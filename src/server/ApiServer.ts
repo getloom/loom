@@ -1,12 +1,6 @@
-import polka from 'polka';
 import cookieSession from 'cookie-session';
 import type {CookieSessionRequest, CookieSessionObject} from 'cookie-session';
-import type {
-	Polka,
-	Request as PolkaRequest,
-	Middleware as PolkaMiddleware,
-	IOptions as PolkaOptions,
-} from 'polka';
+import type {Polka, Request as PolkaRequest, Middleware as PolkaMiddleware} from 'polka';
 import bodyParser from 'body-parser';
 import send from '@polka/send-type';
 import {Logger} from '@feltcoop/gro/dist/utils/log.js';
@@ -29,13 +23,12 @@ import {toAttachSessionUserMiddleware} from '../session/attachSessionUserMiddlew
 import {toLoginMiddleware} from '../session/loginMiddleware.js';
 import {toLogoutMiddleware} from '../session/logoutMiddleware.js';
 import type {User} from '../vocab/user/user.js';
-import {db} from '../db/db.js';
+import type {Database} from '../db/Database.js';
 
 const log = new Logger([blue('[ApiServer]')]);
 
 // TODO not sure what these types should look like in their final form,
 // there's currently some redundancy and weirdness
-export interface ServerApp extends Polka<Request> {}
 export interface Request extends PolkaRequest, CookieSessionRequest {
 	user?: User;
 	session: ServerSession;
@@ -49,9 +42,10 @@ const dev = process.env.NODE_ENV !== 'production';
 
 const TODO_SERVER_COOKIE_KEYS = ['TODO', 'KEY_2_TODO', 'KEY_3_TODO'];
 
-export interface ApiServerConfig {
+export interface Options {
+	app: Polka<Request>;
 	port?: number;
-	polka?: PolkaOptions<Request> | undefined;
+	db: Database;
 	loadRender?: () => Promise<RenderSvelteKit | null>;
 }
 
@@ -59,14 +53,16 @@ export interface RenderSvelteKit {
 	<TContext>(request: SvelteKitRequest<TContext>): SvelteKitResponse | Promise<SvelteKitResponse>;
 }
 
-// TODO review all of this before deploying to production
-
 export class ApiServer {
-	readonly app: ServerApp;
-	readonly db = db;
+	readonly app: Polka<Request>;
+	readonly port: number | undefined;
+	readonly db: Database;
+	readonly loadRender?: () => Promise<RenderSvelteKit | null>;
 
-	constructor(public readonly config: ApiServerConfig) {
-		this.app = polka(config.polka);
+	constructor(options: Options) {
+		this.app = options.app;
+		this.port = options.port;
+		this.db = options.db;
 		log.info('created');
 	}
 
@@ -85,7 +81,6 @@ export class ApiServer {
 				log.trace('req', {url: req.url, query: req.query, params: req.params, body: req.body});
 				next();
 			})
-			// .use(config.render ? (Function.prototype as any) : (Function.prototype as any)) // TODO
 			.use(
 				cookieSession({
 					keys: TODO_SERVER_COOKIE_KEYS,
@@ -111,7 +106,7 @@ export class ApiServer {
 
 		// SvelteKit Node adapter, adapted to our production API server
 		// TODO needs a lot of work, especially for production
-		const render = this.config.loadRender && (await this.config.loadRender());
+		const render = this.loadRender && (await this.loadRender());
 		if (render) {
 			this.app.use(
 				// compression({threshold: 0}), // TODO
@@ -141,21 +136,19 @@ export class ApiServer {
 
 		// Start the app.
 		const port =
-			this.config.port ??
+			this.port ||
 			(render || !dev
 				? numberFromEnv('PORT', API_SERVER_DEFAULT_PORT_PROD)
 				: API_SERVER_DEFAULT_PORT_DEV);
-		await Promise.all([
-			this.db.init(),
-			// TODO Gro utility to get next good port
-			// (wait no that doesn't work, static proxy, hmm... can fix when we switch frontend to Gro)
-			new Promise<void>((resolve) => {
-				this.app.listen(port, () => {
-					log.info(`listening on localhost:${port}`);
-					resolve();
-				});
-			}),
-		]);
+		// TODO Gro utility to get next good port
+		// (wait no that doesn't work, static proxy, hmm... can fix when we switch frontend to Gro)
+		await new Promise<void>((resolve) => {
+			this.app.listen(port, () => {
+				log.info(`listening on localhost:${port}`);
+				resolve();
+			});
+		});
+
 		log.info('inited');
 	}
 

@@ -5,6 +5,7 @@ import {readFileSync, writeFileSync} from 'fs';
 import type {UserSession} from '../session/clientSession.js';
 import type {User} from '../vocab/user/user.js';
 import type {Entity} from '../vocab/entity/entity.js';
+import type {PostgresSql} from './postgres.js';
 
 interface Data {
 	users: User[];
@@ -22,7 +23,7 @@ const persistData = async (data: Data): Promise<void> => {
 	try {
 		writeFileSync(DB_FILE, JSON.stringify(data), 'utf8');
 	} catch (err) {
-		console.error('failed to persist db', err);
+		console.error('[db] failed to persist db', err);
 	}
 };
 
@@ -43,16 +44,23 @@ const getInitialData = (): Data => ({
 	users: [],
 });
 
+export interface Options {
+	sql: PostgresSql;
+}
+
 export class Database {
-	constructor() {
+	sql: PostgresSql;
+
+	constructor({sql}: Options) {
 		console.log('[db] create');
+		this.sql = sql;
 	}
-	async init(): Promise<void> {
-		console.log('[db] init');
-	}
+
 	async destroy(): Promise<void> {
 		console.log('[db] destroy');
+		await this.sql.end();
 	}
+
 	// TODO declaring like this is weird, should be static, but not sure what interface is best
 	repos = {
 		session: {
