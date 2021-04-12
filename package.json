@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "gro dev",
     "build": "gro build",
-    "start": "node dist/server.js",
+    "start": "gro start",
     "test": "gro test",
     "dev-sveltekit": "svelte-kit dev",
     "dev-gro": "gro gro/dev",
@@ -35,7 +35,7 @@
     "vite": "^2.1.5"
   },
   "dependencies": {
-    "@feltcoop/gro": "^0.12.1",
+    "@feltcoop/gro": "^0.19.0",
     "@polka/send-type": "^0.5.2",
     "body-parser": "^1.19.0",
     "cookie-session": "^1.4.0",
