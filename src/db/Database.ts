@@ -3,6 +3,7 @@ import {unwrap} from '@feltcoop/gro';
 import {readFileSync, writeFileSync} from 'fs';
 
 import type {UserSession} from '../session/clientSession.js';
+import type {Community} from '../communities/community.js';
 import type {User} from '../vocab/user/user.js';
 import type {Entity} from '../vocab/entity/entity.js';
 import type {PostgresSql} from './postgres.js';
@@ -113,6 +114,43 @@ export class Database {
 						{type: 'Entity', id: '1', data: {author: name, text: 'hello'}},
 						{type: 'Entity', id: '2', data: {author: name, text: 'world'}},
 					],
+				};
+			},
+		},
+		communities: {
+			findById: async (
+				community_id: string,
+			): Promise<Result<{value: Community[]}, {type: 'noCommunityFound'; reason: string}>> => {
+				console.log(`[db] preparring to query for community id: ${community_id}`);
+				const data = await this.sql<Community[]>`
+				select community_id, name from communities where community_id = ${community_id}
+				`;
+				console.log('[db] community data', data);
+				if (data.length) {
+					return {ok: true, value: data};
+				}
+				return {
+					ok: false,
+					type: 'noCommunityFound',
+					reason: `No community found with id: ${community_id}`,
+				};
+			},
+			filterByAccount: async (
+				account: User,
+			): Promise<Result<{value: Community[]}, {type: 'noCommunitiesFound'; reason: string}>> => {
+				console.log(`[db] preparring to query for communities account: ${account}`);
+				//TODO make this actually use the account data
+				const data = await this.sql<Community[]>`
+				SELECT c.community_id, c.name FROM communities c JOIN account_communities ac ON c.community_id=ac.community_id AND ac.account_id=1
+				`;
+				console.log('[db] community data', data);
+				if (data.length) {
+					return {ok: true, value: data};
+				}
+				return {
+					ok: false,
+					type: 'noCommunitiesFound',
+					reason: `No communities found for account: ${account}`,
 				};
 			},
 		},
