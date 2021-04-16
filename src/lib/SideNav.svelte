@@ -1,13 +1,16 @@
-<script>
-	const submitName = async () => {
-		console.log('button');
+<script lang="ts">
+	import type {Community} from '../communities/community.js';
+
+	export let communities: Community[];
+	const submitName = async (name: string) => {
+		console.log(name);
 	};
 </script>
 
 <div class="sidenav">
-	<button type="button" on:click={submitName}> F </button>
-	<button type="button"> S </button>
-	<button type="button"> D </button>
+	{#each communities as {name} (name)}
+		<button type="button" on:click={() => submitName(name)}>{name} </button>
+	{/each}
 </div>
 
 <style>

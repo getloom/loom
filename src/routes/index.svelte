@@ -1,16 +1,35 @@
 <script lang="ts">
+	import {session} from '$app/stores.js';
 	import Counter from '$lib/Counter.svelte';
 	import Echo from '$lib/Echo.svelte';
 	import AccountForm from '$lib/AccountForm.svelte';
 	import SideNav from '$lib/SideNav.svelte';
+	import {onMount} from 'svelte';
+	import type {ClientSession} from '../session/clientSession.js';
+	import type {Community} from 'src/communities/community.js';
 
 	const title = 'felt-server';
+	let user: ClientSession;
+	$: user = $session?.user;
+	let communities: Community[];
+	communities = [];
+
+	onMount(async () => {
+		const res = await fetch(`/api/v1/communities`);
+		if (res.ok) {
+			const data = await res.json();
+			communities = data.communities;
+			console.log(communities);
+		}
+	});
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
 
 <main>
-	<SideNav />
+	{#if user && !user.guest}
+		<SideNav {communities} />
+	{/if}
 	<h1>{title}</h1>
 	<section>
 		<Counter />
