@@ -5,14 +5,13 @@
 	import AccountForm from '$lib/AccountForm.svelte';
 	import SideNav from '$lib/SideNav.svelte';
 	import {onMount} from 'svelte';
-	import type {ClientSession} from '../session/clientSession.js';
+	import type {ClientSession} from 'src/session/clientSession.js';
 	import type {Community} from 'src/communities/community.js';
 
 	const title = 'felt-server';
 	let user: ClientSession;
 	$: user = $session?.user;
-	let communities: Community[];
-	communities = [];
+	let communities: Community[] = [];
 
 	onMount(async () => {
 		const res = await fetch(`/api/v1/communities`);
