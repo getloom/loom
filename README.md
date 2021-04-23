@@ -1,6 +1,7 @@
 # felt-server
 
-> server for Felt, a tool for building and maintaining communities 💚 work in progress
+> server for [Felt](https://github.com/feltcoop/felt),
+> a tool for building and maintaining communities 💚 work in progress
 
 ## usage
 
