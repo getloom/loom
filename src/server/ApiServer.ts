@@ -1,9 +1,11 @@
+import type {Server as HttpServer} from 'http';
+import type {Server as HttpsServer} from 'https';
 import cookieSession from 'cookie-session';
 import type {CookieSessionRequest, CookieSessionObject} from 'cookie-session';
 import type {Polka, Request as PolkaRequest, Middleware as PolkaMiddleware} from 'polka';
 import bodyParser from 'body-parser';
 import send from '@polka/send-type';
-import {Logger} from '@feltcoop/gro/dist/utils/log.js';
+import {Logger} from '@feltcoop/gro';
 import {blue} from '@feltcoop/gro/dist/utils/terminal.js';
 import sirv from 'sirv';
 import {dirname, join} from 'path';
@@ -27,6 +29,7 @@ import {
 } from '../communities/communityMiddleware.js';
 import type {Account} from '../vocab/account/account.js';
 import type {Database} from '../db/Database.js';
+import type {WebsocketServer} from './WebsocketServer.js';
 
 const log = new Logger([blue('[ApiServer]')]);
 
@@ -46,7 +49,9 @@ const dev = process.env.NODE_ENV !== 'production';
 const TODO_SERVER_COOKIE_KEYS = ['TODO', 'KEY_2_TODO', 'KEY_3_TODO'];
 
 export interface Options {
+	server: HttpServer | HttpsServer;
 	app: Polka<Request>;
+	websocketServer: WebsocketServer;
 	port?: number;
 	db: Database;
 	loadRender?: () => Promise<RenderSvelteKit | null>;
@@ -57,13 +62,17 @@ export interface RenderSvelteKit {
 }
 
 export class ApiServer {
+	readonly server: HttpServer | HttpsServer;
 	readonly app: Polka<Request>;
+	readonly websocketServer: WebsocketServer;
 	readonly port: number | undefined;
 	readonly db: Database;
 	readonly loadRender: () => Promise<RenderSvelteKit | null>;
 
 	constructor(options: Options) {
+		this.server = options.server;
 		this.app = options.app;
+		this.websocketServer = options.websocketServer;
 		this.port = options.port;
 		this.db = options.db;
 		this.loadRender = options.loadRender || (async () => null);
@@ -76,6 +85,9 @@ export class ApiServer {
 
 	async init(): Promise<void> {
 		log.info('initing');
+
+		// TODO refactor to paralleize `init` of the various pieces
+		await this.websocketServer.init();
 
 		// Set up the app and its middleware.
 		this.app
@@ -161,8 +173,10 @@ export class ApiServer {
 		log.info('inited');
 	}
 
-	async destroy(): Promise<void> {
+	async close(): Promise<void> {
+		log.info('close');
 		await Promise.all([
+			this.websocketServer.close(),
 			this.db.close(),
 			new Promise((resolve, reject) =>
 				// TODO remove type casting when polka types are fixed
