@@ -8,7 +8,7 @@ module.exports = {
 	kit: {
 		adapter: node(),
 		target: '#svelte',
-		appDir: 'app', // import('@feltcoop/gro/dist/paths.js').SVELTE_KIT_APP_DIRNAME
+		files: {assets: 'src/static'},
 		vite: {
 			ssr: {
 				noExternal: Object.keys(pkg.dependencies || {}),
