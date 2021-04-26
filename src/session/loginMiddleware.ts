@@ -25,13 +25,13 @@ export const toLoginMiddleware = (server: ApiServer): Middleware => {
 		// TODO formalize and automate validation and normalization
 		if (!accountName) return send(res, 400, {reason: 'invalid accountName'});
 		if (!password) return send(res, 400, {reason: 'invalid password'});
-		if (req.account) {
-			if (req.account.name === accountName) {
+		if (req.accountSession) {
+			if (req.accountSession.account.name === accountName) {
 				return send(res, 400, {reason: 'already logged in'});
 			} else {
 				return send(res, 400, {
 					reason:
-						`Already logged in with accountName '${req.account.name}'.` +
+						`Already logged in with accountName '${req.accountSession.account.name}'.` +
 						` Please first log out if you wish to log in with accountName '${accountName}'.`,
 				});
 			}
@@ -66,7 +66,11 @@ export const toLoginMiddleware = (server: ApiServer): Middleware => {
 
 		console.log('[login]', account.name); // TODO logging
 		req.session.name = account.name;
-		const clientSession = await db.repos.session.loadClientSession(account.name);
-		return send(res, 200, {session: clientSession}); // TODO API types
+		const clientSessionResult = await db.repos.session.loadClientSession(account.name);
+		if (clientSessionResult.ok) {
+			return send(res, 200, {session: clientSessionResult.value}); // TODO API types
+		} else {
+			return send(res, 500, {reason: 'problem loading client session'});
+		}
 	};
 };

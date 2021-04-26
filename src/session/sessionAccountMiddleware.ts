@@ -4,27 +4,18 @@ import type {ApiServer, Middleware} from '../server/ApiServer.js';
 
 export const toSessionAccountMiddleware = (server: ApiServer): Middleware => {
 	return async (req, res, next) => {
+		if (req.accountSession) {
+			return send(res, 500, {reason: 'invalid server configuration'});
+		}
 		if (!req.session.name) {
 			return next();
 		}
 
 		console.log('[sessionAccountMiddleware]', req.session.name); // TODO logging
-		console.log(req.session.name);
-		const findAccountResult = await server.db.repos.accounts.findByName(req.session.name);
-		if (findAccountResult.ok) {
-			req.account = findAccountResult.value;
-		} else {
-			console.log('resetting session, none found');
-			req.session = null!;
-			const code =
-				findAccountResult.type === 'noAccountFound'
-					? 404
-					: findAccountResult.type === 'invalidName'
-					? 400
-					: 500;
-			return send(res, code, {reason: findAccountResult.reason});
+		const findSessionResult = await server.db.repos.session.loadClientSession(req.session.name);
+		if (findSessionResult.ok) {
+			req.accountSession = findSessionResult.value;
 		}
-
 		next();
 	};
 };
