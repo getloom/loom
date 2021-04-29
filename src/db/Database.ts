@@ -3,6 +3,7 @@ import {unwrap} from '@feltcoop/gro';
 
 import type {AccountSession} from '../session/clientSession.js';
 import type {Community} from '../communities/community.js';
+import type {Space} from '../spaces/space.js';
 import type {Account} from '../vocab/account/account.js';
 import type {Entity} from '../vocab/entity/entity.js';
 import type {PostgresSql} from './postgres.js';
@@ -11,6 +12,8 @@ export interface Options {
 	sql: PostgresSql;
 }
 
+//TODO create seperate models used by the front end (w/ camelCase attributes) from the repo models
+// and snake_case for the DB stuff
 export class Database {
 	sql: PostgresSql;
 
@@ -113,6 +116,25 @@ export class Database {
 				`;
 				console.log('[db] community data', data);
 				return {ok: true, value: data};
+			},
+		},
+		spaces: {
+			findById: async (
+				spaceId: string,
+			): Promise<Result<{value: Space[]}, {type: 'noSpaceFound'; reason: string}>> => {
+				console.log(`[db] preparring to query for space id: ${spaceId}`);
+				const data = await this.sql<Space[]>`
+				select space_id, url, media_type, content from spaces where space_id = ${spaceId}
+				`;
+				console.log('[db] space data', data);
+				if (data.length) {
+					return {ok: true, value: data};
+				}
+				return {
+					ok: false,
+					type: 'noSpaceFound',
+					reason: `No space found with id: ${spaceId}`,
+				};
 			},
 		},
 	};

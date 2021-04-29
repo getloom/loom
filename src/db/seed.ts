@@ -1,5 +1,6 @@
 import type {Database} from 'src/db/Database.js';
 import type {Account} from 'src/vocab/account/account.js';
+import type {Space} from 'src/spaces/space.js';
 
 export const seed = async (db: Database): Promise<void> => {
 	const {sql} = db;
@@ -37,9 +38,27 @@ export const seed = async (db: Database): Promise<void> => {
 	)	
 `;
 
-	if (createCommunitiesTableResult.count) {
+	if (createAccountCommunities.count) {
 		console.log('[db] createAccountCommunitiesTableResult', createAccountCommunities);
 	}
+
+	const createSpacesTableResult = await sql`
+	create table if not exists spaces (
+		space_id serial primary key,
+		url text,
+		media_type text,
+		content text
+	)	
+`;
+
+	if (createSpacesTableResult.count) {
+		console.log('[db] createSpacesTableResult', createSpacesTableResult);
+	}
+
+	const spaceDocs: Space[] = await sql`
+  select space_id, url, media_type, content from spaces
+`;
+	console.log('[db] spaceDocs', spaceDocs);
 
 	const accountDocs: Account[] = await sql`
   select account_id, name, password from accounts
@@ -167,6 +186,45 @@ export const seed = async (db: Database): Promise<void> => {
 		insert into account_communities ${sql(accountCommunity4, 'account_id', 'community_id')}
 		`;
 		console.log('[db] createAccountCommunity4Result', accountcommunity4Result);
+	}
+
+	const space1 = spaceDocs.find((d) => d.space_id === 1);
+	if (!space1) {
+		const space1: Space = {
+			url: '/general',
+			media_type: 'application/json',
+			content: "{type: 'ChatRoom', props: {data: '/general/posts'}}",
+		};
+		const space1Result = await sql`
+		insert into spaces ${sql(space1, 'url', 'media_type', 'content')}
+		`;
+		console.log('[db] createSpace1Result', space1Result);
+	}
+
+	const space2 = spaceDocs.find((d) => d.space_id === 2);
+	if (!space2) {
+		const space2: Space = {
+			url: '/general/cute',
+			media_type: 'application/json',
+			content: "{type: 'ChatRoom', props: {data: '/general/fluffy/posts'}}",
+		};
+		const space2Result = await sql`
+		insert into spaces ${sql(space2, 'url', 'media_type', 'content')}
+		`;
+		console.log('[db] createSpace2Result', space2Result);
+	}
+
+	const space3 = spaceDocs.find((d) => d.space_id === 3);
+	if (!space3) {
+		const space3: Space = {
+			url: '/dm/ryan',
+			media_type: 'application/json',
+			content: "{type: 'DirectMessage', props: {data: '/dm/ryan/posts'}}",
+		};
+		const space3Result = await sql`
+		insert into spaces ${sql(space3, 'url', 'media_type', 'content')}
+		`;
+		console.log('[db] createSpace3Result', space3Result);
 	}
 
 	// example: select after inserting
