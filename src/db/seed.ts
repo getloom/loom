@@ -55,6 +55,18 @@ export const seed = async (db: Database): Promise<void> => {
 		console.log('[db] createSpacesTableResult', createSpacesTableResult);
 	}
 
+	const createCommunitySpaces = await sql`
+	create table if not exists community_spaces (
+		community_id int references communities (community_id) ON UPDATE CASCADE ON DELETE CASCADE,
+		space_id int references spaces (space_id) ON UPDATE CASCADE,
+		CONSTRAINT community_spaces_pkey PRIMARY KEY (community_id,space_id)
+	)	
+`;
+
+	if (createCommunitySpaces.count) {
+		console.log('[db] createCommunitySpacesTableResult', createAccountCommunities);
+	}
+
 	const spaceDocs: Space[] = await sql`
   select space_id, url, media_type, content from spaces
 `;
@@ -83,12 +95,21 @@ export const seed = async (db: Database): Promise<void> => {
 	`;
 	console.log('[db] accountCommunityDocs', accountCommunityDocs);
 
+	interface CommunitySpacesDoc {
+		community_id: number;
+		space_id: number;
+	}
+	const communitySpacesDocs: CommunitySpacesDoc[] = await sql`
+	select space_id,community_id from community_spaces
+	`;
+	console.log('[db] communitySpacesDocs', communitySpacesDocs);
+
 	// example: insert literal values
 	const account1Doc = accountDocs.find((d) => d.name === 'account1');
 	if (!account1Doc) {
 		const account1InitialData = {
-			name: 'ryan',
-			password: '16a9c9b6b4eccccecba5d29c8f58eab9bf1e788a9ffb2be7c46927e91f8a6b4c',
+			name: 'a',
+			password: 'ded6a3304309fe718831c3968bdda1b36fb0acae7de54a4cb011ba10923aab71', // 'a' hashed
 		};
 		const createAccount1Result = await sql`
     insert into accounts (
@@ -104,8 +125,8 @@ export const seed = async (db: Database): Promise<void> => {
 	const account2Doc = accountDocs.find((d) => d.name === 'account2');
 	if (!account2Doc) {
 		const account2: Account = {
-			name: 'hamilton',
-			password: '16c7c0b684c170830874eec97caf9853f99634ace2431f0990cbf0c3d7a353fd',
+			name: 'b',
+			password: 'bff5c2262849491dd4047eb7086a7948428885aef62e3b90aa388c9db11d1c1e', // 'b' hashed
 		};
 		const account2Result = await sql`
     insert into accounts ${sql(account2, 'name', 'password')}
@@ -217,14 +238,47 @@ export const seed = async (db: Database): Promise<void> => {
 	const space3 = spaceDocs.find((d) => d.space_id === 3);
 	if (!space3) {
 		const space3: Space = {
-			url: '/dm/ryan',
+			url: '/dm/a',
 			media_type: 'application/json',
-			content: "{type: 'DirectMessage', props: {data: '/dm/ryan/posts'}}",
+			content: "{type: 'DirectMessage', props: {data: '/dm/a/posts'}}",
 		};
 		const space3Result = await sql`
 		insert into spaces ${sql(space3, 'url', 'media_type', 'content')}
 		`;
 		console.log('[db] createSpace3Result', space3Result);
+	}
+
+	const communitySpaces1Doc = communitySpacesDocs.find(
+		(d) => d.space_id === 1 && d.community_id === 1,
+	);
+	if (!communitySpaces1Doc) {
+		const communitySpaces1: CommunitySpacesDoc = {space_id: 1, community_id: 1};
+		const communitySpaces1Result = await sql`
+		insert into community_spaces ${sql(communitySpaces1, 'space_id', 'community_id')}
+		`;
+		console.log('[db] communitySpaces1Result', communitySpaces1Result);
+	}
+
+	const communitySpaces2Doc = communitySpacesDocs.find(
+		(d) => d.space_id === 2 && d.community_id === 1,
+	);
+	if (!communitySpaces2Doc) {
+		const communitySpaces2: CommunitySpacesDoc = {space_id: 2, community_id: 1};
+		const communitySpaces2Result = await sql`
+		insert into community_spaces ${sql(communitySpaces2, 'space_id', 'community_id')}
+		`;
+		console.log('[db] communitySpaces2Result', communitySpaces2Result);
+	}
+
+	const communitySpaces3Doc = communitySpacesDocs.find(
+		(d) => d.space_id === 3 && d.community_id === 1,
+	);
+	if (!communitySpaces3Doc) {
+		const communitySpaces3: CommunitySpacesDoc = {space_id: 3, community_id: 1};
+		const communitySpaces3Result = await sql`
+		insert into community_spaces ${sql(communitySpaces3, 'space_id', 'community_id')}
+		`;
+		console.log('[db] communitySpaces3Result', communitySpaces3Result);
 	}
 
 	// example: select after inserting
