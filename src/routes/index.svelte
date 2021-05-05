@@ -1,9 +1,7 @@
 <script lang="ts">
 	import {session} from '$app/stores.js';
-	import Counter from '$lib/Counter.svelte';
-	import Echo from '$lib/Echo.svelte';
 	import AccountForm from '$lib/AccountForm.svelte';
-	import SideNav from '$lib/SideNav.svelte';
+	import Workspace from '$lib/Workspace.svelte';
 	import type {ClientAccount} from 'src/session/clientSession.js';
 	import type {Community} from 'src/communities/community.js';
 
@@ -18,15 +16,9 @@
 
 <main>
 	{#if communities}
-		<SideNav {communities} />
+		<Workspace {communities} />
 	{/if}
 	<h1>{title}</h1>
-	<section>
-		<Counter />
-	</section>
-	<section>
-		<Echo />
-	</section>
 	<section>
 		<AccountForm />
 	</section>
@@ -40,8 +32,6 @@
 
 	main {
 		text-align: center;
-		padding: 1em;
-		margin: 0 auto;
 		padding: 0 auto;
 	}
 
@@ -50,7 +40,6 @@
 		font-size: 4rem;
 		font-weight: 100;
 		line-height: 1.1;
-		margin: 4rem auto;
 		max-width: 14rem;
 	}
 

@@ -1,16 +1,14 @@
 <script lang="ts">
 	import type {Community} from '../communities/community.js';
 
-	//TODO there is an issue with the communities prop not properly clearing/updating on login/logout
 	export let communities: Community[];
-	const submitName = async (name: string) => {
-		console.log(name);
-	};
+	export let selectedCommunity: Community;
+	export let selectCommunity: (community: Community) => void;
 </script>
 
 <div class="sidenav">
-	{#each communities as {name} (name)}
-		<button type="button" on:click={() => submitName(name)}>{name} </button>
+	{#each communities as community (community.community_id)}
+		<button type="button" on:click={() => selectCommunity(community)}>{community.name} </button>
 	{/each}
 </div>
 
@@ -19,9 +17,10 @@
 		border: 1px outset grey;
 		background-color: lightGreen;
 		height: 75px;
-		width: 90%;
+		width: 75px;
 		cursor: pointer;
 		margin: 5%;
+		word-wrap: break-word;
 	}
 
 	button:active {
@@ -29,9 +28,8 @@
 	}
 
 	.sidenav {
-		width: 5%;
+		width: 85px;
 		height: 100%;
-		border: 2px outset black;
 		position: fixed;
 	}
 </style>
