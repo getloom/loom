@@ -1,6 +1,7 @@
 import type {Database} from 'src/db/Database.js';
 import type {Account} from 'src/vocab/account/account.js';
 import type {Space} from 'src/spaces/space.js';
+import type {Post} from 'src/posts/post.js';
 
 export const seed = async (db: Database): Promise<void> => {
 	const {sql} = db;
@@ -67,6 +68,19 @@ export const seed = async (db: Database): Promise<void> => {
 		console.log('[db] createCommunitySpacesTableResult', createAccountCommunities);
 	}
 
+	const createPostsTableResult = await sql`
+	create table if not exists posts (
+		post_id serial primary key,
+		content text,
+		actor_id int,
+		space_id int references spaces (space_id) ON UPDATE CASCADE ON DELETE CASCADE
+	)	
+`;
+
+	if (createPostsTableResult.count) {
+		console.log('[db] createPostsTableResult', createPostsTableResult);
+	}
+
 	const spaceDocs: Space[] = await sql`
   select space_id, url, media_type, content from spaces
 `;
@@ -76,6 +90,11 @@ export const seed = async (db: Database): Promise<void> => {
   select account_id, name, password from accounts
 `;
 	console.log('[db] accountDocs', accountDocs);
+
+	const postDocs: Post[] = await sql`
+  select post_id, content, actor_id, space_id from posts
+`;
+	console.log('[db] postDocs', postDocs);
 
 	interface CommunityDoc {
 		community_id?: number;
@@ -279,6 +298,32 @@ export const seed = async (db: Database): Promise<void> => {
 		insert into community_spaces ${sql(communitySpaces3, 'space_id', 'community_id')}
 		`;
 		console.log('[db] communitySpaces3Result', communitySpaces3Result);
+	}
+
+	const post1 = postDocs.find((d) => d.post_id === 1);
+	if (!post1) {
+		const post1: Post = {
+			content: 'Those who know do not speak.',
+			actor_id: 1,
+			space_id: 1,
+		};
+		const post1Result = await sql`
+		insert into posts ${sql(post1, 'content', 'actor_id', 'space_id')}
+		`;
+		console.log('[db] createpost1Result', post1Result);
+	}
+
+	const post2 = postDocs.find((d) => d.post_id === 2);
+	if (!post2) {
+		const post2: Post = {
+			content: 'Those who speak do not know.',
+			actor_id: 2,
+			space_id: 1,
+		};
+		const post2Result = await sql`
+		insert into posts ${sql(post2, 'content', 'actor_id', 'space_id')}
+		`;
+		console.log('[db] createpost2Result', post2Result);
 	}
 
 	// example: select after inserting

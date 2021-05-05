@@ -4,6 +4,7 @@ import {unwrap} from '@feltcoop/gro';
 import type {AccountSession} from '../session/clientSession.js';
 import type {Community} from '../communities/community.js';
 import type {Space} from '../spaces/space.js';
+import type {Post} from '../posts/post.js';
 import type {Account} from '../vocab/account/account.js';
 import type {Entity} from '../vocab/entity/entity.js';
 import type {PostgresSql} from './postgres.js';
@@ -150,6 +151,16 @@ export class Database {
 				SELECT s.space_id, s.url, s.media_type, s.content FROM spaces s JOIN community_spaces cs ON s.space_id=cs.space_id AND cs.community_id= ${communityId}
 				`;
 				console.log('[db] community data', data);
+				return {ok: true, value: data};
+			},
+		},
+		posts: {
+			filterBySpace: async (spaceId: string): Promise<Result<{value: Post[]}>> => {
+				console.log(`[db] preparring to query for space posts: ${spaceId}`);
+				const data = await this.sql<Space[]>`
+				SELECT p.post_id, p.content, p.actor_id, p.space_id FROM posts p WHERE p.space_id= ${spaceId}
+				`;
+				console.log('[db] space posts', data);
 				return {ok: true, value: data};
 			},
 		},
