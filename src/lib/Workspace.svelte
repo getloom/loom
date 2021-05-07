@@ -1,21 +1,37 @@
 <script lang="ts">
 	import CommunityNav from '$lib/CommunityNav.svelte';
 	import SpaceNav from '$lib/SpaceNav.svelte';
+	import ChatRoom from '$lib/ChatRoom.svelte';
 	import type {Community} from 'src/communities/community.js';
+	import type {Space} from 'src/spaces/space.js';
 
 	export let communities: Community[];
 	let selectedCommunity = communities[0];
 	const selectCommunity = (community: Community) => {
 		selectedCommunity = community;
 	};
+	let selectedSpace = selectedCommunity.spaces[0];
+	const selectSpace = (space: Space) => {
+		selectedSpace = space;
+		console.log(`[ss] ${selectedSpace.url}`);
+	};
+	let selectedSpaceContent: Object;
+	$: selectedSpaceContent =
+		selectedSpace.media_type === 'application/json'
+			? JSON.parse(selectedSpace.content)
+			: {props: {}};
 </script>
 
 <div class="workspace">
 	<section class="communitynav">
 		<CommunityNav {communities} {selectedCommunity} {selectCommunity} />
 	</section>
-	<section class="spacenav"><SpaceNav spaces={selectedCommunity.spaces} /></section>
-	<div class="viewfinder">"hello this is where a chat box would go"</div>
+	<section class="spacenav">
+		<SpaceNav spaces={selectedCommunity.spaces} {selectedSpace} {selectSpace} />
+	</section>
+	<div class="viewfinder">
+		<ChatRoom space={selectedSpace} />
+	</div>
 </div>
 
 <style>
