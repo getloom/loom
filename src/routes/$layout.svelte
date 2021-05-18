@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Chat from '$lib/Chat.svelte';
-
 	import SocketConnection from '$lib/SocketConnection.svelte';
 	import {createSocketStore} from '$lib/socketStore';
+	import {setContext} from 'svelte';
 
 	const socket = createSocketStore();
 	const socketUrl = 'ws://localhost:3002/ws';
+	setContext('socket', socket);
 </script>
 
 <svelte:head>
@@ -15,9 +15,5 @@
 <!-- TODO get this working with port 3000 as the default -
 		can't get the right proxy configuration, or something -->
 <SocketConnection {socket} url={socketUrl} />
-
-{#if $socket.connected}
-	<Chat {socket} />
-{/if}
 
 <slot />
