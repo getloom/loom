@@ -153,6 +153,29 @@ export class Database {
 				console.log('[db] community data', data);
 				return {ok: true, value: data};
 			},
+			insert: async (
+				community_id: string,
+				url: string,
+				media_type: string,
+				content: string,
+			): Promise<Result<{value: Space}>> => {
+				const data = await this.sql<Space[]>`
+					INSERT INTO spaces (url, media_type, content) VALUES (
+						${url},${media_type},${content}
+					) RETURNING *
+				`;
+				console.log('[db] created space', data);
+				const space_id: number = data[0].space_id!;
+				console.log(community_id);
+				//TODO more robust error handling or condense into single query
+				const association = await this.sql<any>`
+			   INSERT INTO community_spaces (space_id, community_id) VALUES (
+					 ${space_id},${community_id}
+				 )
+				`;
+				console.log('[db] created community_space', association);
+				return {ok: true, value: data[0]};
+			},
 		},
 		posts: {
 			insert: async (
