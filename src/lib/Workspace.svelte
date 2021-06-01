@@ -8,11 +8,12 @@
 
 	export let friends: Member[];
 	export let communities: Community[];
-	let selectedCommunity = communities[0];
+	let selectedCommunity = communities[0] || null;
+	$: selectedCommunitySpaces = selectedCommunity?.spaces || null;
 	const selectCommunity = (community: Community) => {
 		selectedCommunity = community;
 	};
-	let selectedSpace = selectedCommunity.spaces[0];
+	let selectedSpace = selectedCommunity ? selectedCommunity.spaces[0] : null;
 	const selectSpace = (space: Space) => {
 		selectedSpace = space;
 		console.log(`[ss] ${selectedSpace.url}`);
@@ -24,15 +25,19 @@
 		<CommunityNav {friends} {communities} {selectedCommunity} {selectCommunity} />
 	</section>
 	<section class="spacenav">
-		<SpaceNav
-			community={selectedCommunity}
-			spaces={selectedCommunity.spaces}
-			{selectedSpace}
-			{selectSpace}
-		/>
+		{#if selectedCommunity}
+			<SpaceNav
+				community={selectedCommunity}
+				spaces={selectedCommunitySpaces}
+				{selectedSpace}
+				{selectSpace}
+			/>
+		{/if}
 	</section>
 	<div class="viewfinder">
-		<ChatRoom space={selectedSpace} />
+		{#if selectedSpace}
+			<ChatRoom space={selectedSpace} />
+		{/if}
 	</div>
 </div>
 
