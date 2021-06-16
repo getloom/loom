@@ -9,7 +9,7 @@ import {Logger} from '@feltcoop/gro';
 import {blue} from '@feltcoop/gro/dist/utils/terminal.js';
 import sirv from 'sirv';
 import {dirname, join} from 'path';
-import {get_body} from '@sveltejs/kit/http';
+import {getRawBody} from '@sveltejs/kit/node';
 import {URL, fileURLToPath} from 'url';
 import {existsSync} from 'fs';
 import type {Request as SvelteKitRequest, Response as SvelteKitResponse} from '@sveltejs/kit';
@@ -154,7 +154,7 @@ export class ApiServer {
 						method: req.method,
 						headers: req.headers, // TODO: what about repeated headers, i.e. string[]
 						path: parsed.pathname,
-						body: await get_body(req),
+						body: await getRawBody(req),
 						query: parsed.searchParams,
 					} as any); // TODO why the type casting?
 
@@ -197,7 +197,7 @@ export class ApiServer {
 			this.db.close(),
 			new Promise((resolve, reject) =>
 				// TODO remove type casting when polka types are fixed
-				((this.app.server as any) as Server).close((err) => (err ? resolve : reject(err))),
+				(this.app.server as any as Server).close((err) => (err ? resolve : reject(err))),
 			),
 		]);
 	}
