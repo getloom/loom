@@ -56,7 +56,7 @@ PORT=3003 gro start
 
 > TODO
 
-# :turtle:<sub>:turtle:</sub><sub><sub>:turtle:</sub></sub>
+## credits 🐢<sub>🐢</sub><sub><sub>🐢</sub></sub>
 
 [Polka](https://github.com/lukeed/polka) ∙
 [Svelte](https://github.com/sveltejs/svelte) ∙
@@ -72,6 +72,6 @@ PORT=3003 gro start
 [@lukeed\/\*](https://github.com/lukeed)
 & [more](package.json)
 
-## license 🐦
+## license [🐦](https://en.wikipedia.org/wiki/Free_and_open-source_software)
 
 [MIT](LICENSE)
