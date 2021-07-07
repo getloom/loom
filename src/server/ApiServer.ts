@@ -5,8 +5,8 @@ import type {CookieSessionRequest, CookieSessionObject} from 'cookie-session';
 import type {Polka, Request as PolkaRequest, Middleware as PolkaMiddleware} from 'polka';
 import bodyParser from 'body-parser';
 import send from '@polka/send-type';
-import {Logger} from '@feltcoop/gro';
-import {blue} from '@feltcoop/gro/dist/utils/terminal.js';
+import {Logger} from '@feltcoop/felt/util/log.js';
+import {blue} from '@feltcoop/felt/util/terminal.js';
 import sirv from 'sirv';
 import {dirname, join} from 'path';
 import {getRawBody} from '@sveltejs/kit/node';
@@ -17,8 +17,8 @@ import type {Server} from 'net';
 import {
 	API_SERVER_DEFAULT_PORT_DEV,
 	API_SERVER_DEFAULT_PORT_PROD,
-} from '@feltcoop/gro/dist/config/defaultBuildConfig.js';
-import {toEnvNumber} from '@feltcoop/gro/dist/utils/env.js';
+} from '@feltcoop/gro/dist/build/default_build_config.js';
+import {to_env_number} from '@feltcoop/felt/util/env.js';
 
 import {toSessionAccountMiddleware} from '../session/sessionAccountMiddleware.js';
 import {toLoginMiddleware} from '../session/loginMiddleware.js';
@@ -176,7 +176,7 @@ export class ApiServer {
 			// and we want to use 3001 while building for prod.
 			// TODO maybe always default to env var `PORT`, upstream and instantiate `ApiServer` with it
 			(render && !dev
-				? toEnvNumber('PORT', API_SERVER_DEFAULT_PORT_PROD)
+				? to_env_number('PORT', API_SERVER_DEFAULT_PORT_PROD)
 				: API_SERVER_DEFAULT_PORT_DEV);
 		// TODO Gro utility to get next good port
 		// (wait no that doesn't work, static proxy, hmm... can fix when we switch frontend to Gro)

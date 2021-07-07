@@ -6,7 +6,6 @@
 
 	export let community: Community;
 	export let spaces: Space[];
-	export let selectedSpace: Space;
 	export let selectSpace: (community: Space) => void;
 
 	let newName = '';
