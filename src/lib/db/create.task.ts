@@ -1,6 +1,6 @@
 import type {Task} from '@feltcoop/gro';
 
-import {obtainDb} from './obtainDb.js';
+import {obtainDb} from '$lib/db/obtainDb.js';
 
 // name? maybe `init` or `reset` is clearer?
 
@@ -13,9 +13,9 @@ export const task: Task = {
 	run: async ({invoke_task, args}) => {
 		const shouldSeed = !args['no-seed'];
 		const [_, unobtainDb] = obtainDb();
-		await invoke_task('db/destroy');
-		// await invoke_task('db/up'); // TODO add task that migrates up using `ley`
-		if (shouldSeed) await invoke_task('db/seed');
+		await invoke_task('lib/db/destroy');
+		// await invoke_task('lib/db/up'); // TODO add task that migrates up using `ley`
+		if (shouldSeed) await invoke_task('lib/db/seed');
 		unobtainDb();
 	},
 };
