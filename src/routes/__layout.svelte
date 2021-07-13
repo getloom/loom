@@ -6,7 +6,6 @@
 	import {create_socket_store} from '$lib/ui/socket_store';
 
 	const socket = create_socket_store();
-	const socket_url = 'ws://localhost:3002/ws';
 	setContext('socket', socket);
 </script>
 
@@ -16,6 +15,6 @@
 
 <!-- TODO get this working with port 3000 as the default -
 		can't get the right proxy configuration, or something -->
-<Socket_Connection {socket} url={socket_url} />
+<Socket_Connection {socket} />
 
 <slot />
