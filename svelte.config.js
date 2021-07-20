@@ -19,6 +19,9 @@ export default {
 					// 'ws://localhost:3000': 'ws://localhost:3001/',
 				},
 			},
+			optimizeDeps: {
+				exclude: ['@feltcoop/felt'],
+			},
 		},
 	},
 };
