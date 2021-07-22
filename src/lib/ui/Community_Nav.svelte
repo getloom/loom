@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type {Result} from '@feltcoop/felt';
+
 	import type {Community} from '$lib/communities/community.js';
 	import Modal from '$lib/ui/Modal.svelte';
 	import type {Member} from '$lib/members/member.js';
@@ -7,6 +9,9 @@
 	export let communities: Community[];
 	export let selected_community: Community;
 	export let select_community: (community: Community) => void;
+	export let create_community: (
+		name: string,
+	) => Promise<Result<{value: {community: Community}}, {reason: string}>>;
 
 	$: invitable_friends = selected_community
 		? friends.filter((x) => !selected_community.members.some((y) => x.account_id == y.account_id))
@@ -20,22 +25,6 @@
 			new_name = '';
 			close_modal();
 		}
-	};
-
-	const create_community = async (name: string) => {
-		if (!name) return;
-		//Needs to collect name
-		const doc = {
-			name,
-		};
-		const res = await fetch(`/api/v1/communities`, {
-			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify(doc),
-		});
-		const data = await res.json();
-		console.log(data);
-		communities = data.community;
 	};
 
 	/**
@@ -61,7 +50,7 @@
 	};
 </script>
 
-<div class="sidenav">
+<div class="community-nav">
 	<div class="header">
 		<Modal let:open={open_modal} let:close={close_modal}>
 			<span slot="trigger">
@@ -115,7 +104,12 @@
 		{/if}
 	</div>
 	{#each communities as community (community.community_id)}
-		<button type="button" class="button-nav" on:click={() => select_community(community)}>
+		<button
+			type="button"
+			class:selected={community === selected_community}
+			disabled={community === selected_community}
+			on:click={() => select_community(community)}
+		>
 			{community.name}
 		</button>
 	{/each}
@@ -130,24 +124,16 @@
 		word-wrap: break-word;
 	}
 
-	.button-nav {
-		border: 1px outset grey;
-		background-color: lightGreen;
-		height: 75px;
-		width: 75px;
-		cursor: pointer;
-		margin: 5%;
-		word-wrap: break-word;
+	.header {
+		display: flex;
 	}
 
-	button:active {
-		background-color: grey;
-	}
-
-	.sidenav {
-		width: 85px;
+	.community-nav {
 		height: 100%;
-		position: fixed;
-		background: #3bbb3b;
+		width: 8.5rem;
+		border-top: var(--border);
+		border-right: var(--border);
+		display: flex;
+		flex-direction: column;
 	}
 </style>
