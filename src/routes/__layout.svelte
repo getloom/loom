@@ -9,13 +9,15 @@
 	import Main_Nav from '$lib/ui/Main_Nav.svelte';
 	import {set_data} from '$lib/ui/data';
 	import {set_ui} from '$lib/ui/ui';
+	import {set_api, to_api_store} from '$lib/ui/api';
 
 	const devmode = set_devmode();
 	set_socket();
 	const data = set_data($session);
-	$: data.set_session($session);
+	$: data.update_session($session);
 	const ui = set_ui();
-	$: ui.set_data($data);
+	$: ui.update_data($data); // TODO this or make it an arg to the ui store?
+	set_api(to_api_store(ui, data));
 
 	console.log('$data', $data);
 </script>
@@ -27,6 +29,16 @@
 <div class="layout">
 	{#if !$session.guest}
 		<Main_Nav />
+		<!-- TODO consider higher order components instead of linking stores together like this,
+			continuing component-level composition:
+			<Ui>
+				<Data>
+					<Api>
+						<Main_Nav />
+					</Api>
+				</Data>
+			</Ui>
+		-->
 	{/if}
 	<slot />
 	<Devmode {devmode} />

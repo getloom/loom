@@ -1,64 +1,59 @@
 <script lang="ts">
 	import type {Space} from '$lib/spaces/space.js';
 	import Modal from '$lib/ui/Modal.svelte';
-	import type {Community} from '$lib/communities/community.js';
+	import type {Community_Model} from '$lib/communities/community.js';
+	import {get_api} from '$lib/ui/api';
 
-	export let community: Community;
+	const api = get_api();
+
+	export let community: Community_Model;
 	export let spaces: Space[];
 	export let selected_space: Space;
-	export let select_space: (community: Space) => void;
 
 	let new_name = '';
 
 	const on_keydown = async (e: KeyboardEvent, close_modal: () => void) => {
 		if (e.key === 'Enter') {
-			await create_space();
+			await create();
 			close_modal();
 		}
 	};
 
-	const create_space = async () => {
+	const create = async () => {
 		if (!new_name) return;
-		//Needs to collect url(i.e. name for now), type (currently default json/application), & content (hardcoded JSON struct)
+		//Needs to collect url(i.e. name for now), type (currently default application/json), & content (hardcoded JSON struct)
 		const url = `/${new_name}`;
-		const doc = {
+		await api.create_space(
+			community.community_id,
+			new_name,
 			url,
-			media_type: 'json/application',
-			content: `{"type": "ChatRoom", "props": {"data": "${url}/posts"}}`,
-		};
-		const res = await fetch(`/api/v1/communities/${community.community_id}/spaces`, {
-			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify(doc),
-		});
-		const data = await res.json();
-		// TODO call `data.add_space`
-		spaces = spaces.concat(data.space);
+			'application/json',
+			`{"type": "Chat_Room", "props": {"data": "${url}/posts"}}`,
+		);
 		new_name = '';
 	};
 </script>
 
 <div class="space-nav">
 	<div class="header">
-		<Modal let:open={open_modal} let:close={close_modal}>
-			<span slot="trigger">
+		<Modal>
+			<div slot="trigger" let:open>
 				<button
 					aria-label="Create Space"
 					type="button"
 					class="button-emoji"
-					on:click={() => open_modal()}>➕</button
+					on:click={() => open()}
 				>
-			</span>
-			<div slot="header">
-				<h1>Create a new space</h1>
+					➕
+				</button>
 			</div>
-
-			<div slot="content">
+			<div slot="content" let:close>
+				<h1>Create a new space</h1>
 				<p>
 					<input
 						type="text"
-						placeholder="> chat"
-						on:keydown={(e) => on_keydown(e, close_modal)}
+						placeholder="> name"
+						on:keydown={(e) => on_keydown(e, close)}
 						bind:value={new_name}
 					/>
 				</p>
@@ -69,15 +64,17 @@
 		<button
 			class:selected={space === selected_space}
 			disabled={space === selected_space}
-			on:click={() => select_space(space)}>{space.url}</button
+			on:click={() => api.select_space(community.community_id, space.space_id)}
 		>
+			{space.url}
+		</button>
 	{/each}
 </div>
 
 <style>
 	.space-nav {
 		height: 100%;
-		width: 15rem;
+		flex: 1;
 		border-top: var(--border);
 		display: flex;
 		flex-direction: column;
