@@ -49,12 +49,16 @@ export class Database {
 				name: string,
 				password: string,
 			): Promise<Result<{value: Account}, {reason: string}>> => {
-				const account = {name, password};
-				const data = await this.sql`
+				const data = await this.sql<Account[]>`
 					insert into accounts (name, password) values (
 						${name}, ${password}
-					)`;
+					) RETURNING *`;
 				console.log(data);
+				const account = data[0];
+				const result = await this.repos.communities.insert(name, account.account_id!);
+				if (!result.ok) {
+					return {ok: false, reason: 'Failed to create initial user community'};
+				}
 				return {ok: true, value: account};
 			},
 			find_by_name: async (
@@ -143,9 +147,8 @@ export class Database {
 					) RETURNING *
 				`;
 				console.log('[db] created community', data);
-				// TODO is there a way to do this via sql? Or do we just add a default `/general` space to all new communities?
-				data[0].spaces = [];
-				const community_id: number = data[0].community_id!;
+				const community = data[0];
+				const community_id = community.community_id;
 				console.log(community_id);
 				// TODO more robust error handling or condense into single query
 				const association = await this.sql<any>`
@@ -154,7 +157,10 @@ export class Database {
 					)
 				`;
 				console.log('[db] created account_communities', association);
-				return {ok: true, value: data[0]};
+				const spaces_result = await this.repos.spaces.insert_default_spaces(community_id);
+				if (!spaces_result.ok) return spaces_result;
+				community.spaces = spaces_result.value;
+				return {ok: true, value: community};
 			},
 		},
 		spaces: {
@@ -184,12 +190,12 @@ export class Database {
 				return {ok: true, value: data};
 			},
 			insert: async (
-				community_id: string,
+				community_id: number,
 				params: Space_Params,
 			): Promise<Result<{value: Space}>> => {
 				const {name, content, media_type, url} = params;
 				const data = await this.sql<Space[]>`
-					INSERT INTO spaces (url, media_type, content) VALUES (
+					INSERT INTO spaces (name, url, media_type, content) VALUES (
 						${name},${url},${media_type},${content}
 					) RETURNING *
 				`;
@@ -204,6 +210,37 @@ export class Database {
 				`;
 				console.log('[db] created community_space', association);
 				return {ok: true, value: data[0]};
+			},
+			insert_default_spaces: async (
+				community_id: number,
+			): Promise<Result<{value: Space[]}, {reason: string}>> => {
+				const result = await Promise.all([
+					this.repos.spaces.insert(community_id, {
+						name: 'chat',
+						url: '/chat',
+						media_type: 'application/json',
+						content: '{"type": "Chat", "props": {"data": "/chat/posts"}}',
+					}),
+					this.repos.spaces.insert(community_id, {
+						name: 'board',
+						url: '/board',
+						media_type: 'application/json',
+						content: '{"type": "Board", "props": {"data": "/board/posts"}}',
+					}),
+					this.repos.spaces.insert(community_id, {
+						name: 'voice',
+						url: '/voice',
+						media_type: 'application/json',
+						content: '{"type": "Voice", "props": {"data": "/voice/stream"}}',
+					}),
+				]);
+				console.log('[db] created default spaces', community_id, result);
+				const spaces: Space[] = [];
+				for (const r of result) {
+					if (!r.ok) return {ok: false, reason: 'Failed to create default spaces for community.'};
+					spaces.push(r.value);
+				}
+				return {ok: true, value: spaces};
 			},
 		},
 		posts: {
