@@ -29,32 +29,68 @@
 </script>
 
 <div class="main-nav">
-	<Socket_Connection />
-	<Account_Form />
-	<div class="explorer">
-		{#if selected_community}
-			<Community_Nav {members} {communities} {selected_community} />
-			<Space_Nav
-				community={selected_community}
-				spaces={selected_community.spaces}
-				{selected_space}
-			/>
-		{/if}
+	<div class="header">
+		<button
+			on:click={() => ui.set_main_nav_view('explorer')}
+			class:selected={$ui.main_nav_view === 'explorer'}
+			disabled={$ui.main_nav_view === 'explorer'}
+			class="explorer-button"
+		>
+			<img src="/favicon.png" alt="show explorer" />
+		</button>
+		<button
+			on:click={() => ui.set_main_nav_view('account')}
+			class:selected={$ui.main_nav_view === 'account'}
+			disabled={$ui.main_nav_view === 'account'}
+			class="account-button"
+		>
+			{$data.account.name}
+		</button>
+		<Socket_Connection />
 	</div>
+	{#if $ui.main_nav_view === 'explorer'}
+		<div class="explorer">
+			{#if selected_community}
+				<Community_Nav {members} {communities} {selected_community} />
+				<Space_Nav
+					community={selected_community}
+					spaces={selected_community.spaces}
+					{selected_space}
+					{members}
+				/>
+			{/if}
+		</div>
+	{:else if $ui.main_nav_view === 'account'}
+		<Account_Form />
+	{/if}
 </div>
 
 <style>
 	.main-nav {
 		height: 100%;
+		width: var(--column_width_min);
+		overflow: auto;
 		display: flex;
 		flex-direction: column;
+		flex-shrink: 0;
 		border-left: var(--border);
 		border-right: var(--border);
+	}
+	.header {
+		display: flex;
+		height: calc(var(--navbar_size) + var(--border_width));
+		border-bottom: var(--border);
+		width: 100%;
 	}
 	.explorer {
 		display: flex;
 		flex: 1;
-		width: 32rem;
-		max-width: 32rem;
+	}
+	.explorer-button {
+		width: var(--navbar_size);
+		height: var(--navbar_size);
+	}
+	.account-button {
+		flex: 1;
 	}
 </style>
