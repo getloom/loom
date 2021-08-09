@@ -1,14 +1,14 @@
 <script lang="ts">
-	import {get_api} from '$lib/ui/api';
 	import type {Space} from '$lib/spaces/space';
+	import {get_app} from '$lib/ui/app';
 
-	const api = get_api();
+	const {ui, api} = get_app();
 
 	export let space: Space | null | undefined;
 </script>
 
-<div class="workspace-header">
-	<button on:click={() => api.toggle_main_nav()}> ☰ </button>
+<div class="workspace-header" class:expanded-nav={$ui.expand_main_nav}>
+	<button class="icon-button" on:click={() => api.toggle_main_nav()}> ☰ </button>
 	<div>{space?.url}</div>
 </div>
 
@@ -21,9 +21,16 @@
 		border-bottom: var(--border);
 		font-size: var(--font_size_xl);
 	}
-	button {
-		width: var(--navbar_size);
-		height: var(--navbar_size);
+	.icon-button {
 		margin-right: var(--spacing_lg);
+	}
+	.expanded-nav .icon-button {
+		display: none;
+	}
+	/* `50rem` in media queries is the same as `800px`, which is `--column_width` */
+	@media (max-width: 50rem) {
+		.workspace-header .icon-button {
+			display: block;
+		}
 	}
 </style>
