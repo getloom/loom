@@ -26,8 +26,9 @@
 			community.community_id,
 			new_name,
 			url,
-			'application/json',
-			`{"type": "Chat_Room", "props": {"data": "${url}/posts"}}`,
+			//TODO : add space type picker
+			'application/fuz+json',
+			`{"type": "Chat", "props": {"data": "${url}/posts"}}`,
 		);
 		new_name = '';
 	};
