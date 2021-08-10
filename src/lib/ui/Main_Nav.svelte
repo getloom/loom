@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Markup from '@feltcoop/felt/ui/Markup.svelte';
+
 	import Community_Nav from '$lib/ui/Community_Nav.svelte';
 	import Space_Nav from '$lib/ui/Space_Nav.svelte';
 	import Socket_Connection from '$lib/ui/Socket_Connection.svelte';
@@ -33,7 +35,8 @@
 />
 <div class="main-nav" class:expanded={$ui.expand_main_nav}>
 	<div class="header">
-		<button class="icon-button" on:click={() => api.toggle_main_nav()}> ☰ </button>
+		<!-- TODO how to do this? -->
+		<div class="icon-button button-placeholder" />
 		<button
 			on:click={() => ui.set_main_nav_view('explorer')}
 			class:selected={$ui.main_nav_view === 'explorer'}
@@ -62,7 +65,9 @@
 			{/if}
 		</div>
 	{:else if $ui.main_nav_view === 'account'}
-		<Account_Form />
+		<Markup>
+			<Account_Form />
+		</Markup>
 		<Socket_Connection />
 	{/if}
 </div>
@@ -79,10 +84,11 @@
 		flex-shrink: 0;
 		border-left: var(--border);
 		border-right: var(--border);
-		background-color: var(--bg);
+		transform-origin: top left;
+		background-color: hsl(var(--bg_hue), var(--bg_saturation), var(--bg_lightness));
 	}
 	.main-nav.expanded {
-		animation: fly-in var(--transition_duration_md) ease-out;
+		animation: fly-in var(--transition_duration_sm) ease-out;
 	}
 	.main-nav-bg {
 		z-index: 1;
@@ -107,7 +113,7 @@
 			display: block;
 		}
 		.main-nav-bg.expanded {
-			animation: fade-in var(--transition_duration_sm) linear;
+			animation: fade-in var(--transition_duration_md) linear;
 		}
 	}
 	.header {
