@@ -2,7 +2,9 @@
 	import type {Community} from '$lib/communities/community.js';
 	import type {Member} from '$lib/members/member.js';
 	import Community_Input from '$lib/ui/Community_Input.svelte';
+	import Actor_Icon from '$lib/ui/Actor_Icon.svelte';
 	import {get_app} from '$lib/ui/app';
+	import {random_hue} from '$lib/ui/color';
 
 	const {api} = get_app();
 
@@ -21,8 +23,9 @@
 			<button
 				class:selected={community === selected_community}
 				on:click={() => api.select_community(community.community_id)}
+				style="--hue: {random_hue(community.name)}"
 			>
-				{community.name.substring(0, 4)}
+				<Actor_Icon name={community.name} />
 			</button>
 		{/each}
 	</div>
