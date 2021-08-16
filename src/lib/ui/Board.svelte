@@ -3,7 +3,7 @@
 
 	import type {Space} from '$lib/spaces/space.js';
 	import type {Member} from '$lib/members/member.js';
-	import Chat_Items from '$lib/ui/Chat_Items.svelte';
+	import Board_Items from '$lib/ui/Board_Items.svelte';
 	import {posts} from '$lib/ui/post_store';
 	import {get_app} from '$lib/ui/app';
 
@@ -15,7 +15,7 @@
 	let text = '';
 
 	$: browser && load_posts(space.space_id);
-	$: console.log(`[Chat] fetching posts for ${space.space_id}`);
+	$: console.log(`[Board] fetching posts for ${space.space_id}`);
 
 	// TODO refactor
 	const load_posts = async (space_id: number) => {
@@ -40,15 +40,15 @@
 	};
 </script>
 
-<div class="chat">
+<div class="board">
+	<textarea placeholder="> post" on:keydown={on_keydown} bind:value={text} />
 	<div class="posts">
-		<Chat_Items posts={$posts} {members_by_id} />
+		<Board_Items posts={$posts} {members_by_id} />
 	</div>
-	<input type="text" placeholder="> chat" on:keydown={on_keydown} bind:value={text} />
 </div>
 
 <style>
-	.chat {
+	.board {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -59,10 +59,9 @@
 		overflow: auto;
 		flex: 1;
 		display: flex;
-		/* makes scrolling start at the bottom */
-		flex-direction: column-reverse;
+		flex-direction: column;
 	}
-	input {
+	textarea {
 		border-left: none;
 		border-right: none;
 		border-bottom: none;

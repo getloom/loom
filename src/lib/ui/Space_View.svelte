@@ -1,8 +1,11 @@
 <script lang="ts">
 	import Chat from '$lib/ui/Chat.svelte';
+	import Board from '$lib/ui/Board.svelte';
+	import Forum from '$lib/ui/Forum.svelte';
 	import Notes from '$lib/ui/Notes.svelte';
 	import type {Space} from '$lib/spaces/space';
 	import Iframe from '$lib/ui/Iframe.svelte';
+	import Voice from '$lib/ui/Voice.svelte';
 	import type {Member} from '$lib/members/member';
 
 	export let space: Space;
@@ -27,8 +30,14 @@
 <!-- TODO make this a lookup by type and handle generically -->
 {#if space_data.type === 'Chat'}
 	<Chat {space} {members_by_id} />
+{:else if space_data.type === 'Board'}
+	<Board {space} {members_by_id} />
+{:else if space_data.type === 'Forum'}
+	<Forum {space} {members_by_id} />
 {:else if space_data.type === 'Notes'}
 	<Notes {space} />
+{:else if space_data.type === 'Voice'}
+	<Voice {space} />
 {:else if space_data.type === 'Iframe'}
 	<Iframe {space} {...space_data.props} />
 {:else}

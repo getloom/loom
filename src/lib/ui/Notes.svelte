@@ -2,7 +2,7 @@
 	import {browser} from '$app/env';
 
 	import type {Space} from '$lib/spaces/space.js';
-	import Note_List from '$lib/ui/Note_List.svelte';
+	import Note_Items from '$lib/ui/Notes_Items.svelte';
 	import {posts} from '$lib/ui/post_store';
 	import {get_app} from '$lib/ui/app';
 
@@ -17,10 +17,11 @@
 
 	// TODO refactor
 	const load_posts = async (space_id: number) => {
+		$posts = [];
 		const res = await fetch(`/api/v1/spaces/${space_id}/posts`);
 		if (res.ok) {
 			const data = await res.json();
-			posts.set(data.posts);
+			$posts = data.posts;
 		}
 	};
 
@@ -40,7 +41,7 @@
 <div class="notes">
 	<textarea type="text" placeholder="> note" on:keydown={on_keydown} bind:value={text} />
 	<div class="posts">
-		<Note_List posts={$posts} />
+		<Note_Items posts={$posts} />
 	</div>
 </div>
 

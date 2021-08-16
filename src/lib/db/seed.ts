@@ -6,8 +6,9 @@ import type {
 	Account_Community,
 	Account_Community_Params,
 	Community_Spaces,
-	Community_Spaces_Params,
 } from '$lib/communities/community';
+
+// TODO extract seed helpers and db methods
 
 export const seed = async (db: Database): Promise<void> => {
 	const {sql} = db;
@@ -167,7 +168,7 @@ export const seed = async (db: Database): Promise<void> => {
 
 	const community2_doc = community_docs.find((d) => d.community_id === 2);
 	if (!community2_doc) {
-		const community2: Community_Doc = {name: 'svelte'};
+		const community2: Community_Doc = {name: 'dev'};
 		const community2_result = await sql`
 			insert into communities ${sql(community2, 'name')}
 		`;
@@ -227,130 +228,52 @@ export const seed = async (db: Database): Promise<void> => {
 		console.log('[db] create_account_community4_result', account_community4_result);
 	}
 
-	const space1 = space_docs.find((d) => d.space_id === 1);
-	if (!space1) {
-		const space1: Space_Params = {
-			name: 'general',
-			url: '/general',
-			media_type: 'application/fuz+json',
-			content: '{"type": "Chat", "props": {"data": "/general/posts"}}',
-		};
-		const space1_result = await sql`
-			insert into spaces ${sql(space1, 'url', 'media_type', 'content')}
-		`;
-		console.log('[db] create_space1_result', space1_result);
-	}
+	const create_space = async (
+		space_id: number,
+		community_id: number,
+		params: Space_Params,
+	): Promise<void> => {
+		if (!space_docs.find((d) => d.space_id === space_id)) {
+			await db.repos.spaces.insert(community_id, params);
+		}
+	};
 
-	const space2 = space_docs.find((d) => d.space_id === 2);
-	if (!space2) {
-		const space2: Space_Params = {
-			name: 'general/cute',
-			url: '/general/cute',
-			media_type: 'application/fuz+json',
-			content: '{"type": "Chat", "props": {"data": "/general/cute/posts"}}',
-		};
-		const space2_result = await sql`
-			insert into spaces ${sql(space2, 'url', 'media_type', 'content')}
-		`;
-		console.log('[db] create_space2_result', space2_result);
-	}
-
-	const space3 = space_docs.find((d) => d.space_id === 3);
-	if (!space3) {
-		const space3: Space_Params = {
-			name: 'dm/a',
-			url: '/dm/a',
-			media_type: 'application/fuz+json',
-			content: '{"type": "Chat", "props": {"data": "/dm/a/posts"}}',
-		};
-		const space3_result = await sql`
-			insert into spaces ${sql(space3, 'url', 'media_type', 'content')}
-		`;
-		console.log('[db] create_space3_result', space3_result);
-	}
-
-	const space4 = space_docs.find((d) => d.space_id === 4);
-	if (!space4) {
-		const space4: Space_Params = {
-			name: 'notes',
-			url: '/notes',
-			media_type: 'application/fuz+json',
-			content: '{"type": "Notes", "props": {"data": "/notes"}}',
-		};
-		const space4_result = await sql`
-			insert into spaces ${sql(space4, 'url', 'media_type', 'content')}
-		`;
-		console.log('[db] create_space4_result', space4_result);
-	}
-
-	const space5 = space_docs.find((d) => d.space_id === 5);
-	if (!space5) {
-		const space5: Space_Params = {
-			name: 'dealt: tar',
-			url: '/tar',
-			media_type: 'application/fuz+json',
-			content: '{"type": "Iframe", "props": {"url": "https://www.dealt.dev/tar"}}',
-		};
-		const space5_result = await sql`
-			insert into spaces ${sql(space5, 'url', 'media_type', 'content')}
-		`;
-		console.log('[db] create_space5_result', space5_result);
-	}
-
-	const community_spaces1_doc = community_spaces_docs.find(
-		(d) => d.space_id === 1 && d.community_id === 1,
-	);
-	if (!community_spaces1_doc) {
-		const community_spaces1: Community_Spaces_Params = {space_id: 1, community_id: 1};
-		const community_spaces1_result = await sql`
-			insert into community_spaces ${sql(community_spaces1, 'space_id', 'community_id')}
-		`;
-		console.log('[db] community_spaces1_result', community_spaces1_result);
-	}
-
-	const community_spaces2_doc = community_spaces_docs.find(
-		(d) => d.space_id === 2 && d.community_id === 1,
-	);
-	if (!community_spaces2_doc) {
-		const community_spaces2: Community_Spaces_Params = {space_id: 2, community_id: 1};
-		const community_spaces2_result = await sql`
-			insert into community_spaces ${sql(community_spaces2, 'space_id', 'community_id')}
-		`;
-		console.log('[db] community_spaces2_result', community_spaces2_result);
-	}
-
-	const community_spaces3_doc = community_spaces_docs.find(
-		(d) => d.space_id === 3 && d.community_id === 1,
-	);
-	if (!community_spaces3_doc) {
-		const community_spaces3: Community_Spaces_Params = {space_id: 3, community_id: 1};
-		const community_spaces3_result = await sql`
-			insert into community_spaces ${sql(community_spaces3, 'space_id', 'community_id')}
-		`;
-		console.log('[db] community_spaces3_result', community_spaces3_result);
-	}
-
-	const community_spaces4_doc = community_spaces_docs.find(
-		(d) => d.space_id === 4 && d.community_id === 1,
-	);
-	if (!community_spaces4_doc) {
-		const community_spaces4: Community_Spaces_Params = {space_id: 4, community_id: 1};
-		const community_spaces4_result = await sql`
-			insert into community_spaces ${sql(community_spaces4, 'space_id', 'community_id')}
-		`;
-		console.log('[db] community_spaces4_result', community_spaces4_result);
-	}
-
-	const community_spaces5_doc = community_spaces_docs.find(
-		(d) => d.space_id === 5 && d.community_id === 1,
-	);
-	if (!community_spaces5_doc) {
-		const community_spaces5: Community_Spaces_Params = {space_id: 5, community_id: 1};
-		const community_spaces5_result = await sql`
-			insert into community_spaces ${sql(community_spaces5, 'space_id', 'community_id')}
-		`;
-		console.log('[db] community_spaces5_result', community_spaces5_result);
-	}
+	await create_space(1, 1, {
+		name: 'chat',
+		url: '/chat',
+		media_type: 'application/fuz+json',
+		content: '{"type": "Chat", "props": {"data": "/chat/posts"}}',
+	});
+	await create_space(2, 1, {
+		name: 'board',
+		url: '/board',
+		media_type: 'application/fuz+json',
+		content: '{"type": "Board", "props": {"data": "/board/posts"}}',
+	});
+	await create_space(3, 1, {
+		name: 'forum',
+		url: '/forum',
+		media_type: 'application/fuz+json',
+		content: '{"type": "Forum", "props": {"data": "/forum/posts"}}',
+	});
+	await create_space(4, 1, {
+		name: 'dm/a',
+		url: '/dm/a',
+		media_type: 'application/fuz+json',
+		content: '{"type": "Chat", "props": {"data": "/dm/a/posts"}}',
+	});
+	await create_space(5, 1, {
+		name: 'notes',
+		url: '/notes',
+		media_type: 'application/fuz+json',
+		content: '{"type": "Notes", "props": {"data": "/notes"}}',
+	});
+	await create_space(6, 1, {
+		name: 'dealt: tar',
+		url: '/tar',
+		media_type: 'application/fuz+json',
+		content: '{"type": "Iframe", "props": {"url": "https://www.dealt.dev/tar"}}',
+	});
 
 	const post1 = post_docs.find((d) => d.post_id === 1);
 	if (!post1) {
