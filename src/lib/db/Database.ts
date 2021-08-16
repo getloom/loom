@@ -2,6 +2,7 @@ import type {Result} from '@feltcoop/felt';
 import {unwrap} from '@feltcoop/felt';
 
 import type {Account_Session} from '$lib/session/client_session.js';
+import type {Persona} from '$lib/personas/persona.js';
 import type {Community} from '$lib/communities/community.js';
 import type {Space, Space_Params} from '$lib/spaces/space.js';
 import type {Post} from '$lib/posts/post.js';
@@ -39,13 +40,16 @@ export class Database {
 				const account: Account_Model = unwrap(
 					await this.repos.accounts.find_by_id(account_id, account_model_properties),
 				);
+				let personas: Persona[] = unwrap(
+					await this.repos.personas.filter_by_account(account.account_id),
+				);
 				const communities: Community[] = unwrap(
 					await this.repos.communities.filter_by_account(account.account_id),
 				);
 				const members: Member[] = unwrap(await this.repos.members.get_all());
 				return {
 					ok: true,
-					value: {account, communities, members},
+					value: {account, personas, communities, members},
 				};
 			},
 		},
@@ -60,7 +64,14 @@ export class Database {
 					) RETURNING *`;
 				console.log(data);
 				const account = data[0];
-				const result = await this.repos.communities.insert(name, account.account_id!);
+				const persona_response = await this.repos.personas.create(name, account.account_id!);
+				if (!persona_response.ok) {
+					return {ok: false, reason: 'Failed to create initial user persona'};
+				}
+				const result = await this.repos.communities.insert(
+					name,
+					persona_response.value.persona_id!,
+				);
 				if (!result.ok) {
 					return {ok: false, reason: 'Failed to create initial user community'};
 				}
@@ -94,25 +105,62 @@ export class Database {
 				return {ok: false, type: 'no_account_found', reason: `No account found with name: ${name}`};
 			},
 		},
+		personas: {
+			create: async (
+				name: string,
+				account_id: number,
+			): Promise<Result<{value: Persona}, {reason: string}>> => {
+				const data = await this.sql<Persona[]>`
+					insert into personas (name, account_id) values (
+						${name}, ${account_id}
+					) RETURNING *`;
+				console.log(data);
+				const persona = data[0];
+				return {ok: true, value: persona};
+			},
+			filter_by_account: async (
+				account_id: number,
+			): Promise<Result<{value: Persona[]}, {reason: string}>> => {
+				const data = await this.sql<Persona[]>`
+				  select p.persona_id, p.account_id, p.name,
+
+					(
+						select array_to_json(coalesce(array_agg(row_to_json(d)), '{}'))
+						from (
+							SELECT pc.community_id FROM persona_communities pc WHERE pc.persona_id = p.persona_id
+						) d
+					) as communities 
+					
+					from personas p where p.account_id = ${account_id}
+					`;
+				if (data.length) {
+					return {ok: true, value: data};
+				}
+				return {
+					ok: false,
+					reason: `No Personas found for account: ${account_id}`,
+				};
+			},
+		},
 		members: {
 			// TODO: this is a hack to stub out "members" for inviting to a Community.
 			//This should use a community_id to filter or something
 			get_all: async (): Promise<Result<{value: Member[]}, {reason: string}>> => {
 				const data = await this.sql<Member[]>`
-					select account_id, name from accounts
+					select persona_id, name from personas
 				`;
 				return {ok: true, value: data};
 			},
 			create: async (
-				account_id: number,
+				persona_id: number,
 				community_id: number,
 			): Promise<Result<{value: Member}>> => {
 				const data = await this.sql<Member[]>`
-					INSERT INTO account_communities (account_id, community_id) VALUES (
-						${account_id},${community_id}
+					INSERT INTO persona_communities (persona_id, community_id) VALUES (
+						${persona_id},${community_id}
 					) RETURNING *			
 				`;
-				console.log('[db] created account_communities', data);
+				console.log('[db] created persona_communities', data);
 				return {ok: true, value: data[0]};
 			},
 		},
@@ -135,28 +183,30 @@ export class Database {
 				};
 			},
 			filter_by_account: async (account_id: number): Promise<Result<{value: Community[]}>> => {
-				console.log(`[db] preparing to query for communities & spaces account: ${account_id}`);
+				console.log(`[db] preparing to query for communities & spaces persona: ${account_id}`);
 				const data = await this.sql<Community[]>`		
-					select c.community_id, c.name,
-    				(
-      				select array_to_json(coalesce(array_agg(row_to_json(d)), '{}'))
-      				from (
-        				SELECT s.space_id, s.url, s.media_type, s.content FROM spaces s JOIN community_spaces cs ON s.space_id=cs.space_id AND cs.community_id=c.community_id      				
-      				) d
-    				) as spaces,
-						(
-							select array_to_json(coalesce(array_agg(row_to_json(d)), '{}'))
-							from (
-								SELECT a.account_id, a.name FROM accounts a JOIN account_communities ac ON a.account_id=ac.account_id AND ac.community_id=c.community_id
-							) d
-						) as members 
-  				from communities c JOIN account_communities ac
-  				ON c.community_id=ac.community_id AND ac.account_id=${account_id}				
+				select c.community_id, c.name,
+				(
+					select array_to_json(coalesce(array_agg(row_to_json(d)), '{}'))
+					from (
+						SELECT s.space_id, s.url, s.media_type, s.content FROM spaces s JOIN community_spaces cs ON s.space_id=cs.space_id AND cs.community_id=c.community_id      				
+					) d
+				) as spaces,
+				(
+					select array_to_json(coalesce(array_agg(row_to_json(d)), '{}'))
+					from (
+						SELECT p.persona_id, p.name FROM personas p JOIN persona_communities pc ON p.persona_id=pc.persona_id AND pc.community_id=c.community_id
+					) d
+				) as members 
+			from communities c JOIN (
+				SELECT DISTINCT pc.community_id FROM personas p JOIN persona_communities pc ON p.persona_id=pc.persona_id AND p.account_id = ${account_id}
+			) apc
+			ON c.community_id=apc.community_id;			
 				`;
 				console.log('[db] community data', data);
 				return {ok: true, value: data};
 			},
-			insert: async (name: string, account_id: number): Promise<Result<{value: Community}>> => {
+			insert: async (name: string, persona_id: number): Promise<Result<{value: Community}>> => {
 				const data = await this.sql<Community[]>`
 					INSERT INTO communities (name) VALUES (
 						${name}
@@ -168,11 +218,11 @@ export class Database {
 				console.log(community_id);
 				// TODO more robust error handling or condense into single query
 				const association = await this.sql<any>`
-					INSERT INTO account_communities (account_id, community_id) VALUES (
-					${account_id},${community_id}
+					INSERT INTO persona_communities (persona_id, community_id) VALUES (
+					${persona_id},${community_id}
 					)
 				`;
-				console.log('[db] created account_communities', association);
+				console.log('[db] created persona_communities', association);
 				const spaces_result = await this.repos.spaces.insert_default_spaces(community_id);
 				if (!spaces_result.ok) return spaces_result;
 				community.spaces = spaces_result.value;
