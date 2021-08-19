@@ -2,6 +2,7 @@ import ws from 'ws';
 import {promisify} from 'util';
 import type {Server as HttpServer} from 'http';
 import type {Server as HttpsServer} from 'https';
+import {SessionIncomingMessage, validateSession} from '$lib/session/client_session';
 
 // TODO needs a lot of work!
 
@@ -21,9 +22,19 @@ export class WebsocketServer {
 		console.log('wss.on', wss.on);
 		wss.on('connection', (socket, req) => {
 			console.log('[wss] connection req.url', req.url, wss.clients.size);
-			console.log('[wss] connection req.account', (req as any).account); // TODO broken
 			console.log('[wss] connection req.headers', req.headers);
+			let request: SessionIncomingMessage = Object.assign(req);
+			validateSession(request);
+			if (request.session?.account_id == undefined) {
+				console.log('[wss] request to open connection was unauthenticated');
+				socket.close();
+				return;
+			}
+			const {account_id} = request.session!;
+			//TODO where to store the authorized account for a given websocket connection
+			//to prevent actions on other actors resources?
 			socket.on('message', (raw_message) => {
+				console.log('account-id', account_id);
 				let message;
 				try {
 					message = JSON.parse(raw_message as any);
