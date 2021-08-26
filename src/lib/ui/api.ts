@@ -1,6 +1,7 @@
 import {writable} from 'svelte/store';
 import type {Readable} from 'svelte/store';
 import {setContext, getContext} from 'svelte';
+import {session} from '$app/stores';
 import type {Result} from '@feltcoop/felt';
 
 import type {DataStore} from '$lib/ui/data';
@@ -11,6 +12,8 @@ import type {Space, SpaceParams} from '$lib/spaces/space';
 import type {Member, MemberParams} from '$lib/members/member';
 import type {Post} from '$lib/posts/post';
 import type {SocketStore} from '$lib/ui/socket';
+import type {LoginRequest} from '$lib/session/login_middleware.js';
+import type {AccountSession} from '$lib/session/client_session';
 
 // TODO refactor/rethink
 
@@ -27,6 +30,11 @@ export interface ApiState {}
 
 export interface ApiStore {
 	subscribe: Readable<ApiState>['subscribe'];
+	log_in: (
+		account_name: string,
+		password: string,
+	) => Promise<Result<{value: {session: AccountSession}}, {reason: string}>>;
+	log_out: () => Promise<Result<{}, {reason: string}>>;
 	select_community: (community_id: number) => void;
 	select_space: (community_id: number, space: number | null) => void;
 	toggle_main_nav: () => void;
@@ -66,6 +74,57 @@ export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore):
 		select_community: ui.select_community,
 		select_space: ui.select_space,
 		toggle_main_nav: ui.toggle_main_nav,
+		log_in: async (account_name, password) => {
+			console.log('[log_in] logging in with account_name', account_name); // TODO logging
+			try {
+				const login_request: LoginRequest = {account_name, password};
+				const response = await fetch('/api/v1/login', {
+					method: 'POST',
+					headers: {'content-type': 'application/json'},
+					body: JSON.stringify(login_request),
+				});
+				const response_data = await response.json();
+				if (response.ok) {
+					console.log('[log_in] response_data', response_data); // TODO logging
+					account_name = '';
+					session.set(response_data.session);
+					return {ok: true, value: response_data};
+				} else {
+					console.error('[log_in] response not ok', response); // TODO logging
+					return {ok: false, reason: response_data.reason};
+				}
+			} catch (err) {
+				console.error('[log_in] error', err); // TODO logging
+				return {
+					ok: false,
+					reason: `Something went wrong. Is your Internet connection working? Maybe the server is busted. Please try again.`,
+				};
+			}
+		},
+		log_out: async () => {
+			try {
+				console.log('[log_out] logging out'); // TODO logging
+				const response = await fetch('/api/v1/logout', {
+					method: 'POST',
+					headers: {'content-type': 'application/json'},
+				});
+				const response_data = await response.json();
+				console.log('[log_out] response', response_data); // TODO logging
+				if (response.ok) {
+					session.set({guest: true});
+					return {ok: true};
+				} else {
+					console.error('[log_out] response not ok', response); // TODO logging
+					return {ok: false, reason: response_data.reason};
+				}
+			} catch (err) {
+				console.error('[log_out] err', err); // TODO logging
+				return {
+					ok: false,
+					reason: `Something went wrong. Is your Internet connection working? Maybe the server is busted. Please try again!`,
+				};
+			}
+		},
 		// TODO refactor this, maybe into `data` or `api`
 		create_community: async (name) => {
 			if (!name) return {ok: false, reason: 'invalid name'};
