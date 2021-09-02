@@ -6,7 +6,7 @@
 	import {random_hue} from '$lib/ui/color';
 
 	export let members: Member[];
-	export let communities: Community[];
+	export let selected_persona_communities: Community[];
 	export let selected_community: Community;
 </script>
 
@@ -15,7 +15,7 @@
 		<CommunityInput />
 	</div>
 	<div>
-		{#each communities as community (community.community_id)}
+		{#each selected_persona_communities as community (community.community_id)}
 			<!-- TODO make these links <a>...</a> -->
 			<a
 				href="/{community.name}"
