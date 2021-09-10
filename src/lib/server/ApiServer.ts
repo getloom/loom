@@ -2,11 +2,11 @@ import type {Server as HttpServer} from 'http';
 import type {Server as HttpsServer} from 'https';
 import type {Polka, Request as PolkaRequest, Middleware as PolkaMiddleware} from 'polka';
 import body_parser from 'body-parser';
-import send from '@polka/send-type';
 import {Logger} from '@feltcoop/felt/util/log.js';
 import {blue} from '@feltcoop/felt/util/terminal.js';
 
-import {to_session_account_middleware} from '$lib/session/session_account_middleware.js';
+import {to_authentication_middleware} from '$lib/session/authentication_middleware.js';
+import {to_authorization_middleware} from '$lib/session/authorization_middleware.js';
 import {to_login_middleware} from '$lib/session/login_middleware.js';
 import {to_logout_middleware} from '$lib/session/logout_middleware.js';
 import {
@@ -77,20 +77,24 @@ export class ApiServer {
 		this.app
 			.use(body_parser.json()) // TODO is deprecated, but doesn't let us `import {json}`
 			.use((req, _res, next) => {
-				// TODO proper logger
-				log.trace('req', {url: req.url, query: req.query, params: req.params, body: req.body});
+				// TODO proper logger, also don't log sensitive info in prod
+				log.trace('req', {
+					method: req.method,
+					url: req.url,
+					query: req.query,
+					params: req.params,
+					body: req.body,
+				});
 				next();
 			})
 			.use(to_cookie_session_middleware())
-			.use(to_session_account_middleware(this))
+			.use(to_authentication_middleware(this))
 			// API
-			.post('/api/v1/echo', (req, res) => {
-				log.info('echo', req.body);
-				send(res, 200, req.body);
-			})
-			.post('/api/v1/login', to_login_middleware(this))
+			.post('/api/v1/login', to_login_middleware(this)) // TODO wait shouldn't this fail in Polka's system??
+			// TODO we want to support unauthenticated routes so users can publish public content,
+			// but for now it's simple and secure to just require an authenticated account for everything
+			.use('/api', to_authorization_middleware(this))
 			.post('/api/v1/logout', to_logout_middleware(this))
-			// TODO replace these with a single resource middleware
 			.get('/api/v1/communities', to_communities_middleware(this))
 			.post('/api/v1/communities', to_create_community_middleware(this))
 			.get('/api/v1/communities/:community_id', to_community_middleware(this))
@@ -100,8 +104,6 @@ export class ApiServer {
 			.post('/api/v1/spaces/:space_id/files', to_create_file_middleware(this))
 			.get('/api/v1/spaces/:space_id/files', to_files_middleware(this))
 			.post('/api/v1/members', to_create_member_middleware(this));
-
-		// TODO gro filer middleware (and needs to go after auth)
 
 		// SvelteKit Node adapter, adapted to our production API server
 		// TODO needs a lot of work, especially for production
