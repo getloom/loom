@@ -16,7 +16,7 @@ const test__api_server = suite('ApiServer');
 
 test__api_server('init and close', async () => {
 	const server = createServer();
-	const api_server = new ApiServer({
+	const api_server: ApiServer = new ApiServer({
 		server,
 		app: polka({server}),
 		websocket_server: new WebsocketServer(server),

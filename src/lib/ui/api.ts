@@ -10,10 +10,11 @@ import type {Community, CommunityModel, CommunityParams} from '$lib/vocab/commun
 import {to_community_model} from '$lib/vocab/community/community';
 import type {Space, SpaceParams} from '$lib/vocab/space/space';
 import type {Member, MemberParams} from '$lib/vocab/member/member';
-import type {File} from '$lib/vocab/file/file';
+import type {File, FileParams} from '$lib/vocab/file/file';
 import type {SocketStore} from '$lib/ui/socket';
 import type {LoginRequest} from '$lib/session/login_middleware.js';
-import type {AccountSession} from '$lib/session/client_session';
+import type {ClientAccountSession} from '$lib/session/client_session';
+import type {ErrorResponse} from '$lib/util/error';
 
 // TODO refactor/rethink
 
@@ -28,37 +29,30 @@ export const set_api = (store: ApiStore): ApiStore => {
 
 export interface ApiState {}
 
+export type ApiResult<TValue> = Result<TValue, ErrorResponse>;
+
 export interface ApiStore {
 	subscribe: Readable<ApiState>['subscribe'];
 	log_in: (
 		account_name: string,
 		password: string,
-	) => Promise<Result<{value: {session: AccountSession}}, {reason: string}>>;
-	log_out: () => Promise<Result<{}, {reason: string}>>;
+	) => Promise<ApiResult<{value: {session: ClientAccountSession}}>>;
+	log_out: () => Promise<ApiResult<{}>>;
 	select_persona: (persona_id: number) => void;
 	select_community: (community_id: number | null) => void;
 	select_space: (community_id: number, space: number | null) => void;
 	toggle_main_nav: () => void;
 	create_community: (
 		name: string,
-	) => Promise<Result<{value: {community: CommunityModel}}, {reason: string}>>;
-	create_space: (
-		community_id: number, // TODO using `Community` instead of `community_id` breaks the pattern above
-		name: string,
-		url: string,
-		media_type: string,
-		content: string,
-	) => Promise<Result<{value: {space: Space}}, {reason: string}>>;
+		persona_id: number,
+	) => Promise<ApiResult<{value: {community: CommunityModel}}>>;
+	create_space: (params: SpaceParams) => Promise<ApiResult<{value: {space: Space}}>>;
 	invite_member: (
 		community_id: number, // TODO using `Community` instead of `community_id` breaks the pattern above
 		persona_id: number,
-	) => Promise<Result<{value: {member: Member}}, {reason: string}>>;
-	create_file: (
-		space: Space,
-		content: string,
-		selected_persona_id: number,
-	) => Promise<Result<{value: {file: File}}, {reason: string}>>;
-	load_files: (space_id: number) => Promise<Result<{value: {file: File[]}}, {reason: string}>>;
+	) => Promise<ApiResult<{value: {member: Member}}>>;
+	create_file: (params: FileParams) => Promise<ApiResult<{value: {file: File}}>>;
+	load_files: (space_id: number) => Promise<ApiResult<{value: {file: File[]}}>>;
 }
 
 export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore): ApiStore => {
@@ -129,11 +123,12 @@ export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore):
 			}
 		},
 		// TODO refactor this, maybe into `data` or `api`
-		create_community: async (name) => {
+		create_community: async (name, persona_id) => {
 			if (!name) return {ok: false, reason: 'invalid name'};
 			//Needs to collect name
 			const community_params: CommunityParams = {
 				name,
+				persona_id,
 			};
 			const res = await fetch(`/api/v1/communities`, {
 				method: 'POST',
@@ -145,7 +140,7 @@ export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore):
 					const result: {community: Community} = await res.json(); // TODO api types
 					console.log('create_community result', result);
 					const community = to_community_model(result.community);
-					data.add_community(community);
+					data.add_community(community, persona_id);
 					return {ok: true, value: {community}};
 				} catch (err) {
 					return {ok: false, reason: err.message};
@@ -154,36 +149,25 @@ export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore):
 				throw Error(`error: ${res.status}: ${res.statusText}`);
 			}
 		},
-		create_space: async (community_id, name, url, media_type, content) => {
-			// TODO proper automated validation
-			if (community_id == null) return {ok: false, reason: 'invalid url'};
-			if (!name) return {ok: false, reason: 'invalid name'};
-			if (!url) return {ok: false, reason: 'invalid url'};
-			if (!media_type) return {ok: false, reason: 'invalid meta_type'};
-			if (!content) return {ok: false, reason: 'invalid content'};
-			//Needs to collect name
-			const doc: SpaceParams = {
-				name,
-				url,
-				media_type,
-				content,
-			};
-			const res = await fetch(`/api/v1/communities/${community_id}/spaces`, {
-				method: 'POST',
-				headers: {'Content-Type': 'application/json'},
-				body: JSON.stringify(doc),
-			});
-			if (res.ok) {
-				try {
+		create_space: async (params) => {
+			try {
+				const res = await fetch(`/api/v1/communities/${params.community_id}/spaces`, {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify(params),
+				});
+				if (res.ok) {
 					const result: {space: Space} = await res.json(); // TODO api types
-					console.log('create_space result', result);
-					data.add_space(result.space, community_id);
+					console.log('[create_space] result', result);
+					data.add_space(result.space, params.community_id);
 					return {ok: true, value: result};
-				} catch (err) {
-					return {ok: false, reason: err.message};
+				} else {
+					const json = await res.json();
+					throw Error(`[create_space.failed] ${json.reason}`);
 				}
-			} else {
-				throw Error(`error: ${res.status}: ${res.statusText}`);
+			} catch (err) {
+				console.error(err.message);
+				return {ok: false, reason: err.message};
 			}
 		},
 		// TODO: This implementation is currently unconsentful,
@@ -220,7 +204,22 @@ export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore):
 				throw Error(`error: ${res.status}: ${res.statusText}`);
 			}
 		},
-		create_file: async (space, content, persona_id) => {
+		create_file: async (params: FileParams) => {
+			// TODO type
+			const message: {type: 'create_file'; params: FileParams} = {
+				type: 'create_file',
+				params,
+			};
+			socket.send(message);
+			return {
+				ok: true,
+				get value() {
+					// TODO change API to be fire-and-forget? or return this value somehow?
+					throw Error('TODO currently incompatible with value');
+				},
+			} as any;
+			// TODO below is the REST API version -- need to extract separate clients
+			/*
 			const res = await fetch(`/api/v1/spaces/${space.space_id}/files`, {
 				method: 'POST',
 				headers: {'Content-Type': 'application/json'},
@@ -241,6 +240,7 @@ export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore):
 			} else {
 				throw Error(`error sending file: ${res.status}: ${res.statusText}`);
 			}
+			*/
 		},
 		load_files: async (space_id) => {
 			data.set_files(space_id, []);
@@ -251,10 +251,19 @@ export const to_api_store = (ui: UiStore, data: DataStore, socket: SocketStore):
 					data.set_files(space_id, json.files);
 					return {ok: true, value: json};
 				} catch (err) {
+					console.error('err', err);
 					return {ok: false, reason: err.message};
 				}
 			} else {
-				throw Error(`error loading files: ${res.status}: ${res.statusText}`);
+				let reason: string;
+				try {
+					const json = await res.json();
+					reason = json.reason;
+				} catch (err) {
+					reason = `error loading files: ${res.status}: ${res.statusText}`;
+				}
+				console.error('failed to load files:', reason);
+				return {ok: false, reason};
 			}
 		},
 	};

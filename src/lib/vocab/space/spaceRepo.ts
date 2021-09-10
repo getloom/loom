@@ -2,12 +2,13 @@ import type {Result} from '@feltcoop/felt';
 
 import type {Space, SpaceParams} from '$lib/vocab/space/space.js';
 import type {Database} from '$lib/db/Database';
-import {default_spaces} from '$lib/vocab/space/default_spaces';
+import {to_default_spaces} from '$lib/vocab/space/default_spaces';
+import type {ErrorResponse} from '$lib/util/error';
 
 export const spaceRepo = (db: Database) => ({
 	find_by_id: async (
 		space_id: string,
-	): Promise<Result<{value: Space}, {type: 'no_space_found'; reason: string}>> => {
+	): Promise<Result<{value: Space}, {type: 'no_space_found'} & ErrorResponse>> => {
 		console.log(`[db] preparing to query for space id: ${space_id}`);
 		const data = await db.sql<Space[]>`
       select space_id, name, url, media_type, content from spaces where space_id = ${space_id}
@@ -30,7 +31,7 @@ export const spaceRepo = (db: Database) => ({
 		console.log('[db] spaces data', data);
 		return {ok: true, value: data};
 	},
-	create: async (community_id: number, params: SpaceParams): Promise<Result<{value: Space}>> => {
+	create: async (params: SpaceParams): Promise<Result<{value: Space}>> => {
 		const {name, content, media_type, url} = params;
 		const data = await db.sql<Space[]>`
       INSERT INTO spaces (name, url, media_type, content) VALUES (
@@ -39,11 +40,11 @@ export const spaceRepo = (db: Database) => ({
     `;
 		// console.log('[db] created space', data);
 		const space_id: number = data[0].space_id;
-		// console.log('[db] creating community space', community_id, space_id);
+		// console.log('[db] creating community space', params.community_id, space_id);
 		// TODO more robust error handling or condense into single query
 		await db.sql<any>`
       INSERT INTO community_spaces (space_id, community_id) VALUES (
-        ${space_id},${community_id}
+        ${space_id},${params.community_id}
       )
     `;
 		// console.log('[db] created community_space', community_space);
@@ -51,10 +52,10 @@ export const spaceRepo = (db: Database) => ({
 	},
 	create_default_spaces: async (
 		community_id: number,
-	): Promise<Result<{value: Space[]}, {reason: string}>> => {
+	): Promise<Result<{value: Space[]}, ErrorResponse>> => {
 		const spaces: Space[] = [];
-		for (const space_params of default_spaces) {
-			const result = await db.repos.space.create(community_id, space_params);
+		for (const space_params of to_default_spaces(community_id)) {
+			const result = await db.repos.space.create(space_params);
 			if (!result.ok) return {ok: false, reason: 'Failed to create default spaces for community.'};
 			spaces.push(result.value);
 		}

@@ -5,7 +5,6 @@
 	import type {CommunityModel} from '$lib/vocab/community/community.js';
 	import {autofocus} from '$lib/ui/actions';
 	import {get_app} from '$lib/ui/app';
-
 	import {SpaceTypes} from '$lib/vocab/space/space';
 
 	const {api} = get_app();
@@ -20,14 +19,14 @@
 		if (!new_name || !new_type) return;
 		//Needs to collect url(i.e. name for now), type (currently default application/json), & content (hardcoded JSON struct)
 		const url = `/${new_name}`;
-		await api.create_space(
-			community.community_id,
-			new_name,
+		await api.create_space({
+			community_id: community.community_id,
+			name: new_name,
 			url,
 			//TODO : add space type picker
-			'application/fuz+json',
-			`{"type": "${new_type}", "props": {"data": "${url}/files"}}`,
-		);
+			media_type: 'application/fuz+json',
+			content: `{"type": "${new_type}", "props": {"data": "${url}/files"}}`,
+		});
 		new_name = '';
 		new_type = Object.entries(SpaceTypes)[0][1];
 	};

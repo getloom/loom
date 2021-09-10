@@ -8,6 +8,7 @@
 	import {session} from '$app/stores';
 	import Markup from '@feltcoop/felt/ui/Markup.svelte';
 	import {page} from '$app/stores';
+	import {browser} from '$app/env';
 
 	import {set_socket, to_socket_store} from '$lib/ui/socket';
 	import Luggage from '$lib/ui/Luggage.svelte';
@@ -19,16 +20,17 @@
 	import {random_hue} from '$lib/ui/color';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
 	import {WEBSOCKET_URL} from '$lib/constants';
+	import {toHandleSocketMessage} from '$lib/ui/handleSocketMessage';
 
 	const devmode = setDevmode();
 	const data = set_data($session);
 	$: data.update_session($session);
-	const socket = set_socket(to_socket_store(data));
+	const socket = set_socket(to_socket_store(toHandleSocketMessage(data)));
 	const ui = set_ui();
 	$: ui.update_data($data); // TODO this or make it an arg to the ui store?
 	const api = set_api(to_api_store(ui, data, socket));
 	const app = set_app({data, ui, api, devmode, socket});
-	console.log('app', app);
+	browser && console.log('app', app);
 
 	// TODO refactor -- where should this logic go?
 	$: update_state_from_page_params($page.params);

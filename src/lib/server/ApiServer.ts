@@ -4,35 +4,37 @@ import type {Polka, Request as PolkaRequest, Middleware as PolkaMiddleware} from
 import body_parser from 'body-parser';
 import {Logger} from '@feltcoop/felt/util/log.js';
 import {blue} from '@feltcoop/felt/util/terminal.js';
+import type ws from 'ws';
 
 import {to_authentication_middleware} from '$lib/session/authentication_middleware.js';
 import {to_authorization_middleware} from '$lib/session/authorization_middleware.js';
 import {to_login_middleware} from '$lib/session/login_middleware.js';
 import {to_logout_middleware} from '$lib/session/logout_middleware.js';
 import {
-	to_community_middleware,
-	to_communities_middleware,
-	to_create_community_middleware,
-	to_create_member_middleware,
-} from '$lib/vocab/community/community_middleware.js';
-import {to_files_middleware, to_create_file_middleware} from '$lib/vocab/file/fileMiddleware.js';
+	readCommunityService,
+	readCommunitiesService,
+	createMemberService,
+	createCommunityService,
+} from '$lib/vocab/community/communityServices.js';
+import {readFilesService, createFileService} from '$lib/vocab/file/fileServices.js';
 import {
-	to_space_middleware,
-	to_spaces_middleware,
-	to_create_space_middleware,
-} from '$lib/vocab/space/space_middleware.js';
-import type {AccountSession} from '$lib/session/client_session.js';
+	readSpaceService,
+	readSpacesService,
+	createSpaceService,
+} from '$lib/vocab/space/spaceServices.js';
 import type {Database} from '$lib/db/Database.js';
 import type {WebsocketServer} from '$lib/server/WebsocketServer.js';
 import {to_cookie_session_middleware} from '$lib/session/cookie_session';
 import type {CookieSessionRequest} from '$lib/session/cookie_session';
+import {toServiceMiddleware} from '$lib/server/service_middleware';
+import {services} from '$lib/server/services';
 
 const log = new Logger([blue('[ApiServer]')]);
 
 // TODO not sure what these types should look like in their final form,
 // there's currently some redundancy and weirdness
 export interface Request extends PolkaRequest, CookieSessionRequest {
-	account_session?: AccountSession;
+	account_id?: number;
 }
 export interface Middleware extends PolkaMiddleware<Request> {}
 
@@ -71,6 +73,7 @@ export class ApiServer {
 		log.info('initing');
 
 		// TODO refactor to paralleize `init` of the various pieces
+		this.websocket_server.on('message', this.handle_websocket_message);
 		await this.websocket_server.init();
 
 		// Set up the app and its middleware.
@@ -95,15 +98,18 @@ export class ApiServer {
 			// but for now it's simple and secure to just require an authenticated account for everything
 			.use('/api', to_authorization_middleware(this))
 			.post('/api/v1/logout', to_logout_middleware(this))
-			.get('/api/v1/communities', to_communities_middleware(this))
-			.post('/api/v1/communities', to_create_community_middleware(this))
-			.get('/api/v1/communities/:community_id', to_community_middleware(this))
-			.post('/api/v1/communities/:community_id/spaces', to_create_space_middleware(this))
-			.get('/api/v1/communities/:community_id/spaces', to_spaces_middleware(this))
-			.get('/api/v1/spaces/:space_id', to_space_middleware(this))
-			.post('/api/v1/spaces/:space_id/files', to_create_file_middleware(this))
-			.get('/api/v1/spaces/:space_id/files', to_files_middleware(this))
-			.post('/api/v1/members', to_create_member_middleware(this));
+			.get('/api/v1/communities', toServiceMiddleware(this, readCommunitiesService))
+			.post('/api/v1/communities', toServiceMiddleware(this, createCommunityService))
+			.get('/api/v1/communities/:community_id', toServiceMiddleware(this, readCommunityService))
+			.post(
+				'/api/v1/communities/:community_id/spaces',
+				toServiceMiddleware(this, createSpaceService),
+			)
+			.get('/api/v1/communities/:community_id/spaces', toServiceMiddleware(this, readSpacesService))
+			.get('/api/v1/spaces/:space_id', toServiceMiddleware(this, readSpaceService))
+			.post('/api/v1/spaces/:space_id/files', toServiceMiddleware(this, createFileService))
+			.get('/api/v1/spaces/:space_id/files', toServiceMiddleware(this, readFilesService))
+			.post('/api/v1/members', toServiceMiddleware(this, createMemberService));
 
 		// SvelteKit Node adapter, adapted to our production API server
 		// TODO needs a lot of work, especially for production
@@ -134,6 +140,7 @@ export class ApiServer {
 
 	async close(): Promise<void> {
 		log.info('close');
+		this.websocket_server.off('message', this.handle_websocket_message);
 		await Promise.all([
 			this.websocket_server.close(),
 			this.db.close(),
@@ -143,4 +150,48 @@ export class ApiServer {
 			),
 		]);
 	}
+
+	handle_websocket_message = async (_socket: ws, raw_message: ws.Data, account_id: number) => {
+		if (typeof raw_message !== 'string') {
+			console.error(
+				'[handle_websocket_message] cannot handle websocket message; currently only supports strings',
+			);
+			return;
+		}
+
+		let message: any; // TODO type
+		try {
+			message = JSON.parse(raw_message);
+		} catch (err) {
+			console.error('[handle_websocket_message] failed to parse message', err);
+			return;
+		}
+		console.log('[handle_websocket_message]', message);
+		if (!(message as any)?.type) {
+			// TODO proper automated validation
+			console.error('[handle_websocket_message] invalid message', message);
+			return;
+		}
+		const service = services.get(message.type);
+		if (!service) {
+			console.error('[handle_websocket_message] unhandled message type', message.type);
+			return;
+		}
+
+		const response = await service.handle(this, message.params, account_id);
+
+		// TODO what should the API for returning/broadcasting responses be?
+		const serialized_response = JSON.stringify({
+			type: 'service_response',
+			message_type: message.type,
+			response,
+		});
+		for (const client of this.websocket_server.wss.clients) {
+			client.send(serialized_response);
+		}
+	};
+}
+
+export interface HandleWebsocketMessage {
+	(server: ApiServer, socket: ws, raw_message: ws.Data, account_id: number): Promise<void>;
 }

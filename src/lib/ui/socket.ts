@@ -1,10 +1,7 @@
 import type {AsyncStatus} from '@feltcoop/felt';
-import type {Json} from '@feltcoop/felt/util/json.js';
 import {writable} from 'svelte/store';
 import type {Readable} from 'svelte/store';
 import {setContext, getContext} from 'svelte';
-
-import type {DataStore} from '$lib/ui/data';
 
 const KEY = Symbol();
 
@@ -33,10 +30,14 @@ export interface SocketStore {
 	subscribe: Readable<SocketState>['subscribe'];
 	disconnect: (code?: number) => void;
 	connect: (url: string) => void;
-	send: (data: Json) => void;
+	send: (data: object) => void;
 }
 
-export const to_socket_store = (data: DataStore) => {
+export interface HandleSocketMessage {
+	(raw_message: any): void;
+}
+
+export const to_socket_store = (handle_message: HandleSocketMessage) => {
 	const {subscribe, update} = writable<SocketState>(to_default_socket_state(), () => {
 		console.log('[socket] listen store');
 		return () => {
@@ -60,20 +61,8 @@ export const to_socket_store = (data: DataStore) => {
 			update(($socket) => ({...$socket, status: 'initial', connected: false, ws: null, url: null}));
 		};
 		ws.onmessage = (e) => {
-			console.log('[socket] on message!');
-			let message: any; // TODO types
-			try {
-				message = JSON.parse(e.data);
-			} catch (err) {
-				console.error('bad payload', e, err);
-				return;
-			}
-			console.log('[socket] message', message);
-			if (message.file) {
-				data.add_file(message.file);
-			} else {
-				console.warn('TODO unhandled message', message);
-			}
+			// console.log('[socket] on message');
+			handle_message(e.data);
 		};
 		ws.onerror = (e) => {
 			console.log('[socket] error', e);

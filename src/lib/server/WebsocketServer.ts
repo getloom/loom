@@ -2,17 +2,25 @@ import ws from 'ws';
 import {promisify} from 'util';
 import type {Server as HttpServer} from 'http';
 import type {Server as HttpsServer} from 'https';
+import {EventEmitter} from 'events';
+import type StrictEventEmitter from 'strict-event-emitter-types';
 
 import type {CookieSessionIncomingMessage} from '$lib/session/cookie_session';
 import {to_cookie_session_middleware} from '$lib/session/cookie_session';
 
+type WebsocketServerEmitter = StrictEventEmitter<EventEmitter, WebsocketServerEvents>;
+interface WebsocketServerEvents {
+	message: (socket: ws, message: ws.Data, account_id: number) => void;
+}
+
 const cookie_session_middleware = to_cookie_session_middleware();
 
-export class WebsocketServer {
+export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEmitter}) {
 	readonly wss: ws.Server;
 	readonly server: HttpServer | HttpsServer;
 
 	constructor(server: HttpServer | HttpsServer) {
+		super();
 		this.server = server;
 		this.wss = new ws.Server({server});
 	}
@@ -34,31 +42,9 @@ export class WebsocketServer {
 			}
 			//TODO where to store the authorized account for a given websocket connection
 			//to prevent actions on other actors resources?
-			socket.on('message', (raw_message) => {
+			socket.on('message', async (message) => {
 				console.log('account-id', account_id);
-				let message;
-				try {
-					message = JSON.parse(raw_message as any);
-				} catch (err) {
-					console.error('[message] bad message', err, 'do not move and they cannot see you');
-				}
-				console.log('[wss] [message]', message);
-				if (message.type === 'Create') {
-					// TODO automate all of this
-					const final_message = {
-						...message,
-						attributed_to: '$yourname', // some fields must be set by the server
-						id: Math.random().toString().slice(2), // some fields must be set by the server
-					};
-					const serialized = JSON.stringify(final_message);
-					for (const client of wss.clients) {
-						client.send(serialized);
-					}
-				} else {
-					for (const client of wss.clients) {
-						client.send(raw_message);
-					}
-				}
+				this.emit('message', socket, message, account_id);
 			});
 			socket.on('open', () => {
 				console.log('[wss] open');
@@ -69,16 +55,6 @@ export class WebsocketServer {
 			socket.on('error', (err) => {
 				console.error('[wss] error', err);
 			});
-			console.log('[server] saying hi to connected socket');
-			socket.send(
-				// the client should understand ActivityStreams vocabulary:
-				JSON.stringify({
-					id: Math.random().toString().slice(2),
-					attributed_to: 'the_server',
-					type: 'Create',
-					object: {type: 'Chat', content: 'hihi'},
-				}),
-			);
 		});
 		wss.on('close', () => {
 			console.log('[wss] close');
