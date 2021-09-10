@@ -12,3 +12,13 @@ export interface SpaceParams {
 	media_type: string;
 	content: string;
 }
+
+//TODO make TypeScript String enum
+export const SpaceTypes = {
+	Chat: 'Chat',
+	Board: 'Board',
+	Forum: 'Forum',
+	Notes: 'Notes',
+	Voice: 'Voice',
+	Iframe: 'Iframe',
+};
