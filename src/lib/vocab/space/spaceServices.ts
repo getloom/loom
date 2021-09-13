@@ -125,7 +125,7 @@ export const createSpaceService: Service<
 	validateParams: toValidateSchema(CreateSpaceServiceSchema),
 	responseSchema: CreateSpaceServiceResponse,
 	validateResponse: toValidateSchema(CreateSpaceServiceResponse),
-	// TODO verify the `account_id` has permission to modify this space
+	// TODO security: verify the `account_id` has permission to modify this space
 	// TODO add `actor_id` and verify it's one of the `account_id`'s personas
 	perform: async (server, params) => {
 		const {db} = server;
