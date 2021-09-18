@@ -20,7 +20,7 @@
 	import {setApp} from '$lib/ui/app';
 	import {randomHue} from '$lib/ui/color';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
-	import {WEBSOCKET_URL} from '$lib/constants';
+	import {WEBSOCKET_URL} from '$lib/config';
 	import {toHandleSocketMessage} from '$lib/ui/handleSocketMessage';
 
 	const devmode = setDevmode();
