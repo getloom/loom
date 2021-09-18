@@ -18,22 +18,6 @@ export const accountRepo = (db: Database) => ({
       ) RETURNING *`;
 		console.log('[db] created account', data);
 		const account = data[0];
-		// TODO creating the initial persona should probably be decoupled from account creation,
-		// and users should probably create a persona as the first onboarding step once logged in
-		const personaResponse = await db.repos.persona.create({
-			name: `persona_${account.account_id}`,
-			account_id: account.account_id,
-		});
-		if (!personaResponse.ok) {
-			return {ok: false, reason: 'Failed to create initial user persona'};
-		}
-		const result = await db.repos.community.create({
-			name,
-			persona_id: personaResponse.value.persona.persona_id,
-		});
-		if (!result.ok) {
-			return {ok: false, reason: 'Failed to create initial user community'};
-		}
 		return {ok: true, value: account};
 	},
 	findById: async (

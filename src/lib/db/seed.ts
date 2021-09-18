@@ -125,11 +125,11 @@ export const seed = async (db: Database): Promise<void> => {
 		log.trace('created account', account);
 		for (const personaName of personasParams[account.name]) {
 			const {persona, community} = unwrap(
-				await db.repos.persona.create({name: personaName, account_id: account.account_id}),
+				await db.repos.persona.create({name: personaName}, account.account_id),
 			);
 			log.trace('created persona', persona);
 			personas.push(persona);
-			const spaces = unwrap(await db.repos.space.createDefaultSpaces(community.community_id));
+			const spaces = unwrap(await db.repos.space.filterByCommunity(community.community_id));
 			await createDefaultFiles(db, spaces, [persona]);
 		}
 	}

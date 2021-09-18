@@ -11,7 +11,7 @@ export const membershipRepo = (db: Database) => ({
 		const data = await db.sql<Membership[]>`
       INSERT INTO memberships (persona_id, community_id) VALUES (
         ${persona_id},${community_id}
-      ) RETURNING *			
+      ) RETURNING *
     `;
 		console.log('[db] created membership', data);
 		return {ok: true, value: data[0]};
