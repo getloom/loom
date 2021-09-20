@@ -22,6 +22,7 @@
 	import AccountForm from '$lib/ui/AccountForm.svelte';
 	import {WEBSOCKET_URL} from '$lib/config';
 	import {toHandleSocketMessage} from '$lib/ui/handleSocketMessage';
+	import {GUEST_PERSONA_NAME} from '$lib/vocab/persona/constants';
 
 	const devmode = setDevmode();
 	const data = setData($session);
@@ -46,14 +47,16 @@
 		if (community_id !== $ui.selectedCommunityId) {
 			api.selectCommunity(community_id);
 		}
-		if (community_id && params.space) {
-			const spaceUrl = '/' + params.space;
+		if (community_id) {
+			const spaceUrl = '/' + (params.space || '');
 			const space = community.spaces.find((s) => s.url === spaceUrl);
 			if (!space) throw Error(`TODO Unable to find space: ${spaceUrl}`);
 			const {space_id} = space;
 			if (space_id !== $ui.selectedSpaceIdByCommunity[community_id]) {
 				api.selectSpace(community_id, space_id);
 			}
+		} else {
+			// TODO what is this condition?
 		}
 	};
 
@@ -92,7 +95,7 @@
 	<Devmode {devmode} />
 </div>
 
-<FeltWindowHost query={() => ({hue: randomHue($data.account?.name || 'guest')})} />
+<FeltWindowHost query={() => ({hue: randomHue($data.account?.name || GUEST_PERSONA_NAME)})} />
 
 <style>
 	.layout {
