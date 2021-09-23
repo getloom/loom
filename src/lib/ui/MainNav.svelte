@@ -6,11 +6,18 @@
 	import CommunityNav from '$lib/ui/CommunityNav.svelte';
 	import SpaceNav from '$lib/ui/SpaceNav.svelte';
 	import SocketConnection from '$lib/ui/SocketConnection.svelte';
-	import PersonaInfo from '$lib/ui/PersonaInfo.svelte';
+	import Avatar from '$lib/ui/Avatar.svelte';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {randomHue} from '$lib/ui/color';
 	import {GUEST_PERSONA_NAME} from '$lib/vocab/persona/constants';
+	import {toName, toIcon} from '$lib/vocab/entity/entity';
+
+	// TODO when the `SpaceNav` is clicked for navigation,
+	// it should call `api.toggleMainNav` on the mobile view.
+	// Main thing to figure out is how to make JS check if we're in mobile or not.
+	// Maybe use `window.matchMedia` and store in `ui`:
+	// https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia
 
 	const {data, ui, api} = getApp();
 
@@ -38,7 +45,7 @@
 				class:selected={$ui.mainNavView === 'explorer'}
 				class="explorer-button"
 			>
-				<PersonaInfo persona={$selectedPersona} />
+				<Avatar name={toName($selectedPersona)} icon={toIcon($selectedPersona)} />
 			</button>
 			<button
 				on:click={() => ui.setMainNavView('account')}
@@ -79,16 +86,15 @@
 	}
 	.main-nav {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
 		height: 100%;
 		width: var(--column_width_min);
 		overflow: auto;
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
-		border-left: var(--border);
-		border-right: var(--border);
 		transform-origin: top left;
+		/* TODO what var is this? */
 		background-color: hsl(var(--bg_hue), var(--bg_saturation), var(--bg_lightness));
 		transform: translate3d(-100%, 0, 0) scale3d(1, 1, 1);
 		transition: transform var(--transition_duration_xs) ease-out;
@@ -98,7 +104,7 @@
 		transition-duration: var(--transition_duration_sm);
 	}
 	.main-nav-bg {
-		z-index: 1;
+		z-index: 2;
 		display: none;
 		position: fixed;
 		width: 100%;
@@ -111,7 +117,6 @@
 	/* `50rem` in media queries is the same as `800px`, which is `--column_width` */
 	@media (max-width: 50rem) {
 		.main-nav {
-			z-index: 1;
 			position: fixed;
 			left: 0;
 			top: 0;
