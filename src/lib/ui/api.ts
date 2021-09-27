@@ -131,30 +131,20 @@ export const toApi = (
 			const result = await randomClient().invoke('create_persona', params);
 			console.log('[api] create_community result', result);
 			if (result.ok) {
-				const {persona, community: rawCommunity} = result.value;
-				const community = rawCommunity as Community; // TODO `Community` type is off with schema
-				data.addCommunity(community, persona.persona_id);
+				const {persona, community} = result.value;
+				data.addCommunity(community as Community, persona.persona_id); // TODO fix when Community type is fixed
 				data.addPersona(persona);
-				// TODO refactor to not return here, do `return result` below --
-				// can't return `result` right now because the `Community` is different,
-				// but we probably want to change it to have associated data instead of a different interface
-				return {ok: true, status: result.status, value: {persona, community}};
 			}
-			return result;
+			return result as any; // TODO fix when Community type is fixed
 		},
 		createCommunity: async (params) => {
 			if (!params.name) return {ok: false, status: 400, reason: 'invalid name'};
 			const result = await randomClient().invoke('create_community', params);
 			console.log('[api] create_community result', result);
 			if (result.ok) {
-				const community = result.value.community as any; // TODO `Community` type is off with schema
-				data.addCommunity(community, params.persona_id);
-				// TODO refactor to not return here, do `return result` below --
-				// can't return `result` right now because the `Community` is different,
-				// but we probably want to change it to have associated data instead of a different interface
-				return {ok: true, status: result.status, value: community};
+				data.addCommunity(result.value.community as Community, params.persona_id); // TODO fix when Community type is fixed
 			}
-			return result;
+			return result as any; // TODO fix when Community type is fixed
 		},
 		// TODO: This implementation is currently unconsentful,
 		// because does not give the potential member an opportunity to deny an invite
