@@ -54,9 +54,10 @@
 	const api = setApi(toApi(ui, data, websocketApiClient, httpApiClient));
 	const app = setApp({data, ui, api, devmode, socket});
 	browser && console.log('app', app);
+	$: browser && console.log('$session', $session);
 
 	$: guest = $session.guest;
-	$: onboarding = !$session.guest && !$data.personas.length;
+	$: onboarding = !guest && !$data.personas.length;
 
 	$: console.log('$ui', $ui);
 
@@ -83,12 +84,32 @@
 		}
 	};
 
+	let mounted = false;
+	$: if (mounted) {
+		// this expression re-runs when `$socket.status` changes, so we can ignore the `pending` status
+		// and do the right thing after it finishes whatever is in progress
+		if (guest) {
+			if ($socket.status === 'success') {
+				socket.disconnect();
+			}
+		} else {
+			if ($socket.status === 'initial') {
+				socket.connect(WEBSOCKET_URL);
+			}
+		}
+	}
+
 	onMount(() => {
 		// TODO create the API client here -- do we need a `$client.ready` state
-		// to abstract away `$socket.connected`?
-		socket.connect(WEBSOCKET_URL);
+		// to abstract away `$socket.connected`? Probably so to support websocketless usage.
+		mounted = true;
 		return () => {
-			socket.disconnect();
+			// due to how Svelte works, this component's reactive expression that calls `socket.disconnect`
+			// will not be called if `mounted = false` is assigned here while
+			// the component is being destroyed, so we duplicate `socket.disconnect()`
+			if ($socket.status === 'success') {
+				socket.disconnect();
+			}
 		};
 	});
 </script>
