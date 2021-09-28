@@ -2,7 +2,7 @@
 	import type {Readable} from 'svelte/store';
 
 	import type {Community} from '$lib/vocab/community/community.js';
-	import ActorIcon from '$lib/ui/ActorIcon.svelte';
+	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import {randomHue} from '$lib/ui/color';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
@@ -27,6 +27,8 @@
 	// because it's both navigating and setting state internally in the same user action
 	// TODO should this be an event?
 	export let selectPersona: (persona_id: number) => void;
+
+	$: isPersonaHomeCommunity = $community.name === $persona.name;
 </script>
 
 <!-- TODO can this be well abstracted via the Entity with a `link` prop? -->
@@ -34,11 +36,11 @@
 	class="community"
 	href="/{$community.name}{toUrl(selectedCommunitySpace && $selectedCommunitySpace.url)}"
 	class:selected
-	class:persona={$community.name === $persona.name}
+	class:persona={isPersonaHomeCommunity}
 	style="--hue: {randomHue($community.name)}"
 	on:click={() => selectPersona($persona.persona_id)}
 >
-	<ActorIcon name={$community.name} />
+	<EntityIcon name={$community.name} type="Community" />
 </a>
 
 <style>
