@@ -31,6 +31,7 @@ export interface Ui {
 	communities: Readable<Readable<Community>[]>;
 	spaces: Readable<Readable<Space>[]>;
 	spacesById: Readable<Map<number, Readable<Space>>>;
+	spacesByCommunityId: Readable<Map<number, Readable<Space>[]>>;
 	memberships: Readable<Membership[]>; // TODO if no properties can change, then it shouldn't be a store? do we want to handle `null` for deletes?
 	filesBySpace: Map<number, Readable<Readable<File>[]>>;
 	setSession: (session: ClientSession) => void;
@@ -54,7 +55,7 @@ export interface Ui {
 	selectedCommunity: Readable<Readable<Community> | null>;
 	selectedSpaceIdByCommunity: Readable<{[key: number]: number | null}>;
 	// TODO selectedSpace: Readable<Readable<Space> | null>;
-	selectedSpace: Readable<Space | null>;
+	selectedSpace: Readable<Readable<Space> | null>;
 	communitiesByPersonaId: Readable<{[persona_id: number]: Readable<Community>[]}>; // TODO or name `personaCommunities`?
 	mobile: Readable<boolean>;
 	setMobile: (mobile: boolean) => void;
@@ -104,6 +105,21 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 	const spacesById: Readable<Map<number, Writable<Space>>> = derived(
 		spaces,
 		($spaces) => new Map($spaces.map((space) => [get(space).space_id, space])),
+	);
+	const spacesByCommunityId: Readable<Map<number, Readable<Space>[]>> = derived(
+		[communities, spacesById],
+		([$communites, $spacesById]) => {
+			const map = new Map();
+			for (const community of $communites) {
+				const spaces: Writable<Space>[] = [];
+				for (const $space of get(community).spaces) {
+					const space = $spacesById.get($space.space_id);
+					spaces.push(space!);
+				}
+				map.set(get(community).community_id, spaces);
+			}
+			return map;
+		},
 	);
 	const memberships = writable<Membership[]>([]); // TODO should be on the session:  initialSession.guest ? [] : [],
 
@@ -156,11 +172,8 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 	const selectedSpace = derived(
 		[selectedCommunity, selectedSpaceIdByCommunity],
 		([$selectedCommunity, $selectedSpaceIdByCommunity]) =>
-			// TODO faster lookup
 			($selectedCommunity &&
-				get($selectedCommunity).spaces.find(
-					(s) => s.space_id === $selectedSpaceIdByCommunity[get($selectedCommunity)!.community_id],
-				)) ||
+				get(spacesById).get($selectedSpaceIdByCommunity[get($selectedCommunity)!.community_id]!)) ||
 			null,
 	);
 	const communitiesByPersonaId = derived(
@@ -194,6 +207,7 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 		memberships,
 		personasById,
 		spacesById,
+		spacesByCommunityId,
 		filesBySpace,
 		setSession: (session) => {
 			console.log('[data.setSession]', session);
