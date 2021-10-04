@@ -36,7 +36,14 @@ export const setApi = (store: Api): Api => {
 	return store;
 };
 
+export interface Dispatch {
+	// TODO generate these
+	(eventName: 'create_community', params: CommunityParams): Promise<ApiResult<Community>>;
+	(eventName: string, params: any): null | Promise<ApiResult<any>>;
+}
+
 export interface Api {
+	dispatch: Dispatch;
 	logIn: (
 		accountName: string,
 		password: string,
@@ -47,7 +54,6 @@ export interface Api {
 	createPersona: (
 		params: PersonaParams,
 	) => Promise<ApiResult<{persona: Persona; community: Community}>>;
-	createCommunity: (params: CommunityParams) => Promise<ApiResult<Community>>;
 	createSpace: (params: SpaceParams) => Promise<ApiResult<{space: Space}>>;
 	createMembership: (params: MembershipParams) => Promise<ApiResult<{membership: Membership}>>;
 	createFile: (params: FileParams) => Promise<ApiResult<{file: File}>>;
@@ -64,6 +70,19 @@ export const toApi = (
 	const clients = [client, client2];
 	const randomClient = () => randomItem(clients);
 	const api: Api = {
+		// TODO could validate the params here, but for now we'll just let the server validate2
+		dispatch: (eventName, params) => {
+			console.log('[api] invoking', eventName, params);
+			ui.dispatch(eventName, params, null);
+			const client = randomClient();
+			return client.has(eventName)
+				? client.invoke(eventName, params).then((result) => {
+						console.log('[api] invoked', eventName, result);
+						ui.dispatch(eventName, params, result);
+						return result as ApiResult<any>;
+				  })
+				: null!;
+		},
 		// TODO these are just directly proxying and they don't have the normal `ApiResult` return value
 		// The motivation is that sometimes UI events may do API-related things, but this may not be the best design.
 		toggleMainNav: ui.toggleMainNav,
@@ -128,16 +147,8 @@ export const toApi = (
 			if (result.ok) {
 				const {persona, community} = result.value;
 				ui.addPersona(persona);
-				ui.addCommunity(community as Community, persona.persona_id); // TODO fix when Community type is fixed
-			}
-			return result as any; // TODO fix when Community type is fixed
-		},
-		createCommunity: async (params) => {
-			if (!params.name) return {ok: false, status: 400, reason: 'invalid name'};
-			const result = await randomClient().invoke('create_community', params);
-			console.log('[api] create_community result', result);
-			if (result.ok) {
-				ui.addCommunity(result.value.community as Community, params.persona_id); // TODO fix when Community type is fixed
+				// TODO rethink this
+				ui.create_community({name: community.name, persona_id: persona.persona_id}, result);
 			}
 			return result as any; // TODO fix when Community type is fixed
 		},

@@ -1,6 +1,7 @@
 import type {Readable, Writable} from 'svelte/store';
 import {writable, derived, get} from 'svelte/store';
 import {setContext, getContext} from 'svelte';
+import type {Static} from '@sinclair/typebox';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
@@ -9,6 +10,8 @@ import type {ClientSession} from '$lib/session/clientSession';
 import type {AccountModel} from '$lib/vocab/account/account';
 import type {File} from '$lib/vocab/file/file';
 import type {Membership} from '$lib/vocab/membership/membership';
+import type {ApiResult} from '$lib/server/api';
+import type {createCommunityService} from '$lib/vocab/community/communityServices';
 
 const KEY = Symbol();
 
@@ -20,8 +23,12 @@ export const setUi = (store: Ui): Ui => {
 };
 
 export interface Ui {
-	// TODO single code path for UI actions:
-	// dispatch('setSession', {session: ClientSession});
+	dispatch: (eventName: string, params: any, result: ApiResult<any> | null) => void;
+	// TODO generate these
+	create_community: (
+		params: Static<typeof createCommunityService.paramsSchema>,
+		result: ApiResult<Static<typeof createCommunityService.responseSchema>> | null,
+	) => void;
 
 	// db state and caches
 	account: Readable<AccountModel | null>;
@@ -36,7 +43,6 @@ export interface Ui {
 	filesBySpace: Map<number, Readable<Readable<File>[]>>;
 	setSession: (session: ClientSession) => void;
 	addPersona: (persona: Persona) => void;
-	addCommunity: (community: Community, persona_id: number) => void;
 	addMembership: (membership: Membership) => void;
 	addSpace: (space: Space, community_id: number) => void;
 	addFile: (file: File) => void;
@@ -209,6 +215,15 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 		spacesById,
 		spacesByCommunityId,
 		filesBySpace,
+		dispatch: (eventName, params, result) => {
+			const handler = (ui as any)[eventName];
+			// const handler = handlers.get(eventName); // TODO ? would make it easy to do external registration
+			if (handler) {
+				return handler(params, result);
+			} else {
+				console.warn('[ui] ignored a dispatched event', eventName, params, result);
+			}
+		},
 		setSession: (session) => {
 			console.log('[data.setSession]', session);
 			// TODO these are duplicative and error prone, how to improve? helpers? recreate `ui`?
@@ -268,8 +283,11 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 				sessionPersonas.update(($sessionPersonas) => $sessionPersonas.concat(personaStore));
 			}
 		},
-		addCommunity: (community, persona_id) => {
-			console.log('[data.addCommunity]', community, persona_id);
+		create_community: (params, result) => {
+			if (!result?.ok) return;
+			const {persona_id} = params;
+			const community = result.value.community as Community; // TODO fix type mismatch
+			console.log('[data.create_community]', community, persona_id);
 			// TODO how should `persona.community_ids` by modeled and kept up to date?
 			const persona = get(personasById).get(persona_id)!;
 			const $persona = get(persona);
@@ -296,7 +314,6 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 			});
 			const communityStore = writable(community);
 			communities.update(($communities) => $communities.concat(communityStore));
-			// TODO update spaces
 		},
 		addMembership: (membership) => {
 			console.log('[data.addMembership]', membership);
