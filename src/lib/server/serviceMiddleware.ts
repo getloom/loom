@@ -1,17 +1,18 @@
 import send from '@polka/send-type';
-import type {TSchema} from '@sinclair/typebox';
 import {red} from '@feltcoop/felt/util/terminal.js';
 
 import type {ApiServer, Middleware} from '$lib/server/ApiServer.js';
 import type {Service} from '$lib/server/service';
-import {toValidationErrorMessage} from '$lib/util/ajv';
+import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
+
+// TODO use
 
 // TODO refactor this with the `ApiServer` websocket handler,
 // probably just a config object
 
 // Wraps a `Service` in an http `Middleware`
 export const toServiceMiddleware =
-	(server: ApiServer, service: Service<TSchema, TSchema>): Middleware =>
+	(server: ApiServer, service: Service<any, any>): Middleware =>
 	async (req, res) => {
 		// TODO validate input/output via properties on each `Service`
 		try {
@@ -42,11 +43,17 @@ export const toServiceMiddleware =
 				}
 			}
 
+			if (!service.event.params.schema || !service.event.response.schema) {
+				return send(res, 500, {reason: 'unimplemented service schema'});
+			}
+
 			const params = {...reqBody, ...reqParams};
-			if (!service.validateParams()(params)) {
+
+			const validateParams = validateSchema(service.event.params.schema);
+			if (!validateParams(params)) {
 				// TODO handle multiple errors instead of just the first
-				console.error('validation failed:', params, service.validateParams().errors);
-				const validationError = service.validateParams().errors![0];
+				console.error('validation failed:', params, validateParams.errors);
+				const validationError = validateParams.errors![0];
 				return send(res, 400, {reason: toValidationErrorMessage(validationError)});
 			}
 			if (!req.account_id) {
@@ -55,14 +62,17 @@ export const toServiceMiddleware =
 				// Should each service declare if `account_id` is required?
 				return send(res, 401, {reason: 'not logged in'});
 			}
+
 			const result = await service.perform({server, params, account_id: req.account_id});
+
 			if (!result.ok) {
 				send(res, result.status || 500, {reason: result.reason});
 				return;
 			}
 			if (process.env.NODE_ENV !== 'production') {
-				if (!service.validateResponse()(result.value)) {
-					console.error(red('validation failed:'), result, service.validateResponse().errors);
+				const validateResponse = validateSchema(service.event.response.schema);
+				if (!validateResponse(result.value)) {
+					console.error(red('validation failed:'), result, validateResponse.errors);
 				}
 			}
 			console.log('[serviceMiddleware] result.status', result.status);
