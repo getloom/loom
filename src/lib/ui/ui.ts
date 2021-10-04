@@ -1,7 +1,6 @@
 import type {Readable, Writable} from 'svelte/store';
 import {writable, derived, get} from 'svelte/store';
 import {setContext, getContext} from 'svelte';
-import type {Static} from '@sinclair/typebox';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
@@ -10,8 +9,13 @@ import type {ClientSession} from '$lib/session/clientSession';
 import type {AccountModel} from '$lib/vocab/account/account';
 import type {File} from '$lib/vocab/file/file';
 import type {Membership} from '$lib/vocab/membership/membership';
-import type {ApiResult} from '$lib/server/api';
-import type {createCommunityService} from '$lib/vocab/community/communityServices';
+import type {DispatchContext} from '$lib/ui/api';
+import type {UiHandlers} from '$lib/ui/events';
+
+const UNKNOWN_API_ERROR =
+	'Something went wrong. Maybe the server or your Internet connection is down. Please try again.';
+
+export type MainNavView = 'explorer' | 'account'; // TODO where should this live?
 
 const KEY = Symbol();
 
@@ -22,13 +26,8 @@ export const setUi = (store: Ui): Ui => {
 	return store;
 };
 
-export interface Ui {
-	dispatch: (eventName: string, params: any, result: ApiResult<any> | null) => void;
-	// TODO generate these
-	create_community: (
-		params: Static<typeof createCommunityService.paramsSchema>,
-		result: ApiResult<Static<typeof createCommunityService.responseSchema>> | null,
-	) => void;
+export interface Ui extends UiHandlers {
+	dispatch: (ctx: DispatchContext) => any; // TODO return value type?
 
 	// db state and caches
 	account: Readable<AccountModel | null>;
@@ -42,11 +41,6 @@ export interface Ui {
 	memberships: Readable<Membership[]>; // TODO if no properties can change, then it shouldn't be a store? do we want to handle `null` for deletes?
 	filesBySpace: Map<number, Readable<Readable<File>[]>>;
 	setSession: (session: ClientSession) => void;
-	addPersona: (persona: Persona) => void;
-	addMembership: (membership: Membership) => void;
-	addSpace: (space: Space, community_id: number) => void;
-	addFile: (file: File) => void;
-	setFiles: (space_id: number, files: File[]) => void;
 	findPersonaById: (persona_id: number) => Readable<Persona>;
 	findSpaceById: (space_id: number) => Readable<Space>;
 	// view state
@@ -64,17 +58,9 @@ export interface Ui {
 	selectedSpace: Readable<Readable<Space> | null>;
 	communitiesByPersonaId: Readable<{[persona_id: number]: Readable<Community>[]}>; // TODO or name `personaCommunities`?
 	mobile: Readable<boolean>;
-	setMobile: (mobile: boolean) => void;
-	// view methods
-	selectPersona: (persona_id: number) => void;
-	selectCommunity: (community_id: number | null) => void;
-	selectSpace: (community_id: number, space_id: number | null) => void;
-	toggleMainNav: () => void;
-	toggleSecondaryNav: () => void;
-	setMainNavView: (value: MainNavView) => void;
 }
 
-export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
+export const toUi = (session: Writable<ClientSession>, initialMobile: boolean): Ui => {
 	const initialSession = get(session);
 
 	// TODO would it helpfully simplify things to put these stores on the actual store state?
@@ -129,7 +115,7 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 	);
 	const memberships = writable<Membership[]>([]); // TODO should be on the session:  initialSession.guest ? [] : [],
 
-	const {subscribe: subscribeMobile, set: setMobile} = writable(mobile);
+	const mobile = writable(initialMobile);
 
 	// derived state
 	// TODO speed up these lookups with id maps
@@ -200,9 +186,37 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 	// TODO this does not have an outer `Writable` -- do we want that much reactivity?
 	const filesBySpace: Map<number, Writable<Writable<File>[]>> = new Map();
 
-	const expandMainNav = writable(!mobile);
-	const expandMarquee = writable(!mobile);
+	const expandMainNav = writable(!initialMobile);
+	const expandMarquee = writable(!initialMobile);
 	const mainNavView: Writable<MainNavView> = writable('explorer');
+
+	const addCommunity = (community: Community, persona_id: number): void => {
+		const persona = get(personasById).get(persona_id)!;
+		const $persona = get(persona);
+		if (!$persona.community_ids.includes(community.community_id)) {
+			persona.update(($persona) => ({
+				...$persona,
+				community_ids: $persona.community_ids.concat(community.community_id),
+			}));
+			console.log('updated persona community ids', get(persona));
+		}
+		const $spacesById = get(spacesById);
+		let spacesToAdd: Space[] | null = null;
+		for (const space of community.spaces) {
+			if (!$spacesById.has(space.space_id)) {
+				(spacesToAdd || (spacesToAdd = [])).push(space);
+			}
+		}
+		if (spacesToAdd) {
+			spaces.update(($spaces) => $spaces.concat(spacesToAdd!.map((s) => writable(s))));
+		}
+		selectedSpaceIdByCommunity.update(($selectedSpaceIdByCommunity) => {
+			$selectedSpaceIdByCommunity[community.community_id] = community.spaces[0].space_id;
+			return $selectedSpaceIdByCommunity;
+		});
+		const communityStore = writable(community);
+		communities.update(($communities) => $communities.concat(communityStore));
+	};
 
 	const ui: Ui = {
 		account,
@@ -215,13 +229,66 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 		spacesById,
 		spacesByCommunityId,
 		filesBySpace,
-		dispatch: (eventName, params, result) => {
-			const handler = (ui as any)[eventName];
+		dispatch: (ctx) => {
+			const handler = (ui as any)[ctx.eventName];
 			// const handler = handlers.get(eventName); // TODO ? would make it easy to do external registration
 			if (handler) {
-				return handler(params, result);
+				return handler(ctx);
 			} else {
-				console.warn('[ui] ignored a dispatched event', eventName, params, result);
+				console.warn('[ui] ignoring a dispatched event', ctx);
+			}
+		},
+		// TODO convert to a service (and use `invoke` instead of `fetch`)
+		log_in: async ({params}) => {
+			console.log('[log_in] logging in as', params.accountName); // TODO logging
+			try {
+				const response = await fetch('/api/v1/login', {
+					method: 'POST',
+					headers: {'content-type': 'application/json'},
+					body: JSON.stringify(params),
+				});
+				const responseData = await response.json();
+				if (response.ok) {
+					console.log('[log_in] responseData', responseData); // TODO logging
+					session.set(responseData.session);
+					return {ok: true, status: response.status, value: responseData}; // TODO doesn't this have other status codes?
+				} else {
+					console.error('[log_in] response not ok', responseData, response); // TODO logging
+					return {ok: false, status: response.status, reason: responseData.reason};
+				}
+			} catch (err) {
+				console.error('[log_in] error', err); // TODO logging
+				return {
+					ok: false,
+					status: 500,
+					reason: UNKNOWN_API_ERROR,
+				};
+			}
+		},
+		// TODO convert to a service (and use `invoke` instead of `fetch`)
+		log_out: async () => {
+			try {
+				console.log('[log_out] logging out'); // TODO logging
+				const response = await fetch('/api/v1/logout', {
+					method: 'POST',
+					headers: {'content-type': 'application/json'},
+				});
+				const responseData = await response.json();
+				console.log('[log_out] response', responseData); // TODO logging
+				if (response.ok) {
+					session.set({guest: true});
+					return {ok: true, status: response.status, value: responseData};
+				} else {
+					console.error('[log_out] response not ok', response); // TODO logging
+					return {ok: false, status: response.status, reason: responseData.reason};
+				}
+			} catch (err) {
+				console.error('[log_out] err', err); // TODO logging
+				return {
+					ok: false,
+					status: 500,
+					reason: UNKNOWN_API_ERROR,
+				};
 			}
 		},
 		setSession: (session) => {
@@ -274,65 +341,60 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 			);
 			mainNavView.set('explorer');
 		},
-		addPersona: (persona) => {
-			console.log('[data.addPersona]', persona);
+		create_persona: async ({invoke, dispatch}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
+			const {persona, community} = result.value;
+			console.log('[ui.create_persona]', persona);
 			const personaStore = writable(persona);
 			personas.update(($personas) => $personas.concat(personaStore));
-			// TODO better way to check this? should `sessionPersonas` be a `derived` store?
-			if (persona.account_id == get(account)?.account_id) {
-				sessionPersonas.update(($sessionPersonas) => $sessionPersonas.concat(personaStore));
-			}
+			sessionPersonas.update(($sessionPersonas) => $sessionPersonas.concat(personaStore));
+			dispatch('select_persona', {persona_id: persona.persona_id});
+			addCommunity(community as Community, persona.persona_id); // TODO fix type mismatch
+			dispatch('select_community', {community_id: community.community_id});
+			return result;
 		},
-		create_community: (params, result) => {
-			if (!result?.ok) return;
+		create_community: async ({params, invoke, dispatch}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
 			const {persona_id} = params;
 			const community = result.value.community as Community; // TODO fix type mismatch
-			console.log('[data.create_community]', community, persona_id);
-			// TODO how should `persona.community_ids` by modeled and kept up to date?
-			const persona = get(personasById).get(persona_id)!;
-			const $persona = get(persona);
-			if (!$persona.community_ids.includes(community.community_id)) {
-				persona.update(($persona) => ({
-					...$persona,
-					community_ids: $persona.community_ids.concat(community.community_id),
-				}));
-				console.log('updated persona community ids', get(persona));
-			}
-			const $spacesById = get(spacesById);
-			let spacesToAdd: Space[] | null = null;
-			for (const space of community.spaces) {
-				if (!$spacesById.has(space.space_id)) {
-					(spacesToAdd || (spacesToAdd = [])).push(space);
-				}
-			}
-			if (spacesToAdd) {
-				spaces.update(($spaces) => $spaces.concat(spacesToAdd!.map((s) => writable(s))));
-			}
-			selectedSpaceIdByCommunity.update(($selectedSpaceIdByCommunity) => {
-				$selectedSpaceIdByCommunity[community.community_id] = community.spaces[0].space_id;
-				return $selectedSpaceIdByCommunity;
-			});
-			const communityStore = writable(community);
-			communities.update(($communities) => $communities.concat(communityStore));
+			console.log('[ui.create_community]', community, persona_id);
+			// TODO how should `persona.community_ids` be modeled and kept up to date?
+			addCommunity(community, persona_id);
+			dispatch('select_community', {community_id: community.community_id});
+			return result;
 		},
-		addMembership: (membership) => {
-			console.log('[data.addMembership]', membership);
-			// TODO also update `communities.personas` (which will be refactored)
+		create_membership: async ({invoke}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
+			const {membership} = result.value;
+			console.log('[ui.create_membership]', membership);
+			// TODO also update `communities.personas`
 			memberships.update(($memberships) => $memberships.concat(membership));
+			return result;
 		},
-		addSpace: (space, community_id) => {
-			console.log('[data.addSpace]', space);
-			const communityStore = get(communities).find((c) => get(c).community_id === community_id);
-			communityStore?.update((community) => ({
-				...community,
+		create_space: async ({params, invoke}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
+			const {space} = result.value;
+			const {community_id} = params;
+			console.log('[ui.create_space]', space);
+			const community = get(communities).find((c) => get(c).community_id === community_id)!;
+			community.update(($community) => ({
+				...$community,
 				// TODO `community.spaces` is not reactive, and should be replaced with flat data structures,
 				// but we may want to make them readable stores in the meantime
-				spaces: community.spaces.concat(space), // TODO should this check if it's already there? yes but for different data structures
+				spaces: $community.spaces.concat(space), // TODO should this check if it's already there? yes but for different data structures
 			}));
 			spaces.update(($spaces) => $spaces.concat(writable(space)));
+			return result;
 		},
-		addFile: (file) => {
-			console.log('[data.addFile]', file);
+		create_file: async ({invoke}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
+			const {file} = result.value;
+			console.log('[ui.create_file]', file);
 			const fileStore = writable(file);
 			const files = filesBySpace.get(file.space_id);
 			if (files) {
@@ -341,15 +403,30 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 			} else {
 				filesBySpace.set(file.space_id, writable([fileStore]));
 			}
+			return result;
 		},
-		setFiles: (space_id, files) => {
-			console.log('[data.setFiles]', files);
+		read_files: async ({params, invoke}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
+			const {space_id} = params;
 			const existingFiles = filesBySpace.get(space_id);
+			// TODO probably check to make sure they don't already exist
+			const newFiles = result ? result.value.files.map((f) => writable(f)) : [];
+			console.log('[ui.read_files]', newFiles);
 			if (existingFiles) {
-				existingFiles.set(files.map((f) => writable(f)));
+				existingFiles.set(newFiles);
 			} else {
-				filesBySpace.set(space_id, writable(files.map((f) => writable(f))));
+				filesBySpace.set(space_id, writable(newFiles));
 			}
+			return result;
+		},
+		query_files: ({params, dispatch}) => {
+			let files = filesBySpace.get(params.space_id);
+			if (!files) {
+				filesBySpace.set(params.space_id, (files = writable([])));
+				dispatch('read_files', params);
+			}
+			return files;
 		},
 		findPersonaById: (persona_id: number): Readable<Persona> => {
 			const persona = get(personasById).get(persona_id);
@@ -362,8 +439,7 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 			return space;
 		},
 		// view state
-		mobile: {subscribe: subscribeMobile}, // don't expose the writable store
-		setMobile,
+		mobile,
 		expandMainNav,
 		expandMarquee,
 		mainNavView,
@@ -377,13 +453,17 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 		selectedSpace,
 		communitiesByPersonaId,
 		// methods
-		selectPersona: (persona_id) => {
-			console.log('[ui.selectPersona] persona_id', {persona_id});
-			selectedPersonaId.set(persona_id);
+		set_mobile: ({params}) => {
+			mobile.set(params);
 		},
-		selectCommunity: (community_id) => {
-			console.log('[ui.selectCommunity] community_id', {community_id});
+		select_persona: ({params}) => {
+			console.log('[ui.select_persona] persona_id', params.persona_id);
+			selectedPersonaId.set(params.persona_id);
+		},
+		select_community: ({params}) => {
+			console.log('[ui.select_community] community_id', params.community_id);
 			const $selectedPersonaId = get(selectedPersonaId); // TODO how to remove the `!`?
+			const {community_id} = params;
 			if (community_id && $selectedPersonaId) {
 				selectedCommunityIdByPersona.update(($selectedCommunityIdByPersona) => ({
 					...$selectedCommunityIdByPersona,
@@ -391,27 +471,26 @@ export const toUi = (session: Readable<ClientSession>, mobile: boolean): Ui => {
 				}));
 			}
 		},
-		selectSpace: (community_id, space_id) => {
-			console.log('[ui.selectSpace] community_id, space_id', {community_id, space_id});
+		select_space: ({params}) => {
+			console.log('[ui.select_space] community_id, space_id', params);
+			const {community_id, space_id} = params;
 			selectedSpaceIdByCommunity.update(($selectedSpaceIdByCommunity) => ({
 				...$selectedSpaceIdByCommunity,
 				[community_id]: space_id,
 			}));
 		},
-		toggleMainNav: () => {
+		toggle_main_nav: () => {
 			expandMainNav.update(($expandMainNav) => !$expandMainNav);
 		},
-		toggleSecondaryNav: () => {
+		toggle_secondary_nav: () => {
 			expandMarquee.update(($expandMarquee) => !$expandMarquee);
 		},
-		setMainNavView: (value) => {
-			mainNavView.set(value);
+		set_main_nav_view: ({params}) => {
+			mainNavView.set(params);
 		},
 	};
 	return ui;
 };
-
-export type MainNavView = 'explorer' | 'account';
 
 // TODO this is a hack until we have `community_ids` normalized and off the `Persona`,
 // the issue is that the "session personas" are different than the rest of the personas
