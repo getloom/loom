@@ -36,7 +36,9 @@ export const seed = async (db: Database): Promise<void> => {
 		create table if not exists personas (
 			persona_id serial primary key,
 			account_id int,
-			name text
+			name text,
+			created timestamp NOT NULL DEFAULT now(),
+			updated timestamp
 		)
 	`;
 
@@ -47,7 +49,9 @@ export const seed = async (db: Database): Promise<void> => {
 	const createCommunitiesTableResult = await sql`
 		create table if not exists communities (
 			community_id serial primary key,
-			name text
+			name text,
+			created timestamp NOT NULL DEFAULT now(),
+			updated timestamp
 		)	
 	`;
 
