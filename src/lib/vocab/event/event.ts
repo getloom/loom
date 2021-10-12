@@ -15,6 +15,8 @@ export interface ClientEventInfo {
 	returns: string;
 }
 
+// Service events are handled by a remote `Service` (`$lib/server/service.ts`).
+// Their `route` property enables url route building for http methods.
 export interface ServiceEventInfo {
 	type: 'ServiceEvent';
 	name: string; // `snake_cased`
@@ -34,7 +36,7 @@ export interface ServiceEventInfo {
 	};
 }
 
-// TODO remote events are a hack around
+// Remote events are external API calls that aren't services.
 export interface RemoteEventInfo {
 	type: 'RemoteEvent';
 	name: string; // `snake_cased`
