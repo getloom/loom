@@ -26,10 +26,7 @@ export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEm
 	}
 
 	async init(): Promise<void> {
-		// TODO I'm not sure about this way of creating the server externally and passing it to both polka and ws
-		// const wss = new ws.Server({server: this.server}); // port: 3000
 		const {wss} = this;
-		console.log('wss.on', wss.on);
 		wss.on('connection', (socket, req: CookieSessionIncomingMessage) => {
 			console.log('[wss] connection req.url', req.url, wss.clients.size);
 			console.log('[wss] connection req.headers', req.headers);
