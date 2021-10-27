@@ -2,6 +2,8 @@
 
 // TODO figure out how to allow user projects to override these vars
 
+// TODO Replace this at buildtime with a constant so it can be optimized.
+// This probably means supporting `import.meta.env` or `$app/env` in Gro.
 const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production';
 
 export const SVELTEKIT_SERVER_HOST = 'localhost:3000';
