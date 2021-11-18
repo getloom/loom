@@ -51,7 +51,7 @@ export const websocketHandler: WebsocketHandler = async (
 
 	let result;
 
-	const validateParams = validateSchema(service.event.params.schema);
+	const validateParams = validateSchema(service.event.params);
 	if (!validateParams(params)) {
 		console.error('[websocketHandler] failed to validate params', validateParams.errors);
 		result = {
@@ -76,7 +76,7 @@ export const websocketHandler: WebsocketHandler = async (
 	}
 
 	if (process.env.NODE_ENV !== 'production') {
-		const validateResponse = validateSchema(service.event.response.schema);
+		const validateResponse = validateSchema(service.event.response);
 		if (!validateResponse(result.value)) {
 			console.error(
 				red(`failed to validate service response: ${service.event.name}`),
