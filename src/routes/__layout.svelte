@@ -28,7 +28,6 @@
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {goto} from '$app/navigation';
 	import {PERSONA_QUERY_KEY, setUrlPersona} from '$lib/ui/url';
-	import {createPinger} from '$lib/ui/pinger';
 
 	let initialMobileValue = false; // TODO this hardcoded value causes mobile view to change on load -- detect for SSR via User-Agent?
 	const MOBILE_WIDTH = '50rem'; // treats anything less than 800px width as mobile
@@ -44,12 +43,22 @@
 
 	const devmode = setDevmode();
 	const socket = setSocket(
-		toSocketStore((data) =>
-			apiClient.handle(data, (broadcastMessage) => {
-				(ui as any)[broadcastMessage.method]({
-					invoke: () => Promise.resolve(broadcastMessage.result),
-				});
-			}),
+		toSocketStore(
+			(message) =>
+				apiClient.handle(message.data, (broadcastMessage) => {
+					// TODO this is a hack to handle arbitrary messages from the server
+					// outside of the normal JSON RPC calls -- we'll want to rethink this
+					// so it's more structured and type safe
+					const handler = (ui as any)[broadcastMessage.method];
+					if (handler) {
+						handler({
+							invoke: () => Promise.resolve(broadcastMessage.result),
+						});
+					} else {
+						console.warn('unhandled broadcast message', broadcastMessage, message.data);
+					}
+				}),
+			() => dispatch('ping'),
 		),
 	);
 	const ui = setUi(toUi(session, initialMobileValue));
@@ -148,7 +157,6 @@
 	});
 
 	// TODO extract this logic to a websocket module or component
-	if (browser) createPinger(dispatch);
 	let connecting = false;
 	let connectCount = 0;
 	const RECONNECT_DELAY = 1000; // this matches the current Vite/SvelteKit retry rate; we could use the count to increase this

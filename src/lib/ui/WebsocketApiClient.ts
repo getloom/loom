@@ -57,14 +57,13 @@ export const toWebsocketApiClient = <
 				method: name,
 				params,
 			};
-			console.log('[websocket api client] request', request);
 			const websocketRequest = toWebsocketRequest<any>(request);
 			send(request);
 			return websocketRequest.promise;
 		},
 		handle: (rawMessage, handleBroadcastMessage) => {
 			const message = parseSocketMessage(rawMessage);
-			console.log('[websocket api client] handle incoming message', message);
+			console.log('[websocket api client] handle', message);
 			if (!message) return;
 			if ('jsonrpc' in message) {
 				const found = websocketRequests.get(message.id);
@@ -75,8 +74,10 @@ export const toWebsocketApiClient = <
 				websocketRequests.delete(message.id);
 				// TODO upstream the `ok` instead of creating a new object? could return `message.result` directly
 				found.resolve({ok: message.result.status === 200, ...message.result});
-			} else {
+			} else if (message.type === 'broadcast') {
 				handleBroadcastMessage(message);
+			} else {
+				console.log('[websocket api client] unhandled message', message);
 			}
 		},
 		close: () => {

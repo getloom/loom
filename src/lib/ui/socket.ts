@@ -5,6 +5,8 @@ import {setContext, getContext} from 'svelte';
 
 const KEY = Symbol();
 
+export const HEARTBEAT_INTERVAL = 300000;
+
 export const getSocket = (): SocketStore => getContext(KEY);
 
 export const setSocket = (store: SocketStore): SocketStore => {
@@ -33,34 +35,29 @@ export interface SocketStore {
 }
 
 export interface HandleSocketMessage {
-	(rawMessage: any): void;
+	(event: MessageEvent<any>): void;
 }
 
-export const toSocketStore = (handleMessage: HandleSocketMessage): SocketStore => {
+export const toSocketStore = (
+	handleMessage: HandleSocketMessage,
+	sendHeartbeat: () => void,
+	heartbeatInterval = HEARTBEAT_INTERVAL,
+): SocketStore => {
 	const {subscribe, update} = writable<SocketState>(toDefaultSocketState());
 
-	const createWebSocket = (url: string): WebSocket => {
-		const ws = new WebSocket(url);
-		ws.onopen = (e) => {
-			console.log('[socket] open', e);
-			//send('hello world, this is client speaking');
-			update(($socket) => ({...$socket, status: 'success', connected: true}));
-		};
-		ws.onclose = (e) => {
-			console.log('[socket] close', e);
-			update(($socket) => ({...$socket, status: 'initial', connected: false, ws: null, url: null}));
-		};
-		ws.onmessage = (e) => {
-			// console.log('[socket] on message');
-			handleMessage(e.data); // TODO should this forward the entire event?
-		};
-		ws.onerror = (e) => {
-			console.log('[socket] error', e);
-			update(($socket) => ({...$socket, status: 'failure', error: 'unknown websocket error'}));
-		};
-		console.log('[socket] ws', ws);
-
-		return ws;
+	const onWsOpen = () => {
+		console.log('[socket] open');
+		update(($socket) => ({...$socket, status: 'success', connected: true}));
+	};
+	const onWsClose = () => {
+		console.log('[socket] close');
+		update(($socket) => ({
+			...$socket,
+			status: 'initial',
+			connected: false,
+			ws: null,
+			url: null,
+		}));
 	};
 
 	const store: SocketStore = {
@@ -84,19 +81,22 @@ export const toSocketStore = (handleMessage: HandleSocketMessage): SocketStore =
 					console.error('[ws] cannot connect because it is already connected'); // TODO return errors instead?
 					return $socket;
 				}
+				const ws = createWebSocket(url, handleMessage, sendHeartbeat, heartbeatInterval);
+				ws.addEventListener('open', onWsOpen);
+				ws.addEventListener('close', onWsClose);
 				return {
 					...$socket,
 					url,
 					connected: false,
 					status: 'pending',
-					ws: createWebSocket(url),
+					ws,
 					error: null,
 				};
 			});
 		},
 		send: (data) => {
 			const $socket = get(store);
-			console.log('[ws] send', data, $socket);
+			// console.log('[ws] send', data, $socket);
 			if (!$socket.ws) {
 				console.error('[ws] cannot send without a socket', data, $socket);
 				return false;
@@ -120,3 +120,61 @@ const toDefaultSocketState = (): SocketState => ({
 	status: 'initial',
 	error: null,
 });
+
+const createWebSocket = (
+	url: string,
+	handleMessage: HandleSocketMessage,
+	sendHeartbeat: () => void,
+	heartbeatInterval: number,
+): WebSocket => {
+	const ws = new WebSocket(url);
+	const send = ws.send.bind(ws);
+	ws.addEventListener('open', () => startHeartbeat());
+	ws.addEventListener('close', () => stopHeartbeat());
+	ws.addEventListener('message', (e) => {
+		lastReceiveTime = Date.now();
+		handleMessage(e);
+	});
+	ws.send = (data) => {
+		lastSendTime = Date.now();
+		send(data);
+	};
+
+	// Send a heartbeat every `heartbeatInterval`,
+	// resetting to the most recent time both a send and receive event were handled.
+	// This ensures the heartbeat is sent only when actually needed.
+	// Note that if the client is receiving events but not sending them, or vice versa,
+	// the heartbeat is sent to prevent the remote connection from timing out.
+	// (nginx tracks each timer separately and both need to be accounted for --
+	// see `proxy_read_timeout` and `proxy_send_timeout` for more)
+	let lastSendTime: number;
+	let lastReceiveTime: number;
+	let heartbeatTimeout: NodeJS.Timeout | null = null;
+	const startHeartbeat = () => {
+		const now = Date.now();
+		lastSendTime = now;
+		lastReceiveTime = now;
+		queueHeartbeat();
+	};
+	const stopHeartbeat = () => {
+		clearTimeout(heartbeatTimeout!);
+		heartbeatTimeout = null;
+	};
+	const queueHeartbeat = () => {
+		heartbeatTimeout = setTimeout(() => {
+			// While the timeout was pending, the next timeout time may have changed
+			// due to new messages being sent and received,
+			// so send the heartbeat only if it's actually expired.
+			const now = Date.now();
+			if (getNextTimeoutTime() <= now) {
+				lastSendTime = now;
+				lastReceiveTime = now;
+				sendHeartbeat();
+			}
+			queueHeartbeat();
+		}, getNextTimeoutTime() - Date.now());
+	};
+	const getNextTimeoutTime = () => heartbeatInterval + Math.min(lastSendTime, lastReceiveTime);
+
+	return ws;
+};
