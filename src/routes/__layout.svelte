@@ -28,6 +28,8 @@
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {goto} from '$app/navigation';
 	import {PERSONA_QUERY_KEY, setUrlPersona} from '$lib/ui/url';
+	import Contextmenu from '$lib/ui/contextmenu/Contextmenu.svelte';
+	import ContextmenuSlot from '$lib/app/ContextmenuSlot.svelte';
 
 	let initialMobileValue = false; // TODO this hardcoded value causes mobile view to change on load -- detect for SSR via User-Agent?
 	const MOBILE_WIDTH = '50rem'; // treats anything less than 800px width as mobile
@@ -67,18 +69,24 @@
 	// alternative http client:
 	// const apiClient = toHttpApiClient(findService);
 	const dispatch = toDispatch(ui, apiClient);
-	const app = setApp({dispatch, ui, devmode, socket});
-	browser && console.log('app', app);
+	const app = setApp({ui, dispatch, devmode, socket});
+	if (browser) {
+		(window as any).app = app;
+		Object.assign(window, app);
+		console.log('app', app);
+	}
 	$: browser && console.log('$session', $session);
 
 	const {
 		mobile,
+		contextmenu,
 		account,
 		sessionPersonas,
 		communities,
 		selectedPersonaIndex,
 		selectedCommunityId,
 		selectedSpaceIdByCommunity,
+		selectedPersona,
 		setSession,
 	} = ui;
 
@@ -86,6 +94,8 @@
 
 	$: guest = $session.guest;
 	$: onboarding = !guest && !$sessionPersonas.length;
+
+	$: personaSelection = $selectedPersona; // TODO should these names be reversed?
 
 	// TODO instead of dispatching `select` events on startup, try to initialize with correct values
 	// TODO refactor -- where should this logic go?
@@ -182,6 +192,12 @@
 			}
 		}
 	}
+
+	$: layoutEntities = ['app', personaSelection ? 'persona:' + $personaSelection.name : '']
+		.filter(Boolean)
+		.join(',');
+	// TODO refactor this: unfortunately need to set on #root because dialog is outside of `.layout`
+	$: browser && (document.getElementById('root')!.dataset.entity = layoutEntities);
 </script>
 
 <svelte:head>
@@ -207,9 +223,11 @@
 		{/if}
 	</main>
 	<Devmode {devmode} />
+	<Contextmenu {contextmenu}>
+		<ContextmenuSlot {contextmenu} {devmode} />
+	</Contextmenu>
+	<FeltWindowHost query={() => ({hue: randomHue($account?.name || GUEST_PERSONA_NAME)})} />
 </div>
-
-<FeltWindowHost query={() => ({hue: randomHue($account?.name || GUEST_PERSONA_NAME)})} />
 
 <style>
 	.layout {

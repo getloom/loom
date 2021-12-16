@@ -49,14 +49,14 @@ const loadEnvs = () => {
 	}
 };
 
-// Adds or updates an env var value for the key `name`.
-export const updateEnv = (contents: string, name: string, value: string): string => {
-	const matcher = new RegExp(`^${name}=(.*)$`, 'm');
+// Adds or updates an env var `value` for `key`.
+export const updateEnv = (contents: string, key: string, value: string): string => {
+	const matcher = new RegExp(`^${key}=(.*)$`, 'm');
 	const matched = contents.match(matcher);
 	if (matched) {
 		if (matched[1] === value) return contents;
-		return contents.replace(matcher, `${name}=${value}`);
+		return contents.replace(matcher, `${key}=${value}`);
 	} else {
-		return contents + (contents.endsWith('\n') ? '' : '\n') + `${name}=${value}`;
+		return contents + (contents.endsWith('\n') ? '' : '\n') + `${key}=${value}`;
 	}
 };
