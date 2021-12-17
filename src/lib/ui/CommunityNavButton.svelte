@@ -3,7 +3,6 @@
 
 	import type {Community} from '$lib/vocab/community/community.js';
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
-	import {randomHue} from '$lib/ui/color';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
 	import {toSpaceUrl} from '$lib/ui/url';
@@ -35,7 +34,7 @@
 	href={toSpaceUrl(personaIndex, $community, selectedCommunitySpace && $selectedCommunitySpace)}
 	class:selected
 	class:persona={isPersonaHomeCommunity}
-	style="--hue: {randomHue($community.name)}"
+	style="--hue: {$community.settings.hue}"
 	data-entity="community:{$community.name}"
 	on:click={() => dispatch('select_persona', {persona_id: $persona.persona_id})}
 >

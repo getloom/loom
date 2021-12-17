@@ -5,6 +5,7 @@ import {
 	readCommunityService,
 	readCommunitiesService,
 	createCommunityService,
+	updateCommunitySettingsService,
 	createMembershipService,
 } from '$lib/vocab/community/communityServices';
 import {deleteMembershipService} from '$lib/vocab/membership/membershipServices';
@@ -27,6 +28,7 @@ export const services: Map<string, Service<any, any>> = new Map(
 		createFileService,
 		readCommunityService,
 		readCommunitiesService,
+		updateCommunitySettingsService,
 		readSpaceService,
 		readSpacesService,
 		readFilesService,

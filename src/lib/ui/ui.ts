@@ -86,6 +86,7 @@ export const toUi = (session: Writable<ClientSession>, initialMobile: boolean): 
 	const communities = writable<Writable<Community>[]>(
 		initialSession.guest ? [] : initialSession.communities.map((p) => writable(p)),
 	);
+	// TODO communitiesById
 	const spaces = writable<Writable<Space>[]>(
 		initialSession.guest
 			? []
@@ -373,6 +374,21 @@ export const toUi = (session: Writable<ClientSession>, initialMobile: boolean): 
 			// TODO how should `persona.community_ids` be modeled and kept up to date?
 			addCommunity(community, persona_id);
 			dispatch('select_community', {community_id: community.community_id});
+			return result;
+		},
+		update_community_settings: async ({params, invoke}) => {
+			// optimistic update
+			// TODO lookup with `communitiesById`
+			const community = get(communities).find((c) => get(c).community_id === params.community_id)!;
+			const originalSettings = get(community).settings;
+			community.update(($community) => ({
+				...$community,
+				settings: {...$community.settings, ...params.settings},
+			}));
+			const result = await invoke();
+			if (!result.ok) {
+				community.update(($community) => ({...$community, settings: originalSettings}));
+			}
 			return result;
 		},
 		create_membership: async ({invoke}) => {

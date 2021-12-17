@@ -9,6 +9,7 @@ import {
 	RandomVocabContext,
 } from '$lib/vocab/random';
 import {randomPersonaParams, randomCommunityParams, randomSpaceParams} from '$lib/vocab/random';
+import {randomHue} from '$lib/ui/color';
 
 // TODO consider the pattern below where every `create` event creates all dependencies from scratch.
 // We may want to instead test things for both new and existing objects.
@@ -37,6 +38,11 @@ export const randomEventParams = async (
 		case 'create_community': {
 			if (!persona) persona = await random.persona(account);
 			return randomCommunityParams(persona.persona_id);
+		}
+		case 'update_community_settings': {
+			if (!persona) persona = await random.persona(account);
+			if (!community) community = await random.community(persona);
+			return {community_id: community.community_id, settings: {hue: randomHue()}};
 		}
 		case 'read_community': {
 			if (!community) {
