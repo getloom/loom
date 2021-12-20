@@ -46,7 +46,7 @@ export const seed = async (db: Database): Promise<void> => {
 			log.trace('created persona', persona);
 			personas.push(persona);
 			const spaces = unwrap(await db.repos.space.filterByCommunity(community.community_id));
-			await createDefaultFiles(db, spaces, [persona]);
+			await createDefaultEntities(db, spaces, [persona]);
 		}
 	}
 
@@ -75,12 +75,12 @@ export const seed = async (db: Database): Promise<void> => {
 				community_id: community.community_id,
 			});
 		}
-		await createDefaultFiles(db, community.spaces, personas);
+		await createDefaultEntities(db, community.spaces, personas);
 	}
 };
 
-const createDefaultFiles = async (db: Database, spaces: Space[], personas: Persona[]) => {
-	const filesContents: {[key: string]: string[]} = {
+const createDefaultEntities = async (db: Database, spaces: Space[], personas: Persona[]) => {
+	const entitiesContents: {[key: string]: string[]} = {
 		Room: ['Those who know do not speak.', 'Those who speak do not know.'],
 		Board: ["All the world's a stage.", 'And all the men and women merely players.'],
 		Forum: [
@@ -103,15 +103,15 @@ const createDefaultFiles = async (db: Database, spaces: Space[], personas: Perso
 
 	for (const space of spaces) {
 		const spaceContent = JSON.parse(space.content);
-		if (!(spaceContent.type in filesContents)) {
+		if (!(spaceContent.type in entitiesContents)) {
 			continue;
 		}
-		const fileContents = filesContents[spaceContent.type];
-		for (const fileContent of fileContents) {
-			await db.repos.file.create({
+		const entityContents = entitiesContents[spaceContent.type];
+		for (const entityContent of entityContents) {
+			await db.repos.entity.create({
 				actor_id: nextPersona().persona_id,
 				space_id: space.space_id,
-				content: fileContent,
+				content: entityContent,
 			});
 		}
 	}

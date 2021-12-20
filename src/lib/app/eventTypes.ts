@@ -8,7 +8,7 @@ import type {Community} from '$lib/vocab/community/community';
 import type {Persona} from '$lib/vocab/persona/persona';
 import type {Membership} from '$lib/vocab/membership/membership';
 import type {Space} from '$lib/vocab/space/space';
-import type {File} from '$lib/vocab/file/file';
+import type {Entity} from '$lib/vocab/entity/entity';
 import type {DispatchContext} from '$lib/app/dispatch';
 
 export interface EventParamsByName {
@@ -25,10 +25,10 @@ export interface EventParamsByName {
 	ReadSpace: ReadSpaceParams;
 	ReadSpaces: ReadSpacesParams;
 	DeleteSpace: DeleteSpaceParams;
-	CreateFile: CreateFileParams;
-	ReadFiles: ReadFilesParams;
-	QueryFiles: QueryFilesParams;
-	ping: PingParams;
+	CreateEntity: CreateEntityParams;
+	ReadEntities: ReadEntitiesParams;
+	QueryEntities: QueryEntitiesParams;
+	Ping: PingParams;
 	ToggleMainNav: ToggleMainNavParams;
 	ToggleSecondaryNav: ToggleSecondaryNavParams;
 	SetMobile: SetMobileParams;
@@ -50,9 +50,9 @@ export interface EventResponseByName {
 	ReadSpace: ReadSpaceResponse;
 	ReadSpaces: ReadSpacesResponse;
 	DeleteSpace: DeleteSpaceResponse;
-	CreateFile: CreateFileResponse;
-	ReadFiles: ReadFilesResponse;
-	ping: PingResponse;
+	CreateEntity: CreateEntityResponse;
+	ReadEntities: ReadEntitiesResponse;
+	Ping: PingResponse;
 }
 
 export interface LogInParams {
@@ -162,25 +162,25 @@ export interface DeleteSpaceParams {
 export type DeleteSpaceResponse = null;
 export type DeleteSpaceResponseResult = ApiResult<DeleteSpaceResponse>;
 
-export interface CreateFileParams {
+export interface CreateEntityParams {
 	actor_id: number;
 	space_id: number;
 	content: string;
 }
-export interface CreateFileResponse {
-	file: File;
+export interface CreateEntityResponse {
+	entity: Entity;
 }
-export type CreateFileResponseResult = ApiResult<CreateFileResponse>;
+export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;
 
-export interface ReadFilesParams {
+export interface ReadEntitiesParams {
 	space_id: number;
 }
-export interface ReadFilesResponse {
-	files: File[];
+export interface ReadEntitiesResponse {
+	entities: Entity[];
 }
-export type ReadFilesResponseResult = ApiResult<ReadFilesResponse>;
+export type ReadEntitiesResponseResult = ApiResult<ReadEntitiesResponse>;
 
-export interface QueryFilesParams {
+export interface QueryEntitiesParams {
 	space_id: number;
 }
 
@@ -236,10 +236,10 @@ export interface Dispatch {
 	(eventName: 'ReadSpace', params: ReadSpaceParams): Promise<ReadSpaceResponseResult>;
 	(eventName: 'ReadSpaces', params: ReadSpacesParams): Promise<ReadSpacesResponseResult>;
 	(eventName: 'DeleteSpace', params: DeleteSpaceParams): Promise<DeleteSpaceResponseResult>;
-	(eventName: 'CreateFile', params: CreateFileParams): Promise<CreateFileResponseResult>;
-	(eventName: 'ReadFiles', params: ReadFilesParams): Promise<ReadFilesResponseResult>;
-	(eventName: 'QueryFiles', params: QueryFilesParams): Readable<Readable<File>[]>;
-	(eventName: 'ping', params: PingParams): Promise<ApiResult<null>>;
+	(eventName: 'CreateEntity', params: CreateEntityParams): Promise<CreateEntityResponseResult>;
+	(eventName: 'ReadEntities', params: ReadEntitiesParams): Promise<ReadEntitiesResponseResult>;
+	(eventName: 'QueryEntities', params: QueryEntitiesParams): Readable<Readable<Entity>[]>;
+	(eventName: 'Ping', params: PingParams): Promise<ApiResult<null>>;
 	(eventName: 'ToggleMainNav', params: ToggleMainNavParams): void;
 	(eventName: 'ToggleSecondaryNav', params: ToggleSecondaryNavParams): void;
 	(eventName: 'SetMobile', params: SetMobileParams): void;
@@ -288,14 +288,14 @@ export interface UiHandlers {
 	DeleteSpace: (
 		ctx: DispatchContext<DeleteSpaceParams, DeleteSpaceResponseResult>,
 	) => Promise<DeleteSpaceResponseResult>;
-	CreateFile: (
-		ctx: DispatchContext<CreateFileParams, CreateFileResponseResult>,
-	) => Promise<CreateFileResponseResult>;
-	ReadFiles: (
-		ctx: DispatchContext<ReadFilesParams, ReadFilesResponseResult>,
-	) => Promise<ReadFilesResponseResult>;
-	QueryFiles: (ctx: DispatchContext<QueryFilesParams, void>) => Readable<Readable<File>[]>;
-	ping: (ctx: DispatchContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
+	CreateEntity: (
+		ctx: DispatchContext<CreateEntityParams, CreateEntityResponseResult>,
+	) => Promise<CreateEntityResponseResult>;
+	ReadEntities: (
+		ctx: DispatchContext<ReadEntitiesParams, ReadEntitiesResponseResult>,
+	) => Promise<ReadEntitiesResponseResult>;
+	QueryEntities: (ctx: DispatchContext<QueryEntitiesParams, void>) => Readable<Readable<Entity>[]>;
+	Ping: (ctx: DispatchContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
 	ToggleMainNav: (ctx: DispatchContext<ToggleMainNavParams, void>) => void;
 	ToggleSecondaryNav: (ctx: DispatchContext<ToggleSecondaryNavParams, void>) => void;
 	SetMobile: (ctx: DispatchContext<SetMobileParams, void>) => void;
