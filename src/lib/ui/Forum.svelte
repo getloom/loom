@@ -9,11 +9,7 @@
 	import ForumItems from '$lib/ui/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
 
-	const {
-		dispatch,
-		ui: {selectedPersonaId},
-		socket,
-	} = getApp();
+	const {dispatch, socket} = getApp();
 
 	export let persona: Readable<Persona>;
 	export let community: Readable<Community>;
@@ -33,7 +29,7 @@
 		await dispatch('CreateEntity', {
 			space_id: $space.space_id,
 			content,
-			actor_id: $selectedPersonaId!, // TODO generic erorr check for no selected persona?
+			actor_id: $persona.persona_id,
 		});
 		text = '';
 	};
