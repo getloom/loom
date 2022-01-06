@@ -3,7 +3,6 @@
 	import type {Writable} from 'svelte/store';
 
 	import AccountForm from '$lib/ui/AccountForm.svelte';
-	import SocketConnection from '$lib/ui/SocketConnection.svelte';
 	import {VITE_GIT_HASH} from '$lib/config';
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {ContextmenuStore} from '$lib/ui/contextmenu/contextmenu';
@@ -51,16 +50,6 @@
 			<section class="markup panel-outset">
 				<AccountForm guest={$session.guest} />
 			</section>
-			{#if $devmode}
-				<section>
-					<ul>
-						<li><a href="/docs">/docs</a></li>
-					</ul>
-				</section>
-				<section>
-					<SocketConnection />
-				</section>
-			{/if}
 			<!-- TODO refactor -->
 		{:else if entity.startsWith('persona:')}
 			<section class="markup panel-outset">

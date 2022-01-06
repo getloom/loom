@@ -20,8 +20,7 @@
 
 	let text = '';
 
-	// TODO needs refactoring
-	$: shouldLoadEntities = browser && $socket.connected;
+	$: shouldLoadEntities = browser && $socket.open;
 	$: entities = shouldLoadEntities ? dispatch('QueryEntities', {space_id: $space.space_id}) : null;
 
 	const createEntity = async () => {
