@@ -9,7 +9,7 @@
 	import {getApp} from '$lib/ui/app';
 
 	const {
-		ui: {components},
+		ui: {components, viewBySpace},
 	} = getApp();
 
 	export let persona: Readable<Persona>;
@@ -28,7 +28,7 @@
 		}
 	};
 
-	$: viewData = toViewData($space);
+	$: viewData = $viewBySpace.value.get(space) || toViewData($space);
 	$: component = components[viewData.type];
 </script>
 
