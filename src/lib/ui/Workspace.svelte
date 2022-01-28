@@ -68,7 +68,7 @@
 	.marquee {
 		position: relative;
 		height: 100%;
-		width: var(--column_width_min);
+		width: var(--column_width_sm);
 		overflow: auto;
 		display: flex;
 		flex-direction: column;
@@ -80,10 +80,7 @@
 		z-index: 3;
 		display: none;
 		position: fixed;
-		width: 100%;
-		height: 100%;
-		left: 0;
-		top: 0;
+		inset: 0;
 		/* TODO from felt */
 		background-color: rgba(0, 0, 0, 0.4);
 	}
