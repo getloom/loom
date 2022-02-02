@@ -141,7 +141,7 @@ export interface CreateSpaceParams {
 	name: string;
 	url: string;
 	media_type: string;
-	content: string;
+	view: ViewData;
 }
 export interface CreateSpaceResponse {
 	space: Space;
