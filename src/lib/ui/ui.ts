@@ -332,59 +332,18 @@ export const toUi = (
 					  ),
 			);
 		},
-		Ping: async ({invoke}) => invoke(),
-		// TODO convert to a service (and use `invoke` instead of `fetch`)
-		LogIn: async ({params}) => {
-			console.log('[LogIn] logging in as', params.accountName); // TODO logging
-			try {
-				const response = await fetch('/api/v1/login', {
-					method: 'POST',
-					headers: {'content-type': 'application/json'},
-					body: JSON.stringify(params),
-				});
-				const responseData = await response.json();
-				if (response.ok) {
-					console.log('[LogIn] responseData', responseData); // TODO logging
-					session.set(responseData.session);
-					return {ok: true, status: response.status, value: responseData}; // TODO doesn't this have other status codes?
-				} else {
-					console.error('[LogIn] response not ok', responseData, response); // TODO logging
-					return {ok: false, status: response.status, message: responseData.message};
-				}
-			} catch (err) {
-				console.error('[LogIn] error', err); // TODO logging
-				return {
-					ok: false,
-					status: 500,
-					message: 'unknown error',
-				};
-			}
+		Ping: ({invoke}) => invoke(),
+		LoginAccount: async ({invoke}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
+			session.set(result.value.session);
+			return result;
 		},
-		// TODO convert to a service (and use `invoke` instead of `fetch`)
-		LogOut: async () => {
-			try {
-				console.log('[LogOut] logging out'); // TODO logging
-				const response = await fetch('/api/v1/logout', {
-					method: 'POST',
-					headers: {'content-type': 'application/json'},
-				});
-				const responseData = await response.json();
-				console.log('[LogOut] response', responseData); // TODO logging
-				if (response.ok) {
-					session.set({guest: true});
-					return {ok: true, status: response.status, value: responseData};
-				} else {
-					console.error('[LogOut] response not ok', response); // TODO logging
-					return {ok: false, status: response.status, message: responseData.message};
-				}
-			} catch (err) {
-				console.error('[LogOut] err', err); // TODO logging
-				return {
-					ok: false,
-					status: 500,
-					message: 'unknown error',
-				};
-			}
+		LogoutAccount: async ({invoke}) => {
+			const result = await invoke();
+			if (!result.ok) return result;
+			session.set({guest: true});
+			return result;
 		},
 		CreatePersona: async ({invoke, dispatch}) => {
 			const result = await invoke();
