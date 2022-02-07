@@ -45,7 +45,7 @@ export interface Ui extends Partial<UiHandlers> {
 	memberships: Readable<Readable<Membership>[]>;
 	personaById: Map<number, Readable<Persona>>;
 	communityById: Map<number, Readable<Community>>;
-	spaceById: Readable<Map<number, Readable<Space>>>;
+	spaceById: Map<number, Readable<Space>>;
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByCommunityId: Readable<Map<number, Readable<Space>[]>>;
 	personasByCommunityId: Readable<Map<number, Readable<Persona>[]>>;
@@ -88,11 +88,8 @@ export const toUi = (
 	const memberships = writable<Writable<Membership>[]>([]);
 	const personaById: Map<number, Writable<Persona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
+	const spaceById: Map<number, Writable<Space>> = new Map();
 	// TODO do these maps more efficiently
-	const spaceById: Readable<Map<number, Writable<Space>>> = derived(
-		spaces,
-		($spaces) => new Map($spaces.map((space) => [get(space).space_id, space])),
-	);
 	const spacesByCommunityId: Readable<Map<number, Readable<Space>[]>> = derived(
 		[communities, spaces],
 		([$communities, $spaces]) => {
@@ -196,9 +193,7 @@ export const toUi = (
 		[communitySelection, spaceIdSelectionByCommunityId],
 		([$communitySelection, $spaceIdSelectionByCommunityId]) =>
 			($communitySelection &&
-				get(spaceById).get(
-					$spaceIdSelectionByCommunityId[get($communitySelection)!.community_id]!,
-				)) ||
+				spaceById.get($spaceIdSelectionByCommunityId[get($communitySelection)!.community_id]!)) ||
 			null,
 	);
 	// TODO this does not have an outer `Writable` -- do we want that much reactivity?
@@ -223,15 +218,16 @@ export const toUi = (
 		// We may get circular derived dependencies that put things in a bad state if either one is
 		// updated first, in which case we may need something like deferred store transaction updates.
 
-		const $spaceById = get(spaceById);
 		let $spacesToAdd: Space[] | null = null;
 		for (const $space of $communitySpaces) {
-			if (!$spaceById.has($space.space_id)) {
+			if (!spaceById.has($space.space_id)) {
 				($spacesToAdd || ($spacesToAdd = [])).push($space);
 			}
 		}
 		if ($spacesToAdd) {
-			spaces.update(($spaces) => $spaces.concat($spacesToAdd!.map((s) => writable(s))));
+			const spacesToAdd = $spacesToAdd.map((s) => writable(s));
+			spacesToAdd.forEach((s, i) => spaceById.set($spacesToAdd![i].space_id, s));
+			spaces.update(($spaces) => $spaces.concat(spacesToAdd));
 		}
 		spaceIdSelectionByCommunityId.update(($v) => ({
 			...$v,
@@ -292,22 +288,27 @@ export const toUi = (
 			if (browser) console.log('[ui.setSession]', $session);
 			account.set($session.guest ? null : $session.account);
 
-			const $personasArray = $session.guest ? [] : toInitialPersonas($session);
-			const $personas = $personasArray.map((p) => writable(p));
+			const $personaArray = $session.guest ? [] : toInitialPersonas($session);
+			const $personas = $personaArray.map((p) => writable(p));
 			personaById.clear();
-			$personas.forEach((p, i) => personaById.set($personasArray[i].persona_id, p));
+			$personas.forEach((p, i) => personaById.set($personaArray[i].persona_id, p));
 			personas.set($personas);
 
 			const $sessionPersonas = $session.guest ? [] : $session.personas;
 			sessionPersonas.set($sessionPersonas.map((p) => personaById.get(p.persona_id)!));
 
-			const $communitiesArray = $session.guest ? [] : $session.communities;
-			const $communities = $communitiesArray.map((p) => writable(p));
+			const $communityArray = $session.guest ? [] : $session.communities;
+			const $communities = $communityArray.map((p) => writable(p));
 			communityById.clear();
-			$communities.forEach((c, i) => communityById.set($communitiesArray[i].community_id, c));
+			$communities.forEach((c, i) => communityById.set($communityArray[i].community_id, c));
 			communities.set($communities);
 
-			spaces.set($session.guest ? [] : $session.spaces.map((s) => writable(s)));
+			const $spaceArray = $session.guest ? [] : $session.spaces;
+			const $spaces = $spaceArray.map((s) => writable(s));
+			spaceById.clear();
+			$spaces.forEach((s, i) => spaceById.set($spaceArray[i].space_id, s));
+			spaces.set($spaces);
+
 			memberships.set($session.guest ? [] : $session.memberships.map((s) => writable(s)));
 
 			// TODO fix this and the 2 below to use the URL to initialize the correct persona+community+space
@@ -430,7 +431,9 @@ export const toUi = (
 			if (!result.ok) return result;
 			const {space: $space} = result.value;
 			console.log('[ui.CreateSpace]', $space);
-			spaces.update(($spaces) => $spaces.concat(writable($space)));
+			const space = writable($space);
+			spaceById.set($space.space_id, space);
+			spaces.update(($spaces) => $spaces.concat(space));
 			return result;
 		},
 		DeleteSpace: async ({params, invoke}) => {
@@ -453,6 +456,7 @@ export const toUi = (
 				}
 			});
 
+			spaceById.delete(space_id);
 			spaces.update(($spaces) => $spaces.filter((space) => get(space).space_id !== space_id));
 
 			return result;
