@@ -65,6 +65,7 @@ export interface Ui extends Partial<UiHandlers> {
 	spaceIdSelectionByCommunityId: Readable<{[key: number]: number | null}>;
 	spaceSelection: Readable<Readable<Space> | null>;
 	mobile: Readable<boolean>;
+	layout: Writable<{width: number; height: number}>; // TODO maybe make `Readable` and update with an event? `resizeLayout`?
 	contextmenu: ContextmenuStore;
 	dialogs: Writable<DialogData[]>;
 	viewBySpace: Mutable<WeakMap<Readable<Space>, ViewData>>; // client overrides for the views set by the community
@@ -127,7 +128,8 @@ export const toUi = (
 	);
 
 	const mobile = writable(initialMobile);
-	const contextmenu = createContextmenuStore();
+	const layout = writable({width: 0, height: 0});
+	const contextmenu = createContextmenuStore(layout);
 	const dialogs = writable<DialogData[]>([]);
 	const viewBySpace = mutable(new WeakMap());
 
@@ -259,6 +261,7 @@ export const toUi = (
 		communitiesBySessionPersona,
 		// view state
 		mobile,
+		layout,
 		expandMainNav,
 		expandMarquee,
 		contextmenu,

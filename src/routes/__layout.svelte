@@ -75,6 +75,7 @@
 
 	const {
 		mobile,
+		layout,
 		contextmenu,
 		dialogs,
 		account,
@@ -161,6 +162,10 @@
 			socket.connect(WEBSOCKET_URL);
 		}
 	}
+
+	let clientWidth: number;
+	let clientHeight: number;
+	$: $layout = {width: clientWidth, height: clientHeight};
 </script>
 
 <svelte:body
@@ -173,7 +178,7 @@
 	<link rel="shortcut icon" href="/favicon.png" />
 </svelte:head>
 
-<div class="layout" class:mobile={$mobile}>
+<div class="layout" class:mobile={$mobile} bind:clientHeight bind:clientWidth>
 	{#if !guest && !onboarding}
 		<Luggage />
 		<MainNav />
