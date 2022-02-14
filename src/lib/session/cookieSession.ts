@@ -1,8 +1,7 @@
 import type {IncomingMessage} from 'http';
-import cookieSession from 'cookie-session';
-import type {
-	CookieSessionRequest as BaseCookieSessionRequest,
-	CookieSessionObject as BaseCookieSessionObject,
+import cookieSession, {
+	type CookieSessionRequest as BaseCookieSessionRequest,
+	type CookieSessionObject as BaseCookieSessionObject,
 } from 'cookie-session';
 
 import {fromEnv} from '$lib/server/env';

@@ -9,6 +9,8 @@ import {toRandomVocabContext} from '$lib/vocab/random';
 import {randomEventParams} from '$lib/server/random';
 import {SessionApiMock} from '$lib/server/SessionApiMock';
 
+/* eslint-disable no-await-in-loop */
+
 /* test__services */
 const test__services = suite<TestDbContext>('services');
 
@@ -21,11 +23,11 @@ test__services('perform services', async ({db}) => {
 	for (const service of services.values()) {
 		const account = await random.account();
 		const params = await randomEventParams(service.event, random, {account});
-		if (!validateSchema(service.event.params!)(params)) {
+		if (!validateSchema(service.event.params)(params)) {
 			throw new Error(
 				`Failed to validate random params for service ${
 					service.event.name
-				}: ${toValidationErrorMessage(validateSchema(service.event.params!).errors![0])}`,
+				}: ${toValidationErrorMessage(validateSchema(service.event.params).errors![0])}`,
 			);
 		}
 		const result = await service.perform({
@@ -34,11 +36,11 @@ test__services('perform services', async ({db}) => {
 			account_id: service.event.authenticate === false ? (null as any) : account.account_id,
 			session: new SessionApiMock(),
 		});
-		if (!result.ok || !validateSchema(service.event.response!)(result.value)) {
+		if (!result.ok || !validateSchema(service.event.response)(result.value)) {
 			console.error(red(`failed to validate service response: ${service.event.name}`), result);
 			throw new Error(
 				`Failed to validate response for service ${service.event.name}: ${toValidationErrorMessage(
-					validateSchema(service.event.response!).errors![0],
+					validateSchema(service.event.response).errors![0],
 				)}`,
 			);
 		}

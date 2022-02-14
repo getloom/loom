@@ -1,10 +1,10 @@
-import {type ArgsSchema} from '@feltcoop/gro/dist/task/task.js';
+import {type ArgsSchema} from '@feltcoop/gro';
 
 export const DbCreateTaskArgsSchema: ArgsSchema = {
 	$id: '/schemas/DbCreateTaskArgs.json',
 	type: 'object',
 	properties: {
-		seed: {type: 'boolean', default: true},
+		seed: {type: 'boolean', default: true, description: ''},
 		'no-seed': {
 			type: 'boolean',
 			default: false,

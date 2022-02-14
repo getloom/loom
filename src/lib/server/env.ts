@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import {copyFileSync, existsSync} from 'fs';
+import {copyFileSync, existsSync} from 'fs'; // eslint-disable-line @typescript-eslint/no-restricted-imports
 
 // TODO does this stuff belong in `src/server/env.ts`?
 // TODO how to configure this stuff in user projects? felt/gro config?
@@ -9,7 +9,7 @@ export const ENV_DEV = '.env.development';
 
 const dev = import.meta?.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO support in Gro and remove second half
 
-const envs: {file: string; defaultFile: string}[] = [
+const envs: Array<{file: string; defaultFile: string}> = [
 	{file: '.env', defaultFile: 'src/infra/.env.default'},
 	dev
 		? {file: ENV_DEV, defaultFile: `src/infra/${ENV_DEV}.default`}
@@ -50,12 +50,11 @@ const loadEnvs = () => {
 
 // Adds or updates an env var `value` for `key`.
 export const updateEnv = (contents: string, key: string, value: string): string => {
-	const matcher = new RegExp(`^${key}=(.*)$`, 'm');
+	const matcher = new RegExp(`^${key}=(.*)$`, 'mu');
 	const matched = contents.match(matcher);
 	if (matched) {
 		if (matched[1] === value) return contents;
 		return contents.replace(matcher, `${key}=${value}`);
-	} else {
-		return contents + (contents.endsWith('\n') ? '' : '\n') + `${key}=${value}`;
 	}
+	return contents + (contents.endsWith('\n') ? '' : '\n') + `${key}=${value}`;
 };

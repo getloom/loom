@@ -5,12 +5,11 @@ export const jsonSchemaToTypescript = (
 	schema: SchemaObject | null,
 	name: string,
 	options?: Partial<Options> | undefined,
-) => {
+): string | Promise<string> => {
 	if (schema && typeof schema === 'object') {
 		return compile(schema, name, {bannerComment: '', format: false, ...options});
-	} else {
-		return `export type ${name} = void;`;
 	}
+	return `export type ${name} = void;`;
 };
 
 export type JsonSchemaToTypeScriptOptions = Options;

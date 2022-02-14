@@ -18,7 +18,7 @@ import type {ViewData} from '$lib/vocab/view/view';
 import type {Entity} from '$lib/vocab/entity/entity';
 
 // TODO automate these from schemas, also use seeded rng
-export const randomString = () => Math.random().toString().slice(2);
+export const randomString = (): string => Math.random().toString().slice(2);
 export const randomAccountName = randomString;
 export const randomPassword = randomString;
 export const randomPersonaName = randomString;
@@ -88,6 +88,8 @@ export interface RandomVocabContext {
 		space?: Space,
 	) => Promise<Entity>;
 }
+
+/* eslint-disable no-param-reassign */
 
 // TODO generate from schema
 export const toRandomVocabContext = (db: Database): RandomVocabContext => {

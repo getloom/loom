@@ -4,7 +4,7 @@ import {last} from '@feltcoop/felt/util/array.js';
 import {getContext, onDestroy, setContext, type SvelteComponent} from 'svelte';
 
 // Items with `undefined` props are ignored.
-export type ContextmenuItems = [typeof SvelteComponent, object | null | undefined][];
+export type ContextmenuItems = Array<[typeof SvelteComponent, object | null | undefined]>;
 
 export type ItemState = SubmenuState | EntryState;
 export interface EntryState {
@@ -38,18 +38,18 @@ export interface Contextmenu {
 export interface ContextmenuStore extends Readable<Contextmenu> {
 	layout: Readable<{width: number; height: number}>;
 	action: typeof contextmenuAction;
-	open(items: ContextmenuItems, x: number, y: number): void;
-	close(): void;
-	activateSelected(): void; // removes one
-	selectItem(item: ItemState): void;
-	collapseSelected(): void; // removes one
-	expandSelected(): void; // opens the selected submenu
-	selectNext(): void; // advances to the next of the latest
-	selectPrevious(): void; // removes one
-	selectFirst(): void; // advances to the next of the latest
-	selectLast(): void; // removes one
-	addEntry(action: ContextmenuAction): EntryState;
-	addSubmenu(): SubmenuState;
+	open: (items: ContextmenuItems, x: number, y: number) => void;
+	close: () => void;
+	activateSelected: () => void; // removes one
+	selectItem: (item: ItemState) => void;
+	collapseSelected: () => void; // removes one
+	expandSelected: () => void; // opens the selected submenu
+	selectNext: () => void; // advances to the next of the latest
+	selectPrevious: () => void; // removes one
+	selectFirst: () => void; // advances to the next of the latest
+	selectLast: () => void; // removes one
+	addEntry: (action: ContextmenuAction) => EntryState;
+	addSubmenu: () => SubmenuState;
 	// These two properties are mutated internally.
 	// If you need reactivity, use `$contextmenu` in a reactive statement to react to all changes, and
 	// then access the mutable non-reactive  `contextmenu.rootMenu` and `contextmenu.selections`.
@@ -139,7 +139,7 @@ export const createContextmenuStore = (
 		selectFirst: () => store.selectItem((last(selections)?.menu || rootMenu).items[0]),
 		selectLast: () => store.selectItem(last((last(selections)?.menu || rootMenu).items)!),
 		addEntry: (action) => {
-			const menu = (getContext(CONTEXTMENU_STATE_KEY) as SubmenuState | undefined) || rootMenu;
+			const menu = getContext<SubmenuState | undefined>(CONTEXTMENU_STATE_KEY) || rootMenu;
 			const entry: EntryState = {isMenu: false, menu, selected: false, action};
 			menu.items.push(entry);
 			onDestroy(() => {
@@ -148,7 +148,7 @@ export const createContextmenuStore = (
 			return entry;
 		},
 		addSubmenu: () => {
-			const menu = (getContext(CONTEXTMENU_STATE_KEY) as SubmenuState | undefined) || rootMenu;
+			const menu = getContext<SubmenuState | undefined>(CONTEXTMENU_STATE_KEY) || rootMenu;
 			const submenu: SubmenuState = {isMenu: true, menu, selected: false, items: []};
 			menu.items.push(submenu);
 			setContext(CONTEXTMENU_STATE_KEY, submenu);
@@ -193,7 +193,7 @@ export const onContextmenu = (
 	contextmenu: ContextmenuStore,
 	excludeEl?: HTMLElement,
 	LinkContextmenu?: typeof SvelteComponent,
-): void | false => {
+): undefined | false => {
 	if (e.shiftKey) return;
 	e.stopPropagation();
 	e.preventDefault();
@@ -210,9 +210,9 @@ const queryContextmenuItems = (
 	LinkContextmenu: typeof SvelteComponent | undefined,
 ): null | ContextmenuItems => {
 	let items: null | ContextmenuItems = null;
-	let el: HTMLElement | SVGElement | null = target;
+	let el: HTMLElement | SVGElement | null | undefined = target;
 	let cacheKey: string, cached: ContextmenuItems;
-	while ((el = el && el.closest(CONTEXTMENU_DOM_QUERY))) {
+	while ((el = el?.closest(CONTEXTMENU_DOM_QUERY))) {
 		if ((cacheKey = el.dataset[CONTEXTMENU_DATASET_KEY]!)) {
 			if (!items) items = [];
 			cached = contextmenuCache.get(cacheKey)!;

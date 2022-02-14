@@ -16,9 +16,7 @@
 
 	export let persona: Readable<Persona>;
 	export let community: Readable<Community>;
-	export let space: Readable<Space>;
-
-	space; // TODO we're ignoring the space, but should probably mount its `content` as markup
+	export const space: Readable<Space> = undefined as any;
 
 	$: communitySpaces = $spacesByCommunityId.get($community.community_id)!;
 
@@ -31,7 +29,7 @@
 		<!-- TODO display other meta info about the community -->
 		<ul>
 			{#each communityPersonas as persona (persona)}
-				<MemberItem {persona} {community} />
+				<MemberItem {persona} />
 			{/each}
 		</ul>
 	</section>
