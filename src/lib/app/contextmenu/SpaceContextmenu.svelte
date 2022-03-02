@@ -9,6 +9,7 @@
 	import {type Community} from '$lib/vocab/community/community';
 	import SpaceDelete from '$lib/ui/SpaceDelete.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
+	import SpaceEditor from '$lib/ui/SpaceEditor.svelte';
 
 	const {dispatch} = getApp();
 
@@ -25,6 +26,16 @@
 		</span>
 	</svelte:fragment>
 	<svelte:fragment slot="menu">
+		<ContextmenuEntry
+			action={() =>
+				dispatch('OpenDialog', {
+					Component: SpaceEditor,
+					props: {space, community},
+					dialogProps: {layout: 'page'},
+				})}
+		>
+			<span class="title"> Edit Space </span>
+		</ContextmenuEntry>
 		<ContextmenuEntry
 			action={() =>
 				dispatch('OpenDialog', {
