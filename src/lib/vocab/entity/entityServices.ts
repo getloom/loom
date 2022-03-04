@@ -24,7 +24,6 @@ export const readEntitiesService: Service<ReadEntitiesParams, ReadEntitiesRespon
 		if (findEntitiesResult.ok) {
 			return {ok: true, status: 200, value: {entities: findEntitiesResult.value}}; // TODO API types
 		}
-		console.log('[ReadEntities] error searching for entities');
 		return {ok: false, status: 500, message: 'error searching for entities'};
 	},
 };
@@ -42,7 +41,6 @@ export const createEntityService: Service<CreateEntityParams, CreateEntityRespon
 		if (insertEntitiesResult.ok) {
 			return {ok: true, status: 200, value: {entity: insertEntitiesResult.value}}; // TODO API types
 		}
-		console.log('[CreateEntity] error searching for entities');
 		return {ok: false, status: 500, message: 'failed to create entity'};
 	},
 };
@@ -56,7 +54,6 @@ export const updateEntityService: Service<UpdateEntityParams, UpdateEntityRespon
 		if (updateEntitiesResult.ok) {
 			return {ok: true, status: 200, value: {entity: updateEntitiesResult.value}}; // TODO API types
 		}
-		console.log('[UpdateEntity] error updating entity');
 		return {ok: false, status: 500, message: 'failed to update entity'};
 	},
 };
@@ -65,11 +62,8 @@ export const updateEntityService: Service<UpdateEntityParams, UpdateEntityRespon
 export const deleteEntityService: Service<DeleteEntityParams, DeleteEntityResponseResult> = {
 	event: DeleteEntity,
 	perform: async ({repos, params}) => {
-		console.log('[DeleteEntity] deleting entity with id:', params.entity_id);
 		const result = await repos.entity.deleteById(params.entity_id);
-		console.log(result);
 		if (!result.ok) {
-			console.log('[DeleteEntity] error removing entity: ', params.entity_id);
 			return {ok: false, status: 500, message: result.message};
 		}
 		return {ok: true, status: 200, value: null};
