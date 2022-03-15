@@ -20,7 +20,7 @@
     "node": ">=16.6.0"
   },
   "devDependencies": {
-    "@feltcoop/eslint-config": "^0.1.0",
+    "@feltcoop/eslint-config": "^0.1.3",
     "@feltcoop/gro": "^0.52.3",
     "@feltcoop/svelte-mutable-store": "^0.1.2",
     "@sveltejs/adapter-node": "^1.0.0-next.55",
@@ -71,14 +71,6 @@
   "eslintConfig": {
     "root": true,
     "extends": "@feltcoop",
-    "parserOptions": {
-      "project": [
-        "./tsconfig.json"
-      ],
-      "extraFileExtensions": [
-        ".svelte"
-      ]
-    },
     "rules": {
       "no-console": 1
     }
