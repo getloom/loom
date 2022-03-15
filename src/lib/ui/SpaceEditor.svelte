@@ -25,14 +25,14 @@
 		});
 </script>
 
-<div class="editor column">
+<div class="space-editor column">
 	<div class="markup">
 		<h2>Edit Space</h2>
 		<section class="row" style:font-size="var(--font_size_xl)">
 			<SpaceName {space} />
 		</section>
 		<section class="row">
-			<em class="spaced">in</em>
+			<span class="spaced">in</span>
 			<CommunityAvatar {community} />
 		</section>
 		<section>
@@ -79,7 +79,7 @@
 </div>
 
 <style>
-	.editor {
+	.space-editor {
 		display: flex;
 		flex-direction: column;
 		padding: var(--spacing_xl);
