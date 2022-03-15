@@ -11,6 +11,7 @@
 	import {getApp} from '$lib/ui/app';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import {parseView, parseViewString, serializeView} from '$lib/vocab/view/view';
+	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 
 	export let space: Readable<Space>;
 	export let community: Readable<Community>;
@@ -48,6 +49,14 @@
 			</li>
 			<li>
 				<PropertyEditor value={$space.url} field="url" update={updateSpace} />
+			</li>
+			<li>
+				<PropertyEditor
+					value={$space.icon}
+					field="icon"
+					update={updateSpace}
+					parse={parseSpaceIcon}
+				/>
 			</li>
 			<li>
 				<PropertyEditor

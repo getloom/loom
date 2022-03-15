@@ -158,6 +158,7 @@ export interface CreateSpaceParams {
 	community_id: number;
 	name: string;
 	url: string;
+	icon: string;
 	view: ViewData;
 }
 export interface CreateSpaceResponse {
@@ -185,6 +186,7 @@ export interface UpdateSpaceParams {
 	space_id: number;
 	name?: string;
 	url?: string;
+	icon?: string;
 	view?: ViewData;
 }
 export interface UpdateSpaceResponse {

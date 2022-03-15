@@ -31,6 +31,7 @@ export const randomPassword = randomString;
 export const randomPersonaName = randomString;
 export const randomCommunnityName = randomString;
 export const randomSpaceUrl = randomString;
+export const randomSpaceIcon = (): string => '🥥';
 export const randomSpaceName = randomString;
 export const randomViewData = (): ViewData => parseView('<Room />');
 export const randomEntityData = (): EntityData => ({type: 'Note', content: randomString()});
@@ -61,6 +62,7 @@ export const randomSpaceParams = (community_id: number): CreateSpaceParams => ({
 	view: randomViewData(),
 	name: randomSpaceName(),
 	url: randomSpaceUrl(),
+	icon: randomSpaceIcon(),
 });
 export const randomEntityParams = (actor_id: number, space_id: number): CreateEntityParams => ({
 	actor_id,
@@ -135,7 +137,13 @@ export class RandomVocabContext {
 		if (!community) community = await this.community(persona, account);
 		const params = randomSpaceParams(community.community_id);
 		const space = unwrap(
-			await this.db.repos.space.create(params.name, params.view, params.url, params.community_id),
+			await this.db.repos.space.create(
+				params.name,
+				params.view,
+				params.url,
+				params.icon,
+				params.community_id,
+			),
 		);
 		this.spaces.push(space);
 		return space;

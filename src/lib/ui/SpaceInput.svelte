@@ -10,6 +10,10 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
+	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
+
+	// TODO does this belong in `view`?
+	const creatableViewTemplates = viewTemplates.filter((v) => v.creatable !== false);
 
 	const {dispatch} = getApp();
 
@@ -18,10 +22,12 @@
 	export let done: (() => void) | undefined = undefined;
 
 	let name = '';
-	let selectedViewTemplate = viewTemplates[0];
+	let selectedViewTemplate = creatableViewTemplates[0];
+	$: ({icon} = selectedViewTemplate);
 
 	let pending = false;
 	let nameEl: HTMLInputElement;
+	let iconEl: HTMLInputElement;
 	let errorMessage: string | null = null;
 
 	// TODO formalize this (probably through the schema)
@@ -33,6 +39,12 @@
 			nameEl.focus();
 			return;
 		}
+		const iconResult = parseSpaceIcon(icon);
+		if (!iconResult.ok) {
+			errorMessage = iconResult.message;
+			iconEl.focus();
+			return;
+		}
 		if (pending) return;
 		pending = true;
 		errorMessage = null;
@@ -42,6 +54,7 @@
 			community_id: $community.community_id,
 			name,
 			url,
+			icon: iconResult.value,
 			view: parseView(selectedViewTemplate.template),
 		});
 		pending = false;
@@ -80,10 +93,11 @@
 			use:autofocus
 			on:keydown={onKeydown}
 		/>
+		<input placeholder="> icon" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
 		<label>
 			Select Type:
 			<select class="type-selector" bind:value={selectedViewTemplate}>
-				{#each viewTemplates as viewTemplate}
+				{#each creatableViewTemplates as viewTemplate}
 					<option value={viewTemplate}>{viewTemplate.name}</option>
 				{/each}
 			</select>
