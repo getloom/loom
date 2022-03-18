@@ -360,7 +360,7 @@ export interface Dispatch {
 	DeleteTie: (params: DeleteTieParams) => Promise<DeleteTieResponseResult>;
 }
 
-export interface UiHandlers {
+export interface Mutations {
 	LoginAccount: (
 		ctx: DispatchContext<LoginAccountParams, LoginAccountResponseResult>,
 	) => Promise<LoginAccountResponseResult>;

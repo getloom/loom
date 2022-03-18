@@ -100,7 +100,7 @@ export interface Dispatch {
 	)}
 }
 
-export interface UiHandlers {
+export interface Mutations {
   ${eventInfos.reduce(
 		(str, eventInfo) =>
 			str +
