@@ -1,6 +1,8 @@
 import type {Result} from '@feltcoop/felt';
 import {toGraphemeCount} from '@feltcoop/felt/util/string.js';
 
+import type {Space} from '$lib/vocab/space/space';
+
 export const ICON_MISSING_ERROR = 'please add an icon, any character including emoji';
 export const ICON_TOO_LONG_ERROR = 'icon must be exactly 1 character';
 
@@ -16,3 +18,5 @@ export const parseSpaceIcon = (value: string): Result<{value: string}, {message:
 	}
 	return {ok: true, value};
 };
+
+export const canDeleteSpace = (space: Space): boolean => space.url !== '/';
