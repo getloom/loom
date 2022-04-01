@@ -21,6 +21,7 @@ import type {Tie} from '$lib/vocab/tie/tie';
 import {createAccountPersonaService} from '$lib/vocab/persona/personaServices';
 import {SessionApi} from '$lib/server/SessionApi';
 import {createCommunityService} from '$lib/vocab/community/communityServices';
+import {createSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Membership} from '$lib/vocab/membership/membership';
 
 const session = new SessionApi(null);
@@ -151,14 +152,13 @@ export class RandomVocabContext {
 		if (!persona) ({persona} = await this.persona(account));
 		if (!community) ({community} = await this.community(persona, account));
 		const params = randomSpaceParams(community.community_id);
-		const space = unwrap(
-			await this.db.repos.space.create(
-				params.name,
-				params.view,
-				params.url,
-				params.icon,
-				params.community_id,
-			),
+		const {space} = unwrap(
+			await createSpaceService.perform({
+				params,
+				account_id: account.account_id,
+				repos: this.db.repos,
+				session,
+			}),
 		);
 		return {space, persona, account, community};
 	}
@@ -181,7 +181,7 @@ export class RandomVocabContext {
 		if (!space) ({space} = await this.space(persona, account, community));
 		const params = randomEntityParams(persona.persona_id, space.space_id);
 		const entity = unwrap(
-			await this.db.repos.entity.create(params.actor_id, params.space_id, params.data),
+			await this.db.repos.entity.create(params.actor_id, params.data, params.space_id),
 		);
 		return {entity, persona, account, community, space};
 	}
