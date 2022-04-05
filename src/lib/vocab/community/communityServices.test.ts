@@ -5,7 +5,10 @@ import {unwrap} from '@feltcoop/felt';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {randomCommunityParams} from '$lib/vocab/random';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
-import {deleteCommunityService, createCommunityService} from './communityServices';
+import {
+	deleteCommunityService,
+	createCommunityService,
+} from '$lib/vocab/community/communityServices';
 import {SessionApiMock} from '$lib/server/SessionApiMock';
 
 /* test_communityServices */
