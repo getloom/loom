@@ -6,7 +6,7 @@ import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {createAccountPersonaService} from '$lib/vocab/persona/personaServices';
 import {randomEventParams} from '$lib/server/random';
 import {CreateAccountPersona} from '$lib/vocab/persona/personaEvents';
-import {SessionApiMock} from '$lib/server/SessionApiMock';
+import {toServiceRequest} from '$lib/util/testHelpers';
 
 /* test__personaService */
 const test__personaService = suite<TestDbContext & TestAppContext>('personaService');
@@ -18,11 +18,7 @@ test__personaService('create a persona & test collisions', async ({db, random}) 
 	//STEP 1: get a server, account, and event context lined up
 	const account = await random.account();
 	const params = await randomEventParams(CreateAccountPersona, random);
-	const serviceRequest = {
-		repos: db.repos,
-		account_id: account.account_id,
-		session: new SessionApiMock(),
-	};
+	const serviceRequest = toServiceRequest(account.account_id, db);
 
 	params.name = params.name.toLowerCase();
 	unwrap(await createAccountPersonaService.perform({params, ...serviceRequest}));
