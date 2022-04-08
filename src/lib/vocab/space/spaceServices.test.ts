@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import * as assert from 'uvu/assert';
+import {unwrap, unwrapError} from '@feltcoop/felt';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
@@ -15,16 +15,16 @@ test__spaceServices.after(teardownDb);
 test__spaceServices('delete a space in multiple communities', async ({db, random}) => {
 	const {space, account} = await random.space();
 
-	const deleteResult = await deleteSpaceService.perform({
-		repos: db.repos,
-		params: {space_id: space.space_id},
-		account_id: account.account_id,
-		session: new SessionApiMock(),
-	});
-	assert.ok(deleteResult.ok);
+	unwrap(
+		await deleteSpaceService.perform({
+			repos: db.repos,
+			params: {space_id: space.space_id},
+			account_id: account.account_id,
+			session: new SessionApiMock(),
+		}),
+	);
 
-	const findSpaceResult = await db.repos.space.findById(space.space_id);
-	assert.ok(!findSpaceResult.ok);
+	unwrapError(await db.repos.space.findById(space.space_id));
 });
 
 test__spaceServices.run();

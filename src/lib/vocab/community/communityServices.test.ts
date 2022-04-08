@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltcoop/felt';
+import {unwrap, unwrapError} from '@feltcoop/felt';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {randomCommunityParams} from '$lib/vocab/random';
@@ -19,17 +19,17 @@ test_communityServices.after(teardownDb);
 
 test_communityServices('unable to delete personal community', async ({db, random}) => {
 	const {persona, account} = await random.persona();
-
-	const deleteCommunityResult = await deleteCommunityService.perform({
-		repos: db.repos,
-		account_id: account.account_id,
-		params: {community_id: persona.community_id},
-		session: new SessionApiMock(),
-	});
-	assert.not(deleteCommunityResult.ok);
-	assert.is(deleteCommunityResult.status, 405);
-	const errorMessage = deleteCommunityResult.ok ? 'failed' : deleteCommunityResult.message;
-	assert.is(errorMessage, 'cannot delete personal community');
+	assert.is(
+		unwrapError(
+			await deleteCommunityService.perform({
+				repos: db.repos,
+				account_id: account.account_id,
+				params: {community_id: persona.community_id},
+				session: new SessionApiMock(),
+			}),
+		).status,
+		405,
+	);
 });
 
 test_communityServices('disallow duplicate community names', async ({db, random}) => {
@@ -45,14 +45,16 @@ test_communityServices('disallow duplicate community names', async ({db, random}
 	unwrap(await createCommunityService.perform({params, ...serviceRequest}));
 
 	params.name = params.name.toLowerCase();
-	let result = await createCommunityService.perform({params, ...serviceRequest});
-	assert.ok(!result.ok);
-	assert.is(result.status, 409);
+	assert.is(
+		unwrapError(await createCommunityService.perform({params, ...serviceRequest})).status,
+		409,
+	);
 
 	params.name = params.name.toUpperCase();
-	result = await createCommunityService.perform({params, ...serviceRequest});
-	assert.ok(!result.ok);
-	assert.is(result.status, 409);
+	assert.is(
+		unwrapError(await createCommunityService.perform({params, ...serviceRequest})).status,
+		409,
+	);
 });
 
 test_communityServices.run();

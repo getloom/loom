@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import * as assert from 'uvu/assert';
+import {unwrap, unwrapError} from '@feltcoop/felt';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
@@ -18,35 +18,19 @@ test__personaService('create a persona & test collisions', async ({db, random}) 
 	//STEP 1: get a server, account, and event context lined up
 	const account = await random.account();
 	const params = await randomEventParams(CreateAccountPersona, random);
+	const serviceRequest = {
+		repos: db.repos,
+		account_id: account.account_id,
+		session: new SessionApiMock(),
+	};
+
 	params.name = params.name.toLowerCase();
+	unwrap(await createAccountPersonaService.perform({params, ...serviceRequest}));
 
-	let result = await createAccountPersonaService.perform({
-		repos: db.repos,
-		params,
-		account_id: account.account_id,
-		session: new SessionApiMock(),
-	});
-
-	assert.equal(result.ok, true);
-
-	result = await createAccountPersonaService.perform({
-		repos: db.repos,
-		params,
-		account_id: account.account_id,
-		session: new SessionApiMock(),
-	});
-
-	assert.equal(result.ok, false);
+	unwrapError(await createAccountPersonaService.perform({params, ...serviceRequest}));
 
 	params.name = params.name.toUpperCase();
-	result = await createAccountPersonaService.perform({
-		repos: db.repos,
-		params,
-		account_id: account.account_id,
-		session: new SessionApiMock(),
-	});
-
-	assert.equal(result.ok, false);
+	unwrapError(await createAccountPersonaService.perform({params, ...serviceRequest}));
 });
 
 test__personaService.run();
