@@ -11,7 +11,6 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {EntityData} from '$lib/vocab/entity/entityData';
-import type {ViewData} from '$lib/vocab/view/view';
 import type {DispatchContext} from '$lib/app/dispatch';
 
 /* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/array-type */
@@ -178,7 +177,7 @@ export interface CreateSpaceParams {
 	name: string;
 	url: string;
 	icon: string;
-	view: ViewData;
+	view: string;
 }
 export interface CreateSpaceResponse {
 	space: Space;
@@ -206,7 +205,7 @@ export interface UpdateSpaceParams {
 	name?: string;
 	url?: string;
 	icon?: string;
-	view?: ViewData;
+	view?: string;
 }
 export interface UpdateSpaceResponse {
 	space: Space;
@@ -328,7 +327,7 @@ export interface SelectSpaceParams {
 
 export interface ViewSpaceParams {
 	space: Readable<Space>;
-	view: ViewData | null;
+	view: string | null;
 }
 
 export interface Dispatch {
