@@ -1,3 +1,4 @@
+import {DEFAULT_PAGE_SIZE} from '$lib/server/constants';
 import type {ClientEventInfo, ServiceEventInfo} from '$lib/vocab/event/event';
 
 export const CreateEntity: ServiceEventInfo = {
@@ -110,6 +111,37 @@ export const QueryEntities: ClientEventInfo = {
 	// TODO Can/should this compose the `ReadEntities` event info?
 	// Could make the `response` available.
 	returns: 'Readable<Readable<Entity>[]>',
+};
+
+export const ReadEntitiesPaginated: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'ReadEntitiesPaginated',
+	params: {
+		$id: '/schemas/ReadEntitiesPaginatedParams.json',
+		type: 'object',
+		properties: {
+			source_id: {type: 'number'},
+			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
+			pageKey: {type: 'number'},
+		},
+		required: ['source_id'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/ReadEntitiesPaginatedResponse.json',
+		type: 'object',
+		properties: {
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie.json', tsType: 'Tie'}},
+		},
+		required: ['entities', 'ties'],
+		additionalProperties: false,
+	},
+	returns: 'Promise<ReadEntitiesPaginatedResponseResult>',
+	route: {
+		path: '/api/v1/spaces/:space_id/entities/paginated',
+		method: 'GET',
+	},
 };
 
 export const EraseEntity: ServiceEventInfo = {
