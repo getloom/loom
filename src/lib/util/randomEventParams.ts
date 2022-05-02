@@ -121,9 +121,11 @@ export const randomEventParams = async (
 				data: randomEntityData(),
 			};
 		}
-		case 'EraseEntity': {
+		case 'EraseEntities': {
+			const entity1 = await random.entity(persona, account, community, space);
+			const entity2 = await random.entity(persona, account, community, space);
 			return {
-				entity_id: (await random.entity(persona, account, community, space)).entity.entity_id,
+				entity_ids: [entity1.entity.entity_id, entity2.entity.entity_id],
 			};
 		}
 		case 'DeleteEntities': {

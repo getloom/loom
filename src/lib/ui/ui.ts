@@ -51,6 +51,7 @@ export interface Ui {
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
+	entityById: Map<number, Readable<Entity>>; // TODO mutable inner store
 	entitiesBySpace: Map<number, Readable<Array<Readable<Entity>>>>; // TODO mutable inner store
 	// view state
 	expandMainNav: Readable<boolean>;
@@ -208,6 +209,7 @@ export const toUi = (
 			null,
 	);
 	// TODO this does not have an outer `Writable` -- do we want that much reactivity?
+	const entityById: Map<number, Writable<Entity>> = new Map();
 	const entitiesBySpace: Map<number, Writable<Array<Writable<Entity>>>> = new Map();
 
 	const expandMainNav = writable(!initialMobile);
@@ -228,6 +230,7 @@ export const toUi = (
 		spaceById,
 		spacesByCommunityId,
 		personasByCommunityId,
+		entityById,
 		entitiesBySpace,
 		communitiesBySessionPersona,
 		// view state
