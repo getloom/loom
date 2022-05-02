@@ -4,6 +4,7 @@ import type {SvelteComponent} from 'svelte';
 import type {Readable} from 'svelte/store';
 
 import type {ApiResult} from '$lib/server/api';
+import type {Service} from '$lib/server/service';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona, AccountPersona} from '$lib/vocab/persona/persona';
 import type {Membership} from '$lib/vocab/membership/membership';
@@ -14,6 +15,46 @@ import type {EntityData} from '$lib/vocab/entity/entityData';
 import type {DispatchContext} from '$lib/app/dispatch';
 
 /* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/array-type */
+
+export type ServiceEventName =
+	| 'LoginAccount'
+	| 'LogoutAccount'
+	| 'CreateCommunity'
+	| 'ReadCommunity'
+	| 'ReadCommunities'
+	| 'UpdateCommunitySettings'
+	| 'DeleteCommunity'
+	| 'CreateAccountPersona'
+	| 'ReadPersona'
+	| 'CreateMembership'
+	| 'DeleteMembership'
+	| 'CreateSpace'
+	| 'ReadSpace'
+	| 'ReadSpaces'
+	| 'UpdateSpace'
+	| 'DeleteSpace'
+	| 'CreateEntity'
+	| 'UpdateEntity'
+	| 'ReadEntities'
+	| 'ReadEntitiesPaginated'
+	| 'EraseEntities'
+	| 'DeleteEntities'
+	| 'CreateTie'
+	| 'ReadTies'
+	| 'DeleteTie'
+	| 'Ping';
+
+export type ClientEventName =
+	| 'QueryEntities'
+	| 'ToggleMainNav'
+	| 'ToggleSecondaryNav'
+	| 'SetMobile'
+	| 'OpenDialog'
+	| 'CloseDialog'
+	| 'SelectPersona'
+	| 'SelectCommunity'
+	| 'SelectSpace'
+	| 'ViewSpace';
 
 export interface EventParamsByName {
 	LoginAccount: LoginAccountParams;
@@ -82,6 +123,38 @@ export interface EventResponseByName {
 	Ping: PingResponse;
 }
 
+export interface ServiceByName {
+	Ping: Service<PingParams, PingResponseResult>;
+	LoginAccount: Service<LoginAccountParams, LoginAccountResponseResult>;
+	LogoutAccount: Service<LogoutAccountParams, LogoutAccountResponseResult>;
+	CreateAccountPersona: Service<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>;
+	ReadPersona: Service<ReadPersonaParams, ReadPersonaResponseResult>;
+	CreateCommunity: Service<CreateCommunityParams, CreateCommunityResponseResult>;
+	CreateMembership: Service<CreateMembershipParams, CreateMembershipResponseResult>;
+	DeleteMembership: Service<DeleteMembershipParams, DeleteMembershipResponseResult>;
+	CreateSpace: Service<CreateSpaceParams, CreateSpaceResponseResult>;
+	CreateEntity: Service<CreateEntityParams, CreateEntityResponseResult>;
+	UpdateEntity: Service<UpdateEntityParams, UpdateEntityResponseResult>;
+	EraseEntities: Service<EraseEntitiesParams, EraseEntitiesResponseResult>;
+	DeleteEntities: Service<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
+	ReadCommunity: Service<ReadCommunityParams, ReadCommunityResponseResult>;
+	ReadCommunities: Service<ReadCommunitiesParams, ReadCommunitiesResponseResult>;
+	UpdateCommunitySettings: Service<
+		UpdateCommunitySettingsParams,
+		UpdateCommunitySettingsResponseResult
+	>;
+	DeleteCommunity: Service<DeleteCommunityParams, DeleteCommunityResponseResult>;
+	ReadSpace: Service<ReadSpaceParams, ReadSpaceResponseResult>;
+	ReadSpaces: Service<ReadSpacesParams, ReadSpacesResponseResult>;
+	ReadEntities: Service<ReadEntitiesParams, ReadEntitiesResponseResult>;
+	ReadEntitiesPaginated: Service<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>;
+	UpdateSpace: Service<UpdateSpaceParams, UpdateSpaceResponseResult>;
+	DeleteSpace: Service<DeleteSpaceParams, DeleteSpaceResponseResult>;
+	CreateTie: Service<CreateTieParams, CreateTieResponseResult>;
+	ReadTies: Service<ReadTiesParams, ReadTiesResponseResult>;
+	DeleteTie: Service<DeleteTieParams, DeleteTieResponseResult>;
+}
+
 export interface LoginAccountParams {
 	username: string;
 	password: string;
@@ -91,7 +164,7 @@ export interface LoginAccountResponse {
 }
 export type LoginAccountResponseResult = ApiResult<LoginAccountResponse>;
 
-export type LogoutAccountParams = void;
+export type LogoutAccountParams = null;
 export type LogoutAccountResponse = null;
 export type LogoutAccountResponseResult = ApiResult<LogoutAccountResponse>;
 
@@ -306,7 +379,7 @@ export interface DeleteTieParams {
 export type DeleteTieResponse = null;
 export type DeleteTieResponseResult = ApiResult<DeleteTieResponse>;
 
-export type PingParams = void;
+export type PingParams = null;
 export type PingResponse = null;
 export type PingResponseResult = ApiResult<PingResponse>;
 
@@ -348,7 +421,7 @@ export interface ViewSpaceParams {
 
 export interface Dispatch {
 	LoginAccount: (params: LoginAccountParams) => Promise<LoginAccountResponseResult>;
-	LogoutAccount: (params: LogoutAccountParams) => Promise<LogoutAccountResponseResult>;
+	LogoutAccount: () => Promise<LogoutAccountResponseResult>;
 	CreateCommunity: (params: CreateCommunityParams) => Promise<CreateCommunityResponseResult>;
 	ReadCommunity: (params: ReadCommunityParams) => Promise<ReadCommunityResponseResult>;
 	ReadCommunities: (params: ReadCommunitiesParams) => Promise<ReadCommunitiesResponseResult>;
@@ -379,7 +452,7 @@ export interface Dispatch {
 	CreateTie: (params: CreateTieParams) => Promise<CreateTieResponseResult>;
 	ReadTies: (params: ReadTiesParams) => Promise<ReadTiesResponseResult>;
 	DeleteTie: (params: DeleteTieParams) => Promise<DeleteTieResponseResult>;
-	Ping: (params: PingParams) => Promise<ApiResult<null>>;
+	Ping: () => Promise<ApiResult<null>>;
 	ToggleMainNav: (params: ToggleMainNavParams) => void;
 	ToggleSecondaryNav: (params: ToggleSecondaryNavParams) => void;
 	SetMobile: (params: SetMobileParams) => void;

@@ -8,6 +8,7 @@ import {
 	type JsonSchemaToTypeScriptOptions,
 } from '$lib/util/jsonSchemaToTypescript';
 import {schemas} from '$lib/app/schemas';
+import {services} from '$lib/server/services';
 
 const toParamsName = (name: string): string => name + 'Params';
 const toResponseName = (name: string): string => name + 'Response';
@@ -31,6 +32,7 @@ import type {SvelteComponent} from 'svelte';
 import type {Readable} from 'svelte/store';
 
 import type {ApiResult} from '$lib/server/api';
+import type {Service} from '$lib/server/service';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona, AccountPersona} from '$lib/vocab/persona/persona';
 import type {Membership} from '$lib/vocab/membership/membership';
@@ -41,6 +43,16 @@ import type {EntityData} from '$lib/vocab/entity/entityData';
 import type {DispatchContext} from '$lib/app/dispatch';
 
 /* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/array-type */
+
+export type ServiceEventName = ${eventInfos.reduce(
+		(str, eventInfo) => str + (eventInfo.type === 'ServiceEvent' ? `| '${eventInfo.name}'` : ''),
+		'',
+	)};
+
+export type ClientEventName = ${eventInfos.reduce(
+		(str, eventInfo) => str + (eventInfo.type === 'ClientEvent' ? `| '${eventInfo.name}'` : ''),
+		'',
+	)};
 
 export interface EventParamsByName {
 	${eventInfos.reduce(
@@ -63,6 +75,13 @@ ${eventInfo.name}: ${toResponseName(eventInfo.name)};
 `.trim()),
 		'',
 	)}
+}
+
+export interface ServiceByName {
+	${Array.from(services.values()).reduce((str, service) => {
+		const {name} = service.event;
+		return str + `${name}: Service<${toParamsName(name)}, ${toResponseResultName(name)}>;`.trim();
+	}, '')}
 }
 
 ${await eventInfos.reduce(
@@ -91,9 +110,9 @@ export interface Dispatch {
 	${eventInfos.reduce(
 		(str, eventInfo) =>
 			str +
-			`${eventInfo.name}: (params: ${toParamsName(eventInfo.name)}) => ${
-				eventInfo.returns
-			};`.trim(),
+			`${eventInfo.name}: (${
+				eventInfo.params?.type === 'null' ? '' : `params: ${toParamsName(eventInfo.name)}`
+			}) => ${eventInfo.returns};`.trim(),
 		'',
 	)}
 }
