@@ -195,7 +195,7 @@ export const onContextmenu = (
 	LinkContextmenu?: typeof SvelteComponent,
 ): undefined | false => {
 	if (e.shiftKey) return;
-	e.stopPropagation();
+	e.stopImmediatePropagation();
 	e.preventDefault();
 	const target = e.target as HTMLElement | SVGElement;
 	const items = queryContextmenuItems(target, LinkContextmenu);
