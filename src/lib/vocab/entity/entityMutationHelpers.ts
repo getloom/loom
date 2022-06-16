@@ -4,12 +4,15 @@ import type {WritableUi} from '$lib/ui/ui';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Dispatch} from '$lib/app/eventTypes';
 import type {Tie} from '$lib/vocab/tie/tie';
+import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import {upsertCommunityFreshnessById} from '$lib/ui/uiMutationHelper';
 
 export const updateEntity = (
-	{entityById, spaceSelection}: WritableUi,
+	ui: WritableUi,
 	dispatch: Dispatch,
 	$entity: Entity,
 ): Writable<Entity> => {
+	const {entityById, spaceSelection, spaceById} = ui;
 	const {entity_id} = $entity;
 	let entity = entityById.get(entity_id);
 	if (entity) {
@@ -17,8 +20,15 @@ export const updateEntity = (
 	} else {
 		entityById.set(entity_id, (entity = writable($entity)));
 	}
+
+	const entityData = entity.get().data as DirectoryEntityData;
+
+	if (entityData.space_id) {
+		upsertCommunityFreshnessById(ui, spaceById.get(entityData.space_id)!.get().community_id);
+	}
+
 	if (spaceSelection.get()?.get().directory_id === $entity.entity_id) {
-		//TODO having dispatch here may be a code smell; need to rethink either passing full event context or adding listeners
+		//TODO turn UpdateLastSeen into mutation helper & change event to "ClearFreshness"
 		dispatch.UpdateLastSeen({directory_id: $entity.entity_id, time: $entity.updated!.getTime()});
 	}
 	return entity;
@@ -156,4 +166,11 @@ export const evictTie = (
 			});
 		}
 	}
+};
+
+export const deleteEntity = (ui: WritableUi, entity_id: number): void => {
+	const {entityById, freshnessByDirectoryId} = ui;
+	entityById.delete(entity_id);
+	freshnessByDirectoryId.delete(entity_id);
+	evictTiesForEntity(ui, entity_id);
 };
