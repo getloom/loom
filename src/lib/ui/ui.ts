@@ -24,7 +24,7 @@ import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {LAST_SEEN_KEY} from '$lib/ui/app';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {deserialize, deserializers} from '$lib/util/deserialize';
-import {setFreshnessDerived, upsertCommunityFreshnessById} from './uiMutationHelper';
+import {setFreshnessDerived, upsertCommunityFreshnessById} from './uiMutationHelpers';
 
 if (browser) initBrowser();
 
@@ -349,7 +349,7 @@ export const toUi = (
 			const $directoriesArray = $session.guest ? [] : $session.directories;
 
 			$directoriesArray.forEach((d) => {
-				//TODO clean this up with updateEntity once dispatch/updateLastSeen is resolved
+				//TODO we had talked about replacing this with updateEntity, but it currently assumes setFreshnessDerived has already been called
 				const entity = writable(d);
 				entityById.set(d.entity_id, entity);
 				setFreshnessDerived(ui, entity);
