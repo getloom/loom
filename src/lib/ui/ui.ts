@@ -22,9 +22,10 @@ import {createContextmenuStore, type ContextmenuStore} from '$lib/ui/contextmenu
 import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {LAST_SEEN_KEY} from '$lib/ui/app';
+import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {deserialize, deserializers} from '$lib/util/deserialize';
-import {setFreshnessDerived, upsertCommunityFreshnessById} from './uiMutationHelpers';
+import {setFreshnessDerived, upsertCommunityFreshnessById} from '$lib/ui/uiMutationHelpers';
 
 if (browser) initBrowser();
 
@@ -214,7 +215,11 @@ export const toUi = (
 				: null,
 	);
 	// TODO consider making this the space store so we don't have to chase id references
-	const spaceIdSelectionByCommunityId = mutable<Map<number, number | null>>(new Map());
+	const spaceIdSelectionByCommunityId = locallyStoredMap<
+		Mutable<Map<number, number | null>>,
+		Map<number, number | null>,
+		Array<[number, number | null]>
+	>(mutable(new Map()), 'spaceIdSelectionByCommunityId');
 	const spaceSelection = derived(
 		[communitySelection, spaceIdSelectionByCommunityId],
 		([$communitySelection, $spaceIdSelectionByCommunityId]) =>
@@ -307,10 +312,7 @@ export const toUi = (
 				spaceById.set($spaceArray[i].space_id, s);
 				lastSeenByDirectoryId.set(
 					s.get().directory_id,
-					writable(
-						(browser && Number(localStorage.getItem(`${LAST_SEEN_KEY}${s.get().directory_id}`))) ||
-							Date.now(),
-					),
+					locallyStored(writable(Date.now()), LAST_SEEN_KEY + s.get().directory_id),
 				);
 			});
 
@@ -338,9 +340,12 @@ export const toUi = (
 						? null
 						: $session.communities.map(($community) => [
 								$community.community_id,
-								$session.spaces.find(
-									(s) => s.community_id === $community.community_id && isHomeSpace(s),
-								)!.space_id,
+								spaceIdSelectionByCommunityId
+									.getJson()
+									?.find((v) => v[0] === $community.community_id)?.[1] ||
+									$session.spaces.find(
+										(s) => s.community_id === $community.community_id && isHomeSpace(s),
+									)!.space_id,
 						  ]),
 				),
 			);
