@@ -21,11 +21,10 @@ import type {Membership} from '$lib/vocab/membership/membership';
 import {createContextmenuStore, type ContextmenuStore} from '$lib/ui/contextmenu/contextmenu';
 import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import {LAST_SEEN_KEY} from '$lib/ui/app';
-import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
+import {locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {deserialize, deserializers} from '$lib/util/deserialize';
-import {setFreshnessDerived, upsertCommunityFreshnessById} from '$lib/ui/uiMutationHelpers';
+import {updateEntity} from '$lib/vocab/entity/entityMutationHelpers';
 
 if (browser) initBrowser();
 
@@ -305,18 +304,15 @@ export const toUi = (
 			$communities.forEach((c, i) => communityById.set($communityArray[i].community_id, c));
 			communities.swap($communities);
 
-			const $spaceArray = $session.guest ? [] : $session.spaces;
-			const $spaces = $spaceArray.map((s) => writable(s));
-			spaceById.clear();
-			$spaces.forEach((s, i) => {
-				spaceById.set($spaceArray[i].space_id, s);
-				lastSeenByDirectoryId.set(
-					s.get().directory_id,
-					locallyStored(writable(Date.now()), LAST_SEEN_KEY + s.get().directory_id),
-				);
-			});
-
-			spaces.swap($spaces);
+			// TODO maybe do an `if` around the entire `setSession` and clear if guest,
+			// or to support guests with data in the future, duck type
+			if (!$session.guest) {
+				const $spaces = $session.spaces.map((s) => writable(s));
+				spaceById.clear();
+				$spaces.forEach((s) => spaceById.set(s.get().space_id, s));
+				spaces.swap($spaces);
+				$session.directories.forEach((d) => updateEntity(ui, d));
+			}
 
 			memberships.swap($session.guest ? [] : $session.memberships.map((s) => writable(s)));
 
@@ -349,20 +345,6 @@ export const toUi = (
 						  ]),
 				),
 			);
-
-			//TODO directories should probably live in their own store
-			const $directoriesArray = $session.guest ? [] : $session.directories;
-
-			$directoriesArray.forEach((d) => {
-				//TODO we had talked about replacing this with updateEntity, but it currently assumes setFreshnessDerived has already been called
-				const entity = writable(d);
-				entityById.set(d.entity_id, entity);
-				setFreshnessDerived(ui, entity);
-			});
-
-			$communityArray.forEach((c) => {
-				upsertCommunityFreshnessById(ui, c.community_id);
-			});
 		},
 	} as const;
 
