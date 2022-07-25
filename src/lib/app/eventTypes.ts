@@ -434,7 +434,6 @@ export interface ViewSpaceParams {
 
 export interface ClearFreshnessParams {
 	directory_id: number;
-	time?: number;
 }
 
 export interface Dispatch {
