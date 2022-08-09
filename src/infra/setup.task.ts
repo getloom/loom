@@ -23,11 +23,12 @@ export const task: Task<SetupTaskArgs> = {
 		const EMAIL_ADDRESS = fromEnv('EMAIL_ADDRESS');
 		// TODO this is hacky because of `import.meta` env handling
 		const {API_SERVER_HOST_PROD, SVELTEKIT_SERVER_HOST} = await import('../lib/config.js');
+		const NODE_VERSION = '18';
 		// TODO hacky -- see notes above
 		const {defaultPostgresOptions} = await import('../lib/db/postgres.js');
 		const PGDATABASE = defaultPostgresOptions.database;
-		// const PGUSERNAME = defaultPostgresOptions.username; // TODO setup db user+password -- see below
-		// const PGPASSWORD = defaultPostgresOptions.password; // TODO setup db user+password -- see below
+		const PGUSERNAME = defaultPostgresOptions.username;
+		const PGPASSWORD = defaultPostgresOptions.password;
 
 		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt-server.conf';
 		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt-server.conf';
@@ -83,9 +84,9 @@ export const task: Task<SetupTaskArgs> = {
 			//
 			// Install Node:
 			logSequence('Installing Node...') +
-				`fnm install 16;
-				fnm use 16;
-				fnm default 16;
+				`fnm install ${NODE_VERSION};
+				fnm use ${NODE_VERSION};
+				fnm default ${NODE_VERSION};
 				npm i -g npm@latest;`,
 			//
 			//
@@ -128,11 +129,7 @@ export const task: Task<SetupTaskArgs> = {
 			// Create the Postgres database for Felt:
 			logSequence('Creating Postgres database...') +
 				`sudo -i -u postgres psql -c "CREATE DATABASE ${PGDATABASE};";` +
-				// TODO create the custom db user (the following code does not work):
-				// `sudo -i -u postgres psql -U postgres -c "CREATE USER ${PGUSERNAME} WITH LOGIN PASSWORD '${PGPASSWORD}';";` +
-				// `PGPASSWORD=${PGPASSWORD} sudo -i -u postgres psql -U ${PGUSERNAME} -c "CREATE DATABASE ${PGDATABASE};";` +
-				//
-				//
+				`sudo -i -u postgres psql -c "ALTER USER ${PGUSERNAME} WITH PASSWORD '${PGPASSWORD}';";` +
 				// All done!
 				logSequence(`Success! Server is now setup for deployment.`),
 		];
