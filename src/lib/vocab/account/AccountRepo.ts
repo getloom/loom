@@ -34,7 +34,7 @@ export class AccountRepo extends PostgresRepo {
 	async findByName(name: string): Promise<Result<{value: Account}>> {
 		const data = await this.sql<Account[]>`
 			SELECT account_id, name, password, created, updated
-			FROM accounts WHERE name = ${name}
+			FROM accounts WHERE LOWER(name) = LOWER(${name})
 		`;
 		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
