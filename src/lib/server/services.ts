@@ -1,6 +1,6 @@
 import type {Service} from '$lib/server/service';
 import {PingService} from '$lib/server/pingService';
-import {LoginService, LogoutService} from '$lib/vocab/account/accountServices';
+import {LoginService, LogoutService} from '$lib/session/sessionServices';
 import {CreateAccountPersonaService, ReadPersonaService} from '$lib/vocab/persona/personaServices';
 import {
 	ReadCommunityService,
