@@ -8,7 +8,9 @@ import {loadFromStorage, setInStorage} from '$lib/ui/localStorage';
 
 // TODO ideally this type would work with `any` return values, not the default `void`,
 // so custom stores can have whatever impl
-type Storable<TValue> = Writable<TValue> | Mutable<TValue>;
+type Storable<T> = Writable<T> | Mutable<T>;
+type Stored<T> = T extends Storable<infer TValue> ? TValue : never;
+type Mapped<T> = T extends Map<infer TKey, infer TValue> ? Array<[TKey, TValue]> : never;
 
 /**
  * Mutates `store`, wrapping the common store change functions (set/update and mutate/swap)
@@ -26,7 +28,11 @@ type Storable<TValue> = Writable<TValue> | Mutable<TValue>;
  * @param fromJson
  * @returns
  */
-export const locallyStored = <TStore extends Storable<TValue>, TValue, TJson extends Json>(
+export const locallyStored = <
+	TJson extends Json,
+	TStore extends Storable<TValue>,
+	TValue = Stored<TStore>,
+>(
 	store: TStore,
 	key: string,
 	toJson: (v: TValue) => TJson = identity as any,
@@ -99,7 +105,11 @@ export const locallyStored = <TStore extends Storable<TValue>, TValue, TJson ext
 	return store as TStore & {getJson: () => TJson};
 };
 
-export const locallyStoredMap = <TStore extends Storable<TValue>, TValue, TJson extends Json>(
+export const locallyStoredMap = <
+	TStore extends Storable<TValue>,
+	TValue extends Map<any, any> = Stored<TStore>,
+	TJson extends Json = Mapped<TValue>,
+>(
 	store: TStore,
 	key: string,
 ): TStore & {getJson: () => TJson} =>
