@@ -9,10 +9,10 @@ export interface Options {
 }
 
 export class Database {
-	sql: PostgresSql;
-	repos: Repos;
+	readonly sql: PostgresSql;
+	readonly repos: Repos;
 
-	log = new Logger(gray('[') + blue('db') + gray(']'));
+	readonly log = new Logger(gray('[') + blue('db') + gray(']'));
 
 	constructor({sql}: Options) {
 		this.log.info('create');

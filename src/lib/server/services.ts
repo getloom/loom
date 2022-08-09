@@ -33,28 +33,35 @@ import {CreateTieService, ReadTiesService, DeleteTieService} from '$lib/vocab/ti
 export const services: Map<string, Service<any, any>> = new Map(
 	[
 		PingService,
+		// sessionServices
 		LoginService,
 		LogoutService,
+		// personaServices
 		CreateAccountPersonaService,
 		ReadPersonaService,
+		// communityServices
+		ReadCommunityService,
+		ReadCommunitiesService,
 		CreateCommunityService,
+		UpdateCommunitySettingsService,
+		DeleteCommunityService,
+		// membershipServices
 		CreateMembershipService,
 		DeleteMembershipService,
+		// spaceServices
+		ReadSpaceService,
+		ReadSpacesService,
 		CreateSpaceService,
+		UpdateSpaceService,
+		DeleteSpaceService,
+		// entityServices
+		ReadEntitiesService,
+		ReadEntitiesPaginatedService,
 		CreateEntityService,
 		UpdateEntityService,
 		EraseEntitiesService,
 		DeleteEntitiesService,
-		ReadCommunityService,
-		ReadCommunitiesService,
-		UpdateCommunitySettingsService,
-		DeleteCommunityService,
-		ReadSpaceService,
-		ReadSpacesService,
-		ReadEntitiesService,
-		ReadEntitiesPaginatedService,
-		UpdateSpaceService,
-		DeleteSpaceService,
+		// tieServices
 		CreateTieService,
 		ReadTiesService,
 		DeleteTieService,

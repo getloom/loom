@@ -13,14 +13,14 @@ import {TieRepo} from '$lib/vocab/tie/TieRepo';
  * which can be a normal connection or transaction.
  */
 export class Repos {
-	session: SessionRepo;
-	account: AccountRepo;
-	persona: PersonaRepo;
-	membership: MembershipRepo;
-	community: CommunityRepo;
-	space: SpaceRepo;
-	entity: EntityRepo;
-	tie: TieRepo;
+	readonly session: SessionRepo;
+	readonly account: AccountRepo;
+	readonly persona: PersonaRepo;
+	readonly membership: MembershipRepo;
+	readonly community: CommunityRepo;
+	readonly space: SpaceRepo;
+	readonly entity: EntityRepo;
+	readonly tie: TieRepo;
 
 	constructor(sql: PostgresSql) {
 		this.session = new SessionRepo(this, sql);

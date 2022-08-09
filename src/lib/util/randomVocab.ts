@@ -95,7 +95,7 @@ export interface RandomVocab {
 // TODO generate from schema
 // TODO replace db.repos calls w/ service calls (see persona/community creation)
 export class RandomVocabContext {
-	constructor(private db: Database) {}
+	constructor(private readonly db: Database) {}
 
 	async account(): Promise<Account> {
 		const params = randomAccountParams();

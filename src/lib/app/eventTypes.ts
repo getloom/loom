@@ -133,27 +133,27 @@ export interface ServiceByName {
 	Logout: Service<LogoutParams, LogoutResponseResult>;
 	CreateAccountPersona: Service<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>;
 	ReadPersona: Service<ReadPersonaParams, ReadPersonaResponseResult>;
-	CreateCommunity: Service<CreateCommunityParams, CreateCommunityResponseResult>;
-	CreateMembership: Service<CreateMembershipParams, CreateMembershipResponseResult>;
-	DeleteMembership: Service<DeleteMembershipParams, DeleteMembershipResponseResult>;
-	CreateSpace: Service<CreateSpaceParams, CreateSpaceResponseResult>;
-	CreateEntity: Service<CreateEntityParams, CreateEntityResponseResult>;
-	UpdateEntity: Service<UpdateEntityParams, UpdateEntityResponseResult>;
-	EraseEntities: Service<EraseEntitiesParams, EraseEntitiesResponseResult>;
-	DeleteEntities: Service<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
 	ReadCommunity: Service<ReadCommunityParams, ReadCommunityResponseResult>;
 	ReadCommunities: Service<ReadCommunitiesParams, ReadCommunitiesResponseResult>;
+	CreateCommunity: Service<CreateCommunityParams, CreateCommunityResponseResult>;
 	UpdateCommunitySettings: Service<
 		UpdateCommunitySettingsParams,
 		UpdateCommunitySettingsResponseResult
 	>;
 	DeleteCommunity: Service<DeleteCommunityParams, DeleteCommunityResponseResult>;
+	CreateMembership: Service<CreateMembershipParams, CreateMembershipResponseResult>;
+	DeleteMembership: Service<DeleteMembershipParams, DeleteMembershipResponseResult>;
 	ReadSpace: Service<ReadSpaceParams, ReadSpaceResponseResult>;
 	ReadSpaces: Service<ReadSpacesParams, ReadSpacesResponseResult>;
-	ReadEntities: Service<ReadEntitiesParams, ReadEntitiesResponseResult>;
-	ReadEntitiesPaginated: Service<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>;
+	CreateSpace: Service<CreateSpaceParams, CreateSpaceResponseResult>;
 	UpdateSpace: Service<UpdateSpaceParams, UpdateSpaceResponseResult>;
 	DeleteSpace: Service<DeleteSpaceParams, DeleteSpaceResponseResult>;
+	ReadEntities: Service<ReadEntitiesParams, ReadEntitiesResponseResult>;
+	ReadEntitiesPaginated: Service<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>;
+	CreateEntity: Service<CreateEntityParams, CreateEntityResponseResult>;
+	UpdateEntity: Service<UpdateEntityParams, UpdateEntityResponseResult>;
+	EraseEntities: Service<EraseEntitiesParams, EraseEntitiesResponseResult>;
+	DeleteEntities: Service<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
 	CreateTie: Service<CreateTieParams, CreateTieResponseResult>;
 	ReadTies: Service<ReadTiesParams, ReadTiesResponseResult>;
 	DeleteTie: Service<DeleteTieParams, DeleteTieResponseResult>;

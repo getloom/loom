@@ -36,7 +36,7 @@ export class ApiServer {
 	readonly db: Database;
 	readonly services: Map<string, Service<any, any>>;
 
-	websocketListener = toWebsocketServiceMiddleware(this);
+	readonly websocketListener = toWebsocketServiceMiddleware(this);
 
 	constructor(options: Options) {
 		this.server = options.server;
