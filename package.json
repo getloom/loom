@@ -8,6 +8,14 @@
     "email": "team@felt.social",
     "url": "https://felt.social"
   },
+  "homepage": "https://github.com/feltcoop/felt-server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/feltcoop/felt-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/feltcoop/felt-server/issues"
+  },
   "scripts": {
     "dev": "gro dev",
     "build": "gro build",
