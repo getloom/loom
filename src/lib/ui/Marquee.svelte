@@ -34,9 +34,9 @@
 	</section>
 	{#if $devmode}
 		<section>
-			<ul>
+			<menu>
 				<li><a href="/docs">/docs</a></li>
-			</ul>
+			</menu>
 		</section>
 		<section>
 			<SocketConnectionControls {socket} />
