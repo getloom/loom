@@ -82,7 +82,8 @@ export const SetSession: Mutations['SetSession'] = async ({params: {session}, ui
 							?.find((v) => v[0] === $community.community_id)?.[1] ||
 							session.spaces.find(
 								(s) => s.community_id === $community.community_id && isHomeSpace(s),
-							)!.space_id,
+							)?.space_id ||
+							null,
 				  ]),
 		),
 	);

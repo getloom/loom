@@ -16,7 +16,10 @@
 	import {toSpaceUrl} from '$lib/ui/url';
 
 	// TODO does this belong in `view`?
-	const creatableViewTemplates = viewTemplates.filter((v) => v.creatable !== false);
+	const admin = false; // TODO implement
+	const creatableViewTemplates = viewTemplates.filter(
+		(v) => v.creatable !== false && (v.admin ? admin : true),
+	);
 
 	const {
 		dispatch,

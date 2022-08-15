@@ -1,9 +1,10 @@
-import {NOT_OK, OK, type Result} from '@feltcoop/felt';
+import {NOT_OK, OK, type Assignable, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
 import {blue, gray} from 'kleur/colors';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Community} from '$lib/vocab/community/community';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 
 const log = new Logger(gray('[') + blue('CommunityRepo') + gray(']'));
 
@@ -72,5 +73,21 @@ export class CommunityRepo extends PostgresRepo {
 		`;
 		if (!data.count) return NOT_OK;
 		return OK;
+	}
+
+	// This seems safe to cache globally except for possibly tests,
+	// but they can fix it themselves.
+	static readonly hasAdminCommunity: boolean = false;
+
+	async hasAdminCommunity(): Promise<boolean> {
+		if (CommunityRepo.hasAdminCommunity) return true;
+		const [{exists}] = await this.sql`
+			SELECT EXISTS(SELECT 1 FROM communities WHERE community_id=${ADMIN_COMMUNITY_ID});
+		`;
+		if (exists) {
+			(CommunityRepo as Assignable<typeof CommunityRepo, 'hasAdminCommunity'>).hasAdminCommunity =
+				true;
+		}
+		return exists;
 	}
 }

@@ -15,7 +15,7 @@ import type {Community} from '$lib/vocab/community/community';
 import type {Result} from '@feltcoop/felt';
 import type {Space} from '$lib/vocab/space/space';
 import type {ErrorResponse} from '$lib/util/error';
-import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
+import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {DeleteEntitiesService} from '$lib/vocab/entity/entityServices';
@@ -197,11 +197,23 @@ export const createDefaultSpaces = async (
 	const spaces: Space[] = [];
 	for (const params of toDefaultSpaces(persona_id, community)) {
 		// eslint-disable-next-line no-await-in-loop
-		const result = await CreateSpaceService.perform({
-			...serviceRequest,
-			params,
-		});
+		const result = await CreateSpaceService.perform({...serviceRequest, params});
 		if (!result.ok) return {ok: false, message: 'failed to create default spaces'};
+		spaces.push(result.value.space);
+	}
+	return {ok: true, value: spaces};
+};
+
+export const createDefaultAdminSpaces = async (
+	serviceRequest: ServiceRequest<any, any>,
+	persona_id: number,
+	community: Community,
+): Promise<Result<{value: Space[]}, ErrorResponse>> => {
+	const spaces: Space[] = [];
+	for (const params of toDefaultAdminSpaces(persona_id, community)) {
+		// eslint-disable-next-line no-await-in-loop
+		const result = await CreateSpaceService.perform({...serviceRequest, params});
+		if (!result.ok) return {ok: false, message: 'failed to create default admin spaces'};
 		spaces.push(result.value.space);
 	}
 	return {ok: true, value: spaces};

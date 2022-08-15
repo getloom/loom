@@ -3,6 +3,7 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateMembership, DeleteMembership} from '$lib/vocab/membership/membershipEvents';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 import type {Repos} from '$lib/db/Repos';
 
 const log = new Logger(gray('[') + blue('membershipServices') + gray(']'));
@@ -69,6 +70,16 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 			}
 			if (communityResult.value.type === 'personal') {
 				return {ok: false, status: 405, message: 'cannot leave a personal community'};
+			}
+			if (community_id === ADMIN_COMMUNITY_ID) {
+				const adminMembershipsResult =
+					await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id);
+				if (!adminMembershipsResult.ok) {
+					return {ok: false, status: 500, message: 'failed to lookup admin community memberships'};
+				}
+				if (adminMembershipsResult.value.length === 1) {
+					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
+				}
 			}
 			if (
 				personaResult.value.type === 'community' &&

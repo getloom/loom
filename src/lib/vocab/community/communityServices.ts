@@ -10,11 +10,17 @@ import {
 	DeleteCommunity,
 } from '$lib/vocab/community/communityEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
-import {createDefaultSpaces} from '$lib/vocab/space/spaceServices';
+import {createDefaultAdminSpaces, createDefaultSpaces} from '$lib/vocab/space/spaceServices';
+import type {ServiceRequest} from '$lib/server/service';
+import {ADMIN_COMMUNITY_ID, ADMIN_COMMUNITY_NAME} from '$lib/app/admin';
+import {OK, type Result} from '@feltcoop/felt';
+import type {Community} from '$lib/vocab/community/community';
+import type {CommunityPersona} from '$lib/vocab/persona/persona';
+import type {Space} from '$lib/vocab/space/space';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
-const BLOCKLIST = new Set(['docs', 'schemas', 'admin', 'about', 'blog']);
+const BLOCKLIST = new Set(['docs', 'schemas', 'about', 'blog']);
 
 // Returns a list of community objects
 export const ReadCommunitiesService: ServiceByName['ReadCommunities'] = {
@@ -194,12 +200,12 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 					message: 'no community found',
 				};
 			}
-			if (communityResult.value.type === 'personal') {
-				return {
-					ok: false,
-					status: 405,
-					message: 'cannot delete personal community',
-				};
+			const community = communityResult.value;
+			if (community.type === 'personal') {
+				return {ok: false, status: 405, message: 'cannot delete personal community'};
+			}
+			if (community.community_id === ADMIN_COMMUNITY_ID) {
+				return {ok: false, status: 405, message: 'cannot delete admin community'};
 			}
 			const deleteResult = await repos.community.deleteById(params.community_id);
 			if (!deleteResult.ok) {
@@ -207,4 +213,52 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 			}
 			return {ok: true, status: 200, value: null};
 		}),
+};
+
+export const initAdminCommunity = async (
+	serviceRequest: ServiceRequest<any, any>,
+): Promise<
+	Result<{value?: {community: Community; persona: CommunityPersona; spaces: Space[]}}>
+> => {
+	const {repos} = serviceRequest;
+
+	if (await repos.community.hasAdminCommunity()) return OK;
+
+	// The admin community doesn't exist, so this is a freshly installed instance!
+	// We need to set up the admin community and its persona.
+	// For more see /src/docs/admin.md
+
+	// Create the community.
+	const createCommunityResult = await repos.community.create(
+		'standard',
+		ADMIN_COMMUNITY_NAME,
+		toDefaultCommunitySettings(ADMIN_COMMUNITY_NAME),
+	);
+	if (!createCommunityResult.ok) return createCommunityResult;
+	const community = createCommunityResult.value;
+
+	// Create the community persona.
+	const createCommunityPersonaResult = await repos.persona.createCommunityPersona(
+		community.name,
+		community.community_id,
+	);
+	if (!createCommunityPersonaResult.ok) return createCommunityPersonaResult;
+	const persona = createCommunityPersonaResult.value;
+
+	// Create the community persona's membership.
+	const createMembershipResult = await repos.membership.create(
+		persona.persona_id,
+		community.community_id,
+	);
+	if (!createMembershipResult.ok) return createMembershipResult;
+
+	// Create the community's default spaces.
+	const createSpacesResult = await createDefaultAdminSpaces(
+		serviceRequest,
+		persona.persona_id,
+		community,
+	);
+	if (!createSpacesResult.ok) return createSpacesResult;
+
+	return {ok: true, value: {community, persona, spaces: createSpacesResult.value}};
 };

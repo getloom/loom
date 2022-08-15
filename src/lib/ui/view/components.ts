@@ -1,6 +1,7 @@
 import type {SvelteComponent} from 'svelte';
 
 import Home from '$lib/ui/view/Home.svelte';
+import InstanceAdmin from '$lib/ui/view/InstanceAdmin.svelte';
 import Room from '$lib/ui/view/Room.svelte';
 import Board from '$lib/ui/view/Board.svelte';
 import Forum from '$lib/ui/view/Forum.svelte';
@@ -11,6 +12,7 @@ import Todo from '$lib/ui/view/Todo.svelte';
 
 export const viewComponents: Record<string, typeof SvelteComponent> = {
 	Home,
+	InstanceAdmin,
 	Room,
 	Board,
 	Forum,

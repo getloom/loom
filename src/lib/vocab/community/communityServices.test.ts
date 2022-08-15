@@ -10,6 +10,7 @@ import {
 	CreateCommunityService,
 } from '$lib/vocab/community/communityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 
 /* test_communityServices */
 const test_communityServices = suite<TestDbContext & TestAppContext>('communityRepo');
@@ -17,12 +18,25 @@ const test_communityServices = suite<TestDbContext & TestAppContext>('communityR
 test_communityServices.before(setupDb);
 test_communityServices.after(teardownDb);
 
-test_communityServices('unable to delete personal community', async ({db, random}) => {
+test_communityServices('disallow deleting personal community', async ({db, random}) => {
 	const {persona, account} = await random.persona();
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
 				params: {community_id: persona.community_id},
+				...toServiceRequestMock(account.account_id, db),
+			}),
+		).status,
+		405,
+	);
+});
+
+test_communityServices('disallow deleting admin community', async ({db, random}) => {
+	const {account} = await random.persona();
+	assert.is(
+		unwrapError(
+			await DeleteCommunityService.perform({
+				params: {community_id: ADMIN_COMMUNITY_ID},
 				...toServiceRequestMock(account.account_id, db),
 			}),
 		).status,

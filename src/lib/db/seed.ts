@@ -28,11 +28,14 @@ export const seed = async (db: Database): Promise<void> => {
 	log.trace('adding initial dataset to database');
 
 	const accountDocs = await sql<Account[]>`
-		select account_id, name, password from accounts
+		SELECT account_id FROM accounts
 	`;
 	if (accountDocs.length) {
 		return; // already seeded
 	}
+
+	const serviceRequestPartial = toServiceRequestMock(undefined as any, db);
+	const toServiceRequest = (account_id: number) => ({...serviceRequestPartial, account_id});
 
 	// example: insert literal values
 	const accountsParams: LoginParams[] = [
@@ -51,25 +54,25 @@ export const seed = async (db: Database): Promise<void> => {
 		);
 		log.trace('created account', account);
 		accounts.push(account);
+		const accountServiceRequest = toServiceRequest(account.account_id);
 		for (const personaName of personasParams[account.name]) {
 			const {persona, spaces} = unwrap(
 				await CreateAccountPersonaService.perform({
+					...accountServiceRequest,
 					params: {name: personaName},
-					...toServiceRequestMock(account.account_id, db),
 				}),
 			);
 
 			log.trace('created persona', persona);
 			personas.push(persona);
-			await createDefaultEntities(toServiceRequestMock(account.account_id, db), spaces, [persona]);
+			await createDefaultEntities(accountServiceRequest, spaces, [persona]);
 		}
 	}
 
 	const mainAccountCreator = accounts[0];
+	const mainAccountServiceRequest = toServiceRequest(mainAccountCreator.account_id);
 	const mainPersonaCreator = personas[0];
 	const otherPersonas = personas.slice(1);
-
-	const serviceRequest = toServiceRequestMock(mainAccountCreator.account_id, db);
 
 	const communitiesParams: CreateCommunityParams[] = [
 		{name: 'felt', persona_id: mainPersonaCreator.persona_id},
@@ -81,20 +84,20 @@ export const seed = async (db: Database): Promise<void> => {
 	for (const communityParams of communitiesParams) {
 		const {community, spaces} = unwrap(
 			await CreateCommunityService.perform({
+				...mainAccountServiceRequest,
 				params: {name: communityParams.name, persona_id: communityParams.persona_id},
-				...serviceRequest,
 			}),
 		);
 		communities.push(community);
 		for (const persona of otherPersonas) {
 			unwrap(
 				await CreateMembershipService.perform({
+					...mainAccountServiceRequest,
 					params: {persona_id: persona.persona_id, community_id: community.community_id},
-					...serviceRequest,
 				}),
 			);
 		}
-		await createDefaultEntities(serviceRequest, spaces, personas);
+		await createDefaultEntities(mainAccountServiceRequest, spaces, personas);
 	}
 };
 
@@ -122,12 +125,12 @@ const createDefaultEntities = async (
 		for (const entityContent of entityContents) {
 			unwrap(
 				await CreateEntityService.perform({
+					...serviceRequest,
 					params: {
 						persona_id: nextPersona().persona_id,
 						data: {type: 'Note', content: entityContent},
 						source_id: space.directory_id,
 					},
-					...serviceRequest,
 				}),
 			);
 		}
@@ -155,24 +158,24 @@ const generateTodo = async (
 ) => {
 	const list = unwrap(
 		await CreateEntityService.perform({
+			...serviceRequest,
 			params: {
 				persona_id,
 				data: {type: 'Collection', name: 'Grocery List'},
 				source_id: space.directory_id,
 			},
-			...serviceRequest,
 		}),
 	);
 	const itemsContents = ['eggs', 'milk', 'bread'];
 	for (const content of itemsContents) {
 		unwrap(
 			await CreateEntityService.perform({
+				...serviceRequest,
 				params: {
 					persona_id,
 					data: {type: 'Note', content},
 					source_id: list.entity.entity_id,
 				},
-				...serviceRequest,
 			}),
 		);
 	}
