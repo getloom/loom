@@ -8,30 +8,28 @@
 	import type {Community} from '$lib/vocab/community/community.js';
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import {viewTemplates} from '$lib/vocab/view/view';
+	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import {toSpaceUrl} from '$lib/ui/url';
-
-	// TODO does this belong in `view`?
-	const admin = false; // TODO implement
-	const creatableViewTemplates = viewTemplates.filter(
-		(v) => v.creatable !== false && (v.admin ? admin : true),
-	);
+	import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 
 	const {
 		dispatch,
-		ui: {sessionPersonaIndices},
+		ui: {sessionPersonaIndices, adminPersonas},
 	} = getApp();
 
 	export let persona: Readable<Persona>;
 	export let community: Readable<Community>;
 	export let done: (() => void) | undefined = undefined;
 
+	$: admin = $community.community_id === ADMIN_COMMUNITY_ID && $adminPersonas.has(persona);
+	$: creatableViewTemplates = toCreatableViewTemplates(admin);
+
 	let name = '';
-	let selectedViewTemplate = creatableViewTemplates[0];
+	$: selectedViewTemplate = creatableViewTemplates[0];
 	$: ({icon} = selectedViewTemplate);
 
 	let pending = false;

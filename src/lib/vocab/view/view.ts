@@ -12,20 +12,19 @@ export type ViewData = Root;
 
 export type ViewNode = Root | SvelteChild; // TODO does this technically need to include `Node`?
 
-// TODO add `icon` to `viewTemplates` and move `spaceTypeIcons` from `SpaceIcon.svelte` to here
+export interface ViewTemplate {
+	name: string;
+	view: string;
+	icon: string;
+	creatable?: boolean; // defaults to `true`
+	admin?: boolean; // defaults to `false`
+}
 
 /**
  * The views available for users to create in a community, in order of appearance.
  */
-export const viewTemplates: Array<{
-	name: string;
-	view: string;
-	icon: string;
-	creatable?: boolean;
-	admin?: boolean;
-}> = [
+export const viewTemplates: ViewTemplate[] = [
 	{name: 'Home', view: '<Home />', icon: '🏠', creatable: false},
-	{name: 'InstanceAdmin', view: '<InstanceAdmin />', icon: '🪄', admin: true},
 	{name: 'Room', view: '<Room />', icon: '🗨'},
 	{name: 'Board', view: '<Board />', icon: '📚'},
 	{name: 'Forum', view: '<Forum />', icon: '📋'},
@@ -33,7 +32,13 @@ export const viewTemplates: Array<{
 	{name: 'Iframe', view: '<Iframe />', icon: '💻'}, // TODO does this need a default `src`?
 	{name: 'EntityExplorer', view: '<EntityExplorer />', icon: '✏️'},
 	{name: 'Todo', view: '<Todo />', icon: '🗒'},
+	{name: 'InstanceAdmin', view: '<InstanceAdmin />', icon: '🪄', admin: true},
 ];
+
+export const toCreatableViewTemplates = (
+	admin: boolean,
+	templates: ViewTemplate[] = viewTemplates,
+): ViewTemplate[] => templates.filter((v) => v.creatable !== false && (!v.admin || admin));
 
 export const DEFAULT_ALLOWED_HTML_ATTRIBUTES = new Set([
 	'class',

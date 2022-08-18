@@ -21,6 +21,7 @@ import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 
 if (browser) initBrowser();
 
@@ -68,6 +69,7 @@ export interface Ui {
 	lastSeenByDirectoryId: Map<number, Writable<number> | null>;
 	freshnessByDirectoryId: Map<number, Readable<boolean>>;
 	freshnessByCommunityId: Map<number, Writable<boolean>>;
+	adminPersonas: Readable<Set<Readable<Persona>>>;
 	// view state
 	mobile: Readable<boolean>;
 	layout: Writable<{width: number; height: number}>; // TODO maybe make `Readable` and update with an event? `resizeLayout`?
@@ -221,6 +223,13 @@ export const toUi = (
 	const freshnessByDirectoryId: Map<number, Readable<boolean>> = new Map();
 	const freshnessByCommunityId: Map<number, Writable<boolean>> = new Map();
 
+	// TODO optimization: ideally this would recalculate only when the admin community's personas change, not when any membership changes
+	// TODO consider making the value of `personasByCommunityId` a set instead of array, then this could be simplified
+	const adminPersonas = derived(
+		[personasByCommunityId],
+		([$personasByCommunityId]) => new Set($personasByCommunityId.get(ADMIN_COMMUNITY_ID)),
+	);
+
 	const mobile = writable(initialMobile);
 	const layout = writable({width: 0, height: 0});
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
@@ -267,6 +276,7 @@ export const toUi = (
 		lastSeenByDirectoryId,
 		freshnessByDirectoryId,
 		freshnessByCommunityId,
+		adminPersonas,
 	};
 };
 
