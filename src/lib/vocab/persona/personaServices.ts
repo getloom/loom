@@ -29,11 +29,9 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			log.trace('[CreateAccountPersona] validating persona uniqueness', name);
 			const findByNameResult = await repos.persona.findByName(name);
 			if (!findByNameResult.ok) {
-				log.trace('[CreateAccountPersona] error validating unique name for new persona');
 				return {ok: false, status: 500, message: 'error validating unique name for new persona'};
 			}
 			if (findByNameResult.value) {
-				log.trace('[CreateAccountPersona] provided name for persona already exists');
 				return {ok: false, status: 409, message: 'a persona with that name already exists'};
 			}
 
@@ -62,7 +60,6 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				community.community_id,
 			);
 			if (!createPersonaResult.ok) {
-				log.trace('[CreateAccountPersona] error searching for community personas');
 				return {ok: false, status: 500, message: 'error searching for community personas'};
 			}
 			const persona = createPersonaResult.value;
@@ -73,7 +70,6 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				community.community_id,
 			);
 			if (!membershipResult.ok) {
-				log.trace('[CreateAccountPersona] error creating membership in personal community');
 				return {ok: false, status: 500, message: 'error creating membership in personal community'};
 			}
 			const membership = membershipResult.value;
@@ -120,7 +116,6 @@ export const ReadPersonaService: ServiceByName['ReadPersona'] = {
 
 		const findPersonaResult = await repos.persona.findById(params.persona_id);
 		if (!findPersonaResult.ok) {
-			log.trace('[ReadPersona] no persona found');
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
 		return {ok: true, status: 200, value: {persona: findPersonaResult.value}};

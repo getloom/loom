@@ -66,7 +66,8 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			//TODO parse/scrub params alongside validation
 			const validateParams = validateSchema(service.event.params);
 			if (!validateParams(params)) {
-				log.error('failed to validate params', validateParams.errors);
+				// TODO handle multiple errors instead of just the first
+				log.error('failed to validate params', params, validateParams.errors);
 				result = {
 					ok: false,
 					status: 400,
@@ -75,8 +76,11 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			} else {
 				try {
 					result = await service.perform(toServiceRequest(server.db, params, account_id, session));
+					if (!result.ok) {
+						log.error('service.perform failed with a message', service.event.name, result.message);
+					}
 				} catch (err) {
-					log.error('service.perform failed', err);
+					log.error('service.perform failed with an error', service.event.name, err);
 					result = {
 						ok: false,
 						status: 500,

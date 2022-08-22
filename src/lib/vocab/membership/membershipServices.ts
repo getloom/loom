@@ -38,7 +38,6 @@ export const CreateMembershipService: ServiceByName['CreateMembership'] = {
 			if (createMembershipResult.ok) {
 				return {ok: true, status: 200, value: {membership: createMembershipResult.value}};
 			}
-			log.trace('[CreateMembership] error creating membership');
 			return {ok: false, status: 500, message: 'error creating membership'};
 		}),
 };
@@ -91,7 +90,6 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 			const result = await repos.membership.deleteById(persona_id, community_id);
 			log.trace('[DeleteMembership] result', result);
 			if (!result.ok) {
-				log.trace('[DeleteMembership] error removing membership: ', persona_id, community_id);
 				return {ok: false, status: 500, message: 'failed to delete membership'};
 			}
 			await cleanOrphanCommunities(params.community_id, repos);

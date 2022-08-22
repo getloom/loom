@@ -55,7 +55,7 @@ export const toHttpServiceMiddleware =
 		const validateParams = validateSchema(service.event.params);
 		if (!validateParams(params)) {
 			// TODO handle multiple errors instead of just the first
-			log.error('validation failed:', params, validateParams.errors);
+			log.error('failed to validate params', params, validateParams.errors);
 			const validationError = validateParams.errors![0];
 			return send(res, 400, {message: toValidationErrorMessage(validationError)});
 		}
@@ -65,8 +65,11 @@ export const toHttpServiceMiddleware =
 			result = await service.perform(
 				toServiceRequest(server.db, params, req.account_id!, new SessionApi(req, res)),
 			);
+			if (!result.ok) {
+				log.error('service.perform failed with a message', service.event.name, result.message);
+			}
 		} catch (err) {
-			log.error(err);
+			log.error('service.perform failed with an error', service.event.name, err);
 			send(res, 500, {message: 'unknown server error'});
 		}
 

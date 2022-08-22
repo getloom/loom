@@ -30,7 +30,6 @@ export const ReadSpaceService: ServiceByName['ReadSpace'] = {
 
 		const findSpaceResult = await repos.space.findById(params.space_id);
 		if (!findSpaceResult.ok) {
-			log.trace('[ReadSpace] no space found');
 			return {ok: false, status: 404, message: 'no space found'};
 		}
 		return {ok: true, status: 200, value: {space: findSpaceResult.value}};
@@ -45,7 +44,6 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 
 		const findSpacesResult = await repos.space.filterByCommunity(params.community_id);
 		if (!findSpacesResult.ok) {
-			log.trace('[ReadSpaces] error searching for community spaces');
 			return {ok: false, status: 500, message: 'error searching for community spaces'};
 		}
 		return {ok: true, status: 200, value: {spaces: findSpacesResult.value}};
@@ -68,19 +66,16 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 			);
 
 			if (!findByCommunityUrlResult.ok) {
-				log.trace('[CreateSpace] error validating unique url for new space');
 				return {ok: false, status: 500, message: 'error validating unique url for new space'};
 			}
 
 			if (findByCommunityUrlResult.value) {
-				log.trace('[CreateSpace] provided url for space already exists');
 				return {ok: false, status: 409, message: 'a space with that url already exists'};
 			}
 
 			log.trace('[CreateSpace] finding community space for dir actor');
 			const communityPersona = await repos.persona.findByCommunityId(community_id);
 			if (!communityPersona.ok) {
-				log.error('[CreateSpace] error finding persona for provided community', community_id);
 				return {ok: false, status: 500, message: 'error looking up community persona'};
 			}
 
@@ -90,7 +85,6 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 				space_id: undefined as any, // `space_id` gets added below, after the space is created
 			});
 			if (!createDirectoryResult.ok) {
-				log.error('[CreateSpace] error creating directory for space', params.name);
 				return {ok: false, status: 500, message: 'error creating directory for space'};
 			}
 			const uninitializedDirectory = createDirectoryResult.value as Entity & {
@@ -107,7 +101,6 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 				uninitializedDirectory.entity_id,
 			);
 			if (!createSpaceResult.ok) {
-				log.trace('[CreateSpace] error searching for community spaces');
 				return {ok: false, status: 500, message: 'error searching for community spaces'};
 			}
 			const space = createSpaceResult.value;
@@ -121,7 +114,6 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 				},
 			);
 			if (!directoryResult.ok) {
-				log.trace('[CreateSpace] error updating the directory for space');
 				return {ok: false, status: 500, message: 'error updating directory with new space'};
 			}
 			const directory = directoryResult.value as Entity & {data: DirectoryEntityData};
@@ -137,7 +129,6 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 			const {space_id, ...partial} = params;
 			const updateEntitiesResult = await repos.space.update(space_id, partial);
 			if (!updateEntitiesResult.ok) {
-				log.trace('[UpdateSpace] error updating space');
 				return {ok: false, status: 500, message: 'failed to update space'};
 			}
 			return {ok: true, status: 200, value: {space: updateEntitiesResult.value}};
@@ -165,7 +156,6 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 			const result = await repos.space.deleteById(params.space_id);
 			log.trace('[DeleteSpace] result', result);
 			if (!result.ok) {
-				log.trace('[DeleteSpace] error removing space: ', params.space_id);
 				return {ok: false, status: 500, message: 'failed to delete space'};
 			}
 

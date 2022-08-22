@@ -18,7 +18,6 @@ export const CreateTieService: ServiceByName['CreateTie'] = {
 			const createTieResult = await repos.tie.create(params.source_id, params.dest_id, params.type);
 			log.trace('[CreateTie] result', createTieResult);
 			if (!createTieResult.ok) {
-				log.trace('[CreateTie] error creating tie');
 				return {ok: false, status: 500, message: 'error creating tie'};
 			}
 			return {ok: true, status: 200, value: {tie: createTieResult.value}};
@@ -31,7 +30,6 @@ export const ReadTiesService: ServiceByName['ReadTies'] = {
 	perform: async ({repos, params}) => {
 		const findTiesResult = await repos.tie.filterBySourceId(params.source_id);
 		if (!findTiesResult.ok) {
-			log.trace('[ReadTies] error searching for ties');
 			return {ok: false, status: 500, message: 'error searching for ties'};
 		}
 		return {ok: true, status: 200, value: {ties: findTiesResult.value}};
@@ -45,9 +43,7 @@ export const DeleteTieService: ServiceByName['DeleteTie'] = {
 		transact(async (repos) => {
 			log.trace('[DeleteTie] deleting tie with ids:', params.source_id, params.dest_id);
 			const result = await repos.tie.deleteTie(params.source_id, params.dest_id, params.type);
-			log.trace('[DeleteTie] result', result);
 			if (!result.ok) {
-				log.trace('[DeleteTie] error removing tie: ', params.source_id, params.dest_id);
 				return {ok: false, status: 500, message: 'failed to delete tie'};
 			}
 			return {ok: true, status: 200, value: null};
