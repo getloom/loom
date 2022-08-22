@@ -20,7 +20,7 @@ import type {Space} from '$lib/vocab/space/space';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
-const BLOCKLIST = new Set(['docs', 'schemas', 'about', 'blog']);
+const BLOCKLIST = new Set(['docs', 'schemas', 'about']);
 
 // Returns a list of community objects
 export const ReadCommunitiesService: ServiceByName['ReadCommunities'] = {
@@ -75,13 +75,15 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 		serviceRequest.transact(async (repos) => {
 			const {params, account_id} = serviceRequest;
 			log.trace('creating community account_id', account_id);
+			const name = params.name.trim();
+
 			// run name through block list
-			if (BLOCKLIST.has(params.name)) {
+			if (BLOCKLIST.has(name.toLowerCase())) {
 				return {ok: false, status: 409, message: 'a community with that name is not allowed'};
 			}
 
 			// Check for duplicate community names.
-			const findCommunityResult = await repos.community.findByName(params.name);
+			const findCommunityResult = await repos.community.findByName(name);
 			if (!findCommunityResult.ok) {
 				return {ok: false, status: 500, message: 'failed to lookup existing community by name'};
 			}
@@ -92,8 +94,8 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			// TODO validate that `account_id` is `persona_id`
 			const createCommunityResult = await repos.community.create(
 				'standard',
-				params.name,
-				params.settings || toDefaultCommunitySettings(params.name),
+				name,
+				params.settings || toDefaultCommunitySettings(name),
 			);
 			log.trace('createCommunityResult', createCommunityResult);
 
