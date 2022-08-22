@@ -5,8 +5,7 @@ export const MembershipSchema = {
 		persona_id: {type: 'number'},
 		community_id: {type: 'number'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
-	required: ['persona_id', 'community_id', 'created', 'updated'],
+	required: ['persona_id', 'community_id', 'created'],
 	additionalProperties: false,
 };

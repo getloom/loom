@@ -20,7 +20,7 @@ export class MembershipRepo extends PostgresRepo {
 
 	async findById(persona_id: number, community_id: number): Promise<Result<{value: Membership}>> {
 		const data = await this.sql<Membership[]>`
-			SELECT persona_id, community_id, created, updated
+			SELECT persona_id, community_id, created
 			FROM memberships
 			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
 		`;
@@ -31,7 +31,7 @@ export class MembershipRepo extends PostgresRepo {
 	async filterByAccount(account_id: number): Promise<Result<{value: Membership[]}>> {
 		log.trace(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Membership[]>`
-			SELECT m.persona_id, m.community_id, m.created, m.updated 
+			SELECT m.persona_id, m.community_id, m.created
 			FROM memberships m JOIN (
 				SELECT DISTINCT m.community_id FROM personas p 
 				JOIN memberships m 
@@ -45,7 +45,7 @@ export class MembershipRepo extends PostgresRepo {
 	async filterByCommunityId(community_id: number): Promise<Result<{value: Membership[]}>> {
 		log.trace(`[filterByCommunityId] ${community_id}`);
 		const data = await this.sql<Membership[]>`
-			SELECT m.persona_id, m.community_id, m.created, m.updated 
+			SELECT m.persona_id, m.community_id, m.created
 			FROM memberships m 
 			WHERE m.community_id=${community_id};
 		`;
@@ -58,9 +58,9 @@ export class MembershipRepo extends PostgresRepo {
 	): Promise<Result<{value: Membership[]}>> {
 		log.trace(`[filterByCommunityId] ${community_id}`);
 		const data = await this.sql<Membership[]>`
-			SELECT m.persona_id, m.community_id, m.created, m.updated 
+			SELECT m.persona_id, m.community_id, m.created
 			FROM personas p JOIN (
-				SELECT persona_id, community_id, created, updated 
+				SELECT persona_id, community_id, created
 				FROM memberships 
 				WHERE community_id=${community_id}
 			) as m ON m.persona_id = p.persona_id WHERE p.type = 'account';
