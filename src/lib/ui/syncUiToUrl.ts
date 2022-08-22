@@ -1,11 +1,10 @@
-import type {Readable} from '@feltcoop/svelte-gettable-stores';
+import type {Readable, Writable} from '@feltcoop/svelte-gettable-stores';
 import {browser} from '$app/env';
 import {goto} from '$app/navigation';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import type {Persona} from '$lib/vocab/persona/persona';
 import {PERSONA_QUERY_KEY, toUrl} from '$lib/ui/url';
-import type {Dispatch} from '$lib/app/eventTypes';
 import type {Ui} from '$lib/ui/ui';
 
 const log = new Logger('[syncUiToUrl]');
@@ -13,19 +12,20 @@ const log = new Logger('[syncUiToUrl]');
 // TODO instead of dispatching `select` events on startup, initialize with correct values
 
 export const syncUiToUrl = (
-	{
+	ui: Ui,
+	params: {community?: string; space?: string},
+	url: URL,
+): void => {
+	if (!params.community) return;
+
+	const {
 		communities,
 		personaIndexSelection,
 		communitySelection,
 		spacesByCommunityId,
 		spaceIdSelectionByCommunityId,
 		sessionPersonas,
-	}: Ui,
-	dispatch: Dispatch,
-	params: {community?: string; space?: string},
-	url: URL,
-): void => {
-	if (!params.community) return;
+	} = ui;
 
 	const rawPersonaIndex = url.searchParams.get(PERSONA_QUERY_KEY);
 	const personaIndex = rawPersonaIndex ? Number(rawPersonaIndex) : null;
@@ -43,19 +43,19 @@ export const syncUiToUrl = (
 			return; // exit early; this function re-runs from the `goto` call with the updated `$page`
 		}
 	} else if (personaIndex !== personaIndexSelection.get()) {
-		dispatch.SelectPersona({persona_id: persona.get().persona_id});
+		selectPersona(ui, persona.get().persona_id);
 	} // else already selected
 
 	// TODO speed this up with a map of communityByName
 	const community = communities.get().value.find((c) => c.get().name === params.community);
 	if (!community) {
 		// occurs when routing to an inaccessible or nonexistent community
-		dispatch.SelectCommunity({community_id: null});
+		selectCommunity(ui, null);
 		return;
 	}
 	const {community_id} = community.get();
 	if (community !== communitySelection.get()) {
-		dispatch.SelectCommunity({community_id});
+		selectCommunity(ui, community_id);
 	}
 
 	const spaceUrl = '/' + (params.space || '');
@@ -66,12 +66,39 @@ export const syncUiToUrl = (
 		.find((s) => s.get().url === spaceUrl);
 	if (!space) {
 		// occurs when routing to an inaccessible or nonexistent space
-		dispatch.SelectSpace({community_id, space_id: null});
+		selectSpace(ui, community_id, null);
 		return;
 	}
 	const selectedSpaceId = spaceIdSelectionByCommunityId.get().value.get(community_id);
 	const {space_id} = space.get();
 	if (space_id !== selectedSpaceId) {
-		dispatch.SelectSpace({community_id, space_id});
+		selectSpace(ui, community_id, space_id);
 	}
+};
+
+const selectPersona = ({personaIdSelection}: Ui, persona_id: number): void => {
+	// TODO could remove this typecase if `syncUiToUrl` is changed to be an event
+	(personaIdSelection as Writable<number | null>).set(persona_id);
+};
+
+const selectCommunity = (
+	{personaIdSelection, communityIdSelectionByPersonaId}: Ui,
+	community_id: number | null,
+): void => {
+	const $personaIdSelection = personaIdSelection.get();
+	if ($personaIdSelection) {
+		communityIdSelectionByPersonaId.mutate(($c) => {
+			$c.set($personaIdSelection, community_id);
+		});
+	}
+};
+
+const selectSpace = (
+	{spaceIdSelectionByCommunityId}: Ui,
+	community_id: number,
+	space_id: number | null,
+): void => {
+	spaceIdSelectionByCommunityId.mutate(($s) => {
+		$s.set(community_id, space_id);
+	});
 };

@@ -52,9 +52,6 @@ export type ClientEventName =
 	| 'SetMobile'
 	| 'OpenDialog'
 	| 'CloseDialog'
-	| 'SelectPersona'
-	| 'SelectCommunity'
-	| 'SelectSpace'
 	| 'ViewSpace'
 	| 'ClearFreshness';
 
@@ -92,9 +89,6 @@ export interface EventParamsByName {
 	SetMobile: SetMobileParams;
 	OpenDialog: OpenDialogParams;
 	CloseDialog: CloseDialogParams;
-	SelectPersona: SelectPersonaParams;
-	SelectCommunity: SelectCommunityParams;
-	SelectSpace: SelectSpaceParams;
 	ViewSpace: ViewSpaceParams;
 	ClearFreshness: ClearFreshnessParams;
 }
@@ -414,19 +408,6 @@ export interface OpenDialogParams {
 
 export type CloseDialogParams = void;
 
-export interface SelectPersonaParams {
-	persona_id: number;
-}
-
-export interface SelectCommunityParams {
-	community_id: number | null;
-}
-
-export interface SelectSpaceParams {
-	community_id: number;
-	space_id: number | null;
-}
-
 export interface ViewSpaceParams {
 	space_id: number;
 	view: string | null;
@@ -476,9 +457,6 @@ export interface Dispatch {
 	SetMobile: (params: SetMobileParams) => void;
 	OpenDialog: (params: OpenDialogParams) => void;
 	CloseDialog: (params: CloseDialogParams) => void;
-	SelectPersona: (params: SelectPersonaParams) => void;
-	SelectCommunity: (params: SelectCommunityParams) => void;
-	SelectSpace: (params: SelectSpaceParams) => void;
 	ViewSpace: (params: ViewSpaceParams) => void;
 	ClearFreshness: (params: ClearFreshnessParams) => void;
 }
@@ -565,9 +543,6 @@ export interface Mutations {
 	SetMobile: (ctx: DispatchContext<SetMobileParams, void>) => void;
 	OpenDialog: (ctx: DispatchContext<OpenDialogParams, void>) => void;
 	CloseDialog: (ctx: DispatchContext<CloseDialogParams, void>) => void;
-	SelectPersona: (ctx: DispatchContext<SelectPersonaParams, void>) => void;
-	SelectCommunity: (ctx: DispatchContext<SelectCommunityParams, void>) => void;
-	SelectSpace: (ctx: DispatchContext<SelectSpaceParams, void>) => void;
 	ViewSpace: (ctx: DispatchContext<ViewSpaceParams, void>) => void;
 	ClearFreshness: (ctx: DispatchContext<ClearFreshnessParams, void>) => void;
 }

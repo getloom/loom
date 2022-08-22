@@ -176,22 +176,6 @@ export const randomEventParams: RandomEventParams = {
 	CloseDialog: async () => {
 		return undefined;
 	},
-	SelectPersona: async (random, {account} = {}) => {
-		return {
-			persona_id: (await random.persona(account)).persona.persona_id,
-		};
-	},
-	SelectCommunity: async (random, {account, persona} = {}) => {
-		return {
-			community_id: (await random.community(persona, account)).community.community_id,
-		};
-	},
-	SelectSpace: async (random, {account, persona, community} = {}) => {
-		return {
-			community_id: (await random.community(persona, account)).community.community_id,
-			space_id: (await random.space(persona, account, community)).space.space_id,
-		};
-	},
 	ViewSpace: async (random, {account, persona, community} = {}) => {
 		return {
 			space_id: (await random.space(persona, account, community)).space.space_id,

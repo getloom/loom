@@ -99,7 +99,7 @@
 	$: onboarding = !guest && !$sessionPersonas.length;
 	$: selectedPersona = $personaSelection; // must be after `updateStateFromPageParams`
 
-	$: syncUiToUrl(ui, dispatch, $page.params, $page.url);
+	$: syncUiToUrl(ui, $page.params, $page.url);
 
 	let clientWidth: number;
 	let clientHeight: number;

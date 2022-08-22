@@ -27,32 +27,6 @@ export const CloseDialog: Mutations['CloseDialog'] = ({ui: {dialogs}}) => {
 	dialogs.update(($dialogs) => $dialogs.slice(0, $dialogs.length - 1));
 };
 
-export const SelectPersona: Mutations['SelectPersona'] = ({params, ui: {personaIdSelection}}) => {
-	personaIdSelection.set(params.persona_id);
-};
-
-export const SelectCommunity: Mutations['SelectCommunity'] = ({
-	params,
-	ui: {personaIdSelection, communityIdSelectionByPersonaId},
-}) => {
-	const $personaIdSelection = personaIdSelection.get();
-	if ($personaIdSelection) {
-		communityIdSelectionByPersonaId.mutate(($c) => {
-			$c.set($personaIdSelection, params.community_id);
-		});
-	}
-};
-
-export const SelectSpace: Mutations['SelectSpace'] = ({
-	params,
-	ui: {spaceIdSelectionByCommunityId},
-}) => {
-	const {community_id, space_id} = params;
-	spaceIdSelectionByCommunityId.mutate(($s) => {
-		$s.set(community_id, space_id);
-	});
-};
-
 export const ViewSpace: Mutations['ViewSpace'] = async ({
 	params: {space_id, view},
 	ui: {spaceById, viewBySpace, communitySelection, spaceIdSelectionByCommunityId, communityById},

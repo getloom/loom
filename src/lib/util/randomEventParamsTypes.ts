@@ -35,9 +35,6 @@ import type {
 	SetMobileParams,
 	OpenDialogParams,
 	CloseDialogParams,
-	SelectPersonaParams,
-	SelectCommunityParams,
-	SelectSpaceParams,
 	ViewSpaceParams,
 	ClearFreshnessParams,
 } from '$lib/app/eventTypes';
@@ -142,18 +139,6 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<CloseDialogParams>;
-	SelectPersona: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<SelectPersonaParams>;
-	SelectCommunity: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<SelectCommunityParams>;
-	SelectSpace: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<SelectSpaceParams>;
 	ViewSpace: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ViewSpaceParams>;
 	ClearFreshness: (
 		random: RandomVocabContext,

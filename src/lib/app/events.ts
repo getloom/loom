@@ -33,9 +33,6 @@ import {
 	SetMobile,
 	OpenDialog,
 	CloseDialog,
-	SelectPersona,
-	SelectCommunity,
-	SelectSpace,
 	ViewSpace,
 	ClearFreshness,
 } from '$lib/ui/uiEvents';
@@ -82,9 +79,6 @@ export const eventInfos: EventInfo[] = [
 	SetMobile,
 	OpenDialog,
 	CloseDialog,
-	SelectPersona,
-	SelectCommunity,
-	SelectSpace,
 	ViewSpace,
 	ClearFreshness,
 ];

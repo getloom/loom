@@ -60,52 +60,6 @@ export const CloseDialog: ClientEventInfo = {
 	returns: 'void',
 };
 
-export const SelectPersona: ClientEventInfo = {
-	type: 'ClientEvent',
-	name: 'SelectPersona',
-	params: {
-		$id: '/schemas/SelectPersonaParams.json',
-		type: 'object',
-		properties: {
-			persona_id: {type: 'number'},
-		},
-		required: ['persona_id'],
-		additionalProperties: false,
-	},
-	returns: 'void',
-};
-
-export const SelectCommunity: ClientEventInfo = {
-	type: 'ClientEvent',
-	name: 'SelectCommunity',
-	params: {
-		$id: '/schemas/SelectCommunityParams.json',
-		type: 'object',
-		properties: {
-			community_id: {type: ['number', 'null']},
-		},
-		required: ['community_id'],
-		additionalProperties: false,
-	},
-	returns: 'void',
-};
-
-export const SelectSpace: ClientEventInfo = {
-	type: 'ClientEvent',
-	name: 'SelectSpace',
-	params: {
-		$id: '/schemas/SelectSpaceParams.json',
-		type: 'object',
-		properties: {
-			community_id: {type: 'number'},
-			space_id: {type: ['number', 'null']},
-		},
-		required: ['community_id', 'space_id'],
-		additionalProperties: false,
-	},
-	returns: 'void',
-};
-
 export const ViewSpace: ClientEventInfo = {
 	type: 'ClientEvent',
 	name: 'ViewSpace',
