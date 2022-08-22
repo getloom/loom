@@ -11,7 +11,6 @@
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
 
 	const {
-		dispatch,
 		ui: {
 			contextmenu,
 			spaceIdSelectionByCommunityId,
@@ -41,14 +40,13 @@
 <!-- TODO can this be well abstracted via the Entity with a `link` prop? -->
 <a
 	class="community selectable"
-	href={toSpaceUrl($community, selectedSpace && $selectedSpace, $page.url.searchParams, {
+	href={toSpaceUrl($community, $selectedSpace, $page.url.searchParams, {
 		persona: personaIndex + '',
 	})}
 	class:selected
 	class:persona={isPersonaHomeCommunity}
 	style="--hue: {$community.settings.hue}"
 	use:contextmenu.action={[[CommunityContextmenu, {community, persona}]]}
-	on:click={() => dispatch.SelectPersona({persona_id: $persona.persona_id})}
 >
 	{#if $fresh}
 		<FreshnessIndicator />
