@@ -30,7 +30,7 @@
 <style>
 	li {
 		padding: var(--spacing_sm);
-		border: var(--border);
+		border: var(--border_width) var(--border_style) var(--border_color);
 		max-width: var(--column_width_sm);
 		margin: 10px;
 		background-color: var(--input_bg_color);

@@ -102,7 +102,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		</div>
 		{#if items}
 			<div class="items">
-				<ul class="panel-inset">
+				<ul class="panel">
 					{#each items as item (item)}
 						<svelte:self entity={item} {space} {persona} />
 					{/each}

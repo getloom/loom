@@ -104,7 +104,7 @@
 			</p>
 		</section>
 		<section class="rules-and-norms">
-			<div class="rules markup padded-xl panel-inset">
+			<div class="rules markup padded-xl panel">
 				<div class="header">
 					<h4>rules</h4>
 					<!--TODO how to trigger a directory freshen from result of this dialogue-->
@@ -120,7 +120,7 @@
 				</div>
 				{#if rules && $rules}<EntityContent entity={rules} />{:else}rules not found{/if}
 			</div>
-			<div class="norms markup padded-xl panel-inset">
+			<div class="norms markup padded-xl panel">
 				<div class="header">
 					<h4>norms</h4>
 					<button
@@ -137,7 +137,7 @@
 			</div>
 		</section>
 		<section class="roles">
-			<div class="panel-inset">
+			<div class="panel">
 				<h4>roles</h4>
 				<ul>
 					<li>
@@ -181,7 +181,7 @@
 	.roles {
 		margin: var(--spacing_xl);
 	}
-	.roles .panel-inset {
+	.roles .panel {
 		padding: var(--spacing_xl);
 	}
 	.role-name {

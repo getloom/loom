@@ -27,7 +27,7 @@
 <style>
 	li {
 		padding: var(--spacing_sm);
-		border: var(--border);
+		border: var(--border_width) var(--border_style) var(--border_color);
 		margin: 10px;
 		padding: 10px;
 		background-color: var(--input_bg_color);

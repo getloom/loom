@@ -26,7 +26,7 @@
 		background-color: hsl(var(--hue), 50%, 50%);
 		border-radius: 50%;
 		color: white;
-		font-weight: var(--font_weight_4);
+		font-weight: 700;
 		line-height: 1;
 		display: flex;
 		align-items: center;

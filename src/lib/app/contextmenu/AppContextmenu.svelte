@@ -22,7 +22,7 @@
 	<svelte:fragment slot="menu">
 		{#each $sessionPersonas as sessionPersona (sessionPersona)}
 			{#if $personaSelection === sessionPersona}
-				<li class="menu-item panel-inset" role="none">
+				<li class="menu-item panel" role="none">
 					<div class="content">
 						<div class="icon"><PersonaAvatar persona={sessionPersona} showName={false} /></div>
 						<div class="title"><PersonaAvatar persona={sessionPersona} showIcon={false} /></div>

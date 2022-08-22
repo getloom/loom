@@ -38,7 +38,7 @@
 		align-items: center;
 	}
 	.actor {
-		font-weight: var(--font_weight_4);
+		font-weight: 700;
 	}
 	.has-icon {
 		padding-left: var(--spacing_sm);

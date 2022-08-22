@@ -141,6 +141,6 @@
 		top: 0;
 		z-index: 9;
 		width: var(--contextmenu_width);
-		border: var(--border);
+		border: var(--border_width) var(--border_style) var(--border_color);
 	}
 </style>

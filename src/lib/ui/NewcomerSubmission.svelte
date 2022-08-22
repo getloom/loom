@@ -60,7 +60,7 @@
 	};
 </script>
 
-<section class="panel-inset">
+<section class="panel">
 	<!-- TODO fix CommunityAvatar on newline-->
 	<div class="title">
 		<h4>
@@ -70,7 +70,7 @@
 </section>
 {#if !submitted}
 	<form>
-		<section class="panel-inset">
+		<section class="panel">
 			<div class="question">
 				<h4>How did you find this community (& if you were invited to join, who invited you?)</h4>
 			</div>
@@ -84,7 +84,7 @@
 			/>
 		</section>
 
-		<section class="panel-inset">
+		<section class="panel">
 			<div class="question">
 				<h4>Why would you like to join this community?</h4>
 			</div>
@@ -98,7 +98,7 @@
 			/>
 		</section>
 
-		<section class="panel-inset">
+		<section class="panel">
 			<div class="question">
 				<h4>These are the norms of our community, how do you think you can contribute?</h4>
 				<!--TODO discuss a good way to reference the "rules" entity in another space-->
@@ -118,7 +118,7 @@
 		<PendingButton on:click={submit} pending={status === 'pending'}>Submit</PendingButton>
 	</form>
 {:else}
-	<section class="panel-inset">
+	<section class="panel">
 		<div class="question">
 			<h4>
 				Thank you for submitting! We will review your application and get back to you within a week.
@@ -129,7 +129,7 @@
 {/if}
 
 <style>
-	.panel-inset {
+	.panel {
 		margin-top: var(--spacing_xl);
 		margin-left: var(--spacing_xl);
 		margin-right: var(--spacing_xl);
