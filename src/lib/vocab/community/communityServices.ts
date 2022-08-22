@@ -91,7 +91,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				return {ok: false, status: 409, message: 'a community with that name already exists'};
 			}
 
-			// TODO validate that `account_id` is `persona_id`
+			// Create the community
 			const createCommunityResult = await repos.community.create(
 				'standard',
 				name,
@@ -109,7 +109,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			}
 			const community = createCommunityResult.value;
 
-			//TODO maybe trim down returned Persona data?
+			// Create the community persona and its membership
 			const communityPersonaResult = await repos.persona.createCommunityPersona(
 				community.name,
 				community.community_id,
@@ -123,7 +123,34 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				};
 			}
 			const communityPersona = communityPersonaResult.value;
+			const communityPersonaMembershipResult = await repos.membership.create(
+				communityPersona.persona_id,
+				community.community_id,
+			);
+			if (!communityPersonaMembershipResult.ok) {
+				log.trace('[CreateCommunity] error creating community persona membership');
+				return {
+					ok: false,
+					status: 500,
+					message: 'error creating community persona membership',
+				};
+			}
 
+			// Create the membership for the persona that's creating the community.
+			const creatorMembershipResult = await repos.membership.create(
+				params.persona_id,
+				community.community_id,
+			);
+			if (!creatorMembershipResult.ok) {
+				log.trace('[CreateCommunity] error making creator membership');
+				return {
+					ok: false,
+					status: 500,
+					message: 'error making creator membership',
+				};
+			}
+
+			// Create default spaces.
 			const createDefaultSpaceResult = await createDefaultSpaces(
 				serviceRequest,
 				params.persona_id,
@@ -139,31 +166,6 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			}
 			const spaces = createDefaultSpaceResult.value;
 
-			const communityPersonaMembershipResult = await repos.membership.create(
-				communityPersona.persona_id,
-				community.community_id,
-			);
-
-			if (!communityPersonaMembershipResult.ok) {
-				log.trace('[CreateCommunity] error creating community persona membership');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error creating community persona membership',
-				};
-			}
-			const creatorMembershipResult = await repos.membership.create(
-				params.persona_id,
-				community.community_id,
-			);
-			if (!creatorMembershipResult.ok) {
-				log.trace('[CreateCommunity] error making creator membership');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error making creator membership',
-				};
-			}
 			return {
 				ok: true,
 				status: 200,
