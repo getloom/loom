@@ -45,11 +45,6 @@ export const toHttpServiceMiddleware =
 			return send(res, 500, {message: 'unimplemented service schema'});
 		}
 
-		const authorizeResult = authorize(req.account_id, service);
-		if (!authorizeResult.ok) {
-			return send(res, 403, {message: authorizeResult.message});
-		}
-
 		const params = service.event.params.type === 'null' ? null : {...reqBody, ...reqParams};
 
 		const validateParams = validateSchema(service.event.params);
@@ -58,6 +53,11 @@ export const toHttpServiceMiddleware =
 			log.error('failed to validate params', params, validateParams.errors);
 			const validationError = validateParams.errors![0];
 			return send(res, 400, {message: toValidationErrorMessage(validationError)});
+		}
+
+		const authorizeResult = authorize(req.account_id, service);
+		if (!authorizeResult.ok) {
+			return send(res, 403, {message: authorizeResult.message});
 		}
 
 		let result;

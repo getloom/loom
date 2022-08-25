@@ -55,23 +55,23 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 
 		let result: WebsocketResult;
 
-		const authorizeResult = authorize(account_id, service);
-		if (!authorizeResult.ok) {
+		//TODO parse/scrub params alongside validation
+		const validateParams = validateSchema(service.event.params);
+		if (!validateParams(params)) {
+			// TODO handle multiple errors instead of just the first
+			log.error('failed to validate params', params, validateParams.errors);
 			result = {
 				ok: false,
-				status: 403,
-				message: authorizeResult.message,
+				status: 400,
+				message: 'invalid params: ' + toValidationErrorMessage(validateParams.errors![0]),
 			};
 		} else {
-			//TODO parse/scrub params alongside validation
-			const validateParams = validateSchema(service.event.params);
-			if (!validateParams(params)) {
-				// TODO handle multiple errors instead of just the first
-				log.error('failed to validate params', params, validateParams.errors);
+			const authorizeResult = authorize(account_id, service);
+			if (!authorizeResult.ok) {
 				result = {
 					ok: false,
-					status: 400,
-					message: 'invalid params: ' + toValidationErrorMessage(validateParams.errors![0]),
+					status: 403,
+					message: authorizeResult.message,
 				};
 			} else {
 				try {
