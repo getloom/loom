@@ -47,8 +47,22 @@ const parseSvastText = (node: Text): SvelteChild => {
 		});
 		plainText = '';
 	};
-	for (const word of words) {
-		if (word.startsWith('/') || word.startsWith('https://') || word.startsWith('http://')) {
+	let word: string;
+	let lastCharIndex: number;
+	let firstChar: string;
+	let lastChar: string;
+	// eslint-disable-next-line @typescript-eslint/prefer-for-of
+	for (let i = 0; i < words.length; i++) {
+		word = words[i];
+		if (MATCH_WHITESPACE.test(word)) {
+			plainText += word;
+			continue;
+		}
+		lastCharIndex = word.length - 1;
+		firstChar = word[0];
+		lastChar = word[lastCharIndex];
+		if (firstChar === '/' || word.startsWith('https://') || word.startsWith('http://')) {
+			// linkify text like /this and https://that.net
 			flushPlainText();
 			(children || (children = [])).push({
 				[ADDED_BY_FELT as any]: true,
@@ -65,6 +79,19 @@ const parseSvastText = (node: Text): SvelteChild => {
 				],
 				selfClosing: false,
 				children: [{[ADDED_BY_FELT as any]: true, type: 'text', value: word}],
+			});
+		} else if (firstChar === '`' && lastChar === '`') {
+			// `code` tags
+			flushPlainText();
+			(children || (children = [])).push({
+				[ADDED_BY_FELT as any]: true,
+				type: 'svelteElement',
+				tagName: 'code',
+				properties: [],
+				selfClosing: false,
+				children: [
+					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
+				],
 			});
 		} else {
 			plainText += word;

@@ -116,7 +116,7 @@ test__parseSvast('parses absolute links', async () => {
 test__parseSvast('parses a SVAST with links and preserves whitespace', async () => {
 	const parsed = parseSvast({
 		value:
-			'<BigPenguinInATrenchboat>link to <p> /sveveral/little/penguins\n<span>https://sveveral.more</span></p> in\nplain   text  \n  </BigPenguinInATrenchboat />',
+			'<BigPenguinInATrenchboat>link to <p>/sveveral/little/penguins\n<span>https://sveveral.more</span></p> in\nplain   text  \n  </BigPenguinInATrenchboat />',
 		generatePositions: false,
 	});
 	assert.equal(parsed, {
@@ -141,7 +141,6 @@ test__parseSvast('parses a SVAST with links and preserves whitespace', async () 
 								properties: [],
 								selfClosing: false,
 								children: [
-									{type: 'text', value: ' '},
 									{
 										type: 'svelteComponent',
 										tagName: 'Link',
