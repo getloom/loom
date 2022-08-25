@@ -18,6 +18,39 @@ export const Ping: ServiceEventInfo = {
 	},
 };
 
+export const Ephemera: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'Ephemera',
+	broadcast: true,
+	params: {
+		$id: '/schemas/EphemeraParams.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number'},
+			space_id: {type: 'number'},
+			data: {type: 'object'},
+		},
+		required: ['actor', 'space_id', 'data'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/EphemeraResponse.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number'},
+			space_id: {type: 'number'},
+			data: {type: 'object'},
+		},
+		required: ['actor', 'space_id', 'data'],
+		additionalProperties: false,
+	},
+	returns: `Promise<EphemeraResponseResult>`,
+	route: {
+		path: '/api/v1/ephemera',
+		method: 'POST',
+	},
+};
+
 export const ToggleMainNav: ClientEventInfo = {
 	type: 'ClientEvent',
 	name: 'ToggleMainNav',

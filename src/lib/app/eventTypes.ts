@@ -42,7 +42,8 @@ export type ServiceEventName =
 	| 'CreateTie'
 	| 'ReadTies'
 	| 'DeleteTie'
-	| 'Ping';
+	| 'Ping'
+	| 'Ephemera';
 
 export type ClientEventName =
 	| 'SetSession'
@@ -84,6 +85,7 @@ export interface EventParamsByName {
 	ReadTies: ReadTiesParams;
 	DeleteTie: DeleteTieParams;
 	Ping: PingParams;
+	Ephemera: EphemeraParams;
 	ToggleMainNav: ToggleMainNavParams;
 	ToggleSecondaryNav: ToggleSecondaryNavParams;
 	SetMobile: SetMobileParams;
@@ -119,10 +121,12 @@ export interface EventResponseByName {
 	ReadTies: ReadTiesResponse;
 	DeleteTie: DeleteTieResponse;
 	Ping: PingResponse;
+	Ephemera: EphemeraResponse;
 }
 
 export interface ServiceByName {
 	Ping: Service<PingParams, PingResponseResult>;
+	Ephemera: Service<EphemeraParams, EphemeraResponseResult>;
 	Login: Service<LoginParams, LoginResponseResult>;
 	Logout: Service<LogoutParams, LogoutResponseResult>;
 	CreateAccountPersona: Service<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>;
@@ -390,6 +394,22 @@ export type PingParams = null;
 export type PingResponse = null;
 export type PingResponseResult = ApiResult<PingResponse>;
 
+export interface EphemeraParams {
+	actor: number;
+	space_id: number;
+	data: {
+		[k: string]: unknown;
+	};
+}
+export interface EphemeraResponse {
+	actor: number;
+	space_id: number;
+	data: {
+		[k: string]: unknown;
+	};
+}
+export type EphemeraResponseResult = ApiResult<EphemeraResponse>;
+
 export type ToggleMainNavParams = void;
 
 export type ToggleSecondaryNavParams = void;
@@ -452,6 +472,7 @@ export interface Dispatch {
 	ReadTies: (params: ReadTiesParams) => Promise<ReadTiesResponseResult>;
 	DeleteTie: (params: DeleteTieParams) => Promise<DeleteTieResponseResult>;
 	Ping: () => Promise<ApiResult<null>>;
+	Ephemera: (params: EphemeraParams) => Promise<EphemeraResponseResult>;
 	ToggleMainNav: (params: ToggleMainNavParams) => void;
 	ToggleSecondaryNav: (params: ToggleSecondaryNavParams) => void;
 	SetMobile: (params: SetMobileParams) => void;
@@ -538,6 +559,9 @@ export interface Mutations {
 		ctx: DispatchContext<DeleteTieParams, DeleteTieResponseResult>,
 	) => Promise<DeleteTieResponseResult>;
 	Ping: (ctx: DispatchContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
+	Ephemera: (
+		ctx: DispatchContext<EphemeraParams, EphemeraResponseResult>,
+	) => Promise<EphemeraResponseResult>;
 	ToggleMainNav: (ctx: DispatchContext<ToggleMainNavParams, void>) => void;
 	ToggleSecondaryNav: (ctx: DispatchContext<ToggleSecondaryNavParams, void>) => void;
 	SetMobile: (ctx: DispatchContext<SetMobileParams, void>) => void;

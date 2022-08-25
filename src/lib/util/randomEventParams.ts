@@ -19,6 +19,15 @@ export const randomEventParams: RandomEventParams = {
 	Ping: async () => {
 		return null;
 	},
+	Ephemera: async (random, {space, persona, account, community} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!space) ({space} = await random.space(persona, account, community));
+		return {
+			actor: persona?.persona_id,
+			space_id: space.space_id,
+			data: {type: 'a'},
+		};
+	},
 	Login: async () => {
 		return {
 			username: randomString(),

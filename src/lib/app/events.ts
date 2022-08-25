@@ -28,6 +28,7 @@ import {
 import {CreateTie, ReadTies, DeleteTie} from '$lib/vocab/tie/tieEvents';
 import {
 	Ping,
+	Ephemera,
 	ToggleMainNav,
 	ToggleSecondaryNav,
 	SetMobile,
@@ -74,6 +75,7 @@ export const eventInfos: EventInfo[] = [
 	DeleteTie,
 	// uiEvents
 	Ping,
+	Ephemera,
 	ToggleMainNav,
 	ToggleSecondaryNav,
 	SetMobile,

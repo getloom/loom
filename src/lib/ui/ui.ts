@@ -22,6 +22,7 @@ import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+import type {EphemeraResponse} from '$lib/app/eventTypes';
 
 if (browser) initBrowser();
 
@@ -78,6 +79,7 @@ export interface Ui {
 	contextmenu: ContextmenuStore;
 	dialogs: Readable<DialogData[]>;
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the community
+	ephemera: Readable<EphemeraResponse | null>;
 }
 
 export type WritableUi = ReturnType<typeof toUi>;
@@ -236,7 +238,8 @@ export const toUi = (
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
 	const contextmenu = createContextmenuStore({layout, onError});
 	const dialogs = writable<DialogData[]>([]);
-	const viewBySpace = mutable(new WeakMap());
+	const viewBySpace = mutable(new WeakMap<Readable<Space>, string>());
+	const ephemera = writable<EphemeraResponse | null>(null);
 
 	return {
 		// db data
@@ -266,6 +269,7 @@ export const toUi = (
 		contextmenu,
 		dialogs,
 		viewBySpace,
+		ephemera,
 		personaIdSelection,
 		personaSelection,
 		personaIndexSelection,

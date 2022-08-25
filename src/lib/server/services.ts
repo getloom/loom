@@ -1,5 +1,5 @@
 import type {Service} from '$lib/server/service';
-import {PingService} from '$lib/server/pingService';
+import {PingService, EphemeraService} from '$lib/server/uiServices';
 import {LoginService, LogoutService} from '$lib/session/sessionServices';
 import {CreateAccountPersonaService, ReadPersonaService} from '$lib/vocab/persona/personaServices';
 import {
@@ -32,7 +32,9 @@ import {CreateTieService, ReadTiesService, DeleteTieService} from '$lib/vocab/ti
 
 export const services: Map<string, Service<any, any>> = new Map(
 	[
+		// uiServices
 		PingService,
+		EphemeraService,
 		// sessionServices
 		LoginService,
 		LogoutService,

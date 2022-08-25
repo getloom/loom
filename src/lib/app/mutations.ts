@@ -21,6 +21,7 @@ import {
 import {CreateTie, ReadTies, DeleteTie} from '$lib/vocab/tie/tieMutations';
 import {
 	Ping,
+	Ephemera,
 	SetMobile,
 	OpenDialog,
 	CloseDialog,
@@ -63,6 +64,7 @@ export const mutations: Record<string, Mutation> = {
 	DeleteTie,
 	// uiMutations
 	Ping,
+	Ephemera,
 	SetMobile,
 	OpenDialog,
 	CloseDialog,

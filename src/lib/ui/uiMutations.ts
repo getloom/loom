@@ -15,6 +15,13 @@ export const Ping: Mutations['Ping'] = async ({invoke}) => {
 	return result;
 };
 
+export const Ephemera: Mutations['Ephemera'] = async ({invoke, ui: {ephemera}}) => {
+	const result = await invoke();
+	if (!result.ok) return result;
+	ephemera.set(result.value);
+	return result;
+};
+
 export const SetMobile: Mutations['SetMobile'] = ({params, ui: {mobile}}) => {
 	mobile.set(params);
 };

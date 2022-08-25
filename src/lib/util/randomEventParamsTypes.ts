@@ -30,6 +30,7 @@ import type {
 	ReadTiesParams,
 	DeleteTieParams,
 	PingParams,
+	EphemeraParams,
 	ToggleMainNavParams,
 	ToggleSecondaryNavParams,
 	SetMobileParams,
@@ -125,6 +126,7 @@ export interface RandomEventParams {
 	ReadTies: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadTiesParams>;
 	DeleteTie: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteTieParams>;
 	Ping: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<PingParams>;
+	Ephemera: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<EphemeraParams>;
 	ToggleMainNav: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

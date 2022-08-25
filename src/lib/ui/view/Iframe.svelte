@@ -1,9 +1,17 @@
 <script lang="ts">
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app';
 
 	const viewContext = getViewContext();
 	$: ({space} = $viewContext);
+
+	const {
+		ui: {ephemera},
+	} = getApp();
+
+	// eslint-disable-next-line no-console
+	$: console.log(`TODO forward $ephemera`, $ephemera);
 
 	export let src: string;
 
