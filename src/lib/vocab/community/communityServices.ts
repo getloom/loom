@@ -43,25 +43,55 @@ export const ReadCommunitiesService: ServiceByName['ReadCommunities'] = {
 	},
 };
 
-//Returns a single community object
+//Returns a single community with its related data.
 export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 	event: ReadCommunity,
 	perform: async ({repos, params, account_id}) => {
-		log.trace('[ReadCommunity] account', account_id); // TODO logging
-		log.trace('[ReadCommunity] community', params.community_id);
+		const {community_id} = params;
 
-		const findCommunityResult = await repos.community.findById(params.community_id);
+		log.trace('[ReadCommunity] account', account_id); // TODO logging
+		log.trace('[ReadCommunity] community', community_id);
+
+		const findCommunityResult = await repos.community.findById(community_id);
 		if (!findCommunityResult.ok) {
-			return {
-				ok: false,
-				status: 404,
-				message: 'no community found',
-			};
+			return {ok: false, status: 404, message: 'no community found'};
 		}
+
+		const [spacesResult, membershipsResult] = await Promise.all([
+			repos.space.filterByCommunity(community_id),
+			repos.membership.filterByCommunityId(community_id),
+		]);
+		if (!spacesResult.ok) {
+			return {ok: false, status: 500, message: 'failed to filter spaces'};
+		}
+		if (!membershipsResult.ok) {
+			return {ok: false, status: 500, message: 'failed to filter memberships'};
+		}
+		const spaces = spacesResult.value;
+
+		// TODO is this more efficient than parallelizing `persona.filterByCommunity`?
+		const personaIds = membershipsResult.value.map((m) => m.persona_id);
+		const [personasResult, directoriesResult] = await Promise.all([
+			repos.persona.filterByIds(personaIds),
+			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
+		]);
+		if (!personasResult.ok) {
+			return {ok: false, status: 500, message: 'failed to filter personas'};
+		}
+		if (!directoriesResult.ok) {
+			return {ok: false, status: 500, message: 'failed to filter directories'};
+		}
+
 		return {
 			ok: true,
 			status: 200,
-			value: {community: findCommunityResult.value},
+			value: {
+				community: findCommunityResult.value,
+				spaces,
+				directories: directoriesResult.value,
+				memberships: membershipsResult.value,
+				personas: personasResult.value,
+			},
 		};
 	},
 };
@@ -164,7 +194,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 					message: 'error creating community default spaces',
 				};
 			}
-			const spaces = createDefaultSpaceResult.value;
+			const {spaces, directories} = createDefaultSpaceResult.value;
 
 			return {
 				ok: true,
@@ -172,7 +202,8 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				value: {
 					community,
 					spaces,
-					communityPersona,
+					directories,
+					personas: [communityPersona], // TODO add the requesting persona just for completion, after we add `actor` to all events
 					memberships: [communityPersonaMembershipResult.value, creatorMembershipResult.value],
 				},
 			};

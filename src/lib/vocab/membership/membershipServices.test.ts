@@ -17,10 +17,10 @@ test__membershipServices.before(setupDb);
 test__membershipServices.after(teardownDb);
 
 test__membershipServices('disallow creating duplicate memberships', async ({db, random}) => {
-	const {community, persona, account} = await random.community();
+	const {community, personas, account} = await random.community();
 	unwrapError(
 		await CreateMembershipService.perform({
-			params: {community_id: community.community_id, persona_id: persona.persona_id},
+			params: {community_id: community.community_id, persona_id: personas[1].persona_id},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
@@ -43,14 +43,14 @@ test__membershipServices(
 );
 
 test__membershipServices('delete a membership in a community', async ({db, random}) => {
-	const {community, persona, account} = await random.community();
+	const {community, personas, account} = await random.community();
 	unwrap(
 		await DeleteMembershipService.perform({
-			params: {persona_id: persona.persona_id, community_id: community.community_id},
+			params: {persona_id: personas[1].persona_id, community_id: community.community_id},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
-	unwrapError(await db.repos.membership.findById(persona.persona_id, community.community_id));
+	unwrapError(await db.repos.membership.findById(personas[1].persona_id, community.community_id));
 });
 
 test__membershipServices('fail to delete a personal membership', async ({db, random}) => {
@@ -65,14 +65,14 @@ test__membershipServices('fail to delete a personal membership', async ({db, ran
 });
 
 test__membershipServices('fail to delete a community persona membership', async ({db, random}) => {
-	const {community, communityPersona, account} = await random.community();
+	const {community, personas, account} = await random.community();
 	unwrapError(
 		await DeleteMembershipService.perform({
-			params: {persona_id: communityPersona.persona_id, community_id: community.community_id},
+			params: {persona_id: personas[0].persona_id, community_id: community.community_id},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
-	unwrap(await db.repos.membership.findById(communityPersona.persona_id, community.community_id));
+	unwrap(await db.repos.membership.findById(personas[0].persona_id, community.community_id));
 });
 
 test__membershipServices(

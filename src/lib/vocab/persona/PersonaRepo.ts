@@ -58,6 +58,15 @@ export class PersonaRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
+	async filterByIds(personaIds: number[]): Promise<Result<{value: Persona[]}>> {
+		const data = await this.sql<Persona[]>`
+			SELECT persona_id, type, name, account_id, community_id, created, updated 
+			FROM personas WHERE persona_id IN ${this.sql(personaIds)}
+		`;
+		if (!data.length) return NOT_OK;
+		return {ok: true, value: data};
+	}
+
 	async findByCommunityId(community_id: number): Promise<Result<{value: Persona}>> {
 		log.trace('[findByCommunityId]', community_id);
 		const data = await this.sql<Persona[]>`

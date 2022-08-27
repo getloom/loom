@@ -183,15 +183,17 @@ export const createDefaultSpaces = async (
 	serviceRequest: ServiceRequest<any, any>,
 	persona_id: number,
 	community: Community,
-): Promise<Result<{value: Space[]}, ErrorResponse>> => {
+): Promise<Result<{value: {spaces: Space[]; directories: Entity[]}}, ErrorResponse>> => {
 	const spaces: Space[] = [];
+	const directories: Entity[] = [];
 	for (const params of toDefaultSpaces(persona_id, community)) {
 		// eslint-disable-next-line no-await-in-loop
 		const result = await CreateSpaceService.perform({...serviceRequest, params});
 		if (!result.ok) return {ok: false, message: 'failed to create default spaces'};
 		spaces.push(result.value.space);
+		directories.push(result.value.directory);
 	}
-	return {ok: true, value: spaces};
+	return {ok: true, value: {spaces, directories}};
 };
 
 export const createDefaultAdminSpaces = async (

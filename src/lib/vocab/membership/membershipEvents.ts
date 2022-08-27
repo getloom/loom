@@ -3,6 +3,7 @@ import type {ServiceEventInfo} from '$lib/vocab/event/event';
 export const CreateMembership: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'CreateMembership',
+	broadcast: true,
 	params: {
 		$id: '/schemas/CreateMembershipParams.json',
 		type: 'object',
@@ -32,6 +33,7 @@ export const CreateMembership: ServiceEventInfo = {
 export const DeleteMembership: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'DeleteMembership',
+	broadcast: true,
 	params: {
 		$id: '/schemas/DeleteMembershipParams.json',
 		type: 'object',

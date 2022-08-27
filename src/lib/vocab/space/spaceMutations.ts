@@ -1,20 +1,15 @@
-import {writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import {deleteEntity, upsertEntity} from '$lib/vocab/entity/entityMutationHelpers';
+import {deleteEntity} from '$lib/vocab/entity/entityMutationHelpers';
+import {upsertSpaces} from './spaceMutationHelpers';
 
 export const CreateSpace: Mutations['CreateSpace'] = async ({invoke, ui}) => {
-	const {spaceById, spaces} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {space: $space, directory: $directory} = result.value;
-	// TODO use an `updateSpace` helper here like with entities and use it in `UpdateSpace` and `SetSession`
-	const space = writable($space);
-	spaceById.set($space.space_id, space);
-	spaces.mutate(($spaces) => $spaces.push(space));
-	upsertEntity(ui, $directory);
+	upsertSpaces(ui, [$space], [$directory]);
 	return result;
 };
 

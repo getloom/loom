@@ -102,9 +102,9 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 					message: 'error creating community default spaces',
 				};
 			}
-			const spaces = createDefaultSpaceResult.value;
+			const {spaces, directories} = createDefaultSpaceResult.value;
 
-			return {ok: true, status: 200, value: {persona, community, spaces, membership}};
+			return {ok: true, status: 200, value: {persona, community, spaces, directories, membership}};
 		}),
 };
 

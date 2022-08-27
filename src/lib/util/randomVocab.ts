@@ -127,22 +127,21 @@ export class RandomVocabContext {
 		account?: Account,
 	): Promise<{
 		community: Community;
-		communityPersona: Persona;
 		memberships: Membership[];
 		spaces: Space[];
-		persona: Persona;
+		personas: Persona[];
 		account: Account;
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona, account} = await this.persona(account));
 		const params = randomCommunityParams(persona.persona_id);
-		const {community, communityPersona, memberships, spaces} = unwrap(
+		const {community, personas, memberships, spaces} = unwrap(
 			await CreateCommunityService.perform({
 				...toServiceRequestMock(account.account_id, this.db),
 				params,
 			}),
 		);
-		return {community, communityPersona, memberships, spaces, persona, account};
+		return {community, memberships, spaces, personas: personas.concat(persona), account};
 	}
 
 	async space(

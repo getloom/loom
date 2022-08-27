@@ -3,45 +3,44 @@ import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import type {WritableUi} from '$lib/ui/ui';
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
+import type {Entity} from '$lib/vocab/entity/entity';
 import type {Membership} from '$lib/vocab//membership/membership';
+import {upsertSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 
-export const addCommunity = (
-	{
-		memberships,
-		spaceById,
-		spaces,
-		spaceIdSelectionByCommunityId,
-		communityById,
-		communities,
-	}: WritableUi,
+export const upsertCommunity = (
+	ui: WritableUi,
 	$community: Community,
-	$communitySpaces: Space[],
+	$spaces: Space[],
+	$directories: Entity[],
 	$memberships: Membership[],
 ): Writable<Community> => {
-	memberships.mutate(($ms) => $ms.push(...$memberships.map(($m) => writable($m))));
+	const {memberships, communityById, communities} = ui;
 
-	// TODO what's the right order of updating `communities` and `spaces`?
-	// We may get circular derived dependencies that put things in a bad state if either one is
-	// updated first, in which case we may need something like deferred store transaction updates.
-
-	let $spacesToAdd: Space[] | null = null;
-	for (const $space of $communitySpaces) {
-		if (!spaceById.has($space.space_id)) {
-			($spacesToAdd || ($spacesToAdd = [])).push($space);
+	// TODO `membershipMutationHelpers`
+	const $ms = memberships.get().value;
+	let addedMemberships = false;
+	for (const $m of $memberships) {
+		// TODO could speed this up with a map cached by compound key
+		if (
+			!$ms.find(
+				(m) => $m.community_id === m.get().community_id && $m.persona_id === m.get().persona_id,
+			)
+		) {
+			$ms.push(writable($m));
+			addedMemberships = true;
 		}
 	}
-	if ($spacesToAdd) {
-		const spacesToAdd = $spacesToAdd.map((s) => writable(s));
-		spacesToAdd.forEach((s, i) => spaceById.set($spacesToAdd![i].space_id, s));
-		spaces.mutate(($spaces) => $spaces.push(...spacesToAdd));
+	if (addedMemberships) memberships.mutate();
+
+	upsertSpaces(ui, $spaces, $directories);
+
+	let community = communityById.get($community.community_id);
+	if (community) {
+		community.set($community);
+	} else {
+		community = writable($community);
+		communityById.set($community.community_id, community);
+		communities.mutate(($communities) => $communities.push(community!));
 	}
-	spaceIdSelectionByCommunityId.mutate(($s) => {
-		$s.set($community.community_id, $communitySpaces[0].space_id);
-	});
-	const community = writable($community);
-	// TODO this updates the map before the store array because it may be derived,
-	// but is the better implementation to use a `mutable` wrapping a map, no array?
-	communityById.set($community.community_id, community);
-	communities.mutate(($communities) => $communities.push(community));
 	return community;
 };

@@ -2,7 +2,7 @@ import {goto} from '$app/navigation';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {addPersona} from '$lib/vocab/persona/personaMutationHelpers';
-import {addCommunity} from '$lib/vocab/community/communityMutationHelpers';
+import {upsertCommunity} from '$lib/vocab/community/communityMutationHelpers';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
@@ -14,17 +14,33 @@ export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) =>
 	return result;
 };
 
+export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) => {
+	const result = await invoke();
+	if (!result.ok) return result;
+	const {
+		community: $community,
+		spaces: $spaces,
+		directories: $directories,
+		memberships: $memberships,
+		personas: $personas,
+	} = result.value;
+	for (const $persona of $personas) addPersona(ui, $persona);
+	upsertCommunity(ui, $community, $spaces, $directories, $memberships);
+	return result;
+};
+
 export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {
 		community: $community,
 		spaces: $spaces,
+		directories: $directories,
 		memberships: $memberships,
-		communityPersona: $persona,
+		personas: $personas,
 	} = result.value;
-	addPersona(ui, $persona);
-	addCommunity(ui, $community, $spaces, $memberships);
+	for (const $persona of $personas) addPersona(ui, $persona);
+	upsertCommunity(ui, $community, $spaces, $directories, $memberships);
 	return result;
 };
 
@@ -47,7 +63,7 @@ export const UpdateCommunitySettings: Mutations['UpdateCommunitySettings'] = asy
 	return result;
 };
 
-export const DeleteCommunity: Mutations['UpdateCommunitySettings'] = async ({
+export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({
 	params,
 	invoke,
 	ui: {
