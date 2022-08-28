@@ -1,17 +1,30 @@
 <script lang="ts">
+	import FeltWindowHost from '@feltcoop/felt/ui/FeltWindowHost.svelte';
+
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import {getApp} from '$lib/ui/app';
 
 	const viewContext = getViewContext();
-	$: ({space} = $viewContext);
+	$: ({space, persona} = $viewContext);
 
 	const {
+		dispatch,
 		ui: {ephemera},
 	} = getApp();
 
-	// eslint-disable-next-line no-console
-	$: console.log(`TODO forward $ephemera`, $ephemera);
+	let postMessage: ((message: any) => void) | undefined;
+
+	// Forward ephemera to the iframe:
+	$: if (
+		postMessage && // wait for init
+		$ephemera && // there may be no ephemera
+		$ephemera.space_id === $space.space_id && // scope to this space
+		$ephemera.actor !== $persona.persona_id // don't forward ephemera created by the user
+	) {
+		// TODO forward `actor: $ephemera.actor` if user allows it
+		postMessage({type: 'Ephemera', data: $ephemera.data}); // don't forward the space_id
+	}
 
 	export let src: string;
 
@@ -21,16 +34,22 @@
 <!-- TODO figure out sandboxing -- allow-same-origin? -->
 
 <div class="iframe-wrapper">
-	<iframe
-		sandbox="allow-scripts allow-pointer-lock"
-		frameborder="0"
-		title={$space.name}
-		{src}
-		on:load={() => (loaded = true)}
-	/>
+	<iframe frameborder="0" title={$space.name} {src} on:load={() => (loaded = true)} />
 	{#if !loaded}
 		<PendingAnimationOverlay />
 	{/if}
+	<FeltWindowHost
+		key={$space.space_id}
+		bind:postMessage
+		on:message={(e) => {
+			if (e.detail?.type === 'Ephemera') {
+				// TODO validate automatically
+				const data = e.detail.params;
+				if (!data) return;
+				void dispatch.Ephemera({actor: $persona.persona_id, space_id: $space.space_id, data});
+			}
+		}}
+	/>
 </div>
 
 <style>

@@ -404,6 +404,7 @@ export interface EphemeraParams {
 	actor: number;
 	space_id: number;
 	data: {
+		type: string;
 		[k: string]: unknown;
 	};
 }
@@ -411,6 +412,7 @@ export interface EphemeraResponse {
 	actor: number;
 	space_id: number;
 	data: {
+		type: string;
 		[k: string]: unknown;
 	};
 }

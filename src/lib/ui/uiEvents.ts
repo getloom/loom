@@ -28,7 +28,7 @@ export const Ephemera: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			space_id: {type: 'number'},
-			data: {type: 'object'},
+			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
 		additionalProperties: false,
@@ -39,7 +39,7 @@ export const Ephemera: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			space_id: {type: 'number'},
-			data: {type: 'object'},
+			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
 		additionalProperties: false,

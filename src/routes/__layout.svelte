@@ -3,7 +3,6 @@
 	import '$lib/ui/style.css';
 	import {setDevmode} from '@feltcoop/felt/ui/devmode.js';
 	import DevmodeControls from '@feltcoop/felt/ui/DevmodeControls.svelte';
-	import FeltWindowHost from '@feltcoop/felt/ui/FeltWindowHost.svelte';
 	import {session, page} from '$app/stores';
 	import {browser} from '$app/env';
 	import Dialogs from '@feltcoop/felt/ui/dialog/Dialogs.svelte';
@@ -18,12 +17,10 @@
 	import {syncUiToUrl} from '$lib/ui/syncUiToUrl';
 	import {toDispatch, toDispatchBroadcastMessage} from '$lib/app/dispatch';
 	import {setApp} from '$lib/ui/app';
-	import {randomHue} from '$lib/ui/color';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
 	import {WEBSOCKET_URL} from '$lib/config';
 	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient';
 	import {toHttpApiClient} from '$lib/ui/HttpApiClient';
-	import {GUEST_PERSONA_NAME} from '$lib/vocab/persona/constants';
 	import {findHttpService, findWebsocketService} from '$lib/ui/services';
 	import Contextmenu from '$lib/ui/contextmenu/Contextmenu.svelte';
 	import {components} from '$lib/app/components';
@@ -93,7 +90,7 @@
 	// https://github.com/feltcoop/felt-server/pull/397/files#r923790411
 	$: dispatch.SetSession({session: $session});
 
-	const {mobile, layout, contextmenu, dialogs, account, sessionPersonas, personaSelection} = ui;
+	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection} = ui;
 
 	$: guest = $session.guest;
 	$: onboarding = !guest && !$sessionPersonas.length;
@@ -149,7 +146,6 @@
 	<DevmodeControls {devmode} />
 	<Dialogs {dialogs} on:close={() => dispatch.CloseDialog()} />
 	<Contextmenu {contextmenu} {LinkContextmenu} />
-	<FeltWindowHost query={() => ({hue: randomHue($account?.name || GUEST_PERSONA_NAME)})} />
 </div>
 
 <style>
