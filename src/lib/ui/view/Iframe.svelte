@@ -39,7 +39,6 @@
 		<PendingAnimationOverlay />
 	{/if}
 	<FeltWindowHost
-		key={$space.space_id}
 		bind:postMessage
 		on:message={(e) => {
 			if (e.detail?.type === 'Ephemera') {
