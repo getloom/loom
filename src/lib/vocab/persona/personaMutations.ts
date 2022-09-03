@@ -1,5 +1,5 @@
 import type {Mutations} from '$lib/app/eventTypes';
-import {addPersona} from '$lib/vocab/persona/personaMutationHelpers';
+import {upsertPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {upsertCommunity} from '$lib/vocab/community/communityMutationHelpers';
 
 export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({invoke, ui}) => {
@@ -12,7 +12,7 @@ export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({i
 		directories: $directories,
 		membership: $membership,
 	} = result.value;
-	addPersona(ui, $persona);
+	upsertPersonas(ui, [$persona]);
 	upsertCommunity(ui, $community, $spaces, $directories, [$membership]);
 	return result;
 };
