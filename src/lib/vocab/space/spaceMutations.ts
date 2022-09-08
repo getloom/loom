@@ -66,3 +66,19 @@ export const UpdateSpace: Mutations['UpdateSpace'] = async ({invoke, params, ui:
 	space!.set(updatedSpace);
 	return result;
 };
+
+export const ReadSpace: Mutations['ReadSpace'] = async ({invoke, ui}) => {
+	const result = await invoke();
+	if (!result.ok) return result;
+	const {space: $space, directory: $directory} = result.value;
+	upsertSpaces(ui, [$space], [$directory]);
+	return result;
+};
+
+export const ReadSpaces: Mutations['ReadSpaces'] = async ({invoke, ui}) => {
+	const result = await invoke();
+	if (!result.ok) return result;
+	const {spaces: $spaces, directories: $directories} = result.value;
+	upsertSpaces(ui, $spaces, $directories);
+	return result;
+};

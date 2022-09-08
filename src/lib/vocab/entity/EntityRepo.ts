@@ -21,6 +21,15 @@ export class EntityRepo extends PostgresRepo {
 		return {ok: true, value: entity[0]};
 	}
 
+	async findById(entity_id: number): Promise<Result<{value: Entity}>> {
+		const data = await this.sql<Entity[]>`
+			SELECT entity_id, data, persona_id, created, updated 
+			FROM entities WHERE entity_id=${entity_id}
+		`;
+		if (!data.length) return NOT_OK;
+		return {ok: true, value: data[0]};
+	}
+
 	// TODO maybe `EntityQuery`?
 	async filterByIds(entityIds: number[]): Promise<Result<{value: Entity[]}, ErrorResponse>> {
 		if (entityIds.length === 0) return {ok: true, value: []};

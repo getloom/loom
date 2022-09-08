@@ -23,7 +23,7 @@ export const CreateSpace: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			space: {$ref: '/schemas/Space.json', tsType: 'Space'},
-			directory: {$ref: '/schemas/Entity.json', tsType: 'Entity & {data: DirectoryEntityData}'}, // TODO make this a generic instead?
+			directory: {$ref: '/schemas/Entity.json', tsType: 'Entity & {data: DirectoryEntityData}'},
 		},
 		required: ['space', 'directory'],
 		additionalProperties: false,
@@ -52,8 +52,9 @@ export const ReadSpace: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			space: {$ref: '/schemas/Space.json', tsType: 'Space'},
+			directory: {$ref: '/schemas/Entity.json', tsType: 'Entity & {data: DirectoryEntityData}'},
 		},
-		required: ['space'],
+		required: ['space', 'directory'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<ReadSpaceResponseResult>',
@@ -80,8 +81,12 @@ export const ReadSpaces: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
+			directories: {
+				type: 'array',
+				items: {$ref: '/schemas/Entity.json', tsType: '(Entity & {data: DirectoryEntityData})'},
+			},
 		},
-		required: ['spaces'],
+		required: ['spaces', 'directories'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<ReadSpacesResponseResult>',

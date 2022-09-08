@@ -17,6 +17,8 @@ import {OK, type Result} from '@feltcoop/felt';
 import type {Community} from '$lib/vocab/community/community';
 import type {CommunityPersona} from '$lib/vocab/persona/persona';
 import type {Space} from '$lib/vocab/space/space';
+import type {Entity} from '$lib/vocab/entity/entity';
+import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -88,7 +90,7 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 			value: {
 				community: findCommunityResult.value,
 				spaces,
-				directories: directoriesResult.value,
+				directories: directoriesResult.value as Array<Entity & {data: DirectoryEntityData}>,
 				memberships: membershipsResult.value,
 				personas: personasResult.value,
 			},

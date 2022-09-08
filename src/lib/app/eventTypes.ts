@@ -185,7 +185,7 @@ export interface CreateCommunityParams {
 export interface CreateCommunityResponse {
 	community: Community;
 	spaces: Space[];
-	directories: Entity[];
+	directories: (Entity & {data: DirectoryEntityData})[];
 	memberships: Membership[];
 	personas: Persona[];
 }
@@ -197,7 +197,7 @@ export interface ReadCommunityParams {
 export interface ReadCommunityResponse {
 	community: Community;
 	spaces: Space[];
-	directories: Entity[];
+	directories: (Entity & {data: DirectoryEntityData})[];
 	memberships: Membership[];
 	personas: Persona[];
 }
@@ -231,7 +231,7 @@ export interface CreateAccountPersonaResponse {
 	persona: AccountPersona;
 	community: Community;
 	spaces: Space[];
-	directories: Entity[];
+	directories: (Entity & {data: DirectoryEntityData})[];
 	membership: Membership;
 }
 export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaResponse>;
@@ -279,6 +279,7 @@ export interface ReadSpaceParams {
 }
 export interface ReadSpaceResponse {
 	space: Space;
+	directory: Entity & {data: DirectoryEntityData};
 }
 export type ReadSpaceResponseResult = ApiResult<ReadSpaceResponse>;
 
@@ -287,6 +288,7 @@ export interface ReadSpacesParams {
 }
 export interface ReadSpacesResponse {
 	spaces: Space[];
+	directories: (Entity & {data: DirectoryEntityData})[];
 }
 export type ReadSpacesResponseResult = ApiResult<ReadSpacesResponse>;
 

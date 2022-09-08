@@ -22,7 +22,7 @@ import {DeleteEntitiesService} from '$lib/vocab/entity/entityServices';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 
-//Returns a single space object
+//Returns a single space object and its directory.
 export const ReadSpaceService: ServiceByName['ReadSpace'] = {
 	event: ReadSpace,
 	perform: async ({repos, params}) => {
@@ -32,7 +32,15 @@ export const ReadSpaceService: ServiceByName['ReadSpace'] = {
 		if (!findSpaceResult.ok) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
-		return {ok: true, status: 200, value: {space: findSpaceResult.value}};
+		const space = findSpaceResult.value;
+
+		const findDirectoryResult = await repos.entity.findById(space.directory_id);
+		if (!findDirectoryResult.ok) {
+			return {ok: false, status: 404, message: 'no directory found'};
+		}
+		const directory = findDirectoryResult.value as Entity & {data: DirectoryEntityData};
+
+		return {ok: true, status: 200, value: {space, directory}};
 	},
 };
 
@@ -46,7 +54,19 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 		if (!findSpacesResult.ok) {
 			return {ok: false, status: 500, message: 'error searching for community spaces'};
 		}
-		return {ok: true, status: 200, value: {spaces: findSpacesResult.value}};
+		const spaces = findSpacesResult.value;
+
+		const filterDirectoriesResult = await repos.entity.filterByIds(
+			spaces.map((s) => s.directory_id),
+		);
+		if (!filterDirectoriesResult.ok) {
+			return {ok: false, status: 500, message: 'failed to filter directories'};
+		}
+		const directories = filterDirectoriesResult.value as Array<
+			Entity & {data: DirectoryEntityData}
+		>;
+
+		return {ok: true, status: 200, value: {spaces, directories}};
 	},
 };
 
@@ -183,9 +203,14 @@ export const createDefaultSpaces = async (
 	serviceRequest: ServiceRequest<any, any>,
 	persona_id: number,
 	community: Community,
-): Promise<Result<{value: {spaces: Space[]; directories: Entity[]}}, ErrorResponse>> => {
+): Promise<
+	Result<
+		{value: {spaces: Space[]; directories: Array<Entity & {data: DirectoryEntityData}>}},
+		ErrorResponse
+	>
+> => {
 	const spaces: Space[] = [];
-	const directories: Entity[] = [];
+	const directories: Array<Entity & {data: DirectoryEntityData}> = [];
 	for (const params of toDefaultSpaces(persona_id, community)) {
 		// eslint-disable-next-line no-await-in-loop
 		const result = await CreateSpaceService.perform({...serviceRequest, params});

@@ -3,6 +3,8 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 import {blue, gray} from 'kleur/colors';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
+import type {Entity} from '$lib/vocab/entity/entity';
+import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {ClientAccountSession} from '$lib/session/clientSession';
 
 const log = new Logger(gray('[') + blue('SessionRepo') + gray(']'));
@@ -35,7 +37,9 @@ export class SessionRepo extends PostgresRepo {
 		if (!personasResult.ok) return personasResult;
 
 		const spaces = spacesResult.value.map((r) => r.space);
-		const directories = spacesResult.value.map((r) => r.entity);
+		const directories = spacesResult.value.map((r) => r.entity) as Array<
+			Entity & {data: DirectoryEntityData}
+		>;
 
 		return {
 			ok: true,

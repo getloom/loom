@@ -20,7 +20,10 @@ export const CreateCommunity: ServiceEventInfo = {
 		properties: {
 			community: {$ref: '/schemas/Community.json', tsType: 'Community'},
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
-			directories: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			directories: {
+				type: 'array',
+				items: {$ref: '/schemas/Entity.json', tsType: '(Entity & {data: DirectoryEntityData})'},
+			},
 			memberships: {type: 'array', items: {$ref: '/schemas/Membership.json', tsType: 'Membership'}},
 			personas: {type: 'array', items: {$ref: '/schemas/Persona.json', tsType: 'Persona'}},
 		},
@@ -52,7 +55,10 @@ export const ReadCommunity: ServiceEventInfo = {
 		properties: {
 			community: {$ref: '/schemas/Community.json', tsType: 'Community'},
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
-			directories: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			directories: {
+				type: 'array',
+				items: {$ref: '/schemas/Entity.json', tsType: '(Entity & {data: DirectoryEntityData})'},
+			},
 			memberships: {type: 'array', items: {$ref: '/schemas/Membership.json', tsType: 'Membership'}},
 			personas: {type: 'array', items: {$ref: '/schemas/Persona.json', tsType: 'Persona'}},
 		},
