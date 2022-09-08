@@ -3,8 +3,8 @@
 	import '$lib/ui/style.css';
 	import {setDevmode} from '@feltcoop/felt/ui/devmode.js';
 	import DevmodeControls from '@feltcoop/felt/ui/DevmodeControls.svelte';
-	import {session, page} from '$app/stores';
-	import {browser} from '$app/env';
+	import {page} from '$app/stores';
+	import {browser} from '$app/environment';
 	import Dialogs from '@feltcoop/felt/ui/dialog/Dialogs.svelte';
 	import {Logger} from '@feltcoop/felt/util/log.js';
 	import {isEditable, swallow} from '@feltcoop/felt/util/dom.js';
@@ -31,6 +31,9 @@
 	import LinkContextmenu from '$lib/app/contextmenu/LinkContextmenu.svelte';
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
 	import {deserialize, deserializers} from '$lib/util/deserialize';
+	import type {ClientSession} from '$lib/session/clientSession';
+
+	export let data: ClientSession; // TODO should be `LayoutServerLoad`, right? but doesn't typecheck if so
 
 	const log = new Logger('[layout]');
 
@@ -51,7 +54,7 @@
 		(message) => websocketClient.handle(message.data),
 		() => dispatch.Ping(),
 	);
-	const ui = toUi(initialMobileValue, components, (errorMessage) => {
+	const ui = toUi(data, initialMobileValue, components, (errorMessage) => {
 		dispatch.OpenDialog({Component: ErrorMessage, props: {text: errorMessage}});
 	});
 	setUi(ui);
@@ -70,7 +73,7 @@
 				if ($session.guest) {
 					await dispatch.Logout();
 				} else {
-					$session = {guest: true};
+					dispatch.SetSession({session: {guest: true}});
 				}
 			} else {
 				log.error('unhandled status message', message);
@@ -88,6 +91,7 @@
 
 	// TODO might need to dispatch during initialization:
 	// https://github.com/feltcoop/felt-server/pull/397/files#r923790411
+	const {session} = ui;
 	$: dispatch.SetSession({session: $session});
 
 	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection} = ui;

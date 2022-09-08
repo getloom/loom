@@ -1,5 +1,4 @@
-import {browser} from '$app/env';
-import {session as sveltekitSession} from '$app/stores';
+import {browser} from '$app/environment';
 import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
@@ -8,11 +7,13 @@ import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {Persona} from '$lib/vocab/persona/persona';
 import {upsertEntity} from '$lib/vocab/entity/entityMutationHelpers';
+import type {ClientSession} from '$lib/session/clientSession';
 
 const log = new Logger('[ui]');
 
-export const SetSession: Mutations['SetSession'] = async ({params: {session}, ui}) => {
+export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	const {
+		session,
 		account,
 		personaById,
 		communityById,
@@ -33,31 +34,34 @@ export const SetSession: Mutations['SetSession'] = async ({params: {session}, ui
 		freshnessByDirectoryId,
 		freshnessByCommunityId,
 	} = ui;
-	const {guest} = session;
 
-	if (browser) log.trace('[setSession]', session);
-	deserialize(deserializers)(session);
-	account.set(guest ? null : session.account);
+	const $session = params.session;
+	session.set($session);
+	const {guest} = $session;
 
-	const $personas = (guest ? [] : toInitialPersonas(session)).map((p) => writable(p));
+	if (browser) log.trace('[setSession]', $session);
+	deserialize(deserializers)($session);
+	account.set(guest ? null : $session.account);
+
+	const $personas = (guest ? [] : toInitialPersonas($session)).map((p) => writable(p));
 	personaById.clear();
 	$personas.forEach((p) => personaById.set(p.get().persona_id, p));
 	personas.swap($personas);
 
-	const $sessionPersonas = guest ? [] : session.sessionPersonas;
+	const $sessionPersonas = guest ? [] : $session.sessionPersonas;
 	sessionPersonas.set($sessionPersonas.map((p) => personaById.get(p.persona_id)!));
 
-	const $communities = (guest ? [] : session.communities).map((p) => writable(p));
+	const $communities = (guest ? [] : $session.communities).map((p) => writable(p));
 	communityById.clear();
 	$communities.forEach((c) => communityById.set(c.get().community_id, c));
 	communities.swap($communities);
 
-	const $spaces = guest ? [] : session.spaces.map((s) => writable(s));
+	const $spaces = guest ? [] : $session.spaces.map((s) => writable(s));
 	spaceById.clear();
 	$spaces.forEach((s) => spaceById.set(s.get().space_id, s));
 	spaces.swap($spaces);
 
-	memberships.swap(guest ? [] : session.memberships.map((s) => writable(s)));
+	memberships.swap(guest ? [] : $session.memberships.map((s) => writable(s)));
 
 	// TODO fix this and the 2 below to use the URL to initialize the correct persona+community+space
 	const $firstSessionPersona = guest ? null : $sessionPersonas[0];
@@ -75,12 +79,12 @@ export const SetSession: Mutations['SetSession'] = async ({params: {session}, ui
 		new Map(
 			guest
 				? null
-				: session.communities.map(($community) => [
+				: $session.communities.map(($community) => [
 						$community.community_id,
 						spaceIdSelectionByCommunityId
 							.getJson()
 							?.find((v) => v[0] === $community.community_id)?.[1] ||
-							session.spaces.find(
+							$session.spaces.find(
 								(s) => s.community_id === $community.community_id && isHomeSpace(s),
 							)?.space_id ||
 							null,
@@ -98,7 +102,7 @@ export const SetSession: Mutations['SetSession'] = async ({params: {session}, ui
 	freshnessByCommunityId.clear();
 
 	// Add entities after the other stores are ready.
-	if (!guest) session.directories.forEach((d) => upsertEntity(ui, d));
+	if (!guest) $session.directories.forEach((d) => upsertEntity(ui, d));
 };
 
 // TODO This is a hack until we figure out how to handle "session personas" differently from the rest.
@@ -118,16 +122,16 @@ const toInitialPersonas = (session: ClientSession): Persona[] =>
 				),
 		  );
 
-export const Login: Mutations['Login'] = async ({invoke}) => {
+export const Login: Mutations['Login'] = async ({invoke, dispatch}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	sveltekitSession.set(result.value.session);
+	dispatch.SetSession({session: result.value.session});
 	return result;
 };
 
-export const Logout: Mutations['Logout'] = async ({invoke}) => {
+export const Logout: Mutations['Logout'] = async ({invoke, dispatch}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	sveltekitSession.set({guest: true});
+	dispatch.SetSession({session: {guest: true}});
 	return result;
 };

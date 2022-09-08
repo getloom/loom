@@ -29,16 +29,26 @@
 	export let src: string;
 
 	let loaded = false;
+
+	let el: HTMLIFrameElement;
+	$: tenant = el?.contentWindow || undefined; // TODO remove this line after upgrading Felt to 0.39.1
 </script>
 
 <!-- TODO figure out sandboxing -- allow-same-origin? -->
 
 <div class="iframe-wrapper">
-	<iframe frameborder="0" title={$space.name} {src} on:load={() => (loaded = true)} />
+	<iframe
+		bind:this={el}
+		frameborder="0"
+		title={$space.name}
+		{src}
+		on:load={() => (loaded = true)}
+	/>
 	{#if !loaded}
 		<PendingAnimationOverlay />
 	{/if}
 	<FeltWindowHost
+		{tenant}
 		bind:postMessage
 		on:message={(e) => {
 			if (e.detail?.type === 'Ephemera') {

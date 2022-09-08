@@ -3,6 +3,7 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 import {blue, gray} from 'kleur/colors';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
+import type {ClientAccountSession} from '$lib/session/clientSession';
 
 const log = new Logger(gray('[') + blue('SessionRepo') + gray(']'));
 

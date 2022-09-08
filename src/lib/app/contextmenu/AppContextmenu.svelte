@@ -1,6 +1,4 @@
 <script lang="ts">
-	import {session} from '$app/stores';
-
 	import {getApp} from '$lib/ui/app';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
@@ -11,7 +9,7 @@
 
 	const {
 		dispatch,
-		ui: {sessionPersonas},
+		ui: {session, sessionPersonas},
 	} = getApp();
 </script>
 

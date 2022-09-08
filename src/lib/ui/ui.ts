@@ -8,7 +8,7 @@ import {
 } from '@feltcoop/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent} from 'svelte';
 import type {DialogData} from '@feltcoop/felt/ui/dialog/dialog.js';
-import {browser} from '$app/env';
+import {browser} from '$app/environment';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
@@ -23,6 +23,7 @@ import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 import type {EphemeraResponse} from '$lib/app/eventTypes';
+import type {ClientSession} from '$lib/session/clientSession';
 
 if (browser) initBrowser();
 
@@ -43,6 +44,7 @@ export interface Ui {
 	// db state and caches
 	account: Readable<AccountModel | null>;
 	personas: Mutable<Array<Readable<Persona>>>;
+	session: Readable<ClientSession>;
 	sessionPersonas: Readable<Array<Readable<Persona>>>;
 	sessionPersonaIndices: Readable<Map<Readable<Persona>, number>>;
 	communities: Mutable<Array<Readable<Community>>>;
@@ -86,6 +88,7 @@ export type WritableUi = ReturnType<typeof toUi>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const toUi = (
+	$session: ClientSession,
 	initialMobile: boolean,
 	components: {[key: string]: typeof SvelteComponent},
 	onError: (message: string | undefined) => void,
@@ -94,6 +97,7 @@ export const toUi = (
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
 	// TODO these `Persona`s need additional data compared to every other `Persona`
+	const session = writable<ClientSession>($session); // TODO default value? maybe nullable?
 	const sessionPersonas = writable<Array<Writable<Persona>>>([]);
 	const personas = mutable<Array<Writable<Persona>>>([]);
 	const communities = mutable<Array<Writable<Community>>>([]);
@@ -246,6 +250,7 @@ export const toUi = (
 		components,
 		account,
 		personas,
+		session,
 		sessionPersonas,
 		sessionPersonaIndices,
 		spaces,

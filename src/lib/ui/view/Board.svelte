@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {browser} from '$app/env';
+	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
 
 	import BoardItems from '$lib/ui/BoardItems.svelte';

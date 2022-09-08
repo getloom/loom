@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {browser} from '$app/env';
+	import {browser} from '$app/environment';
 	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';

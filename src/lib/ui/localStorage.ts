@@ -1,4 +1,4 @@
-import {browser} from '$app/env';
+import {browser} from '$app/environment';
 import type {Json} from '@feltcoop/felt/util/json.js';
 // import {Logger} from '@feltcoop/felt/util/log.js';
 

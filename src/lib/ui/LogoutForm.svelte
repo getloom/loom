@@ -1,5 +1,4 @@
 <script lang="ts">
-	import {session} from '$app/stores';
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
 	import Message from '@feltcoop/felt/ui/Message.svelte';
 	import type {LogoutResponseResult} from '$lib/app/eventTypes';
@@ -7,7 +6,10 @@
 	import type {AccountModel} from '$lib/vocab/account/account';
 	import {getApp} from '$lib/ui/app';
 
-	const {dispatch} = getApp();
+	const {
+		dispatch,
+		ui: {session},
+	} = getApp();
 
 	let account: AccountModel | undefined;
 	$: account = $session.guest ? undefined : $session.account;

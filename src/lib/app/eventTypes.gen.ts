@@ -41,6 +41,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {DispatchContext} from '$lib/app/dispatch';
+import type {ClientSession, ClientAccountSession} from '$lib/session/clientSession';
 
 /* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/array-type */
 

@@ -1,9 +1,13 @@
 <script lang="ts">
 	import {onDestroy} from 'svelte';
-	import {session} from '$app/stores';
-	import {browser} from '$app/env';
+	import {browser} from '$app/environment';
 
 	import type {SocketStore} from '$lib/ui/socket';
+	import {getApp} from '$lib/ui/app';
+
+	const {
+		ui: {session},
+	} = getApp();
 
 	export let socket: SocketStore;
 	export let url: string;
