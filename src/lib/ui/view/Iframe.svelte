@@ -31,7 +31,6 @@
 	let loaded = false;
 
 	let el: HTMLIFrameElement;
-	$: tenant = el?.contentWindow || undefined; // TODO remove this line after upgrading Felt to 0.39.1
 </script>
 
 <!-- TODO figure out sandboxing -- allow-same-origin? -->
@@ -48,7 +47,7 @@
 		<PendingAnimationOverlay />
 	{/if}
 	<FeltWindowHost
-		{tenant}
+		tenant={el?.contentWindow}
 		bind:postMessage
 		on:message={(e) => {
 			if (e.detail?.type === 'Ephemera') {

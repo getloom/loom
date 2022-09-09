@@ -1,8 +1,6 @@
-import {goto} from '$app/navigation';
-
 import type {Mutations} from '$lib/app/eventTypes';
+import {deleteCommunity, upsertCommunity} from '$lib/vocab/community/communityMutationHelpers';
 import {upsertPersonas} from '$lib/vocab/persona/personaMutationHelpers';
-import {upsertCommunity} from '$lib/vocab/community/communityMutationHelpers';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
@@ -63,37 +61,10 @@ export const UpdateCommunitySettings: Mutations['UpdateCommunitySettings'] = asy
 	return result;
 };
 
-export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({
-	params,
-	invoke,
-	ui: {
-		communityById,
-		communitySelection,
-		personaSelection,
-		communities,
-		communityIdSelectionByPersonaId,
-		personaById,
-	},
-}) => {
+export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {community_id} = params;
-	const community = communityById.get(community_id)!;
-
-	if (communitySelection.get() === community) {
-		const persona = personaSelection.get()!;
-		await goto('/' + persona.get().name + location.search, {replaceState: true});
-	}
-
-	communityById.delete(community_id);
-	communities.mutate(($communites) => $communites.splice($communites.indexOf(community), 1)); // TODO use fast volatile remove instead, or maybe a set?
-	communityIdSelectionByPersonaId.mutate(($c) => {
-		for (const [persona_id, communityIdSelection] of $c) {
-			if (communityIdSelection === community_id) {
-				$c.set(persona_id, personaById.get(persona_id)!.get().community_id);
-			}
-		}
-	});
-
+	deleteCommunity(ui, community_id);
 	return result;
 };

@@ -41,11 +41,15 @@ export interface Ui {
 	// this should be an interface to lazy-load UI components
 	components: {[key: string]: typeof SvelteComponent};
 
+	// TODO should the mutable flat arrays be sets instead? or mutable maps from id to store?
+	// if the latter, we'd need to change the
+
 	// db state and caches
 	account: Readable<AccountModel | null>;
 	personas: Mutable<Array<Readable<Persona>>>;
 	session: Readable<ClientSession>;
 	sessionPersonas: Readable<Array<Readable<Persona>>>;
+	sessionPersonaIds: Readable<Set<number>>;
 	sessionPersonaIndices: Readable<Map<Readable<Persona>, number>>;
 	communities: Mutable<Array<Readable<Community>>>;
 	spaces: Mutable<Array<Readable<Space>>>;
@@ -151,8 +155,6 @@ export const toUi = (
 	);
 
 	// derived state
-	// TODO speed up these lookups with id maps
-	// TODO remove it from `state`
 	const personaIdSelection = writable<number | null>(null);
 	const personaSelection = derived(
 		[personaIdSelection],
@@ -163,6 +165,10 @@ export const toUi = (
 		[personaSelection, sessionPersonas],
 		([$personaSelection, $sessionPersonas]) =>
 			$personaSelection ? $sessionPersonas.indexOf($personaSelection) : null,
+	);
+	const sessionPersonaIds = derived(
+		[sessionPersonas],
+		([$sessionPersonas]) => new Set($sessionPersonas.map((p) => p.get().persona_id)),
 	);
 	const sessionPersonaIndices = derived(
 		[sessionPersonas],
@@ -195,7 +201,6 @@ export const toUi = (
 			},
 		);
 	// TODO should these be store references instead of ids?
-	// TODO maybe make this a lazy map, not a derived store?
 	const communityIdSelectionByPersonaId = mutable<Map<number, number | null>>(new Map());
 	const communitySelection = derived(
 		[personaIdSelection, communityIdSelectionByPersonaId],
@@ -219,7 +224,6 @@ export const toUi = (
 			null,
 	);
 
-	// TODO this does not have an outer `Writable` -- do we want that much reactivity?
 	const entityById: Map<number, Writable<Entity>> = new Map();
 	const entitiesBySourceId: Map<number, Writable<Array<Writable<Entity>>>> = new Map();
 	const sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Tie[]>>> = mutable(new Map());
@@ -252,6 +256,7 @@ export const toUi = (
 		personas,
 		session,
 		sessionPersonas,
+		sessionPersonaIds,
 		sessionPersonaIndices,
 		spaces,
 		communities,

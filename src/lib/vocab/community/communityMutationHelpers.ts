@@ -1,4 +1,6 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {goto} from '$app/navigation';
+import {removeUnordered} from '@feltcoop/felt/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Community} from '$lib/vocab/community/community';
@@ -43,4 +45,44 @@ export const upsertCommunity = (
 		communities.mutate(($communities) => $communities.push(community!));
 	}
 	return community;
+};
+
+export const deleteCommunity = (ui: WritableUi, community_id: number): void => {
+	const {
+		communityById,
+		communitySelection,
+		personaSelection,
+		communities,
+		communityIdSelectionByPersonaId,
+		personaById,
+		memberships,
+	} = ui;
+
+	const community = communityById.get(community_id)!;
+
+	if (communitySelection.get() === community) {
+		const persona = personaSelection.get()!;
+		void goto('/' + persona.get().name + location.search, {replaceState: true});
+	}
+
+	communityById.delete(community_id);
+	communities.mutate(($communites) => {
+		removeUnordered($communites, $communites.indexOf(community));
+	});
+	communityIdSelectionByPersonaId.mutate(($c) => {
+		for (const [persona_id, communityIdSelection] of $c) {
+			if (communityIdSelection === community_id) {
+				$c.set(persona_id, personaById.get(persona_id)!.get().community_id);
+			}
+		}
+	});
+
+	memberships.swap(memberships.get().value.filter(($m) => $m.get().community_id !== community_id));
+
+	// TODO delete all spaces
+
+	// TODO delete all entities
+
+	// TODO delete the community persona and all non-session personas who were members
+	// but are no longer members of any other communities
 };
