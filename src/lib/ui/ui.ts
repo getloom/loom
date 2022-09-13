@@ -57,25 +57,15 @@ export interface Ui {
 	personaById: Map<number, Readable<Persona>>;
 	communityById: Map<number, Readable<Community>>;
 	spaceById: Map<number, Readable<Space>>;
+	entityById: Map<number, Readable<Entity>>; // TODO mutable inner store
+	// derived state
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
-	entityById: Map<number, Readable<Entity>>; // TODO mutable inner store
 	entitiesBySourceId: Map<number, Readable<Array<Readable<Entity>>>>; // TODO mutable inner store
 	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Tie[]>>>;
 	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Tie[]>>>;
-	// derived state
-	personaIdSelection: Readable<number | null>;
-	personaSelection: Readable<Readable<Persona> | null>;
-	personaIndexSelection: Readable<number | null>;
 	communitiesBySessionPersona: Readable<Map<Readable<Persona>, Array<Readable<Community>>>>;
-	communityIdSelectionByPersonaId: Mutable<Map<number, number | null>>;
-	communitySelection: Readable<Readable<Community> | null>;
-	spaceIdSelectionByCommunityId: Mutable<Map<number, number | null>>;
-	spaceSelection: Readable<Readable<Space> | null>;
-	lastSeenByDirectoryId: Map<number, Writable<number> | null>;
-	freshnessByDirectoryId: Map<number, Readable<boolean>>;
-	freshnessByCommunityId: Map<number, Writable<boolean>>;
 	adminPersonas: Readable<Set<Readable<Persona>>>;
 	// view state
 	mobile: Readable<boolean>;
@@ -86,6 +76,16 @@ export interface Ui {
 	dialogs: Readable<DialogData[]>;
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the community
 	ephemera: Readable<EphemeraResponse | null>;
+	personaIdSelection: Readable<number | null>;
+	personaSelection: Readable<Readable<Persona> | null>;
+	personaIndexSelection: Readable<number | null>;
+	communityIdSelectionByPersonaId: Mutable<Map<number, number | null>>;
+	communitySelection: Readable<Readable<Community> | null>;
+	spaceIdSelectionByCommunityId: Mutable<Map<number, number | null>>;
+	spaceSelection: Readable<Readable<Space> | null>;
+	lastSeenByDirectoryId: Map<number, Writable<number> | null>;
+	freshnessByDirectoryId: Map<number, Readable<boolean>>;
+	freshnessByCommunityId: Map<number, Writable<boolean>>;
 }
 
 export type WritableUi = ReturnType<typeof toUi>;
@@ -264,13 +264,15 @@ export const toUi = (
 		personaById,
 		communityById,
 		spaceById,
+		entityById,
+		// derived state
 		spacesByCommunityId,
 		personasByCommunityId,
-		entityById,
 		entitiesBySourceId,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
 		communitiesBySessionPersona,
+		adminPersonas,
 		// view state
 		mobile,
 		layout,
@@ -290,7 +292,6 @@ export const toUi = (
 		lastSeenByDirectoryId,
 		freshnessByDirectoryId,
 		freshnessByCommunityId,
-		adminPersonas,
 	};
 };
 

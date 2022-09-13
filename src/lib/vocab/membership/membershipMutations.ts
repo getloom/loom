@@ -47,7 +47,7 @@ export const DeleteMembership: Mutations['DeleteMembership'] = async ({params, i
 			return $m.community_id === community_id && $sessionPersonaIds.has($m.persona_id);
 		});
 		if (!hasOtherSessionMembership) {
-			deleteCommunity(ui, community_id);
+			await deleteCommunity(ui, community_id);
 		}
 	}
 

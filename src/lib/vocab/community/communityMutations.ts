@@ -65,6 +65,6 @@ export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, inv
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {community_id} = params;
-	deleteCommunity(ui, community_id);
+	await deleteCommunity(ui, community_id);
 	return result;
 };

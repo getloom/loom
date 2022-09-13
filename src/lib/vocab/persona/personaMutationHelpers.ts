@@ -34,3 +34,13 @@ export const upsertPersonas = (
 		});
 	}
 };
+
+export const deletePersonas = (
+	{personas, personaById}: WritableUi,
+	personasToDelete: Set<Writable<Persona>>,
+): void => {
+	personas.swap(personas.get().value.filter((p) => !personasToDelete.has(p)));
+	for (const persona of personasToDelete) {
+		personaById.delete(persona.get().persona_id);
+	}
+};

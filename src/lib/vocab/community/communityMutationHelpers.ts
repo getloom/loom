@@ -8,6 +8,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Membership} from '$lib/vocab//membership/membership';
 import {upsertSpaces} from '$lib/vocab/space/spaceMutationHelpers';
+import {deleteMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 
 export const upsertCommunity = (
 	ui: WritableUi,
@@ -47,7 +48,7 @@ export const upsertCommunity = (
 	return community;
 };
 
-export const deleteCommunity = (ui: WritableUi, community_id: number): void => {
+export const deleteCommunity = async (ui: WritableUi, community_id: number): Promise<void> => {
 	const {
 		communityById,
 		communitySelection,
@@ -62,7 +63,7 @@ export const deleteCommunity = (ui: WritableUi, community_id: number): void => {
 
 	if (communitySelection.get() === community) {
 		const persona = personaSelection.get()!;
-		void goto('/' + persona.get().name + location.search, {replaceState: true});
+		await goto('/' + persona.get().name + location.search, {replaceState: true});
 	}
 
 	communityById.delete(community_id);
@@ -77,12 +78,12 @@ export const deleteCommunity = (ui: WritableUi, community_id: number): void => {
 		}
 	});
 
-	memberships.swap(memberships.get().value.filter(($m) => $m.get().community_id !== community_id));
+	deleteMemberships(
+		ui,
+		memberships.get().value.filter((m) => m.get().community_id === community_id),
+	);
 
 	// TODO delete all spaces
 
 	// TODO delete all entities
-
-	// TODO delete the community persona and all non-session personas who were members
-	// but are no longer members of any other communities
 };
