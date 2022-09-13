@@ -2,7 +2,8 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
 
-	import NoteItems from '$lib/ui/NotesItems.svelte';
+	import TextInput from '$lib/ui/TextInput.svelte';
+	import NotesItems from '$lib/ui/NotesItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 
@@ -34,18 +35,16 @@
 		text = '';
 	};
 
-	const onKeydown = async (e: KeyboardEvent) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			await createEntity();
-		}
+	const onSubmit = async () => {
+		await createEntity();
 	};
 </script>
 
 <div class="notes">
-	<textarea placeholder="> note" on:keydown={onKeydown} bind:value={text} />
+	<TextInput {persona} on:submit={onSubmit} bind:value={text} placeholder="> note" />
 	<div class="entities">
 		{#if entities}
-			<NoteItems {entities} />
+			<NotesItems {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}
@@ -58,12 +57,6 @@
 		flex-direction: column;
 		flex: 1;
 		overflow: hidden; /* make the content scroll */
-	}
-	textarea {
-		border-left: none;
-		border-right: none;
-		border-top: none;
-		border-radius: 0;
 	}
 	.entities {
 		flex: 1;

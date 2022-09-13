@@ -5,6 +5,7 @@
 	import RoomItems from '$lib/ui/RoomItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
+	import TextInput from '../TextInput.svelte';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
@@ -34,10 +35,8 @@
 		text = '';
 	};
 
-	const onKeydown = async (e: KeyboardEvent) => {
-		if (e.key === 'Enter') {
-			await createEntity();
-		}
+	const onSubmit = async () => {
+		await createEntity();
 	};
 </script>
 
@@ -49,7 +48,7 @@
 			<PendingAnimation />
 		{/if}
 	</div>
-	<input placeholder="> chat" on:keydown={onKeydown} bind:value={text} />
+	<TextInput {persona} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
 </div>
 
 <style>
@@ -66,11 +65,5 @@
 		display: flex;
 		/* makes scrolling start at the bottom */
 		flex-direction: column-reverse;
-	}
-	input {
-		border-left: none;
-		border-right: none;
-		border-bottom: none;
-		border-radius: 0;
 	}
 </style>

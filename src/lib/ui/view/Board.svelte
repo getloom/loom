@@ -10,7 +10,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({persona, space, community} = $viewContext);
 
 	const {dispatch, socket} = getApp();
 
@@ -42,7 +42,13 @@
 					on:click={() =>
 						dispatch.OpenDialog({
 							Component: EntityInput,
-							props: {done: () => dispatch.CloseDialog(), entityName: 'Post', contentForm: true},
+							props: {
+								done: () => dispatch.CloseDialog(),
+								entityName: 'Post',
+								community,
+								persona,
+								contentForm: true,
+							},
 						})}>Submit a new post</button
 				>
 			{/if}

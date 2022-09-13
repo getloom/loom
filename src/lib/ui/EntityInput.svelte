@@ -2,9 +2,14 @@
 	import type {AsyncStatus} from '@feltcoop/felt';
 	import Message from '@feltcoop/felt/ui/Message.svelte';
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
+	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import type {Community} from '$lib/vocab/community/community';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
 		dispatch,
@@ -13,6 +18,8 @@
 
 	export let done: (() => void) | undefined = undefined;
 	export let entityName = 'Entity';
+	export let community: Readable<Community>;
+	export let persona: Readable<Persona>;
 	export let contentForm = false;
 
 	$: selectedPersona = $personaSelection;
@@ -69,8 +76,16 @@
 	};
 </script>
 
-<div class="markup padded-xl">
+<div class="entity-input markup">
 	<h1>New {entityName}</h1>
+	<section class="row">
+		<span class="spaced">in</span>
+		<CommunityAvatar {community} />
+	</section>
+	<section class="row">
+		<span class="spaced">as</span>
+		<PersonaAvatar {persona} />
+	</section>
 	<form>
 		<input
 			placeholder="> name"
@@ -100,4 +115,8 @@
 </div>
 
 <style>
+	.entity-input {
+		--icon_size: var(--icon_size_sm);
+		padding: var(--spacing_xl);
+	}
 </style>

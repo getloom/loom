@@ -2,6 +2,7 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
 
+	import TextInput from '$lib/ui/TextInput.svelte';
 	import TodoItems from '$lib/ui/TodoItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -10,7 +11,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({persona, space, community} = $viewContext);
 
 	const {
 		dispatch,
@@ -51,10 +52,8 @@
 		});
 		text = '';
 	};
-	const onKeydown = async (e: KeyboardEvent) => {
-		if (e.key === 'Enter') {
-			await createEntity();
-		}
+	const onSubmit = async () => {
+		await createEntity();
 	};
 
 	const clearDone = async () => {
@@ -88,7 +87,7 @@
 				on:click={() =>
 					dispatch.OpenDialog({
 						Component: EntityInput,
-						props: {done: () => dispatch.CloseDialog()},
+						props: {done: () => dispatch.CloseDialog(), entityName: 'Todo', community, persona},
 					})}>+ ...Create List</button
 			>
 		{:else}
@@ -97,7 +96,7 @@
 	</div>
 	{#if selectedList}
 		<div class="selected-tools">
-			<input placeholder="> create new todo" on:keydown={onKeydown} bind:value={text} />
+			<TextInput {persona} placeholder="> create new todo" on:submit={onSubmit} bind:value={text} />
 			<button on:click={clearDone}>Clear Done</button>
 		</div>
 	{/if}
@@ -120,5 +119,9 @@
 	}
 	.selected-tools {
 		display: flex;
+	}
+	/* TODO remove this hack when the layout is more mature */
+	.selected-tools > :global(*:first-child) {
+		flex: 1;
 	}
 </style>

@@ -2,6 +2,7 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
 
+	import TextInput from '$lib/ui/TextInput.svelte';
 	import ForumItems from '$lib/ui/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
@@ -34,15 +35,13 @@
 		text = '';
 	};
 
-	const onKeydown = async (e: KeyboardEvent) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			await createEntity();
-		}
+	const onSubmit = async () => {
+		await createEntity();
 	};
 </script>
 
 <div class="forum">
-	<textarea placeholder="> new topic" on:keydown={onKeydown} bind:value={text} />
+	<TextInput {persona} placeholder="> new topic" on:submit={onSubmit} bind:value={text} />
 	<div class="entities">
 		{#if entities}
 			<ForumItems {entities} />
@@ -65,11 +64,5 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-	}
-	textarea {
-		border-left: none;
-		border-right: none;
-		border-top: none;
-		border-radius: 0;
 	}
 </style>
