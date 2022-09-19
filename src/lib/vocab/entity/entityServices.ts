@@ -120,14 +120,13 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 	event: DeleteEntities,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const deletedEntityIds: number[] = [];
 			const result = await repos.entity.deleteByIds(params.entityIds);
 			if (!result.ok) {
 				return {ok: false, status: 500, message: 'failed to delete entity'};
 			}
-			deletedEntityIds.push(...params.entityIds);
 
 			// Deleting one entity may orphan others, so loop until there are no more orphans.
+			// TODO optimize this into a single SQL statement (recursive?)
 			while (true) {
 				const orphans = await repos.entity.findOrphanedEntities(); // eslint-disable-line no-await-in-loop
 				if (!orphans.ok) {
@@ -140,9 +139,8 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 				if (!deletedOrphans.ok) {
 					return {ok: false, status: 500, message: 'failed to delete orphans'};
 				}
-				deletedEntityIds.push(...orphans.value);
 			}
 
-			return {ok: true, status: 200, value: {deletedEntityIds}};
+			return {ok: true, status: 200, value: null};
 		}),
 };

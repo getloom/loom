@@ -1,11 +1,11 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {goto} from '$app/navigation';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
-import {upsertEntity} from '$lib/vocab/entity/entityMutationHelpers';
+import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import {goto} from '$app/navigation';
 
 export const upsertSpaces = (ui: WritableUi, $spaces: Space[], $directories: Entity[]): void => {
 	if (!$spaces.length) return;
@@ -28,7 +28,7 @@ export const upsertSpaces = (ui: WritableUi, $spaces: Space[], $directories: Ent
 			$s.set(community_id, $spaces[0].space_id);
 		});
 	}
-	for (const $directory of $directories) upsertEntity(ui, $directory); // TODO probably batch for efficiency
+	stashEntities(ui, $directories);
 	if (addedSpace) spaces.mutate(); // doing this once for efficiency
 };
 
@@ -69,8 +69,8 @@ export const evictSpaces = async (
 
 	spaces.swap(spaces.get().value.filter((s) => !spacesToDelete.includes(s)));
 
-	// TODO do this work here instead of getting `deletedEntityIds` via the `DeleteSpace` return value
-	// for (const entity_id of deletedEntityIds) {
-	// 	deleteEntity(ui, entity_id);
-	// }
+	evictEntities(
+		ui,
+		spacesToDelete.map((s) => s.get().directory_id),
+	);
 };

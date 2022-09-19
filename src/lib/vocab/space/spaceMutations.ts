@@ -1,5 +1,4 @@
 import type {Mutations} from '$lib/app/eventTypes';
-import {deleteEntity} from '$lib/vocab/entity/entityMutationHelpers';
 import {evictSpaces, upsertSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 
 export const CreateSpace: Mutations['CreateSpace'] = async ({invoke, ui}) => {
@@ -14,19 +13,8 @@ export const DeleteSpace: Mutations['DeleteSpace'] = async ({params, invoke, ui}
 	const {spaceById} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
-
 	const space = spaceById.get(params.space_id)!;
-	const {deletedEntityIds} = result.value;
-
 	await evictSpaces(ui, [space]);
-
-	// TODO this should be removed and the work done in `evictSpaces`
-	// because `deletedEntityIds` doesn't scale and
-	// `deleteCommunity` doesn't have `deletedEntityIds` but needs to do the same cleanup
-	for (const entity_id of deletedEntityIds) {
-		deleteEntity(ui, entity_id);
-	}
-
 	return result;
 };
 

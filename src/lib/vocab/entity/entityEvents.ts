@@ -193,12 +193,7 @@ export const DeleteEntities: ServiceEventInfo = {
 	},
 	response: {
 		$id: '/schemas/DeleteEntitiesResponse.json',
-		type: 'object',
-		properties: {
-			deletedEntityIds: {type: 'array', items: {type: 'number'}},
-		},
-		required: ['deletedEntityIds'],
-		additionalProperties: false,
+		type: 'null',
 	},
 	returns: 'Promise<DeleteEntitiesResponseResult>',
 	route: {

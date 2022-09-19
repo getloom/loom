@@ -155,19 +155,25 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 		source_id: list.entity_id,
 		data: {type: 'Note', content: `milk`},
 	});
+	assert.is(
+		unwrap(await db.repos.entity.filterByIds([todo1.entity_id, todo2.entity_id, todo3.entity_id]))
+			.length,
+		3,
+	);
 	//delete the collection
-	const result = unwrap(
+	unwrap(
 		await DeleteEntitiesService.perform({
 			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
 			...serviceRequest,
 		}),
 	);
-	//confirm all four entity ids come back
-	assert.equal(result.deletedEntityIds.length, 4);
-	assert.ok(result.deletedEntityIds.includes(list.entity_id));
-	assert.ok(result.deletedEntityIds.includes(todo1.entity_id));
-	assert.ok(result.deletedEntityIds.includes(todo2.entity_id));
-	assert.ok(result.deletedEntityIds.includes(todo3.entity_id));
+	let failed = false;
+	try {
+		unwrap(await db.repos.entity.filterByIds([todo1.entity_id, todo2.entity_id, todo3.entity_id]));
+	} catch (err) {
+		failed = true;
+	}
+	if (!failed) throw Error('Expected to delete entities');
 });
 
 test_entityServices.run();

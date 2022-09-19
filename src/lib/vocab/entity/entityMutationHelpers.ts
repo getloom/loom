@@ -1,4 +1,5 @@
-import {writable, mutable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {writable, mutable, type Mutable} from '@feltcoop/svelte-gettable-stores';
+import {Logger} from '@feltcoop/felt/util/log.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -10,91 +11,104 @@ import {
 	setFreshnessByDirectoryId,
 } from '$lib/ui/uiMutationHelpers';
 
-export const upsertEntity = (ui: WritableUi, $entity: Entity): Writable<Entity> => {
+const log = new Logger('[entityMutationHelpers]');
+
+export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 	const {entityById, spaceSelection, spaceById, freshnessByDirectoryId} = ui;
-	const {entity_id} = $entity;
-	let entity = entityById.get(entity_id);
-	if (entity) {
-		entity.set($entity);
-	} else {
-		entityById.set(entity_id, (entity = writable($entity)));
-	}
 
-	// Handle directories.
-	if ('space_id' in $entity.data) {
-		if (!freshnessByDirectoryId.get(entity_id)) {
-			setLastSeen(ui, entity_id, ($entity.updated || $entity.created).getTime());
-			setFreshnessByDirectoryId(ui, entity);
+	for (const $entity of $entities) {
+		const {entity_id} = $entity;
+		let entity = entityById.get(entity_id);
+		if (entity) {
+			entity.set($entity);
+		} else {
+			entityById.set(entity_id, (entity = writable($entity)));
 		}
-		upsertFreshnessByCommunityId(ui, spaceById.get($entity.data.space_id)!.get().community_id);
-		// Is the directory's space selected? If so we don't want a notification.
-		if (entity_id === spaceSelection.get()?.get().directory_id) {
-			updateLastSeen(ui, entity_id);
+
+		// Handle directories.
+		if ('space_id' in $entity.data) {
+			if (!freshnessByDirectoryId.get(entity_id)) {
+				setLastSeen(ui, entity_id, ($entity.updated || $entity.created).getTime());
+				setFreshnessByDirectoryId(ui, entity);
+			}
+			upsertFreshnessByCommunityId(ui, spaceById.get($entity.data.space_id)!.get().community_id);
+			// Is the directory's space selected? If so we don't want a notification.
+			if (entity_id === spaceSelection.get()?.get().directory_id) {
+				updateLastSeen(ui, entity_id);
+			}
 		}
 	}
-
-	return entity;
 };
 
-export const updateEntityCaches = (
-	{entityById, entitiesBySourceId}: WritableUi,
-	$entity: Entity,
-	source_id: number,
-): Writable<Entity> => {
-	const entity = entityById.get($entity.entity_id)!;
-	const existingSpaceEntities = entitiesBySourceId.get(source_id);
-	if (existingSpaceEntities) {
-		if (!existingSpaceEntities.get().includes(entity)) {
-			existingSpaceEntities.update(($entities) =>
-				// TODO splice into a mutable array instead of sorting like this
-				$entities.concat(entity).sort((a, b) => (a.get().created > b.get().created ? 1 : -1)),
-			);
-		}
-	} else {
-		entitiesBySourceId.set(source_id, writable([entity]));
-	}
-	return entity;
-};
-
-export const updateTieCaches = (
-	{sourceTiesByDestEntityId, destTiesBySourceEntityId}: WritableUi,
-	$tie: Tie,
+// TODO possibly merge with `stashEntities` to prevent update churn
+export const stashTies = (
+	{sourceTiesByDestEntityId, destTiesBySourceEntityId, entitiesBySourceId, entityById}: WritableUi,
+	$ties: Tie[],
 ): void => {
+	const mutated = new Set<Mutable<any>>();
 	const $sourceTiesByDestEntityId = sourceTiesByDestEntityId.get().value;
-	//TODO this mutablity may be better served by a LookupTiesHelper
-	let sourceTies = $sourceTiesByDestEntityId.get($tie.dest_id);
-	if (!sourceTies) {
-		sourceTiesByDestEntityId.mutate(($v) => {
-			$v.set($tie.dest_id, (sourceTies = mutable([])));
-		});
-	}
-	const $sourceTies = sourceTies!.get().value;
-	if (
-		!$sourceTies.find(
-			($t) =>
-				$t.dest_id === $tie.dest_id && $t.source_id === $tie.source_id && $t.type === $tie.type,
-		)
-	) {
-		sourceTies!.mutate(($v) => $v.push($tie));
+	const $destTiesBySourceEntityId = destTiesBySourceEntityId.get().value;
+
+	for (const $tie of $ties) {
+		const {source_id, dest_id, type} = $tie;
+		let sourceTies = $sourceTiesByDestEntityId.get(dest_id);
+		if (!sourceTies) {
+			sourceTies = mutable([]);
+			$sourceTiesByDestEntityId.set(dest_id, sourceTies);
+			mutated.add(sourceTiesByDestEntityId);
+		}
+		const $sourceTies = sourceTies.get().value;
+		// TODO optimize lookup, maybe with a map by cached tie key
+		if (
+			!$sourceTies.find(
+				($t) => $t.dest_id === dest_id && $t.source_id === source_id && $t.type === type,
+			)
+		) {
+			$sourceTies.push($tie);
+			mutated.add(sourceTies);
+		}
+
+		let destTies = $destTiesBySourceEntityId.get(source_id);
+		if (!destTies) {
+			destTies = mutable([]);
+			$destTiesBySourceEntityId.set(source_id, destTies);
+			mutated.add(destTiesBySourceEntityId);
+		}
+		const $destTies = destTies.get().value;
+		// TODO optimize lookup, maybe with a map by cached tie key
+		if (
+			!$destTies.find(
+				($t) => $t.dest_id === dest_id && $t.source_id === source_id && $t.type === type,
+			)
+		) {
+			$destTies.push($tie);
+			mutated.add(destTies);
+		}
+
+		// TODO is inefficient, make `entitiesBySourceId` mutable and batch
+		// Update the cached entity array by source_id.
+		const entity = entityById.get(dest_id);
+		if (entity) {
+			const destEntities = entitiesBySourceId.get(source_id);
+			if (destEntities) {
+				if (!destEntities.get().includes(entity)) {
+					destEntities.update(($entities) =>
+						// TODO splice into a mutable array instead of sorting like this
+						$entities.concat(entity!).sort((a, b) => (a.get().created > b.get().created ? 1 : -1)),
+					);
+					// mutated.add(destEntities) // TODO see above
+				}
+			} else {
+				entitiesBySourceId.set(source_id, writable([entity]));
+			}
+		} else {
+			// TODO what should we do here? may not be a problem depending on query patterns
+			log.warn('stashing tie with unknown dest entity', dest_id);
+		}
 	}
 
-	const $destTiesBySourceEntityId = destTiesBySourceEntityId.get().value;
-	//TODO this mutablity may be better served by a LookupTiesHelper
-	let destTies = $destTiesBySourceEntityId.get($tie.source_id);
-	if (!destTies) {
-		destTiesBySourceEntityId.mutate(($v) => {
-			$v.set($tie.source_id, (destTies = mutable([])));
-		});
-	}
-	const $destTies = destTies!.get().value;
-	if (
-		!$destTies.find(
-			($t) =>
-				$t.dest_id === $tie.dest_id && $t.source_id === $tie.source_id && $t.type === $tie.type,
-		)
-	) {
-		destTies!.mutate(($v) => $v.push($tie));
-	}
+	// Batch mutatations.
+	for (const m of mutated) m.mutate();
 };
 
 export const evictTiesForEntity = (
@@ -169,9 +183,22 @@ export const evictTie = (
 	}
 };
 
-export const deleteEntity = (ui: WritableUi, entity_id: number): void => {
-	const {entityById, freshnessByDirectoryId} = ui;
-	entityById.delete(entity_id);
-	freshnessByDirectoryId.delete(entity_id);
-	evictTiesForEntity(ui, entity_id);
+export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
+	const {entityById, entitiesBySourceId, freshnessByDirectoryId} = ui;
+
+	// TODO delete orphaned entities
+
+	for (const entity_id of entityIds) {
+		entityById.delete(entity_id);
+		freshnessByDirectoryId.delete(entity_id);
+		evictTiesForEntity(ui, entity_id);
+	}
+
+	// Update the cached entity array by source id.
+	for (const destEntities of entitiesBySourceId.values()) {
+		// TODO this is very inefficient
+		if (destEntities.get().find((e) => entityIds.includes(e.get().entity_id))) {
+			destEntities.update(($s) => $s.filter(($e) => !entityIds.includes($e.get().entity_id)));
+		}
+	}
 };

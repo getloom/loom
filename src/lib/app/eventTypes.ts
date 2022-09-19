@@ -319,9 +319,7 @@ export interface DeleteSpaceParams {
 	actor: number;
 	space_id: number;
 }
-export interface DeleteSpaceResponse {
-	deletedEntityIds: number[];
-}
+export type DeleteSpaceResponse = null;
 export type DeleteSpaceResponseResult = ApiResult<DeleteSpaceResponse>;
 
 export interface CreateEntityParams {
@@ -386,9 +384,7 @@ export interface DeleteEntitiesParams {
 	actor: number;
 	entityIds: number[];
 }
-export interface DeleteEntitiesResponse {
-	deletedEntityIds: number[];
-}
+export type DeleteEntitiesResponse = null;
 export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
 export interface CreateTieParams {

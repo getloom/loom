@@ -1,23 +1,17 @@
 import {writable} from '@feltcoop/svelte-gettable-stores';
 
 import type {Mutations} from '$lib/app/eventTypes';
-import {
-	deleteEntity,
-	upsertEntity,
-	updateEntityCaches,
-	updateTieCaches,
-} from '$lib/vocab/entity/entityMutationHelpers';
+import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityMutationHelpers';
 
 // TODO if `Create/Update/Erase` remain identical, probably make them use a single helper
 // `updateEntity` or more likely `updateEntities`
 
-export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, params, ui}) => {
+export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {tie, entity} = result.value;
-	upsertEntity(ui, entity);
-	updateEntityCaches(ui, entity, params.source_id);
-	updateTieCaches(ui, tie);
+	const {entity, tie} = result.value;
+	stashEntities(ui, [entity]);
+	stashTies(ui, [tie]);
 	return result;
 };
 
@@ -25,83 +19,53 @@ export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, params, u
 export const UpdateEntity: Mutations['UpdateEntity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	upsertEntity(ui, result.value.entity);
+	stashEntities(ui, [result.value.entity]);
 	return result;
 };
 
 export const EraseEntities: Mutations['EraseEntities'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	for (const $entity of result.value.entities) {
-		upsertEntity(ui, $entity);
-	}
+	stashEntities(ui, result.value.entities);
 	return result;
 };
 
-export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui}) => {
+export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui, params}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {deletedEntityIds} = result.value;
-	for (const entity_id of deletedEntityIds) {
-		deleteEntity(ui, entity_id);
-	}
-
-	//TODO extract all this to a helper sibling like updateEntityCaches
-	for (const spaceEntities of ui.entitiesBySourceId.values()) {
-		// TODO this is very inefficient
-		if (spaceEntities.get().find((e) => deletedEntityIds.includes(e.get().entity_id))) {
-			spaceEntities.update(($s) =>
-				$s.filter(($e) => !deletedEntityIds.includes($e.get().entity_id)),
-			);
-		}
-	}
-
+	evictEntities(ui, params.entityIds);
 	return result;
 };
 
-export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, params, ui}) => {
+export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {ties, entities} = result.value;
-	for (const $entity of entities) {
-		upsertEntity(ui, $entity);
-		updateEntityCaches(ui, $entity, params.source_id);
-	}
-	for (const $tie of ties) {
-		updateTieCaches(ui, $tie);
-	}
+	stashEntities(ui, entities);
+	stashTies(ui, ties);
 	return result;
 };
 
 // TODO implement this along with `ReadEntities` to use the same query and caching structures
-export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async ({
-	invoke,
-	ui,
-	params,
-}) => {
+export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {ties, entities} = result.value;
-	for (const $entity of entities) {
-		upsertEntity(ui, $entity);
-		updateEntityCaches(ui, $entity, params.source_id);
-	}
-	for (const $tie of ties) {
-		updateTieCaches(ui, $tie);
-	}
+	stashEntities(ui, entities);
+	stashTies(ui, ties);
 	return result;
 };
 
 //TODO rethink this caching element
 export const QueryEntities: Mutations['QueryEntities'] = ({
-	params,
-	dispatch,
 	ui: {entitiesBySourceId},
+	dispatch,
+	params,
 }) => {
-	let spaceEntities = entitiesBySourceId.get(params.source_id);
-	if (!spaceEntities) {
-		entitiesBySourceId.set(params.source_id, (spaceEntities = writable([])));
+	let destEntities = entitiesBySourceId.get(params.source_id);
+	if (!destEntities) {
+		entitiesBySourceId.set(params.source_id, (destEntities = writable([])));
 		void dispatch.ReadEntities(params);
 	}
-	return spaceEntities;
+	return destEntities;
 };

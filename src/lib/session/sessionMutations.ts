@@ -6,7 +6,7 @@ import type {Mutations} from '$lib/app/eventTypes';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {Persona} from '$lib/vocab/persona/persona';
-import {upsertEntity} from '$lib/vocab/entity/entityMutationHelpers';
+import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/session/clientSession';
 
 const log = new Logger('[ui]');
@@ -102,7 +102,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	freshnessByCommunityId.clear();
 
 	// Add entities after the other stores are ready.
-	if (!guest) $session.directories.forEach((d) => upsertEntity(ui, d));
+	if (!guest) stashEntities(ui, $session.directories);
 };
 
 // TODO This is a hack until we figure out how to handle "session personas" differently from the rest.

@@ -162,7 +162,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 		serviceRequest.transact(async (repos) => {
 			const {params} = serviceRequest;
 			log.trace('[DeleteSpace] deleting space with id:', params.space_id);
-			const deletedEntityIds: number[] = [];
+
 			// Check that the space can be deleted.
 			const findSpaceResult = await repos.space.findById(params.space_id);
 			if (!findSpaceResult.ok) {
@@ -179,7 +179,6 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 				return {ok: false, status: 500, message: 'failed to delete space'};
 			}
 
-			deletedEntityIds.push(space.directory_id);
 			const orphanedEntities = await DeleteEntitiesService.perform({
 				...serviceRequest,
 				params: {actor: params.actor, entityIds: [space.directory_id]},
@@ -193,9 +192,8 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 					message: `failed to clean up space entities; ${orphanedEntities.message}`,
 				};
 			}
-			deletedEntityIds.push(...orphanedEntities.value.deletedEntityIds);
 
-			return {ok: true, status: 200, value: {deletedEntityIds}};
+			return {ok: true, status: 200, value: null};
 		}),
 };
 
