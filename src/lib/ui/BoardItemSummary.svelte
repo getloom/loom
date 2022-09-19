@@ -58,8 +58,6 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 	li {
 		align-items: flex-start;
 		flex-direction: column;
-		padding: var(--spacing_xs);
-		padding-left: var(--spacing_xl3);
 	}
 	.signature {
 		display: flex;

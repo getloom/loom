@@ -47,7 +47,6 @@
 								entityName: 'Post',
 								community,
 								persona,
-								contentForm: true,
 							},
 						})}>Submit a new post</button
 				>

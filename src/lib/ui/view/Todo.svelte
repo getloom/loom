@@ -87,7 +87,13 @@
 				on:click={() =>
 					dispatch.OpenDialog({
 						Component: EntityInput,
-						props: {done: () => dispatch.CloseDialog(), entityName: 'Todo', community, persona},
+						props: {
+							done: () => dispatch.CloseDialog(),
+							entityName: 'Todo',
+							community,
+							persona,
+							fields: {name: true},
+						},
 					})}>+ ...Create List</button
 			>
 		{:else}

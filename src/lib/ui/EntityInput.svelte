@@ -10,6 +10,7 @@
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import type {Community} from '$lib/vocab/community/community';
 	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
 
 	const {
 		dispatch,
@@ -20,7 +21,8 @@
 	export let entityName = 'Entity';
 	export let community: Readable<Community>;
 	export let persona: Readable<Persona>;
-	export let contentForm = false;
+	export let type = 'Collection';
+	export let fields: {name?: boolean; content?: boolean} = {name: true, content: true}; // TODO add customization like display names for each field
 
 	$: selectedPersona = $personaSelection;
 	$: persona_id = $selectedPersona!.persona_id;
@@ -40,21 +42,23 @@
 		//TODO validate inputs
 		name = name.trim();
 		content = content.trim();
-		if (!name) {
+		if (fields.name && !name) {
 			errorMessage = `please enter a name for your new ${entityName}`;
 			nameEl.focus();
 			return;
 		}
-		if (contentForm && !content) {
+		if (fields.content && !content) {
 			errorMessage = `please enter content for your new ${entityName}`;
 			contentEl.focus();
 			return;
 		}
 		status = 'pending';
+		const data: BaseEntityData = {type};
+		if (fields.name) data.name = name;
+		if (fields.content) data.content = content;
 		const result = await dispatch.CreateEntity({
 			persona_id,
-			//TODO genericize type for this form
-			data: {type: 'Collection', name, content},
+			data: data as EntityData, // TODO avoid typecast, probably validation against type?
 			source_id,
 		});
 		status = 'success'; // TODO handle failure (also refactor to be generic)
@@ -87,20 +91,21 @@
 		<PersonaAvatar {persona} />
 	</section>
 	<form>
-		<input
-			placeholder="> name"
-			bind:this={nameEl}
-			bind:value={name}
-			use:autofocus
-			disabled={status === 'pending'}
-			on:keydown={onKeydown}
-		/>
-		{#if contentForm}
+		{#if fields.name}
+			<input
+				placeholder="> name"
+				bind:this={nameEl}
+				bind:value={name}
+				use:autofocus
+				disabled={status === 'pending'}
+				on:keydown={onKeydown}
+			/>
+		{/if}
+		{#if fields.content}
 			<textarea
 				placeholder="> content"
 				bind:this={contentEl}
 				bind:value={content}
-				use:autofocus
 				disabled={status === 'pending'}
 				on:keydown={onKeydown}
 			/>
