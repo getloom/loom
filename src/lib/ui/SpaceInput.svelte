@@ -9,12 +9,11 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import {toSpaceUrl} from '$lib/ui/url';
 	import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {
 		dispatch,
@@ -88,14 +87,7 @@
 
 <div class="markup padded-xl">
 	<h1>Create a new Space</h1>
-	<section class="row">
-		<span class="spaced">in</span>
-		<CommunityAvatar {community} />
-	</section>
-	<section class="row">
-		<span class="spaced">as</span>
-		<PersonaAvatar {persona} />
-	</section>
+	<ContextInfo {persona} {community} />
 	<form>
 		<input
 			name="name"

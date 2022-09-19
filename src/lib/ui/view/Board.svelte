@@ -45,8 +45,9 @@
 							props: {
 								done: () => dispatch.CloseDialog(),
 								entityName: 'Post',
-								community,
 								persona,
+								community,
+								space,
 							},
 						})}>Submit a new post</button
 				>

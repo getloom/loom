@@ -6,10 +6,10 @@
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Community} from '$lib/vocab/community/community';
 	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {Space} from '$lib/vocab/space/space';
 	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
 
 	const {
@@ -19,8 +19,9 @@
 
 	export let done: (() => void) | undefined = undefined;
 	export let entityName = 'Entity';
-	export let community: Readable<Community>;
 	export let persona: Readable<Persona>;
+	export let community: Readable<Community>;
+	export let space: Readable<Space>;
 	export let type = 'Collection';
 	export let fields: {name?: boolean; content?: boolean} = {name: true, content: true}; // TODO add customization like display names for each field
 
@@ -82,14 +83,7 @@
 
 <div class="entity-input markup">
 	<h1>New {entityName}</h1>
-	<section class="row">
-		<span class="spaced">in</span>
-		<CommunityAvatar {community} />
-	</section>
-	<section class="row">
-		<span class="spaced">as</span>
-		<PersonaAvatar {persona} />
-	</section>
+	<ContextInfo {persona} {community} {space} />
 	<form>
 		{#if fields.name}
 			<input
@@ -121,7 +115,6 @@
 
 <style>
 	.entity-input {
-		--icon_size: var(--icon_size_sm);
 		padding: var(--spacing_xl);
 	}
 </style>

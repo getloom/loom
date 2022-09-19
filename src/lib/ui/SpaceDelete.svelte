@@ -1,15 +1,13 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import Message from '@feltcoop/felt/ui/Message.svelte';
+	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Space} from '$lib/vocab/space/space';
-	import SpaceName from '$lib/ui/SpaceName.svelte';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import type {Community} from '$lib/vocab/community/community';
 	import type {Persona} from '$lib/vocab/persona/persona';
-	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
+	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {dispatch} = getApp();
 
@@ -49,17 +47,7 @@
 
 <div class="markup padded-xl">
 	<h1>Delete Space?</h1>
-	<section class="row" style:font-size="var(--font_size_xl)">
-		<SpaceName {space} />
-	</section>
-	<section class="row">
-		<span class="spaced">in</span>
-		<CommunityAvatar {community} />
-	</section>
-	<section class="row">
-		<span class="spaced">as</span>
-		<PersonaAvatar {persona} />
-	</section>
+	<ContextInfo {persona} {community} {space} />
 	<form>
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>

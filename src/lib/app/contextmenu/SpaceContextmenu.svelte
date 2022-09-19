@@ -29,7 +29,7 @@
 			action={() =>
 				dispatch.OpenDialog({
 					Component: SpaceEditor,
-					props: {space, community},
+					props: {persona, space, community},
 					dialogProps: {layout: 'page'},
 				})}
 		>

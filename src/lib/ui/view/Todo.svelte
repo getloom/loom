@@ -90,11 +90,12 @@
 						props: {
 							done: () => dispatch.CloseDialog(),
 							entityName: 'Todo',
-							community,
 							persona,
+							community,
+							space,
 							fields: {name: true},
 						},
-					})}>+ ...Create List</button
+					})}>+ Create List</button
 			>
 		{:else}
 			<PendingAnimation />
