@@ -7,7 +7,7 @@ import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Membership} from '$lib/vocab//membership/membership';
-import {upsertSpaces} from '$lib/vocab/space/spaceMutationHelpers';
+import {upsertSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {deleteMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 
 export const upsertCommunity = (
@@ -57,6 +57,7 @@ export const deleteCommunity = async (ui: WritableUi, community_id: number): Pro
 		communityIdSelectionByPersonaId,
 		personaById,
 		memberships,
+		spacesByCommunityId,
 	} = ui;
 
 	const community = communityById.get(community_id)!;
@@ -65,6 +66,8 @@ export const deleteCommunity = async (ui: WritableUi, community_id: number): Pro
 		const persona = personaSelection.get()!;
 		await goto('/' + persona.get().name + location.search, {replaceState: true});
 	}
+
+	await evictSpaces(ui, spacesByCommunityId.get().get(community_id)!);
 
 	communityById.delete(community_id);
 	communities.mutate(($communites) => {
@@ -82,8 +85,4 @@ export const deleteCommunity = async (ui: WritableUi, community_id: number): Pro
 		ui,
 		memberships.get().value.filter((m) => m.get().community_id === community_id),
 	);
-
-	// TODO delete all spaces
-
-	// TODO delete all entities
 };
