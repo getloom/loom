@@ -10,7 +10,7 @@ import {
 	ReadEntitiesPaginatedService,
 	DeleteEntitiesService,
 } from '$lib/vocab/entity/entityServices';
-import {DEFAULT_PAGE_SIZE} from '$lib/server/constants';
+import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
 
 /* test_entityServices */

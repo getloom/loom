@@ -3,7 +3,7 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {DEFAULT_PAGE_SIZE} from '$lib/server/constants';
+import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 
 const log = new Logger('[TieRepo]');
 

@@ -1,4 +1,4 @@
-import {DEFAULT_PAGE_SIZE} from '$lib/server/constants';
+import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import type {ClientEventInfo, ServiceEventInfo} from '$lib/vocab/event/event';
 
 export const CreateEntity: ServiceEventInfo = {
