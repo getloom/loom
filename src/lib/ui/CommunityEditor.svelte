@@ -5,7 +5,9 @@
 	import type {Community} from '$lib/vocab/community/community';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import CommunitySettingsHue from '$lib/ui/CommunitySettingsHue.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
+	export let persona: Readable<Persona>;
 	export let community: Readable<Community>;
 </script>
 
@@ -23,7 +25,7 @@
 		</section>
 	</div>
 	<section>
-		<CommunitySettingsHue {community} />
+		<CommunitySettingsHue {persona} {community} />
 	</section>
 </div>
 

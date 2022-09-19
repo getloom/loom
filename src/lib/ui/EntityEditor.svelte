@@ -10,7 +10,9 @@
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 	export let done: (() => void) | undefined = undefined;
 
@@ -20,16 +22,18 @@
 		ui: {personaById},
 	} = getApp();
 
-	$: persona = personaById.get($entity.persona_id)!;
+	$: authorPersona = personaById.get($entity.persona_id)!;
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
 		dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: {...$entity.data, [field]: updated},
 		});
 
 	const updateEntityData = async (updated: any) =>
 		dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: updated,
 		});
@@ -38,7 +42,10 @@
 	let deletePending = false;
 	const deleteEntity = async () => {
 		deletePending = true;
-		await dispatch.DeleteEntities({entityIds: [$entity.entity_id]});
+		await dispatch.DeleteEntities({
+			actor: $persona.persona_id,
+			entityIds: [$entity.entity_id],
+		});
 		deletePending = false;
 		done?.();
 	};
@@ -49,7 +56,7 @@
 		<h1>Edit Entity</h1>
 		<section class="row">
 			<span class="spaced">created by</span>
-			<PersonaAvatar {persona} />
+			<PersonaAvatar persona={authorPersona} />
 		</section>
 		<section style:--icon_size="var(--icon_size_sm)">
 			<p>created {format($entity.created, 'PPPPp')}</p>
@@ -92,7 +99,7 @@
 	{#if $devmode}
 		<hr />
 		<section>
-			<EntityTable {entity} />
+			<EntityTable {persona} {entity} />
 		</section>
 	{/if}
 </div>

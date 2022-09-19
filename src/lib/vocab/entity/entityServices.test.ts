@@ -55,7 +55,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	//first query on the space dir and expect an empty set
 	const {entities: filtered} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			params: {source_id: space.directory_id},
+			params: {actor: persona.persona_id, source_id: space.directory_id},
 			...serviceRequest,
 		}),
 	);
@@ -77,7 +77,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	//test the default param returns properly
 	const {entities: filtered2} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			params: {source_id: space.directory_id},
+			params: {actor: persona.persona_id, source_id: space.directory_id},
 			...serviceRequest,
 		}),
 	);
@@ -90,7 +90,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	//then do 3 queries on smaller pages
 	const {entities: filtered3} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			params: {source_id: space.directory_id, pageSize: FIRST_PAGE_SIZE},
+			params: {actor: persona.persona_id, source_id: space.directory_id, pageSize: FIRST_PAGE_SIZE},
 			...serviceRequest,
 		}),
 	);
@@ -100,6 +100,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	const {entities: filtered4} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
 			params: {
+				actor: persona.persona_id,
 				source_id: space.directory_id,
 				pageSize: SECOND_PAGE_SIZE,
 				pageKey: filtered3.at(-1)!.entity_id,
@@ -114,6 +115,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	const {entities: filtered5} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
 			params: {
+				actor: persona.persona_id,
 				source_id: space.directory_id,
 				pageSize: SECOND_PAGE_SIZE,
 				pageKey: filtered4.at(-1)!.entity_id,
@@ -156,9 +158,7 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 	//delete the collection
 	const result = unwrap(
 		await DeleteEntitiesService.perform({
-			params: {
-				entityIds: [list.entity_id],
-			},
+			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
 			...serviceRequest,
 		}),
 	);

@@ -2,14 +2,18 @@
 	import {getApp} from '$lib/ui/app';
 	import type {Community} from '$lib/vocab/community/community';
 	import Avatar from '$lib/ui/Avatar.svelte';
+	import {getViewContext} from '$lib/vocab/view/view';
 
 	const {dispatch} = getApp();
+
+	const viewContext = getViewContext();
+	$: ({persona} = $viewContext);
 
 	// TODO this is just stubbing out some admin-like UI
 	let communities: Community[] | undefined;
 	const loadAllCommunities = async () => {
 		// TODO need to cache this data in the `ui` somehow -- see comment below
-		const result = await dispatch.ReadCommunities({});
+		const result = await dispatch.ReadCommunities({actor: $persona.persona_id});
 		if (!result.ok) throw Error(); // TODO querying helpers
 		communities = result.value.communities;
 	};

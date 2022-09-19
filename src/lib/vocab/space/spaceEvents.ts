@@ -8,14 +8,14 @@ export const CreateSpace: ServiceEventInfo = {
 		$id: '/schemas/CreateSpaceParams.json',
 		type: 'object',
 		properties: {
-			persona_id: {type: 'number'},
+			actor: {type: 'number'},
 			community_id: {type: 'number'},
 			name: {type: 'string'},
 			url: {type: 'string'},
 			icon: {type: 'string'},
 			view: {type: 'string'},
 		},
-		required: ['persona_id', 'community_id', 'name', 'url', 'icon', 'view'],
+		required: ['actor', 'community_id', 'name', 'url', 'icon', 'view'],
 		additionalProperties: false,
 	},
 	response: {
@@ -42,9 +42,10 @@ export const ReadSpace: ServiceEventInfo = {
 		$id: '/schemas/ReadSpaceParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			space_id: {type: 'number'},
 		},
-		required: ['space_id'],
+		required: ['actor', 'space_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -71,9 +72,10 @@ export const ReadSpaces: ServiceEventInfo = {
 		$id: '/schemas/ReadSpacesParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			community_id: {type: 'number'},
 		},
-		required: ['community_id'],
+		required: ['actor', 'community_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -104,13 +106,14 @@ export const UpdateSpace: ServiceEventInfo = {
 		$id: '/schemas/UpdateSpaceParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			space_id: {type: 'number'},
 			name: {type: 'string'},
 			url: {type: 'string'},
 			icon: {type: 'string'},
 			view: {type: 'string'},
 		},
-		required: ['space_id'],
+		required: ['actor', 'space_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -137,9 +140,10 @@ export const DeleteSpace: ServiceEventInfo = {
 		$id: '/schemas/DeleteSpaceParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			space_id: {type: 'number'},
 		},
-		required: ['space_id'],
+		required: ['actor', 'space_id'],
 		additionalProperties: false,
 	},
 	response: {

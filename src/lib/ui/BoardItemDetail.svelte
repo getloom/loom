@@ -50,11 +50,12 @@
 
 		//TODO better error handling
 		await dispatch.CreateEntity({
+			actor: $persona.persona_id,
 			data: {type: 'Note', content},
-			persona_id: $persona.persona_id,
 			source_id: $entity.entity_id,
 		});
 		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			data: null,
 			entity_id: $space.directory_id,
 		});
@@ -75,7 +76,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		style="--hue: {hue}"
 		use:contextmenu.action={[
 			[PersonaContextmenu, {persona: authorPersona}],
-			[EntityContextmenu, {entity}],
+			[EntityContextmenu, {persona, entity}],
 		]}
 	>
 		<div class="wrapper">

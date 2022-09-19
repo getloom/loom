@@ -24,6 +24,7 @@
 		pending = true;
 		errorMessage = '';
 		const result = await dispatch.DeleteCommunity({
+			actor: $persona.persona_id,
 			community_id: $community.community_id,
 		});
 		if (result.ok) {

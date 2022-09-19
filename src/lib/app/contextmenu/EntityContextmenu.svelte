@@ -7,8 +7,10 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	export let entity: Readable<Entity>;
+	export let persona: Readable<Persona>;
 
 	const {dispatch} = getApp();
 </script>
@@ -23,7 +25,7 @@
 			action={() =>
 				dispatch.OpenDialog({
 					Component: EntityEditor,
-					props: {entity, done: () => dispatch.CloseDialog()},
+					props: {persona, entity, done: () => dispatch.CloseDialog()},
 					dialogProps: {layout: 'page'},
 				})}
 		>
@@ -31,11 +33,17 @@
 		</ContextmenuEntry>
 		<!-- TODO add confirmation dialogs to both delete and erase actions -->
 		{#if $entity.data.type !== 'Tombstone'}
-			<ContextmenuEntry action={() => dispatch.EraseEntities({entityIds: [$entity.entity_id]})}>
+			<ContextmenuEntry
+				action={() =>
+					dispatch.EraseEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]})}
+			>
 				Erase Entity
 			</ContextmenuEntry>
 		{/if}
-		<ContextmenuEntry action={() => dispatch.DeleteEntities({entityIds: [$entity.entity_id]})}>
+		<ContextmenuEntry
+			action={() =>
+				dispatch.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]})}
+		>
 			Delete Entity
 		</ContextmenuEntry>
 	</svelte:fragment>

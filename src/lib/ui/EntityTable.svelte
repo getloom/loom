@@ -3,7 +3,9 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityCell from '$lib/ui/EntityCell.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 
 	$: properties = Object.keys($entity);
@@ -18,7 +20,7 @@
 	<tbody>
 		<tr>
 			{#each properties as propertyName (propertyName)}
-				<td><EntityCell {entity} {propertyName} /></td>
+				<td><EntityCell {persona} {entity} {propertyName} /></td>
 			{/each}
 		</tr>
 	</tbody>

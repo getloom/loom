@@ -58,7 +58,7 @@
 		if (fields.name) data.name = name;
 		if (fields.content) data.content = content;
 		const result = await dispatch.CreateEntity({
-			persona_id,
+			actor: persona_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?
 			source_id,
 		});

@@ -5,14 +5,17 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {Community} from '$lib/vocab/community/community';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {dispatch} = getApp();
 
+	export let persona: Readable<Persona>;
 	export let community: Readable<Community>;
 
 	const UPDATE_INTERVAL = 500; // TODO extract this to config
 	const updateHue = throttle(UPDATE_INTERVAL, async (hue: number): Promise<void> => {
 		await dispatch.UpdateCommunitySettings({
+			actor: $persona.persona_id,
 			community_id: $community.community_id,
 			settings: {hue},
 		});

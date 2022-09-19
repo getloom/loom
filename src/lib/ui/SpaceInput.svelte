@@ -55,7 +55,7 @@
 		pending = true;
 		errorMessage = null;
 		const result = await dispatch.CreateSpace({
-			persona_id: $persona.persona_id,
+			actor: $persona.persona_id,
 			community_id: $community.community_id,
 			name,
 			url: `/${name}`,

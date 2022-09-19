@@ -28,7 +28,7 @@
 			action={() =>
 				dispatch.OpenDialog({
 					Component: CommunityEditor,
-					props: {community},
+					props: {persona, community},
 				})}
 		>
 			Edit Community

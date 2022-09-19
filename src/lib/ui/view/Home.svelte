@@ -43,7 +43,10 @@
 
 	//TODO this is all done because the Query event always returns an empty array on initial call
 	$: entitiesResult = shouldLoadEntities
-		? dispatch.ReadEntities({source_id: $space.directory_id})
+		? dispatch.ReadEntities({
+				actor: $persona.persona_id,
+				source_id: $space.directory_id,
+		  })
 		: null;
 	let entities: Entity[] | undefined;
 	let rules: Readable<Entity> | undefined;
@@ -62,8 +65,8 @@
 
 		if (!content) return;
 		await dispatch.CreateEntity({
+			actor: $persona.persona_id,
 			data: {type: 'Article', content, name},
-			persona_id: $persona.persona_id,
 			source_id: $space.directory_id,
 		});
 	};
@@ -112,7 +115,7 @@
 						on:click={() =>
 							dispatch.OpenDialog({
 								Component: EntityEditor,
-								props: {entity: rules},
+								props: {persona, entity: rules},
 								dialogProps: {layout: 'page'},
 							})}
 						>propose change ✍️
@@ -127,7 +130,7 @@
 						on:click={() =>
 							dispatch.OpenDialog({
 								Component: EntityEditor,
-								props: {entity: norms},
+								props: {persona, entity: norms},
 								dialogProps: {layout: 'page'},
 							})}
 						>propose change ✍️

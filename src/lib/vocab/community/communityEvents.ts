@@ -7,11 +7,11 @@ export const CreateCommunity: ServiceEventInfo = {
 		$id: '/schemas/CreateCommunityParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			name: {type: 'string'},
-			persona_id: {type: 'number'},
 			settings: {$ref: '/schemas/CommunitySettings.json'},
 		},
-		required: ['name', 'persona_id'],
+		required: ['actor', 'name'],
 		additionalProperties: false,
 	},
 	response: {
@@ -44,9 +44,10 @@ export const ReadCommunity: ServiceEventInfo = {
 		$id: '/schemas/ReadCommunityParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			community_id: {type: 'number'},
 		},
-		required: ['community_id'],
+		required: ['actor', 'community_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -78,8 +79,10 @@ export const ReadCommunities: ServiceEventInfo = {
 	params: {
 		$id: '/schemas/ReadCommunitiesParams.json',
 		type: 'object',
-		properties: {},
-		required: [],
+		properties: {
+			actor: {type: 'number'},
+		},
+		required: ['actor'],
 		additionalProperties: false,
 	},
 	response: {
@@ -106,10 +109,11 @@ export const UpdateCommunitySettings: ServiceEventInfo = {
 		$id: '/schemas/UpdateCommunitySettingsParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			community_id: {type: 'number'},
 			settings: {$ref: '/schemas/CommunitySettings.json'},
 		},
-		required: ['community_id', 'settings'],
+		required: ['actor', 'community_id', 'settings'],
 		additionalProperties: false,
 	},
 	response: {
@@ -130,9 +134,10 @@ export const DeleteCommunity: ServiceEventInfo = {
 		$id: '/schemas/DeleteCommunityParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			community_id: {type: 'number'},
 		},
-		required: ['community_id'],
+		required: ['actor', 'community_id'],
 		additionalProperties: false,
 	},
 	response: {

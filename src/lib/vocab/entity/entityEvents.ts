@@ -9,12 +9,12 @@ export const CreateEntity: ServiceEventInfo = {
 		$id: '/schemas/CreateEntityParams.json',
 		type: 'object',
 		properties: {
-			persona_id: {type: 'number'},
+			actor: {type: 'number'},
 			data: {type: 'object', tsType: 'EntityData'},
 			source_id: {type: 'number'},
 			type: {type: 'string'}, //defaults to 'HasItem'
 		},
-		required: ['persona_id', 'data', 'source_id'],
+		required: ['actor', 'data', 'source_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -42,10 +42,11 @@ export const UpdateEntity: ServiceEventInfo = {
 		$id: '/schemas/UpdateEntityParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			entity_id: {type: 'number'},
 			data: {anyOf: [{type: 'object', tsType: 'EntityData'}, {type: 'null'}]},
 		},
-		required: ['entity_id', 'data'],
+		required: ['actor', 'entity_id', 'data'],
 		additionalProperties: false,
 	},
 	response: {
@@ -71,9 +72,10 @@ export const ReadEntities: ServiceEventInfo = {
 		$id: '/schemas/ReadEntitiesParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			source_id: {type: 'number'},
 		},
-		required: ['source_id'],
+		required: ['actor', 'source_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -120,11 +122,12 @@ export const ReadEntitiesPaginated: ServiceEventInfo = {
 		$id: '/schemas/ReadEntitiesPaginatedParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			source_id: {type: 'number'},
 			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
 			pageKey: {type: 'number'},
 		},
-		required: ['source_id'],
+		required: ['actor', 'source_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -152,9 +155,10 @@ export const EraseEntities: ServiceEventInfo = {
 		$id: '/schemas/EraseEntitiesParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			entityIds: {type: 'array', items: {type: 'number'}},
 		},
-		required: ['entityIds'],
+		required: ['actor', 'entityIds'],
 		additionalProperties: false,
 	},
 	response: {
@@ -181,9 +185,10 @@ export const DeleteEntities: ServiceEventInfo = {
 		$id: '/schemas/DeleteEntitiesParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			entityIds: {type: 'array', items: {type: 'number'}},
 		},
-		required: ['entityIds'],
+		required: ['actor', 'entityIds'],
 		additionalProperties: false,
 	},
 	response: {

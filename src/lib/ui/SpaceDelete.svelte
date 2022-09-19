@@ -25,6 +25,7 @@
 		pending = true;
 		errorMessage = '';
 		const result = await dispatch.DeleteSpace({
+			actor: $persona.persona_id,
 			space_id: $space.space_id,
 		});
 		if (result.ok) {

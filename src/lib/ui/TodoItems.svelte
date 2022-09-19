@@ -4,7 +4,9 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import TodoItem from '$lib/ui/TodoItem.svelte';
 	import type {Space} from '$lib/vocab/space/space';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
+	export let persona: Readable<Persona>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 	export let space: Readable<Space>;
 	export let selectedList: Readable<Entity> | null;
@@ -17,6 +19,6 @@
 <!-- TODO possibly remove the `ul` wrapper and change the `li`s to `div`s -->
 <ul>
 	{#each collectionEntities as entity (entity)}
-		<TodoItem {entity} {space} {selectedList} {selectList} />
+		<TodoItem {persona} {entity} {space} {selectedList} {selectList} />
 	{/each}
 </ul>

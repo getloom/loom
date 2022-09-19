@@ -9,6 +9,7 @@
 	const {dispatch} = getApp();
 
 	export let persona: Readable<Persona>;
+	export let membershipPersona: Readable<Persona>;
 	export let community: Readable<Community>;
 </script>
 
@@ -18,8 +19,9 @@
 		class="button-join"
 		on:click={() =>
 			dispatch.CreateMembership({
+				actor: $persona.persona_id,
 				community_id: $community.community_id,
-				persona_id: $persona.persona_id,
+				persona_id: $membershipPersona.persona_id,
 			})}
 	>
 		<PersonaAvatar {persona} />

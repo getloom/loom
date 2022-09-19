@@ -5,7 +5,9 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 	export let propertyName: string;
 
@@ -33,6 +35,7 @@
 			return;
 		}
 		const result = await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: updatedData,
 		});

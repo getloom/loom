@@ -7,6 +7,7 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
 		dispatch,
@@ -14,8 +15,7 @@
 		ui: {contextmenu, entityById},
 	} = getApp();
 
-	// TODO this should possibly be a generic component instead of this named one
-
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 	export let ties: Readable<Array<Readable<Tie>>>; // TODO maybe don't pass these and do lookups instead
 	export let depth = 0;
@@ -29,7 +29,10 @@
 	// let destTies: Readable<Array<Readable<Tie>>>;
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
-		const result = await dispatch.ReadEntitiesPaginated({source_id: $entity.entity_id});
+		const result = await dispatch.ReadEntitiesPaginated({
+			actor: $persona.persona_id,
+			source_id: $entity.entity_id,
+		});
 		if (result.ok) {
 			// TODO refactor using a query interface (with data, status)
 			destEntities = writable(result.value.entities.map((e) => entityById.get(e.entity_id)!));
@@ -41,7 +44,7 @@
 </script>
 
 <li style:--depth={depth}>
-	<div class="item" use:contextmenu.action={[[EntityContextmenu, {entity}]]}>
+	<div class="item" use:contextmenu.action={[[EntityContextmenu, {persona, entity}]]}>
 		{#if hasDestEntities}
 			<button class="icon-button" on:click={() => (expanded = !expanded)}>
 				{#if expanded}–{:else}+{/if}

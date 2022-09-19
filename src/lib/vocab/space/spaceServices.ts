@@ -146,7 +146,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 	event: UpdateSpace,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {space_id, ...partial} = params;
+			const {space_id, actor: _actor, ...partial} = params;
 			const updateEntitiesResult = await repos.space.update(space_id, partial);
 			if (!updateEntitiesResult.ok) {
 				return {ok: false, status: 500, message: 'failed to update space'};
@@ -182,7 +182,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 			deletedEntityIds.push(space.directory_id);
 			const orphanedEntities = await DeleteEntitiesService.perform({
 				...serviceRequest,
-				params: {entityIds: [space.directory_id]},
+				params: {actor: params.actor, entityIds: [space.directory_id]},
 			});
 
 			if (!orphanedEntities.ok) {

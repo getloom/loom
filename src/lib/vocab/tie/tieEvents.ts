@@ -7,11 +7,12 @@ export const CreateTie: ServiceEventInfo = {
 		$id: '/schemas/CreateTieParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			source_id: {type: 'number'},
 			dest_id: {type: 'number'},
 			type: {type: 'string'},
 		},
-		required: ['source_id', 'dest_id', 'type'],
+		required: ['actor', 'source_id', 'dest_id', 'type'],
 		additionalProperties: false,
 	},
 	response: {
@@ -37,9 +38,10 @@ export const ReadTies: ServiceEventInfo = {
 		$id: '/schemas/ReadTiesParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			source_id: {type: 'number'},
 		},
-		required: ['source_id'],
+		required: ['actor', 'source_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -66,11 +68,12 @@ export const DeleteTie: ServiceEventInfo = {
 		$id: '/schemas/DeleteTieParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			source_id: {type: 'number'},
 			dest_id: {type: 'number'},
 			type: {type: 'string'},
 		},
-		required: ['source_id', 'dest_id', 'type'],
+		required: ['actor', 'source_id', 'dest_id', 'type'],
 		additionalProperties: false,
 	},
 	response: {

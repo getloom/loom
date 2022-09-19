@@ -16,7 +16,10 @@
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: entities = shouldLoadEntities
-		? dispatch.QueryEntities({source_id: $space.directory_id})
+		? dispatch.QueryEntities({
+				actor: $persona.persona_id,
+				source_id: $space.directory_id,
+		  })
 		: null;
 
 	const createEntity = async () => {
@@ -24,11 +27,12 @@
 
 		if (!content) return;
 		await dispatch.CreateEntity({
+			actor: $persona.persona_id,
 			data: {type: 'Note', content},
-			persona_id: $persona.persona_id,
 			source_id: $space.directory_id,
 		});
 		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			data: null,
 			entity_id: $space.directory_id,
 		});
@@ -43,7 +47,7 @@
 <div class="room">
 	<div class="entities">
 		{#if entities}
-			<RoomItems {entities} />
+			<RoomItems {persona} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}

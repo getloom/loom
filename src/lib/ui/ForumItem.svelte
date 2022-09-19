@@ -8,30 +8,32 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
 		ui: {contextmenu, personaById},
 	} = getApp();
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 
-	$: persona = personaById.get($entity.persona_id)!;
+	$: authorPersona = personaById.get($entity.persona_id)!;
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($persona.name);
+	$: hue = randomHue($authorPersona.name);
 </script>
 
 <li
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[PersonaContextmenu, {persona}],
-		[EntityContextmenu, {entity}],
+		[PersonaContextmenu, {persona: authorPersona}],
+		[EntityContextmenu, {persona, entity}],
 	]}
 >
 	<div class="markup padded-xl formatted">
 		<EntityContent {entity} />
 	</div>
-	<PersonaAvatar {persona} />
+	<PersonaAvatar persona={authorPersona} />
 </li>
 
 <style>

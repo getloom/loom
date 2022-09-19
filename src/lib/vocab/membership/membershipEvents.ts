@@ -8,10 +8,11 @@ export const CreateMembership: ServiceEventInfo = {
 		$id: '/schemas/CreateMembershipParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			persona_id: {type: 'number'},
 			community_id: {type: 'number'},
 		},
-		required: ['persona_id', 'community_id'],
+		required: ['actor', 'persona_id', 'community_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -38,10 +39,11 @@ export const DeleteMembership: ServiceEventInfo = {
 		$id: '/schemas/DeleteMembershipParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			persona_id: {type: 'number'},
 			community_id: {type: 'number'},
 		},
-		required: ['persona_id', 'community_id'],
+		required: ['actor', 'persona_id', 'community_id'],
 		additionalProperties: false,
 	},
 	response: {

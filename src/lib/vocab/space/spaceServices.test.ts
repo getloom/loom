@@ -19,11 +19,11 @@ test__spaceServices('space directory data has community and space ids', async ({
 });
 
 test__spaceServices('delete a space in multiple communities', async ({db, random}) => {
-	const {space, account} = await random.space();
+	const {space, account, persona} = await random.space();
 
 	unwrap(
 		await DeleteSpaceService.perform({
-			params: {space_id: space.space_id},
+			params: {actor: persona.persona_id, space_id: space.space_id},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);

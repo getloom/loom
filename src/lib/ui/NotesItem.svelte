@@ -6,20 +6,22 @@
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
 		ui: {contextmenu, personaById},
 	} = getApp();
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 
-	$: persona = personaById.get($entity.persona_id)!;
+	$: authorPersona = personaById.get($entity.persona_id)!;
 </script>
 
 <li
 	use:contextmenu.action={[
-		[PersonaContextmenu, {persona}],
-		[EntityContextmenu, {entity}],
+		[PersonaContextmenu, {persona: authorPersona}],
+		[EntityContextmenu, {persona, entity}],
 	]}
 >
 	<div class="markup padded-xl formatted">

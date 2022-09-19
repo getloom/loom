@@ -21,7 +21,7 @@
 </div>
 <ul>
 	{#each communities as community (community)}
-		<ManageMembershipItem {persona} {community} />
+		<ManageMembershipItem {persona} membershipPersona={persona} {community} />
 	{/each}
 </ul>
 

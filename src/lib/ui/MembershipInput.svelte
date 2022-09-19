@@ -37,7 +37,7 @@
 		{/if}
 	</section>
 	{#each invitableMembers as persona (persona)}
-		<MembershipInputItem {persona} {community} />
+		<MembershipInputItem {persona} membershipPersona={persona} {community} />
 	{:else}
 		<p>There's no one new to invite</p>
 	{/each}

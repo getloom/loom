@@ -51,7 +51,11 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	// join the community with the second persona
 	unwrap(
 		await CreateMembershipService.perform({
-			params: {community_id: community.community_id, persona_id: persona2.persona_id},
+			params: {
+				actor: persona2.persona_id,
+				community_id: community.community_id,
+				persona_id: persona2.persona_id,
+			},
 			...serviceRequest,
 		}),
 	);
@@ -74,18 +78,24 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	//
 
 	const {entities: filteredEntities} = unwrap(
-		await ReadEntitiesService.perform({params: {source_id: space.directory_id}, ...serviceRequest}),
+		await ReadEntitiesService.perform({
+			params: {actor: persona2.persona_id, source_id: space.directory_id},
+			...serviceRequest,
+		}),
 	);
 	assert.equal(filteredEntities.slice(), [entity2, entity1]); // `slice` because `RowList` is not deep equal to arrays
 
 	const {space: foundSpace} = unwrap(
-		await ReadSpaceService.perform({params: {space_id: space.space_id}, ...serviceRequest}),
+		await ReadSpaceService.perform({
+			params: {actor: persona2.persona_id, space_id: space.space_id},
+			...serviceRequest,
+		}),
 	);
 	assert.equal(foundSpace, space);
 
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
-			params: {community_id: community.community_id},
+			params: {actor: persona2.persona_id, community_id: community.community_id},
 			...serviceRequest,
 		}),
 	);
@@ -93,7 +103,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {community: foundCommunity} = unwrap(
 		await ReadCommunityService.perform({
-			params: {community_id: community.community_id},
+			params: {actor: persona2.persona_id, community_id: community.community_id},
 			...serviceRequest,
 		}),
 	);
@@ -101,7 +111,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {communities: filteredCommunities} = unwrap(
 		await ReadCommunitiesService.perform({
-			params: {account_id: account.account_id},
+			params: {actor: persona2.persona_id},
 			...serviceRequest,
 		}),
 	);
@@ -134,7 +144,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
-					params: {space_id: space.space_id},
+					params: {actor: persona2.persona_id, space_id: space.space_id},
 					...serviceRequest,
 				}),
 			);
@@ -149,7 +159,11 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 	unwrap(
 		await DeleteMembershipService.perform({
-			params: {persona_id: persona2.persona_id, community_id: community.community_id},
+			params: {
+				actor: persona2.persona_id,
+				persona_id: persona2.persona_id,
+				community_id: community.community_id,
+			},
 			...serviceRequest,
 		}),
 	);
@@ -169,12 +183,12 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	// delete community
 	unwrap(
 		await DeleteCommunityService.perform({
-			params: {community_id: community.community_id},
+			params: {actor: persona.persona_id, community_id: community.community_id},
 			...serviceRequest,
 		}),
 	);
 	const readCommunityResult = await ReadCommunityService.perform({
-		params: {community_id: community.community_id},
+		params: {actor: persona.persona_id, community_id: community.community_id},
 		...serviceRequest,
 	});
 	assert.is(readCommunityResult.status, 404);

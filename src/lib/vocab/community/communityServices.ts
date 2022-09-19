@@ -170,7 +170,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 
 			// Create the membership for the persona that's creating the community.
 			const creatorMembershipResult = await repos.membership.create(
-				params.persona_id,
+				params.actor,
 				community.community_id,
 			);
 			if (!creatorMembershipResult.ok) {
@@ -185,7 +185,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			// Create default spaces.
 			const createDefaultSpaceResult = await createDefaultSpaces(
 				serviceRequest,
-				params.persona_id,
+				params.actor,
 				community,
 			);
 			if (!createDefaultSpaceResult.ok) {

@@ -21,7 +21,10 @@
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: entities = shouldLoadEntities
-		? dispatch.QueryEntities({source_id: $space.directory_id})
+		? dispatch.QueryEntities({
+				actor: $persona.persona_id,
+				source_id: $space.directory_id,
+		  })
 		: null;
 	let text = '';
 
@@ -42,11 +45,12 @@
 
 		//TODO better error handling
 		await dispatch.CreateEntity({
+			actor: $persona.persona_id,
 			data: {type: 'Note', content, checked: false},
-			persona_id: $persona.persona_id,
 			source_id: $selectedList!.entity_id,
 		});
 		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			data: null,
 			entity_id: $space.directory_id,
 		});
@@ -70,8 +74,12 @@
 		}, [] as Array<Readable<Entity>>);
 		if (!items?.length) return;
 		const entityIds = items.map((i) => i.get().entity_id);
-		await dispatch.DeleteEntities({entityIds});
+		await dispatch.DeleteEntities({
+			actor: $persona.persona_id,
+			entityIds,
+		});
 		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			data: null,
 			entity_id: $space.directory_id,
 		});
@@ -82,7 +90,7 @@
 	<div class="entities">
 		<!-- TODO handle failures here-->
 		{#if entities}
-			<TodoItems {entities} {space} {selectedList} {selectList} />
+			<TodoItems {persona} {entities} {space} {selectedList} {selectList} />
 			<button
 				on:click={() =>
 					dispatch.OpenDialog({

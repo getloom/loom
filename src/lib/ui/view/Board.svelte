@@ -17,7 +17,10 @@
 	//TODO once QueryEntities interface is in place this should initialize a "posts" collection
 	$: shouldLoadEntities = browser && $socket.open;
 	$: entities = shouldLoadEntities
-		? dispatch.QueryEntities({source_id: $space.directory_id})
+		? dispatch.QueryEntities({
+				actor: $persona.persona_id,
+				source_id: $space.directory_id,
+		  })
 		: null;
 
 	//TODO this should be readable

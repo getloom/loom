@@ -31,7 +31,7 @@
 {:else}
 	<ul>
 		{#each collectionEntities as entity (entity)}
-			<BoardItemSummary {entity} {selectPost} />
+			<BoardItemSummary {persona} {entity} {selectPost} />
 		{/each}
 	</ul>
 {/if}

@@ -9,12 +9,14 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {Space} from '$lib/vocab/space/space';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
 		dispatch,
 	} = getApp();
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 	export let space: Readable<Space>;
 	export let selectedList: Readable<Entity> | null;
@@ -34,10 +36,10 @@
 
 	$: ({checked} = $entity.data);
 
-	$: persona = personaById.get($entity.persona_id)!;
+	$: authorPersona = personaById.get($entity.persona_id)!;
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($persona.name);
+	$: hue = randomHue($authorPersona.name);
 
 	$: checked !== undefined && updateEntity(checked);
 
@@ -48,10 +50,12 @@
 		if ($entity.data.checked === checked) return;
 		pending = true;
 		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: {...$entity.data, checked},
 		});
 		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
 			data: null,
 			entity_id: $space.directory_id,
 		});
@@ -72,8 +76,8 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 	<li
 		style="--hue: {hue}"
 		use:contextmenu.action={[
-			[PersonaContextmenu, {persona}],
-			[EntityContextmenu, {entity}],
+			[PersonaContextmenu, {persona: authorPersona}],
+			[EntityContextmenu, {persona, entity}],
 		]}
 	>
 		<div on:click={() => selectList(entity)} class="entity markup formatted">
@@ -95,7 +99,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 				{/if}
 			</div>
 			<div class="signature">
-				<PersonaAvatar {persona} showName={false} />
+				<PersonaAvatar persona={authorPersona} showName={false} />
 			</div>
 		</div>
 		{#if items && selected}

@@ -15,7 +15,7 @@ import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData
 import type {DispatchContext} from '$lib/app/dispatch';
 import type {ClientSession, ClientAccountSession} from '$lib/session/clientSession';
 
-/* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/array-type */
+/* eslint-disable @typescript-eslint/array-type */
 
 export type ServiceEventName =
 	| 'Login'
@@ -176,8 +176,8 @@ export type LogoutResponse = null;
 export type LogoutResponseResult = ApiResult<LogoutResponse>;
 
 export interface CreateCommunityParams {
+	actor: number;
 	name: string;
-	persona_id: number;
 	settings?: {
 		hue: number;
 	};
@@ -192,6 +192,7 @@ export interface CreateCommunityResponse {
 export type CreateCommunityResponseResult = ApiResult<CreateCommunityResponse>;
 
 export interface ReadCommunityParams {
+	actor: number;
 	community_id: number;
 }
 export interface ReadCommunityResponse {
@@ -203,13 +204,16 @@ export interface ReadCommunityResponse {
 }
 export type ReadCommunityResponseResult = ApiResult<ReadCommunityResponse>;
 
-export interface ReadCommunitiesParams {}
+export interface ReadCommunitiesParams {
+	actor: number;
+}
 export interface ReadCommunitiesResponse {
 	communities: Community[];
 }
 export type ReadCommunitiesResponseResult = ApiResult<ReadCommunitiesResponse>;
 
 export interface UpdateCommunitySettingsParams {
+	actor: number;
 	community_id: number;
 	settings: {
 		hue: number;
@@ -219,6 +223,7 @@ export type UpdateCommunitySettingsResponse = null;
 export type UpdateCommunitySettingsResponseResult = ApiResult<UpdateCommunitySettingsResponse>;
 
 export interface DeleteCommunityParams {
+	actor: number;
 	community_id: number;
 }
 export type DeleteCommunityResponse = null;
@@ -237,6 +242,7 @@ export interface CreateAccountPersonaResponse {
 export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaResponse>;
 
 export interface ReadPersonaParams {
+	actor: number;
 	persona_id: number;
 }
 export interface ReadPersonaResponse {
@@ -245,6 +251,7 @@ export interface ReadPersonaResponse {
 export type ReadPersonaResponseResult = ApiResult<ReadPersonaResponse>;
 
 export interface CreateMembershipParams {
+	actor: number;
 	persona_id: number;
 	community_id: number;
 }
@@ -254,6 +261,7 @@ export interface CreateMembershipResponse {
 export type CreateMembershipResponseResult = ApiResult<CreateMembershipResponse>;
 
 export interface DeleteMembershipParams {
+	actor: number;
 	persona_id: number;
 	community_id: number;
 }
@@ -261,7 +269,7 @@ export type DeleteMembershipResponse = null;
 export type DeleteMembershipResponseResult = ApiResult<DeleteMembershipResponse>;
 
 export interface CreateSpaceParams {
-	persona_id: number;
+	actor: number;
 	community_id: number;
 	name: string;
 	url: string;
@@ -275,6 +283,7 @@ export interface CreateSpaceResponse {
 export type CreateSpaceResponseResult = ApiResult<CreateSpaceResponse>;
 
 export interface ReadSpaceParams {
+	actor: number;
 	space_id: number;
 }
 export interface ReadSpaceResponse {
@@ -284,6 +293,7 @@ export interface ReadSpaceResponse {
 export type ReadSpaceResponseResult = ApiResult<ReadSpaceResponse>;
 
 export interface ReadSpacesParams {
+	actor: number;
 	community_id: number;
 }
 export interface ReadSpacesResponse {
@@ -293,6 +303,7 @@ export interface ReadSpacesResponse {
 export type ReadSpacesResponseResult = ApiResult<ReadSpacesResponse>;
 
 export interface UpdateSpaceParams {
+	actor: number;
 	space_id: number;
 	name?: string;
 	url?: string;
@@ -305,6 +316,7 @@ export interface UpdateSpaceResponse {
 export type UpdateSpaceResponseResult = ApiResult<UpdateSpaceResponse>;
 
 export interface DeleteSpaceParams {
+	actor: number;
 	space_id: number;
 }
 export interface DeleteSpaceResponse {
@@ -313,7 +325,7 @@ export interface DeleteSpaceResponse {
 export type DeleteSpaceResponseResult = ApiResult<DeleteSpaceResponse>;
 
 export interface CreateEntityParams {
-	persona_id: number;
+	actor: number;
 	data: EntityData;
 	source_id: number;
 	type?: string;
@@ -325,6 +337,7 @@ export interface CreateEntityResponse {
 export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;
 
 export interface UpdateEntityParams {
+	actor: number;
 	entity_id: number;
 	data: EntityData | null;
 }
@@ -334,6 +347,7 @@ export interface UpdateEntityResponse {
 export type UpdateEntityResponseResult = ApiResult<UpdateEntityResponse>;
 
 export interface ReadEntitiesParams {
+	actor: number;
 	source_id: number;
 }
 export interface ReadEntitiesResponse {
@@ -343,6 +357,7 @@ export interface ReadEntitiesResponse {
 export type ReadEntitiesResponseResult = ApiResult<ReadEntitiesResponse>;
 
 export interface ReadEntitiesPaginatedParams {
+	actor: number;
 	source_id: number;
 	pageSize?: number;
 	pageKey?: number;
@@ -354,10 +369,12 @@ export interface ReadEntitiesPaginatedResponse {
 export type ReadEntitiesPaginatedResponseResult = ApiResult<ReadEntitiesPaginatedResponse>;
 
 export interface QueryEntitiesParams {
+	actor: number;
 	source_id: number;
 }
 
 export interface EraseEntitiesParams {
+	actor: number;
 	entityIds: number[];
 }
 export interface EraseEntitiesResponse {
@@ -366,6 +383,7 @@ export interface EraseEntitiesResponse {
 export type EraseEntitiesResponseResult = ApiResult<EraseEntitiesResponse>;
 
 export interface DeleteEntitiesParams {
+	actor: number;
 	entityIds: number[];
 }
 export interface DeleteEntitiesResponse {
@@ -374,6 +392,7 @@ export interface DeleteEntitiesResponse {
 export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
 export interface CreateTieParams {
+	actor: number;
 	source_id: number;
 	dest_id: number;
 	type: string;
@@ -384,6 +403,7 @@ export interface CreateTieResponse {
 export type CreateTieResponseResult = ApiResult<CreateTieResponse>;
 
 export interface ReadTiesParams {
+	actor: number;
 	source_id: number;
 }
 export interface ReadTiesResponse {
@@ -392,6 +412,7 @@ export interface ReadTiesResponse {
 export type ReadTiesResponseResult = ApiResult<ReadTiesResponse>;
 
 export interface DeleteTieParams {
+	actor: number;
 	source_id: number;
 	dest_id: number;
 	type: string;

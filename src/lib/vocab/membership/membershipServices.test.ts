@@ -20,7 +20,11 @@ test__membershipServices('disallow creating duplicate memberships', async ({db, 
 	const {community, personas, account} = await random.community();
 	unwrapError(
 		await CreateMembershipService.perform({
-			params: {community_id: community.community_id, persona_id: personas[1].persona_id},
+			params: {
+				actor: personas[1].persona_id,
+				community_id: community.community_id,
+				persona_id: personas[1].persona_id,
+			},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
@@ -29,10 +33,11 @@ test__membershipServices('disallow creating duplicate memberships', async ({db, 
 test__membershipServices(
 	'disallow creating memberships for personal communities',
 	async ({db, random}) => {
-		const {account, personalCommunity} = await random.persona();
+		const {account, personalCommunity, persona} = await random.persona();
 		unwrapError(
 			await CreateMembershipService.perform({
 				params: {
+					actor: persona.persona_id,
 					community_id: personalCommunity.community_id,
 					persona_id: (await random.persona()).persona.persona_id,
 				},
@@ -46,7 +51,11 @@ test__membershipServices('delete a membership in a community', async ({db, rando
 	const {community, personas, account} = await random.community();
 	unwrap(
 		await DeleteMembershipService.perform({
-			params: {persona_id: personas[1].persona_id, community_id: community.community_id},
+			params: {
+				actor: personas[1].persona_id,
+				persona_id: personas[1].persona_id,
+				community_id: community.community_id,
+			},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
@@ -57,7 +66,11 @@ test__membershipServices('fail to delete a personal membership', async ({db, ran
 	const {persona, account} = await random.persona();
 	unwrapError(
 		await DeleteMembershipService.perform({
-			params: {persona_id: persona.persona_id, community_id: persona.community_id},
+			params: {
+				actor: persona.persona_id,
+				persona_id: persona.persona_id,
+				community_id: persona.community_id,
+			},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
@@ -68,7 +81,11 @@ test__membershipServices('fail to delete a community persona membership', async 
 	const {community, personas, account} = await random.community();
 	unwrapError(
 		await DeleteMembershipService.perform({
-			params: {persona_id: personas[0].persona_id, community_id: community.community_id},
+			params: {
+				actor: personas[0].persona_id,
+				persona_id: personas[0].persona_id,
+				community_id: community.community_id,
+			},
 			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
@@ -84,7 +101,11 @@ test__membershipServices(
 		const {persona: persona2} = await random.persona();
 		unwrap(
 			await CreateMembershipService.perform({
-				params: {persona_id: persona2.persona_id, community_id: community.community_id},
+				params: {
+					actor: persona2.persona_id,
+					persona_id: persona2.persona_id,
+					community_id: community.community_id,
+				},
 				...toServiceRequestMock(account.account_id, db),
 			}),
 		);
@@ -96,7 +117,11 @@ test__membershipServices(
 		//Delete 1 account member, the community still exists
 		unwrap(
 			await DeleteMembershipService.perform({
-				params: {persona_id: persona2.persona_id, community_id: community.community_id},
+				params: {
+					actor: persona2.persona_id,
+					persona_id: persona2.persona_id,
+					community_id: community.community_id,
+				},
 				...toServiceRequestMock(account.account_id, db),
 			}),
 		);
@@ -109,7 +134,11 @@ test__membershipServices(
 		//Delete last account member, the community is deleted
 		unwrap(
 			await DeleteMembershipService.perform({
-				params: {persona_id: persona1.persona_id, community_id: community.community_id},
+				params: {
+					actor: persona1.persona_id,
+					persona_id: persona1.persona_id,
+					community_id: community.community_id,
+				},
 				...toServiceRequestMock(account.account_id, db),
 			}),
 		);

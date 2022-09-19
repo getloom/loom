@@ -4,7 +4,12 @@ import {removeUnordered} from '@feltcoop/felt/util/array.js';
 import type {Mutations} from '$lib/app/eventTypes';
 import {deleteCommunity} from '$lib/vocab/community/communityMutationHelpers';
 
-export const CreateMembership: Mutations['CreateMembership'] = async ({invoke, dispatch, ui}) => {
+export const CreateMembership: Mutations['CreateMembership'] = async ({
+	invoke,
+	dispatch,
+	ui,
+	params,
+}) => {
 	const {memberships, communityById} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
@@ -16,6 +21,7 @@ export const CreateMembership: Mutations['CreateMembership'] = async ({invoke, d
 		memberships.mutate(($memberships) => $memberships.push(writable($membership)));
 	} else {
 		const readCommunityResult = await dispatch.ReadCommunity({
+			actor: params.actor,
 			community_id: $membership.community_id,
 		});
 		if (!readCommunityResult.ok) return readCommunityResult;

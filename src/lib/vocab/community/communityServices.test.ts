@@ -23,7 +23,7 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
-				params: {community_id: persona.community_id},
+				params: {actor: persona.persona_id, community_id: persona.community_id},
 				...toServiceRequestMock(account.account_id, db),
 			}),
 		).status,
@@ -32,11 +32,11 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 });
 
 test_communityServices('disallow deleting admin community', async ({db, random}) => {
-	const {account} = await random.persona();
+	const {account, persona} = await random.persona();
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
-				params: {community_id: ADMIN_COMMUNITY_ID},
+				params: {actor: persona.persona_id, community_id: ADMIN_COMMUNITY_ID},
 				...toServiceRequestMock(account.account_id, db),
 			}),
 		).status,

@@ -3,15 +3,15 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityItem from '$lib/ui/EntityItem.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
-	// TODO this should possibly be a generic component instead of this named one
-
+	export let persona: Readable<Persona>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 </script>
 
 <ul>
 	{#each $entities as entity (entity)}
-		<EntityItem {entity} />
+		<EntityItem {persona} {entity} />
 	{/each}
 </ul>
 

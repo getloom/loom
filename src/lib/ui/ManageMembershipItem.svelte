@@ -10,8 +10,9 @@
 
 	const {dispatch} = getApp();
 
-	export let community: Readable<Community>;
 	export let persona: Readable<Persona>;
+	export let membershipPersona: Readable<Persona>;
+	export let community: Readable<Community>;
 
 	let errorMessage: string | undefined;
 	let pending = false;
@@ -20,7 +21,8 @@
 		errorMessage = '';
 		pending = true;
 		const result = await dispatch.DeleteMembership({
-			persona_id: $persona.persona_id,
+			actor: $persona.persona_id,
+			persona_id: $membershipPersona.persona_id,
 			community_id,
 		});
 		pending = false;

@@ -11,7 +11,7 @@
 	import type {Tie} from '$lib/vocab/tie/tie';
 
 	const viewContext = getViewContext();
-	$: ({space} = $viewContext);
+	$: ({persona, space} = $viewContext);
 
 	const {
 		dispatch,
@@ -25,7 +25,10 @@
 
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
-		const result = await dispatch.ReadEntitiesPaginated({source_id: $space.directory_id});
+		const result = await dispatch.ReadEntitiesPaginated({
+			actor: $persona.persona_id,
+			source_id: $space.directory_id,
+		});
 		if (result.ok) {
 			// TODO refactor using a query interface (with data, status)
 			entities2 = writable(result.value.entities.map((e) => entityById.get(e.entity_id)!));
@@ -35,7 +38,10 @@
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: entities = shouldLoadEntities
-		? dispatch.QueryEntities({source_id: $space.directory_id})
+		? dispatch.QueryEntities({
+				actor: $persona.persona_id,
+				source_id: $space.directory_id,
+		  })
 		: null;
 </script>
 
@@ -50,7 +56,7 @@
 		{#if entities2}
 			<ul>
 				{#each $entities2 as entity (entity)}
-					<EntityTree {entity} ties={ties2} />
+					<EntityTree {persona} {entity} ties={ties2} />
 				{/each}
 			</ul>
 		{:else}
@@ -59,7 +65,7 @@
 	</div>
 	<div class="entities">
 		{#if entities}
-			<EntityItems {entities} />
+			<EntityItems {persona} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}

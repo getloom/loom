@@ -9,17 +9,19 @@
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
 		ui: {contextmenu, personaById},
 	} = getApp();
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 
-	$: persona = personaById.get($entity.persona_id)!;
+	$: authorPersona = personaById.get($entity.persona_id)!;
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($persona.name);
+	$: hue = randomHue($authorPersona.name);
 </script>
 
 <!-- TODO delete `PersonaContextmenu` ? should that be handled by the entity contextmenu?
@@ -27,16 +29,16 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 <li
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[PersonaContextmenu, {persona}],
-		[EntityContextmenu, {entity}],
+		[PersonaContextmenu, {persona: authorPersona}],
+		[EntityContextmenu, {persona, entity}],
 	]}
 >
 	<div class="signature">
-		<PersonaAvatar {persona} showName={false} />
+		<PersonaAvatar persona={authorPersona} showName={false} />
 	</div>
 	<div class="markup padded-md formatted">
 		<div class="signature">
-			<PersonaAvatar {persona} showIcon={false} />
+			<PersonaAvatar persona={authorPersona} showIcon={false} />
 			{format($entity.created, 'Pp')}
 		</div>
 		<div>

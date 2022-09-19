@@ -7,18 +7,20 @@
 	import {getApp} from '$lib/ui/app';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
+	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
 		ui: {contextmenu, personaById},
 	} = getApp();
 
+	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
 	export let selectPost: (post: Readable<Entity>) => void;
 
-	$: persona = personaById.get($entity.persona_id)!;
+	$: authorPersona = personaById.get($entity.persona_id)!;
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($persona.name);
+	$: hue = randomHue($authorPersona.name);
 
 	//TODO is this still needed?
 	const renderEntity = (entity: Entity): boolean => {
@@ -35,8 +37,8 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 	<li
 		style="--hue: {hue}"
 		use:contextmenu.action={[
-			[PersonaContextmenu, {persona}],
-			[EntityContextmenu, {entity}],
+			[PersonaContextmenu, {persona: authorPersona}],
+			[EntityContextmenu, {persona, entity}],
 		]}
 	>
 		<div on:click={() => selectPost(entity)} class="entity markup formatted">
@@ -48,7 +50,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 				{/if}
 			</div>
 			<div class="signature">
-				<PersonaAvatar {persona} />
+				<PersonaAvatar persona={authorPersona} />
 			</div>
 		</div>
 	</li>

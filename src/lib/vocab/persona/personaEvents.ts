@@ -42,9 +42,10 @@ export const ReadPersona: ServiceEventInfo = {
 		$id: '/schemas/ReadPersonaParams.json',
 		type: 'object',
 		properties: {
+			actor: {type: 'number'},
 			persona_id: {type: 'number'},
 		},
-		required: ['persona_id'],
+		required: ['actor', 'persona_id'],
 		additionalProperties: false,
 	},
 	response: {

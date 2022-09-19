@@ -75,9 +75,9 @@ export const seed = async (db: Database): Promise<void> => {
 	const otherPersonas = personas.slice(1);
 
 	const communitiesParams: CreateCommunityParams[] = [
-		{name: 'felt', persona_id: mainPersonaCreator.persona_id},
-		{name: 'dev', persona_id: mainPersonaCreator.persona_id},
-		{name: 'backpackers-anonymous', persona_id: mainPersonaCreator.persona_id},
+		{name: 'felt', actor: mainPersonaCreator.persona_id},
+		{name: 'dev', actor: mainPersonaCreator.persona_id},
+		{name: 'backpackers-anonymous', actor: mainPersonaCreator.persona_id},
 	];
 	const communities: Community[] = [];
 
@@ -85,7 +85,7 @@ export const seed = async (db: Database): Promise<void> => {
 		const {community, spaces} = unwrap(
 			await CreateCommunityService.perform({
 				...mainAccountServiceRequest,
-				params: {name: communityParams.name, persona_id: communityParams.persona_id},
+				params: {name: communityParams.name, actor: communityParams.actor},
 			}),
 		);
 		communities.push(community);
@@ -93,7 +93,11 @@ export const seed = async (db: Database): Promise<void> => {
 			unwrap(
 				await CreateMembershipService.perform({
 					...mainAccountServiceRequest,
-					params: {persona_id: persona.persona_id, community_id: community.community_id},
+					params: {
+						actor: persona.persona_id,
+						persona_id: persona.persona_id,
+						community_id: community.community_id,
+					},
 				}),
 			);
 		}
@@ -127,7 +131,7 @@ const createDefaultEntities = async (
 				await CreateEntityService.perform({
 					...serviceRequest,
 					params: {
-						persona_id: nextPersona().persona_id,
+						actor: nextPersona().persona_id,
 						data: {type: 'Note', content: entityContent},
 						source_id: space.directory_id,
 					},
@@ -153,14 +157,14 @@ const entitiesContents: Record<string, string[]> = {
 
 const generateTodo = async (
 	serviceRequest: ReturnType<typeof toServiceRequestMock>,
-	persona_id: number,
+	actor: number,
 	space: Space,
 ) => {
 	const list = unwrap(
 		await CreateEntityService.perform({
 			...serviceRequest,
 			params: {
-				persona_id,
+				actor,
 				data: {type: 'Collection', name: 'Grocery List'},
 				source_id: space.directory_id,
 			},
@@ -172,7 +176,7 @@ const generateTodo = async (
 			await CreateEntityService.perform({
 				...serviceRequest,
 				params: {
-					persona_id,
+					actor,
 					data: {type: 'Note', content},
 					source_id: list.entity.entity_id,
 				},

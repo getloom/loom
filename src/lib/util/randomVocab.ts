@@ -46,34 +46,41 @@ export const randomPersonaParams = (): CreateAccountPersonaParams => ({
 	name: randomPersonaName(),
 });
 export const randomMembershipParams = (
+	actor: number,
 	persona_id: number,
 	community_id: number,
 ): CreateMembershipParams => ({
+	actor,
 	persona_id,
 	community_id,
 });
-export const randomCommunityParams = (persona_id: number): CreateCommunityParams => {
+export const randomCommunityParams = (actor: number): CreateCommunityParams => {
 	const name = randomCommunnityName();
 	return {
 		name,
-		persona_id,
+		actor,
 		settings: toDefaultCommunitySettings(name),
 	};
 };
-export const randomSpaceParams = (persona_id: number, community_id: number): CreateSpaceParams => ({
-	persona_id,
+export const randomSpaceParams = (actor: number, community_id: number): CreateSpaceParams => ({
+	actor,
 	community_id,
 	view: randomView(),
 	name: randomSpaceName(),
 	url: randomSpaceUrl(),
 	icon: randomSpaceIcon(),
 });
-export const randomEntityParams = (persona_id: number, source_id: number): CreateEntityParams => ({
-	persona_id,
+export const randomEntityParams = (actor: number, source_id: number): CreateEntityParams => ({
+	actor,
 	data: randomEntityData(),
 	source_id,
 });
-export const randomTieParams = (source_id: number, dest_id: number): CreateTieParams => ({
+export const randomTieParams = (
+	actor: number,
+	source_id: number,
+	dest_id: number,
+): CreateTieParams => ({
+	actor,
 	source_id,
 	dest_id,
 	type: randomTieType(),
@@ -231,7 +238,11 @@ export class RandomVocabContext {
 		if (!destEntity) {
 			({entity: destEntity} = await this.entity(persona, account, community, parentSourceId));
 		}
-		const params = randomTieParams(sourceEntity.entity_id, destEntity.entity_id);
+		const params = randomTieParams(
+			persona.persona_id,
+			sourceEntity.entity_id,
+			destEntity.entity_id,
+		);
 		if (type) params.type = type;
 		const {tie} = unwrap(
 			await CreateTieService.perform({
