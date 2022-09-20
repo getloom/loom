@@ -1,11 +1,13 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
+	import {readable} from '@feltcoop/svelte-gettable-stores';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import ForumItems from '$lib/ui/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
+	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
@@ -15,12 +17,14 @@
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
-	$: entities = shouldLoadEntities
+	$: queried = shouldLoadEntities
 		? dispatch.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
+	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
+	$: entities = $queried && readable(sortEntitiesByCreated(Array.from($queried.value)));
 
 	const createEntity = async () => {
 		const content = text.trim(); // TODO parse to trim? regularize step?

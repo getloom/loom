@@ -85,21 +85,18 @@ export const stashTies = (
 			mutated.add(destTies);
 		}
 
-		// TODO is inefficient, make `entitiesBySourceId` mutable and batch
-		// Update the cached entity array by source_id.
+		// Update the dest entity set.
 		const entity = entityById.get(dest_id);
 		if (entity) {
 			const destEntities = entitiesBySourceId.get(source_id);
 			if (destEntities) {
-				if (!destEntities.get().includes(entity)) {
-					destEntities.update(($entities) =>
-						// TODO splice into a mutable array instead of sorting like this
-						$entities.concat(entity!).sort((a, b) => (a.get().created > b.get().created ? 1 : -1)),
-					);
-					// mutated.add(destEntities) // TODO see above
+				const $destEntities = destEntities.get().value;
+				if (!$destEntities.has(entity)) {
+					$destEntities.add(entity);
+					mutated.add(destEntities);
 				}
 			} else {
-				entitiesBySourceId.set(source_id, writable([entity]));
+				entitiesBySourceId.set(source_id, mutable(new Set([entity])));
 			}
 		} else {
 			// TODO what should we do here? may not be a problem depending on query patterns
@@ -107,7 +104,7 @@ export const stashTies = (
 		}
 	}
 
-	// Batch mutatations.
+	// Batch mutations.
 	for (const m of mutated) m.mutate();
 };
 
@@ -183,22 +180,33 @@ export const evictTie = (
 	}
 };
 
+// TODO delete orphaned entities
 export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
 	const {entityById, entitiesBySourceId, freshnessByDirectoryId} = ui;
 
-	// TODO delete orphaned entities
+	const mutated = new Set<Mutable<any>>();
 
 	for (const entity_id of entityIds) {
+		const entity = entityById.get(entity_id)!;
 		entityById.delete(entity_id);
 		freshnessByDirectoryId.delete(entity_id);
 		evictTiesForEntity(ui, entity_id);
+
+		// Update the dest entity set.
+		// TODO instead of looping through every collection here,
+		// if we had `entitiesByDestId` we could do this much more efficiently,
+		// or alternatively the logic of `evictTiesForEntity`
+		// could be integrated in this function instead of being extracted
+		for (const destEntities of entitiesBySourceId.values()) {
+			const $destEntities = destEntities.get().value;
+			if ($destEntities.has(entity)) {
+				$destEntities.delete(entity);
+				mutated.add(destEntities);
+			}
+		}
+		entitiesBySourceId.delete(entity_id);
 	}
 
-	// Update the cached entity array by source id.
-	for (const destEntities of entitiesBySourceId.values()) {
-		// TODO this is very inefficient
-		if (destEntities.get().find((e) => entityIds.includes(e.get().entity_id))) {
-			destEntities.update(($s) => $s.filter(($e) => !entityIds.includes($e.get().entity_id)));
-		}
-	}
+	// Batch mutations.
+	for (const m of mutated) m.mutate();
 };

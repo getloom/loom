@@ -62,7 +62,7 @@ export interface Ui {
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
-	entitiesBySourceId: Map<number, Readable<Array<Readable<Entity>>>>; // TODO mutable inner store
+	entitiesBySourceId: Map<number, Mutable<Set<Readable<Entity>>>>;
 	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Tie[]>>>;
 	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Tie[]>>>;
 	communitiesBySessionPersona: Readable<Map<Readable<Persona>, Array<Readable<Community>>>>;
@@ -225,7 +225,7 @@ export const toUi = (
 	);
 
 	const entityById: Map<number, Writable<Entity>> = new Map();
-	const entitiesBySourceId: Map<number, Writable<Array<Writable<Entity>>>> = new Map();
+	const entitiesBySourceId: Map<number, Mutable<Set<Writable<Entity>>>> = new Map();
 	const sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Tie[]>>> = mutable(new Map());
 	const destTiesBySourceEntityId: Mutable<Map<number, Mutable<Tie[]>>> = mutable(new Map());
 

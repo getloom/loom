@@ -1,4 +1,4 @@
-import {writable} from '@feltcoop/svelte-gettable-stores';
+import {mutable} from '@feltcoop/svelte-gettable-stores';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityMutationHelpers';
@@ -64,7 +64,7 @@ export const QueryEntities: Mutations['QueryEntities'] = ({
 }) => {
 	let destEntities = entitiesBySourceId.get(params.source_id);
 	if (!destEntities) {
-		entitiesBySourceId.set(params.source_id, (destEntities = writable([])));
+		entitiesBySourceId.set(params.source_id, (destEntities = mutable(new Set())));
 		void dispatch.ReadEntities(params);
 	}
 	return destEntities;

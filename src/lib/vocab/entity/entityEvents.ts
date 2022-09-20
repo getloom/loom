@@ -112,7 +112,7 @@ export const QueryEntities: ClientEventInfo = {
 	},
 	// TODO Can/should this compose the `ReadEntities` event info?
 	// Could make the `response` available.
-	returns: 'Readable<Readable<Entity>[]>',
+	returns: 'Mutable<Set<Readable<Entity>>>',
 };
 
 export const ReadEntitiesPaginated: ServiceEventInfo = {

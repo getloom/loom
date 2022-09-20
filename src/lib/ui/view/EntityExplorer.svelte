@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
-	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import {readable, writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import EntityItems from '$lib/ui/EntityItems.svelte';
 	import EntityTree from '$lib/ui/EntityTree.svelte';
@@ -9,6 +9,7 @@
 	import {getViewContext} from '$lib/vocab/view/view';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {Tie} from '$lib/vocab/tie/tie';
+	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
@@ -37,12 +38,14 @@
 	};
 
 	$: shouldLoadEntities = browser && $socket.open;
-	$: entities = shouldLoadEntities
+	$: queried = shouldLoadEntities
 		? dispatch.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
+	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
+	$: entities = $queried && readable(sortEntitiesByCreated(Array.from($queried.value)));
 </script>
 
 <div class="entity-explorer">
