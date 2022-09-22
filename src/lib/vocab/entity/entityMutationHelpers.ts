@@ -108,41 +108,6 @@ export const stashTies = (
 	for (const m of mutated) m.mutate();
 };
 
-export const evictTiesForEntity = (
-	{sourceTiesByDestEntityId, destTiesBySourceEntityId}: WritableUi,
-	entity_id: number,
-): void => {
-	const sources = sourceTiesByDestEntityId.get().value.get(entity_id);
-	if (sources) {
-		for (const source of sources.get().value) {
-			const ties = destTiesBySourceEntityId.get().value.get(source.source_id);
-			if (ties) {
-				ties.mutate(($ties) => {
-					for (let i = $ties.length - 1; i >= 0; i--) {
-						if ($ties[i].dest_id === entity_id) $ties.splice(i, 1);
-					}
-				});
-			}
-		}
-		sourceTiesByDestEntityId.mutate(($v) => $v.delete(entity_id));
-	}
-
-	const destinations = destTiesBySourceEntityId.get().value.get(entity_id);
-	if (destinations) {
-		for (const dest of destinations.get().value) {
-			const ties = sourceTiesByDestEntityId.get().value.get(dest.dest_id);
-			if (ties) {
-				ties.mutate(($ties) => {
-					for (let i = $ties.length - 1; i >= 0; i--) {
-						if ($ties[i].source_id === entity_id) $ties.splice(i, 1);
-					}
-				});
-			}
-		}
-		destTiesBySourceEntityId.mutate(($v) => $v.delete(entity_id));
-	}
-};
-
 export const evictTie = (
 	{sourceTiesByDestEntityId, destTiesBySourceEntityId}: WritableUi,
 	source_id: number,
@@ -182,7 +147,16 @@ export const evictTie = (
 
 // TODO delete orphaned entities
 export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
-	const {entityById, entitiesBySourceId, freshnessByDirectoryId} = ui;
+	const {
+		entityById,
+		entitiesBySourceId,
+		freshnessByDirectoryId,
+		sourceTiesByDestEntityId,
+		destTiesBySourceEntityId,
+	} = ui;
+
+	const $sourceTiesByDestEntityId = sourceTiesByDestEntityId.get().value;
+	const $destTiesBySourceEntityId = destTiesBySourceEntityId.get().value;
 
 	const mutated = new Set<Mutable<any>>();
 
@@ -190,13 +164,54 @@ export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
 		const entity = entityById.get(entity_id)!;
 		entityById.delete(entity_id);
 		freshnessByDirectoryId.delete(entity_id);
-		evictTiesForEntity(ui, entity_id);
 
-		// Update the dest entity set.
+		// TODO the loops below should be optimizable using the cached data
+		// See also the TODO below.
+
+		// Evict ties for entity.
+		const sourceTies = $sourceTiesByDestEntityId.get(entity_id);
+		if (sourceTies) {
+			for (const sourceTie of sourceTies.get().value) {
+				const ties = $destTiesBySourceEntityId.get(sourceTie.source_id);
+				if (ties) {
+					const $ties = ties.get().value;
+					for (let i = $ties.length - 1; i >= 0; i--) {
+						if ($ties[i].dest_id === entity_id) {
+							$ties.splice(i, 1);
+							mutated.add(ties);
+						}
+					}
+				}
+			}
+			$sourceTiesByDestEntityId.delete(entity_id);
+			mutated.add(sourceTiesByDestEntityId);
+		}
+
+		const destTies = $destTiesBySourceEntityId.get(entity_id);
+		if (destTies) {
+			for (const destTie of destTies.get().value) {
+				const ties = $sourceTiesByDestEntityId.get(destTie.dest_id);
+				if (ties) {
+					const $ties = ties.get().value;
+					for (let i = $ties.length - 1; i >= 0; i--) {
+						if ($ties[i].source_id === entity_id) {
+							$ties.splice(i, 1);
+							mutated.add(ties);
+						}
+					}
+				}
+			}
+			$destTiesBySourceEntityId.delete(entity_id);
+			mutated.add(destTiesBySourceEntityId);
+		}
+
 		// TODO instead of looping through every collection here,
 		// if we had `entitiesByDestId` we could do this much more efficiently,
 		// or alternatively the logic of `evictTiesForEntity`
-		// could be integrated in this function instead of being extracted
+		// could be integrated in this function instead of being extracted.
+		// See also the TODO above.
+
+		// Update the dest entity set.
 		for (const destEntities of entitiesBySourceId.values()) {
 			const $destEntities = destEntities.get().value;
 			if ($destEntities.has(entity)) {
