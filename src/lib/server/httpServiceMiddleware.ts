@@ -47,7 +47,7 @@ export const toHttpServiceMiddleware =
 
 		const params = service.event.params.type === 'null' ? null : {...reqBody, ...reqParams};
 
-		const validateParams = validateSchema(service.event.params);
+		const validateParams = validateSchema<any>(service.event.params);
 		if (!validateParams(params)) {
 			// TODO handle multiple errors instead of just the first
 			log.error('failed to validate params', params, validateParams.errors);
@@ -55,9 +55,9 @@ export const toHttpServiceMiddleware =
 			return send(res, 400, {message: toValidationErrorMessage(validationError)});
 		}
 
-		const authorizeResult = authorize(req.account_id, service);
+		const authorizeResult = await authorize(service, server.db.repos, req.account_id, params);
 		if (!authorizeResult.ok) {
-			return send(res, 403, {message: authorizeResult.message});
+			return send(res, authorizeResult.status, {message: authorizeResult.message});
 		}
 
 		let result;
