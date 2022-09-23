@@ -2,6 +2,7 @@ import {DialogDataSchema} from '@feltcoop/felt/ui/dialog/dialog.schema.js';
 import type {VocabSchema} from '@feltcoop/gro/dist/utils/schema.js';
 
 import {eventInfos} from '$lib/app/events';
+import {toSchemaName} from '$lib/util/schema';
 import {AccountSchema} from '$lib/vocab/account/account.schema';
 import {
 	AccountPersonaSchema,
@@ -13,7 +14,7 @@ import {MembershipSchema} from '$lib/vocab/membership/membership.schema';
 import {SpaceSchema} from '$lib/vocab/space/space.schema';
 import {EntitySchema} from '$lib/vocab/entity/entity.schema';
 import {TieSchema} from '$lib/vocab/tie/tie.schema';
-import {toSchemaName} from '$lib/util/schema';
+import {RoleSchema} from '$lib/vocab/role/role.schema';
 
 // TODO The casts to `as VocabSchema` in this file
 // are needed because the `json-schema` types are very strict,
@@ -34,6 +35,7 @@ export const vocabSchemas = [
 	SpaceSchema,
 	EntitySchema,
 	TieSchema,
+	RoleSchema,
 ] as VocabSchema[];
 
 export const schemas = vocabSchemas.concat(

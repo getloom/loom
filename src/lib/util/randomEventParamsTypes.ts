@@ -29,6 +29,10 @@ import type {
 	CreateTieParams,
 	ReadTiesParams,
 	DeleteTieParams,
+	CreateRoleParams,
+	ReadRolesParams,
+	UpdateRoleParams,
+	DeleteRolesParams,
 	PingParams,
 	EphemeraParams,
 	ToggleMainNavParams,
@@ -125,6 +129,13 @@ export interface RandomEventParams {
 	CreateTie: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateTieParams>;
 	ReadTies: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadTiesParams>;
 	DeleteTie: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteTieParams>;
+	CreateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateRoleParams>;
+	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
+	UpdateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateRoleParams>;
+	DeleteRoles: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<DeleteRolesParams>;
 	Ping: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<PingParams>;
 	Ephemera: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<EphemeraParams>;
 	ToggleMainNav: (

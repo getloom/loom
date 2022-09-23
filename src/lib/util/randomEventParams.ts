@@ -9,6 +9,7 @@ import {
 	randomSpaceParams,
 	randomSpaceName,
 	randomCommunityParams,
+	randomRoleName,
 } from '$lib/util/randomVocab';
 import {randomHue} from '$lib/ui/color';
 import type {RandomEventParams} from '$lib/util/randomEventParamsTypes';
@@ -195,6 +196,31 @@ export const randomEventParams: RandomEventParams = {
 			type: tie.type,
 		};
 	},
+	CreateRole: async (random, {account, persona, community} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!community) ({community} = await random.community(persona, account));
+		return {
+			actor: persona.persona_id,
+			community_id: community.community_id,
+			name: randomRoleName(),
+		};
+	},
+	ReadRoles: async (random, {account, persona, community} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!community) ({community} = await random.community(persona, account));
+		return {actor: persona.persona_id, community_id: community.community_id};
+	},
+	UpdateRole: async (random, {account, persona, community, role} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!role) ({role} = await random.role(persona, account, community));
+		return {actor: persona.persona_id, role_id: role.role_id, name: randomRoleName()};
+	},
+	DeleteRoles: async (random, {account, persona, community, role} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!role) ({role} = await random.role(persona, account, community));
+		return {actor: persona.persona_id, roleIds: [role.role_id]};
+	},
+
 	ToggleMainNav: async () => {
 		return undefined;
 	},

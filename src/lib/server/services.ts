@@ -29,6 +29,12 @@ import {
 	DeleteSpaceService,
 } from '$lib/vocab/space/spaceServices';
 import {CreateTieService, ReadTiesService, DeleteTieService} from '$lib/vocab/tie/tieServices';
+import {
+	CreateRoleService,
+	DeleteRolesService,
+	ReadRolesService,
+	UpdateRoleService,
+} from '$lib/vocab/role/roleServices';
 
 export const services: Map<string, Service<any, any>> = new Map(
 	[
@@ -67,5 +73,10 @@ export const services: Map<string, Service<any, any>> = new Map(
 		CreateTieService,
 		ReadTiesService,
 		DeleteTieService,
+		// roleServices
+		CreateRoleService,
+		ReadRolesService,
+		UpdateRoleService,
+		DeleteRolesService,
 	].map((s) => [s.event.name, s]),
 );

@@ -7,6 +7,7 @@ import {CommunityRepo} from '$lib/vocab/community/CommunityRepo';
 import {SpaceRepo} from '$lib/vocab/space/SpaceRepo';
 import {EntityRepo} from '$lib/vocab/entity/EntityRepo';
 import {TieRepo} from '$lib/vocab/tie/TieRepo';
+import {RoleRepo} from '$lib/vocab/role/RoleRepo';
 
 /**
  * The `Repos` is instantiated with a `postgres.Sql` instance,
@@ -21,6 +22,7 @@ export class Repos {
 	readonly space: SpaceRepo;
 	readonly entity: EntityRepo;
 	readonly tie: TieRepo;
+	readonly role: RoleRepo;
 
 	constructor(sql: PostgresSql) {
 		this.session = new SessionRepo(this, sql);
@@ -31,5 +33,6 @@ export class Repos {
 		this.space = new SpaceRepo(this, sql);
 		this.entity = new EntityRepo(this, sql);
 		this.tie = new TieRepo(this, sql);
+		this.role = new RoleRepo(this, sql);
 	}
 }

@@ -10,8 +10,9 @@ import type {Persona, AccountPersona} from '$lib/vocab/persona/persona';
 import type {Membership} from '$lib/vocab/membership/membership';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {Tie} from '$lib/vocab/tie/tie';
 import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {Tie} from '$lib/vocab/tie/tie';
+import type {Role} from '$lib/vocab/role/role';
 import type {DispatchContext} from '$lib/app/dispatch';
 import type {ClientSession, ClientAccountSession} from '$lib/session/clientSession';
 
@@ -43,6 +44,10 @@ export type ServiceEventName =
 	| 'CreateTie'
 	| 'ReadTies'
 	| 'DeleteTie'
+	| 'CreateRole'
+	| 'ReadRoles'
+	| 'UpdateRole'
+	| 'DeleteRoles'
 	| 'Ping'
 	| 'Ephemera';
 
@@ -85,6 +90,10 @@ export interface EventParamsByName {
 	CreateTie: CreateTieParams;
 	ReadTies: ReadTiesParams;
 	DeleteTie: DeleteTieParams;
+	CreateRole: CreateRoleParams;
+	ReadRoles: ReadRolesParams;
+	UpdateRole: UpdateRoleParams;
+	DeleteRoles: DeleteRolesParams;
 	Ping: PingParams;
 	Ephemera: EphemeraParams;
 	ToggleMainNav: ToggleMainNavParams;
@@ -121,6 +130,10 @@ export interface EventResponseByName {
 	CreateTie: CreateTieResponse;
 	ReadTies: ReadTiesResponse;
 	DeleteTie: DeleteTieResponse;
+	CreateRole: CreateRoleResponse;
+	ReadRoles: ReadRolesResponse;
+	UpdateRole: UpdateRoleResponse;
+	DeleteRoles: DeleteRolesResponse;
 	Ping: PingResponse;
 	Ephemera: EphemeraResponse;
 }
@@ -156,6 +169,10 @@ export interface ServiceByName {
 	CreateTie: Service<CreateTieParams, CreateTieResponseResult>;
 	ReadTies: Service<ReadTiesParams, ReadTiesResponseResult>;
 	DeleteTie: Service<DeleteTieParams, DeleteTieResponseResult>;
+	CreateRole: Service<CreateRoleParams, CreateRoleResponseResult>;
+	ReadRoles: Service<ReadRolesParams, ReadRolesResponseResult>;
+	UpdateRole: Service<UpdateRoleParams, UpdateRoleResponseResult>;
+	DeleteRoles: Service<DeleteRolesParams, DeleteRolesResponseResult>;
 }
 
 export interface SetSessionParams {
@@ -416,6 +433,42 @@ export interface DeleteTieParams {
 export type DeleteTieResponse = null;
 export type DeleteTieResponseResult = ApiResult<DeleteTieResponse>;
 
+export interface CreateRoleParams {
+	actor: number;
+	community_id: number;
+	name: string;
+}
+export interface CreateRoleResponse {
+	role: Role;
+}
+export type CreateRoleResponseResult = ApiResult<CreateRoleResponse>;
+
+export interface ReadRolesParams {
+	actor: number;
+	community_id: number;
+}
+export interface ReadRolesResponse {
+	roles: Role[];
+}
+export type ReadRolesResponseResult = ApiResult<ReadRolesResponse>;
+
+export interface UpdateRoleParams {
+	actor: number;
+	role_id: number;
+	name: string;
+}
+export interface UpdateRoleResponse {
+	role: Role;
+}
+export type UpdateRoleResponseResult = ApiResult<UpdateRoleResponse>;
+
+export interface DeleteRolesParams {
+	actor: number;
+	roleIds: number[];
+}
+export type DeleteRolesResponse = null;
+export type DeleteRolesResponseResult = ApiResult<DeleteRolesResponse>;
+
 export type PingParams = null;
 export type PingResponse = null;
 export type PingResponseResult = ApiResult<PingResponse>;
@@ -499,6 +552,10 @@ export interface Dispatch {
 	CreateTie: (params: CreateTieParams) => Promise<CreateTieResponseResult>;
 	ReadTies: (params: ReadTiesParams) => Promise<ReadTiesResponseResult>;
 	DeleteTie: (params: DeleteTieParams) => Promise<DeleteTieResponseResult>;
+	CreateRole: (params: CreateRoleParams) => Promise<CreateRoleResponseResult>;
+	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
+	UpdateRole: (params: UpdateRoleParams) => Promise<UpdateRoleResponseResult>;
+	DeleteRoles: (params: DeleteRolesParams) => Promise<DeleteRolesResponseResult>;
 	Ping: () => Promise<ApiResult<null>>;
 	Ephemera: (params: EphemeraParams) => Promise<EphemeraResponseResult>;
 	ToggleMainNav: (params: ToggleMainNavParams) => void;
@@ -588,6 +645,18 @@ export interface Mutations {
 	DeleteTie: (
 		ctx: DispatchContext<DeleteTieParams, DeleteTieResponseResult>,
 	) => Promise<DeleteTieResponseResult>;
+	CreateRole: (
+		ctx: DispatchContext<CreateRoleParams, CreateRoleResponseResult>,
+	) => Promise<CreateRoleResponseResult>;
+	ReadRoles: (
+		ctx: DispatchContext<ReadRolesParams, ReadRolesResponseResult>,
+	) => Promise<ReadRolesResponseResult>;
+	UpdateRole: (
+		ctx: DispatchContext<UpdateRoleParams, UpdateRoleResponseResult>,
+	) => Promise<UpdateRoleResponseResult>;
+	DeleteRoles: (
+		ctx: DispatchContext<DeleteRolesParams, DeleteRolesResponseResult>,
+	) => Promise<DeleteRolesResponseResult>;
 	Ping: (ctx: DispatchContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
 	Ephemera: (
 		ctx: DispatchContext<EphemeraParams, EphemeraResponseResult>,

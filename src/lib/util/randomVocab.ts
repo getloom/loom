@@ -12,6 +12,7 @@ import type {
 	CreateSpaceParams,
 	CreateMembershipParams,
 	CreateTieParams,
+	CreateRoleParams,
 	LoginParams,
 } from '$lib/app/eventTypes';
 import type {Database} from '$lib/db/Database';
@@ -25,6 +26,8 @@ import type {Membership} from '$lib/vocab/membership/membership';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {CreateTieService} from '$lib/vocab/tie/tieServices';
 import {toServiceRequestMock} from './testHelpers';
+import type {Role} from '$lib/vocab/role/role';
+import {CreateRoleService} from '$lib/vocab/role/roleServices';
 
 // TODO automate these from schemas, also use seeded rng
 export const randomString = (): string => Math.random().toString().slice(2);
@@ -38,6 +41,7 @@ export const randomSpaceName = randomString;
 export const randomView = (): string => '<Room />';
 export const randomEntityData = (): EntityData => ({type: 'Note', content: randomString()});
 export const randomTieType = randomString;
+export const randomRoleName = randomString;
 export const randomAccountParams = (): LoginParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
@@ -86,6 +90,12 @@ export const randomTieParams = (
 	type: randomTieType(),
 });
 
+export const randomRoleParams = (actor: number, community_id: number): CreateRoleParams => ({
+	actor,
+	community_id,
+	name: randomRoleName(),
+});
+
 // TODO maybe compute in relation to `RandomVocabContext`
 export interface RandomVocab {
 	account?: Account;
@@ -93,6 +103,7 @@ export interface RandomVocab {
 	community?: Community;
 	space?: Space;
 	entity?: Entity;
+	role?: Role;
 }
 
 /* eslint-disable no-param-reassign */
@@ -251,5 +262,28 @@ export class RandomVocabContext {
 			}),
 		);
 		return {tie, sourceEntity, destEntity, persona, account, community, parentSourceId};
+	}
+
+	async role(
+		persona?: Persona,
+		account?: Account,
+		community?: Community,
+	): Promise<{
+		role: Role;
+		persona: Persona;
+		account: Account;
+		community: Community;
+	}> {
+		if (!account) account = await this.account();
+		if (!persona) ({persona} = await this.persona(account));
+		if (!community) ({community} = await this.community(persona, account));
+		const params = randomRoleParams(persona.persona_id, community.community_id);
+		const {role} = unwrap(
+			await CreateRoleService.perform({
+				...toServiceRequestMock(community.community_id, this.db),
+				params,
+			}),
+		);
+		return {role, persona, account, community};
 	}
 }

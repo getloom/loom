@@ -38,8 +38,9 @@ import type {Persona, AccountPersona} from '$lib/vocab/persona/persona';
 import type {Membership} from '$lib/vocab/membership/membership';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {Tie} from '$lib/vocab/tie/tie';
 import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {Tie} from '$lib/vocab/tie/tie';
+import type {Role} from '$lib/vocab/role/role';
 import type {DispatchContext} from '$lib/app/dispatch';
 import type {ClientSession, ClientAccountSession} from '$lib/session/clientSession';
 
