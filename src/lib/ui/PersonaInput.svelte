@@ -7,7 +7,7 @@
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import {toSpaceUrl} from '$lib/ui/url';
+	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 
 	const {
 		dispatch,
@@ -38,10 +38,14 @@
 			errorMessage = null;
 			name = '';
 			await goto(
-				toSpaceUrl(result.value.community, null, $page.url.searchParams, {
-					persona:
-						$sessionPersonaIndices.get(personaById.get(result.value.persona.persona_id)!) + '',
-				}),
+				toCommunityUrl(
+					result.value.community.name,
+					null,
+					toSearchParams($page.url.searchParams, {
+						persona:
+							$sessionPersonaIndices.get(personaById.get(result.value.persona.persona_id)!) + '',
+					}),
+				),
 			);
 			done?.();
 		} else {

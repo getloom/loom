@@ -4,7 +4,7 @@ import {goto} from '$app/navigation';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import type {Persona} from '$lib/vocab/persona/persona';
-import {PERSONA_QUERY_KEY, toUrl} from '$lib/ui/url';
+import {PERSONA_QUERY_KEY, toSearchParams, toUrl} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
 
 const log = new Logger('[syncUiToUrl]');
@@ -37,9 +37,10 @@ export const syncUiToUrl = (
 			log.warn(
 				`failed to find persona at index ${personaIndex}; falling back to index ${fallbackPersonaIndex}`,
 			);
-			void goto(toUrl(url.pathname, url.searchParams, {persona: fallbackPersonaIndex + ''}), {
-				replaceState: true,
-			});
+			void goto(
+				toUrl(url.pathname, toSearchParams(url.searchParams, {persona: fallbackPersonaIndex + ''})),
+				{replaceState: true},
+			);
 			return; // exit early; this function re-runs from the `goto` call with the updated `$page`
 		}
 	} else if (personaIndex !== personaIndexSelection.get()) {

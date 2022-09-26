@@ -6,7 +6,7 @@
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
-	import {toSpaceUrl} from '$lib/ui/url';
+	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
 
@@ -40,9 +40,11 @@
 <!-- TODO can this be well abstracted via the Entity with a `link` prop? -->
 <a
 	class="community selectable"
-	href={toSpaceUrl($community, $selectedSpace, $page.url.searchParams, {
-		persona: personaIndex + '',
-	})}
+	href={toCommunityUrl(
+		$community.name,
+		$selectedSpace?.url,
+		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
+	)}
 	class:selected
 	class:persona={isPersonaHomeCommunity}
 	style="--hue: {$community.settings.hue}"

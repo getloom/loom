@@ -12,7 +12,7 @@
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {randomHue} from '$lib/ui/color';
-	import {toSpaceUrl} from '$lib/ui/url';
+	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 
 	const {
 		dispatch,
@@ -55,9 +55,13 @@
 			errorMessage = null;
 			name = '';
 			await goto(
-				toSpaceUrl(result.value.community, null, $page.url.searchParams, {
-					persona: $sessionPersonaIndices.get(persona) + '',
-				}),
+				toCommunityUrl(
+					result.value.community.name,
+					null,
+					toSearchParams($page.url.searchParams, {
+						persona: $sessionPersonaIndices.get(persona) + '',
+					}),
+				),
 			);
 			done?.();
 		} else {

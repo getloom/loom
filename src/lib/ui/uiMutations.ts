@@ -1,9 +1,12 @@
-import {goto} from '$app/navigation';
 import {Logger} from '@feltcoop/felt/util/log.js';
 import {round} from '@feltcoop/felt/util/maths.js';
+import {page} from '$app/stores';
+import {get} from 'svelte/store';
+import {goto} from '$app/navigation';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
+import {toCommunityUrl, isUrlEqual} from '$lib/ui/url';
 
 const log = new Logger('[uiMutations]');
 
@@ -36,7 +39,7 @@ export const CloseDialog: Mutations['CloseDialog'] = ({ui: {dialogs}}) => {
 
 export const ViewSpace: Mutations['ViewSpace'] = async ({
 	params: {space_id, view},
-	ui: {spaceById, viewBySpace, communitySelection, spaceIdSelectionByCommunityId, communityById},
+	ui: {spaceById, viewBySpace, communityById},
 }) => {
 	const space = spaceById.get(space_id)!;
 	viewBySpace.mutate(($viewBySpace) => {
@@ -46,19 +49,18 @@ export const ViewSpace: Mutations['ViewSpace'] = async ({
 			$viewBySpace.delete(space);
 		}
 	});
-	// Navigate the browser to the target space.
-	// The target community may not match the selected community,
-	// so it's not as simple as checking if this is already the selected space for its community,
-	// we need to check if the selected community's selected space matches this space.
-	const selectedCommunity = communitySelection.get();
+	// Navgiate to the space if needed.
+	// If we don't always want to do this,
+	// we could either move this logic to the views or add a `navigate` boolean param.
 	const $space = space.get();
-	if (
-		selectedCommunity &&
-		$space.space_id !==
-			spaceIdSelectionByCommunityId.get().value.get(selectedCommunity.get().community_id)
-	) {
-		const $community = communityById.get($space.community_id)!.get();
-		await goto('/' + $community.name + $space.url + location.search, {replaceState: true});
+	const $page = get(page);
+	const targetPath = toCommunityUrl(
+		communityById.get($space.community_id)!.get().name,
+		$space.url,
+		$page.url.search,
+	);
+	if (!isUrlEqual(targetPath, $page.url)) {
+		await goto(targetPath);
 	}
 };
 

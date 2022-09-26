@@ -11,7 +11,7 @@
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
-	import {toSpaceUrl} from '$lib/ui/url';
+	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
@@ -67,9 +67,13 @@
 			errorMessage = null;
 			name = '';
 			await goto(
-				toSpaceUrl($community, result.value.space, $page.url.searchParams, {
-					persona: $sessionPersonaIndices.get(persona) + '',
-				}),
+				toCommunityUrl(
+					$community.name,
+					result.value.space.url,
+					toSearchParams($page.url.searchParams, {
+						persona: $sessionPersonaIndices.get(persona) + '',
+					}),
+				),
 			);
 			done?.();
 		} else {

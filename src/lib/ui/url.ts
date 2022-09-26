@@ -1,31 +1,32 @@
-import type {Community} from '$lib/vocab/community/community';
-import type {Space} from '$lib/vocab/space/space';
-import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
+import {base} from '$app/paths';
 
 export const PERSONA_QUERY_KEY = 'persona';
 
 export type SearchParams<TKey extends string = string> = Record<TKey, string | null | undefined>;
 
-export const toUrl = (
-	pathname: string,
-	baseParams: URLSearchParams,
-	newSearchParams?: SearchParams<typeof PERSONA_QUERY_KEY>,
-): string =>
-	`${pathname}?${newSearchParams ? setSearchParams(baseParams, newSearchParams) : baseParams}`;
+/**
+ * Constructs a url string from primitives.
+ * @param pathname The pathname with a leading slash.
+ * @param search A search string with a leading `?` or a URLSearchParams instance.
+ * @returns The base-prefixed url string.
+ */
+export const toUrl = (pathname: string, search: string | URLSearchParams): string =>
+	base + pathname + (typeof search === 'string' ? search : '?' + search);
 
-export const toSpaceUrl = (
-	community: Community,
-	space: Space | null | undefined,
-	baseParams: URLSearchParams,
-	newSearchParams?: SearchParams<typeof PERSONA_QUERY_KEY>,
-): string => {
-	let pathname = '/' + community.name;
-	const spaceUrl = space?.url;
-	if (spaceUrl && !isHomeSpace(space)) pathname += spaceUrl;
-	return toUrl(pathname, baseParams, newSearchParams);
-};
+/**
+ * Constructs a url string from a community and nullable path.
+ * @param name The community name to navigate to.
+ * @param path Usually `space.url`, but can be null or any path with a leading slash.
+ * @param search A search string with a leading `?` or a URLSearchParams instance.
+ * @returns The base-prefixed url string.
+ */
+export const toCommunityUrl = (
+	name: string,
+	path: string | null | undefined,
+	search: string | URLSearchParams,
+): string => toUrl('/' + name + (path && path !== '/' ? path : ''), search);
 
-const setSearchParams = (
+export const toSearchParams = (
 	baseParams: URLSearchParams,
 	newSearchParams: SearchParams,
 ): URLSearchParams => {
@@ -44,3 +45,12 @@ const setSearchParams = (
 	}
 	return finalParams || baseParams;
 };
+
+/**
+ * Is the target path equal to the current url?
+ * @param targetPath The path the navigate to.
+ * @param currentUrl The current URL object, usually `$page.url`.
+ * @returns Boolean indicating if the target path equals the current url.
+ */
+export const isUrlEqual = (targetPath: string, currentUrl: URL): boolean =>
+	targetPath === currentUrl.pathname + currentUrl.search;

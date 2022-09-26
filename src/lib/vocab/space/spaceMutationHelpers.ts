@@ -1,40 +1,69 @@
-import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {writable, type Mutable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
+import {page} from '$app/stores';
+import {get} from 'svelte/store';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
+import {toCommunityUrl} from '$lib/ui/url';
 
-export const upsertSpaces = (ui: WritableUi, $spaces: Space[], $directories: Entity[]): void => {
-	if (!$spaces.length) return;
-	const {spaceById, spaces, spaceIdSelectionByCommunityId} = ui;
-	let addedSpace = false;
-	for (const $space of $spaces) {
+export const stashSpaces = (
+	ui: WritableUi,
+	$spacesToStash: Space[],
+	$directoriesToStash?: Entity[],
+): void => {
+	if (!$spacesToStash.length && !$directoriesToStash?.length) return;
+	const {spaceById, spaces, spaceIdSelectionByCommunityId, spaceSelection, communityById} = ui;
+	const mutated = new Set<Mutable<any>>();
+	const selectedSpace = spaceSelection.get();
+	const $spaceIdSelectionByCommunityId = spaceIdSelectionByCommunityId.get().value;
+
+	for (const $space of $spacesToStash) {
 		let space = spaceById.get($space.space_id);
 		if (space) {
+			// Update the existing space store.
+			// If `space.url` changed and the space is selected, navigate to it.
+			const prevUrl = space.get().url;
 			space.set($space);
+			if (space === selectedSpace && $space.url !== prevUrl) {
+				void goto(
+					toCommunityUrl(
+						communityById.get($space.community_id)!.get().name,
+						$space.url,
+						get(page).url.search,
+					),
+					{replaceState: true},
+				);
+			}
 		} else {
-			addedSpace = true;
+			// Insert the space. We don't need to handle navigation in this case.
 			space = writable($space);
 			spaceById.set($space.space_id, space);
-			spaces.get().value.push(space); // using `get()` for efficiency, see `spaces.mutate()` below
+			spaces.get().value.push(space);
+			mutated.add(spaces);
+
+			// Set the community's space selection if needed.
+			if (!$spaceIdSelectionByCommunityId.get($space.community_id)) {
+				$spaceIdSelectionByCommunityId.set($space.community_id, $space.space_id);
+				mutated.add(spaceIdSelectionByCommunityId);
+			}
 		}
 	}
-	const {community_id} = $spaces[0];
-	if (!spaceIdSelectionByCommunityId.get().value.has(community_id)) {
-		spaceIdSelectionByCommunityId.mutate(($s) => {
-			$s.set(community_id, $spaces[0].space_id);
-		});
-	}
-	stashEntities(ui, $directories);
-	if (addedSpace) spaces.mutate(); // doing this once for efficiency
+
+	// TODO if the `mutated` pattern is added to `stashEntities`,
+	// probably forward `mutated` here so everything is batched below
+	if ($directoriesToStash) stashEntities(ui, $directoriesToStash);
+
+	// Batch mutations.
+	for (const m of mutated) m.mutate();
 };
 
 export const evictSpaces = async (
 	ui: WritableUi,
-	spacesToDelete: Array<Writable<Space>>,
+	spacesToEvict: Array<Writable<Space>>,
 ): Promise<void> => {
 	const {
 		communityById,
@@ -45,13 +74,16 @@ export const evictSpaces = async (
 		communitySelection,
 	} = ui;
 
-	for (const space of spacesToDelete) {
+	for (const space of spacesToEvict) {
 		const {space_id, community_id} = space.get();
 		// If the deleted space is selected, select the home space as a fallback.
 		if (space_id === spaceIdSelectionByCommunityId.get().value.get(community_id)) {
 			const community = communityById.get(community_id)!;
 			if (community === communitySelection.get()) {
-				await goto('/' + community.get().name + location.search, {replaceState: true}); // eslint-disable-line no-await-in-loop
+				// eslint-disable-next-line no-await-in-loop
+				await goto(toCommunityUrl(community.get().name, null, get(page).url.search), {
+					replaceState: true,
+				});
 			} else {
 				//TODO lookup space by community_id+url (see this comment in multiple places)
 				const homeSpace = spacesByCommunityId
@@ -67,10 +99,10 @@ export const evictSpaces = async (
 		spaceById.delete(space_id);
 	}
 
-	spaces.swap(spaces.get().value.filter((s) => !spacesToDelete.includes(s)));
+	spaces.swap(spaces.get().value.filter((s) => !spacesToEvict.includes(s)));
 
 	evictEntities(
 		ui,
-		spacesToDelete.map((s) => s.get().directory_id),
+		spacesToEvict.map((s) => s.get().directory_id),
 	);
 };

@@ -5,7 +5,7 @@
 	import type {Persona} from '$lib/vocab/persona/persona.js';
 	import type {Space} from '$lib/vocab/space/space.js';
 	import type {Community} from '$lib/vocab/community/community.js';
-	import {toSpaceUrl} from '$lib/ui/url';
+	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
@@ -26,7 +26,11 @@
 </script>
 
 <a
-	href={toSpaceUrl($community, $space, $page.url.searchParams, {persona: personaIndex + ''})}
+	href={toCommunityUrl(
+		$community.name,
+		$space.url,
+		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
+	)}
 	class="selectable"
 	class:selected
 	use:contextmenu.action={[[SpaceContextmenu, {persona, community, space}]]}

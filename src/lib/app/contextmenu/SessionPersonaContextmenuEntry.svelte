@@ -6,7 +6,7 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import {toSpaceUrl} from '$lib/ui/url';
+	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import type {Persona} from '$lib/vocab/persona/persona';
 
 	const {
@@ -42,9 +42,11 @@
 	<ContextmenuEntry
 		action={() =>
 			goto(
-				toSpaceUrl($community, $selectedSpace, $page.url.searchParams, {
-					persona: personaIndex + '',
-				}),
+				toCommunityUrl(
+					$community.name,
+					$selectedSpace?.url,
+					toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
+				),
 			)}
 	>
 		<svelte:fragment slot="icon"><PersonaAvatar {persona} showName={false} /></svelte:fragment>

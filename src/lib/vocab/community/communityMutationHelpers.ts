@@ -1,14 +1,17 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 import {removeUnordered} from '@feltcoop/felt/util/array.js';
+import {get} from 'svelte/store';
+import {page} from '$app/stores';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Membership} from '$lib/vocab//membership/membership';
-import {upsertSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
+import {stashSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {deleteMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
+import {toCommunityUrl} from '$lib/ui/url';
 
 export const upsertCommunity = (
 	ui: WritableUi,
@@ -35,7 +38,7 @@ export const upsertCommunity = (
 	}
 	if (addedMemberships) memberships.mutate();
 
-	upsertSpaces(ui, $spaces, $directories);
+	stashSpaces(ui, $spaces, $directories);
 
 	let community = communityById.get($community.community_id);
 	if (community) {
@@ -64,7 +67,9 @@ export const deleteCommunity = async (ui: WritableUi, community_id: number): Pro
 
 	if (communitySelection.get() === community) {
 		const persona = personaSelection.get()!;
-		await goto('/' + persona.get().name + location.search, {replaceState: true});
+		await goto(toCommunityUrl(persona.get().name, null, get(page).url.search), {
+			replaceState: true,
+		});
 	}
 
 	await evictSpaces(ui, spacesByCommunityId.get().get(community_id)!);
