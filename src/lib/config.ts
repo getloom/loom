@@ -18,13 +18,8 @@ export const VITE_GIT_HASH = import.meta.env
 	? import.meta.env.VITE_GIT_HASH
 	: process.env.VITE_GIT_HASH;
 
-export const SVELTEKIT_SERVER_HOST = 'localhost:3000';
-export const API_SERVER_PORT_DEV = 3001;
-export const API_SERVER_PORT_PROD = 3000;
-export const API_SERVER_PORT = dev ? API_SERVER_PORT_DEV : API_SERVER_PORT_PROD; // TODO maybe use `process.env.PORT`?
-export const API_SERVER_HOST_DEV = `localhost:${API_SERVER_PORT_DEV}`;
-export const API_SERVER_HOST_PROD = `localhost:${API_SERVER_PORT_PROD}`;
-export const API_SERVER_HOST = dev ? API_SERVER_HOST_DEV : API_SERVER_HOST_PROD;
-export const WEBSOCKET_URL_DEV = `ws://localhost:${API_SERVER_PORT_DEV}/ws`;
-export const WEBSOCKET_URL_PROD = `wss://${VITE_DEPLOY_SERVER_HOST}/ws`;
+export const API_SERVER_PORT = 3000; // same as in vite.config.js
+export const API_SERVER_HOST = `localhost:${API_SERVER_PORT}`;
+export const WEBSOCKET_URL_DEV = `ws://localhost:${API_SERVER_PORT}/ws`;
+export const WEBSOCKET_URL_PROD = `wss://localhost:${API_SERVER_PORT}/ws`;
 export const WEBSOCKET_URL = dev ? WEBSOCKET_URL_DEV : WEBSOCKET_URL_PROD;

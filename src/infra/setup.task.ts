@@ -22,7 +22,7 @@ export const task: Task<SetupTaskArgs> = {
 		const VITE_DEPLOY_SERVER_HOST = fromEnv('VITE_DEPLOY_SERVER_HOST');
 		const EMAIL_ADDRESS = fromEnv('EMAIL_ADDRESS');
 		// TODO this is hacky because of `import.meta` env handling
-		const {API_SERVER_HOST_PROD, SVELTEKIT_SERVER_HOST} = await import('../lib/config.js');
+		const {API_SERVER_HOST} = await import('../lib/config.js');
 		const NODE_VERSION = '18';
 		// TODO hacky -- see notes above
 		const {defaultPostgresOptions} = await import('../lib/db/postgres.js');
@@ -32,11 +32,7 @@ export const task: Task<SetupTaskArgs> = {
 
 		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt-server.conf';
 		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt-server.conf';
-		const nginxConfig = toNginxConfig(
-			fromEnv('VITE_DEPLOY_SERVER_HOST'),
-			API_SERVER_HOST_PROD,
-			SVELTEKIT_SERVER_HOST,
-		);
+		const nginxConfig = toNginxConfig(fromEnv('VITE_DEPLOY_SERVER_HOST'), API_SERVER_HOST);
 
 		// This file is used to detect if the setup script has already run.
 		const FELT_SETUP_STATE_FILE_PATH = '~/felt_state_setup';

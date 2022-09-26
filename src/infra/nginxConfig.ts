@@ -4,7 +4,6 @@ import {HEARTBEAT_INTERVAL} from '$lib/ui/socket';
 export const toNginxConfig = (
 	VITE_DEPLOY_SERVER_HOST: string,
 	API_SERVER_HOST_PROD: string,
-	SVELTEKIT_SERVER_HOST: string,
 ): string => {
 	const websocketTimeout = `${HEARTBEAT_INTERVAL / 1000 + 60}s`; // 60 second padding
 	return `
@@ -28,7 +27,7 @@ server {
   }
 
   location / {
-    proxy_pass https://${SVELTEKIT_SERVER_HOST};
+    proxy_pass https://${API_SERVER_HOST_PROD};
   }
 }
 
