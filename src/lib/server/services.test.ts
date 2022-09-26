@@ -9,50 +9,52 @@ import {services} from '$lib/server/services';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {SessionApiMock} from '$lib/session/SessionApiMock';
 
-/* test__services */
-const test__services = suite<TestDbContext>('services');
+/* test__serviceDefinitions */
+const test__serviceDefinitions = suite('serviceDefinitions');
 
-test__services.before(setupDb);
-test__services.after(teardownDb);
-
-const session = new SessionApiMock(); // reuse the session so it tests login sequentially
-
+// Check each service's definition data for inconsistencies.
 for (const service of services.values()) {
-	test__services(`perform service ${service.event.name}`, async ({db, random}) => {
-		const account = await random.account();
-		const params = await randomEventParams[service.event.name](random, {account});
-		if (!validateSchema(service.event.params)(params)) {
-			throw new Error(
-				`Failed to validate random params for service ${
-					service.event.name
-				}: ${toValidationErrorMessage(validateSchema(service.event.params).errors![0])}`,
+	const {event} = service;
+	test__serviceDefinitions('service auth definitions: ' + event.name, () => {
+		if (event.authenticate === false) {
+			// unauthenticated event (no account_id, no actor)
+			assert.is(
+				event.params.properties?.actor,
+				undefined,
+				'unauthenticated event params must have no actor',
+			);
+			assert.is(
+				event.authorize,
+				false,
+				'unauthenticated events must have an authorize value of false',
+			);
+		} else if (event.authorize === false) {
+			// unauthorized event (yes account_id, no actor)
+			assert.is(
+				event.params.properties?.actor,
+				undefined,
+				'unauthorized event params must have no actor',
+			);
+		} else {
+			// defualt to authorized (yes account_id, yes actor)
+			assert.equal(
+				event.params.properties?.actor,
+				{type: 'number'},
+				'authorized events must have an actor number property',
+			);
+			assert.ok(
+				Array.isArray(event.params.required) && event.params.required.includes('actor'),
+				'authorized events must have a required actor property',
+			);
+			assert.ok(
+				event.authenticate === undefined || event.authenticate,
+				'authorized events must have an authenticate value of true or undefined',
 			);
 		}
-		const result = await service.perform({
-			params,
-			...toServiceRequestMock(
-				// TODO what's the proper type here? should `account_id` be optional?
-				service.event.authenticate === false ? (null as any) : account.account_id,
-				db,
-				session,
-			),
-		});
-		if (!result.ok) {
-			log.error(red(`failed service call: ${service.event.name}`), params, result);
-			throw new Error(`Failed service call: ${service.event.name}`);
-		} else if (!validateSchema(service.event.response)(result.value)) {
-			log.error(red(`failed to validate service response: ${service.event.name}`), params, result);
-			throw new Error(
-				`Failed to validate response for service ${service.event.name}: ${toValidationErrorMessage(
-					validateSchema(service.event.response).errors![0],
-				)}`,
-			);
-		}
-		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
 	});
 }
 
-test__services(`check for duplicate HTTP route paths`, async () => {
+test__serviceDefinitions(`check for duplicate HTTP route paths`, async () => {
 	const paths = new Set();
 
 	for (const service of services.values()) {
@@ -63,6 +65,53 @@ test__services(`check for duplicate HTTP route paths`, async () => {
 		paths.add(key);
 	}
 });
+
+test__serviceDefinitions.run();
+/* test__serviceDefinitions */
+
+/* test__services */
+const test__services = suite<TestDbContext>('services');
+
+test__services.before(setupDb);
+test__services.after(teardownDb);
+
+const session = new SessionApiMock(); // reuse the session so it tests login sequentially
+
+for (const service of services.values()) {
+	const {event} = service;
+	test__services(`perform service ${event.name}`, async ({db, random}) => {
+		const account = await random.account();
+		const params = await randomEventParams[event.name](random, {account});
+		if (!validateSchema(event.params)(params)) {
+			throw new Error(
+				`Failed to validate random params for service ${event.name}: ${toValidationErrorMessage(
+					validateSchema(event.params).errors![0],
+				)}`,
+			);
+		}
+		const result = await service.perform({
+			params,
+			...toServiceRequestMock(
+				// TODO what's the proper type here? should `account_id` be optional?
+				event.authenticate === false ? (null as any) : account.account_id,
+				db,
+				session,
+			),
+		});
+		if (!result.ok) {
+			log.error(red(`failed service call: ${event.name}`), params, result);
+			throw new Error(`Failed service call: ${event.name}`);
+		} else if (!validateSchema(event.response)(result.value)) {
+			log.error(red(`failed to validate service response: ${event.name}`), params, result);
+			throw new Error(
+				`Failed to validate response for service ${event.name}: ${toValidationErrorMessage(
+					validateSchema(event.response).errors![0],
+				)}`,
+			);
+		}
+		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
+	});
+}
 
 test__services.run();
 /* test__services */

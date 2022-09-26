@@ -3,6 +3,7 @@ import type {ServiceEventInfo} from '$lib/vocab/event/event';
 export const CreateAccountPersona: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'CreateAccountPersona',
+	authorize: false,
 	params: {
 		$id: '/schemas/CreateAccountPersonaParams.json',
 		type: 'object',

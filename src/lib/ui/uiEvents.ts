@@ -3,6 +3,7 @@ import type {ServiceEventInfo, ClientEventInfo} from '$lib/vocab/event/event';
 export const Ping: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'Ping',
+	authorize: false,
 	params: {
 		$id: '/schemas/PingParams.json',
 		type: 'null',

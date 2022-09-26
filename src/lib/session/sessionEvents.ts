@@ -26,6 +26,7 @@ export const Login: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'Login',
 	authenticate: false,
+	authorize: false,
 	params: {
 		$id: '/schemas/LoginParams.json',
 		type: 'object',
@@ -58,6 +59,7 @@ export const Login: ServiceEventInfo = {
 export const Logout: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'Logout',
+	authorize: false,
 	websockets: false,
 	params: {
 		$id: '/schemas/LogoutParams.json',
