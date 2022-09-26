@@ -55,7 +55,7 @@
     "uvu": "^0.5.6"
   },
   "dependencies": {
-    "@feltcoop/felt": "^0.40.1",
+    "@feltcoop/felt": "^0.41.1",
     "@feltcoop/svelte-gettable-stores": "^0.2.0",
     "@polka/send-type": "^0.5.2",
     "@ryanatkn/json-schema-to-typescript": "^11.1.2",

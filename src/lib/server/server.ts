@@ -5,6 +5,7 @@ import {createServer as create_http_server} from 'http';
 import {createServer as create_https_server} from 'https';
 import fs from 'fs';
 import {configureLogLevel, Logger, LogLevel} from '@feltcoop/felt/util/log.js';
+import {format} from 'date-fns';
 
 import {ApiServer} from '$lib/server/ApiServer.js';
 import {WebsocketServer} from '$lib/server/WebsocketServer.js';
@@ -12,11 +13,15 @@ import {services} from '$lib/server/services';
 import {db} from '$lib/db/db';
 import {API_SERVER_PORT, VITE_DEPLOY_SERVER_HOST} from '$lib/config';
 
-const log = new Logger('[server]');
-
+// Global logging setup
 if (process.env.NODE_ENV === 'production') {
 	configureLogLevel(LogLevel.Info);
+	Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
 }
+
+const log = new Logger('[server]');
+
+log.info('startup time:', format(new Date(), 'P H:mm:ss.SSS O'));
 
 const create_server = (): HttpServer | HttpsServer => {
 	if (process.env.NODE_ENV === 'production') {
