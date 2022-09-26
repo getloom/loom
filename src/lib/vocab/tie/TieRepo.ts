@@ -12,7 +12,7 @@ export class TieRepo extends PostgresRepo {
 		const tie = await this.sql<Tie[]>`
 			INSERT INTO ties (source_id, dest_id, type) VALUES (
 				${source_id},${dest_id},${type}
-			) RETURNING source_id,dest_id,type,created
+			) RETURNING *
 		`;
 		// log.trace('create entity', data);
 		return {ok: true, value: tie[0]};
@@ -21,16 +21,16 @@ export class TieRepo extends PostgresRepo {
 	async filterBySourceId(directory_id: number): Promise<Result<{value: Tie[]}>> {
 		log.trace(`preparing to walk graph starting with directory: ${directory_id}`);
 		const ties = await this.sql<Tie[]>`
-			WITH RECURSIVE paths (source_id, dest_id, type, created, path) AS (
-				SELECT t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
+			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
+				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
 					FROM ties t WHERE source_id=${directory_id}
 				UNION ALL
-					SELECT t.source_id, t.dest_id, t.type,t.created, p.path || ARRAY[t.dest_id]
+					SELECT t.tie_id, t.source_id, t.dest_id, t.type,t.created, p.path || ARRAY[t.dest_id]
 					FROM paths p
 					JOIN ties t
 					ON p.dest_id = t.source_id AND t.dest_id != ALL(p.path)
 			)
-			SELECT DISTINCT source_id, dest_id, type, created FROM paths;
+			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths;
 		`;
 		log.trace('directory ties', ties);
 		return {ok: true, value: ties};
@@ -47,7 +47,7 @@ export class TieRepo extends PostgresRepo {
 	): Promise<Result<{value: Tie[]}>> {
 		log.trace(`paginated query of tie dests`, source_id, pageKey, pageSize);
 		const ties = await this.sql<Tie[]>`
-			SELECT t.source_id, t.dest_id, t.type, t.created
+			SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created
 			FROM ties t WHERE source_id=${source_id} ${
 			pageKey ? this.sql`AND dest_id < ${pageKey}` : this.sql``
 		} 
