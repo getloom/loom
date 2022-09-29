@@ -57,14 +57,15 @@ export interface Ui {
 	personaById: Map<number, Readable<Persona>>;
 	communityById: Map<number, Readable<Community>>;
 	spaceById: Map<number, Readable<Space>>;
-	entityById: Map<number, Readable<Entity>>; // TODO mutable inner store
+	entityById: Map<number, Readable<Entity>>;
+	tieById: Map<number, Tie>;
 	// derived state
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
 	entitiesBySourceId: Map<number, Mutable<Set<Readable<Entity>>>>;
-	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Tie[]>>>;
-	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Tie[]>>>;
+	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
+	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
 	communitiesBySessionPersona: Readable<Map<Readable<Persona>, Array<Readable<Community>>>>;
 	adminPersonas: Readable<Set<Readable<Persona>>>;
 	// view state
@@ -225,9 +226,10 @@ export const toUi = (
 	);
 
 	const entityById: Map<number, Writable<Entity>> = new Map();
+	const tieById: Map<number, Tie> = new Map();
 	const entitiesBySourceId: Map<number, Mutable<Set<Writable<Entity>>>> = new Map();
-	const sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Tie[]>>> = mutable(new Map());
-	const destTiesBySourceEntityId: Mutable<Map<number, Mutable<Tie[]>>> = mutable(new Map());
+	const sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>> = mutable(new Map());
+	const destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>> = mutable(new Map());
 
 	const lastSeenByDirectoryId: Map<number, Writable<number> | null> = new Map();
 	const freshnessByDirectoryId: Map<number, Readable<boolean>> = new Map();
@@ -265,6 +267,7 @@ export const toUi = (
 		communityById,
 		spaceById,
 		entityById,
+		tieById,
 		// derived state
 		spacesByCommunityId,
 		personasByCommunityId,

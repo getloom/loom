@@ -23,12 +23,14 @@
 
 	$: destTies = $destTiesBySourceEntityId.value.get($entity.entity_id);
 
-	$: items = $destTies?.value.reduce((acc, tie) => {
-		if (tie.type === 'HasItem') {
-			acc.push(entityById.get(tie.dest_id)!);
-		}
-		return acc;
-	}, [] as Array<Readable<Entity>>);
+	$: items =
+		$destTies &&
+		Array.from($destTies.value).reduce((acc, tie) => {
+			if (tie.type === 'HasItem') {
+				acc.push(entityById.get(tie.dest_id)!);
+			}
+			return acc;
+		}, [] as Array<Readable<Entity>>);
 
 	$: authorPersona = personaById.get($entity.persona_id)!;
 

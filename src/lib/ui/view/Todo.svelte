@@ -67,15 +67,17 @@
 	const clearDone = async () => {
 		if (!selectedList) return;
 		const destTies = $destTiesBySourceEntityId.value.get($selectedList!.entity_id);
-		const items = destTies?.get().value.reduce((acc, tie) => {
-			if (tie.type === 'HasItem') {
-				const entity = entityById.get(tie.dest_id)!;
-				if (entity.get().data.checked) {
-					acc.push(entity);
+		const items =
+			destTies &&
+			Array.from(destTies.get().value).reduce((acc, tie) => {
+				if (tie.type === 'HasItem') {
+					const entity = entityById.get(tie.dest_id)!;
+					if (entity.get().data.checked) {
+						acc.push(entity);
+					}
 				}
-			}
-			return acc;
-		}, [] as Array<Readable<Entity>>);
+				return acc;
+			}, [] as Array<Readable<Entity>>);
 		if (!items?.length) return;
 		const entityIds = items.map((i) => i.get().entity_id);
 		await dispatch.DeleteEntities({
