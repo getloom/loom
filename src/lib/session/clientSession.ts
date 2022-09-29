@@ -4,6 +4,7 @@ import type {AccountModel} from '$lib/vocab/account/account.js';
 import type {Persona} from '$lib/vocab/persona/persona.js';
 import type {Membership} from '$lib/vocab/membership/membership';
 import type {Entity} from '$lib/vocab/entity/entity';
+import type {Role} from '$lib/vocab/role/role';
 
 export type ClientSession = ClientAccountSession | ClientGuestSession;
 
@@ -11,6 +12,7 @@ export interface ClientAccountSession {
 	account: AccountModel;
 	sessionPersonas: Persona[];
 	communities: Community[];
+	roles: Role[];
 	spaces: Space[];
 	directories: Entity[];
 	memberships: Membership[];

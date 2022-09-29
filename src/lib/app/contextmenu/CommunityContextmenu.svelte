@@ -11,6 +11,7 @@
 	import MembershipInput from '$lib/ui/MembershipInput.svelte';
 	import CommunityEditor from '$lib/ui/CommunityEditor.svelte';
 	import CommunityDelete from '$lib/ui/CommunityDelete.svelte';
+	import ManageRolesForm from '$lib/ui/ManageRolesForm.svelte';
 
 	const {dispatch} = getApp();
 
@@ -41,6 +42,15 @@
 				})}
 		>
 			Create Space
+		</ContextmenuEntry>
+		<ContextmenuEntry
+			action={() =>
+				dispatch.OpenDialog({
+					Component: ManageRolesForm,
+					props: {persona, community},
+				})}
+		>
+			Manage Roles
 		</ContextmenuEntry>
 		{#if $community.type !== 'personal'}
 			<ContextmenuEntry

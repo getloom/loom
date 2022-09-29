@@ -19,6 +19,8 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		communityById,
 		personas,
 		communities,
+		roles,
+		roleById,
 		spaceById,
 		spaces,
 		memberships,
@@ -55,6 +57,11 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	communityById.clear();
 	$communities.forEach((c) => communityById.set(c.get().community_id, c));
 	communities.swap($communities);
+
+	const $roles = (guest ? [] : $session.roles).map((r) => writable(r));
+	roleById.clear();
+	$roles.forEach((r) => roleById.set(r.get().role_id, r));
+	roles.swap($roles);
 
 	const $spaces = guest ? [] : $session.spaces.map((s) => writable(s));
 	spaceById.clear();

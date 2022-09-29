@@ -3,6 +3,7 @@ import type {ServiceEventInfo} from '$lib/vocab/event/event';
 export const CreateRole: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'CreateRole',
+	broadcast: true,
 	params: {
 		$id: '/schemas/CreateRoleParams.json',
 		type: 'object',

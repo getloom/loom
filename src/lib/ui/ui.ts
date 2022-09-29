@@ -24,6 +24,7 @@ import type {Tie} from '$lib/vocab/tie/tie';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 import type {EphemeraResponse} from '$lib/app/eventTypes';
 import type {ClientSession} from '$lib/session/clientSession';
+import type {Role} from '$lib/vocab/role/role';
 
 if (browser) initBrowser();
 
@@ -52,10 +53,12 @@ export interface Ui {
 	sessionPersonaIds: Readable<Set<number>>;
 	sessionPersonaIndices: Readable<Map<Readable<Persona>, number>>;
 	communities: Mutable<Array<Readable<Community>>>;
+	roles: Mutable<Array<Readable<Role>>>;
 	spaces: Mutable<Array<Readable<Space>>>;
 	memberships: Mutable<Array<Readable<Membership>>>;
 	personaById: Map<number, Readable<Persona>>;
 	communityById: Map<number, Readable<Community>>;
+	roleById: Map<number, Readable<Role>>;
 	spaceById: Map<number, Readable<Space>>;
 	entityById: Map<number, Readable<Entity>>;
 	tieById: Map<number, Tie>;
@@ -63,6 +66,7 @@ export interface Ui {
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
+	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
 	entitiesBySourceId: Map<number, Mutable<Set<Readable<Entity>>>>;
 	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
 	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
@@ -101,15 +105,17 @@ export const toUi = (
 	const account = writable<AccountModel | null>(null);
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
-	// TODO these `Persona`s need additional data compared to every other `Persona`
 	const session = writable<ClientSession>($session); // TODO default value? maybe nullable?
+	// TODO these `Persona`s need additional data compared to every other `Persona`
 	const sessionPersonas = writable<Array<Writable<Persona>>>([]);
 	const personas = mutable<Array<Writable<Persona>>>([]);
 	const communities = mutable<Array<Writable<Community>>>([]);
+	const roles = mutable<Array<Writable<Role>>>([]);
 	const spaces = mutable<Array<Writable<Space>>>([]);
 	const memberships = mutable<Array<Writable<Membership>>>([]);
 	const personaById: Map<number, Writable<Persona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
+	const roleById: Map<number, Writable<Role>> = new Map();
 	const spaceById: Map<number, Writable<Space>> = new Map();
 	// TODO do these maps more efficiently
 	const spacesByCommunityId: Readable<Map<number, Array<Writable<Space>>>> = derived(
@@ -150,6 +156,24 @@ export const toUi = (
 					}
 				}
 				map.set(community_id, communityPersonas);
+			}
+			return map;
+		},
+	);
+
+	const rolesByCommunityId: Readable<Map<number, Array<Writable<Role>>>> = derived(
+		[communities, roles],
+		([$communities, $roles]) => {
+			const map: Map<number, Array<Writable<Role>>> = new Map();
+			for (const community of $communities.value) {
+				const communityRoles: Array<Writable<Role>> = [];
+				const {community_id} = community.get();
+				for (const role of $roles.value) {
+					if (role.get().community_id === community_id) {
+						communityRoles.push(role);
+					}
+				}
+				map.set(community_id, communityRoles);
 			}
 			return map;
 		},
@@ -256,6 +280,7 @@ export const toUi = (
 		components,
 		account,
 		personas,
+		roles,
 		session,
 		sessionPersonas,
 		sessionPersonaIds,
@@ -265,12 +290,14 @@ export const toUi = (
 		memberships,
 		personaById,
 		communityById,
+		roleById,
 		spaceById,
 		entityById,
 		tieById,
 		// derived state
 		spacesByCommunityId,
 		personasByCommunityId,
+		rolesByCommunityId,
 		entitiesBySourceId,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
