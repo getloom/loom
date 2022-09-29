@@ -34,9 +34,6 @@ export const seed = async (db: Database): Promise<void> => {
 		return; // already seeded
 	}
 
-	const serviceRequestPartial = toServiceRequestMock(undefined as any, db);
-	const toServiceRequest = (account_id: number) => ({...serviceRequestPartial, account_id});
-
 	// example: insert literal values
 	const accountsParams: LoginParams[] = [
 		{username: 'a', password: 'a'},
@@ -54,7 +51,12 @@ export const seed = async (db: Database): Promise<void> => {
 		);
 		log.trace('created account', account);
 		accounts.push(account);
-		const accountServiceRequest = toServiceRequest(account.account_id);
+		const accountServiceRequest = toServiceRequestMock(
+			db,
+			undefined,
+			undefined,
+			account.account_id,
+		);
 		for (const personaName of personasParams[account.name]) {
 			const {persona, spaces} = unwrap(
 				await CreateAccountPersonaService.perform({
@@ -65,13 +67,12 @@ export const seed = async (db: Database): Promise<void> => {
 
 			log.trace('created persona', persona);
 			personas.push(persona);
-			await createDefaultEntities(accountServiceRequest, spaces, [persona]);
+			await createDefaultEntities({...accountServiceRequest, actor: persona}, spaces, [persona]);
 		}
 	}
 
-	const mainAccountCreator = accounts[0];
-	const mainAccountServiceRequest = toServiceRequest(mainAccountCreator.account_id);
 	const mainPersonaCreator = personas[0];
+	const mainAccountServiceRequest = toServiceRequestMock(db, mainPersonaCreator);
 	const otherPersonas = personas.slice(1);
 
 	const communitiesParams: CreateCommunityParams[] = [
@@ -120,18 +121,20 @@ const createDefaultEntities = async (
 	for (const space of spaces) {
 		const componentName = findFirstComponentName(parseView(space.view));
 		if (componentName === 'Todo') {
-			await generateTodo(serviceRequest, nextPersona().persona_id, space);
+			await generateTodo(serviceRequest, nextPersona(), space);
 		}
 		if (!componentName || !(componentName in entitiesContents)) {
 			continue;
 		}
 		const entityContents = entitiesContents[componentName];
 		for (const entityContent of entityContents) {
+			const actor = nextPersona();
 			unwrap(
 				await CreateEntityService.perform({
 					...serviceRequest,
+					actor,
 					params: {
-						actor: nextPersona().persona_id,
+						actor: actor.persona_id,
 						data: {type: 'Note', content: entityContent},
 						source_id: space.directory_id,
 					},
@@ -157,14 +160,15 @@ const entitiesContents: Record<string, string[]> = {
 
 const generateTodo = async (
 	serviceRequest: ReturnType<typeof toServiceRequestMock>,
-	actor: number,
+	actor: Persona,
 	space: Space,
 ) => {
 	const list = unwrap(
 		await CreateEntityService.perform({
 			...serviceRequest,
+			actor,
 			params: {
-				actor,
+				actor: actor.persona_id,
 				data: {type: 'Collection', name: 'Grocery List'},
 				source_id: space.directory_id,
 			},
@@ -175,8 +179,9 @@ const generateTodo = async (
 		unwrap(
 			await CreateEntityService.perform({
 				...serviceRequest,
+				actor,
 				params: {
-					actor,
+					actor: actor.persona_id,
 					data: {type: 'Note', content},
 					source_id: list.entity.entity_id,
 				},

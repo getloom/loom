@@ -17,15 +17,15 @@ test__personaService('create a persona & test collisions', async ({db, random}) 
 	//STEP 1: get a server, account, and event context lined up
 	const account = await random.account();
 	const params = await randomEventParams.CreateAccountPersona(random);
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const serviceRequest = toServiceRequestMock(db, undefined, undefined, account.account_id);
 
 	params.name = params.name.toLowerCase();
-	unwrap(await CreateAccountPersonaService.perform({params, ...serviceRequest}));
+	unwrap(await CreateAccountPersonaService.perform({...serviceRequest, params}));
 
-	unwrapError(await CreateAccountPersonaService.perform({params, ...serviceRequest}));
+	unwrapError(await CreateAccountPersonaService.perform({...serviceRequest, params}));
 
 	params.name = params.name.toUpperCase();
-	unwrapError(await CreateAccountPersonaService.perform({params, ...serviceRequest}));
+	unwrapError(await CreateAccountPersonaService.perform({...serviceRequest, params}));
 });
 
 test__personaService.run();

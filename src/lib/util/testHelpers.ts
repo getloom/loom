@@ -4,7 +4,14 @@ import type {OmitStrict} from '@feltcoop/felt';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';
 import type {Database} from '$lib/db/Database';
-import {toServiceRequest} from '$lib/server/service';
+import {
+	toServiceRequest,
+	type AuthorizedServiceRequest,
+	type ServiceRequest,
+	type NonAuthenticatedServiceRequest,
+	type NonAuthorizedServiceRequest,
+} from '$lib/server/service';
+import type {Persona} from '$lib/vocab/persona/persona';
 
 configureLogLevel(LogLevel.Info);
 
@@ -20,11 +27,30 @@ export const installSourceMaps = (): void => {
 	});
 };
 
-export const toServiceRequestMock = (
-	account_id: number,
+export function toServiceRequestMock(
 	db: Database,
+	actor?: undefined,
+	session?: SessionApiMock,
+	account_id?: undefined,
+): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
+export function toServiceRequestMock(
+	db: Database,
+	actor?: undefined,
+	session?: SessionApiMock,
+	account_id?: number,
+): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
+export function toServiceRequestMock(
+	db: Database,
+	actor: Persona,
+	session?: SessionApiMock,
+	account_id?: number,
+): OmitStrict<AuthorizedServiceRequest, 'params'>;
+export function toServiceRequestMock(
+	db: Database,
+	actor?: Persona,
 	session = new SessionApiMock(), // some tests need to reuse the same mock session
-): OmitStrict<ReturnType<typeof toServiceRequest<any, any>>, 'params'> => {
-	const {params: _, ...rest} = toServiceRequest(db, undefined, account_id, session);
+	account_id = actor?.account_id || undefined,
+): OmitStrict<ServiceRequest, 'params'> {
+	const {params: _, ...rest} = toServiceRequest(db, undefined, account_id!, actor!, session);
 	return rest;
-};
+}

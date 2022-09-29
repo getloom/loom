@@ -4,7 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAccountPersona, ReadPersona} from '$lib/vocab/persona/personaEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
-import {createDefaultSpaces} from '$lib/vocab/space/spaceServices';
+import {createDefaultAdminSpaces, createDefaultSpaces} from '$lib/vocab/space/spaceServices';
 import {initAdminCommunity} from '$lib/vocab/community/communityServices';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
@@ -74,14 +74,26 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			}
 			const membership = membershipResult.value;
 
-			// If the admin community was created, create the persona's membership.
+			// If the admin community was created, create the admin spaces and the persona's membership.
 			// This is a separate step because we need to create the admin community before any others
 			// and the dependencies flow like this:
-			// `adminCommunity => personalCommunity => persona => adminCommunityMembership`
+			// `adminCommunity => personalCommunity => persona => adminCommunitySpaces + adminCommunityMembership`
 			if (initAdminCommunityResult.value) {
+				const adminCommunity = initAdminCommunityResult.value.community;
+				// Create the admin community's default spaces.
+				const createDefaultAdminSpacesResult = await createDefaultAdminSpaces(
+					{...serviceRequest, actor: persona},
+					persona.persona_id,
+					adminCommunity,
+				);
+				if (!createDefaultAdminSpacesResult.ok) {
+					return {ok: false, status: 500, message: createDefaultAdminSpacesResult.message};
+				}
+
+				// Create the persona's membership to the admin community.
 				const adminMembershipResult = await repos.membership.create(
 					persona.persona_id,
-					initAdminCommunityResult.value.community.community_id,
+					adminCommunity.community_id,
 				);
 				if (!adminMembershipResult.ok) {
 					return {ok: false, status: 500, message: 'failed to init admin community'};
@@ -89,20 +101,15 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			}
 
 			// Create the default spaces.
-			const createDefaultSpaceResult = await createDefaultSpaces(
-				serviceRequest,
+			const createDefaultSpacesResult = await createDefaultSpaces(
+				{...serviceRequest, actor: persona},
 				persona.persona_id,
 				community,
 			);
-			if (!createDefaultSpaceResult.ok) {
-				log.trace('[CreateCommunity] error creating community default spaces');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error creating community default spaces',
-				};
+			if (!createDefaultSpacesResult.ok) {
+				return {ok: false, status: 500, message: createDefaultSpacesResult.message};
 			}
-			const {spaces, directories} = createDefaultSpaceResult.value;
+			const {spaces, directories} = createDefaultSpacesResult.value;
 
 			return {ok: true, status: 200, value: {persona, community, spaces, directories, membership}};
 		}),

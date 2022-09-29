@@ -35,40 +35,39 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	//
 	const account = await random.account();
 
-	// This is a reusable request context for all `service.perform` calls.
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
-
 	// create a persona
-	const {persona, personalCommunity} = await random.persona(account);
-	assert.ok(personalCommunity);
+	const {persona: persona1} = await random.persona(account);
 
 	// create a second persona
 	const {persona: persona2} = await random.persona(account);
 
+	const serviceRequest1 = toServiceRequestMock(db, persona1);
+	const serviceRequest2 = toServiceRequestMock(db, persona2);
+
 	// create community
-	const {community} = await random.community(persona);
+	const {community} = await random.community(persona1);
 
 	// join the community with the second persona
 	unwrap(
 		await CreateMembershipService.perform({
+			...serviceRequest1, // add `persona2` with `persona1`
 			params: {
 				actor: persona2.persona_id,
 				community_id: community.community_id,
 				persona_id: persona2.persona_id,
 			},
-			...serviceRequest,
 		}),
 	);
 
 	// create a space
-	const {space} = await random.space(persona, account, community);
+	const {space} = await random.space(persona1, account, community);
 	const spaceCount = 1;
-	const defaultSpaces = toDefaultSpaces(persona.persona_id, community);
+	const defaultSpaces = toDefaultSpaces(persona1.persona_id, community);
 	const defaultSpaceCount = defaultSpaces.length;
 
 	// create some entities
-	const {entity: entity1} = await random.entity(persona, account, community, space.directory_id);
-	const {entity: entity2} = await random.entity(persona, account, community, space.directory_id);
+	const {entity: entity1} = await random.entity(persona1, account, community, space.directory_id);
+	const {entity: entity2} = await random.entity(persona1, account, community, space.directory_id);
 
 	// TODO create some ties
 
@@ -79,40 +78,40 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {entities: filteredEntities} = unwrap(
 		await ReadEntitiesService.perform({
+			...serviceRequest2,
 			params: {actor: persona2.persona_id, source_id: space.directory_id},
-			...serviceRequest,
 		}),
 	);
 	assert.equal(filteredEntities.slice(), [entity2, entity1]); // `slice` because `RowList` is not deep equal to arrays
 
 	const {space: foundSpace} = unwrap(
 		await ReadSpaceService.perform({
+			...serviceRequest2,
 			params: {actor: persona2.persona_id, space_id: space.space_id},
-			...serviceRequest,
 		}),
 	);
 	assert.equal(foundSpace, space);
 
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
+			...serviceRequest2,
 			params: {actor: persona2.persona_id, community_id: community.community_id},
-			...serviceRequest,
 		}),
 	);
 	assert.is(filteredSpaces.length, spaceCount + defaultSpaceCount);
 
 	const {community: foundCommunity} = unwrap(
 		await ReadCommunityService.perform({
+			...serviceRequest2,
 			params: {actor: persona2.persona_id, community_id: community.community_id},
-			...serviceRequest,
 		}),
 	);
 	assert.is(foundCommunity.name, community.name);
 
 	const {communities: filteredCommunities} = unwrap(
 		await ReadCommunitiesService.perform({
+			...serviceRequest2,
 			params: {actor: persona2.persona_id},
-			...serviceRequest,
 		}),
 	);
 	assert.is(filteredCommunities.length, 3);
@@ -122,7 +121,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 		unwrap(await db.repos.persona.filterByAccount(account.account_id))
 			.sort((a, b) => (a.created < b.created ? -1 : 1))
 			.slice(), // `slice` because `RowList` is not deep equal to arrays
-		[persona, persona2],
+		[persona1, persona2],
 	);
 
 	// TODO add a service event?
@@ -144,8 +143,8 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
+					...serviceRequest2,
 					params: {actor: persona2.persona_id, space_id: space.space_id},
-					...serviceRequest,
 				}),
 			);
 		}
@@ -159,12 +158,12 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 	unwrap(
 		await DeleteMembershipService.perform({
+			...serviceRequest2,
 			params: {
 				actor: persona2.persona_id,
 				persona_id: persona2.persona_id,
 				community_id: community.community_id,
 			},
-			...serviceRequest,
 		}),
 	);
 	assert.is(
@@ -183,13 +182,13 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	// delete community
 	unwrap(
 		await DeleteCommunityService.perform({
-			params: {actor: persona.persona_id, community_id: community.community_id},
-			...serviceRequest,
+			...serviceRequest1,
+			params: {actor: persona1.persona_id, community_id: community.community_id},
 		}),
 	);
 	const readCommunityResult = await ReadCommunityService.perform({
-		params: {actor: persona.persona_id, community_id: community.community_id},
-		...serviceRequest,
+		...serviceRequest1,
+		params: {actor: persona1.persona_id, community_id: community.community_id},
 	});
 	assert.is(readCommunityResult.status, 404);
 	assert.is(

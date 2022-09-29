@@ -12,7 +12,7 @@ const log = new Logger(gray('[') + blue('httpServiceMiddleware') + gray(']'));
 
 // Wraps a `Service` in an http `Middleware`
 export const toHttpServiceMiddleware =
-	(server: ApiServer, service: Service<any, any>): HttpMiddleware =>
+	(server: ApiServer, service: Service): HttpMiddleware =>
 	async (req, res) => {
 		const {body: reqBody, params: reqParams} = req;
 
@@ -59,11 +59,12 @@ export const toHttpServiceMiddleware =
 		if (!authorizeResult.ok) {
 			return send(res, authorizeResult.status, {message: authorizeResult.message});
 		}
+		const actor = authorizeResult.value?.actor;
 
 		let result;
 		try {
 			result = await service.perform(
-				toServiceRequest(server.db, params, req.account_id!, new SessionApi(req, res)),
+				toServiceRequest(server.db, params, req.account_id!, actor!, new SessionApi(req, res)), // TODO try to avoid the non-null assertions, looks tricky
 			);
 			if (!result.ok) {
 				log.error('service.perform failed with a message', service.event.name, result.message);

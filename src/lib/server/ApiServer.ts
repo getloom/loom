@@ -25,7 +25,7 @@ export interface Options {
 	websocketServer: WebsocketServer;
 	port: number;
 	db: Database;
-	services: Map<string, Service<any, any>>;
+	services: Map<string, Service>;
 }
 
 export class ApiServer {
@@ -34,7 +34,7 @@ export class ApiServer {
 	readonly websocketServer: WebsocketServer;
 	readonly port: number;
 	readonly db: Database;
-	readonly services: Map<string, Service<any, any>>;
+	readonly services: Map<string, Service>;
 
 	readonly websocketListener = toWebsocketServiceMiddleware(this);
 

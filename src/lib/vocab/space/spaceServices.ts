@@ -1,7 +1,7 @@
 import {Logger} from '@feltcoop/felt/util/log.js';
 
+import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {blue, gray} from '$lib/server/colors';
-import type {ServiceRequest} from '$lib/server/service';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {
 	CreateSpace,
@@ -198,7 +198,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 };
 
 export const createDefaultSpaces = async (
-	serviceRequest: ServiceRequest<any, any>,
+	serviceRequest: AuthorizedServiceRequest,
 	persona_id: number,
 	community: Community,
 ): Promise<
@@ -220,7 +220,7 @@ export const createDefaultSpaces = async (
 };
 
 export const createDefaultAdminSpaces = async (
-	serviceRequest: ServiceRequest<any, any>,
+	serviceRequest: AuthorizedServiceRequest,
 	persona_id: number,
 	community: Community,
 ): Promise<Result<{value: Space[]}, ErrorResponse>> => {

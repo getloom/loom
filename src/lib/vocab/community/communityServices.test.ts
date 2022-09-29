@@ -19,12 +19,12 @@ test_communityServices.before(setupDb);
 test_communityServices.after(teardownDb);
 
 test_communityServices('disallow deleting personal community', async ({db, random}) => {
-	const {persona, account} = await random.persona();
+	const {persona} = await random.persona();
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
+				...toServiceRequestMock(db, persona),
 				params: {actor: persona.persona_id, community_id: persona.community_id},
-				...toServiceRequestMock(account.account_id, db),
 			}),
 		).status,
 		405,
@@ -32,12 +32,12 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 });
 
 test_communityServices('disallow deleting admin community', async ({db, random}) => {
-	const {account, persona} = await random.persona();
+	const {persona} = await random.persona();
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
+				...toServiceRequestMock(db, persona),
 				params: {actor: persona.persona_id, community_id: ADMIN_COMMUNITY_ID},
-				...toServiceRequestMock(account.account_id, db),
 			}),
 		).status,
 		405,
@@ -45,34 +45,34 @@ test_communityServices('disallow deleting admin community', async ({db, random})
 });
 
 test_communityServices('disallow duplicate community names', async ({db, random}) => {
-	const {persona, account} = await random.persona();
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const {persona} = await random.persona();
+	const serviceRequest = toServiceRequestMock(db, persona);
 
 	const params = randomCommunityParams(persona.persona_id);
 	params.name += 'Aa';
-	unwrap(await CreateCommunityService.perform({params, ...serviceRequest}));
+	unwrap(await CreateCommunityService.perform({...serviceRequest, params}));
 
 	params.name = params.name.toLowerCase();
 	assert.is(
-		unwrapError(await CreateCommunityService.perform({params, ...serviceRequest})).status,
+		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
 		409,
 	);
 
 	params.name = params.name.toUpperCase();
 	assert.is(
-		unwrapError(await CreateCommunityService.perform({params, ...serviceRequest})).status,
+		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
 		409,
 	);
 });
 
 test_communityServices('disallow reserved community names', async ({db, random}) => {
-	const {persona, account} = await random.persona();
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const {persona} = await random.persona();
+	const serviceRequest = toServiceRequestMock(db, persona);
 
 	const params = randomCommunityParams(persona.persona_id);
 	params.name = 'docs';
 	assert.is(
-		unwrapError(await CreateCommunityService.perform({params, ...serviceRequest})).status,
+		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
 		409,
 	);
 });

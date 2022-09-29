@@ -4,7 +4,11 @@ import type {SvelteComponent} from 'svelte';
 import type {Readable, Mutable} from '@feltcoop/svelte-gettable-stores';
 
 import type {ApiResult} from '$lib/server/api';
-import type {Service} from '$lib/server/service';
+import type {
+	NonAuthenticatedService,
+	NonAuthorizedService,
+	AuthorizedService,
+} from '$lib/server/service';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona, AccountPersona} from '$lib/vocab/persona/persona';
 import type {Membership} from '$lib/vocab/membership/membership';
@@ -139,40 +143,46 @@ export interface EventResponseByName {
 }
 
 export interface ServiceByName {
-	Ping: Service<PingParams, PingResponseResult>;
-	Ephemera: Service<EphemeraParams, EphemeraResponseResult>;
-	Login: Service<LoginParams, LoginResponseResult>;
-	Logout: Service<LogoutParams, LogoutResponseResult>;
-	CreateAccountPersona: Service<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>;
-	ReadPersona: Service<ReadPersonaParams, ReadPersonaResponseResult>;
-	ReadCommunity: Service<ReadCommunityParams, ReadCommunityResponseResult>;
-	ReadCommunities: Service<ReadCommunitiesParams, ReadCommunitiesResponseResult>;
-	CreateCommunity: Service<CreateCommunityParams, CreateCommunityResponseResult>;
-	UpdateCommunitySettings: Service<
+	Ping: NonAuthorizedService<PingParams, PingResponseResult>;
+	Ephemera: AuthorizedService<EphemeraParams, EphemeraResponseResult>;
+	Login: NonAuthenticatedService<LoginParams, LoginResponseResult>;
+	Logout: NonAuthorizedService<LogoutParams, LogoutResponseResult>;
+	CreateAccountPersona: NonAuthorizedService<
+		CreateAccountPersonaParams,
+		CreateAccountPersonaResponseResult
+	>;
+	ReadPersona: AuthorizedService<ReadPersonaParams, ReadPersonaResponseResult>;
+	ReadCommunity: AuthorizedService<ReadCommunityParams, ReadCommunityResponseResult>;
+	ReadCommunities: AuthorizedService<ReadCommunitiesParams, ReadCommunitiesResponseResult>;
+	CreateCommunity: AuthorizedService<CreateCommunityParams, CreateCommunityResponseResult>;
+	UpdateCommunitySettings: AuthorizedService<
 		UpdateCommunitySettingsParams,
 		UpdateCommunitySettingsResponseResult
 	>;
-	DeleteCommunity: Service<DeleteCommunityParams, DeleteCommunityResponseResult>;
-	CreateMembership: Service<CreateMembershipParams, CreateMembershipResponseResult>;
-	DeleteMembership: Service<DeleteMembershipParams, DeleteMembershipResponseResult>;
-	ReadSpace: Service<ReadSpaceParams, ReadSpaceResponseResult>;
-	ReadSpaces: Service<ReadSpacesParams, ReadSpacesResponseResult>;
-	CreateSpace: Service<CreateSpaceParams, CreateSpaceResponseResult>;
-	UpdateSpace: Service<UpdateSpaceParams, UpdateSpaceResponseResult>;
-	DeleteSpace: Service<DeleteSpaceParams, DeleteSpaceResponseResult>;
-	ReadEntities: Service<ReadEntitiesParams, ReadEntitiesResponseResult>;
-	ReadEntitiesPaginated: Service<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>;
-	CreateEntity: Service<CreateEntityParams, CreateEntityResponseResult>;
-	UpdateEntity: Service<UpdateEntityParams, UpdateEntityResponseResult>;
-	EraseEntities: Service<EraseEntitiesParams, EraseEntitiesResponseResult>;
-	DeleteEntities: Service<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
-	CreateTie: Service<CreateTieParams, CreateTieResponseResult>;
-	ReadTies: Service<ReadTiesParams, ReadTiesResponseResult>;
-	DeleteTie: Service<DeleteTieParams, DeleteTieResponseResult>;
-	CreateRole: Service<CreateRoleParams, CreateRoleResponseResult>;
-	ReadRoles: Service<ReadRolesParams, ReadRolesResponseResult>;
-	UpdateRole: Service<UpdateRoleParams, UpdateRoleResponseResult>;
-	DeleteRoles: Service<DeleteRolesParams, DeleteRolesResponseResult>;
+	DeleteCommunity: AuthorizedService<DeleteCommunityParams, DeleteCommunityResponseResult>;
+	CreateMembership: AuthorizedService<CreateMembershipParams, CreateMembershipResponseResult>;
+	DeleteMembership: AuthorizedService<DeleteMembershipParams, DeleteMembershipResponseResult>;
+	ReadSpace: AuthorizedService<ReadSpaceParams, ReadSpaceResponseResult>;
+	ReadSpaces: AuthorizedService<ReadSpacesParams, ReadSpacesResponseResult>;
+	CreateSpace: AuthorizedService<CreateSpaceParams, CreateSpaceResponseResult>;
+	UpdateSpace: AuthorizedService<UpdateSpaceParams, UpdateSpaceResponseResult>;
+	DeleteSpace: AuthorizedService<DeleteSpaceParams, DeleteSpaceResponseResult>;
+	ReadEntities: AuthorizedService<ReadEntitiesParams, ReadEntitiesResponseResult>;
+	ReadEntitiesPaginated: AuthorizedService<
+		ReadEntitiesPaginatedParams,
+		ReadEntitiesPaginatedResponseResult
+	>;
+	CreateEntity: AuthorizedService<CreateEntityParams, CreateEntityResponseResult>;
+	UpdateEntity: AuthorizedService<UpdateEntityParams, UpdateEntityResponseResult>;
+	EraseEntities: AuthorizedService<EraseEntitiesParams, EraseEntitiesResponseResult>;
+	DeleteEntities: AuthorizedService<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
+	CreateTie: AuthorizedService<CreateTieParams, CreateTieResponseResult>;
+	ReadTies: AuthorizedService<ReadTiesParams, ReadTiesResponseResult>;
+	DeleteTie: AuthorizedService<DeleteTieParams, DeleteTieResponseResult>;
+	CreateRole: AuthorizedService<CreateRoleParams, CreateRoleResponseResult>;
+	ReadRoles: AuthorizedService<ReadRolesParams, ReadRolesResponseResult>;
+	UpdateRole: AuthorizedService<UpdateRoleParams, UpdateRoleResponseResult>;
+	DeleteRoles: AuthorizedService<DeleteRolesParams, DeleteRolesResponseResult>;
 }
 
 export interface SetSessionParams {

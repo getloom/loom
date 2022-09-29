@@ -13,8 +13,8 @@ test__service.before(setupDb);
 test__service.after(teardownDb);
 
 test__service(`roll back the database after a failed transaction`, async ({db, random}) => {
-	const account = await random.account();
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const {persona} = await random.persona();
+	const serviceRequest = toServiceRequestMock(db, persona);
 	const communityName = 'a';
 	let community: Community | undefined;
 	let failedResult: Result | undefined;
@@ -34,8 +34,8 @@ test__service(`roll back the database after a failed transaction`, async ({db, r
 });
 
 test__service(`compose multiple calls into one transaction`, async ({db, random}) => {
-	const account = await random.account();
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const {persona} = await random.persona();
+	const serviceRequest = toServiceRequestMock(db, persona);
 	const communityName = 'a';
 	let community: Community | undefined;
 	let failedResult: Result | undefined;
@@ -58,8 +58,8 @@ test__service(`compose multiple calls into one transaction`, async ({db, random}
 });
 
 test__service(`when a transact cb throws, fail and rethrow`, async ({db, random}) => {
-	const account = await random.account();
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const {persona} = await random.persona();
+	const serviceRequest = toServiceRequestMock(db, persona);
 	const communityName = 'a';
 	let community: Community | undefined;
 	let result: any;

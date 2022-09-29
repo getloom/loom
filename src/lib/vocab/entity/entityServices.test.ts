@@ -50,13 +50,13 @@ test_entityServices('create entities with data', async ({random}) => {
 
 test_entityServices('read paginated entities by source_id', async ({db, random}) => {
 	const {space, persona, account, community} = await random.space();
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const serviceRequest = toServiceRequestMock(db, persona);
 
 	//first query on the space dir and expect an empty set
 	const {entities: filtered} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			params: {actor: persona.persona_id, source_id: space.directory_id},
 			...serviceRequest,
+			params: {actor: persona.persona_id, source_id: space.directory_id},
 		}),
 	);
 
@@ -77,8 +77,8 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	//test the default param returns properly
 	const {entities: filtered2} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			params: {actor: persona.persona_id, source_id: space.directory_id},
 			...serviceRequest,
+			params: {actor: persona.persona_id, source_id: space.directory_id},
 		}),
 	);
 	assert.is(filtered2.length, DEFAULT_PAGE_SIZE);
@@ -90,8 +90,8 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	//then do 3 queries on smaller pages
 	const {entities: filtered3} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			params: {actor: persona.persona_id, source_id: space.directory_id, pageSize: FIRST_PAGE_SIZE},
 			...serviceRequest,
+			params: {actor: persona.persona_id, source_id: space.directory_id, pageSize: FIRST_PAGE_SIZE},
 		}),
 	);
 
@@ -99,13 +99,13 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 
 	const {entities: filtered4} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
+			...serviceRequest,
 			params: {
 				actor: persona.persona_id,
 				source_id: space.directory_id,
 				pageSize: SECOND_PAGE_SIZE,
 				pageKey: filtered3.at(-1)!.entity_id,
 			},
-			...serviceRequest,
 		}),
 	);
 
@@ -114,13 +114,13 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 
 	const {entities: filtered5} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
+			...serviceRequest,
 			params: {
 				actor: persona.persona_id,
 				source_id: space.directory_id,
 				pageSize: SECOND_PAGE_SIZE,
 				pageKey: filtered4.at(-1)!.entity_id,
 			},
-			...serviceRequest,
 		}),
 	);
 	assert.is(filtered5.length, 1);
@@ -138,7 +138,7 @@ test_entityServices('assert default as max pageSize', async ({random}) => {
 
 test_entityServices('deleting entities and cleaning orphans', async ({random, db}) => {
 	const {space, persona, account, community} = await random.space();
-	const serviceRequest = toServiceRequestMock(account.account_id, db);
+	const serviceRequest = toServiceRequestMock(db, persona);
 	//generate a collection with 3 notes
 	const {entity: list} = await random.entity(persona, account, community, space.directory_id, {
 		data: {type: 'Collection', name: `grocery list`},
@@ -163,8 +163,8 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 	//delete the collection
 	unwrap(
 		await DeleteEntitiesService.perform({
-			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
 			...serviceRequest,
+			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
 		}),
 	);
 	let failed = false;

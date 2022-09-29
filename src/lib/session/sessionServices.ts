@@ -5,14 +5,17 @@ import type {ServiceByName} from '$lib/app/eventTypes';
 
 export const LoginService: ServiceByName['Login'] = {
 	event: Login,
-	perform: ({transact, params, account_id, session}) =>
-		transact(async (repos) => {
-			const {username, password} = params;
+	perform: (serviceRequest) =>
+		serviceRequest.transact(async (repos) => {
+			const {
+				params: {username, password},
+				session,
+			} = serviceRequest;
 
 			// If the browser session is out of sync with the server,
 			// the client may think it's logged out when the server sees a session.
 			// To avoid bugs and confusion, this logs out the user and asks them to try again.
-			if (account_id) {
+			if ('account_id' in serviceRequest) {
 				session.logout();
 				return {
 					ok: false,

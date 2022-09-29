@@ -4,6 +4,7 @@ import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {Database} from '$lib/db/Database';
+import type {Persona} from '$lib/vocab/persona/persona';
 
 export type ServiceMethod =
 	| 'GET'
@@ -18,28 +19,79 @@ export type ServiceMethod =
 
 // A `Service` can be reused across both http and websocket handlers.
 // The generics are required to avoid mistakes with service definitions.
-export interface Service<TParams extends object | null, TResult extends Result> {
+export type Service = NonAuthenticatedService | NonAuthorizedService | AuthorizedService;
+export interface NonAuthenticatedService<
+	TParams extends object | null = any,
+	TResult extends Result = any,
+> {
 	event: ServiceEventInfo;
-	perform: (serviceRequest: ServiceRequest<TParams, TResult>) => Promise<TResult>;
+	perform: (serviceRequest: NonAuthenticatedServiceRequest<TParams, TResult>) => Promise<TResult>;
+}
+export interface NonAuthorizedService<
+	TParams extends object | null = any,
+	TResult extends Result = any,
+> {
+	event: ServiceEventInfo;
+	perform: (serviceRequest: NonAuthorizedServiceRequest<TParams, TResult>) => Promise<TResult>;
+}
+export interface AuthorizedService<
+	TParams extends object | null = any,
+	TResult extends Result = any,
+> {
+	event: ServiceEventInfo;
+	perform: (serviceRequest: AuthorizedServiceRequest<TParams, TResult>) => Promise<TResult>;
 }
 
-export interface ServiceRequest<TParams, TResult> {
+export type ServiceRequest =
+	| NonAuthenticatedServiceRequest
+	| NonAuthenticatedServiceRequest
+	| AuthorizedServiceRequest;
+export interface NonAuthenticatedServiceRequest<TParams = any, TResult = any> {
 	repos: Repos;
 	transact: (cb: (repos: Repos) => Promise<TResult>) => Promise<TResult>;
 	params: TParams;
-	account_id: number;
 	session: ISessionApi;
 }
+export interface NonAuthorizedServiceRequest<TParams = any, TResult = any>
+	extends NonAuthenticatedServiceRequest<TParams, TResult> {
+	account_id: number;
+}
+export interface AuthorizedServiceRequest<TParams = any, TResult = any>
+	extends NonAuthorizedServiceRequest<TParams, TResult> {
+	actor: Persona;
+}
 
-export const toServiceRequest = <TParams = any, TResult extends Result = any>(
+export function toServiceRequest<TParams = any, TResult extends Result = any>(
+	db: Database,
+	params: TParams,
+	account_id: undefined,
+	actor: undefined,
+	session: ISessionApi,
+): NonAuthenticatedServiceRequest<TParams, TResult>;
+export function toServiceRequest<TParams = any, TResult extends Result = any>(
 	db: Database,
 	params: TParams,
 	account_id: number,
+	actor: undefined,
 	session: ISessionApi,
-): ServiceRequest<TParams, TResult> => {
+): NonAuthorizedServiceRequest<TParams, TResult>;
+export function toServiceRequest<TParams = any, TResult extends Result = any>(
+	db: Database,
+	params: TParams,
+	account_id: number,
+	actor: Persona,
+	session: ISessionApi,
+): AuthorizedServiceRequest<TParams, TResult>;
+export function toServiceRequest<TParams = any, TResult extends Result = any>(
+	db: Database,
+	params: TParams,
+	account_id: number | undefined,
+	actor: Persona | undefined,
+	session: ISessionApi,
+): ServiceRequest {
 	let repos: Repos | undefined; // cache for service composition
 	let result: TResult; // cache to pass through if the inner transaction promise rejects
-	return {
+	const req: NonAuthenticatedServiceRequest = {
 		repos: db.repos,
 		// TODO support creating new transactions outside of this singleton, which is needed for service composition
 		// TODO support savepoints -- https://github.com/porsager/postgres#transactions
@@ -60,7 +112,12 @@ export const toServiceRequest = <TParams = any, TResult extends Result = any>(
 							}
 						}),
 		params,
-		account_id, // TODO how to handle this type for services that don't require an account_id?
 		session,
 	};
-};
+	// TODO this is a bit hacky -- it may be preferred to have 3 different versions of `toServiceRequest` instead
+	if (account_id) {
+		(req as NonAuthorizedServiceRequest).account_id = account_id;
+		if (actor) (req as AuthorizedServiceRequest).actor = actor;
+	}
+	return req;
+}

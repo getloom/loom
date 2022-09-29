@@ -17,23 +17,23 @@ for (const service of services.values()) {
 	const {event} = service;
 	test__serviceDefinitions('service auth definitions: ' + event.name, () => {
 		if (event.authenticate === false) {
-			// unauthenticated event (no account_id, no actor)
+			// non-authenticated event (no account_id, no actor)
 			assert.is(
 				event.params.properties?.actor,
 				undefined,
-				'unauthenticated event params must have no actor',
+				'non-authenticated event params must have no actor',
 			);
 			assert.is(
 				event.authorize,
 				false,
-				'unauthenticated events must have an authorize value of false',
+				'non-authenticated events must have an authorize value of false',
 			);
 		} else if (event.authorize === false) {
-			// unauthorized event (yes account_id, no actor)
+			// non-authorized event (yes account_id, no actor)
 			assert.is(
 				event.params.properties?.actor,
 				undefined,
-				'unauthorized event params must have no actor',
+				'non-authorized event params must have no actor',
 			);
 		} else {
 			// defualt to authorized (yes account_id, yes actor)
@@ -89,15 +89,13 @@ for (const service of services.values()) {
 				)}`,
 			);
 		}
-		const result = await service.perform({
-			params,
-			...toServiceRequestMock(
-				// TODO what's the proper type here? should `account_id` be optional?
-				event.authenticate === false ? (null as any) : account.account_id,
-				db,
-				session,
-			),
-		});
+		const serviceRequest = toServiceRequestMock(
+			db,
+			event.authorize === false ? undefined! : (await random.persona(account)).persona,
+			session,
+			event.authenticate === false ? undefined : account.account_id,
+		);
+		const result = await service.perform({...serviceRequest, params});
 		if (!result.ok) {
 			log.error(red(`failed service call: ${event.name}`), params, result);
 			throw new Error(`Failed service call: ${event.name}`);

@@ -17,15 +17,15 @@ test__membershipServices.before(setupDb);
 test__membershipServices.after(teardownDb);
 
 test__membershipServices('disallow creating duplicate memberships', async ({db, random}) => {
-	const {community, personas, account} = await random.community();
+	const {community, personas} = await random.community();
 	unwrapError(
 		await CreateMembershipService.perform({
+			...toServiceRequestMock(db, personas[1]),
 			params: {
 				actor: personas[1].persona_id,
 				community_id: community.community_id,
 				persona_id: personas[1].persona_id,
 			},
-			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
 });
@@ -33,60 +33,60 @@ test__membershipServices('disallow creating duplicate memberships', async ({db, 
 test__membershipServices(
 	'disallow creating memberships for personal communities',
 	async ({db, random}) => {
-		const {account, personalCommunity, persona} = await random.persona();
+		const {personalCommunity, persona} = await random.persona();
 		unwrapError(
 			await CreateMembershipService.perform({
+				...toServiceRequestMock(db, persona),
 				params: {
 					actor: persona.persona_id,
 					community_id: personalCommunity.community_id,
 					persona_id: (await random.persona()).persona.persona_id,
 				},
-				...toServiceRequestMock(account.account_id, db),
 			}),
 		);
 	},
 );
 
 test__membershipServices('delete a membership in a community', async ({db, random}) => {
-	const {community, personas, account} = await random.community();
+	const {community, personas} = await random.community();
 	unwrap(
 		await DeleteMembershipService.perform({
+			...toServiceRequestMock(db, personas[1]),
 			params: {
 				actor: personas[1].persona_id,
 				persona_id: personas[1].persona_id,
 				community_id: community.community_id,
 			},
-			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
 	unwrapError(await db.repos.membership.findById(personas[1].persona_id, community.community_id));
 });
 
 test__membershipServices('fail to delete a personal membership', async ({db, random}) => {
-	const {persona, account} = await random.persona();
+	const {persona} = await random.persona();
 	unwrapError(
 		await DeleteMembershipService.perform({
+			...toServiceRequestMock(db, persona),
 			params: {
 				actor: persona.persona_id,
 				persona_id: persona.persona_id,
 				community_id: persona.community_id,
 			},
-			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
 	unwrap(await db.repos.membership.findById(persona.persona_id, persona.community_id));
 });
 
 test__membershipServices('fail to delete a community persona membership', async ({db, random}) => {
-	const {community, personas, account} = await random.community();
+	const {community, personas} = await random.community();
 	unwrapError(
 		await DeleteMembershipService.perform({
+			...toServiceRequestMock(db, personas[0]),
 			params: {
 				actor: personas[0].persona_id,
 				persona_id: personas[0].persona_id,
 				community_id: community.community_id,
 			},
-			...toServiceRequestMock(account.account_id, db),
 		}),
 	);
 	unwrap(await db.repos.membership.findById(personas[0].persona_id, community.community_id));
@@ -96,17 +96,17 @@ test__membershipServices(
 	'delete orphaned communities on last member leaving',
 	async ({db, random}) => {
 		//Need a community with two account members
-		const {persona: persona1, account} = await random.persona();
+		const {persona: persona1} = await random.persona();
 		const {community} = await random.community(persona1);
 		const {persona: persona2} = await random.persona();
 		unwrap(
 			await CreateMembershipService.perform({
+				...toServiceRequestMock(db, persona1),
 				params: {
 					actor: persona2.persona_id,
 					persona_id: persona2.persona_id,
 					community_id: community.community_id,
 				},
-				...toServiceRequestMock(account.account_id, db),
 			}),
 		);
 		assert.is(
@@ -117,12 +117,12 @@ test__membershipServices(
 		//Delete 1 account member, the community still exists
 		unwrap(
 			await DeleteMembershipService.perform({
+				...toServiceRequestMock(db, persona2),
 				params: {
 					actor: persona2.persona_id,
 					persona_id: persona2.persona_id,
 					community_id: community.community_id,
 				},
-				...toServiceRequestMock(account.account_id, db),
 			}),
 		);
 		assert.is(
@@ -134,12 +134,12 @@ test__membershipServices(
 		//Delete last account member, the community is deleted
 		unwrap(
 			await DeleteMembershipService.perform({
+				...toServiceRequestMock(db, persona1),
 				params: {
 					actor: persona1.persona_id,
 					persona_id: persona1.persona_id,
 					community_id: community.community_id,
 				},
-				...toServiceRequestMock(account.account_id, db),
 			}),
 		);
 

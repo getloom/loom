@@ -36,7 +36,7 @@ import {
 	UpdateRoleService,
 } from '$lib/vocab/role/roleServices';
 
-export const services: Map<string, Service<any, any>> = new Map(
+export const services: Map<string, Service> = new Map(
 	[
 		// uiServices
 		PingService,
