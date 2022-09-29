@@ -15,6 +15,7 @@ import {CreateCommunityService} from '$lib/vocab/community/communityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {CreateMembershipService} from '$lib/vocab/membership/membershipServices';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
+import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 
 /* eslint-disable no-await-in-loop */
 
@@ -47,7 +48,11 @@ export const seed = async (db: Database): Promise<void> => {
 	const personas: Persona[] = [];
 	for (const accountParams of accountsParams) {
 		const account = unwrap(
-			await db.repos.account.create(accountParams.username, accountParams.password),
+			await db.repos.account.create(
+				accountParams.username,
+				accountParams.password,
+				toDefaultAccountSettings(),
+			),
 		);
 		log.trace('created account', account);
 		accounts.push(account);

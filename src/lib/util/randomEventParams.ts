@@ -41,6 +41,11 @@ export const randomEventParams: RandomEventParams = {
 	SetSession: async () => {
 		return {session: {guest: true}};
 	},
+	UpdateAccountSettings: async () => {
+		return {
+			settings: {darkmode: randomBool()},
+		};
+	},
 	CreateCommunity: async (random, {account, persona} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		return randomCommunityParams(persona.persona_id);

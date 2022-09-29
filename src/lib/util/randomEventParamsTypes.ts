@@ -5,6 +5,7 @@ import type {
 	SetSessionParams,
 	LoginParams,
 	LogoutParams,
+	UpdateAccountSettingsParams,
 	CreateCommunityParams,
 	ReadCommunityParams,
 	ReadCommunitiesParams,
@@ -48,6 +49,10 @@ export interface RandomEventParams {
 	SetSession: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetSessionParams>;
 	Login: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<LoginParams>;
 	Logout: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<LogoutParams>;
+	UpdateAccountSettings: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<UpdateAccountSettingsParams>;
 	CreateCommunity: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

@@ -3,7 +3,7 @@ import type {VocabSchema} from '@feltcoop/gro/dist/utils/schema.js';
 
 import {eventInfos} from '$lib/app/events';
 import {toSchemaName} from '$lib/util/schema';
-import {AccountSchema} from '$lib/vocab/account/account.schema';
+import {AccountSchema, AccountSettingsSchema} from '$lib/vocab/account/account.schema';
 import {
 	AccountPersonaSchema,
 	CommunityPersonaSchema,
@@ -26,6 +26,7 @@ import {RoleSchema} from '$lib/vocab/role/role.schema';
 
 export const vocabSchemas = [
 	AccountSchema,
+	AccountSettingsSchema,
 	AccountPersonaSchema,
 	CommunityPersonaSchema,
 	PersonaSchema,

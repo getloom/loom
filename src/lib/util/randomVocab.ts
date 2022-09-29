@@ -28,6 +28,7 @@ import {CreateTieService} from '$lib/vocab/tie/tieServices';
 import {toServiceRequestMock} from './testHelpers';
 import type {Role} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
+import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 
 // TODO automate these from schemas, also use seeded rng
 export const randomString = (): string => Math.random().toString().slice(2);
@@ -115,7 +116,13 @@ export class RandomVocabContext {
 
 	async account(): Promise<Account> {
 		const params = randomAccountParams();
-		return unwrap(await this.db.repos.account.create(params.username, params.password));
+		return unwrap(
+			await this.db.repos.account.create(
+				params.username,
+				params.password,
+				toDefaultAccountSettings(),
+			),
+		);
 	}
 
 	async persona(account?: Account): Promise<{

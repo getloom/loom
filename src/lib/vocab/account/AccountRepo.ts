@@ -1,4 +1,4 @@
-import {NOT_OK, type Result} from '@feltcoop/felt';
+import {NOT_OK, OK, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -9,11 +9,15 @@ import {toPasswordKey} from '$lib/util/password';
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
 export class AccountRepo extends PostgresRepo {
-	async create(name: string, password: string): Promise<Result<{value: Account}>> {
+	async create(
+		name: string,
+		password: string,
+		settings: Account['settings'],
+	): Promise<Result<{value: Account}>> {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<Account[]>`
-			INSERT INTO accounts (name, password) VALUES (
-				${name}, ${passwordKey}
+			INSERT INTO accounts (name, password, settings) VALUES (
+				${name}, ${passwordKey}, ${this.sql.json(settings)}
 			) RETURNING *
 		`;
 		log.trace('created account', data[0]);
@@ -24,7 +28,7 @@ export class AccountRepo extends PostgresRepo {
 	async findById(account_id: number): Promise<Result<{value: AccountModel}>> {
 		log.trace('loading account', account_id);
 		const data = await this.sql<AccountModel[]>`
-			SELECT account_id, name, created, updated
+			SELECT account_id, name, settings, created, updated
 			FROM accounts WHERE account_id = ${account_id}
 		`;
 		if (!data.length) return NOT_OK;
@@ -38,5 +42,13 @@ export class AccountRepo extends PostgresRepo {
 		`;
 		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
+	}
+
+	async updateSettings(account_id: number, settings: AccountModel['settings']): Promise<Result> {
+		const data = await this.sql<any[]>`
+			UPDATE accounts SET settings=${this.sql.json(settings)} WHERE account_id=${account_id}
+		`;
+		if (!data.count) return NOT_OK;
+		return OK;
 	}
 }

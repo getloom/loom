@@ -25,6 +25,7 @@ import type {ClientSession, ClientAccountSession} from '$lib/session/clientSessi
 export type ServiceEventName =
 	| 'Login'
 	| 'Logout'
+	| 'UpdateAccountSettings'
 	| 'CreateCommunity'
 	| 'ReadCommunity'
 	| 'ReadCommunities'
@@ -70,6 +71,7 @@ export interface EventParamsByName {
 	SetSession: SetSessionParams;
 	Login: LoginParams;
 	Logout: LogoutParams;
+	UpdateAccountSettings: UpdateAccountSettingsParams;
 	CreateCommunity: CreateCommunityParams;
 	ReadCommunity: ReadCommunityParams;
 	ReadCommunities: ReadCommunitiesParams;
@@ -111,6 +113,7 @@ export interface EventParamsByName {
 export interface EventResponseByName {
 	Login: LoginResponse;
 	Logout: LogoutResponse;
+	UpdateAccountSettings: UpdateAccountSettingsResponse;
 	CreateCommunity: CreateCommunityResponse;
 	ReadCommunity: ReadCommunityResponse;
 	ReadCommunities: ReadCommunitiesResponse;
@@ -147,6 +150,10 @@ export interface ServiceByName {
 	Ephemera: AuthorizedService<EphemeraParams, EphemeraResponseResult>;
 	Login: NonAuthenticatedService<LoginParams, LoginResponseResult>;
 	Logout: NonAuthorizedService<LogoutParams, LogoutResponseResult>;
+	UpdateAccountSettings: NonAuthorizedService<
+		UpdateAccountSettingsParams,
+		UpdateAccountSettingsResponseResult
+	>;
 	CreateAccountPersona: NonAuthorizedService<
 		CreateAccountPersonaParams,
 		CreateAccountPersonaResponseResult
@@ -201,6 +208,14 @@ export type LoginResponseResult = ApiResult<LoginResponse>;
 export type LogoutParams = null;
 export type LogoutResponse = null;
 export type LogoutResponseResult = ApiResult<LogoutResponse>;
+
+export interface UpdateAccountSettingsParams {
+	settings: {
+		darkmode?: boolean;
+	};
+}
+export type UpdateAccountSettingsResponse = null;
+export type UpdateAccountSettingsResponseResult = ApiResult<UpdateAccountSettingsResponse>;
 
 export interface CreateCommunityParams {
 	actor: number;
@@ -532,6 +547,9 @@ export interface Dispatch {
 	SetSession: (params: SetSessionParams) => void;
 	Login: (params: LoginParams) => Promise<LoginResponseResult>;
 	Logout: () => Promise<LogoutResponseResult>;
+	UpdateAccountSettings: (
+		params: UpdateAccountSettingsParams,
+	) => Promise<UpdateAccountSettingsResponseResult>;
 	CreateCommunity: (params: CreateCommunityParams) => Promise<CreateCommunityResponseResult>;
 	ReadCommunity: (params: ReadCommunityParams) => Promise<ReadCommunityResponseResult>;
 	ReadCommunities: (params: ReadCommunitiesParams) => Promise<ReadCommunitiesResponseResult>;
@@ -583,6 +601,9 @@ export interface Mutations {
 	Logout: (
 		ctx: DispatchContext<LogoutParams, LogoutResponseResult>,
 	) => Promise<LogoutResponseResult>;
+	UpdateAccountSettings: (
+		ctx: DispatchContext<UpdateAccountSettingsParams, UpdateAccountSettingsResponseResult>,
+	) => Promise<UpdateAccountSettingsResponseResult>;
 	CreateCommunity: (
 		ctx: DispatchContext<CreateCommunityParams, CreateCommunityResponseResult>,
 	) => Promise<CreateCommunityResponseResult>;

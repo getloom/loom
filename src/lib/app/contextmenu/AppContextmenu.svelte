@@ -6,10 +6,11 @@
 	import PersonaInput from '$lib/ui/PersonaInput.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
 	import About from '$lib/ui/About.svelte';
+	import AccountEditor from '$lib/ui/AccountEditor.svelte';
 
 	const {
 		dispatch,
-		ui: {session, sessionPersonas},
+		ui: {account, session, sessionPersonas},
 	} = getApp();
 </script>
 
@@ -23,6 +24,15 @@
 			<SessionPersonaContextmenuEntry {persona} />
 		{/each}
 		{#if !$session.guest}
+			<ContextmenuEntry
+				action={() =>
+					dispatch.OpenDialog({
+						Component: AccountEditor,
+						props: {account},
+					})}
+			>
+				Account Settings
+			</ContextmenuEntry>
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({

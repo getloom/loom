@@ -2,6 +2,7 @@ import type {Account} from '$lib/vocab/account/account.js';
 import {verifyPassword} from '$lib/util/password';
 import {Login, Logout} from '$lib/session/sessionEvents';
 import type {ServiceByName} from '$lib/app/eventTypes';
+import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 
 export const LoginService: ServiceByName['Login'] = {
 	event: Login,
@@ -35,7 +36,11 @@ export const LoginService: ServiceByName['Login'] = {
 				}
 			} else {
 				// There's no account, so create one.
-				const createAccountResult = await repos.account.create(username, password);
+				const createAccountResult = await repos.account.create(
+					username,
+					password,
+					toDefaultAccountSettings(),
+				);
 				if (createAccountResult.ok) {
 					account = createAccountResult.value;
 				} else {

@@ -1,5 +1,6 @@
 import type {EventInfo} from '$lib/vocab/event/event';
 import {Login, Logout, SetSession} from '$lib/session/sessionEvents';
+import {UpdateAccountSettings} from '$lib/vocab/account/accountEvents';
 import {
 	CreateCommunity,
 	ReadCommunity,
@@ -44,6 +45,8 @@ export const eventInfos: EventInfo[] = [
 	SetSession,
 	Login,
 	Logout,
+	// accountEvents
+	UpdateAccountSettings,
 	// communityEvents
 	CreateCommunity,
 	ReadCommunity,
