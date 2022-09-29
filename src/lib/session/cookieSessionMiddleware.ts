@@ -1,7 +1,7 @@
 import send from '@polka/send-type';
-import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
+import {blue, gray} from '$lib/server/colors';
 import type {HttpMiddleware} from '$lib/server/ApiServer.js';
 import {parseSessionCookie, setSessionCookie} from '$lib/session/sessionCookie';
 

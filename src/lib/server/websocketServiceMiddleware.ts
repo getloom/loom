@@ -1,7 +1,7 @@
 import type ws from 'ws';
-import {red, blue, gray} from 'kleur/colors';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
+import {red, blue, gray} from '$lib/server/colors';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc';
 import type {ApiServer} from '$lib/server/ApiServer';
 import {toValidationErrorMessage, validateSchema} from '$lib/util/ajv';

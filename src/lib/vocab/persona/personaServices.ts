@@ -1,6 +1,6 @@
-import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
+import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAccountPersona, ReadPersona} from '$lib/vocab/persona/personaEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';

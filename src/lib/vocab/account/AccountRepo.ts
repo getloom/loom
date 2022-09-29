@@ -1,7 +1,7 @@
 import {NOT_OK, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue, gray} from 'kleur/colors';
 
+import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Account, AccountModel} from '$lib/vocab/account/account.js';
 import {toPasswordKey} from '$lib/util/password';

@@ -1,4 +1,4 @@
-import {blue, gray} from 'kleur/colors';
+import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRoles} from '$lib/vocab/role/roleEvents';
 import {Logger} from '@feltcoop/felt/util/log.js';

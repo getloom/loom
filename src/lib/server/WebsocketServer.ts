@@ -4,9 +4,9 @@ import type {Server as HttpServer} from 'http';
 import type {Server as HttpsServer} from 'https';
 import {EventEmitter} from 'events';
 import type StrictEventEmitter from 'strict-event-emitter-types';
-import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
+import {blue, gray} from '$lib/server/colors';
 import {parseSessionCookie} from '$lib/session/sessionCookie';
 import type {StatusMessage} from '$lib/util/websocket';
 

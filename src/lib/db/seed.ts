@@ -1,8 +1,8 @@
 import {unwrap} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {cyan} from 'kleur/colors';
 import {traverse} from '@feltcoop/felt/util/object.js';
 
+import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';
 import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';

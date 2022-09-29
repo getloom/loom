@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {red} from 'kleur/colors';
 
+import {red} from '$lib/server/colors';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {log, toServiceRequestMock} from '$lib/util/testHelpers';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';

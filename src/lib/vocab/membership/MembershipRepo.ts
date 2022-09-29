@@ -1,7 +1,7 @@
 import {NOT_OK, OK, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue, gray} from 'kleur/colors';
 
+import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Membership} from '$lib/vocab/membership/membership.js';
 
@@ -68,7 +68,7 @@ export class MembershipRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
-	async deleteById(persona_id: number, community_id: number): Promise<Result<object>> {
+	async deleteById(persona_id: number, community_id: number): Promise<Result> {
 		const data = await this.sql<any[]>`
 			DELETE FROM memberships 
 			WHERE ${persona_id}=persona_id AND ${community_id}=community_id

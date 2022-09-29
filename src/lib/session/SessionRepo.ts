@@ -1,7 +1,7 @@
 import type {Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue, gray} from 'kleur/colors';
 
+import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';

@@ -1,7 +1,7 @@
 import {NOT_OK, OK, type Assignable, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue, gray} from 'kleur/colors';
 
+import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Community} from '$lib/vocab/community/community';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
@@ -66,7 +66,7 @@ export class CommunityRepo extends PostgresRepo {
 		return OK;
 	}
 
-	async deleteById(community_id: number): Promise<Result<object>> {
+	async deleteById(community_id: number): Promise<Result> {
 		log.trace('[deleteById]', community_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM communities WHERE community_id=${community_id}

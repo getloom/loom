@@ -1,7 +1,7 @@
 import {NOT_OK, OK, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue, gray} from 'kleur/colors';
 
+import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Space} from '$lib/vocab/space/space.js';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -104,7 +104,7 @@ export class SpaceRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
-	async deleteById(space_id: number): Promise<Result<object>> {
+	async deleteById(space_id: number): Promise<Result> {
 		log.trace('[deleteById]', space_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM spaces WHERE space_id=${space_id}

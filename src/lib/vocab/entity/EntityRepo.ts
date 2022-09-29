@@ -1,7 +1,7 @@
 import {NOT_OK, OK, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue, gray} from 'kleur/colors';
 
+import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {EntityData} from '$lib/vocab/entity/entityData';
@@ -81,7 +81,7 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	//This function actually deletes the records in the DB
-	async deleteByIds(entityIds: number[]): Promise<Result<object>> {
+	async deleteByIds(entityIds: number[]): Promise<Result> {
 		log.trace('[deleteByIds]', entityIds);
 		const data = await this.sql<any[]>`
 			DELETE FROM entities WHERE entity_id IN ${this.sql(entityIds)}

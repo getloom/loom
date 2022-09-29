@@ -6,7 +6,7 @@
 	import {page} from '$app/stores';
 	import {browser} from '$app/environment';
 	import Dialogs from '@feltcoop/felt/ui/dialog/Dialogs.svelte';
-	import {Logger} from '@feltcoop/felt/util/log.js';
+	import {configureLogLevel, Logger, LogLevel} from '@feltcoop/felt/util/log.js';
 	import {isEditable, swallow} from '@feltcoop/felt/util/dom.js';
 
 	import {toSocketStore} from '$lib/ui/socket';
@@ -32,6 +32,10 @@
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
 	import {deserialize, deserializers} from '$lib/util/deserialize';
 	import type {ClientSession} from '$lib/session/clientSession';
+
+	if (import.meta.env.PROD) {
+		configureLogLevel(LogLevel.Info);
+	}
 
 	export let data: ClientSession; // TODO should be `LayoutServerLoad`, right? but doesn't typecheck if so
 

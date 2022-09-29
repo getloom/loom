@@ -1,7 +1,7 @@
 import {NOT_OK, OK, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue, gray} from 'kleur/colors';
 
+import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Role} from '$lib/vocab/role/role';
 
@@ -37,7 +37,7 @@ export class RoleRepo extends PostgresRepo {
 		return {ok: true, value: result[0]};
 	}
 
-	async deleteByIds(roleIds: number[]): Promise<Result<object>> {
+	async deleteByIds(roleIds: number[]): Promise<Result> {
 		log.trace('[deleteByIds]', roleIds);
 		const result = await this.sql<any[]>`
 			DELETE FROM roles WHERE role_id IN ${this.sql(roleIds)}

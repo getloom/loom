@@ -1,6 +1,6 @@
-import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
+import {blue, gray} from '$lib/server/colors';
 import type {ServiceRequest} from '$lib/server/service';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {

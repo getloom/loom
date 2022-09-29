@@ -1,7 +1,7 @@
 import type {Task} from '@feltcoop/gro';
 import {spawn} from '@feltcoop/felt/util/process.js';
-import {green, red} from 'kleur/colors';
 
+import {green, red} from '$lib/server/colors';
 import {fromEnv} from '$lib/server/env';
 import {toNginxConfig} from './nginxConfig';
 import {toLogSequence} from './helpers';

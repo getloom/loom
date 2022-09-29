@@ -3,9 +3,9 @@ import type {Server as HttpsServer} from 'https';
 import type {Polka, Request as PolkaRequest, Middleware as PolkaMiddleware} from 'polka';
 import bodyParser from 'body-parser';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {blue} from 'kleur/colors';
 import {promisify} from 'util';
 
+import {blue} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';
 import type {WebsocketServer} from '$lib/server/WebsocketServer.js';
 import type {Service} from '$lib/server/service';

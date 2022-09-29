@@ -1,5 +1,6 @@
 import {toCounter} from '@feltcoop/felt/util/counter.js';
-import {cyan} from 'kleur/colors';
+
+import {cyan} from '$lib/server/colors';
 
 export interface LogSequence {
 	(text: string, color?: typeof cyan): string;

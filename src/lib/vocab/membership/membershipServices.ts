@@ -1,6 +1,6 @@
-import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
+import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateMembership, DeleteMembership} from '$lib/vocab/membership/membershipEvents';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
