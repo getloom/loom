@@ -58,7 +58,7 @@ export class EntityRepo extends PostgresRepo {
 			UPDATE entities SET ${
 				data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``
 			} updated=NOW()
-			WHERE entity_id= ${entity_id} AND data->>'type' != 'Tombstone'
+			WHERE entity_id=${entity_id} AND data->>'type' != 'Tombstone' AND data->>'space_id' IS NULL
 			RETURNING *
 		`;
 		if (!_data.count) return NOT_OK;
@@ -71,7 +71,9 @@ export class EntityRepo extends PostgresRepo {
 		const data = await this.sql<any[]>`
 			UPDATE entities
 			SET data = jsonb_build_object('type','Tombstone','formerType',data->>'type','deleted',NOW())
-			WHERE entity_id IN ${this.sql(entityIds)} AND data->>'type' != 'Tombstone'
+			WHERE entity_id IN ${this.sql(
+				entityIds,
+			)} AND data->>'type' != 'Tombstone' AND data->>'space_id' IS NULL
 			RETURNING *;
 		`;
 		if (!data.count) return NOT_OK;
