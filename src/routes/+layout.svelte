@@ -8,6 +8,7 @@
 	import Dialogs from '@feltcoop/felt/ui/dialog/Dialogs.svelte';
 	import {configureLogLevel, Logger, LogLevel} from '@feltcoop/felt/util/log.js';
 	import {isEditable, swallow} from '@feltcoop/felt/util/dom.js';
+	import {format} from 'date-fns';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Luggage from '$lib/ui/Luggage.svelte';
@@ -35,6 +36,9 @@
 
 	if (import.meta.env.PROD) {
 		configureLogLevel(LogLevel.Info);
+		if (!browser) {
+			Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
+		}
 	}
 
 	export let data: ClientSession; // TODO should be `LayoutServerLoad`, right? but doesn't typecheck if so
