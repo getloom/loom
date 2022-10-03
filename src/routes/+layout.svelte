@@ -1,3 +1,14 @@
+<script lang="ts" context="module">
+	import {configureLogLevel, LogLevel, Logger} from '@feltcoop/felt/util/log.js';
+
+	if (import.meta.env.PROD) {
+		configureLogLevel(LogLevel.Info);
+		if (!browser) {
+			Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
+		}
+	}
+</script>
+
 <script lang="ts">
 	import '@feltcoop/felt/ui/style.css';
 	import '$lib/ui/style.css';
@@ -6,7 +17,6 @@
 	import {page} from '$app/stores';
 	import {browser} from '$app/environment';
 	import Dialogs from '@feltcoop/felt/ui/dialog/Dialogs.svelte';
-	import {configureLogLevel, Logger, LogLevel} from '@feltcoop/felt/util/log.js';
 	import {isEditable, swallow} from '@feltcoop/felt/util/dom.js';
 	import {format} from 'date-fns';
 
@@ -33,13 +43,6 @@
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
 	import {deserialize, deserializers} from '$lib/util/deserialize';
 	import type {ClientSession} from '$lib/session/clientSession';
-
-	if (import.meta.env.PROD) {
-		configureLogLevel(LogLevel.Info);
-		if (!browser) {
-			Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
-		}
-	}
 
 	export let data: ClientSession; // TODO should be `LayoutServerLoad`, right? but doesn't typecheck if so
 
