@@ -69,11 +69,9 @@ export const DeleteTie: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			source_id: {type: 'number'},
-			dest_id: {type: 'number'},
-			type: {type: 'string'},
+			tie_id: {type: 'number'},
 		},
-		required: ['actor', 'source_id', 'dest_id', 'type'],
+		required: ['actor', 'tie_id'],
 		additionalProperties: false,
 	},
 	response: {

@@ -451,9 +451,7 @@ export type ReadTiesResponseResult = ApiResult<ReadTiesResponse>;
 
 export interface DeleteTieParams {
 	actor: number;
-	source_id: number;
-	dest_id: number;
-	type: string;
+	tie_id: number;
 }
 export type DeleteTieResponse = null;
 export type DeleteTieResponseResult = ApiResult<DeleteTieResponse>;

@@ -196,9 +196,7 @@ export const randomEventParams: RandomEventParams = {
 		);
 		return {
 			actor: persona.persona_id,
-			source_id: tie.source_id,
-			dest_id: tie.dest_id,
-			type: tie.type,
+			tie_id: tie.tie_id,
 		};
 	},
 	CreateRole: async (random, {account, persona, community} = {}) => {

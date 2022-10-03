@@ -18,6 +18,6 @@ export const ReadTies: Mutations['ReadTies'] = async ({invoke, ui}) => {
 export const DeleteTie: Mutations['DeleteTie'] = async ({invoke, params, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	evictTie(ui, params.source_id, params.dest_id, params.type);
+	evictTie(ui, params.tie_id);
 	return result;
 };

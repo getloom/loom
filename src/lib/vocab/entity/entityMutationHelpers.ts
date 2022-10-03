@@ -112,19 +112,17 @@ export const stashTies = (
 
 export const evictTie = (
 	{sourceTiesByDestEntityId, destTiesBySourceEntityId, tieById}: WritableUi,
-	source_id: number,
-	dest_id: number,
-	type: string,
+	tie_id: number,
 ): void => {
+	const $tie = tieById.get(tie_id);
+	if (!$tie) return;
+	const {dest_id, source_id} = $tie;
+	tieById.delete(tie_id);
+
 	const sourceTies = sourceTiesByDestEntityId.get().value.get(dest_id);
 	if (sourceTies) {
 		sourceTies.mutate(($sourceTies) => {
-			for (const $tie of $sourceTies) {
-				if ($tie.source_id === source_id && $tie.type === type) {
-					$sourceTies.delete($tie);
-					tieById.delete($tie.tie_id);
-				}
-			}
+			$sourceTies.delete($tie);
 		});
 		if (sourceTies.get().value.size === 0) {
 			sourceTiesByDestEntityId.mutate(($v) => {
@@ -136,12 +134,7 @@ export const evictTie = (
 	const destTies = destTiesBySourceEntityId.get().value.get(source_id);
 	if (destTies) {
 		destTies.mutate(($destTies) => {
-			for (const $tie of $destTies) {
-				if ($tie.dest_id === dest_id && $tie.type === type) {
-					$destTies.delete($tie);
-					tieById.delete($tie.tie_id);
-				}
-			}
+			$destTies.delete($tie);
 		});
 		if (destTies.get().value.size === 0) {
 			destTiesBySourceEntityId.mutate(($v) => {
