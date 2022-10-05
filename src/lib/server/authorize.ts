@@ -11,7 +11,7 @@ export const authorize = async (
 	service: Service,
 	repos: Repos,
 	account_id: number | undefined,
-	params: {actor?: number},
+	params: {actor?: number; [key: string]: unknown},
 ): Promise<Result<{value?: {actor?: Persona}}, ErrorResponse & {status: number}>> => {
 	// Authorize all services by default; each service can opt-out as needed.
 	const requiresAuthentication = service.event.authenticate ?? true;
