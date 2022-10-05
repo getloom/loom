@@ -1,5 +1,5 @@
 import type {Mutations} from '$lib/app/eventTypes';
-import {stashRole} from '$lib/vocab/role/roleMutationHelpers';
+import {evictRoles, stashRole} from '$lib/vocab/role/roleMutationHelpers';
 
 export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
@@ -10,18 +10,21 @@ export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {
 };
 
 //TODO should this be UpdateEntities & batch?
-export const UpdateRole: Mutations['UpdateRole'] = async ({invoke}) => {
+export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, params, ui: {roleById}}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	//TODO update stores here
+	const role = roleById.get(params.role_id)!;
+	role.update(($role) => ({
+		...$role,
+		name: params.name,
+	}));
 	return result;
 };
 
-export const DeleteRoles: Mutations['DeleteRoles'] = async ({invoke}) => {
+export const DeleteRoles: Mutations['DeleteRoles'] = async ({invoke, params, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	//TODO update stores here
-
+	evictRoles(ui, params.roleIds);
 	return result;
 };
 

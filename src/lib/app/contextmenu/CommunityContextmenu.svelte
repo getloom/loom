@@ -47,6 +47,7 @@
 			action={() =>
 				dispatch.OpenDialog({
 					Component: ManageRolesForm,
+					dialogProps: {layout: 'page'},
 					props: {persona, community},
 				})}
 		>

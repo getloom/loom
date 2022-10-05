@@ -5,8 +5,11 @@
 
 	import type {Community} from '$lib/vocab/community/community.js';
 	import type {Persona} from '$lib/vocab/persona/persona';
-	import CommunityAvatar from './CommunityAvatar.svelte';
+	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
+
+	import type {Role} from '$lib/vocab/role/role';
+	import RoleDetails from '$lib/ui/RoleDetails.svelte';
 
 	export let persona: Readable<Persona>;
 	export let community: Readable<Community>;
@@ -26,6 +29,15 @@
 			name: 'new role',
 		});
 	};
+
+	let selectedRole: Readable<Role> | null = null as any;
+	const selectRole = (role: Readable<Role>) => {
+		if (selectedRole === role) {
+			selectedRole = null;
+		} else {
+			selectedRole = role;
+		}
+	};
 </script>
 
 <div class="markup padded-xl">
@@ -38,19 +50,17 @@
 			{#if roles}
 				{#if roles.length === 0}no roles found....{/if}
 				{#each roles as role (role)}
-					<ManageRolesItem {role} />
+					<ManageRolesItem {role} {selectedRole} {selectRole} />
 				{/each}
 			{:else}
 				<PendingAnimation />
 			{/if}
 		</ul>
 	</div>
-	<div class="details">
-		<h2>Manage Members</h2>
-		[list of members with role goes here]
-		<h2>Permissions</h2>
-		[list of toggles goes here]
-	</div>
+	<!-- TODO this whole chunk should be it's own component-->
+	{#if selectedRole && $selectedRole}
+		<RoleDetails {persona} role={selectedRole} />
+	{/if}
 </div>
 
 <style>
@@ -63,10 +73,5 @@
 		padding: var(--spacing_md);
 		background-color: rgba(0, 0, 0, 0.1);
 		flex: 1;
-	}
-	.details {
-		padding: var(--spacing_md);
-		flex: 2;
-		background-color: rgba(0, 0, 0, 0.45);
 	}
 </style>

@@ -32,7 +32,6 @@
 
 	let text = '';
 
-	//TODO this should be readable
 	let selectedList: Readable<Entity> | null = null as any;
 	const selectList = (list: Readable<Entity>) => {
 		if (list.get().data.type !== 'Collection') return;
