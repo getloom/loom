@@ -58,7 +58,7 @@ export class EntityRepo extends PostgresRepo {
 			UPDATE entities SET ${
 				data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``
 			} updated=NOW()
-			WHERE entity_id=${entity_id} AND data->>'type' != 'Tombstone' AND data->>'space_id' IS NULL
+			WHERE entity_id=${entity_id} AND NOT (data @> '{"type":"Tombstone"}'::jsonb) AND NOT (data ? 'space_id')
 			RETURNING *
 		`;
 		if (!_data.count) return NOT_OK;
@@ -73,7 +73,7 @@ export class EntityRepo extends PostgresRepo {
 			SET data = jsonb_build_object('type','Tombstone','formerType',data->>'type','deleted',NOW())
 			WHERE entity_id IN ${this.sql(
 				entityIds,
-			)} AND data->>'type' != 'Tombstone' AND data->>'space_id' IS NULL
+			)} AND NOT (data @> '{"type":"Tombstone"}'::jsonb) AND NOT (data ? 'space_id')
 			RETURNING *;
 		`;
 		if (!data.count) return NOT_OK;
@@ -97,7 +97,7 @@ export class EntityRepo extends PostgresRepo {
 			SELECT entity_id FROM entities e
 			LEFT JOIN ties t
 			ON e.entity_id = t.dest_id
-			WHERE e.data->>'space_id' IS NULL AND t.dest_id IS NULL;
+			WHERE NOT (e.data ? 'space_id') AND t.dest_id IS NULL;
 		`;
 		return {ok: true, value: data.flatMap((e) => e.entity_id)};
 	}
