@@ -73,6 +73,10 @@
 	const dispatch = toDispatch(ui, mutations, (e) =>
 		websocketClient.find(e) ? websocketClient : httpClient.find(e) ? httpClient : null,
 	);
+
+	// The websocket client is the one we use as much as possible for efficiency.
+	// The downside is it doesn't scale as well because the server holds a connection per client.
+	// TODO make websockets optional to improve scalability
 	const websocketClient = toWebsocketApiClient(
 		findWebsocketService,
 		socket.send,
@@ -92,7 +96,9 @@
 		},
 		deserialize(deserializers),
 	);
+	// The http client is needed for cookie-related calls like `Login` and `Logout`.
 	const httpClient = toHttpApiClient(findHttpService, deserialize(deserializers));
+
 	const app = setApp({ui, dispatch, devmode, socket});
 	if (browser) {
 		(window as any).app = app;
@@ -100,10 +106,8 @@
 		log.trace('app', app);
 	}
 
-	// TODO might need to dispatch during initialization:
-	// https://github.com/feltcoop/felt-server/pull/397/files#r923790411
 	const {session} = ui;
-	$: dispatch.SetSession({session: $session});
+	dispatch.SetSession({session: $session});
 
 	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection} = ui;
 

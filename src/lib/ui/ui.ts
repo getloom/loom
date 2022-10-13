@@ -103,9 +103,9 @@ export const toUi = (
 	onError: (message: string | undefined) => void,
 ) => {
 	const account = writable<AccountModel | null>(null);
+	const session = writable<ClientSession>($session);
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
-	const session = writable<ClientSession>($session); // TODO default value? maybe nullable?
 	// TODO these `Persona`s need additional data compared to every other `Persona`
 	const sessionPersonas = writable<Array<Writable<Persona>>>([]);
 	const personas = mutable<Array<Writable<Persona>>>([]);
