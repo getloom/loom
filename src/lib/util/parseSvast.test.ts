@@ -86,6 +86,7 @@ test__parseSvast('parses http:// links', async () => {
 		],
 	});
 });
+
 test__parseSvast('parses absolute links', async () => {
 	const parsed = parseSvast({
 		value: '/felt.dev/some-link',
@@ -217,6 +218,45 @@ test__parseSvast('does not parse https:// links in properties', async () => {
 		],
 	});
 });
+
+test__parseSvast('parses a word in backticks', async () => {
+	const parsed = parseSvast({
+		value: '`some-code`',
+		generatePositions: false,
+	});
+	assert.equal(parsed, {
+		type: 'root',
+		children: [
+			{
+				type: 'svelteElement',
+				tagName: 'code',
+				properties: [],
+				selfClosing: false,
+				children: [{type: 'text', value: 'some-code'}],
+			},
+		],
+	});
+});
+
+// TODO rewrite `parseSvelteText` to handle this test
+// test__parseSvast('parses a phrase in backticks', async () => {
+// 	const parsed = parseSvast({
+// 		value: '`some phrase with many words`',
+// 		generatePositions: false,
+// 	});
+// 	assert.equal(parsed, {
+// 		type: 'root',
+// 		children: [
+// 			{
+// 				type: 'svelteElement',
+// 				tagName: 'code',
+// 				properties: [],
+// 				selfClosing: false,
+// 				children: [{type: 'text', value: 'some phrase with many words'}],
+// 			},
+// 		],
+// 	});
+// });
 
 test__parseSvast.run();
 /* test__parseSvast */
