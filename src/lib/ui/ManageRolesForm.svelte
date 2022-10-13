@@ -5,7 +5,7 @@
 
 	import type {Community} from '$lib/vocab/community/community.js';
 	import type {Persona} from '$lib/vocab/persona/persona';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
 
 	import type {Role} from '$lib/vocab/role/role';
@@ -41,7 +41,8 @@
 </script>
 
 <div class="markup padded-xl">
-	<h1>Manage Community Roles for <CommunityAvatar {community} /></h1>
+	<h1>Manage Roles</h1>
+	<ContextInfo {persona} {community} />
 </div>
 <div class="panel">
 	<div class="roles">
