@@ -63,6 +63,7 @@ export const ReadRoles: ServiceEventInfo = {
 export const UpdateRole: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'UpdateRole',
+	broadcast: true,
 	params: {
 		$id: '/schemas/UpdateRoleParams.json',
 		type: 'object',

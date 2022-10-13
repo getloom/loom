@@ -9,15 +9,11 @@ export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {
 	return result;
 };
 
-//TODO should this be UpdateEntities & batch?
-export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, params, ui: {roleById}}) => {
+export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const role = roleById.get(params.role_id)!;
-	role.update(($role) => ({
-		...$role,
-		name: params.name,
-	}));
+	const {role: $role} = result.value;
+	stashRole(ui, $role);
 	return result;
 };
 
@@ -31,7 +27,8 @@ export const DeleteRoles: Mutations['DeleteRoles'] = async ({invoke, params, ui}
 export const ReadRoles: Mutations['ReadRoles'] = async ({invoke}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	//const {roles} = result.value;
-	//TODO update stores here
+	//TODO update stores here and batch
+	// const {roles: $roles} = result.value;
+	// stashRoles(ui, $roles);
 	return result;
 };
