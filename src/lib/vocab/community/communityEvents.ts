@@ -9,7 +9,7 @@ export const CreateCommunity: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			name: {type: 'string'},
-			settings: {$ref: '/schemas/CommunitySettings.json'},
+			settings: {$ref: '/schemas/InitialCommunitySettingsSchema.json'},
 		},
 		required: ['actor', 'name'],
 		additionalProperties: false,
@@ -19,6 +19,7 @@ export const CreateCommunity: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			community: {$ref: '/schemas/Community.json', tsType: 'Community'},
+			role: {$ref: '/schemas/Role.json', tsType: 'Role'},
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
 			directories: {
 				type: 'array',
@@ -27,7 +28,7 @@ export const CreateCommunity: ServiceEventInfo = {
 			memberships: {type: 'array', items: {$ref: '/schemas/Membership.json', tsType: 'Membership'}},
 			personas: {type: 'array', items: {$ref: '/schemas/Persona.json', tsType: 'Persona'}},
 		},
-		required: ['community', 'spaces', 'directories', 'memberships', 'personas'],
+		required: ['community', 'role', 'spaces', 'directories', 'memberships', 'personas'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<CreateCommunityResponseResult>',

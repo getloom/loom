@@ -42,9 +42,9 @@
 					props: {
 						done: () => dispatch.CloseDialog(),
 						action: () =>
-							dispatch.DeleteRoles({
+							dispatch.DeleteRole({
 								actor: $persona.persona_id,
-								roleIds: [$role.role_id],
+								role_id: $role.role_id,
 							}),
 						description: 'delete this role',
 					},

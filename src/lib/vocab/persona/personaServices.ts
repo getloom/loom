@@ -5,7 +5,10 @@ import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAccountPersona, ReadPersona} from '$lib/vocab/persona/personaEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {createDefaultAdminSpaces, createDefaultSpaces} from '$lib/vocab/space/spaceServices';
-import {initAdminCommunity} from '$lib/vocab/community/communityServices';
+import {
+	initAdminCommunity,
+	initDefaultRoleForCommunity,
+} from '$lib/vocab/community/communityServices';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
 
@@ -50,7 +53,20 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			if (!createCommunityResult.ok) {
 				return {ok: false, status: 500, message: 'failed to create initial persona community'};
 			}
-			const community = createCommunityResult.value;
+			let community = createCommunityResult.value;
+
+			// Create the default role and assign it
+			const initDefaultRoleResult = await initDefaultRoleForCommunity(repos, community);
+			if (!initDefaultRoleResult.ok) {
+				return {
+					ok: false,
+					status: 500,
+					message: 'error initializing default role',
+				};
+			}
+
+			community = initDefaultRoleResult.value!.community;
+			const role = initDefaultRoleResult.value!.defaultRole;
 
 			// Create the persona.
 			log.trace('[CreateAccountPersona] creating persona', name);
@@ -111,7 +127,11 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			}
 			const {spaces, directories} = createDefaultSpacesResult.value;
 
-			return {ok: true, status: 200, value: {persona, community, spaces, directories, membership}};
+			return {
+				ok: true,
+				status: 200,
+				value: {persona, community, role, spaces, directories, membership},
+			};
 		}),
 };
 

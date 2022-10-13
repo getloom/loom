@@ -21,7 +21,7 @@ import {
 	QueryEntities,
 } from '$lib/vocab/entity/entityMutations';
 import {CreateTie, ReadTies, DeleteTie} from '$lib/vocab/tie/tieMutations';
-import {CreateRole, UpdateRole, ReadRoles, DeleteRoles} from '$lib/vocab/role/roleMutations';
+import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/roleMutations';
 import {
 	Ping,
 	Ephemera,
@@ -72,7 +72,7 @@ export const mutations: Record<string, Mutation> = {
 	CreateRole,
 	UpdateRole,
 	ReadRoles,
-	DeleteRoles,
+	DeleteRole,
 	// uiMutations
 	Ping,
 	Ephemera,

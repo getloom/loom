@@ -2,7 +2,6 @@ import {unwrap} from '@feltcoop/felt';
 
 import type {Space} from '$lib/vocab/space/space';
 import type {Community} from '$lib/vocab/community/community';
-import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import type {Account} from '$lib/vocab/account/account';
 import type {Persona} from '$lib/vocab/persona/persona';
 import type {
@@ -29,6 +28,7 @@ import {toServiceRequestMock} from './testHelpers';
 import type {Role} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
+import {randomHue} from '$lib/ui/color';
 
 // TODO automate these from schemas, also use seeded rng
 export const randomString = (): string => Math.random().toString().slice(2);
@@ -64,7 +64,7 @@ export const randomCommunityParams = (actor: number): CreateCommunityParams => {
 	return {
 		name,
 		actor,
-		settings: toDefaultCommunitySettings(name),
+		settings: {hue: randomHue(name)},
 	};
 };
 export const randomSpaceParams = (actor: number, community_id: number): CreateSpaceParams => ({
@@ -152,6 +152,7 @@ export class RandomVocabContext {
 		account?: Account,
 	): Promise<{
 		community: Community;
+		role: Role;
 		memberships: Membership[];
 		spaces: Space[];
 		personas: Persona[];
@@ -160,13 +161,13 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona, account} = await this.persona(account));
 		const params = randomCommunityParams(persona.persona_id);
-		const {community, personas, memberships, spaces} = unwrap(
+		const {community, role, personas, memberships, spaces} = unwrap(
 			await CreateCommunityService.perform({
 				...toServiceRequestMock(this.db, persona),
 				params,
 			}),
 		);
-		return {community, memberships, spaces, personas: personas.concat(persona), account};
+		return {community, role, memberships, spaces, personas: personas.concat(persona), account};
 	}
 
 	async space(
@@ -272,9 +273,9 @@ export class RandomVocabContext {
 	}
 
 	async role(
+		community?: Community,
 		persona?: Persona,
 		account?: Account,
-		community?: Community,
 	): Promise<{
 		role: Role;
 		persona: Persona;

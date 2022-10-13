@@ -31,7 +31,7 @@ import {
 import {CreateTieService, ReadTiesService, DeleteTieService} from '$lib/vocab/tie/tieServices';
 import {
 	CreateRoleService,
-	DeleteRolesService,
+	DeleteRoleService,
 	ReadRolesService,
 	UpdateRoleService,
 } from '$lib/vocab/role/roleServices';
@@ -80,6 +80,6 @@ export const services: Map<string, Service> = new Map(
 		CreateRoleService,
 		ReadRolesService,
 		UpdateRoleService,
-		DeleteRolesService,
+		DeleteRoleService,
 	].map((s) => [s.event.name, s]),
 );

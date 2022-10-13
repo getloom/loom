@@ -18,10 +18,15 @@ import type {Community} from '$lib/vocab/community/community';
 import type {CommunityPersona} from '$lib/vocab/persona/persona';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {Repos} from '$lib/db/Repos';
+import type {Role} from '../role/role';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
 const BLOCKLIST = new Set(['docs', 'schemas', 'about']);
+
+//TODO allow for more robust defaults at Community init
+const DEFAULT_ROLE = 'member';
 
 // Returns a list of community objects
 export const ReadCommunitiesService: ServiceByName['ReadCommunities'] = {
@@ -122,12 +127,13 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				return {ok: false, status: 409, message: 'a community with that name already exists'};
 			}
 
+			let settings = toDefaultCommunitySettings(name);
+			if (params.settings) {
+				settings = {...settings, ...params.settings};
+			}
+
 			// Create the community
-			const createCommunityResult = await repos.community.create(
-				'standard',
-				name,
-				params.settings || toDefaultCommunitySettings(name),
-			);
+			const createCommunityResult = await repos.community.create('standard', name, settings);
 			log.trace('createCommunityResult', createCommunityResult);
 
 			if (!createCommunityResult.ok) {
@@ -138,7 +144,20 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 					message: 'error creating community',
 				};
 			}
-			const community = createCommunityResult.value;
+			let community = createCommunityResult.value;
+
+			// Create the default role and assign it
+			const initDefaultRoleResult = await initDefaultRoleForCommunity(repos, community);
+			if (!initDefaultRoleResult.ok) {
+				return {
+					ok: false,
+					status: 500,
+					message: 'error initializing default role',
+				};
+			}
+
+			community = initDefaultRoleResult.value.community;
+			const role = initDefaultRoleResult.value.defaultRole;
 
 			// Create the community persona and its membership
 			const communityPersonaResult = await repos.persona.createCommunityPersona(
@@ -202,6 +221,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				status: 200,
 				value: {
 					community,
+					role,
 					spaces,
 					directories,
 					personas: [communityPersona], // TODO add the requesting persona just for completion, after we add `actor` to all events
@@ -223,7 +243,6 @@ export const UpdateCommunitySettingsService: ServiceByName['UpdateCommunitySetti
 		}),
 };
 
-//TODO don't let users delete their home community
 export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 	event: DeleteCommunity,
 	perform: ({transact, params}) =>
@@ -253,7 +272,7 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 
 export const initAdminCommunity = async (
 	serviceRequest: NonAuthorizedServiceRequest,
-): Promise<Result<{value?: {community: Community; persona: CommunityPersona}}>> => {
+): Promise<Result<{value?: {community: Community; persona: CommunityPersona; role: Role}}>> => {
 	const {repos} = serviceRequest;
 
 	if (await repos.community.hasAdminCommunity()) return OK;
@@ -269,7 +288,16 @@ export const initAdminCommunity = async (
 		toDefaultCommunitySettings(ADMIN_COMMUNITY_NAME),
 	);
 	if (!createCommunityResult.ok) return createCommunityResult;
-	const community = createCommunityResult.value;
+	let community = createCommunityResult.value;
+
+	// Create the default role and assign it
+	const initDefaultRoleResult = await initDefaultRoleForCommunity(repos, community);
+	if (!initDefaultRoleResult.ok) {
+		return initDefaultRoleResult;
+	}
+
+	const role = initDefaultRoleResult.value.defaultRole;
+	community = initDefaultRoleResult.value.community;
 
 	// Create the community persona.
 	const createCommunityPersonaResult = await repos.persona.createCommunityPersona(
@@ -286,5 +314,39 @@ export const initAdminCommunity = async (
 	);
 	if (!createMembershipResult.ok) return createMembershipResult;
 
-	return {ok: true, value: {community, persona}};
+	return {ok: true, value: {community, persona, role}};
+};
+
+export const initDefaultRoleForCommunity = async (
+	repos: Repos,
+	community: Community,
+): Promise<Result<{value: {community: Community; defaultRole: Role}}>> => {
+	const createDefaultRoleResult = await repos.role.createRole(community.community_id, DEFAULT_ROLE);
+	log.trace('createDefaultRoleResult', createDefaultRoleResult);
+
+	if (!createDefaultRoleResult.ok) {
+		log.trace('[CreateCommunity] error creating default role for community');
+		return createDefaultRoleResult;
+	}
+	const defaultRole = createDefaultRoleResult.value;
+
+	const settings = {
+		...community.settings,
+		defaultRoleId: defaultRole.role_id,
+	};
+
+	const updateSettingsResult = await repos.community.updateSettings(
+		community.community_id,
+		settings,
+	);
+	log.trace('updateSettingsResult', updateSettingsResult);
+
+	if (!updateSettingsResult.ok) {
+		log.trace('[CreateCommunity] error setting default role_id');
+		return updateSettingsResult;
+	}
+
+	community.settings = settings;
+
+	return {ok: true, value: {community, defaultRole}};
 };

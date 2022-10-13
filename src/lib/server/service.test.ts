@@ -5,6 +5,7 @@ import {unwrap, type Result} from '@feltcoop/felt';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Community} from '$lib/vocab/community/community';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 
 /* test__service */
 const test__service = suite<TestDbContext>('services');
@@ -19,7 +20,13 @@ test__service(`roll back the database after a failed transaction`, async ({db, r
 	let community: Community | undefined;
 	let failedResult: Result | undefined;
 	const returnedResult = await serviceRequest.transact(async (repos) => {
-		community = unwrap(await repos.community.create('standard', communityName, {hue: 100}));
+		community = unwrap(
+			await repos.community.create(
+				'standard',
+				communityName,
+				toDefaultCommunitySettings(communityName),
+			),
+		);
 		const found = unwrap(await repos.community.findByName(communityName));
 		assert.is(found?.name, communityName);
 		return (failedResult = {ok: false});
@@ -44,7 +51,13 @@ test__service(`compose multiple calls into one transaction`, async ({db, random}
 			serviceRequest.transact(async (repos) => {
 				assert.is(reposA, repos);
 				assert.is(reposB, repos);
-				community = unwrap(await repos.community.create('standard', communityName, {hue: 100}));
+				community = unwrap(
+					await repos.community.create(
+						'standard',
+						communityName,
+						toDefaultCommunitySettings(communityName),
+					),
+				);
 				const found = unwrap(await repos.community.findByName(communityName));
 				assert.is(found?.name, communityName);
 				return (failedResult = {ok: false});
@@ -66,7 +79,13 @@ test__service(`when a transact cb throws, fail and rethrow`, async ({db, random}
 	let errorMessage: string | undefined;
 	try {
 		result = await serviceRequest.transact(async (repos) => {
-			community = unwrap(await repos.community.create('standard', communityName, {hue: 100}));
+			community = unwrap(
+				await repos.community.create(
+					'standard',
+					communityName,
+					toDefaultCommunitySettings(communityName),
+				),
+			);
 			throw Error('test failure');
 		});
 	} catch (err) {

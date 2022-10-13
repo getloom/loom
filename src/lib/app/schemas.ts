@@ -9,7 +9,11 @@ import {
 	CommunityPersonaSchema,
 	PersonaSchema,
 } from '$lib/vocab/persona/persona.schema';
-import {CommunitySchema, CommunitySettingsSchema} from '$lib/vocab/community/community.schema';
+import {
+	CommunitySchema,
+	CommunitySettingsSchema,
+	InitialCommunitySettingsSchema,
+} from '$lib/vocab/community/community.schema';
 import {MembershipSchema} from '$lib/vocab/membership/membership.schema';
 import {SpaceSchema} from '$lib/vocab/space/space.schema';
 import {EntitySchema} from '$lib/vocab/entity/entity.schema';
@@ -32,6 +36,7 @@ export const vocabSchemas = [
 	PersonaSchema,
 	CommunitySchema,
 	CommunitySettingsSchema,
+	InitialCommunitySettingsSchema,
 	MembershipSchema,
 	SpaceSchema,
 	EntitySchema,

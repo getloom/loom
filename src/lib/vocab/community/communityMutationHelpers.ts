@@ -12,6 +12,7 @@ import type {Membership} from '$lib/vocab//membership/membership';
 import {stashSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {deleteMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
+import {evictRoles} from '../role/roleMutationHelpers';
 
 export const upsertCommunity = (
 	ui: WritableUi,
@@ -61,9 +62,18 @@ export const deleteCommunity = async (ui: WritableUi, community_id: number): Pro
 		personaById,
 		memberships,
 		spacesByCommunityId,
+		rolesByCommunityId,
 	} = ui;
 
 	const community = communityById.get(community_id)!;
+	const communityRoleIds = rolesByCommunityId.get().get(community_id);
+
+	if (communityRoleIds) {
+		evictRoles(
+			ui,
+			communityRoleIds.map((r) => r.get().role_id),
+		);
+	}
 
 	if (communitySelection.get() === community) {
 		const persona = personaSelection.get()!;

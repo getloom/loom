@@ -27,7 +27,7 @@ import {
 	ReadEntitiesPaginated,
 } from '$lib/vocab/entity/entityEvents';
 import {CreateTie, ReadTies, DeleteTie} from '$lib/vocab/tie/tieEvents';
-import {CreateRole, ReadRoles, UpdateRole, DeleteRoles} from '$lib/vocab/role/roleEvents';
+import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleEvents';
 import {
 	Ping,
 	Ephemera,
@@ -81,7 +81,7 @@ export const eventInfos: EventInfo[] = [
 	CreateRole,
 	ReadRoles,
 	UpdateRole,
-	DeleteRoles,
+	DeleteRole,
 	// uiEvents
 	Ping,
 	Ephemera,

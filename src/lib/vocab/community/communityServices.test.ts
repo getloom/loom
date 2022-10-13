@@ -11,6 +11,7 @@ import {
 } from '$lib/vocab/community/communityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+import {ReadRolesService} from '../role/roleServices';
 
 /* test_communityServices */
 const test_communityServices = suite<TestDbContext & TestAppContext>('communityRepo');
@@ -75,6 +76,58 @@ test_communityServices('disallow reserved community names', async ({db, random})
 		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
 		409,
 	);
+});
+
+test_communityServices('new communities have a default role', async ({db, random}) => {
+	const {persona} = await random.persona();
+	const serviceRequest = toServiceRequestMock(db, persona);
+
+	const params = randomCommunityParams(persona.persona_id);
+	const communityResult = unwrap(await CreateCommunityService.perform({...serviceRequest, params}));
+
+	const roleResult = unwrap(
+		await ReadRolesService.perform({
+			...serviceRequest,
+			params: {actor: persona.persona_id, community_id: communityResult.community.community_id},
+		}),
+	);
+
+	assert.equal(roleResult.roles.length, 1);
+	assert.equal(roleResult.roles[0].role_id, communityResult.role.role_id);
+	assert.equal(roleResult.roles[0].role_id, communityResult.community.settings.defaultRoleId);
+});
+
+test_communityServices('deleted communities cleanup after themselves', async ({db, random}) => {
+	const {persona} = await random.persona();
+	const {community} = await random.community(persona);
+	const serviceRequest = toServiceRequestMock(db, persona);
+
+	unwrap(
+		await DeleteCommunityService.perform({
+			...serviceRequest,
+			params: {actor: persona.persona_id, community_id: community.community_id},
+		}),
+	);
+
+	//check community personas are gone
+	unwrapError(await db.repos.persona.findByCommunityId(community.community_id));
+
+	//check community spaces are gone
+	const spaceResult = unwrap(await db.repos.space.filterByCommunity(community.community_id));
+	assert.equal(spaceResult.length, 0);
+
+	//check community memberships are gone
+	const membershipResult = unwrap(
+		await db.repos.membership.filterByCommunityId(community.community_id),
+	);
+	assert.equal(membershipResult.length, 0);
+
+	//check roles are gone
+	const roleResult = unwrap(await db.repos.role.filterByCommunityId(community.community_id));
+	assert.equal(roleResult.length, 0);
+
+	//check community is gone
+	unwrapError(await db.repos.community.findById(community.community_id));
 });
 
 test_communityServices.run();

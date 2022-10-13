@@ -17,7 +17,7 @@
 		await dispatch.UpdateCommunitySettings({
 			actor: $persona.persona_id,
 			community_id: $community.community_id,
-			settings: {hue},
+			settings: {...$community.settings, hue},
 		});
 	});
 </script>

@@ -52,7 +52,7 @@ export type ServiceEventName =
 	| 'CreateRole'
 	| 'ReadRoles'
 	| 'UpdateRole'
-	| 'DeleteRoles'
+	| 'DeleteRole'
 	| 'Ping'
 	| 'Ephemera';
 
@@ -99,7 +99,7 @@ export interface EventParamsByName {
 	CreateRole: CreateRoleParams;
 	ReadRoles: ReadRolesParams;
 	UpdateRole: UpdateRoleParams;
-	DeleteRoles: DeleteRolesParams;
+	DeleteRole: DeleteRoleParams;
 	Ping: PingParams;
 	Ephemera: EphemeraParams;
 	ToggleMainNav: ToggleMainNavParams;
@@ -140,7 +140,7 @@ export interface EventResponseByName {
 	CreateRole: CreateRoleResponse;
 	ReadRoles: ReadRolesResponse;
 	UpdateRole: UpdateRoleResponse;
-	DeleteRoles: DeleteRolesResponse;
+	DeleteRole: DeleteRoleResponse;
 	Ping: PingResponse;
 	Ephemera: EphemeraResponse;
 }
@@ -189,7 +189,7 @@ export interface ServiceByName {
 	CreateRole: AuthorizedService<CreateRoleParams, CreateRoleResponseResult>;
 	ReadRoles: AuthorizedService<ReadRolesParams, ReadRolesResponseResult>;
 	UpdateRole: AuthorizedService<UpdateRoleParams, UpdateRoleResponseResult>;
-	DeleteRoles: AuthorizedService<DeleteRolesParams, DeleteRolesResponseResult>;
+	DeleteRole: AuthorizedService<DeleteRoleParams, DeleteRoleResponseResult>;
 }
 
 export interface SetSessionParams {
@@ -226,6 +226,7 @@ export interface CreateCommunityParams {
 }
 export interface CreateCommunityResponse {
 	community: Community;
+	role: Role;
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
 	memberships: Membership[];
@@ -259,6 +260,7 @@ export interface UpdateCommunitySettingsParams {
 	community_id: number;
 	settings: {
 		hue: number;
+		defaultRoleId: number;
 	};
 }
 export type UpdateCommunitySettingsResponse = null;
@@ -277,6 +279,7 @@ export interface CreateAccountPersonaParams {
 export interface CreateAccountPersonaResponse {
 	persona: AccountPersona;
 	community: Community;
+	role: Role;
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
 	membership: Membership;
@@ -485,12 +488,12 @@ export interface UpdateRoleResponse {
 }
 export type UpdateRoleResponseResult = ApiResult<UpdateRoleResponse>;
 
-export interface DeleteRolesParams {
+export interface DeleteRoleParams {
 	actor: number;
-	roleIds: number[];
+	role_id: number;
 }
-export type DeleteRolesResponse = null;
-export type DeleteRolesResponseResult = ApiResult<DeleteRolesResponse>;
+export type DeleteRoleResponse = null;
+export type DeleteRoleResponseResult = ApiResult<DeleteRoleResponse>;
 
 export type PingParams = null;
 export type PingResponse = null;
@@ -581,7 +584,7 @@ export interface Dispatch {
 	CreateRole: (params: CreateRoleParams) => Promise<CreateRoleResponseResult>;
 	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
 	UpdateRole: (params: UpdateRoleParams) => Promise<UpdateRoleResponseResult>;
-	DeleteRoles: (params: DeleteRolesParams) => Promise<DeleteRolesResponseResult>;
+	DeleteRole: (params: DeleteRoleParams) => Promise<DeleteRoleResponseResult>;
 	Ping: () => Promise<ApiResult<null>>;
 	Ephemera: (params: EphemeraParams) => Promise<EphemeraResponseResult>;
 	ToggleMainNav: (params: ToggleMainNavParams) => void;
@@ -683,9 +686,9 @@ export interface Mutations {
 	UpdateRole: (
 		ctx: DispatchContext<UpdateRoleParams, UpdateRoleResponseResult>,
 	) => Promise<UpdateRoleResponseResult>;
-	DeleteRoles: (
-		ctx: DispatchContext<DeleteRolesParams, DeleteRolesResponseResult>,
-	) => Promise<DeleteRolesResponseResult>;
+	DeleteRole: (
+		ctx: DispatchContext<DeleteRoleParams, DeleteRoleResponseResult>,
+	) => Promise<DeleteRoleResponseResult>;
 	Ping: (ctx: DispatchContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
 	Ephemera: (
 		ctx: DispatchContext<EphemeraParams, EphemeraResponseResult>,

@@ -14,6 +14,8 @@
 	export let persona: Readable<Persona>;
 	export let community: Readable<Community>;
 
+	$: defaultRoleId = $community.settings.defaultRoleId;
+
 	const {
 		dispatch,
 		ui: {rolesByCommunityId},
@@ -51,7 +53,7 @@
 			{#if roles}
 				{#if roles.length === 0}no roles found....{/if}
 				{#each roles as role (role)}
-					<ManageRolesItem {role} {selectedRole} {selectRole} />
+					<ManageRolesItem {role} {defaultRoleId} {selectedRole} {selectRole} />
 				{/each}
 			{:else}
 				<PendingAnimation />

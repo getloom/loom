@@ -33,7 +33,7 @@ import type {
 	CreateRoleParams,
 	ReadRolesParams,
 	UpdateRoleParams,
-	DeleteRolesParams,
+	DeleteRoleParams,
 	PingParams,
 	EphemeraParams,
 	ToggleMainNavParams,
@@ -137,10 +137,7 @@ export interface RandomEventParams {
 	CreateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateRoleParams>;
 	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
 	UpdateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateRoleParams>;
-	DeleteRoles: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<DeleteRolesParams>;
+	DeleteRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteRoleParams>;
 	Ping: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<PingParams>;
 	Ephemera: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<EphemeraParams>;
 	ToggleMainNav: (

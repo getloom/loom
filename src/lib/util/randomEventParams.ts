@@ -56,7 +56,7 @@ export const randomEventParams: RandomEventParams = {
 		return {
 			actor: persona.persona_id,
 			community_id: community.community_id,
-			settings: {hue: randomHue()},
+			settings: {...community.settings, hue: randomHue()},
 		};
 	},
 	ReadCommunity: async (random, {account, persona, community} = {}) => {
@@ -215,13 +215,13 @@ export const randomEventParams: RandomEventParams = {
 	},
 	UpdateRole: async (random, {account, persona, community, role} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!role) ({role} = await random.role(persona, account, community));
+		if (!role) ({role} = await random.role(community, persona, account));
 		return {actor: persona.persona_id, role_id: role.role_id, name: randomRoleName()};
 	},
-	DeleteRoles: async (random, {account, persona, community, role} = {}) => {
+	DeleteRole: async (random, {account, persona, community, role} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!role) ({role} = await random.role(persona, account, community));
-		return {actor: persona.persona_id, roleIds: [role.role_id]};
+		if (!role) ({role} = await random.role(community, persona, account));
+		return {actor: persona.persona_id, role_id: role.role_id};
 	},
 
 	ToggleMainNav: async () => {

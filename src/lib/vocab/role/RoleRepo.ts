@@ -37,12 +37,12 @@ export class RoleRepo extends PostgresRepo {
 		return {ok: true, value: result[0]};
 	}
 
-	async deleteByIds(roleIds: number[]): Promise<Result> {
-		log.trace('[deleteByIds]', roleIds);
+	async deleteById(role_id: number): Promise<Result> {
+		log.trace('[deleteById]', role_id);
 		const result = await this.sql<any[]>`
-			DELETE FROM roles WHERE role_id IN ${this.sql(roleIds)}
+			DELETE FROM roles WHERE role_id=${role_id}
 		`;
-		if (result.count !== roleIds.length) return NOT_OK;
+		if (!result.count) return NOT_OK;
 		return OK;
 	}
 

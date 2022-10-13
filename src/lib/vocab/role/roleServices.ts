@@ -1,6 +1,6 @@
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
-import {CreateRole, ReadRoles, UpdateRole, DeleteRoles} from '$lib/vocab/role/roleEvents';
+import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleEvents';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 const log = new Logger(gray('[') + blue('roleServices') + gray(']'));
@@ -50,13 +50,22 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 		}),
 };
 
-export const DeleteRolesService: ServiceByName['DeleteRoles'] = {
-	event: DeleteRoles,
+export const DeleteRoleService: ServiceByName['DeleteRole'] = {
+	event: DeleteRole,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {roleIds} = params;
-			log.trace('deleting roles', roleIds);
-			const deleteRolesResult = await repos.role.deleteByIds(roleIds);
+			const {role_id} = params;
+			log.trace('deleting role', role_id);
+			const roleCommunityResult = await repos.community.findByRoleId(role_id);
+			if (!roleCommunityResult.ok) {
+				return {ok: false, status: 500, message: 'failed to find community for role'};
+			}
+
+			if (roleCommunityResult.value.settings.defaultRoleId === role_id) {
+				return {ok: false, status: 405, message: 'deleting default role has been disallowed'};
+			}
+
+			const deleteRolesResult = await repos.role.deleteById(role_id);
 			if (!deleteRolesResult.ok) {
 				return {ok: false, status: 500, message: 'failed to delete roles'};
 			}

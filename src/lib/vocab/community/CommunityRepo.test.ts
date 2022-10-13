@@ -16,7 +16,7 @@ test__CommunityRepo('updateSettings', async ({db, random}) => {
 	assert.type(community.settings, 'object');
 	assert.type(community.settings.hue, 'number');
 	const newHue = community.settings.hue === 1 ? 2 : 1;
-	const newSettings = {hue: newHue};
+	const newSettings = {...community.settings, hue: newHue};
 	assert.is.not(community.settings.hue, newHue); // just in case we mess the logic up
 	unwrap(await db.repos.community.updateSettings(community.community_id, newSettings));
 	assert.equal(

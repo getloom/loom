@@ -21,6 +21,17 @@ export const CommunitySettingsSchema = {
 	type: 'object',
 	properties: {
 		hue: {type: 'number'},
+		defaultRoleId: {type: 'number'},
+	},
+	required: ['hue', 'defaultRoleId'],
+	additionalProperties: false,
+};
+
+export const InitialCommunitySettingsSchema = {
+	$id: '/schemas/InitialCommunitySettingsSchema.json',
+	type: 'object',
+	properties: {
+		hue: {type: 'number'},
 	},
 	required: ['hue'],
 	additionalProperties: false,
@@ -28,4 +39,6 @@ export const CommunitySettingsSchema = {
 
 export const toDefaultCommunitySettings = (name: string): CommunitySettings => ({
 	hue: randomHue(name),
+	//this is a hack to allow for creation of the community before it's default role is created
+	defaultRoleId: -1,
 });

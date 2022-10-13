@@ -90,4 +90,17 @@ export class CommunityRepo extends PostgresRepo {
 		}
 		return exists;
 	}
+
+	async findByRoleId(role_id: number): Promise<Result<{value: Community}>> {
+		log.trace(`[findByRoleId] ${role_id}`);
+		const data = await this.sql<Community[]>`
+			SELECT c.community_id, c.type, c.name, c.settings, c.created, c.updated
+			FROM communities c 
+			JOIN roles r
+			ON r.community_id = c.community_id
+			WHERE r.role_id=${role_id}
+		`;
+		if (!data.length) return NOT_OK;
+		return {ok: true, value: data[0]};
+	}
 }

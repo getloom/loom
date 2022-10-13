@@ -17,10 +17,10 @@ export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, ui}) => {
 	return result;
 };
 
-export const DeleteRoles: Mutations['DeleteRoles'] = async ({invoke, params, ui}) => {
+export const DeleteRole: Mutations['DeleteRole'] = async ({invoke, params, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	evictRoles(ui, params.roleIds);
+	evictRoles(ui, [params.role_id]);
 	return result;
 };
 

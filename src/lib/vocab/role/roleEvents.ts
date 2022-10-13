@@ -91,25 +91,25 @@ export const UpdateRole: ServiceEventInfo = {
 	},
 };
 
-export const DeleteRoles: ServiceEventInfo = {
+export const DeleteRole: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'DeleteRoles',
+	name: 'DeleteRole',
 	broadcast: true,
 	params: {
-		$id: '/schemas/DeleteRolesParams.json',
+		$id: '/schemas/DeleteRoleParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			roleIds: {type: 'array', items: {type: 'number'}},
+			role_id: {type: 'number'},
 		},
-		required: ['actor', 'roleIds'],
+		required: ['actor', 'role_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/DeleteRolesResponse.json',
+		$id: '/schemas/DeleteRoleResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<DeleteRolesResponseResult>',
+	returns: 'Promise<DeleteRoleResponseResult>',
 	route: {
 		path: '/api/v1/community/roles',
 		method: 'DELETE',

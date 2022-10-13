@@ -19,6 +19,7 @@ export const CreateAccountPersona: ServiceEventInfo = {
 		properties: {
 			persona: {$ref: '/schemas/AccountPersona.json', tsType: 'AccountPersona'},
 			community: {$ref: '/schemas/Community.json', tsType: 'Community'},
+			role: {$ref: '/schemas/Role.json', tsType: 'Role'},
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
 			directories: {
 				type: 'array',
@@ -26,7 +27,7 @@ export const CreateAccountPersona: ServiceEventInfo = {
 			},
 			membership: {$ref: '/schemas/Membership.json', tsType: 'Membership'},
 		},
-		required: ['persona', 'community', 'spaces', 'directories', 'membership'],
+		required: ['persona', 'community', 'role', 'spaces', 'directories', 'membership'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<CreateAccountPersonaResponseResult>',

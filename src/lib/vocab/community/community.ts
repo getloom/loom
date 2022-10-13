@@ -6,11 +6,16 @@ export interface Community {
 	name: string;
 	settings: {
 		hue: number;
+		defaultRoleId: number;
 	};
 	created: Date;
 	updated: Date | null;
 }
 export interface CommunitySettings {
+	hue: number;
+	defaultRoleId: number;
+}
+export interface InitialCommunitySettings {
 	hue: number;
 }
 
