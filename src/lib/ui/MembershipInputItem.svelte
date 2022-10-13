@@ -24,6 +24,6 @@
 				persona_id: $membershipPersona.persona_id,
 			})}
 	>
-		<PersonaAvatar {persona} />
+		<PersonaAvatar persona={membershipPersona} />
 	</button>
 </p>

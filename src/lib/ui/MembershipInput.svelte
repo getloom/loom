@@ -36,9 +36,11 @@
 			<div>(no persona selected)</div>
 		{/if}
 	</section>
-	{#each invitableMembers as persona (persona)}
-		<MembershipInputItem {persona} membershipPersona={persona} {community} />
-	{:else}
-		<p>There's no one new to invite</p>
-	{/each}
+	{#if selectedPersona}
+		{#each invitableMembers as persona (persona)}
+			<MembershipInputItem persona={selectedPersona} membershipPersona={persona} {community} />
+		{:else}
+			<p>There's no one new to invite</p>
+		{/each}
+	{/if}
 </div>
