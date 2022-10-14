@@ -11,7 +11,7 @@ import {
 } from '$lib/vocab/community/communityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
-import {ReadRolesService} from '../role/roleServices';
+import {ReadRolesService} from '$lib/vocab/role/roleServices';
 
 /* test_communityServices */
 const test_communityServices = suite<TestDbContext & TestAppContext>('communityRepo');

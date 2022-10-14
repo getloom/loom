@@ -19,7 +19,7 @@ import type {CommunityPersona} from '$lib/vocab/persona/persona';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
-import type {Role} from '../role/role';
+import type {Role} from '$lib/vocab/role/role';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 

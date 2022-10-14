@@ -1,7 +1,7 @@
 import type {Mutations} from '$lib/app/eventTypes';
 import {deleteCommunity, upsertCommunity} from '$lib/vocab/community/communityMutationHelpers';
 import {upsertPersonas} from '$lib/vocab/persona/personaMutationHelpers';
-import {stashRole} from '../role/roleMutationHelpers';
+import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
@@ -41,7 +41,7 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 	} = result.value;
 	upsertPersonas(ui, $personas);
 	upsertCommunity(ui, $community, $spaces, $directories, $memberships);
-	stashRole(ui, $role);
+	stashRoles(ui, [$role]);
 	return result;
 };
 

@@ -1,11 +1,11 @@
 import type {Mutations} from '$lib/app/eventTypes';
-import {evictRoles, stashRole} from '$lib/vocab/role/roleMutationHelpers';
+import {evictRoles, stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 
 export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {role: $role} = result.value;
-	stashRole(ui, $role);
+	stashRoles(ui, [$role]);
 	return result;
 };
 
@@ -13,7 +13,7 @@ export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {role: $role} = result.value;
-	stashRole(ui, $role);
+	stashRoles(ui, [$role]);
 	return result;
 };
 
@@ -24,11 +24,10 @@ export const DeleteRole: Mutations['DeleteRole'] = async ({invoke, params, ui}) 
 	return result;
 };
 
-export const ReadRoles: Mutations['ReadRoles'] = async ({invoke}) => {
+export const ReadRoles: Mutations['ReadRoles'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	//TODO update stores here and batch
-	// const {roles: $roles} = result.value;
-	// stashRoles(ui, $roles);
+	const {roles: $roles} = result.value;
+	stashRoles(ui, $roles);
 	return result;
 };

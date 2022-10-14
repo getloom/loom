@@ -24,7 +24,7 @@ import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Membership} from '$lib/vocab/membership/membership';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {CreateTieService} from '$lib/vocab/tie/tieServices';
-import {toServiceRequestMock} from './testHelpers';
+import {toServiceRequestMock} from '$lib/util/testHelpers';
 import type {Role} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';

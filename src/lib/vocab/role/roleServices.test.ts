@@ -4,7 +4,7 @@ import {unwrap, unwrapError} from '@feltcoop/felt';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {DeleteRoleService} from './roleServices';
+import {DeleteRoleService} from '$lib/vocab/role/roleServices';
 
 /* test_roleServices */
 const test_roleServices = suite<TestDbContext & TestAppContext>('communityRepo');

@@ -1,7 +1,7 @@
 import type {Mutations} from '$lib/app/eventTypes';
 import {upsertPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {upsertCommunity} from '$lib/vocab/community/communityMutationHelpers';
-import {stashRole} from '../role/roleMutationHelpers';
+import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 
 export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({invoke, ui}) => {
 	const result = await invoke();
@@ -16,6 +16,6 @@ export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({i
 	} = result.value;
 	upsertPersonas(ui, [$persona]);
 	upsertCommunity(ui, $community, $spaces, $directories, [$membership]);
-	stashRole(ui, $role);
+	stashRoles(ui, [$role]);
 	return result;
 };

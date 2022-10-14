@@ -12,7 +12,7 @@ import type {Membership} from '$lib/vocab//membership/membership';
 import {stashSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {deleteMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
-import {evictRoles} from '../role/roleMutationHelpers';
+import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 
 export const upsertCommunity = (
 	ui: WritableUi,
