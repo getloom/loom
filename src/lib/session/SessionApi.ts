@@ -1,5 +1,5 @@
 import type {ServerResponse} from 'http';
-import type {Result} from '@feltcoop/felt';
+import {OK, type Result} from '@feltcoop/felt';
 
 import type {ApiServerRequest} from '$lib/server/ApiServer';
 import {setSessionCookie} from '$lib/session/sessionCookie';
@@ -26,13 +26,13 @@ export class SessionApi implements ISessionApi {
 		log.trace('logging in', account_id);
 		this.req.account_id = account_id;
 		setSessionCookie(this.res, account_id);
-		return {ok: true};
+		return OK;
 	}
 
 	logout(): Result<object, ErrorResponse> {
 		log.trace('logging out', this.req.account_id);
 		this.req.account_id = undefined;
 		setSessionCookie(this.res, '');
-		return {ok: true};
+		return OK;
 	}
 }

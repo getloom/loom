@@ -1,3 +1,5 @@
+import {unwrap} from '@feltcoop/felt';
+
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {
 	ReadEntities,
@@ -13,48 +15,26 @@ import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	event: ReadEntities,
 	perform: async ({repos, params}) => {
-		const findTiesResult = await repos.tie.filterBySourceId(params.source_id);
-		if (!findTiesResult.ok) {
-			return {ok: false, status: 500, message: 'error searching space directory'};
-		}
+		const ties = unwrap(await repos.tie.filterBySourceId(params.source_id));
 		//TODO stop filtering directory until we fix entity indexing by space_id
-		const entityIds = toTieEntityIds(findTiesResult.value);
+		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(params.source_id);
-		const findEntitiesResult = await repos.entity.filterByIds(Array.from(entityIds));
-		if (!findEntitiesResult.ok) {
-			return {ok: false, status: 500, message: 'error searching for entities'};
-		}
-		return {
-			ok: true,
-			status: 200,
-			value: {entities: findEntitiesResult.value, ties: findTiesResult.value},
-		};
+		const entities = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
+		return {ok: true, status: 200, value: {entities, ties}};
 	},
 };
 
 export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'] = {
 	event: ReadEntitiesPaginated,
 	perform: async ({repos, params}) => {
-		const findTiesResult = await repos.tie.filterBySourceIdPaginated(
-			params.source_id,
-			params.pageSize,
-			params.pageKey,
+		const ties = unwrap(
+			await repos.tie.filterBySourceIdPaginated(params.source_id, params.pageSize, params.pageKey),
 		);
-		if (!findTiesResult.ok) {
-			return {ok: false, status: 500, message: 'error searching directory'};
-		}
 		//TODO stop filtering directory until we fix entity indexing by space_id
-		const entityIds = toTieEntityIds(findTiesResult.value);
+		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(params.source_id);
-		const findEntitiesResult = await repos.entity.filterByIds(Array.from(entityIds));
-		if (!findEntitiesResult.ok) {
-			return {ok: false, status: 500, message: 'error searching for entities'};
-		}
-		return {
-			ok: true,
-			status: 200,
-			value: {entities: findEntitiesResult.value, ties: findTiesResult.value},
-		};
+		const entities = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
+		return {ok: true, status: 200, value: {entities, ties}};
 	},
 };
 
@@ -62,27 +42,17 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	event: CreateEntity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			// TODO security: validate `account_id` against the persona -- maybe as an optimized standalone method?
-			const insertEntitiesResult = await repos.entity.create(params.actor, params.data);
-			if (!insertEntitiesResult.ok) {
-				return {ok: false, status: 500, message: 'failed to create entity'};
-			}
+			const entity = unwrap(await repos.entity.create(params.actor, params.data));
 
-			const insertTieResult = await repos.tie.create(
-				params.source_id,
-				insertEntitiesResult.value.entity_id,
-				params.type ? params.type : 'HasItem',
+			const tie = unwrap(
+				await repos.tie.create(
+					params.source_id,
+					entity.entity_id,
+					params.type ? params.type : 'HasItem',
+				),
 			);
 
-			if (!insertTieResult.ok) {
-				return {ok: false, status: 500, message: 'failed to tie entity to graph'};
-			}
-
-			return {
-				ok: true,
-				status: 200,
-				value: {entity: insertEntitiesResult.value, tie: insertTieResult.value},
-			};
+			return {ok: true, status: 200, value: {entity, tie}};
 		}),
 };
 
@@ -90,15 +60,8 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 	event: UpdateEntity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			// TODO security: validate `account_id` against the persona -- maybe as an optimized standalone method?
-			const updateEntitiesResult = await repos.entity.updateEntityData(
-				params.entity_id,
-				params.data,
-			);
-			if (!updateEntitiesResult.ok) {
-				return {ok: false, status: 500, message: 'failed to update entity'};
-			}
-			return {ok: true, status: 200, value: {entity: updateEntitiesResult.value}};
+			const entity = unwrap(await repos.entity.updateEntityData(params.entity_id, params.data));
+			return {ok: true, status: 200, value: {entity}};
 		}),
 };
 
@@ -107,11 +70,8 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 	event: EraseEntities,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const result = await repos.entity.eraseByIds(params.entityIds);
-			if (!result.ok) {
-				return {ok: false, status: 500, message: 'failed to soft delete entity'};
-			}
-			return {ok: true, status: 200, value: {entities: result.value}};
+			const entities = unwrap(await repos.entity.eraseByIds(params.entityIds));
+			return {ok: true, status: 200, value: {entities}};
 		}),
 };
 
@@ -120,25 +80,16 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 	event: DeleteEntities,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const result = await repos.entity.deleteByIds(params.entityIds);
-			if (!result.ok) {
-				return {ok: false, status: 500, message: 'failed to delete entity'};
-			}
+			unwrap(await repos.entity.deleteByIds(params.entityIds));
 
 			// Deleting one entity may orphan others, so loop until there are no more orphans.
 			// TODO optimize this into a single SQL statement (recursive?)
 			while (true) {
-				const orphans = await repos.entity.findOrphanedEntities(); // eslint-disable-line no-await-in-loop
-				if (!orphans.ok) {
-					return {ok: false, status: 500, message: 'failed to find orphans'};
-				}
-				if (orphans.value.length === 0) {
+				const orphans = unwrap(await repos.entity.findOrphanedEntities()); // eslint-disable-line no-await-in-loop
+				if (orphans.length === 0) {
 					break;
 				}
-				const deletedOrphans = await repos.entity.deleteByIds(orphans.value); // eslint-disable-line no-await-in-loop
-				if (!deletedOrphans.ok) {
-					return {ok: false, status: 500, message: 'failed to delete orphans'};
-				}
+				unwrap(await repos.entity.deleteByIds(orphans)); // eslint-disable-line no-await-in-loop
 			}
 
 			return {ok: true, status: 200, value: null};

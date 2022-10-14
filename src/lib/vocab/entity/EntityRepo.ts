@@ -21,6 +21,7 @@ export class EntityRepo extends PostgresRepo {
 		return {ok: true, value: entity[0]};
 	}
 
+	// TODO change this and other `findById` calls to return `T | undefined`
 	async findById(entity_id: number): Promise<Result<{value: Entity}>> {
 		const data = await this.sql<Entity[]>`
 			SELECT entity_id, data, persona_id, created, updated 
@@ -31,6 +32,7 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	// TODO maybe `EntityQuery`?
+	// TODO remove the `message`, handle count mismatch similar to `findById` calls, maybe returning an array of the missing ids with `ok: false`
 	async filterByIds(entityIds: number[]): Promise<Result<{value: Entity[]}, ErrorResponse>> {
 		if (entityIds.length === 0) return {ok: true, value: []};
 		log.trace('[findBySet]', entityIds);

@@ -1,4 +1,5 @@
 import {Logger} from '@feltcoop/felt/util/log.js';
+import {unwrap} from '@feltcoop/felt';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
@@ -14,13 +15,9 @@ export const CreateTieService: ServiceByName['CreateTie'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			log.trace('[CreateTie] params', params);
-			// TODO validate that `account_id` is `persona_id`
-			const createTieResult = await repos.tie.create(params.source_id, params.dest_id, params.type);
-			log.trace('[CreateTie] result', createTieResult);
-			if (!createTieResult.ok) {
-				return {ok: false, status: 500, message: 'error creating tie'};
-			}
-			return {ok: true, status: 200, value: {tie: createTieResult.value}};
+			const tie = unwrap(await repos.tie.create(params.source_id, params.dest_id, params.type));
+			log.trace('[CreateTie] result', tie);
+			return {ok: true, status: 200, value: {tie}};
 		}),
 };
 
@@ -28,11 +25,8 @@ export const CreateTieService: ServiceByName['CreateTie'] = {
 export const ReadTiesService: ServiceByName['ReadTies'] = {
 	event: ReadTies,
 	perform: async ({repos, params}) => {
-		const findTiesResult = await repos.tie.filterBySourceId(params.source_id);
-		if (!findTiesResult.ok) {
-			return {ok: false, status: 500, message: 'error searching for ties'};
-		}
-		return {ok: true, status: 200, value: {ties: findTiesResult.value}};
+		const ties = unwrap(await repos.tie.filterBySourceId(params.source_id));
+		return {ok: true, status: 200, value: {ties}};
 	},
 };
 
@@ -42,10 +36,7 @@ export const DeleteTieService: ServiceByName['DeleteTie'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			log.trace('[DeleteTie] deleting tie with ids:', params.tie_id);
-			const result = await repos.tie.deleteTie(params.tie_id);
-			if (!result.ok) {
-				return {ok: false, status: 500, message: 'failed to delete tie'};
-			}
+			unwrap(await repos.tie.deleteTie(params.tie_id));
 			return {ok: true, status: 200, value: null};
 		}),
 };

@@ -1,4 +1,5 @@
 import {Logger} from '@feltcoop/felt/util/log.js';
+import {OK, unwrap, type Result} from '@feltcoop/felt';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
@@ -13,7 +14,6 @@ import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema'
 import {createDefaultSpaces} from '$lib/vocab/space/spaceServices';
 import type {NonAuthorizedServiceRequest} from '$lib/server/service';
 import {ADMIN_COMMUNITY_ID, ADMIN_COMMUNITY_NAME} from '$lib/app/admin';
-import {OK, type Result} from '@feltcoop/felt';
 import type {Community} from '$lib/vocab/community/community';
 import type {CommunityPersona} from '$lib/vocab/persona/persona';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -32,20 +32,8 @@ const DEFAULT_ROLE = 'member';
 export const ReadCommunitiesService: ServiceByName['ReadCommunities'] = {
 	event: ReadCommunities,
 	perform: async ({repos, account_id}) => {
-		const findCommunitiesResult = await repos.community.filterByAccount(account_id);
-		if (!findCommunitiesResult.ok) {
-			log.trace('[ReadCommunities] error searching for communities');
-			return {
-				ok: false,
-				status: 500,
-				message: 'error searching for communities',
-			};
-		}
-		return {
-			ok: true,
-			status: 200,
-			value: {communities: findCommunitiesResult.value},
-		};
+		const communities = unwrap(await repos.community.filterByAccount(account_id));
+		return {ok: true, status: 200, value: {communities}};
 	},
 };
 
@@ -67,37 +55,22 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 			repos.space.filterByCommunity(community_id),
 			repos.membership.filterByCommunityId(community_id),
 		]);
-		if (!spacesResult.ok) {
-			return {ok: false, status: 500, message: 'failed to filter spaces'};
-		}
-		if (!membershipsResult.ok) {
-			return {ok: false, status: 500, message: 'failed to filter memberships'};
-		}
-		const spaces = spacesResult.value;
+		const spaces = unwrap(spacesResult);
+		const memberships = unwrap(membershipsResult);
 
 		// TODO is this more efficient than parallelizing `persona.filterByCommunity`?
-		const personaIds = membershipsResult.value.map((m) => m.persona_id);
+		const personaIds = memberships.map((m) => m.persona_id);
 		const [personasResult, directoriesResult] = await Promise.all([
 			repos.persona.filterByIds(personaIds),
 			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
 		]);
-		if (!personasResult.ok) {
-			return {ok: false, status: 500, message: 'failed to filter personas'};
-		}
-		if (!directoriesResult.ok) {
-			return {ok: false, status: 500, message: 'failed to filter directories'};
-		}
+		const personas = unwrap(personasResult);
+		const directories = unwrap(directoriesResult) as Array<Entity & {data: DirectoryEntityData}>;
 
 		return {
 			ok: true,
 			status: 200,
-			value: {
-				community: findCommunityResult.value,
-				spaces,
-				directories: directoriesResult.value as Array<Entity & {data: DirectoryEntityData}>,
-				memberships: membershipsResult.value,
-				personas: personasResult.value,
-			},
+			value: {community: findCommunityResult.value, spaces, directories, memberships, personas},
 		};
 	},
 };
@@ -119,11 +92,8 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			}
 
 			// Check for duplicate community names.
-			const findCommunityResult = await repos.community.findByName(name);
-			if (!findCommunityResult.ok) {
-				return {ok: false, status: 500, message: 'failed to lookup existing community by name'};
-			}
-			if (findCommunityResult.value) {
+			const existingCommunity = unwrap(await repos.community.findByName(name), 'custom');
+			if (existingCommunity) {
 				return {ok: false, status: 409, message: 'a community with that name already exists'};
 			}
 
@@ -133,88 +103,28 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			}
 
 			// Create the community
-			const createCommunityResult = await repos.community.create('standard', name, settings);
-			log.trace('createCommunityResult', createCommunityResult);
-
-			if (!createCommunityResult.ok) {
-				log.trace('[CreateCommunity] error creating community');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error creating community',
-				};
-			}
-			let community = createCommunityResult.value;
+			const community = unwrap(await repos.community.create('standard', name, settings));
 
 			// Create the default role and assign it
-			const initDefaultRoleResult = await initDefaultRoleForCommunity(repos, community);
-			if (!initDefaultRoleResult.ok) {
-				return {
-					ok: false,
-					status: 500,
-					message: 'error initializing default role',
-				};
-			}
-
-			community = initDefaultRoleResult.value.community;
-			const role = initDefaultRoleResult.value.defaultRole;
+			const role = unwrap(await initDefaultRoleForCommunity(repos, community));
 
 			// Create the community persona and its membership
-			const communityPersonaResult = await repos.persona.createCommunityPersona(
-				community.name,
-				community.community_id,
+			const communityPersona = unwrap(
+				await repos.persona.createCommunityPersona(community.name, community.community_id),
 			);
-			if (!communityPersonaResult.ok) {
-				log.trace('[CreateCommunity] error creating community persona');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error creating community persona',
-				};
-			}
-			const communityPersona = communityPersonaResult.value;
-			const communityPersonaMembershipResult = await repos.membership.create(
-				communityPersona.persona_id,
-				community.community_id,
+			const communityPersonaMembership = unwrap(
+				await repos.membership.create(communityPersona.persona_id, community.community_id),
 			);
-			if (!communityPersonaMembershipResult.ok) {
-				log.trace('[CreateCommunity] error creating community persona membership');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error creating community persona membership',
-				};
-			}
 
 			// Create the membership for the persona that's creating the community.
-			const creatorMembershipResult = await repos.membership.create(
-				params.actor,
-				community.community_id,
+			const creatorMembership = unwrap(
+				await repos.membership.create(params.actor, community.community_id),
 			);
-			if (!creatorMembershipResult.ok) {
-				log.trace('[CreateCommunity] error making creator membership');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error making creator membership',
-				};
-			}
 
 			// Create default spaces.
-			const createDefaultSpaceResult = await createDefaultSpaces(
-				serviceRequest,
-				params.actor,
-				community,
+			const {spaces, directories} = unwrap(
+				await createDefaultSpaces(serviceRequest, params.actor, community),
 			);
-			if (!createDefaultSpaceResult.ok) {
-				log.trace('[CreateCommunity] error creating community default spaces');
-				return {
-					ok: false,
-					status: 500,
-					message: 'error creating community default spaces',
-				};
-			}
-			const {spaces, directories} = createDefaultSpaceResult.value;
 
 			return {
 				ok: true,
@@ -225,7 +135,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 					spaces,
 					directories,
 					personas: [communityPersona], // TODO add the requesting persona just for completion, after we add `actor` to all events
-					memberships: [communityPersonaMembershipResult.value, creatorMembershipResult.value],
+					memberships: [communityPersonaMembership, creatorMembership],
 				},
 			};
 		}),
@@ -235,10 +145,7 @@ export const UpdateCommunitySettingsService: ServiceByName['UpdateCommunitySetti
 	event: UpdateCommunitySettings,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const result = await repos.community.updateSettings(params.community_id, params.settings);
-			if (!result.ok) {
-				return {ok: false, status: 500, message: 'failed to update community settings'};
-			}
+			unwrap(await repos.community.updateSettings(params.community_id, params.settings));
 			return {ok: true, status: 200, value: null};
 		}),
 };
@@ -262,10 +169,7 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 			if (community.community_id === ADMIN_COMMUNITY_ID) {
 				return {ok: false, status: 405, message: 'cannot delete admin community'};
 			}
-			const deleteResult = await repos.community.deleteById(params.community_id);
-			if (!deleteResult.ok) {
-				return {ok: false, status: 500, message: 'failed to delete community'};
-			}
+			unwrap(await repos.community.deleteById(params.community_id));
 			return {ok: true, status: 200, value: null};
 		}),
 };
@@ -282,71 +186,42 @@ export const initAdminCommunity = async (
 	// For more see /src/docs/admin.md
 
 	// Create the community.
-	const createCommunityResult = await repos.community.create(
-		'standard',
-		ADMIN_COMMUNITY_NAME,
-		toDefaultCommunitySettings(ADMIN_COMMUNITY_NAME),
+	const community = unwrap(
+		await repos.community.create(
+			'standard',
+			ADMIN_COMMUNITY_NAME,
+			toDefaultCommunitySettings(ADMIN_COMMUNITY_NAME),
+		),
 	);
-	if (!createCommunityResult.ok) return createCommunityResult;
-	let community = createCommunityResult.value;
 
 	// Create the default role and assign it
-	const initDefaultRoleResult = await initDefaultRoleForCommunity(repos, community);
-	if (!initDefaultRoleResult.ok) {
-		return initDefaultRoleResult;
-	}
-
-	const role = initDefaultRoleResult.value.defaultRole;
-	community = initDefaultRoleResult.value.community;
+	const role = unwrap(await initDefaultRoleForCommunity(repos, community));
 
 	// Create the community persona.
-	const createCommunityPersonaResult = await repos.persona.createCommunityPersona(
-		community.name,
-		community.community_id,
+	const persona = unwrap(
+		await repos.persona.createCommunityPersona(community.name, community.community_id),
 	);
-	if (!createCommunityPersonaResult.ok) return createCommunityPersonaResult;
-	const persona = createCommunityPersonaResult.value;
 
 	// Create the community persona's membership.
-	const createMembershipResult = await repos.membership.create(
-		persona.persona_id,
-		community.community_id,
-	);
-	if (!createMembershipResult.ok) return createMembershipResult;
+	unwrap(await repos.membership.create(persona.persona_id, community.community_id));
 
 	return {ok: true, value: {community, persona, role}};
 };
 
+/**
+ * Creates the default role for a community,
+ * mutating the `community` instance with the changed settings.
+ */
 export const initDefaultRoleForCommunity = async (
 	repos: Repos,
 	community: Community,
-): Promise<Result<{value: {community: Community; defaultRole: Role}}>> => {
-	const createDefaultRoleResult = await repos.role.createRole(community.community_id, DEFAULT_ROLE);
-	log.trace('createDefaultRoleResult', createDefaultRoleResult);
+): Promise<Result<{value: Role}>> => {
+	const defaultRole = unwrap(await repos.role.createRole(community.community_id, DEFAULT_ROLE));
 
-	if (!createDefaultRoleResult.ok) {
-		log.trace('[CreateCommunity] error creating default role for community');
-		return createDefaultRoleResult;
-	}
-	const defaultRole = createDefaultRoleResult.value;
+	const settings = {...community.settings, defaultRoleId: defaultRole.role_id};
 
-	const settings = {
-		...community.settings,
-		defaultRoleId: defaultRole.role_id,
-	};
-
-	const updateSettingsResult = await repos.community.updateSettings(
-		community.community_id,
-		settings,
-	);
-	log.trace('updateSettingsResult', updateSettingsResult);
-
-	if (!updateSettingsResult.ok) {
-		log.trace('[CreateCommunity] error setting default role_id');
-		return updateSettingsResult;
-	}
-
+	unwrap(await repos.community.updateSettings(community.community_id, settings));
 	community.settings = settings;
 
-	return {ok: true, value: {community, defaultRole}};
+	return {ok: true, value: defaultRole};
 };

@@ -1,4 +1,5 @@
 import {Logger} from '@feltcoop/felt/util/log.js';
+import {OK, unwrap, type Result} from '@feltcoop/felt';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
@@ -34,11 +35,8 @@ export const CreateMembershipService: ServiceByName['CreateMembership'] = {
 
 			// TODO test what happens if the persona doesn't exist
 
-			const createMembershipResult = await repos.membership.create(persona_id, community_id);
-			if (createMembershipResult.ok) {
-				return {ok: true, status: 200, value: {membership: createMembershipResult.value}};
-			}
-			return {ok: false, status: 500, message: 'error creating membership'};
+			const membership = unwrap(await repos.membership.create(persona_id, community_id));
+			return {ok: true, status: 200, value: {membership}};
 		}),
 };
 
@@ -71,12 +69,10 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 				return {ok: false, status: 405, message: 'cannot leave a personal community'};
 			}
 			if (community_id === ADMIN_COMMUNITY_ID) {
-				const adminMembershipsResult =
-					await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id);
-				if (!adminMembershipsResult.ok) {
-					return {ok: false, status: 500, message: 'failed to lookup admin community memberships'};
-				}
-				if (adminMembershipsResult.value.length === 1) {
+				const adminMemberships = unwrap(
+					await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id),
+				);
+				if (adminMemberships.length === 1) {
 					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
 				}
 			}
@@ -87,26 +83,22 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 
-			const result = await repos.membership.deleteById(persona_id, community_id);
-			log.trace('[DeleteMembership] result', result);
-			if (!result.ok) {
-				return {ok: false, status: 500, message: 'failed to delete membership'};
-			}
-			await cleanOrphanCommunities(params.community_id, repos);
+			unwrap(await repos.membership.deleteById(persona_id, community_id));
+
+			unwrap(await cleanOrphanCommunities(params.community_id, repos));
+
 			return {ok: true, status: 200, value: null};
 		}),
 };
 
-const cleanOrphanCommunities = async (community_id: number, repos: Repos) => {
+const cleanOrphanCommunities = async (community_id: number, repos: Repos): Promise<Result> => {
 	log.trace('[membershipServices] checking if community is orphaned', community_id);
-	const result = await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id);
-	if (result.ok && result.value.length <= 0) {
-		log.trace('[membershipServices] no memberships found, cleaning up', community_id);
-		const cleanupResult = await repos.community.deleteById(community_id);
-		if (cleanupResult.ok) {
-			log.trace('[membershipServices] orphan community successfully deleted', community_id);
-		} else {
-			log.trace('[membershipServices] issue deleting orphaned community', community_id);
-		}
+	const accountPersonaMemberships = unwrap(
+		await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id),
+	);
+	if (accountPersonaMemberships.length === 0) {
+		log.trace('[membershipServices] no memberships found for community, cleaning up', community_id);
+		unwrap(await repos.community.deleteById(community_id));
 	}
+	return OK;
 };

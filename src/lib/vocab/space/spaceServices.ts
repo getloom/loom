@@ -1,4 +1,5 @@
 import {Logger} from '@feltcoop/felt/util/log.js';
+import {unwrap, type Result} from '@feltcoop/felt';
 
 import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {blue, gray} from '$lib/server/colors';
@@ -12,9 +13,7 @@ import {
 } from '$lib/vocab/space/spaceEvents';
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
 import type {Community} from '$lib/vocab/community/community';
-import type {Result} from '@feltcoop/felt';
 import type {Space} from '$lib/vocab/space/space';
-import type {ErrorResponse} from '$lib/util/error';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -50,21 +49,11 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 	perform: async ({repos, params}) => {
 		log.trace('[ReadSpaces] retrieving spaces for community', params.community_id);
 
-		const findSpacesResult = await repos.space.filterByCommunity(params.community_id);
-		if (!findSpacesResult.ok) {
-			return {ok: false, status: 500, message: 'error searching for community spaces'};
-		}
-		const spaces = findSpacesResult.value;
+		const spaces = unwrap(await repos.space.filterByCommunity(params.community_id));
 
-		const filterDirectoriesResult = await repos.entity.filterByIds(
-			spaces.map((s) => s.directory_id),
-		);
-		if (!filterDirectoriesResult.ok) {
-			return {ok: false, status: 500, message: 'failed to filter directories'};
-		}
-		const directories = filterDirectoriesResult.value as Array<
-			Entity & {data: DirectoryEntityData}
-		>;
+		const directories = unwrap(
+			await repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
+		) as Array<Entity & {data: DirectoryEntityData}>;
 
 		return {ok: true, status: 200, value: {spaces, directories}};
 	},
@@ -80,63 +69,44 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 			log.trace('[CreateSpace] validating space url uniqueness');
 			const {community_id} = params;
 
-			const findByCommunityUrlResult = await repos.space.findByCommunityUrl(
-				community_id,
-				params.url,
+			// TODO run this same logic when a space url is updated
+			const existingSpaceWithUrl = unwrap(
+				await repos.space.findByCommunityUrl(community_id, params.url),
 			);
-
-			if (!findByCommunityUrlResult.ok) {
-				return {ok: false, status: 500, message: 'error validating unique url for new space'};
-			}
-
-			if (findByCommunityUrlResult.value) {
+			if (existingSpaceWithUrl) {
 				return {ok: false, status: 409, message: 'a space with that url already exists'};
 			}
 
 			log.trace('[CreateSpace] finding community space for dir actor');
-			const communityPersona = await repos.persona.findByCommunityId(community_id);
-			if (!communityPersona.ok) {
-				return {ok: false, status: 500, message: 'error looking up community persona'};
-			}
+			const communityPersona = unwrap(await repos.persona.findByCommunityId(community_id));
 
 			log.trace('[CreateSpace] initializing directory for space');
-			const createDirectoryResult = await repos.entity.create(communityPersona.value.persona_id, {
-				type: 'Collection',
-				space_id: undefined as any, // `space_id` gets added below, after the space is created
-			});
-			if (!createDirectoryResult.ok) {
-				return {ok: false, status: 500, message: 'error creating directory for space'};
-			}
-			const uninitializedDirectory = createDirectoryResult.value as Entity & {
-				data: DirectoryEntityData;
-			};
+			const uninitializedDirectory = unwrap(
+				await repos.entity.create(communityPersona.persona_id, {
+					type: 'Collection',
+					space_id: undefined as any, // `space_id` gets added below, after the space is created
+				}),
+			) as Entity & {data: DirectoryEntityData};
 
 			log.trace('[CreateSpace] creating space for community', community_id);
-			const createSpaceResult = await repos.space.create(
-				params.name,
-				params.view,
-				params.url,
-				params.icon,
-				community_id,
-				uninitializedDirectory.entity_id,
+			const space = unwrap(
+				await repos.space.create(
+					params.name,
+					params.view,
+					params.url,
+					params.icon,
+					community_id,
+					uninitializedDirectory.entity_id,
+				),
 			);
-			if (!createSpaceResult.ok) {
-				return {ok: false, status: 500, message: 'error searching for community spaces'};
-			}
-			const space = createSpaceResult.value;
 
 			// set `uninitializedDirectory.data.space_id` now that the space has been created
-			const directoryResult = await repos.entity.updateEntityData(
-				uninitializedDirectory.entity_id,
-				{
+			const directory = unwrap(
+				await repos.entity.updateEntityData(uninitializedDirectory.entity_id, {
 					...uninitializedDirectory.data,
 					space_id: space.space_id,
-				},
-			);
-			if (!directoryResult.ok) {
-				return {ok: false, status: 500, message: 'error updating directory with new space'};
-			}
-			const directory = directoryResult.value as Entity & {data: DirectoryEntityData};
+				}),
+			) as Entity & {data: DirectoryEntityData};
 
 			return {ok: true, status: 200, value: {space, directory}};
 		}),
@@ -147,11 +117,8 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {space_id, actor: _actor, ...partial} = params;
-			const updateEntitiesResult = await repos.space.update(space_id, partial);
-			if (!updateEntitiesResult.ok) {
-				return {ok: false, status: 500, message: 'failed to update space'};
-			}
-			return {ok: true, status: 200, value: {space: updateEntitiesResult.value}};
+			const space = unwrap(await repos.space.update(space_id, partial));
+			return {ok: true, status: 200, value: {space}};
 		}),
 };
 
@@ -173,25 +140,13 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 				return {ok: false, status: 405, message: 'cannot delete home space'};
 			}
 
-			const result = await repos.space.deleteById(params.space_id);
-			log.trace('[DeleteSpace] result', result);
-			if (!result.ok) {
-				return {ok: false, status: 500, message: 'failed to delete space'};
-			}
+			unwrap(await repos.space.deleteById(params.space_id));
 
-			const orphanedEntities = await DeleteEntitiesService.perform({
+			const orphanedEntitiesResult = await DeleteEntitiesService.perform({
 				...serviceRequest,
 				params: {actor: params.actor, entityIds: [space.directory_id]},
 			});
-
-			if (!orphanedEntities.ok) {
-				log.trace('[DeleteSpace] error cleaning up space entities: ', params.space_id);
-				return {
-					ok: false,
-					status: 500,
-					message: `failed to clean up space entities; ${orphanedEntities.message}`,
-				};
-			}
+			if (!orphanedEntitiesResult.ok) return orphanedEntitiesResult;
 
 			return {ok: true, status: 200, value: null};
 		}),
@@ -202,17 +157,14 @@ export const createDefaultSpaces = async (
 	persona_id: number,
 	community: Community,
 ): Promise<
-	Result<
-		{value: {spaces: Space[]; directories: Array<Entity & {data: DirectoryEntityData}>}},
-		ErrorResponse
-	>
+	Result<{value: {spaces: Space[]; directories: Array<Entity & {data: DirectoryEntityData}>}}>
 > => {
 	const spaces: Space[] = [];
 	const directories: Array<Entity & {data: DirectoryEntityData}> = [];
 	for (const params of toDefaultSpaces(persona_id, community)) {
 		// eslint-disable-next-line no-await-in-loop
 		const result = await CreateSpaceService.perform({...serviceRequest, params});
-		if (!result.ok) return {ok: false, message: 'failed to create default spaces'};
+		if (!result.ok) return result;
 		spaces.push(result.value.space);
 		directories.push(result.value.directory);
 	}
@@ -223,12 +175,12 @@ export const createDefaultAdminSpaces = async (
 	serviceRequest: AuthorizedServiceRequest,
 	persona_id: number,
 	community: Community,
-): Promise<Result<{value: Space[]}, ErrorResponse>> => {
+): Promise<Result<{value: Space[]}>> => {
 	const spaces: Space[] = [];
 	for (const params of toDefaultAdminSpaces(persona_id, community)) {
 		// eslint-disable-next-line no-await-in-loop
 		const result = await CreateSpaceService.perform({...serviceRequest, params});
-		if (!result.ok) return {ok: false, message: 'failed to create default admin spaces'};
+		if (!result.ok) return result;
 		spaces.push(result.value.space);
 	}
 	return {ok: true, value: spaces};

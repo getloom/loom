@@ -1,4 +1,5 @@
 import {Logger} from '@feltcoop/felt/util/log.js';
+import {unwrap} from '@feltcoop/felt';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
@@ -30,102 +31,60 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			}
 
 			log.trace('[CreateAccountPersona] validating persona uniqueness', name);
-			const findByNameResult = await repos.persona.findByName(name);
-			if (!findByNameResult.ok) {
-				return {ok: false, status: 500, message: 'error validating unique name for new persona'};
-			}
-			if (findByNameResult.value) {
+			const existingPersona = unwrap(await repos.persona.findByName(name));
+			if (existingPersona) {
 				return {ok: false, status: 409, message: 'a persona with that name already exists'};
 			}
 
 			// First create the admin community if it doesn't exist yet.
-			const initAdminCommunityResult = await initAdminCommunity(serviceRequest);
-			if (!initAdminCommunityResult.ok) {
-				return {ok: false, status: 500, message: 'failed to init admin community'};
-			}
+			const initAdminCommunityValue = unwrap(await initAdminCommunity(serviceRequest));
 
 			// Create the persona's personal community.
-			const createCommunityResult = await repos.community.create(
-				'personal',
-				name,
-				toDefaultCommunitySettings(name),
+			const community = unwrap(
+				await repos.community.create('personal', name, toDefaultCommunitySettings(name)),
 			);
-			if (!createCommunityResult.ok) {
-				return {ok: false, status: 500, message: 'failed to create initial persona community'};
-			}
-			let community = createCommunityResult.value;
 
 			// Create the default role and assign it
-			const initDefaultRoleResult = await initDefaultRoleForCommunity(repos, community);
-			if (!initDefaultRoleResult.ok) {
-				return {
-					ok: false,
-					status: 500,
-					message: 'error initializing default role',
-				};
-			}
-
-			community = initDefaultRoleResult.value!.community;
-			const role = initDefaultRoleResult.value!.defaultRole;
+			const role = unwrap(await initDefaultRoleForCommunity(repos, community));
 
 			// Create the persona.
 			log.trace('[CreateAccountPersona] creating persona', name);
-			const createPersonaResult = await repos.persona.createAccountPersona(
-				name,
-				account_id,
-				community.community_id,
+			const persona = unwrap(
+				await repos.persona.createAccountPersona(name, account_id, community.community_id),
 			);
-			if (!createPersonaResult.ok) {
-				return {ok: false, status: 500, message: 'error searching for community personas'};
-			}
-			const persona = createPersonaResult.value;
 
 			// Create the persona's membership to its personal community.
-			const membershipResult = await repos.membership.create(
-				persona.persona_id,
-				community.community_id,
+			const membership = unwrap(
+				await repos.membership.create(persona.persona_id, community.community_id),
 			);
-			if (!membershipResult.ok) {
-				return {ok: false, status: 500, message: 'error creating membership in personal community'};
-			}
-			const membership = membershipResult.value;
 
 			// If the admin community was created, create the admin spaces and the persona's membership.
 			// This is a separate step because we need to create the admin community before any others
 			// and the dependencies flow like this:
 			// `adminCommunity => personalCommunity => persona => adminCommunitySpaces + adminCommunityMembership`
-			if (initAdminCommunityResult.value) {
-				const adminCommunity = initAdminCommunityResult.value.community;
+			if (initAdminCommunityValue) {
+				const adminCommunity = initAdminCommunityValue.community;
 				// Create the admin community's default spaces.
-				const createDefaultAdminSpacesResult = await createDefaultAdminSpaces(
-					{...serviceRequest, actor: persona},
-					persona.persona_id,
-					adminCommunity,
+				unwrap(
+					await createDefaultAdminSpaces(
+						{...serviceRequest, actor: persona},
+						persona.persona_id,
+						adminCommunity,
+					),
 				);
-				if (!createDefaultAdminSpacesResult.ok) {
-					return {ok: false, status: 500, message: createDefaultAdminSpacesResult.message};
-				}
 
 				// Create the persona's membership to the admin community.
-				const adminMembershipResult = await repos.membership.create(
-					persona.persona_id,
-					adminCommunity.community_id,
-				);
-				if (!adminMembershipResult.ok) {
-					return {ok: false, status: 500, message: 'failed to init admin community'};
-				}
+				unwrap(await repos.membership.create(persona.persona_id, adminCommunity.community_id));
 			}
 
 			// Create the default spaces.
-			const createDefaultSpacesResult = await createDefaultSpaces(
-				{...serviceRequest, actor: persona},
-				persona.persona_id,
-				community,
+			const {spaces, directories} = unwrap(
+				await createDefaultSpaces(
+					{...serviceRequest, actor: persona},
+					persona.persona_id,
+					community,
+				),
 			);
-			if (!createDefaultSpacesResult.ok) {
-				return {ok: false, status: 500, message: createDefaultSpacesResult.message};
-			}
-			const {spaces, directories} = createDefaultSpacesResult.value;
 
 			return {
 				ok: true,

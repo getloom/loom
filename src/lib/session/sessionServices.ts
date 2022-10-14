@@ -3,6 +3,7 @@ import {verifyPassword} from '$lib/util/password';
 import {Login, Logout} from '$lib/session/sessionEvents';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
+import {unwrap} from '@feltcoop/felt';
 
 export const LoginService: ServiceByName['Login'] = {
 	event: Login,
@@ -18,11 +19,7 @@ export const LoginService: ServiceByName['Login'] = {
 			// To avoid bugs and confusion, this logs out the user and asks them to try again.
 			if ('account_id' in serviceRequest) {
 				session.logout();
-				return {
-					ok: false,
-					status: 400,
-					message: 'something went wrong, please try again',
-				};
+				return {ok: false, status: 400, message: 'something went wrong, please try again'};
 			}
 
 			// First see if the account already exists.
@@ -49,34 +46,18 @@ export const LoginService: ServiceByName['Login'] = {
 				}
 			}
 
-			const clientSessionResult = await repos.session.loadClientSession(account.account_id);
+			const clientSession = unwrap(await repos.session.loadClientSession(account.account_id));
 
-			if (clientSessionResult.ok) {
-				const result = session.login(account.account_id);
-				if (!result.ok) return {ok: false, status: 500, message: result.message};
-				return {
-					ok: true,
-					status: 200,
-					value: {session: clientSessionResult.value},
-				};
-			}
-			return {
-				ok: false,
-				status: 500,
-				message: 'failed to load client session',
-			};
+			unwrap(session.login(account.account_id));
+
+			return {ok: true, status: 200, value: {session: clientSession}};
 		}),
 };
 
 export const LogoutService: ServiceByName['Logout'] = {
 	event: Logout,
 	perform: async ({session}) => {
-		const result = session.logout();
-		if (!result.ok) return {ok: false, status: 500, message: result.message};
-		return {
-			ok: true,
-			status: 200,
-			value: null,
-		};
+		unwrap(session.logout());
+		return {ok: true, status: 200, value: null};
 	},
 };
