@@ -39,14 +39,14 @@
 			on:click={() =>
 				dispatch.OpenDialog({
 					Component: ConfirmDialog,
+					dialogProps: {layout: 'page'},
 					props: {
-						done: () => dispatch.CloseDialog(),
 						action: () =>
 							dispatch.DeleteRole({
 								actor: $persona.persona_id,
 								role_id: $role.role_id,
 							}),
-						description: 'delete this role',
+						promptText: 'Are you sure you want to delete this role?',
 					},
 				})}>🗑️</button
 		>
