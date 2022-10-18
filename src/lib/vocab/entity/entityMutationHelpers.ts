@@ -113,35 +113,35 @@ export const stashTies = (
 export const evictTie = (
 	{sourceTiesByDestEntityId, destTiesBySourceEntityId, tieById}: WritableUi,
 	tie_id: number,
+	mutated = new Mutated('evictTie'),
 ): void => {
 	const $tie = tieById.get(tie_id);
 	if (!$tie) return;
-	const {dest_id, source_id} = $tie;
 	tieById.delete(tie_id);
+
+	const {dest_id, source_id} = $tie;
 
 	const sourceTies = sourceTiesByDestEntityId.get().value.get(dest_id);
 	if (sourceTies) {
-		sourceTies.mutate(($sourceTies) => {
-			$sourceTies.delete($tie);
-		});
+		sourceTies.get().value.delete($tie);
+		mutated.add(sourceTies);
 		if (sourceTies.get().value.size === 0) {
-			sourceTiesByDestEntityId.mutate(($v) => {
-				$v.delete(dest_id);
-			});
+			sourceTiesByDestEntityId.get().value.delete(dest_id);
+			mutated.add(sourceTiesByDestEntityId);
 		}
 	}
 
 	const destTies = destTiesBySourceEntityId.get().value.get(source_id);
 	if (destTies) {
-		destTies.mutate(($destTies) => {
-			$destTies.delete($tie);
-		});
+		destTies.get().value.delete($tie);
+		mutated.add(destTies);
 		if (destTies.get().value.size === 0) {
-			destTiesBySourceEntityId.mutate(($v) => {
-				$v.delete(source_id);
-			});
+			destTiesBySourceEntityId.get().value.delete(source_id);
+			mutated.add(destTiesBySourceEntityId);
 		}
 	}
+
+	mutated.end('evictTie');
 };
 
 // TODO delete orphaned entities

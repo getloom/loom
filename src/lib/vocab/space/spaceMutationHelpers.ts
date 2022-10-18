@@ -2,6 +2,7 @@ import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
+import {removeUnordered} from '@feltcoop/felt/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Space} from '$lib/vocab/space/space';
@@ -60,9 +61,9 @@ export const stashSpaces = (
 		}
 	}
 
-	// TODO if the `mutated` pattern is added to `stashEntities`,
-	// probably forward `mutated` here so everything is batched below
-	if ($directoriesToStash) stashEntities(ui, $directoriesToStash);
+	if ($directoriesToStash) {
+		stashEntities(ui, $directoriesToStash);
+	}
 
 	mutated.end('stashSpaces');
 };
@@ -70,6 +71,7 @@ export const stashSpaces = (
 export const evictSpaces = async (
 	ui: WritableUi,
 	spacesToEvict: Array<Writable<Space>>,
+	mutated = new Mutated('evictSpaces'),
 ): Promise<void> => {
 	const {
 		communityById,
@@ -96,19 +98,24 @@ export const evictSpaces = async (
 					.get()
 					.get(community_id)!
 					.find((s) => isHomeSpace(s.get()))!;
-				spaceIdSelectionByCommunityId.mutate(($s) => {
-					$s.set(community_id, homeSpace.get().space_id);
-				});
+				spaceIdSelectionByCommunityId.get().value.set(community_id, homeSpace.get().space_id);
+				mutated.add(spaceIdSelectionByCommunityId);
 			}
 		}
 
 		spaceById.delete(space_id);
 	}
 
-	spaces.swap(spaces.get().value.filter((s) => !spacesToEvict.includes(s)));
+	for (const space of spacesToEvict) {
+		removeUnordered(spaces.get().value, spaces.get().value.indexOf(space));
+	}
+	mutated.add(spaces);
 
 	evictEntities(
 		ui,
 		spacesToEvict.map((s) => s.get().directory_id),
+		mutated,
 	);
+
+	mutated.end('evictSpaces');
 };

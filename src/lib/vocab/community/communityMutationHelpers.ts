@@ -10,7 +10,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Membership} from '$lib/vocab//membership/membership';
 import {stashSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {deleteMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
+import {evictMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
 import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
@@ -73,7 +73,11 @@ export const stashCommunity = (
 	return community;
 };
 
-export const deleteCommunity = async (ui: WritableUi, community_id: number): Promise<void> => {
+export const evictCommunity = async (
+	ui: WritableUi,
+	community_id: number,
+	mutated = new Mutated('evictCommunity'),
+): Promise<void> => {
 	const {
 		communityById,
 		communitySelection,
@@ -93,6 +97,7 @@ export const deleteCommunity = async (ui: WritableUi, community_id: number): Pro
 		evictRoles(
 			ui,
 			communityRoleIds.map((r) => r.get().role_id),
+			mutated,
 		);
 	}
 
@@ -103,22 +108,27 @@ export const deleteCommunity = async (ui: WritableUi, community_id: number): Pro
 		});
 	}
 
-	await evictSpaces(ui, spacesByCommunityId.get().get(community_id)!);
+	await evictSpaces(ui, spacesByCommunityId.get().get(community_id)!, mutated);
 
 	communityById.delete(community_id);
-	communities.mutate(($communites) => {
-		removeUnordered($communites, $communites.indexOf(community));
-	});
-	communityIdSelectionByPersonaId.mutate(($c) => {
-		for (const [persona_id, communityIdSelection] of $c) {
-			if (communityIdSelection === community_id) {
-				$c.set(persona_id, personaById.get(persona_id)!.get().community_id);
-			}
-		}
-	});
 
-	deleteMemberships(
+	removeUnordered(communities.get().value, communities.get().value.indexOf(community));
+	mutated.add(communities);
+
+	for (const [persona_id, communityIdSelection] of communityIdSelectionByPersonaId.get().value) {
+		if (communityIdSelection === community_id) {
+			communityIdSelectionByPersonaId
+				.get()
+				.value.set(persona_id, personaById.get(persona_id)!.get().community_id);
+			mutated.add(communityIdSelectionByPersonaId);
+		}
+	}
+
+	evictMemberships(
 		ui,
 		memberships.get().value.filter((m) => m.get().community_id === community_id),
+		mutated,
 	);
+
+	mutated.end('evictCommunity');
 };

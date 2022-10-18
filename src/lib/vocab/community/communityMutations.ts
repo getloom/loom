@@ -1,5 +1,6 @@
 import type {Mutations} from '$lib/app/eventTypes';
-import {deleteCommunity, stashCommunity} from '$lib/vocab/community/communityMutationHelpers';
+import {Mutated} from '$lib/util/Mutated';
+import {evictCommunity, stashCommunity} from '$lib/vocab/community/communityMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 
@@ -23,8 +24,10 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 		memberships: $memberships,
 		personas: $personas,
 	} = result.value;
-	stashPersonas(ui, $personas);
-	stashCommunity(ui, $community, $spaces, $directories, $memberships);
+	const mutated = new Mutated('ReadCommunity');
+	stashPersonas(ui, $personas, mutated);
+	stashCommunity(ui, $community, $spaces, $directories, $memberships, mutated);
+	mutated.end('ReadCommunity');
 	return result;
 };
 
@@ -39,9 +42,11 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 		memberships: $memberships,
 		personas: $personas,
 	} = result.value;
-	stashPersonas(ui, $personas);
-	stashCommunity(ui, $community, $spaces, $directories, $memberships);
-	stashRoles(ui, [$role]);
+	const mutated = new Mutated('CreateCommunity');
+	stashPersonas(ui, $personas, mutated);
+	stashCommunity(ui, $community, $spaces, $directories, $memberships, mutated);
+	stashRoles(ui, [$role], mutated);
+	mutated.end('CreateCommunity');
 	return result;
 };
 
@@ -68,6 +73,6 @@ export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, inv
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {community_id} = params;
-	await deleteCommunity(ui, community_id);
+	await evictCommunity(ui, community_id);
 	return result;
 };

@@ -1,4 +1,5 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {removeUnordered} from '@feltcoop/felt/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Persona} from '$lib/vocab/persona/persona';
@@ -39,12 +40,17 @@ export const stashPersonas = (
 	mutated.end('stashPersonas');
 };
 
-export const deletePersonas = (
+export const evictPersonas = (
 	{personas, personaById}: WritableUi,
-	personasToDelete: Set<Writable<Persona>>,
+	personasToEvict: Set<Writable<Persona>>,
+	mutated = new Mutated('evictPersonas'),
 ): void => {
-	personas.swap(personas.get().value.filter((p) => !personasToDelete.has(p)));
-	for (const persona of personasToDelete) {
+	for (const p of personasToEvict) {
+		removeUnordered(personas.get().value, personas.get().value.indexOf(p));
+	}
+	mutated.add(personas);
+	for (const persona of personasToEvict) {
 		personaById.delete(persona.get().persona_id);
 	}
+	mutated.end('evictPersonas');
 };

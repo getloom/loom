@@ -2,7 +2,7 @@ import {writable} from '@feltcoop/svelte-gettable-stores';
 import {removeUnordered} from '@feltcoop/felt/util/array.js';
 
 import type {Mutations} from '$lib/app/eventTypes';
-import {deleteCommunity} from '$lib/vocab/community/communityMutationHelpers';
+import {evictCommunity} from '$lib/vocab/community/communityMutationHelpers';
 
 export const CreateMembership: Mutations['CreateMembership'] = async ({
 	invoke,
@@ -53,7 +53,7 @@ export const DeleteMembership: Mutations['DeleteMembership'] = async ({params, i
 			return $m.community_id === community_id && $sessionPersonaIds.has($m.persona_id);
 		});
 		if (!hasOtherSessionMembership) {
-			await deleteCommunity(ui, community_id);
+			await evictCommunity(ui, community_id);
 		}
 	}
 
