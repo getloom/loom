@@ -143,11 +143,12 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 
 			unwrap(await repos.space.deleteById(params.space_id));
 
-			const orphanedEntitiesResult = await DeleteEntitiesService.perform({
-				...serviceRequest,
-				params: {actor: params.actor, entityIds: [space.directory_id]},
-			});
-			if (!orphanedEntitiesResult.ok) return orphanedEntitiesResult;
+			unwrap(
+				await DeleteEntitiesService.perform({
+					...serviceRequest,
+					params: {actor: params.actor, entityIds: [space.directory_id]},
+				}),
+			);
 
 			return {ok: true, status: 200, value: null};
 		}),
@@ -163,11 +164,11 @@ export const createDefaultSpaces = async (
 	const spaces: Space[] = [];
 	const directories: Array<Entity & {data: DirectoryEntityData}> = [];
 	for (const params of toDefaultSpaces(persona_id, community)) {
-		// eslint-disable-next-line no-await-in-loop
-		const result = await CreateSpaceService.perform({...serviceRequest, params});
-		if (!result.ok) return result;
-		spaces.push(result.value.space);
-		directories.push(result.value.directory);
+		const {space, directory} = unwrap(
+			await CreateSpaceService.perform({...serviceRequest, params}), // eslint-disable-line no-await-in-loop
+		);
+		spaces.push(space);
+		directories.push(directory);
 	}
 	return {ok: true, value: {spaces, directories}};
 };
@@ -179,10 +180,8 @@ export const createDefaultAdminSpaces = async (
 ): Promise<Result<{value: Space[]}>> => {
 	const spaces: Space[] = [];
 	for (const params of toDefaultAdminSpaces(persona_id, community)) {
-		// eslint-disable-next-line no-await-in-loop
-		const result = await CreateSpaceService.perform({...serviceRequest, params});
-		if (!result.ok) return result;
-		spaces.push(result.value.space);
+		const {space} = unwrap(await CreateSpaceService.perform({...serviceRequest, params})); // eslint-disable-line no-await-in-loop
+		spaces.push(space);
 	}
 	return {ok: true, value: spaces};
 };

@@ -4,5 +4,5 @@ import type {ErrorResponse} from '$lib/util/error';
 
 export type ApiResult<TValue> = Result<
 	{status: number; value: TValue},
-	ErrorResponse & {status: number | null}
+	{status: number | null} & ErrorResponse
 >;

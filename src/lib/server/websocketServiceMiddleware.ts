@@ -9,6 +9,7 @@ import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
 import type {BroadcastMessage, WebsocketResult} from '$lib/util/websocket';
 import {toServiceRequest} from '$lib/server/service';
+import {ResultError} from '@feltcoop/felt';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 
@@ -80,11 +81,10 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 					}
 				} catch (err) {
 					log.error('service.perform failed with an error', service.event.name, err);
-					result = {
-						ok: false,
-						status: 500,
-						message: 'unknown server error',
-					};
+					result =
+						err instanceof ResultError
+							? {ok: false, status: (err.result as any).status || 500, message: err.message}
+							: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE};
 				}
 			}
 		}
@@ -98,7 +98,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 
 		if (!result.ok) {
 			socket.send(serializedResponse);
-			return; // TODO or do we need to broadcast in some cases?
+			return;
 		}
 
 		if (process.env.NODE_ENV !== 'production') {

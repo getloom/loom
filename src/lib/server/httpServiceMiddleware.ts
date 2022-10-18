@@ -1,5 +1,6 @@
 import send from '@polka/send-type';
 import {Logger} from '@feltcoop/felt/util/log.js';
+import {ResultError} from '@feltcoop/felt';
 
 import {red, blue, gray} from '$lib/server/colors';
 import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';
@@ -7,6 +8,7 @@ import {type Service, toServiceRequest} from '$lib/server/service';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
+import type {ApiResult} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('httpServiceMiddleware') + gray(']'));
 
@@ -61,7 +63,7 @@ export const toHttpServiceMiddleware =
 		}
 		const actor = authorizeResult.value?.actor;
 
-		let result;
+		let result: ApiResult<any>;
 		try {
 			result = await service.perform(
 				toServiceRequest(server.db, params, req.account_id!, actor!, new SessionApi(req, res)), // TODO try to avoid the non-null assertions, looks tricky
@@ -71,7 +73,10 @@ export const toHttpServiceMiddleware =
 			}
 		} catch (err) {
 			log.error('service.perform failed with an error', service.event.name, err);
-			send(res, 500, {message: 'unknown server error'});
+			result =
+				err instanceof ResultError
+					? {ok: false, status: (err.result as any).status || 500, message: err.message}
+					: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE};
 		}
 
 		if (!result.ok) {

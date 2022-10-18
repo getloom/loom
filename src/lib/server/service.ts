@@ -93,16 +93,15 @@ export function toServiceRequest<TParams = any, TResult extends Result = any>(
 	let result: TResult; // cache to pass through if the inner transaction promise rejects
 	const req: NonAuthenticatedServiceRequest = {
 		repos: db.repos,
-		// TODO support creating new transactions outside of this singleton, which is needed for service composition
 		// TODO support savepoints -- https://github.com/porsager/postgres#transactions
-		transact: async (cb) =>
+		transact: (cb) =>
 			repos
 				? cb(repos)
 				: db.sql
 						.begin(async (sql) => {
 							result = await cb((repos = new Repos(sql)));
-							if (!result.ok) throw Error('Failed transction');
-							return result as any;
+							if (!result.ok) throw Error(); // cancel the transaction; the error is caught and swallowed ahead
+							return result;
 						})
 						.catch((err) => {
 							if (result === undefined) {

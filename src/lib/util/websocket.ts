@@ -1,5 +1,7 @@
 import type {Result} from '@feltcoop/felt';
 
+import type {ErrorResponse} from '$lib/util/error';
+
 export interface BroadcastMessage {
 	type: 'broadcast';
 	method: string;
@@ -15,5 +17,5 @@ export interface StatusMessage {
 
 export type WebsocketResult<T = any> = Result<
 	{status: number; value: T},
-	{status: number; message: string}
+	{status: number} & ErrorResponse
 >;
