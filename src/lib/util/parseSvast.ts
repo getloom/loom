@@ -19,13 +19,13 @@ export const parseSvast: typeof parse = (opts) => {
 	const ast = parse(opts);
 	walk(ast, {
 		enter(node, parent) {
-			if (node[ADDED_BY_FELT]) return;
+			if ((node as any)[ADDED_BY_FELT]) return;
 			if (node.type === 'text') {
 				// Parse text and replace extended syntax with new nodes.
 				// This is a temporary implementation until Pfm is ready and we write a proper plugin.
 				const {type: t} = parent;
 				if (t !== 'root' && t !== 'svelteElement' && t !== 'svelteComponent') return;
-				const newNode = parseSvastText(node);
+				const newNode = parseSvastText(node as any);
 				if (newNode !== node) this.replace(newNode);
 			}
 		},

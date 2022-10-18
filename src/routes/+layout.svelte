@@ -133,7 +133,8 @@
 	use:contextmenu.action={[
 		[ActingPersonaContextmenu, selectedPersona ? {persona: selectedPersona} : undefined],
 		[AppContextmenu, null],
-	]} />
+	]}
+/>
 
 <svelte:head>
 	<link rel="shortcut icon" href="/favicon.png" />

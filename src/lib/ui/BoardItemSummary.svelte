@@ -41,6 +41,8 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 			[EntityContextmenu, {persona, entity}],
 		]}
 	>
+		<!-- TODO remove this override after implementing links -->
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div on:click={() => selectPost(entity)} class="entity markup formatted">
 			<div>
 				{#if $entity.data.name}

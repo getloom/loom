@@ -82,6 +82,8 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 			[EntityContextmenu, {persona, entity}],
 		]}
 	>
+		<!-- TODO fix a11y -->
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div on:click={() => selectList(entity)} class="entity markup formatted">
 			{#if hasItems}
 				<div class="icon-button">

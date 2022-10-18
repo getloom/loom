@@ -39,6 +39,7 @@
 >
 	{#if $expandMarquee}
 		<div
+			aria-hidden
 			class="marquee-bg"
 			on:click={() => ($expandMarquee ? dispatch.ToggleSecondaryNav() : null)}
 		/>

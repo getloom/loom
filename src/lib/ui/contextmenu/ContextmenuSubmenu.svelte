@@ -62,6 +62,8 @@
 
 <!-- TODO what's the right structure for a11y? -->
 <li>
+	<!-- disabling the a11y warning because a parent element handles keyboard events -->
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		class="menu-item"
 		role="menuitem"

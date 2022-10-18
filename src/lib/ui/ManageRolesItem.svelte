@@ -17,13 +17,13 @@
 </script>
 
 <li>
-	<div on:click={() => selectRole(role)} class="row selectable" class:selected>
+	<button on:click={() => selectRole(role)} class="row selectable" class:selected>
 		{bulletIcon}
 		{$role.name}
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{/if}
-	</div>
+	</button>
 </li>
 
 <style>

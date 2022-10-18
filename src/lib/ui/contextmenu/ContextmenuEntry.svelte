@@ -22,6 +22,8 @@
 https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-links.html
 (in Chrome/FF contextmenus, `Tab` doesn't work, but maybe it should here?)
 -->
+<!-- disabling the a11y warning because a parent element handles keyboard events -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <li
 	class="menu-item"
 	role="menuitem"
