@@ -2,6 +2,7 @@
 
 import type {SvelteComponent} from 'svelte';
 import type {Readable, Mutable} from '@feltcoop/svelte-gettable-stores';
+import type {AsyncStatus} from '@feltcoop/felt';
 
 import type {ApiResult} from '$lib/server/api';
 import type {
@@ -575,7 +576,10 @@ export interface Dispatch {
 	ReadEntitiesPaginated: (
 		params: ReadEntitiesPaginatedParams,
 	) => Promise<ReadEntitiesPaginatedResponseResult>;
-	QueryEntities: (params: QueryEntitiesParams) => Mutable<Set<Readable<Entity>>>;
+	QueryEntities: (params: QueryEntitiesParams) => {
+		data: Mutable<Set<Readable<Entity>>>;
+		status: Readable<AsyncStatus>;
+	};
 	EraseEntities: (params: EraseEntitiesParams) => Promise<EraseEntitiesResponseResult>;
 	DeleteEntities: (params: DeleteEntitiesParams) => Promise<DeleteEntitiesResponseResult>;
 	CreateTie: (params: CreateTieParams) => Promise<CreateTieResponseResult>;
@@ -659,9 +663,10 @@ export interface Mutations {
 	ReadEntitiesPaginated: (
 		ctx: DispatchContext<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>,
 	) => Promise<ReadEntitiesPaginatedResponseResult>;
-	QueryEntities: (
-		ctx: DispatchContext<QueryEntitiesParams, void>,
-	) => Mutable<Set<Readable<Entity>>>;
+	QueryEntities: (ctx: DispatchContext<QueryEntitiesParams, void>) => {
+		data: Mutable<Set<Readable<Entity>>>;
+		status: Readable<AsyncStatus>;
+	};
 	EraseEntities: (
 		ctx: DispatchContext<EraseEntitiesParams, EraseEntitiesResponseResult>,
 	) => Promise<EraseEntitiesResponseResult>;

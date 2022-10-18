@@ -17,14 +17,16 @@
 
 	//TODO once QueryEntities interface is in place this should initialize a "posts" collection
 	$: shouldLoadEntities = browser && $socket.open;
-	$: queried = shouldLoadEntities
+	$: query = shouldLoadEntities
 		? dispatch.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
+	$: queryData = query?.data;
+	$: queryStatus = query?.status;
 	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queried && readable(sortEntitiesByCreated(Array.from($queried.value)));
+	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
 
 	//TODO this should be readable
 	let selectedPost: Readable<Entity> | null = null as any;
@@ -40,8 +42,7 @@
 
 <div class="room">
 	<div class="entities">
-		<!-- TODO handle failures here-->
-		{#if entities}
+		{#if entities && $queryStatus === 'success'}
 			<BoardItems {entities} {space} {persona} {selectedPost} {selectPost} />
 			{#if !selectedPost}
 				<button
@@ -58,6 +59,9 @@
 						})}>Submit a new post</button
 				>
 			{/if}
+			<!-- TODO handle query failures, see https://github.com/feltcoop/felt-server/pull/514#discussion_r998626893 -->
+			<!-- {:else if $queryStatus === 'failure'}
+				<Message status="error">{$queryError.message}</Message> -->
 		{:else}
 			<PendingAnimation />
 		{/if}

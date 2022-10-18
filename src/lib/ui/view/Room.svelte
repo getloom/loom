@@ -17,14 +17,16 @@
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
-	$: queried = shouldLoadEntities
+	$: query = shouldLoadEntities
 		? dispatch.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
+	$: queryData = query?.data;
+	$: queryStatus = query?.status;
 	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queried && readable(sortEntitiesByCreated(Array.from($queried.value)));
+	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
 
 	const createEntity = async () => {
 		const content = text.trim(); // TODO parse to trim? regularize step?
@@ -50,7 +52,7 @@
 
 <div class="room">
 	<div class="entities">
-		{#if entities}
+		{#if entities && $queryStatus === 'success'}
 			<RoomItems {persona} {entities} />
 		{:else}
 			<PendingAnimation />

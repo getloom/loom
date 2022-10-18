@@ -43,13 +43,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 
 // TODO possibly merge with `stashEntities` to prevent update churn
 export const stashTies = (
-	{
-		sourceTiesByDestEntityId,
-		destTiesBySourceEntityId,
-		entitiesBySourceId,
-		entityById,
-		tieById,
-	}: WritableUi,
+	{sourceTiesByDestEntityId, destTiesBySourceEntityId, queryByKey, entityById, tieById}: WritableUi,
 	$ties: Tie[],
 	mutated = new Mutated('stashTies'),
 ): void => {
@@ -88,18 +82,21 @@ export const stashTies = (
 			mutated.add(destTies);
 		}
 
-		// Update the dest entity set.
+		// Update the queries.
 		const entity = entityById.get(dest_id);
 		if (entity) {
-			const destEntities = entitiesBySourceId.get(source_id);
-			if (destEntities) {
-				const $destEntities = destEntities.get().value;
-				if (!$destEntities.has(entity)) {
-					$destEntities.add(entity);
-					mutated.add(destEntities);
+			const query = queryByKey.get(source_id);
+			if (query) {
+				const $query = query.data.get().value;
+				if (!$query.has(entity)) {
+					$query.add(entity);
+					mutated.add(query.data);
 				}
 			} else {
-				entitiesBySourceId.set(source_id, mutable(new Set([entity])));
+				queryByKey.set(source_id, {
+					data: mutable(new Set([entity])),
+					status: writable('initial'),
+				});
 			}
 		} else {
 			// TODO what should we do here? may not be a problem depending on query patterns
@@ -153,7 +150,7 @@ export const evictEntities = (
 	const {
 		entityById,
 		tieById,
-		entitiesBySourceId,
+		queryByKey,
 		freshnessByDirectoryId,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
@@ -217,15 +214,15 @@ export const evictEntities = (
 		// could be integrated in this function instead of being extracted.
 		// See also the TODO above.
 
-		// Update the dest entity set.
-		for (const destEntities of entitiesBySourceId.values()) {
-			const $destEntities = destEntities.get().value;
-			if ($destEntities.has(entity)) {
-				$destEntities.delete(entity);
-				mutated.add(destEntities);
+		// Update the queries.
+		for (const query of queryByKey.values()) {
+			const $query = query.data.get().value;
+			if ($query.has(entity)) {
+				$query.delete(entity);
+				mutated.add(query.data);
 			}
 		}
-		entitiesBySourceId.delete(entity_id);
+		queryByKey.delete(entity_id);
 	}
 
 	mutated.end('evictEntities');

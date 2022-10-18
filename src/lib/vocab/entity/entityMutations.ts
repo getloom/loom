@@ -1,4 +1,4 @@
-import {mutable} from '@feltcoop/svelte-gettable-stores';
+import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityMutationHelpers';
@@ -56,16 +56,17 @@ export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async (
 	return result;
 };
 
-//TODO rethink this caching element
-export const QueryEntities: Mutations['QueryEntities'] = ({
-	ui: {entitiesBySourceId},
-	dispatch,
-	params,
-}) => {
-	let destEntities = entitiesBySourceId.get(params.source_id);
-	if (!destEntities) {
-		entitiesBySourceId.set(params.source_id, (destEntities = mutable(new Set())));
-		void dispatch.ReadEntities(params);
+export const QueryEntities: Mutations['QueryEntities'] = ({ui: {queryByKey}, dispatch, params}) => {
+	let query = queryByKey.get(params.source_id);
+	if (!query) {
+		queryByKey.set(
+			params.source_id,
+			(query = {data: mutable(new Set()), status: writable('pending')}),
+		);
+		void dispatch.ReadEntities(params).then(
+			() => query!.status.set('success'),
+			() => query!.status.set('failure'), // TODO set something like `query.error` from this
+		);
 	}
-	return destEntities;
+	return query;
 };

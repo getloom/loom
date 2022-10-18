@@ -25,7 +25,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		communityIdSelectionByPersonaId,
 		spaceIdSelectionByCommunityId,
 		entityById,
-		entitiesBySourceId,
+		queryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
 		lastSeenByDirectoryId,
@@ -79,7 +79,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	);
 
 	entityById.clear();
-	entitiesBySourceId.clear();
+	queryByKey.clear();
 	sourceTiesByDestEntityId.mutate(($v) => $v.clear());
 	destTiesBySourceEntityId.mutate(($v) => $v.clear());
 

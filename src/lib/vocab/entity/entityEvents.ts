@@ -95,24 +95,20 @@ export const ReadEntities: ServiceEventInfo = {
 	},
 };
 
-// `QueryEntities` differs from `ReadEntities` in that
-// it returns a reactive store containing the requested entities.
-// Its API could be expanded to give callers access to its async status or promise,
-// maybe via a third `options` arg with callbacks.
 export const QueryEntities: ClientEventInfo = {
 	type: 'ClientEvent',
 	name: 'QueryEntities',
-	// TODO this is saying "use `ReadEntities`'s params but for this event"
-	// but it's verbose and awkward. If the pattern should stay, we could write a helper like:
-	// `renameSchema(ReadEntities.params, '/schemas/QueryEntitiesResponse.json')`
-	// but that only handles extending the $id, which may not be the common case.
 	params: {
-		...ReadEntities.params,
 		$id: '/schemas/QueryEntitiesResponse.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number'},
+			source_id: {type: 'number'},
+		},
+		required: ['actor', 'source_id'],
+		additionalProperties: false,
 	},
-	// TODO Can/should this compose the `ReadEntities` event info?
-	// Could make the `response` available.
-	returns: 'Mutable<Set<Readable<Entity>>>',
+	returns: '{data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}',
 };
 
 export const ReadEntitiesPaginated: ServiceEventInfo = {

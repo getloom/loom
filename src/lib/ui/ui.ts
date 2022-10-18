@@ -9,6 +9,7 @@ import {
 import {setContext, getContext, type SvelteComponent} from 'svelte';
 import type {DialogData} from '@feltcoop/felt/ui/dialog/dialog.js';
 import {browser} from '$app/environment';
+import type {AsyncStatus} from '@feltcoop/felt';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
@@ -67,7 +68,7 @@ export interface Ui {
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
 	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
-	entitiesBySourceId: Map<number, Mutable<Set<Readable<Entity>>>>;
+	queryByKey: Map<number, {data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}>;
 	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
 	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
 	communitiesBySessionPersona: Readable<Map<Readable<Persona>, Array<Readable<Community>>>>;
@@ -251,7 +252,10 @@ export const toUi = (
 
 	const entityById: Map<number, Writable<Entity>> = new Map();
 	const tieById: Map<number, Tie> = new Map();
-	const entitiesBySourceId: Map<number, Mutable<Set<Writable<Entity>>>> = new Map();
+	const queryByKey: Map<
+		number,
+		{data: Mutable<Set<Writable<Entity>>>; status: Writable<AsyncStatus>}
+	> = new Map();
 	const sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>> = mutable(new Map());
 	const destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>> = mutable(new Map());
 
@@ -298,7 +302,7 @@ export const toUi = (
 		spacesByCommunityId,
 		personasByCommunityId,
 		rolesByCommunityId,
-		entitiesBySourceId,
+		queryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
 		communitiesBySessionPersona,
