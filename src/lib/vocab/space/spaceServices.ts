@@ -51,9 +51,9 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 
 		const spaces = unwrap(await repos.space.filterByCommunity(params.community_id));
 
-		const directories = unwrap(
+		const {entities: directories} = unwrap(
 			await repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
-		) as Array<Entity & {data: DirectoryEntityData}>;
+		) as {entities: Array<Entity & {data: DirectoryEntityData}>};
 
 		return {ok: true, status: 200, value: {spaces, directories}};
 	},

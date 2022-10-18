@@ -57,13 +57,19 @@ export class PersonaRepo extends PostgresRepo {
 	}
 
 	// TODO handle count mismatch similar to to the entity version of this method
-	async filterByIds(personaIds: number[]): Promise<Result<{value: Persona[]}>> {
-		const data = await this.sql<Persona[]>`
+	async filterByIds(
+		personaIds: number[],
+	): Promise<Result<{value: {personas: Persona[]; missing: null | number[]}}>> {
+		if (personaIds.length === 0) return {ok: true, value: {personas: [], missing: null}};
+		const personas = await this.sql<Persona[]>`
 			SELECT persona_id, type, name, account_id, community_id, created, updated 
 			FROM personas WHERE persona_id IN ${this.sql(personaIds)}
 		`;
-		if (!data.length) return NOT_OK;
-		return {ok: true, value: data};
+		const missing =
+			personas.length === personaIds.length
+				? null
+				: personaIds.filter((id) => !personas.some((e) => e.persona_id === id));
+		return {ok: true, value: {personas, missing}};
 	}
 
 	async findByCommunityId(community_id: number): Promise<Result<{value: Persona | undefined}>> {

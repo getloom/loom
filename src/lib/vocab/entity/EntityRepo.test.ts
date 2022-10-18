@@ -31,7 +31,7 @@ test__EntityRepo('entites return sorted by descending id', async ({db, random}) 
 
 	// Ensure db sort order is shuffled from the insertion order.
 	unwrap(await db.repos.entity.updateEntityData(entity1.entity_id, entity1.data));
-	const entities = unwrap(
+	const {entities} = unwrap(
 		await db.repos.entity.filterByIds([entity0.entity_id, entity2.entity_id, entity1.entity_id]),
 	);
 	assert.is(entity2.entity_id, entities[0].entity_id);

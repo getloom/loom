@@ -19,7 +19,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(params.source_id);
-		const entities = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
+		const {entities} = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
 };
@@ -33,7 +33,7 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(params.source_id);
-		const entities = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
+		const {entities} = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
 };

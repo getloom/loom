@@ -64,8 +64,10 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 			repos.persona.filterByIds(personaIds),
 			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
 		]);
-		const personas = unwrap(personasResult);
-		const directories = unwrap(directoriesResult) as Array<Entity & {data: DirectoryEntityData}>;
+		const {personas} = unwrap(personasResult);
+		const {entities: directories} = unwrap(directoriesResult) as {
+			entities: Array<Entity & {data: DirectoryEntityData}>;
+		};
 
 		return {
 			ok: true,

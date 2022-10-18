@@ -5,7 +5,6 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {EntityData} from '$lib/vocab/entity/entityData';
-import type {ErrorResponse} from '$lib/util/error';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
@@ -31,22 +30,21 @@ export class EntityRepo extends PostgresRepo {
 
 	// TODO maybe `EntityQuery`?
 	// TODO remove the `message`, handle count mismatch similar to `findById` calls, maybe returning an array of the missing ids with `ok: false`
-	async filterByIds(entityIds: number[]): Promise<Result<{value: Entity[]}, ErrorResponse>> {
-		if (entityIds.length === 0) return {ok: true, value: []};
-		log.trace('[findBySet]', entityIds);
+	async filterByIds(
+		entityIds: number[],
+	): Promise<Result<{value: {entities: Entity[]; missing: null | number[]}}>> {
+		if (entityIds.length === 0) return {ok: true, value: {entities: [], missing: null}};
+		log.trace('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
 			SELECT entity_id, data, persona_id, created, updated 
 			FROM entities WHERE entity_id IN ${this.sql(entityIds)}
 			ORDER BY entity_id DESC
 		`;
-		log.trace('filterByIds entity count:', entities.length);
-		if (entities.count !== entityIds.length) {
-			return {
-				ok: false,
-				message: `expected ${entityIds.length} entities but only found ${entities.count}`,
-			};
-		}
-		return {ok: true, value: entities};
+		const missing =
+			entities.length === entityIds.length
+				? null
+				: entityIds.filter((id) => !entities.some((e) => e.entity_id === id));
+		return {ok: true, value: {entities, missing}};
 	}
 
 	async updateEntityData(

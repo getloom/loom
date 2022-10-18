@@ -155,11 +155,10 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 		source_id: list.entity_id,
 		data: {type: 'Note', content: `milk`},
 	});
-	assert.is(
-		unwrap(await db.repos.entity.filterByIds([todo1.entity_id, todo2.entity_id, todo3.entity_id]))
-			.length,
-		3,
-	);
+	const entityIds = [todo1.entity_id, todo2.entity_id, todo3.entity_id];
+	const filterResult = unwrap(await db.repos.entity.filterByIds(entityIds));
+	assert.is(filterResult.entities.length, 3);
+	assert.is(filterResult.missing, null);
 	//delete the collection
 	unwrap(
 		await DeleteEntitiesService.perform({
@@ -167,13 +166,8 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
 		}),
 	);
-	let failed = false;
-	try {
-		unwrap(await db.repos.entity.filterByIds([todo1.entity_id, todo2.entity_id, todo3.entity_id]));
-	} catch (err) {
-		failed = true;
-	}
-	if (!failed) throw Error('Expected to delete entities');
+	const {missing} = unwrap(await db.repos.entity.filterByIds(entityIds));
+	assert.equal(missing, entityIds);
 });
 
 test_entityServices.run();
