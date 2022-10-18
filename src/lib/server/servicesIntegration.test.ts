@@ -125,10 +125,10 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 
 	// TODO add a service event?
-	assert.is(unwrap(await db.repos.account.findById(account.account_id)).name, account.name);
+	assert.is(unwrap(await db.repos.account.findById(account.account_id))?.name, account.name);
 
 	// TODO add a service event?
-	assert.is(unwrap(await db.repos.account.findByName(account.name)).name, account.name);
+	assert.is(unwrap(await db.repos.account.findByName(account.name))?.name, account.name);
 
 	// do changes
 	//

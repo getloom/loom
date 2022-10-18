@@ -99,11 +99,10 @@ export const ReadPersonaService: ServiceByName['ReadPersona'] = {
 	event: ReadPersona,
 	perform: async ({repos, params}) => {
 		log.trace('[ReadPersona] persona', params.persona_id);
-
-		const findPersonaResult = await repos.persona.findById(params.persona_id);
-		if (!findPersonaResult.ok) {
+		const persona = unwrap(await repos.persona.findById(params.persona_id));
+		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
-		return {ok: true, status: 200, value: {persona: findPersonaResult.value}};
+		return {ok: true, status: 200, value: {persona}};
 	},
 };

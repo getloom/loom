@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import {unwrap, unwrapError} from '@feltcoop/felt';
+import {unwrap} from '@feltcoop/felt';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
@@ -28,7 +28,7 @@ test__spaceServices('delete a space in multiple communities', async ({db, random
 		}),
 	);
 
-	unwrapError(await db.repos.space.findById(space.space_id));
+	assert.ok(!unwrap(await db.repos.space.findById(space.space_id)));
 });
 
 test__spaceServices.run();

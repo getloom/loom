@@ -46,8 +46,8 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 		log.trace('[ReadCommunity] account', account_id); // TODO logging
 		log.trace('[ReadCommunity] community', community_id);
 
-		const findCommunityResult = await repos.community.findById(community_id);
-		if (!findCommunityResult.ok) {
+		const community = unwrap(await repos.community.findById(community_id));
+		if (!community) {
 			return {ok: false, status: 404, message: 'no community found'};
 		}
 
@@ -70,7 +70,7 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 		return {
 			ok: true,
 			status: 200,
-			value: {community: findCommunityResult.value, spaces, directories, memberships, personas},
+			value: {community, spaces, directories, memberships, personas},
 		};
 	},
 };
@@ -154,15 +154,10 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 	event: DeleteCommunity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const communityResult = await repos.community.findById(params.community_id);
-			if (!communityResult.ok) {
-				return {
-					ok: false,
-					status: 404,
-					message: 'no community found',
-				};
+			const community = unwrap(await repos.community.findById(params.community_id));
+			if (!community) {
+				return {ok: false, status: 404, message: 'no community found'};
 			}
-			const community = communityResult.value;
 			if (community.type === 'personal') {
 				return {ok: false, status: 405, message: 'cannot delete personal community'};
 			}

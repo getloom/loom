@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, type Result} from '@feltcoop/felt';
+import {NOT_OK, unwrap, type Result} from '@feltcoop/felt';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Community} from '$lib/vocab/community/community';
@@ -29,7 +29,7 @@ test__service(`roll back the database after a failed transaction`, async ({db, r
 		);
 		const found = unwrap(await repos.community.findByName(communityName));
 		assert.is(found?.name, communityName);
-		return (failedResult = {ok: false});
+		return (failedResult = NOT_OK);
 	});
 	assert.ok(community);
 	assert.ok(failedResult);
@@ -37,7 +37,7 @@ test__service(`roll back the database after a failed transaction`, async ({db, r
 	assert.is(returnedResult, failedResult);
 	// Ensure the community created in the transaction no longer exists in the db.
 	assert.ok(!unwrap(await db.repos.community.findByName(communityName)));
-	assert.ok(!(await db.repos.community.findById(community.community_id)).ok);
+	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
 });
 
 test__service(`compose multiple calls into one transaction`, async ({db, random}) => {
@@ -60,14 +60,14 @@ test__service(`compose multiple calls into one transaction`, async ({db, random}
 				);
 				const found = unwrap(await repos.community.findByName(communityName));
 				assert.is(found?.name, communityName);
-				return (failedResult = {ok: false});
+				return (failedResult = NOT_OK);
 			}),
 		),
 	);
 	assert.ok(community);
 	assert.ok(failedResult);
 	assert.ok(!failedResult.ok);
-	assert.ok(!(await db.repos.community.findById(community.community_id)).ok);
+	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
 });
 
 test__service(`when a transact cb throws, fail and rethrow`, async ({db, random}) => {
@@ -94,7 +94,7 @@ test__service(`when a transact cb throws, fail and rethrow`, async ({db, random}
 	assert.is(result, undefined);
 	assert.is(errorMessage, 'test failure');
 	assert.ok(community);
-	assert.ok(!(await db.repos.community.findById(community.community_id)).ok);
+	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
 });
 
 test__service.run();

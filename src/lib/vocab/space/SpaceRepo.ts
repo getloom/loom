@@ -9,14 +9,13 @@ import type {Entity} from '$lib/vocab/entity/entity';
 const log = new Logger(gray('[') + blue('SpaceRepo') + gray(']'));
 
 export class SpaceRepo extends PostgresRepo {
-	async findById(space_id: number): Promise<Result<{value: Space}>> {
+	async findById(space_id: number): Promise<Result<{value: Space | undefined}>> {
 		log.trace(`[findById] ${space_id}`);
 		const data = await this.sql<Space[]>`
 			SELECT space_id, name, url, icon, view, updated, created, community_id, directory_id
 			FROM spaces WHERE space_id=${space_id}
 		`;
 		log.trace('[findById] result', data);
-		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
 	}
 

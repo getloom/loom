@@ -27,17 +27,17 @@ export const ReadSpaceService: ServiceByName['ReadSpace'] = {
 	perform: async ({repos, params}) => {
 		log.trace('[ReadSpace] space', params.space_id);
 
-		const findSpaceResult = await repos.space.findById(params.space_id);
-		if (!findSpaceResult.ok) {
+		const space = unwrap(await repos.space.findById(params.space_id));
+		if (!space) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
-		const space = findSpaceResult.value;
 
-		const findDirectoryResult = await repos.entity.findById(space.directory_id);
-		if (!findDirectoryResult.ok) {
+		const directory = unwrap(await repos.entity.findById(space.directory_id)) as
+			| (Entity & {data: DirectoryEntityData})
+			| undefined;
+		if (!directory) {
 			return {ok: false, status: 404, message: 'no directory found'};
 		}
-		const directory = findDirectoryResult.value as Entity & {data: DirectoryEntityData};
 
 		return {ok: true, status: 200, value: {space, directory}};
 	},
@@ -77,8 +77,10 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 				return {ok: false, status: 409, message: 'a space with that url already exists'};
 			}
 
-			log.trace('[CreateSpace] finding community space for dir actor');
 			const communityPersona = unwrap(await repos.persona.findByCommunityId(community_id));
+			if (!communityPersona) {
+				return {ok: false, status: 409, message: 'failed to find the community persona'};
+			}
 
 			log.trace('[CreateSpace] initializing directory for space');
 			const uninitializedDirectory = unwrap(
@@ -131,11 +133,10 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 			log.trace('[DeleteSpace] deleting space with id:', params.space_id);
 
 			// Check that the space can be deleted.
-			const findSpaceResult = await repos.space.findById(params.space_id);
-			if (!findSpaceResult.ok) {
+			const space = unwrap(await repos.space.findById(params.space_id));
+			if (!space) {
 				return {ok: false, status: 404, message: 'no space found'};
 			}
-			const space = findSpaceResult.value;
 			if (!canDeleteSpace(space)) {
 				return {ok: false, status: 405, message: 'cannot delete home space'};
 			}

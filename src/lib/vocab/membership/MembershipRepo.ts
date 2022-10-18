@@ -18,13 +18,15 @@ export class MembershipRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
-	async findById(persona_id: number, community_id: number): Promise<Result<{value: Membership}>> {
+	async findById(
+		persona_id: number,
+		community_id: number,
+	): Promise<Result<{value: Membership | undefined}>> {
 		const data = await this.sql<Membership[]>`
 			SELECT persona_id, community_id, created
 			FROM memberships
 			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
 		`;
-		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
 	}
 

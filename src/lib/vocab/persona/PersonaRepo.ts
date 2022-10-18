@@ -47,14 +47,12 @@ export class PersonaRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
-	// TODO `findById` could be constructed by a generic function with id/columns params
-	async findById(persona_id: number): Promise<Result<{value: Persona}>> {
+	async findById(persona_id: number): Promise<Result<{value: Persona | undefined}>> {
 		log.trace('[findById]', persona_id);
 		const data = await this.sql<Persona[]>`
 			SELECT persona_id, type, name, account_id, community_id, created, updated 
 			FROM personas WHERE persona_id=${persona_id}
 		`;
-		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
 	}
 
@@ -68,13 +66,12 @@ export class PersonaRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
-	async findByCommunityId(community_id: number): Promise<Result<{value: Persona}>> {
+	async findByCommunityId(community_id: number): Promise<Result<{value: Persona | undefined}>> {
 		log.trace('[findByCommunityId]', community_id);
 		const data = await this.sql<Persona[]>`
 			SELECT persona_id, type, name, account_id, community_id, created, updated 
 			FROM personas WHERE community_id=${community_id}
 		`;
-		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
 	}
 

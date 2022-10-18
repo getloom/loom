@@ -59,7 +59,9 @@ test__membershipServices('delete a membership in a community', async ({db, rando
 			},
 		}),
 	);
-	unwrapError(await db.repos.membership.findById(personas[1].persona_id, community.community_id));
+	assert.ok(
+		!unwrap(await db.repos.membership.findById(personas[1].persona_id, community.community_id)),
+	);
 });
 
 test__membershipServices('fail to delete a personal membership', async ({db, random}) => {
@@ -74,7 +76,7 @@ test__membershipServices('fail to delete a personal membership', async ({db, ran
 			},
 		}),
 	);
-	unwrap(await db.repos.membership.findById(persona.persona_id, persona.community_id));
+	assert.ok(unwrap(await db.repos.membership.findById(persona.persona_id, persona.community_id)));
 });
 
 test__membershipServices('fail to delete a community persona membership', async ({db, random}) => {
@@ -89,7 +91,9 @@ test__membershipServices('fail to delete a community persona membership', async 
 			},
 		}),
 	);
-	unwrap(await db.repos.membership.findById(personas[0].persona_id, community.community_id));
+	assert.ok(
+		unwrap(await db.repos.membership.findById(personas[0].persona_id, community.community_id)),
+	);
 });
 
 test__membershipServices(
@@ -129,7 +133,7 @@ test__membershipServices(
 			unwrap(await db.repos.membership.filterByCommunityId(community.community_id)).length,
 			2,
 		);
-		unwrap(await db.repos.community.findById(community.community_id));
+		assert.ok(unwrap(await db.repos.community.findById(community.community_id)));
 
 		//Delete last account member, the community is deleted
 		unwrap(
@@ -147,7 +151,7 @@ test__membershipServices(
 			unwrap(await db.repos.membership.filterByCommunityId(community.community_id)).length,
 			0,
 		);
-		unwrapError(await db.repos.community.findById(community.community_id));
+		assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
 	},
 );
 

@@ -110,7 +110,7 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 	);
 
 	//check community personas are gone
-	unwrapError(await db.repos.persona.findByCommunityId(community.community_id));
+	assert.ok(!unwrap(await db.repos.persona.findByCommunityId(community.community_id)));
 
 	//check community spaces are gone
 	const spaceResult = unwrap(await db.repos.space.filterByCommunity(community.community_id));
@@ -127,7 +127,7 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 	assert.equal(roleResult.length, 0);
 
 	//check community is gone
-	unwrapError(await db.repos.community.findById(community.community_id));
+	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
 });
 
 test_communityServices.run();

@@ -1,4 +1,4 @@
-import {OK, type Result} from '@feltcoop/felt';
+import {OK, unwrap, type Result} from '@feltcoop/felt';
 
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
@@ -34,11 +34,10 @@ export const authorize = async (
 	if (!params.actor) {
 		return {ok: false, status: 400, message: 'actor is required'};
 	}
-	const personaResult = await repos.persona.findById(params.actor);
-	if (!personaResult.ok) {
+	const actor = unwrap(await repos.persona.findById(params.actor));
+	if (!actor) {
 		return {ok: false, status: 400, message: 'actor cannot be found'};
 	}
-	const actor = personaResult.value;
 	if (actor.account_id !== account_id) {
 		return {ok: false, status: 403, message: 'actor is not authorized for this account'};
 	}

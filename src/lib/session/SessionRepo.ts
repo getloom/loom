@@ -1,4 +1,4 @@
-import type {Result} from '@feltcoop/felt';
+import {NOT_OK, unwrap, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -12,9 +12,8 @@ const log = new Logger(gray('[') + blue('SessionRepo') + gray(']'));
 export class SessionRepo extends PostgresRepo {
 	async loadClientSession(account_id: number): Promise<Result<{value: ClientAccountSession}>> {
 		log.trace('loadClientSession', account_id);
-		const accountResult = await this.repos.account.findById(account_id);
-		if (!accountResult.ok) return accountResult;
-		const account = accountResult.value;
+		const account = unwrap(await this.repos.account.findById(account_id));
+		if (!account) return NOT_OK; // TODO custom error?
 
 		// TODO make this a single query
 		const [

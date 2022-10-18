@@ -1,4 +1,3 @@
-import type {Account} from '$lib/vocab/account/account.js';
 import {verifyPassword} from '$lib/util/password';
 import {Login, Logout} from '$lib/session/sessionEvents';
 import type {ServiceByName} from '$lib/app/eventTypes';
@@ -23,16 +22,15 @@ export const LoginService: ServiceByName['Login'] = {
 			}
 
 			// First see if the account already exists.
-			const findAccountResult = await repos.account.findByName(username);
-			let account: Account;
-			if (findAccountResult.ok) {
+			let account = unwrap(await repos.account.findByName(username));
+			if (account) {
 				// There's already an account, so proceed to log in after validating the password.
-				account = findAccountResult.value;
 				if (!(await verifyPassword(password, account.password))) {
 					return {ok: false, status: 400, message: 'invalid account name or password'};
 				}
 			} else {
 				// There's no account, so create one.
+				// TODO this flow is temporary, we'll make account creation explicit instead of implicit
 				const createAccountResult = await repos.account.create(
 					username,
 					password,

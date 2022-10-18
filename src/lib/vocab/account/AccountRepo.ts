@@ -21,26 +21,23 @@ export class AccountRepo extends PostgresRepo {
 			) RETURNING *
 		`;
 		log.trace('created account', data[0]);
-		const account = data[0];
-		return {ok: true, value: account};
+		return {ok: true, value: data[0]};
 	}
 
-	async findById(account_id: number): Promise<Result<{value: AccountModel}>> {
+	async findById(account_id: number): Promise<Result<{value: AccountModel | undefined}>> {
 		log.trace('loading account', account_id);
 		const data = await this.sql<AccountModel[]>`
 			SELECT account_id, name, settings, created, updated
 			FROM accounts WHERE account_id = ${account_id}
 		`;
-		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
 	}
 
-	async findByName(name: string): Promise<Result<{value: Account}>> {
+	async findByName(name: string): Promise<Result<{value: Account | undefined}>> {
 		const data = await this.sql<Account[]>`
 			SELECT account_id, name, password, created, updated
 			FROM accounts WHERE LOWER(name) = LOWER(${name})
 		`;
-		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
 	}
 

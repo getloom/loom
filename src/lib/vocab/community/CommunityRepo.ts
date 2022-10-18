@@ -24,14 +24,12 @@ export class CommunityRepo extends PostgresRepo {
 		return {ok: true, value: community};
 	}
 
-	async findById(community_id: number): Promise<Result<{value: Community}>> {
+	async findById(community_id: number): Promise<Result<{value: Community | undefined}>> {
 		log.trace(`[findById] ${community_id}`);
 		const data = await this.sql<Community[]>`
 			SELECT community_id, type, name, settings, created, updated
 			FROM communities WHERE community_id=${community_id}
 		`;
-		// log.trace('[findById]', data);
-		if (!data.length) return NOT_OK;
 		return {ok: true, value: data[0]};
 	}
 

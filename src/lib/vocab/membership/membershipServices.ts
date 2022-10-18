@@ -18,18 +18,17 @@ export const CreateMembershipService: ServiceByName['CreateMembership'] = {
 			log.trace('[CreateMembership] creating membership', persona_id, community_id);
 
 			// Personal communities disallow memberships as a hard rule.
-			const communityResult = await repos.community.findById(community_id);
-			if (!communityResult.ok) {
+			const community = unwrap(await repos.community.findById(community_id));
+			if (!community) {
 				return {ok: false, status: 400, message: 'community not found'};
 			}
-			const community = communityResult.value;
 			if (community.type === 'personal') {
 				return {ok: false, status: 403, message: 'personal communities disallow memberships'};
 			}
 
 			// Check for duplicate memberships.
-			const findMembershipResult = await repos.membership.findById(persona_id, community_id);
-			if (findMembershipResult.ok) {
+			const existingMembership = unwrap(await repos.membership.findById(persona_id, community_id));
+			if (existingMembership) {
 				return {ok: false, status: 409, message: 'membership already exists'};
 			}
 
@@ -57,15 +56,15 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 			// 	repos.persona.findById(persona_id),
 			// 	repos.community.findById(community_id),
 			// ]);
-			const personaResult = await repos.persona.findById(persona_id);
-			const communityResult = await repos.community.findById(community_id);
-			if (!personaResult.ok) {
+			const persona = unwrap(await repos.persona.findById(persona_id));
+			if (!persona) {
 				return {ok: false, status: 404, message: 'no persona found'};
 			}
-			if (!communityResult.ok) {
+			const community = unwrap(await repos.community.findById(community_id));
+			if (!community) {
 				return {ok: false, status: 404, message: 'no community found'};
 			}
-			if (communityResult.value.type === 'personal') {
+			if (community.type === 'personal') {
 				return {ok: false, status: 405, message: 'cannot leave a personal community'};
 			}
 			if (community_id === ADMIN_COMMUNITY_ID) {
@@ -76,10 +75,7 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
 				}
 			}
-			if (
-				personaResult.value.type === 'community' &&
-				personaResult.value.community_id === community_id
-			) {
+			if (persona.type === 'community' && persona.community_id === community_id) {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 

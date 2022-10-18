@@ -17,6 +17,7 @@ test__EntityRepo('find entity by id', async ({db, random}) => {
 	const {entity} = await random.entity(undefined, undefined, undefined, undefined, {data});
 	assert.equal(entity.data, data); // just in case
 	const found = unwrap(await db.repos.entity.findById(entity.entity_id));
+	assert.ok(found);
 	assert.is(found.entity_id, entity.entity_id);
 	assert.is(found.persona_id, entity.persona_id);
 	assert.equal(found.data, data);
@@ -58,6 +59,7 @@ test__EntityRepo('disallow mutating directories', async ({db, random}) => {
 
 	// Ensure nothing in the database changed.
 	const found = unwrap(await db.repos.entity.findById(entity.entity_id));
+	assert.ok(found);
 	assert.is(found.entity_id, entity.entity_id);
 	assert.is(found.persona_id, entity.persona_id);
 	assert.equal(found.data, data);
@@ -86,6 +88,7 @@ test__EntityRepo('disallow mutating tombstones', async ({db, random}) => {
 
 	// Ensure the entity is a Tombstone and didn't get mutated.
 	const found = unwrap(await db.repos.entity.findById(entity.entity_id));
+	assert.ok(found);
 	assert.is(found.entity_id, entity.entity_id);
 	assert.is(found.persona_id, entity.persona_id);
 	const foundData = found.data as TombstoneEntityData;
