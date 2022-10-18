@@ -41,6 +41,7 @@ export const CreateMembershipService: ServiceByName['CreateMembership'] = {
 
 //deletes a membership of a given persona in a given community
 //TODO after front end data normalization make this use membership_id
+//TODO refactor this into LeaveCommunityService & make DeleteMembership use membership_id
 export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 	event: DeleteMembership,
 	perform: ({transact, params}) =>
