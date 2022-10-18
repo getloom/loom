@@ -49,7 +49,7 @@ export interface Ui {
 	account: Readable<AccountModel | null>;
 	personas: Mutable<Array<Readable<Persona>>>;
 	session: Readable<ClientSession>;
-	sessionPersonas: Readable<Array<Readable<Persona>>>;
+	sessionPersonas: Mutable<Array<Readable<Persona>>>;
 	sessionPersonaIds: Readable<Set<number>>;
 	sessionPersonaIndices: Readable<Map<Readable<Persona>, number>>;
 	communities: Mutable<Array<Readable<Community>>>;
@@ -107,7 +107,7 @@ export const toUi = (
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
 	// TODO these `Persona`s need additional data compared to every other `Persona`
-	const sessionPersonas = writable<Array<Writable<Persona>>>([]);
+	const sessionPersonas = mutable<Array<Writable<Persona>>>([]);
 	const personas = mutable<Array<Writable<Persona>>>([]);
 	const communities = mutable<Array<Writable<Community>>>([]);
 	const roles = mutable<Array<Writable<Role>>>([]);
@@ -189,22 +189,22 @@ export const toUi = (
 	const personaIndexSelection = derived(
 		[personaSelection, sessionPersonas],
 		([$personaSelection, $sessionPersonas]) =>
-			$personaSelection ? $sessionPersonas.indexOf($personaSelection) : null,
+			$personaSelection ? $sessionPersonas.value.indexOf($personaSelection) : null,
 	);
 	const sessionPersonaIds = derived(
 		[sessionPersonas],
-		([$sessionPersonas]) => new Set($sessionPersonas.map((p) => p.get().persona_id)),
+		([$sessionPersonas]) => new Set($sessionPersonas.value.map((p) => p.get().persona_id)),
 	);
 	const sessionPersonaIndices = derived(
 		[sessionPersonas],
-		([$sessionPersonas]) => new Map($sessionPersonas.map((p, i) => [p, i])),
+		([$sessionPersonas]) => new Map($sessionPersonas.value.map((p, i) => [p, i])),
 	);
 	const communitiesBySessionPersona: Readable<Map<Writable<Persona>, Array<Writable<Community>>>> =
 		derived(
 			[sessionPersonas, memberships, communities],
 			([$sessionPersonas, $memberships, $communities]) => {
 				const map: Map<Writable<Persona>, Array<Writable<Community>>> = new Map();
-				for (const sessionPersona of $sessionPersonas) {
+				for (const sessionPersona of $sessionPersonas.value) {
 					const $sessionPersona = sessionPersona.get();
 					const sessionPersonaCommunities: Array<Writable<Community>> = [];
 					for (const community of $communities.value) {

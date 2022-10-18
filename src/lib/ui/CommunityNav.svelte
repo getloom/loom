@@ -8,7 +8,7 @@
 </script>
 
 <nav class="community-nav">
-	{#each $sessionPersonas as persona (persona)}
+	{#each $sessionPersonas.value as persona (persona)}
 		<CommunityNavGroup {persona} />
 	{/each}
 </nav>

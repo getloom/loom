@@ -20,7 +20,7 @@
 	</svelte:fragment>
 	Account
 	<svelte:fragment slot="menu">
-		{#each $sessionPersonas as persona (persona)}
+		{#each $sessionPersonas.value as persona (persona)}
 			<SessionPersonaContextmenuEntry {persona} />
 		{/each}
 		{#if !$session.guest}

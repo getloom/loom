@@ -1,4 +1,4 @@
-import {writable, mutable, type Mutable} from '@feltcoop/svelte-gettable-stores';
+import {writable, mutable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import type {WritableUi} from '$lib/ui/ui';
@@ -10,6 +10,7 @@ import {
 	upsertFreshnessByCommunityId,
 	setFreshnessByDirectoryId,
 } from '$lib/ui/uiMutationHelpers';
+import {Mutated} from '$lib/util/Mutated';
 
 const log = new Logger('[entityMutationHelpers]');
 
@@ -50,8 +51,8 @@ export const stashTies = (
 		tieById,
 	}: WritableUi,
 	$ties: Tie[],
+	mutated = new Mutated('stashTies'),
 ): void => {
-	const mutated = new Set<Mutable<any>>();
 	const $sourceTiesByDestEntityId = sourceTiesByDestEntityId.get().value;
 	const $destTiesBySourceEntityId = destTiesBySourceEntityId.get().value;
 
@@ -106,8 +107,7 @@ export const stashTies = (
 		}
 	}
 
-	// Batch mutations.
-	for (const m of mutated) m.mutate();
+	mutated.end('stashTies');
 };
 
 export const evictTie = (
@@ -145,7 +145,11 @@ export const evictTie = (
 };
 
 // TODO delete orphaned entities
-export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
+export const evictEntities = (
+	ui: WritableUi,
+	entityIds: number[],
+	mutated = new Mutated('evictEntities'),
+): void => {
 	const {
 		entityById,
 		tieById,
@@ -157,8 +161,6 @@ export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
 
 	const $sourceTiesByDestEntityId = sourceTiesByDestEntityId.get().value;
 	const $destTiesBySourceEntityId = destTiesBySourceEntityId.get().value;
-
-	const mutated = new Set<Mutable<any>>();
 
 	for (const entity_id of entityIds) {
 		const entity = entityById.get(entity_id)!;
@@ -226,6 +228,5 @@ export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
 		entitiesBySourceId.delete(entity_id);
 	}
 
-	// Batch mutations.
-	for (const m of mutated) m.mutate();
+	mutated.end('evictEntities');
 };

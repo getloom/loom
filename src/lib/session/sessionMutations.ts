@@ -8,6 +8,11 @@ import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {Persona} from '$lib/vocab/persona/persona';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/session/clientSession';
+import {Mutated} from '$lib/util/Mutated';
+import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
+import {stashCommunities} from '$lib/vocab/community/communityMutationHelpers';
+import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
+import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 
 const log = new Logger('[ui]');
 
@@ -15,17 +20,8 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	const {
 		session,
 		account,
-		personaById,
-		communityById,
-		personas,
-		communities,
-		roles,
-		roleById,
-		spaceById,
-		spaces,
 		memberships,
 		personaIdSelection,
-		sessionPersonas,
 		communityIdSelectionByPersonaId,
 		spaceIdSelectionByCommunityId,
 		entityById,
@@ -43,43 +39,26 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	if (browser) log.trace('[setSession]', $session);
 	deserialize(deserializers)($session);
+
 	account.set(guest ? null : $session.account);
 
-	const $personas = (guest ? [] : toInitialPersonas($session)).map((p) => writable(p));
-	personaById.clear();
-	$personas.forEach((p) => personaById.set(p.get().persona_id, p));
-	personas.swap($personas);
-
-	const $sessionPersonas = guest ? [] : $session.sessionPersonas;
-	sessionPersonas.set($sessionPersonas.map((p) => personaById.get(p.persona_id)!));
-
-	const $communities = (guest ? [] : $session.communities).map((p) => writable(p));
-	communityById.clear();
-	$communities.forEach((c) => communityById.set(c.get().community_id, c));
-	communities.swap($communities);
-
-	const $roles = (guest ? [] : $session.roles).map((r) => writable(r));
-	roleById.clear();
-	$roles.forEach((r) => roleById.set(r.get().role_id, r));
-	roles.swap($roles);
-
-	const $spaces = guest ? [] : $session.spaces.map((s) => writable(s));
-	spaceById.clear();
-	$spaces.forEach((s) => spaceById.set(s.get().space_id, s));
-	spaces.swap($spaces);
+	const mutated = new Mutated('SetSession');
+	stashPersonas(ui, guest ? [] : toInitialPersonas($session), mutated, true);
+	stashCommunities(ui, guest ? [] : $session.communities, mutated, true);
+	stashRoles(ui, guest ? [] : $session.roles, mutated, true);
+	stashSpaces(ui, guest ? [] : $session.spaces, undefined, mutated, true);
+	mutated.end('SetSession');
 
 	memberships.swap(guest ? [] : $session.memberships.map((s) => writable(s)));
 
-	// TODO fix this and the 2 below to use the URL to initialize the correct persona+community+space
-	const $firstSessionPersona = guest ? null : $sessionPersonas[0];
-	personaIdSelection.set($firstSessionPersona?.persona_id ?? null);
+	personaIdSelection.set(guest ? null : $session.sessionPersonas[0]?.persona_id ?? null);
 
 	// TODO these two selections are hacky because using the derived stores
 	// was causing various confusing issues, so they find stuff directly on the session objects
 	// instead of using derived stores like `sessionPersonas` and `spacesByCommunityId`.
 	communityIdSelectionByPersonaId.swap(
 		// TODO first try to load this from localStorage
-		new Map(guest ? null : $sessionPersonas.map(($p) => [$p.persona_id, $p.community_id])),
+		new Map(guest ? null : $session.sessionPersonas.map(($p) => [$p.persona_id, $p.community_id])),
 	);
 	spaceIdSelectionByCommunityId.swap(
 		//TODO lookup space by community_id+url (see this comment in multiple places)

@@ -2,13 +2,22 @@ import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Persona} from '$lib/vocab/persona/persona';
+import {Mutated} from '$lib/util/Mutated';
 
-export const upsertPersonas = (
+export const stashPersonas = (
 	{personaById, personas, sessionPersonas, communityIdSelectionByPersonaId}: WritableUi,
 	$personas: Persona[],
+	mutated = new Mutated('stashPersonas'),
+	replace = false,
 ): void => {
-	let addedPersonas: Array<Writable<Persona>> | null = null;
-	let addedSessionPersonas: Array<Writable<Persona>> | null = null;
+	if (replace) {
+		personaById.clear();
+		personas.get().value.length = 0;
+		mutated.add(personas);
+		sessionPersonas.get().value.length = 0;
+		mutated.add(sessionPersonas);
+	}
+
 	for (const $persona of $personas) {
 		let persona = personaById.get($persona.persona_id);
 		if (persona) {
@@ -16,23 +25,18 @@ export const upsertPersonas = (
 		} else {
 			persona = writable($persona);
 			personaById.set($persona.persona_id, persona);
-			(addedPersonas || (addedPersonas = [])).push(persona);
+			personas.get().value.push(persona);
+			mutated.add(personas);
 			if ($persona.account_id) {
-				(addedSessionPersonas || (addedSessionPersonas = [])).push(persona);
+				// Adding a session persona.
+				sessionPersonas.get().value.push(persona);
+				mutated.add(sessionPersonas);
+				communityIdSelectionByPersonaId.get().value.set($persona.persona_id, $persona.community_id);
+				mutated.add(communityIdSelectionByPersonaId);
 			}
 		}
 	}
-	if (addedPersonas) {
-		personas.mutate(($personas) => $personas.push(...addedPersonas!));
-	}
-	if (addedSessionPersonas) {
-		sessionPersonas.update(($sessionPersonas) => $sessionPersonas.concat(addedSessionPersonas!));
-		communityIdSelectionByPersonaId.mutate(($c) => {
-			for (const $sessionPersona of addedSessionPersonas!) {
-				$c.set($sessionPersona.get().persona_id, $sessionPersona.get().community_id);
-			}
-		});
-	}
+	mutated.end('stashPersonas');
 };
 
 export const deletePersonas = (

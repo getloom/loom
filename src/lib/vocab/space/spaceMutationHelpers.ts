@@ -1,4 +1,4 @@
-import {writable, type Mutable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
@@ -9,17 +9,24 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
+import {Mutated} from '$lib/util/Mutated';
 
 export const stashSpaces = (
 	ui: WritableUi,
 	$spacesToStash: Space[],
 	$directoriesToStash?: Entity[],
+	mutated = new Mutated('stashSpaces'),
+	replace = false,
 ): void => {
-	if (!$spacesToStash.length && !$directoriesToStash?.length) return;
 	const {spaceById, spaces, spaceIdSelectionByCommunityId, spaceSelection, communityById} = ui;
-	const mutated = new Set<Mutable<any>>();
 	const selectedSpace = spaceSelection.get();
 	const $spaceIdSelectionByCommunityId = spaceIdSelectionByCommunityId.get().value;
+
+	if (replace) {
+		spaceById.clear();
+		spaces.get().value.length = 0;
+		mutated.add(spaces);
+	}
 
 	for (const $space of $spacesToStash) {
 		let space = spaceById.get($space.space_id);
@@ -57,8 +64,7 @@ export const stashSpaces = (
 	// probably forward `mutated` here so everything is batched below
 	if ($directoriesToStash) stashEntities(ui, $directoriesToStash);
 
-	// Batch mutations.
-	for (const m of mutated) m.mutate();
+	mutated.end('stashSpaces');
 };
 
 export const evictSpaces = async (

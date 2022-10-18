@@ -1,15 +1,25 @@
-import {writable, type Mutable} from '@feltcoop/svelte-gettable-stores';
+import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Role} from '$lib/vocab/role/role';
 import {removeUnordered} from '@feltcoop/felt/util/array.js';
+import {Mutated} from '$lib/util/Mutated';
 
 const log = new Logger('[roleMutationHelpers]');
 
-export const stashRoles = (ui: WritableUi, $roles: Role[]): void => {
+export const stashRoles = (
+	ui: WritableUi,
+	$roles: Role[],
+	mutated = new Mutated('stashRoles'),
+	replace = false,
+): void => {
 	const {roleById, roles} = ui;
-	const mutated = new Set<Mutable<any>>();
+	if (replace) {
+		roleById.clear();
+		roles.get().value.length = 0;
+		mutated.add(roles);
+	}
 	for (const $role of $roles) {
 		const {role_id} = $role;
 		let role = roleById.get(role_id);
@@ -22,7 +32,7 @@ export const stashRoles = (ui: WritableUi, $roles: Role[]): void => {
 			mutated.add(roles);
 		}
 	}
-	for (const m of mutated) m.mutate();
+	mutated.end('stashRoles');
 };
 
 export const evictRoles = (ui: WritableUi, roleIds: number[]): void => {

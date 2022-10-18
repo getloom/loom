@@ -30,7 +30,7 @@ export const syncUiToUrl = (
 	const rawPersonaIndex = url.searchParams.get(PERSONA_QUERY_KEY);
 	const personaIndex = rawPersonaIndex ? Number(rawPersonaIndex) : null;
 	const persona: Readable<Persona> | null =
-		personaIndex === null ? null : sessionPersonas.get()[personaIndex];
+		personaIndex === null ? null : sessionPersonas.get().value[personaIndex];
 	if (!persona) {
 		if (browser) {
 			const fallbackPersonaIndex = 0;

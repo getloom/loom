@@ -112,7 +112,7 @@
 	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection} = ui;
 
 	$: guest = $session.guest;
-	$: onboarding = !guest && !$sessionPersonas.length;
+	$: onboarding = !guest && !$sessionPersonas.value.length;
 	$: selectedPersona = $personaSelection; // must be after `updateStateFromPageParams`
 
 	$: syncUiToUrl(ui, $page.params, $page.url);

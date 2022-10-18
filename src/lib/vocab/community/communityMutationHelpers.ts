@@ -1,6 +1,6 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
-import {removeUnordered} from '@feltcoop/felt/util/array.js';
+import {EMPTY_ARRAY, removeUnordered} from '@feltcoop/felt/util/array.js';
 import {get} from 'svelte/store';
 import {page} from '$app/stores';
 
@@ -12,20 +12,39 @@ import type {Membership} from '$lib/vocab//membership/membership';
 import {stashSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {deleteMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
+import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 
-export const upsertCommunity = (
+export const stashCommunities = (
+	ui: WritableUi,
+	$communities: Community[],
+	mutated = new Mutated('stashCommunities'),
+	replace = false,
+): void => {
+	const {communityById, communities} = ui;
+	if (replace) {
+		communityById.clear();
+		communities.get().value.length = 0;
+		mutated.add(communities);
+	}
+	for (const $community of $communities) {
+		stashCommunity(ui, $community, EMPTY_ARRAY, EMPTY_ARRAY, EMPTY_ARRAY, mutated);
+	}
+	mutated.end('stashCommunities');
+};
+
+export const stashCommunity = (
 	ui: WritableUi,
 	$community: Community,
 	$spaces: Space[],
 	$directories: Entity[],
 	$memberships: Membership[],
+	mutated = new Mutated('stashCommunity'),
 ): Writable<Community> => {
 	const {memberships, communityById, communities} = ui;
 
 	// TODO `membershipMutationHelpers`
 	const $ms = memberships.get().value;
-	let addedMemberships = false;
 	for (const $m of $memberships) {
 		// TODO could speed this up with a map cached by compound key
 		if (
@@ -34,12 +53,11 @@ export const upsertCommunity = (
 			)
 		) {
 			$ms.push(writable($m));
-			addedMemberships = true;
+			mutated.add(memberships);
 		}
 	}
-	if (addedMemberships) memberships.mutate();
 
-	stashSpaces(ui, $spaces, $directories);
+	stashSpaces(ui, $spaces, $directories, mutated);
 
 	let community = communityById.get($community.community_id);
 	if (community) {
@@ -47,8 +65,11 @@ export const upsertCommunity = (
 	} else {
 		community = writable($community);
 		communityById.set($community.community_id, community);
-		communities.mutate(($communities) => $communities.push(community!));
+		communities.get().value.push(community);
+		mutated.add(communities);
 	}
+
+	mutated.end('stashCommunity');
 	return community;
 };
 
