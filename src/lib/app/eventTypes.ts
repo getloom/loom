@@ -243,6 +243,7 @@ export interface ReadCommunityResponse {
 	community: Community;
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
+	roles: Role[];
 	memberships: Membership[];
 	personas: Persona[];
 }

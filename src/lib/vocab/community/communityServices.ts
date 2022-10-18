@@ -51,11 +51,13 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 			return {ok: false, status: 404, message: 'no community found'};
 		}
 
-		const [spacesResult, membershipsResult] = await Promise.all([
+		const [spacesResult, rolesResult, membershipsResult] = await Promise.all([
 			repos.space.filterByCommunity(community_id),
+			repos.role.filterByCommunityId(community_id),
 			repos.membership.filterByCommunityId(community_id),
 		]);
 		const spaces = unwrap(spacesResult);
+		const roles = unwrap(rolesResult);
 		const memberships = unwrap(membershipsResult);
 
 		// TODO is this more efficient than parallelizing `persona.filterByCommunity`?
@@ -72,7 +74,7 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 		return {
 			ok: true,
 			status: 200,
-			value: {community, spaces, directories, memberships, personas},
+			value: {community, spaces, directories, roles, memberships, personas},
 		};
 	},
 };

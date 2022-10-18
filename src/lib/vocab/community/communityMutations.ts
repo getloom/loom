@@ -23,6 +23,7 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 		community: $community,
 		spaces: $spaces,
 		directories: $directories,
+		roles: $roles,
 		memberships: $memberships,
 		personas: $personas,
 	} = result.value;
@@ -30,8 +31,8 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 	stashPersonas(ui, $personas, mutated);
 	stashCommunity(ui, $community, mutated);
 	stashSpaces(ui, $spaces, $directories, mutated);
+	stashRoles(ui, $roles, mutated);
 	stashMemberships(ui, $memberships, mutated);
-	// TODO add roles
 	mutated.end('ReadCommunity');
 	return result;
 };
