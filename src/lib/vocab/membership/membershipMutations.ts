@@ -1,8 +1,8 @@
-import {writable} from '@feltcoop/svelte-gettable-stores';
 import {removeUnordered} from '@feltcoop/felt/util/array.js';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {evictCommunity} from '$lib/vocab/community/communityMutationHelpers';
+import {stashMemberships} from './membershipMutationHelpers';
 
 export const CreateMembership: Mutations['CreateMembership'] = async ({
 	invoke,
@@ -10,7 +10,7 @@ export const CreateMembership: Mutations['CreateMembership'] = async ({
 	ui,
 	params,
 }) => {
-	const {memberships, communityById} = ui;
+	const {communityById} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {membership: $membership} = result.value;
@@ -18,12 +18,9 @@ export const CreateMembership: Mutations['CreateMembership'] = async ({
 
 	// If there's no community locally, we were just added to it, so query its data in full.
 	if (communityById.has(community_id)) {
-		memberships.mutate(($memberships) => $memberships.push(writable($membership)));
+		stashMemberships(ui, [$membership]);
 	} else {
-		const readCommunityResult = await dispatch.ReadCommunity({
-			actor: params.actor,
-			community_id: $membership.community_id,
-		});
+		const readCommunityResult = await dispatch.ReadCommunity({actor: params.actor, community_id});
 		if (!readCommunityResult.ok) return readCommunityResult;
 	}
 

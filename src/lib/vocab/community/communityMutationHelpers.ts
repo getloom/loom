@@ -1,15 +1,12 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
-import {EMPTY_ARRAY, removeUnordered} from '@feltcoop/felt/util/array.js';
+import {removeUnordered} from '@feltcoop/felt/util/array.js';
 import {get} from 'svelte/store';
 import {page} from '$app/stores';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Community} from '$lib/vocab/community/community';
-import type {Space} from '$lib/vocab/space/space';
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {Membership} from '$lib/vocab//membership/membership';
-import {stashSpaces, evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
+import {evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
 import {Mutated} from '$lib/util/Mutated';
@@ -28,7 +25,7 @@ export const stashCommunities = (
 		mutated.add(communities);
 	}
 	for (const $community of $communities) {
-		stashCommunity(ui, $community, EMPTY_ARRAY, EMPTY_ARRAY, EMPTY_ARRAY, mutated);
+		stashCommunity(ui, $community, mutated);
 	}
 	mutated.end('stashCommunities');
 };
@@ -36,28 +33,9 @@ export const stashCommunities = (
 export const stashCommunity = (
 	ui: WritableUi,
 	$community: Community,
-	$spaces: Space[],
-	$directories: Entity[],
-	$memberships: Membership[],
 	mutated = new Mutated('stashCommunity'),
 ): Writable<Community> => {
-	const {memberships, communityById, communities} = ui;
-
-	// TODO `membershipMutationHelpers`
-	const $ms = memberships.get().value;
-	for (const $m of $memberships) {
-		// TODO could speed this up with a map cached by compound key
-		if (
-			!$ms.find(
-				(m) => $m.community_id === m.get().community_id && $m.persona_id === m.get().persona_id,
-			)
-		) {
-			$ms.push(writable($m));
-			mutated.add(memberships);
-		}
-	}
-
-	stashSpaces(ui, $spaces, $directories, mutated);
+	const {communityById, communities} = ui;
 
 	let community = communityById.get($community.community_id);
 	if (community) {

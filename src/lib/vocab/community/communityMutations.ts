@@ -3,11 +3,13 @@ import {Mutated} from '$lib/util/Mutated';
 import {evictCommunity, stashCommunity} from '$lib/vocab/community/communityMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
+import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
+import {stashMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
-	// TODO These aren't cached like normal session communities.
-	// However if they were, we would be able to get things like contextmenu actions for them.
+	// TODO These aren't cached like normal session communities because it's an admin-only endpoint.
+	// However if they were cached, we would be able to get things like contextmenu actions for them.
 	// But they'd conflict with existing data --
 	// for example, these communities shouldn't be added to the main nav,
 	// but that's what would happen if added to the current data stuctures.
@@ -26,7 +28,10 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 	} = result.value;
 	const mutated = new Mutated('ReadCommunity');
 	stashPersonas(ui, $personas, mutated);
-	stashCommunity(ui, $community, $spaces, $directories, $memberships, mutated);
+	stashCommunity(ui, $community, mutated);
+	stashSpaces(ui, $spaces, $directories, mutated);
+	stashMemberships(ui, $memberships, mutated);
+	// TODO add roles
 	mutated.end('ReadCommunity');
 	return result;
 };
@@ -44,7 +49,9 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 	} = result.value;
 	const mutated = new Mutated('CreateCommunity');
 	stashPersonas(ui, $personas, mutated);
-	stashCommunity(ui, $community, $spaces, $directories, $memberships, mutated);
+	stashCommunity(ui, $community, mutated);
+	stashSpaces(ui, $spaces, $directories, mutated);
+	stashMemberships(ui, $memberships, mutated);
 	stashRoles(ui, [$role], mutated);
 	mutated.end('CreateCommunity');
 	return result;
