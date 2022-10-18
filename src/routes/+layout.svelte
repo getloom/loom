@@ -108,14 +108,13 @@
 
 	const {session} = ui;
 	dispatch.SetSession({session: $session});
+	$: syncUiToUrl(ui, $page.params, $page.url);
 
 	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection} = ui;
 
 	$: guest = $session.guest;
 	$: onboarding = !guest && !$sessionPersonas.value.length;
-	$: selectedPersona = $personaSelection; // must be after `updateStateFromPageParams`
-
-	$: syncUiToUrl(ui, $page.params, $page.url);
+	$: selectedPersona = $personaSelection; // this line must be after `syncUiToUrl`
 
 	let clientWidth: number;
 	let clientHeight: number;
