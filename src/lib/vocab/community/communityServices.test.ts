@@ -116,11 +116,11 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 	const spaceResult = unwrap(await db.repos.space.filterByCommunity(community.community_id));
 	assert.equal(spaceResult.length, 0);
 
-	//check community memberships are gone
-	const membershipResult = unwrap(
-		await db.repos.membership.filterByCommunityId(community.community_id),
+	//check community assignments are gone
+	const assignmentResult = unwrap(
+		await db.repos.assignment.filterByCommunityId(community.community_id),
 	);
-	assert.equal(membershipResult.length, 0);
+	assert.equal(assignmentResult.length, 0);
 
 	//check roles are gone
 	const roleResult = unwrap(await db.repos.role.filterByCommunityId(community.community_id));

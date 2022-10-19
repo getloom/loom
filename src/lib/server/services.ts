@@ -11,9 +11,9 @@ import {
 	LeaveCommunityService,
 } from '$lib/vocab/community/communityServices';
 import {
-	CreateMembershipService,
-	DeleteMembershipService,
-} from '$lib/vocab/membership/membershipServices';
+	CreateAssignmentService,
+	DeleteAssignmentService,
+} from '$lib/vocab/assignment/assignmentServices';
 import {
 	ReadEntitiesService,
 	ReadEntitiesPaginatedService,
@@ -58,9 +58,9 @@ export const services: Map<string, Service> = new Map(
 		UpdateCommunitySettingsService,
 		DeleteCommunityService,
 		LeaveCommunityService,
-		// membershipServices
-		CreateMembershipService,
-		DeleteMembershipService,
+		// assignmentServices
+		CreateAssignmentService,
+		DeleteAssignmentService,
 		// spaceServices
 		ReadSpaceService,
 		ReadSpacesService,

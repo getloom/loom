@@ -20,7 +20,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	const {
 		session,
 		account,
-		memberships,
+		assignments,
 		personaIdSelection,
 		communityIdSelectionByPersonaId,
 		spaceIdSelectionByCommunityId,
@@ -49,7 +49,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	stashSpaces(ui, guest ? [] : $session.spaces, undefined, mutated, true);
 	mutated.end('SetSession');
 
-	memberships.swap(guest ? [] : $session.memberships.map((s) => writable(s)));
+	assignments.swap(guest ? [] : $session.assignments.map((s) => writable(s)));
 
 	personaIdSelection.set(guest ? null : $session.sessionPersonas[0]?.persona_id ?? null);
 

@@ -14,7 +14,7 @@ import {
 	CommunitySettingsSchema,
 	InitialCommunitySettingsSchema,
 } from '$lib/vocab/community/community.schema';
-import {MembershipSchema} from '$lib/vocab/membership/membership.schema';
+import {AssignmentSchema} from '$lib/vocab/assignment/assignment.schema';
 import {SpaceSchema} from '$lib/vocab/space/space.schema';
 import {EntitySchema} from '$lib/vocab/entity/entity.schema';
 import {TieSchema} from '$lib/vocab/tie/tie.schema';
@@ -37,7 +37,7 @@ export const vocabSchemas = [
 	CommunitySchema,
 	CommunitySettingsSchema,
 	InitialCommunitySettingsSchema,
-	MembershipSchema,
+	AssignmentSchema,
 	SpaceSchema,
 	EntitySchema,
 	TieSchema,

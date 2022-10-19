@@ -21,21 +21,21 @@ export class SessionRepo extends PostgresRepo {
 			sessionPersonasResult,
 			communitiesResult,
 			rolesResult,
-			membershipsResult,
+			assignmentsResult,
 			personasResult,
 		] = await Promise.all([
 			this.repos.space.filterByAccountWithDirectories(account.account_id),
 			this.repos.persona.filterByAccount(account.account_id),
 			this.repos.community.filterByAccount(account.account_id),
 			this.repos.role.filterByAccount(account.account_id),
-			this.repos.membership.filterByAccount(account.account_id),
+			this.repos.assignment.filterByAccount(account.account_id),
 			this.repos.persona.getAll(), //TODO don't getAll
 		]);
 		if (!spacesResult.ok) return spacesResult;
 		if (!sessionPersonasResult.ok) return sessionPersonasResult;
 		if (!communitiesResult.ok) return communitiesResult;
 		if (!rolesResult.ok) return rolesResult;
-		if (!membershipsResult.ok) return membershipsResult;
+		if (!assignmentsResult.ok) return assignmentsResult;
 		if (!personasResult.ok) return personasResult;
 
 		const spaces = spacesResult.value.map((r) => r.space);
@@ -52,7 +52,7 @@ export class SessionRepo extends PostgresRepo {
 				roles: rolesResult.value,
 				spaces,
 				directories,
-				memberships: membershipsResult.value,
+				assignments: assignmentsResult.value,
 				personas: personasResult.value,
 			},
 		};

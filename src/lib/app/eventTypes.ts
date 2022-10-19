@@ -12,7 +12,7 @@ import type {
 } from '$lib/server/service';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona, AccountPersona} from '$lib/vocab/persona/persona';
-import type {Membership} from '$lib/vocab/membership/membership';
+import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
@@ -35,8 +35,8 @@ export type ServiceEventName =
 	| 'LeaveCommunity'
 	| 'CreateAccountPersona'
 	| 'ReadPersona'
-	| 'CreateMembership'
-	| 'DeleteMembership'
+	| 'CreateAssignment'
+	| 'DeleteAssignment'
 	| 'CreateSpace'
 	| 'ReadSpace'
 	| 'ReadSpaces'
@@ -82,8 +82,8 @@ export interface EventParamsByName {
 	LeaveCommunity: LeaveCommunityParams;
 	CreateAccountPersona: CreateAccountPersonaParams;
 	ReadPersona: ReadPersonaParams;
-	CreateMembership: CreateMembershipParams;
-	DeleteMembership: DeleteMembershipParams;
+	CreateAssignment: CreateAssignmentParams;
+	DeleteAssignment: DeleteAssignmentParams;
 	CreateSpace: CreateSpaceParams;
 	ReadSpace: ReadSpaceParams;
 	ReadSpaces: ReadSpacesParams;
@@ -125,8 +125,8 @@ export interface EventResponseByName {
 	LeaveCommunity: LeaveCommunityResponse;
 	CreateAccountPersona: CreateAccountPersonaResponse;
 	ReadPersona: ReadPersonaResponse;
-	CreateMembership: CreateMembershipResponse;
-	DeleteMembership: DeleteMembershipResponse;
+	CreateAssignment: CreateAssignmentResponse;
+	DeleteAssignment: DeleteAssignmentResponse;
 	CreateSpace: CreateSpaceResponse;
 	ReadSpace: ReadSpaceResponse;
 	ReadSpaces: ReadSpacesResponse;
@@ -172,8 +172,8 @@ export interface ServiceByName {
 	>;
 	DeleteCommunity: AuthorizedService<DeleteCommunityParams, DeleteCommunityResponseResult>;
 	LeaveCommunity: AuthorizedService<LeaveCommunityParams, LeaveCommunityResponseResult>;
-	CreateMembership: AuthorizedService<CreateMembershipParams, CreateMembershipResponseResult>;
-	DeleteMembership: AuthorizedService<DeleteMembershipParams, DeleteMembershipResponseResult>;
+	CreateAssignment: AuthorizedService<CreateAssignmentParams, CreateAssignmentResponseResult>;
+	DeleteAssignment: AuthorizedService<DeleteAssignmentParams, DeleteAssignmentResponseResult>;
 	ReadSpace: AuthorizedService<ReadSpaceParams, ReadSpaceResponseResult>;
 	ReadSpaces: AuthorizedService<ReadSpacesParams, ReadSpacesResponseResult>;
 	CreateSpace: AuthorizedService<CreateSpaceParams, CreateSpaceResponseResult>;
@@ -234,7 +234,7 @@ export interface CreateCommunityResponse {
 	role: Role;
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
-	memberships: Membership[];
+	assignments: Assignment[];
 	personas: Persona[];
 }
 export type CreateCommunityResponseResult = ApiResult<CreateCommunityResponse>;
@@ -248,7 +248,7 @@ export interface ReadCommunityResponse {
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
 	roles: Role[];
-	memberships: Membership[];
+	assignments: Assignment[];
 	personas: Persona[];
 }
 export type ReadCommunityResponseResult = ApiResult<ReadCommunityResponse>;
@@ -295,7 +295,7 @@ export interface CreateAccountPersonaResponse {
 	role: Role;
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
-	membership: Membership;
+	assignment: Assignment;
 }
 export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaResponse>;
 
@@ -308,23 +308,23 @@ export interface ReadPersonaResponse {
 }
 export type ReadPersonaResponseResult = ApiResult<ReadPersonaResponse>;
 
-export interface CreateMembershipParams {
+export interface CreateAssignmentParams {
 	actor: number;
 	persona_id: number;
 	community_id: number;
 }
-export interface CreateMembershipResponse {
-	membership: Membership;
+export interface CreateAssignmentResponse {
+	assignment: Assignment;
 }
-export type CreateMembershipResponseResult = ApiResult<CreateMembershipResponse>;
+export type CreateAssignmentResponseResult = ApiResult<CreateAssignmentResponse>;
 
-export interface DeleteMembershipParams {
+export interface DeleteAssignmentParams {
 	actor: number;
 	persona_id: number;
 	community_id: number;
 }
-export type DeleteMembershipResponse = null;
-export type DeleteMembershipResponseResult = ApiResult<DeleteMembershipResponse>;
+export type DeleteAssignmentResponse = null;
+export type DeleteAssignmentResponseResult = ApiResult<DeleteAssignmentResponse>;
 
 export interface CreateSpaceParams {
 	actor: number;
@@ -576,8 +576,8 @@ export interface Dispatch {
 		params: CreateAccountPersonaParams,
 	) => Promise<CreateAccountPersonaResponseResult>;
 	ReadPersona: (params: ReadPersonaParams) => Promise<ReadPersonaResponseResult>;
-	CreateMembership: (params: CreateMembershipParams) => Promise<CreateMembershipResponseResult>;
-	DeleteMembership: (params: DeleteMembershipParams) => Promise<DeleteMembershipResponseResult>;
+	CreateAssignment: (params: CreateAssignmentParams) => Promise<CreateAssignmentResponseResult>;
+	DeleteAssignment: (params: DeleteAssignmentParams) => Promise<DeleteAssignmentResponseResult>;
 	CreateSpace: (params: CreateSpaceParams) => Promise<CreateSpaceResponseResult>;
 	ReadSpace: (params: ReadSpaceParams) => Promise<ReadSpaceResponseResult>;
 	ReadSpaces: (params: ReadSpacesParams) => Promise<ReadSpacesResponseResult>;
@@ -646,12 +646,12 @@ export interface Mutations {
 	ReadPersona: (
 		ctx: DispatchContext<ReadPersonaParams, ReadPersonaResponseResult>,
 	) => Promise<ReadPersonaResponseResult>;
-	CreateMembership: (
-		ctx: DispatchContext<CreateMembershipParams, CreateMembershipResponseResult>,
-	) => Promise<CreateMembershipResponseResult>;
-	DeleteMembership: (
-		ctx: DispatchContext<DeleteMembershipParams, DeleteMembershipResponseResult>,
-	) => Promise<DeleteMembershipResponseResult>;
+	CreateAssignment: (
+		ctx: DispatchContext<CreateAssignmentParams, CreateAssignmentResponseResult>,
+	) => Promise<CreateAssignmentResponseResult>;
+	DeleteAssignment: (
+		ctx: DispatchContext<DeleteAssignmentParams, DeleteAssignmentResponseResult>,
+	) => Promise<DeleteAssignmentResponseResult>;
 	CreateSpace: (
 		ctx: DispatchContext<CreateSpaceParams, CreateSpaceResponseResult>,
 	) => Promise<CreateSpaceResponseResult>;

@@ -7,7 +7,7 @@ import {page} from '$app/stores';
 import type {WritableUi} from '$lib/ui/ui';
 import type {Community} from '$lib/vocab/community/community';
 import {evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {evictMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
+import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
 import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
@@ -63,7 +63,7 @@ export const evictCommunity = async (
 		communities,
 		communityIdSelectionByPersonaId,
 		personaById,
-		memberships,
+		assignments,
 		spacesByCommunityId,
 		rolesByCommunityId,
 	} = ui;
@@ -102,9 +102,9 @@ export const evictCommunity = async (
 		}
 	}
 
-	evictMemberships(
+	evictAssignments(
 		ui,
-		memberships.get().value.filter((m) => m.get().community_id === community_id),
+		assignments.get().value.filter((m) => m.get().community_id === community_id),
 		mutated,
 	);
 

@@ -14,8 +14,8 @@ import type {
 	LeaveCommunityParams,
 	CreateAccountPersonaParams,
 	ReadPersonaParams,
-	CreateMembershipParams,
-	DeleteMembershipParams,
+	CreateAssignmentParams,
+	DeleteAssignmentParams,
 	CreateSpaceParams,
 	ReadSpaceParams,
 	ReadSpacesParams,
@@ -86,14 +86,14 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<ReadPersonaParams>;
-	CreateMembership: (
+	CreateAssignment: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<CreateMembershipParams>;
-	DeleteMembership: (
+	) => Promise<CreateAssignmentParams>;
+	DeleteAssignment: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<DeleteMembershipParams>;
+	) => Promise<DeleteAssignmentParams>;
 	CreateSpace: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

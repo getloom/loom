@@ -9,7 +9,7 @@
 	const {dispatch} = getApp();
 
 	export let persona: Readable<Persona>;
-	export let membershipPersona: Readable<Persona>;
+	export let assignmentPersona: Readable<Persona>;
 	export let community: Readable<Community>;
 </script>
 
@@ -18,12 +18,12 @@
 		type="button"
 		class="button-join"
 		on:click={() =>
-			dispatch.CreateMembership({
+			dispatch.CreateAssignment({
 				actor: $persona.persona_id,
 				community_id: $community.community_id,
-				persona_id: $membershipPersona.persona_id,
+				persona_id: $assignmentPersona.persona_id,
 			})}
 	>
-		<PersonaAvatar persona={membershipPersona} />
+		<PersonaAvatar persona={assignmentPersona} />
 	</button>
 </p>

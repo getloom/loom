@@ -17,9 +17,9 @@ import {
 import {ReadEntitiesService} from '$lib/vocab/entity/entityServices';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {
-	CreateMembershipService,
-	DeleteMembershipService,
-} from '$lib/vocab/membership/membershipServices';
+	CreateAssignmentService,
+	DeleteAssignmentService,
+} from '$lib/vocab/assignment/assignmentServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 
 /* test_servicesIntegration */
@@ -49,7 +49,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	// join the community with the second persona
 	unwrap(
-		await CreateMembershipService.perform({
+		await CreateAssignmentService.perform({
 			...serviceRequest1, // add `persona2` with `persona1`
 			params: {
 				actor: persona2.persona_id,
@@ -151,13 +151,13 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	}
 	assert.is(unwrap(await db.repos.space.filterByCommunity(community.community_id)).length, 1);
 
-	// delete membership
+	// delete assignment
 	assert.is(
-		unwrap(await db.repos.membership.filterByCommunityId(community.community_id)).length,
+		unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
 		3,
 	);
 	unwrap(
-		await DeleteMembershipService.perform({
+		await DeleteAssignmentService.perform({
 			...serviceRequest2,
 			params: {
 				actor: persona2.persona_id,
@@ -167,12 +167,12 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 		}),
 	);
 	assert.is(
-		unwrap(await db.repos.membership.filterByCommunityId(community.community_id)).length,
+		unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
 		2,
 	);
 	assert.is(
 		unwrap(
-			await db.repos.membership.filterAccountPersonaMembershipsByCommunityId(
+			await db.repos.assignment.filterAccountPersonaAssignmentsByCommunityId(
 				community.community_id,
 			),
 		).length,
@@ -192,7 +192,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	});
 	assert.is(readCommunityResult.status, 404);
 	assert.is(
-		unwrap(await db.repos.membership.filterByCommunityId(community.community_id)).length,
+		unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
 		0,
 	);
 

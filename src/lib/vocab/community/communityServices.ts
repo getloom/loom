@@ -21,7 +21,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
-import {cleanOrphanCommunities} from '$lib/vocab/membership/membershipServices';
+import {cleanOrphanCommunities} from '$lib/vocab/assignment/assignmentServices';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -53,17 +53,17 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 			return {ok: false, status: 404, message: 'no community found'};
 		}
 
-		const [spacesResult, rolesResult, membershipsResult] = await Promise.all([
+		const [spacesResult, rolesResult, assignmentsResult] = await Promise.all([
 			repos.space.filterByCommunity(community_id),
 			repos.role.filterByCommunityId(community_id),
-			repos.membership.filterByCommunityId(community_id),
+			repos.assignment.filterByCommunityId(community_id),
 		]);
 		const spaces = unwrap(spacesResult);
 		const roles = unwrap(rolesResult);
-		const memberships = unwrap(membershipsResult);
+		const assignments = unwrap(assignmentsResult);
 
 		// TODO is this more efficient than parallelizing `persona.filterByCommunity`?
-		const personaIds = memberships.map((m) => m.persona_id);
+		const personaIds = assignments.map((a) => a.persona_id);
 		const [personasResult, directoriesResult] = await Promise.all([
 			repos.persona.filterByIds(personaIds),
 			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
@@ -76,7 +76,7 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 		return {
 			ok: true,
 			status: 200,
-			value: {community, spaces, directories, roles, memberships, personas},
+			value: {community, spaces, directories, roles, assignments, personas},
 		};
 	},
 };
@@ -114,17 +114,17 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			// Create the default role and assign it
 			const role = unwrap(await initDefaultRoleForCommunity(repos, community));
 
-			// Create the community persona and its membership
+			// Create the community persona and its assignment
 			const communityPersona = unwrap(
 				await repos.persona.createCommunityPersona(community.name, community.community_id),
 			);
-			const communityPersonaMembership = unwrap(
-				await repos.membership.create(communityPersona.persona_id, community.community_id),
+			const communityPersonaAssignment = unwrap(
+				await repos.assignment.create(communityPersona.persona_id, community.community_id),
 			);
 
-			// Create the membership for the persona that's creating the community.
-			const creatorMembership = unwrap(
-				await repos.membership.create(params.actor, community.community_id),
+			// Create the assignment for the persona that's creating the community.
+			const creatorAssignment = unwrap(
+				await repos.assignment.create(params.actor, community.community_id),
 			);
 
 			// Create default spaces.
@@ -141,7 +141,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 					spaces,
 					directories,
 					personas: [communityPersona], // TODO add the requesting persona just for completion, after we add `actor` to all events
-					memberships: [communityPersonaMembership, creatorMembership],
+					assignments: [communityPersonaAssignment, creatorAssignment],
 				},
 			};
 		}),
@@ -181,7 +181,7 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 		transact(async (repos) => {
 			const {actor, community_id} = params;
 			log.trace(
-				'[LeaveCommunity] removing all memberships for persona in community',
+				'[LeaveCommunity] removing all assignments for persona in community',
 				actor,
 				community_id,
 			);
@@ -202,10 +202,10 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 				return {ok: false, status: 405, message: 'cannot leave a personal community'};
 			}
 			if (community_id === ADMIN_COMMUNITY_ID) {
-				const adminMemberships = unwrap(
-					await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id),
+				const adminAssignments = unwrap(
+					await repos.assignment.filterAccountPersonaAssignmentsByCommunityId(community_id),
 				);
-				if (adminMemberships.length === 1) {
+				if (adminAssignments.length === 1) {
 					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
 				}
 			}
@@ -213,7 +213,7 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 
-			unwrap(await repos.membership.deleteByCommunity(actor, community_id));
+			unwrap(await repos.assignment.deleteByCommunity(actor, community_id));
 
 			unwrap(await cleanOrphanCommunities(params.community_id, repos));
 
@@ -249,8 +249,8 @@ export const initAdminCommunity = async (
 		await repos.persona.createCommunityPersona(community.name, community.community_id),
 	);
 
-	// Create the community persona's membership.
-	unwrap(await repos.membership.create(persona.persona_id, community.community_id));
+	// Create the community persona's assignment.
+	unwrap(await repos.assignment.create(persona.persona_id, community.community_id));
 
 	return {ok: true, value: {community, persona, role}};
 };

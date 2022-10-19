@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Community} from '$lib/vocab/community/community.js';
-	import MembershipInputItem from '$lib/ui/MembershipInputItem.svelte';
+	import AssignmentInputItem from '$lib/ui/AssignmentInputItem.svelte';
 	import {getApp} from '$lib/ui/app';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
@@ -38,7 +38,7 @@
 	</section>
 	{#if selectedPersona}
 		{#each invitableMembers as persona (persona)}
-			<MembershipInputItem persona={selectedPersona} membershipPersona={persona} {community} />
+			<AssignmentInputItem persona={selectedPersona} assignmentPersona={persona} {community} />
 		{:else}
 			<p>There's no one new to invite</p>
 		{/each}

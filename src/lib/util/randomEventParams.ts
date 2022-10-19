@@ -3,7 +3,7 @@ import {randomBool} from '@feltcoop/felt/util/random.js';
 import {
 	randomEntityData,
 	randomEntityParams,
-	randomMembershipParams,
+	randomAssignmentParams,
 	randomString,
 	randomPersonaParams,
 	randomSpaceParams,
@@ -85,12 +85,12 @@ export const randomEventParams: RandomEventParams = {
 		if (!persona) ({persona} = await random.persona());
 		return {actor: persona.persona_id, persona_id: persona.persona_id};
 	},
-	CreateMembership: async (random, {account, persona, community} = {}) => {
+	CreateAssignment: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community()); // don't forward `persona`/`account` bc that's the service's job
-		return randomMembershipParams(persona.persona_id, persona.persona_id, community.community_id);
+		return randomAssignmentParams(persona.persona_id, persona.persona_id, community.community_id);
 	},
-	DeleteMembership: async (random, {account, persona, community} = {}) => {
+	DeleteAssignment: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community(persona));
 		return {

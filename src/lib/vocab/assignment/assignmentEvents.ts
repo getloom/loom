@@ -1,11 +1,11 @@
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 
-export const CreateMembership: ServiceEventInfo = {
+export const CreateAssignment: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'CreateMembership',
+	name: 'CreateAssignment',
 	broadcast: true,
 	params: {
-		$id: '/schemas/CreateMembershipParams.json',
+		$id: '/schemas/CreateAssignmentParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
@@ -16,27 +16,27 @@ export const CreateMembership: ServiceEventInfo = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/CreateMembershipResponse.json',
+		$id: '/schemas/Create AssignmentResponse.json',
 		type: 'object',
 		properties: {
-			membership: {$ref: '/schemas/Membership.json', tsType: 'Membership'},
+			assignment: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'},
 		},
-		required: ['membership'],
+		required: ['assignment'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<CreateMembershipResponseResult>',
+	returns: 'Promise<CreateAssignmentResponseResult>',
 	route: {
-		path: '/api/v1/memberships',
+		path: '/api/v1/assignments',
 		method: 'POST',
 	},
 };
 
-export const DeleteMembership: ServiceEventInfo = {
+export const DeleteAssignment: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'DeleteMembership',
+	name: 'DeleteAssignment',
 	broadcast: true,
 	params: {
-		$id: '/schemas/DeleteMembershipParams.json',
+		$id: '/schemas/DeleteAssignmentParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
@@ -47,12 +47,12 @@ export const DeleteMembership: ServiceEventInfo = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/DeleteMembershipResponse.json',
+		$id: '/schemas/DeleteAssignmentResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<DeleteMembershipResponseResult>',
+	returns: 'Promise<DeleteAssignmentResponseResult>',
 	route: {
-		path: '/api/v1/memberships',
+		path: '/api/v1/assignments',
 		method: 'DELETE',
 	},
 };

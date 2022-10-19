@@ -53,15 +53,15 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				await repos.persona.createAccountPersona(name, account_id, community.community_id),
 			);
 
-			// Create the persona's membership to its personal community.
-			const membership = unwrap(
-				await repos.membership.create(persona.persona_id, community.community_id),
+			// Create the persona's assignment to its personal community.
+			const assignment = unwrap(
+				await repos.assignment.create(persona.persona_id, community.community_id),
 			);
 
-			// If the admin community was created, create the admin spaces and the persona's membership.
+			// If the admin community was created, create the admin spaces and the persona's assignment.
 			// This is a separate step because we need to create the admin community before any others
 			// and the dependencies flow like this:
-			// `adminCommunity => personalCommunity => persona => adminCommunitySpaces + adminCommunityMembership`
+			// `adminCommunity => personalCommunity => persona => adminCommunitySpaces + adminCommunityAssignment`
 			if (initAdminCommunityValue) {
 				const adminCommunity = initAdminCommunityValue.community;
 				// Create the admin community's default spaces.
@@ -73,8 +73,8 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 					),
 				);
 
-				// Create the persona's membership to the admin community.
-				unwrap(await repos.membership.create(persona.persona_id, adminCommunity.community_id));
+				// Create the persona's assignment to the admin community.
+				unwrap(await repos.assignment.create(persona.persona_id, adminCommunity.community_id));
 			}
 
 			// Create the default spaces.
@@ -89,7 +89,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			return {
 				ok: true,
 				status: 200,
-				value: {persona, community, role, spaces, directories, membership},
+				value: {persona, community, role, spaces, directories, assignment},
 			};
 		}),
 };

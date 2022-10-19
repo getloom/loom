@@ -11,7 +11,7 @@ import {
 	LeaveCommunity,
 } from '$lib/vocab/community/communityMutations';
 import {CreateSpace, DeleteSpace, UpdateSpace} from '$lib/vocab/space/spaceMutations';
-import {CreateMembership, DeleteMembership} from '$lib/vocab/membership/membershipMutations';
+import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentMutations';
 import {
 	CreateEntity,
 	UpdateEntity,
@@ -55,9 +55,9 @@ export const mutations: Record<string, Mutation> = {
 	CreateSpace,
 	DeleteSpace,
 	UpdateSpace,
-	// membershipMutations
-	CreateMembership,
-	DeleteMembership,
+	// assignmentMutations
+	CreateAssignment,
+	DeleteAssignment,
 	// entityMutations
 	CreateEntity,
 	UpdateEntity,

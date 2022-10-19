@@ -13,7 +13,7 @@ import {parseView, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
 import {CreateCommunityService} from '$lib/vocab/community/communityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {CreateMembershipService} from '$lib/vocab/membership/membershipServices';
+import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 
@@ -97,7 +97,7 @@ export const seed = async (db: Database): Promise<void> => {
 		communities.push(community);
 		for (const persona of otherPersonas) {
 			unwrap(
-				await CreateMembershipService.perform({
+				await CreateAssignmentService.perform({
 					...mainAccountServiceRequest,
 					params: {
 						actor: persona.persona_id,

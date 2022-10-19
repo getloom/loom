@@ -4,7 +4,7 @@ import {evictCommunity, stashCommunity} from '$lib/vocab/community/communityMuta
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {evictMemberships, stashMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
+import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
@@ -24,7 +24,7 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 		spaces: $spaces,
 		directories: $directories,
 		roles: $roles,
-		memberships: $memberships,
+		assignments: $assignments,
 		personas: $personas,
 	} = result.value;
 	const mutated = new Mutated('ReadCommunity');
@@ -32,7 +32,7 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 	stashCommunity(ui, $community, mutated);
 	stashSpaces(ui, $spaces, $directories, mutated);
 	stashRoles(ui, $roles, mutated);
-	stashMemberships(ui, $memberships, mutated);
+	stashAssignments(ui, $assignments, mutated);
 	mutated.end('ReadCommunity');
 	return result;
 };
@@ -45,14 +45,14 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 		role: $role,
 		spaces: $spaces,
 		directories: $directories,
-		memberships: $memberships,
+		assignments: $assignments,
 		personas: $personas,
 	} = result.value;
 	const mutated = new Mutated('CreateCommunity');
 	stashPersonas(ui, $personas, mutated);
 	stashCommunity(ui, $community, mutated);
 	stashSpaces(ui, $spaces, $directories, mutated);
-	stashMemberships(ui, $memberships, mutated);
+	stashAssignments(ui, $assignments, mutated);
 	stashRoles(ui, [$role], mutated);
 	mutated.end('CreateCommunity');
 	return result;
@@ -86,18 +86,18 @@ export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, inv
 };
 
 export const LeaveCommunity: Mutations['LeaveCommunity'] = async ({params, invoke, ui}) => {
-	const {memberships} = ui;
+	const {assignments} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor, community_id} = params;
-	const otherMemberships = memberships
+	const otherAssignments = assignments
 		.get()
 		.value.filter((m) => m.get().community_id === community_id && m.get().persona_id !== actor);
 
-	if (otherMemberships.length > 0) {
-		evictMemberships(
+	if (otherAssignments.length > 0) {
+		evictAssignments(
 			ui,
-			memberships
+			assignments
 				.get()
 				.value.filter((m) => m.get().community_id === community_id && m.get().persona_id === actor),
 		);

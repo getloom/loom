@@ -17,6 +17,6 @@ with some important differences:
 - a personal community is created automatically for every [`'account'` persona](./persona-types.md);
   this is the only way they're created
 - a personal community has the same `name` as its persona
-- a personal community's membership includes its owning persona,
-  and **no other personas may be invited as members**,
+- a personal community's assignment includes its owning persona,
+  and **no other personas may be invited and given assignments**,
   including other personas under the same account

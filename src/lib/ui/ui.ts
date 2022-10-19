@@ -16,7 +16,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Persona} from '$lib/vocab/persona/persona';
 import type {AccountModel} from '$lib/vocab/account/account';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {Membership} from '$lib/vocab/membership/membership';
+import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {createContextmenuStore, type ContextmenuStore} from '$lib/ui/contextmenu/contextmenu';
 import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
@@ -56,7 +56,7 @@ export interface Ui {
 	communities: Mutable<Array<Readable<Community>>>;
 	roles: Mutable<Array<Readable<Role>>>;
 	spaces: Mutable<Array<Readable<Space>>>;
-	memberships: Mutable<Array<Readable<Membership>>>;
+	assignments: Mutable<Array<Readable<Assignment>>>;
 	personaById: Map<number, Readable<Persona>>;
 	communityById: Map<number, Readable<Community>>;
 	roleById: Map<number, Readable<Role>>;
@@ -113,7 +113,7 @@ export const toUi = (
 	const communities = mutable<Array<Writable<Community>>>([]);
 	const roles = mutable<Array<Writable<Role>>>([]);
 	const spaces = mutable<Array<Writable<Space>>>([]);
-	const memberships = mutable<Array<Writable<Membership>>>([]);
+	const assignments = mutable<Array<Writable<Assignment>>>([]);
 	const personaById: Map<number, Writable<Persona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();
@@ -143,15 +143,15 @@ export const toUi = (
 	);
 
 	const personasByCommunityId: Readable<Map<number, Array<Writable<Persona>>>> = derived(
-		[communities, memberships],
-		([$communities, $memberships]) => {
+		[communities, assignments],
+		([$communities, $assignments]) => {
 			const map: Map<number, Array<Writable<Persona>>> = new Map();
 			for (const community of $communities.value) {
 				const communityPersonas: Array<Writable<Persona>> = [];
 				const {community_id} = community.get();
-				for (const membership of $memberships.value) {
-					if (membership.get().community_id === community_id) {
-						const persona = personaById.get(membership.get().persona_id)!;
+				for (const assignment of $assignments.value) {
+					if (assignment.get().community_id === community_id) {
+						const persona = personaById.get(assignment.get().persona_id)!;
 						if (persona.get().type !== 'account') continue;
 						communityPersonas.push(persona);
 					}
@@ -202,19 +202,19 @@ export const toUi = (
 	);
 	const communitiesBySessionPersona: Readable<Map<Writable<Persona>, Array<Writable<Community>>>> =
 		derived(
-			[sessionPersonas, memberships, communities],
-			([$sessionPersonas, $memberships, $communities]) => {
+			[sessionPersonas, assignments, communities],
+			([$sessionPersonas, $assignments, $communities]) => {
 				const map: Map<Writable<Persona>, Array<Writable<Community>>> = new Map();
 				for (const sessionPersona of $sessionPersonas.value) {
 					const $sessionPersona = sessionPersona.get();
 					const sessionPersonaCommunities: Array<Writable<Community>> = [];
 					for (const community of $communities.value) {
 						const $community = community.get();
-						for (const membership of $memberships.value) {
-							const $membership = membership.get();
+						for (const assignment of $assignments.value) {
+							const $assignment = assignment.get();
 							if (
-								$membership.community_id === $community.community_id &&
-								$membership.persona_id === $sessionPersona.persona_id
+								$assignment.community_id === $community.community_id &&
+								$assignment.persona_id === $sessionPersona.persona_id
 							) {
 								sessionPersonaCommunities.push(community);
 								break;
@@ -263,7 +263,7 @@ export const toUi = (
 	const freshnessByDirectoryId: Map<number, Readable<boolean>> = new Map();
 	const freshnessByCommunityId: Map<number, Writable<boolean>> = new Map();
 
-	// TODO optimization: ideally this would recalculate only when the admin community's personas change, not when any membership changes
+	// TODO optimization: ideally this would recalculate only when the admin community's personas change, not when any assignment changes
 	// TODO consider making the value of `personasByCommunityId` a set instead of array, then this could be simplified
 	const adminPersonas = derived(
 		[personasByCommunityId],
@@ -291,7 +291,7 @@ export const toUi = (
 		sessionPersonaIndices,
 		spaces,
 		communities,
-		memberships,
+		assignments,
 		personaById,
 		communityById,
 		roleById,

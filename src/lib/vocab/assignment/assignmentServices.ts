@@ -3,52 +3,56 @@ import {OK, unwrap, type Result} from '@feltcoop/felt';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
-import {CreateMembership, DeleteMembership} from '$lib/vocab/membership/membershipEvents';
+import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
 import type {Repos} from '$lib/db/Repos';
 
-const log = new Logger(gray('[') + blue('membershipServices') + gray(']'));
+const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 
 //Creates a new member relation for a community
-export const CreateMembershipService: ServiceByName['CreateMembership'] = {
-	event: CreateMembership,
+export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
+	event: CreateAssignment,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {community_id, persona_id} = params;
-			log.trace('[CreateMembership] creating membership', persona_id, community_id);
+			log.trace('[CreateAssignment] creating assignment', persona_id, community_id);
 
-			// Personal communities disallow memberships as a hard rule.
+			// Personal communities disallow assignments as a hard rule.
 			const community = unwrap(await repos.community.findById(community_id));
 			if (!community) {
 				return {ok: false, status: 400, message: 'community not found'};
 			}
 			if (community.type === 'personal') {
-				return {ok: false, status: 403, message: 'personal communities disallow memberships'};
+				return {
+					ok: false,
+					status: 403,
+					message: 'personal communities disallow additional assignments',
+				};
 			}
 
-			// Check for duplicate memberships.
-			const existingMembership = unwrap(await repos.membership.findById(persona_id, community_id));
-			if (existingMembership) {
-				return {ok: false, status: 409, message: 'membership already exists'};
+			// Check for duplicate assignments.
+			const existingAssignment = unwrap(await repos.assignment.findById(persona_id, community_id));
+			if (existingAssignment) {
+				return {ok: false, status: 409, message: 'assignment already exists'};
 			}
 
 			// TODO test what happens if the persona doesn't exist
 
-			const membership = unwrap(await repos.membership.create(persona_id, community_id));
-			return {ok: true, status: 200, value: {membership}};
+			const assignment = unwrap(await repos.assignment.create(persona_id, community_id));
+			return {ok: true, status: 200, value: {assignment}};
 		}),
 };
 
-//deletes a membership of a given persona in a given community
-//TODO after front end data normalization make this use membership_id
-//TODO refactor this to use membership_id instead
-export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
-	event: DeleteMembership,
+//deletes an assignment of a given persona in a given community
+//TODO after front end data normalization make this use assignment_id
+//TODO refactor this to use assignment_id instead
+export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
+	event: DeleteAssignment,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {persona_id, community_id} = params;
 			log.trace(
-				'[DeleteMembership] deleting membership for persona in community',
+				'[DeleteAssignment] deleting assignment for persona in community',
 				persona_id,
 				community_id,
 			);
@@ -69,10 +73,10 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 				return {ok: false, status: 405, message: 'cannot leave a personal community'};
 			}
 			if (community_id === ADMIN_COMMUNITY_ID) {
-				const adminMemberships = unwrap(
-					await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id),
+				const adminAssignments = unwrap(
+					await repos.assignment.filterAccountPersonaAssignmentsByCommunityId(community_id),
 				);
-				if (adminMemberships.length === 1) {
+				if (adminAssignments.length === 1) {
 					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
 				}
 			}
@@ -81,7 +85,7 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 			}
 
 			//TODO replace with deleteById
-			unwrap(await repos.membership.deleteByCommunity(persona_id, community_id));
+			unwrap(await repos.assignment.deleteByCommunity(persona_id, community_id));
 
 			unwrap(await cleanOrphanCommunities(params.community_id, repos));
 
@@ -93,12 +97,12 @@ export const cleanOrphanCommunities = async (
 	community_id: number,
 	repos: Repos,
 ): Promise<Result> => {
-	log.trace('[membershipServices] checking if community is orphaned', community_id);
-	const accountPersonaMemberships = unwrap(
-		await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id),
+	log.trace('[assignmentServices] checking if community is orphaned', community_id);
+	const accountPersonaAssignments = unwrap(
+		await repos.assignment.filterAccountPersonaAssignmentsByCommunityId(community_id),
 	);
-	if (accountPersonaMemberships.length === 0) {
-		log.trace('[membershipServices] no memberships found for community, cleaning up', community_id);
+	if (accountPersonaAssignments.length === 0) {
+		log.trace('[assignmentServices] no assignments found for community, cleaning up', community_id);
 		unwrap(await repos.community.deleteById(community_id));
 	}
 	return OK;

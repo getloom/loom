@@ -2,7 +2,7 @@ import type {PostgresSql} from '$lib/db/postgres';
 import {SessionRepo} from '$lib/session/SessionRepo';
 import {AccountRepo} from '$lib/vocab/account/AccountRepo';
 import {PersonaRepo} from '$lib/vocab/persona/PersonaRepo';
-import {MembershipRepo} from '$lib/vocab/membership/MembershipRepo';
+import {AssignmentRepo} from '$lib/vocab/assignment/AssignmentRepo';
 import {CommunityRepo} from '$lib/vocab/community/CommunityRepo';
 import {SpaceRepo} from '$lib/vocab/space/SpaceRepo';
 import {EntityRepo} from '$lib/vocab/entity/EntityRepo';
@@ -17,7 +17,7 @@ export class Repos {
 	readonly session: SessionRepo;
 	readonly account: AccountRepo;
 	readonly persona: PersonaRepo;
-	readonly membership: MembershipRepo;
+	readonly assignment: AssignmentRepo;
 	readonly community: CommunityRepo;
 	readonly space: SpaceRepo;
 	readonly entity: EntityRepo;
@@ -28,7 +28,7 @@ export class Repos {
 		this.session = new SessionRepo(this, sql);
 		this.account = new AccountRepo(this, sql);
 		this.persona = new PersonaRepo(this, sql);
-		this.membership = new MembershipRepo(this, sql);
+		this.assignment = new AssignmentRepo(this, sql);
 		this.community = new CommunityRepo(this, sql);
 		this.space = new SpaceRepo(this, sql);
 		this.entity = new EntityRepo(this, sql);

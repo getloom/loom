@@ -9,7 +9,7 @@ import type {
 	CreateAccountPersonaParams,
 	CreateEntityParams,
 	CreateSpaceParams,
-	CreateMembershipParams,
+	CreateAssignmentParams,
 	CreateTieParams,
 	CreateRoleParams,
 	LoginParams,
@@ -21,7 +21,7 @@ import type {Tie} from '$lib/vocab/tie/tie';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
 import {CreateCommunityService} from '$lib/vocab/community/communityServices';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
-import type {Membership} from '$lib/vocab/membership/membership';
+import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {CreateTieService} from '$lib/vocab/tie/tieServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
@@ -50,11 +50,11 @@ export const randomAccountParams = (): LoginParams => ({
 export const randomPersonaParams = (): CreateAccountPersonaParams => ({
 	name: randomPersonaName(),
 });
-export const randomMembershipParams = (
+export const randomAssignmentParams = (
 	actor: number,
 	persona_id: number,
 	community_id: number,
-): CreateMembershipParams => ({
+): CreateAssignmentParams => ({
 	actor,
 	persona_id,
 	community_id,
@@ -128,7 +128,7 @@ export class RandomVocabContext {
 	async persona(account?: Account): Promise<{
 		persona: Persona;
 		personalCommunity: Community;
-		membership: Membership;
+		assignment: Assignment;
 		spaces: Space[];
 		account: Account;
 	}> {
@@ -136,7 +136,7 @@ export class RandomVocabContext {
 		const {
 			persona,
 			community: personalCommunity,
-			membership,
+			assignment,
 			spaces,
 		} = unwrap(
 			await CreateAccountPersonaService.perform({
@@ -144,7 +144,7 @@ export class RandomVocabContext {
 				params: {name: randomPersonaParams().name},
 			}),
 		);
-		return {persona, personalCommunity, membership, spaces, account};
+		return {persona, personalCommunity, assignment, spaces, account};
 	}
 
 	async community(
@@ -153,7 +153,7 @@ export class RandomVocabContext {
 	): Promise<{
 		community: Community;
 		role: Role;
-		memberships: Membership[];
+		assignments: Assignment[];
 		spaces: Space[];
 		personas: Persona[];
 		account: Account;
@@ -161,13 +161,13 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona, account} = await this.persona(account));
 		const params = randomCommunityParams(persona.persona_id);
-		const {community, role, personas, memberships, spaces} = unwrap(
+		const {community, role, personas, assignments, spaces} = unwrap(
 			await CreateCommunityService.perform({
 				...toServiceRequestMock(this.db, persona),
 				params,
 			}),
 		);
-		return {community, role, memberships, spaces, personas: personas.concat(persona), account};
+		return {community, role, assignments, spaces, personas: personas.concat(persona), account};
 	}
 
 	async space(

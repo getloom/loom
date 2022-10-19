@@ -4,7 +4,7 @@ import {stashCommunity} from '$lib/vocab/community/communityMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {Mutated} from '$lib/util/Mutated';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {stashMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
+import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 
 export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({invoke, ui}) => {
 	const result = await invoke();
@@ -15,13 +15,13 @@ export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({i
 		role: $role,
 		spaces: $spaces,
 		directories: $directories,
-		membership: $membership,
+		assignment: $assignment,
 	} = result.value;
 	const mutated = new Mutated('CreateAccountPersona');
 	stashPersonas(ui, [$persona], mutated);
 	stashCommunity(ui, $community, mutated);
 	stashSpaces(ui, $spaces, $directories, mutated);
-	stashMemberships(ui, [$membership], mutated);
+	stashAssignments(ui, [$assignment], mutated);
 	stashRoles(ui, [$role], mutated);
 	mutated.end('CreateAccountPersona');
 	return result;

@@ -10,7 +10,7 @@ import {
 	LeaveCommunity,
 } from '$lib/vocab/community/communityEvents';
 import {CreateAccountPersona, ReadPersona} from '$lib/vocab/persona/personaEvents';
-import {CreateMembership, DeleteMembership} from '$lib/vocab/membership/membershipEvents';
+import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {
 	CreateSpace,
 	ReadSpace,
@@ -58,9 +58,9 @@ export const eventInfos: EventInfo[] = [
 	// personaEvents
 	CreateAccountPersona,
 	ReadPersona,
-	// membershipEvents
-	CreateMembership,
-	DeleteMembership,
+	// assignmentEvents
+	CreateAssignment,
+	DeleteAssignment,
 	// spaceEvents
 	CreateSpace,
 	ReadSpace,
