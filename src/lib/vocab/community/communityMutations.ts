@@ -4,7 +4,7 @@ import {evictCommunity, stashCommunity} from '$lib/vocab/community/communityMuta
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {stashMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
+import {evictMemberships, stashMemberships} from '$lib/vocab/membership/membershipMutationHelpers';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
@@ -82,5 +82,28 @@ export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, inv
 	if (!result.ok) return result;
 	const {community_id} = params;
 	await evictCommunity(ui, community_id);
+	return result;
+};
+
+export const LeaveCommunity: Mutations['LeaveCommunity'] = async ({params, invoke, ui}) => {
+	const {memberships} = ui;
+	const result = await invoke();
+	if (!result.ok) return result;
+	const {actor, community_id} = params;
+	const otherMemberships = memberships
+		.get()
+		.value.filter((m) => m.get().community_id === community_id && m.get().persona_id !== actor);
+
+	if (otherMemberships.length > 0) {
+		evictMemberships(
+			ui,
+			memberships
+				.get()
+				.value.filter((m) => m.get().community_id === community_id && m.get().persona_id === actor),
+		);
+	} else {
+		await evictCommunity(ui, community_id);
+	}
+
 	return result;
 };

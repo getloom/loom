@@ -11,7 +11,6 @@
 	const {dispatch} = getApp();
 
 	export let persona: Readable<Persona>;
-	export let membershipPersona: Readable<Persona>;
 	export let community: Readable<Community>;
 
 	let errorMessage: string | undefined;
@@ -20,9 +19,8 @@
 	const leaveCommunity = async (community_id: number) => {
 		errorMessage = '';
 		pending = true;
-		const result = await dispatch.DeleteMembership({
+		const result = await dispatch.LeaveCommunity({
 			actor: $persona.persona_id,
-			persona_id: $membershipPersona.persona_id,
 			community_id,
 		});
 		pending = false;

@@ -9,6 +9,7 @@ import {
 	ReadCommunity,
 	UpdateCommunitySettings,
 	DeleteCommunity,
+	LeaveCommunity,
 } from '$lib/vocab/community/communityEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {createDefaultSpaces} from '$lib/vocab/space/spaceServices';
@@ -20,6 +21,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
+import {cleanOrphanCommunities} from '$lib/vocab/membership/membershipServices';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -169,6 +171,52 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 				return {ok: false, status: 405, message: 'cannot delete admin community'};
 			}
 			unwrap(await repos.community.deleteById(params.community_id));
+			return {ok: true, status: 200, value: null};
+		}),
+};
+
+export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
+	event: LeaveCommunity,
+	perform: ({transact, params}) =>
+		transact(async (repos) => {
+			const {actor, community_id} = params;
+			log.trace(
+				'[LeaveCommunity] removing all memberships for persona in community',
+				actor,
+				community_id,
+			);
+			// TODO why can't this be parallelized? bug in our code? or the driver? failed to reproduce in the driver.
+			// const [personaResult, communityResult] = await Promise.all([
+			// 	repos.persona.findById(persona_id),
+			// 	repos.community.findById(community_id),
+			// ]);
+			const personaResult = unwrap(await repos.persona.findById(actor));
+			const communityResult = unwrap(await repos.community.findById(community_id));
+			if (!personaResult) {
+				return {ok: false, status: 404, message: 'no persona found'};
+			}
+			if (!communityResult) {
+				return {ok: false, status: 404, message: 'no community found'};
+			}
+			if (communityResult.type === 'personal') {
+				return {ok: false, status: 405, message: 'cannot leave a personal community'};
+			}
+			if (community_id === ADMIN_COMMUNITY_ID) {
+				const adminMemberships = unwrap(
+					await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id),
+				);
+				if (adminMemberships.length === 1) {
+					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
+				}
+			}
+			if (personaResult.type === 'community' && personaResult.community_id === community_id) {
+				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
+			}
+
+			unwrap(await repos.membership.deleteByCommunity(actor, community_id));
+
+			unwrap(await cleanOrphanCommunities(params.community_id, repos));
+
 			return {ok: true, status: 200, value: null};
 		}),
 };

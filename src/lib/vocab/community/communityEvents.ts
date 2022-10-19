@@ -152,3 +152,28 @@ export const DeleteCommunity: ServiceEventInfo = {
 		method: 'DELETE',
 	},
 };
+
+export const LeaveCommunity: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'LeaveCommunity',
+	broadcast: true,
+	params: {
+		$id: '/schemas/LeaveCommunityParams.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number'},
+			community_id: {type: 'number'},
+		},
+		required: ['actor', 'community_id'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/LeaveCommunityResponse.json',
+		type: 'null',
+	},
+	returns: 'Promise<LeaveCommunityResponseResult>',
+	route: {
+		path: '/api/v1/community/leave',
+		method: 'POST',
+	},
+};

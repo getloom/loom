@@ -41,7 +41,7 @@ export const CreateMembershipService: ServiceByName['CreateMembership'] = {
 
 //deletes a membership of a given persona in a given community
 //TODO after front end data normalization make this use membership_id
-//TODO refactor this into LeaveCommunityService & make DeleteMembership use membership_id
+//TODO refactor this to use membership_id instead
 export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 	event: DeleteMembership,
 	perform: ({transact, params}) =>
@@ -80,7 +80,8 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 
-			unwrap(await repos.membership.deleteById(persona_id, community_id));
+			//TODO replace with deleteById
+			unwrap(await repos.membership.deleteByCommunity(persona_id, community_id));
 
 			unwrap(await cleanOrphanCommunities(params.community_id, repos));
 
@@ -88,7 +89,10 @@ export const DeleteMembershipService: ServiceByName['DeleteMembership'] = {
 		}),
 };
 
-const cleanOrphanCommunities = async (community_id: number, repos: Repos): Promise<Result> => {
+export const cleanOrphanCommunities = async (
+	community_id: number,
+	repos: Repos,
+): Promise<Result> => {
 	log.trace('[membershipServices] checking if community is orphaned', community_id);
 	const accountPersonaMemberships = unwrap(
 		await repos.membership.filterAccountPersonaMembershipsByCommunityId(community_id),

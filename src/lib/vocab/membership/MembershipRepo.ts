@@ -18,6 +18,7 @@ export class MembershipRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
+	//TODO refactor to use membership_id
 	async findById(
 		persona_id: number,
 		community_id: number,
@@ -70,13 +71,25 @@ export class MembershipRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
-	//TODO refactor to use membership_id
-	async deleteById(persona_id: number, community_id: number): Promise<Result> {
+	async deleteById(membership_id: number): Promise<Result> {
 		const data = await this.sql<any[]>`
 			DELETE FROM memberships 
-			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
+			WHERE membership_id=${membership_id}
 		`;
 		if (!data.count) return NOT_OK;
 		return OK;
+	}
+
+	async deleteByCommunity(
+		persona_id: number,
+		community_id: number,
+	): Promise<Result<{value: Membership[]}>> {
+		const data = await this.sql<any[]>`
+			DELETE FROM memberships 
+			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
+			RETURNING *
+		`;
+		if (!data.count) return NOT_OK;
+		return {ok: true, value: data};
 	}
 }

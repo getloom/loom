@@ -32,6 +32,7 @@ export type ServiceEventName =
 	| 'ReadCommunities'
 	| 'UpdateCommunitySettings'
 	| 'DeleteCommunity'
+	| 'LeaveCommunity'
 	| 'CreateAccountPersona'
 	| 'ReadPersona'
 	| 'CreateMembership'
@@ -78,6 +79,7 @@ export interface EventParamsByName {
 	ReadCommunities: ReadCommunitiesParams;
 	UpdateCommunitySettings: UpdateCommunitySettingsParams;
 	DeleteCommunity: DeleteCommunityParams;
+	LeaveCommunity: LeaveCommunityParams;
 	CreateAccountPersona: CreateAccountPersonaParams;
 	ReadPersona: ReadPersonaParams;
 	CreateMembership: CreateMembershipParams;
@@ -120,6 +122,7 @@ export interface EventResponseByName {
 	ReadCommunities: ReadCommunitiesResponse;
 	UpdateCommunitySettings: UpdateCommunitySettingsResponse;
 	DeleteCommunity: DeleteCommunityResponse;
+	LeaveCommunity: LeaveCommunityResponse;
 	CreateAccountPersona: CreateAccountPersonaResponse;
 	ReadPersona: ReadPersonaResponse;
 	CreateMembership: CreateMembershipResponse;
@@ -168,6 +171,7 @@ export interface ServiceByName {
 		UpdateCommunitySettingsResponseResult
 	>;
 	DeleteCommunity: AuthorizedService<DeleteCommunityParams, DeleteCommunityResponseResult>;
+	LeaveCommunity: AuthorizedService<LeaveCommunityParams, LeaveCommunityResponseResult>;
 	CreateMembership: AuthorizedService<CreateMembershipParams, CreateMembershipResponseResult>;
 	DeleteMembership: AuthorizedService<DeleteMembershipParams, DeleteMembershipResponseResult>;
 	ReadSpace: AuthorizedService<ReadSpaceParams, ReadSpaceResponseResult>;
@@ -274,6 +278,13 @@ export interface DeleteCommunityParams {
 }
 export type DeleteCommunityResponse = null;
 export type DeleteCommunityResponseResult = ApiResult<DeleteCommunityResponse>;
+
+export interface LeaveCommunityParams {
+	actor: number;
+	community_id: number;
+}
+export type LeaveCommunityResponse = null;
+export type LeaveCommunityResponseResult = ApiResult<LeaveCommunityResponse>;
 
 export interface CreateAccountPersonaParams {
 	name: string;
@@ -560,6 +571,7 @@ export interface Dispatch {
 		params: UpdateCommunitySettingsParams,
 	) => Promise<UpdateCommunitySettingsResponseResult>;
 	DeleteCommunity: (params: DeleteCommunityParams) => Promise<DeleteCommunityResponseResult>;
+	LeaveCommunity: (params: LeaveCommunityParams) => Promise<LeaveCommunityResponseResult>;
 	CreateAccountPersona: (
 		params: CreateAccountPersonaParams,
 	) => Promise<CreateAccountPersonaResponseResult>;
@@ -625,6 +637,9 @@ export interface Mutations {
 	DeleteCommunity: (
 		ctx: DispatchContext<DeleteCommunityParams, DeleteCommunityResponseResult>,
 	) => Promise<DeleteCommunityResponseResult>;
+	LeaveCommunity: (
+		ctx: DispatchContext<LeaveCommunityParams, LeaveCommunityResponseResult>,
+	) => Promise<LeaveCommunityResponseResult>;
 	CreateAccountPersona: (
 		ctx: DispatchContext<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>,
 	) => Promise<CreateAccountPersonaResponseResult>;
