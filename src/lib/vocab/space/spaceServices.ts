@@ -3,7 +3,7 @@ import {unwrap, type Result} from '@feltcoop/felt';
 
 import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {CreateSpaceParams, ServiceByName} from '$lib/app/eventTypes';
 import {
 	CreateSpace,
 	ReadSpace,
@@ -12,9 +12,7 @@ import {
 	DeleteSpace,
 } from '$lib/vocab/space/spaceEvents';
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
-import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
-import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {DeleteEntitiesService} from '$lib/vocab/entity/entityServices';
@@ -154,16 +152,15 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 		}),
 };
 
-export const createDefaultSpaces = async (
+export const createSpaces = async (
 	serviceRequest: AuthorizedServiceRequest,
-	persona_id: number,
-	community: Community,
+	serviceParams: CreateSpaceParams[],
 ): Promise<
 	Result<{value: {spaces: Space[]; directories: Array<Entity & {data: DirectoryEntityData}>}}>
 > => {
 	const spaces: Space[] = [];
 	const directories: Array<Entity & {data: DirectoryEntityData}> = [];
-	for (const params of toDefaultSpaces(persona_id, community)) {
+	for (const params of serviceParams) {
 		const {space, directory} = unwrap(
 			await CreateSpaceService.perform({...serviceRequest, params}), // eslint-disable-line no-await-in-loop
 		);
@@ -171,17 +168,4 @@ export const createDefaultSpaces = async (
 		directories.push(directory);
 	}
 	return {ok: true, value: {spaces, directories}};
-};
-
-export const createDefaultAdminSpaces = async (
-	serviceRequest: AuthorizedServiceRequest,
-	persona_id: number,
-	community: Community,
-): Promise<Result<{value: Space[]}>> => {
-	const spaces: Space[] = [];
-	for (const params of toDefaultAdminSpaces(persona_id, community)) {
-		const {space} = unwrap(await CreateSpaceService.perform({...serviceRequest, params})); // eslint-disable-line no-await-in-loop
-		spaces.push(space);
-	}
-	return {ok: true, value: spaces};
 };

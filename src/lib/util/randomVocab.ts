@@ -134,9 +134,9 @@ export class RandomVocabContext {
 	}> {
 		if (!account) account = await this.account();
 		const {
-			persona,
-			community: personalCommunity,
-			assignment,
+			personas: [persona],
+			communities: [personalCommunity],
+			assignments: [assignment],
 			spaces,
 		} = unwrap(
 			await CreateAccountPersonaService.perform({

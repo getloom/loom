@@ -11,7 +11,7 @@ import type {
 	AuthorizedService,
 } from '$lib/server/service';
 import type {Community} from '$lib/vocab/community/community';
-import type {Persona, AccountPersona} from '$lib/vocab/persona/persona';
+import type {Persona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -290,12 +290,12 @@ export interface CreateAccountPersonaParams {
 	name: string;
 }
 export interface CreateAccountPersonaResponse {
-	persona: AccountPersona;
-	community: Community;
-	role: Role;
+	personas: Persona[];
+	communities: Community[];
+	roles: Role[];
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
-	assignment: Assignment;
+	assignments: Assignment[];
 }
 export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaResponse>;
 

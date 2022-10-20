@@ -12,7 +12,7 @@ import {
 	LeaveCommunity,
 } from '$lib/vocab/community/communityEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
-import {createDefaultSpaces} from '$lib/vocab/space/spaceServices';
+import {createSpaces} from '$lib/vocab/space/spaceServices';
 import type {NonAuthorizedServiceRequest} from '$lib/server/service';
 import {ADMIN_COMMUNITY_ID, ADMIN_COMMUNITY_NAME} from '$lib/app/admin';
 import type {Community} from '$lib/vocab/community/community';
@@ -21,6 +21,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
+import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {cleanOrphanCommunities} from '$lib/vocab/assignment/assignmentServices';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
@@ -129,7 +130,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 
 			// Create default spaces.
 			const {spaces, directories} = unwrap(
-				await createDefaultSpaces(serviceRequest, params.actor, community),
+				await createSpaces(serviceRequest, toDefaultSpaces(params.actor, community)),
 			);
 
 			return {

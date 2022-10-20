@@ -63,13 +63,15 @@ export const seed = async (db: Database): Promise<void> => {
 			account.account_id,
 		);
 		for (const personaName of personasParams[account.name]) {
-			const {persona, spaces} = unwrap(
+			const {
+				personas: [persona],
+				spaces,
+			} = unwrap(
 				await CreateAccountPersonaService.perform({
 					...accountServiceRequest,
 					params: {name: personaName},
 				}),
 			);
-
 			log.trace('created persona', persona);
 			personas.push(persona);
 			await createDefaultEntities({...accountServiceRequest, actor: persona}, spaces, [persona]);
