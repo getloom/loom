@@ -77,6 +77,6 @@ export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEm
 const REQUIRES_AUTHENTICATION_MESSAGE: StatusMessage = {
 	type: 'status',
 	status: 401,
-	message: 'please log in before connecting via websocket',
+	message: 'please sign in before connecting via websocket',
 };
 const REQUIRES_AUTHENTICATION_MESSAGE_STR = JSON.stringify(REQUIRES_AUTHENTICATION_MESSAGE);

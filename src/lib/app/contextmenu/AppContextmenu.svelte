@@ -47,7 +47,7 @@
 			About
 		</ContextmenuEntry>
 		{#if !$session.guest}
-			<ContextmenuEntry action={() => dispatch.Logout()}>Log out</ContextmenuEntry>
+			<ContextmenuEntry action={() => dispatch.SignOut()}>Sign out</ContextmenuEntry>
 		{/if}
 	</svelte:fragment>
 </ContextmenuSubmenu>

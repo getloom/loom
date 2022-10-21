@@ -1,12 +1,12 @@
 <script lang="ts">
-	import LoginForm from '$lib/ui/LoginForm.svelte';
-	import LogoutForm from '$lib/ui/LogoutForm.svelte';
+	import SignInForm from '$lib/ui/SignInForm.svelte';
+	import SignOutForm from '$lib/ui/SignOutForm.svelte';
 
 	export let guest: boolean;
 </script>
 
 {#if guest}
-	<LoginForm />
+	<SignInForm />
 {:else}
-	<LogoutForm />
+	<SignOutForm />
 {/if}

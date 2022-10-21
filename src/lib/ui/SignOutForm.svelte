@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
 	import Message from '@feltcoop/felt/ui/Message.svelte';
-	import type {LogoutResponseResult} from '$lib/app/eventTypes';
+	import type {SignOutResponseResult} from '$lib/app/eventTypes';
 
 	import type {AccountModel} from '$lib/vocab/account/account';
 	import {getApp} from '$lib/ui/app';
@@ -19,10 +19,10 @@
 
 	$: disabled = !account;
 
-	const logout = async (): Promise<LogoutResponseResult> => {
+	const signOut = async (): Promise<SignOutResponseResult> => {
 		submitting = true;
 		errorMessage = '';
-		const result = await dispatch.Logout();
+		const result = await dispatch.SignOut();
 		if (!result.ok) {
 			errorMessage = result.message;
 		}
@@ -32,7 +32,7 @@
 </script>
 
 <form>
-	<PendingButton pending={!!submitting} on:click={logout} {disabled}>log out</PendingButton>
+	<PendingButton pending={!!submitting} on:click={signOut} {disabled}>sign out</PendingButton>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>
 	{/if}

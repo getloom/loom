@@ -19,7 +19,7 @@ export const authorize = async (
 
 	// Authenticate by ensuring there's an account_id:
 	if (!account_id) {
-		return {ok: false, status: 401, message: 'not logged in'}; // TODO centralize error message strings
+		return {ok: false, status: 401, message: 'not signed in'}; // TODO centralize error message strings
 	}
 	// TODO possibly check that the account still exists and is in good standing,
 	// and if loading the account is required for the check, add it to the service request,

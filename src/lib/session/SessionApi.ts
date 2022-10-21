@@ -9,8 +9,8 @@ import type {ErrorResponse} from '$lib/util/error';
 const log = new Logger('[SessionApi]');
 
 export interface ISessionApi {
-	login: (account_id: number) => Result<object, ErrorResponse>;
-	logout: () => Result<object, ErrorResponse>;
+	signIn: (account_id: number) => Result<object, ErrorResponse>;
+	signOut: () => Result<object, ErrorResponse>;
 }
 
 /**
@@ -22,14 +22,14 @@ export interface ISessionApi {
 export class SessionApi implements ISessionApi {
 	constructor(private readonly req: ApiServerRequest, private readonly res: ServerResponse) {}
 
-	login(account_id: number): Result<object, ErrorResponse> {
+	signIn(account_id: number): Result<object, ErrorResponse> {
 		log.trace('logging in', account_id);
 		this.req.account_id = account_id;
 		setSessionCookie(this.res, account_id);
 		return OK;
 	}
 
-	logout(): Result<object, ErrorResponse> {
+	signOut(): Result<object, ErrorResponse> {
 		log.trace('logging out', this.req.account_id);
 		this.req.account_id = undefined;
 		setSessionCookie(this.res, '');

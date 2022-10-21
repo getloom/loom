@@ -84,9 +84,9 @@
 		async (message) => {
 			if (message.status === 401) {
 				// this condition occurs when the server fails to parse and validate session cookies
-				// TODO maybe display an error on the login screen
+				// TODO maybe display an error on the sign in screen
 				if ($session.guest) {
-					await dispatch.Logout();
+					await dispatch.SignOut();
 				} else {
 					dispatch.SetSession({session: {guest: true}});
 				}
@@ -96,7 +96,7 @@
 		},
 		deserialize(deserializers),
 	);
-	// The http client is needed for cookie-related calls like `Login` and `Logout`.
+	// The http client is needed for cookie-related calls like `SignIn` and `SignOut`.
 	const httpClient = toHttpApiClient(findHttpService, deserialize(deserializers));
 
 	const app = setApp({ui, dispatch, devmode, socket});

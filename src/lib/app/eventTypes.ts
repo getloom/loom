@@ -24,8 +24,8 @@ import type {ClientSession, ClientAccountSession} from '$lib/session/clientSessi
 /* eslint-disable @typescript-eslint/array-type */
 
 export type ServiceEventName =
-	| 'Login'
-	| 'Logout'
+	| 'SignIn'
+	| 'SignOut'
 	| 'UpdateAccountSettings'
 	| 'CreateCommunity'
 	| 'ReadCommunity'
@@ -71,8 +71,8 @@ export type ClientEventName =
 
 export interface EventParamsByName {
 	SetSession: SetSessionParams;
-	Login: LoginParams;
-	Logout: LogoutParams;
+	SignIn: SignInParams;
+	SignOut: SignOutParams;
 	UpdateAccountSettings: UpdateAccountSettingsParams;
 	CreateCommunity: CreateCommunityParams;
 	ReadCommunity: ReadCommunityParams;
@@ -114,8 +114,8 @@ export interface EventParamsByName {
 	ClearFreshness: ClearFreshnessParams;
 }
 export interface EventResponseByName {
-	Login: LoginResponse;
-	Logout: LogoutResponse;
+	SignIn: SignInResponse;
+	SignOut: SignOutResponse;
 	UpdateAccountSettings: UpdateAccountSettingsResponse;
 	CreateCommunity: CreateCommunityResponse;
 	ReadCommunity: ReadCommunityResponse;
@@ -152,8 +152,8 @@ export interface EventResponseByName {
 export interface ServiceByName {
 	Ping: NonAuthorizedService<PingParams, PingResponseResult>;
 	Ephemera: AuthorizedService<EphemeraParams, EphemeraResponseResult>;
-	Login: NonAuthenticatedService<LoginParams, LoginResponseResult>;
-	Logout: NonAuthorizedService<LogoutParams, LogoutResponseResult>;
+	SignIn: NonAuthenticatedService<SignInParams, SignInResponseResult>;
+	SignOut: NonAuthorizedService<SignOutParams, SignOutResponseResult>;
 	UpdateAccountSettings: NonAuthorizedService<
 		UpdateAccountSettingsParams,
 		UpdateAccountSettingsResponseResult
@@ -201,18 +201,18 @@ export interface SetSessionParams {
 	session: ClientSession;
 }
 
-export interface LoginParams {
+export interface SignInParams {
 	username: string;
 	password: string;
 }
-export interface LoginResponse {
+export interface SignInResponse {
 	session: ClientAccountSession;
 }
-export type LoginResponseResult = ApiResult<LoginResponse>;
+export type SignInResponseResult = ApiResult<SignInResponse>;
 
-export type LogoutParams = null;
-export type LogoutResponse = null;
-export type LogoutResponseResult = ApiResult<LogoutResponse>;
+export type SignOutParams = null;
+export type SignOutResponse = null;
+export type SignOutResponseResult = ApiResult<SignOutResponse>;
 
 export interface UpdateAccountSettingsParams {
 	settings: {
@@ -559,8 +559,8 @@ export interface ClearFreshnessParams {
 
 export interface Dispatch {
 	SetSession: (params: SetSessionParams) => void;
-	Login: (params: LoginParams) => Promise<LoginResponseResult>;
-	Logout: () => Promise<LogoutResponseResult>;
+	SignIn: (params: SignInParams) => Promise<SignInResponseResult>;
+	SignOut: () => Promise<SignOutResponseResult>;
 	UpdateAccountSettings: (
 		params: UpdateAccountSettingsParams,
 	) => Promise<UpdateAccountSettingsResponseResult>;
@@ -615,10 +615,12 @@ export interface Dispatch {
 
 export interface Mutations {
 	SetSession: (ctx: DispatchContext<SetSessionParams, void>) => void;
-	Login: (ctx: DispatchContext<LoginParams, LoginResponseResult>) => Promise<LoginResponseResult>;
-	Logout: (
-		ctx: DispatchContext<LogoutParams, LogoutResponseResult>,
-	) => Promise<LogoutResponseResult>;
+	SignIn: (
+		ctx: DispatchContext<SignInParams, SignInResponseResult>,
+	) => Promise<SignInResponseResult>;
+	SignOut: (
+		ctx: DispatchContext<SignOutParams, SignOutResponseResult>,
+	) => Promise<SignOutResponseResult>;
 	UpdateAccountSettings: (
 		ctx: DispatchContext<UpdateAccountSettingsParams, UpdateAccountSettingsResponseResult>,
 	) => Promise<UpdateAccountSettingsResponseResult>;

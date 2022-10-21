@@ -9,11 +9,11 @@ import type {ErrorResponse} from '$lib/util/error';
  * so they pass this disabled session API to services for error reporting.
  */
 export class SessionApiDisabled implements ISessionApi {
-	login(): Result<object, ErrorResponse> {
-		return {ok: false, message: 'login can only be called by http clients'};
+	signIn(): Result<object, ErrorResponse> {
+		return {ok: false, message: 'only http clients can sign in'};
 	}
 
-	logout(): Result<object, ErrorResponse> {
-		return {ok: false, message: 'logout can only be called by http clients'};
+	signOut(): Result<object, ErrorResponse> {
+		return {ok: false, message: 'only http clients can sign out'};
 	}
 }

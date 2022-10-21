@@ -22,13 +22,13 @@ export const SetSession: ClientEventInfo = {
 	returns: 'void',
 };
 
-export const Login: ServiceEventInfo = {
+export const SignIn: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'Login',
+	name: 'SignIn',
 	authenticate: false,
 	authorize: false,
 	params: {
-		$id: '/schemas/LoginParams.json',
+		$id: '/schemas/SignInParams.json',
 		type: 'object',
 		properties: {
 			username: {type: 'string'},
@@ -38,10 +38,9 @@ export const Login: ServiceEventInfo = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/LoginResponse.json',
+		$id: '/schemas/SignInResponse.json',
 		type: 'object',
 		properties: {
-			// TODO this wasn't being used ?
 			// TODO session schema type
 			// session: {$ref: 'Session.json', tsType: 'Persona'},
 			session: {type: 'object', tsType: 'ClientAccountSession'},
@@ -49,29 +48,29 @@ export const Login: ServiceEventInfo = {
 		required: ['session'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<LoginResponseResult>',
+	returns: 'Promise<SignInResponseResult>',
 	route: {
-		path: '/api/v1/login',
+		path: '/api/v1/signin',
 		method: 'POST',
 	},
 };
 
-export const Logout: ServiceEventInfo = {
+export const SignOut: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'Logout',
+	name: 'SignOut',
 	authorize: false,
 	websockets: false,
 	params: {
-		$id: '/schemas/LogoutParams.json',
+		$id: '/schemas/SignOutParams.json',
 		type: 'null',
 	},
 	response: {
-		$id: '/schemas/LogoutResponse.json',
+		$id: '/schemas/SignOutResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<LogoutResponseResult>',
+	returns: 'Promise<SignOutResponseResult>',
 	route: {
-		path: '/api/v1/logout',
+		path: '/api/v1/signout',
 		method: 'POST',
 	},
 };

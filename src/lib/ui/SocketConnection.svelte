@@ -18,7 +18,7 @@
 		socket.disconnect();
 	});
 
-	// Keep the socket connected when logged in, and disconnect when logged out.
+	// Keep the socket connected when signed in, and disconnect when signed out.
 	$: if (browser) {
 		if (guest) {
 			socket.disconnect();

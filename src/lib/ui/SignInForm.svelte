@@ -18,7 +18,7 @@
 
 	$: disabled = !!submitting;
 
-	const login = async () => {
+	const signIn = async () => {
 		if (submitting) return;
 		if (!username) {
 			usernameEl.focus();
@@ -33,7 +33,7 @@
 		buttonEl.focus();
 		submitting = true;
 		errorMessage = '';
-		const result = await dispatch.Login({username, password});
+		const result = await dispatch.SignIn({username, password});
 		submitting = false;
 		if (!result.ok) {
 			errorMessage = result.message;
@@ -44,7 +44,7 @@
 
 	const onKeypress = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
-			await login();
+			await signIn();
 		}
 	};
 </script>
@@ -71,7 +71,7 @@
 		placeholder="password"
 		autocomplete="current-password"
 	/>
-	<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={login}>log in</PendingButton>
+	<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signIn}>sign in</PendingButton>
 	<div class:error={!!errorMessage}>{errorMessage || '💚'}</div>
 </form>
 <div class="centered-block">

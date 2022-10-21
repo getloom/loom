@@ -1,11 +1,11 @@
 import {verifyPassword} from '$lib/util/password';
-import {Login, Logout} from '$lib/session/sessionEvents';
+import {SignIn, SignOut} from '$lib/session/sessionEvents';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 import {unwrap} from '@feltcoop/felt';
 
-export const LoginService: ServiceByName['Login'] = {
-	event: Login,
+export const SignInService: ServiceByName['SignIn'] = {
+	event: SignIn,
 	perform: (serviceRequest) =>
 		serviceRequest.transact(async (repos) => {
 			const {
@@ -14,17 +14,17 @@ export const LoginService: ServiceByName['Login'] = {
 			} = serviceRequest;
 
 			// If the browser session is out of sync with the server,
-			// the client may think it's logged out when the server sees a session.
+			// the client may think it's signed out when the server sees a session.
 			// To avoid bugs and confusion, this logs out the user and asks them to try again.
 			if ('account_id' in serviceRequest) {
-				session.logout();
+				session.signOut();
 				return {ok: false, status: 400, message: 'something went wrong, please try again'};
 			}
 
 			// First see if the account already exists.
 			let account = unwrap(await repos.account.findByName(username));
 			if (account) {
-				// There's already an account, so proceed to log in after validating the password.
+				// There's already an account, so proceed to sign in after validating the password.
 				if (!(await verifyPassword(password, account.password))) {
 					return {ok: false, status: 400, message: 'invalid account name or password'};
 				}
@@ -46,16 +46,16 @@ export const LoginService: ServiceByName['Login'] = {
 
 			const clientSession = unwrap(await repos.session.loadClientSession(account.account_id));
 
-			unwrap(session.login(account.account_id));
+			unwrap(session.signIn(account.account_id));
 
 			return {ok: true, status: 200, value: {session: clientSession}};
 		}),
 };
 
-export const LogoutService: ServiceByName['Logout'] = {
-	event: Logout,
+export const SignOutService: ServiceByName['SignOut'] = {
+	event: SignOut,
 	perform: async ({session}) => {
-		unwrap(session.logout());
+		unwrap(session.signOut());
 		return {ok: true, status: 200, value: null};
 	},
 };

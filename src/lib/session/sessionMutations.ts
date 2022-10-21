@@ -108,14 +108,14 @@ const toInitialPersonas = (session: ClientSession): Persona[] =>
 				),
 		  );
 
-export const Login: Mutations['Login'] = async ({invoke, dispatch}) => {
+export const SignIn: Mutations['SignIn'] = async ({invoke, dispatch}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	dispatch.SetSession({session: result.value.session});
 	return result;
 };
 
-export const Logout: Mutations['Logout'] = async ({invoke, dispatch}) => {
+export const SignOut: Mutations['SignOut'] = async ({invoke, dispatch}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	dispatch.SetSession({session: {guest: true}});

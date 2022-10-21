@@ -29,13 +29,13 @@ export const randomEventParams: RandomEventParams = {
 			data: {type: 'a'},
 		};
 	},
-	Login: async () => {
+	SignIn: async () => {
 		return {
 			username: randomString(),
 			password: randomString(),
 		};
 	},
-	Logout: async () => {
+	SignOut: async () => {
 		return null;
 	},
 	SetSession: async () => {

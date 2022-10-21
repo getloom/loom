@@ -75,7 +75,7 @@ const test__services = suite<TestDbContext>('services');
 test__services.before(setupDb);
 test__services.after(teardownDb);
 
-const session = new SessionApiMock(); // reuse the session so it tests login sequentially
+const session = new SessionApiMock(); // reuse the session so it tests SignIn sequentially
 
 for (const service of services.values()) {
 	const {event} = service;
