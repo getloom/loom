@@ -36,7 +36,7 @@ import {
 	ReadRolesService,
 	UpdateRoleService,
 } from '$lib/vocab/role/roleServices';
-import {UpdateAccountSettingsService} from '$lib/vocab/account/accountServices';
+import {SignUpService, UpdateAccountSettingsService} from '$lib/vocab/account/accountServices';
 
 export const services: Map<string, Service> = new Map(
 	[
@@ -47,6 +47,7 @@ export const services: Map<string, Service> = new Map(
 		SignInService,
 		SignOutService,
 		// accountServices
+		SignUpService,
 		UpdateAccountSettingsService,
 		// personaServices
 		CreateAccountPersonaService,

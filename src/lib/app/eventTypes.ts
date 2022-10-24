@@ -26,6 +26,7 @@ import type {ClientSession, ClientAccountSession} from '$lib/session/clientSessi
 export type ServiceEventName =
 	| 'SignIn'
 	| 'SignOut'
+	| 'SignUp'
 	| 'UpdateAccountSettings'
 	| 'CreateCommunity'
 	| 'ReadCommunity'
@@ -73,6 +74,7 @@ export interface EventParamsByName {
 	SetSession: SetSessionParams;
 	SignIn: SignInParams;
 	SignOut: SignOutParams;
+	SignUp: SignUpParams;
 	UpdateAccountSettings: UpdateAccountSettingsParams;
 	CreateCommunity: CreateCommunityParams;
 	ReadCommunity: ReadCommunityParams;
@@ -116,6 +118,7 @@ export interface EventParamsByName {
 export interface EventResponseByName {
 	SignIn: SignInResponse;
 	SignOut: SignOutResponse;
+	SignUp: SignUpResponse;
 	UpdateAccountSettings: UpdateAccountSettingsResponse;
 	CreateCommunity: CreateCommunityResponse;
 	ReadCommunity: ReadCommunityResponse;
@@ -154,6 +157,7 @@ export interface ServiceByName {
 	Ephemera: AuthorizedService<EphemeraParams, EphemeraResponseResult>;
 	SignIn: NonAuthenticatedService<SignInParams, SignInResponseResult>;
 	SignOut: NonAuthorizedService<SignOutParams, SignOutResponseResult>;
+	SignUp: NonAuthenticatedService<SignUpParams, SignUpResponseResult>;
 	UpdateAccountSettings: NonAuthorizedService<
 		UpdateAccountSettingsParams,
 		UpdateAccountSettingsResponseResult
@@ -213,6 +217,15 @@ export type SignInResponseResult = ApiResult<SignInResponse>;
 export type SignOutParams = null;
 export type SignOutResponse = null;
 export type SignOutResponseResult = ApiResult<SignOutResponse>;
+
+export interface SignUpParams {
+	username: string;
+	password: string;
+}
+export interface SignUpResponse {
+	session: ClientAccountSession;
+}
+export type SignUpResponseResult = ApiResult<SignUpResponse>;
 
 export interface UpdateAccountSettingsParams {
 	settings: {
@@ -561,6 +574,7 @@ export interface Dispatch {
 	SetSession: (params: SetSessionParams) => void;
 	SignIn: (params: SignInParams) => Promise<SignInResponseResult>;
 	SignOut: () => Promise<SignOutResponseResult>;
+	SignUp: (params: SignUpParams) => Promise<SignUpResponseResult>;
 	UpdateAccountSettings: (
 		params: UpdateAccountSettingsParams,
 	) => Promise<UpdateAccountSettingsResponseResult>;
@@ -621,6 +635,9 @@ export interface Mutations {
 	SignOut: (
 		ctx: DispatchContext<SignOutParams, SignOutResponseResult>,
 	) => Promise<SignOutResponseResult>;
+	SignUp: (
+		ctx: DispatchContext<SignUpParams, SignUpResponseResult>,
+	) => Promise<SignUpResponseResult>;
 	UpdateAccountSettings: (
 		ctx: DispatchContext<UpdateAccountSettingsParams, UpdateAccountSettingsResponseResult>,
 	) => Promise<UpdateAccountSettingsResponseResult>;

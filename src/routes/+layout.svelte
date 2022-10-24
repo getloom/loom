@@ -151,11 +151,11 @@
 	{/if}
 	<main>
 		{#if guest}
-			<div class="account column markup padded-xl">
+			<div class="main-content account column markup">
 				<AccountForm {guest} />
 			</div>
 		{:else if onboarding}
-			<div class="column">
+			<div class="main-content column">
 				<Onboard />
 			</div>
 		{:else}
@@ -182,6 +182,10 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+	}
+	.main-content {
+		max-height: 100%; /* fix vertical scrolling */
+		padding: var(--spacing_xl);
 	}
 	.account {
 		align-items: center;

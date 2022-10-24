@@ -36,7 +36,7 @@ for (const service of services.values()) {
 				'non-authorized event params must have no actor',
 			);
 		} else {
-			// defualt to authorized (yes account_id, yes actor)
+			// default to authorized (yes account_id, yes actor)
 			assert.equal(
 				event.params.properties?.actor,
 				{type: 'number'},

@@ -32,7 +32,7 @@ import {randomHue} from '$lib/ui/color';
 
 // TODO automate these from schemas, also use seeded rng
 export const randomString = (): string => Math.random().toString().slice(2);
-export const randomAccountName = randomString;
+export const randomAccountName = (): string => randomString() + '@email.com';
 export const randomPassword = randomString;
 export const randomPersonaName = randomString;
 export const randomCommunnityName = randomString;
@@ -114,15 +114,18 @@ export interface RandomVocab {
 export class RandomVocabContext {
 	constructor(private readonly db: Database) {}
 
-	async account(): Promise<Account> {
-		const params = randomAccountParams();
-		return unwrap(
+	async account(params = randomAccountParams()): Promise<Account> {
+		const account = unwrap(
 			await this.db.repos.account.create(
 				params.username,
 				params.password,
 				toDefaultAccountSettings(),
 			),
 		);
+		// This makes the unencrypted password available for tests,
+		// so things like `SignIn` can be tested with existing accounts.
+		(account as any).__testPlaintextPassword = params.password;
+		return account;
 	}
 
 	async persona(account?: Account): Promise<{

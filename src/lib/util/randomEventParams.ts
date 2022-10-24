@@ -10,6 +10,7 @@ import {
 	randomSpaceName,
 	randomCommunityParams,
 	randomRoleName,
+	randomAccountName,
 } from '$lib/util/randomVocab';
 import {randomHue} from '$lib/ui/color';
 import type {RandomEventParams} from '$lib/util/randomEventParamsTypes';
@@ -29,17 +30,24 @@ export const randomEventParams: RandomEventParams = {
 			data: {type: 'a'},
 		};
 	},
-	SignIn: async () => {
+	SetSession: async () => {
+		return {session: {guest: true}};
+	},
+	SignIn: async (random, {account} = {}) => {
+		if (!account) account = await random.account();
 		return {
-			username: randomString(),
-			password: randomString(),
+			username: account.name,
+			password: (account as any).__testPlaintextPassword,
 		};
 	},
 	SignOut: async () => {
 		return null;
 	},
-	SetSession: async () => {
-		return {session: {guest: true}};
+	SignUp: async () => {
+		return {
+			username: randomAccountName(),
+			password: randomString(),
+		};
 	},
 	UpdateAccountSettings: async () => {
 		return {

@@ -128,3 +128,9 @@ maybe upstream to Felt? think about how to upstream without bloating bundles tha
 	/* TODO probably want `--button_color_selected` so it's different than active */
 	background-color: var(--button_color_active);
 }
+
+/* a minimal alternative to `<Message status="error">some error text</Message>` */
+.error-text {
+	font-weight: bold;
+	color: var(--error_color);
+}

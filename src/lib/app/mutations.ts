@@ -1,6 +1,6 @@
 import type {Mutation} from '$lib/ui/mutation';
 import {SignIn, SignOut, SetSession} from '$lib/session/sessionMutations';
-import {UpdateAccountSettings} from '$lib/vocab/account/accountMutations';
+import {SignUp, UpdateAccountSettings} from '$lib/vocab/account/accountMutations';
 import {CreateAccountPersona} from '$lib/vocab/persona/personaMutations';
 import {
 	ReadCommunities,
@@ -41,6 +41,7 @@ export const mutations: Record<string, Mutation> = {
 	SignIn,
 	SignOut,
 	// accountMutations
+	SignUp,
 	UpdateAccountSettings,
 	// personaMutations
 	CreateAccountPersona,
