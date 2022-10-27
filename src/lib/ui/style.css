@@ -42,7 +42,8 @@ main {
 .plain-button {
 	border: none;
 	box-shadow: none;
-	background: transparent;
+	--button_color: transparent;
+	--button_color_hover: var(--tint_light_5);
 }
 
 .buttons {

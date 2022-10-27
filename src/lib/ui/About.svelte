@@ -4,6 +4,8 @@
 
 <div class="markup padded-xl">
 	<h1>About this Instance</h1>
+	<p>Need help? Have questions, comments, concerns?</p>
+	<p>Email us at <a href="mailto:{VITE_HELP_EMAIL_ADDRESS}">{VITE_HELP_EMAIL_ADDRESS}</a></p>
 	<p class="title">
 		💚
 		<a href="https://github.com/feltcoop/felt-server" target="_blank" rel="noreferrer"
@@ -17,10 +19,5 @@
 		>
 			{VITE_GIT_HASH}
 		</a>
-	</p>
-	<p>
-		Questions, comments, concerns? Email us at <a href="mailto:{VITE_HELP_EMAIL_ADDRESS}"
-			>{VITE_HELP_EMAIL_ADDRESS}</a
-		>
 	</p>
 </div>

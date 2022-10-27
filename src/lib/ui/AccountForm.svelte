@@ -2,6 +2,7 @@
 	import SignInForm from '$lib/ui/SignInForm.svelte';
 	import SignUpForm from '$lib/ui/SignUpForm.svelte';
 	import SignOutForm from '$lib/ui/SignOutForm.svelte';
+	import HelpButton from '$lib/ui/HelpButton.svelte';
 
 	export let guest: boolean;
 
@@ -13,11 +14,17 @@
 {#if guest}
 	{#if view === 'sign_in'}
 		<SignInForm bind:username>
-			<button on:click={() => (view = 'sign_up')}>sign up</button>
+			<div class="centered">
+				<button on:click={() => (view = 'sign_up')}>sign up</button>
+				<HelpButton />
+			</div>
 		</SignInForm>
 	{:else if view === 'sign_up'}
 		<SignUpForm bind:username>
-			<button on:click={() => (view = 'sign_in')}>sign in</button>
+			<div class="centered">
+				<button on:click={() => (view = 'sign_in')}>sign in</button>
+				<HelpButton />
+			</div>
 		</SignUpForm>
 	{/if}
 {:else}

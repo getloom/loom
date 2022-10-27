@@ -84,15 +84,5 @@
 		{/if}
 		<PendingButton on:click={create} pending={status === 'pending'}>Create persona</PendingButton>
 	</form>
-	<div class="centered-block">
-		<Message icon="‼">your persona names are visible to people in the communities you join</Message>
-	</div>
+	<Message icon="‼">your persona names are visible to people in the communities you join</Message>
 </div>
-
-<style>
-	.centered-block {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-</style>

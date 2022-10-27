@@ -3,6 +3,7 @@
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
 
 	import {autofocus} from '$lib/ui/actions';
+	import HeroIcon from '$lib/ui/HeroIcon.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 
@@ -68,9 +69,7 @@
 	};
 </script>
 
-<div class="icon">
-	<img src="/favicon.png" alt="felt heart" />
-</div>
+<HeroIcon />
 <form>
 	<input
 		bind:this={usernameEl}
@@ -100,11 +99,7 @@
 	<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signUp}>sign up</PendingButton>
 	<div class:error-text={!!errorMessage}>{errorMessage || '💚'}</div>
 </form>
-<div class="centered-block">
-	<div>
-		<slot />
-	</div>
-</div>
+<slot />
 
 <style>
 	form {
@@ -112,19 +107,5 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-	}
-	.icon {
-		display: flex;
-		justify-content: center;
-		padding: var(--spacing_lg);
-	}
-	.icon img {
-		width: var(--icon_size);
-		height: var(--icon_size);
-	}
-	.centered-block {
-		display: flex;
-		justify-content: center;
-		align-items: center;
 	}
 </style>
