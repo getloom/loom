@@ -37,7 +37,7 @@
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);
 
-	let openReply = false;
+	let replying = false;
 	let text = '';
 
 	const renderEntity = (entity: Entity): boolean => {
@@ -62,13 +62,16 @@
 			entity_id: $space.directory_id,
 		});
 		text = '';
-		openReply = false;
+		replying = false;
 	};
 	const onKeydown = async (e: KeyboardEvent) => {
-		if (e.key === 'Enter') {
+		if (e.key === 'Enter' && !e.shiftKey) {
 			await createEntity();
 		}
 	};
+
+	let replyInputEl: HTMLTextAreaElement | undefined;
+	$: replyInputEl?.focus();
 </script>
 
 <!-- TODO delete `PersonaContextmenu` ? should that be handled by the entity contextmenu?
@@ -97,9 +100,16 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 			</div>
 
 			<div>
-				<button on:click={() => (openReply = !openReply)}>reply</button>
-				{#if openReply}
-					<input placeholder="> replying to comment" on:keydown={onKeydown} bind:value={text} />
+				<button class="plain-button" aria-label="reply" on:click={() => (replying = !replying)}
+					>↩</button
+				>
+				{#if replying}
+					<textarea
+						placeholder="> replying to {$authorPersona.name}"
+						on:keydown={onKeydown}
+						bind:value={text}
+						bind:this={replyInputEl}
+					/>
 				{/if}
 			</div>
 		</div>
