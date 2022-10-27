@@ -16,12 +16,13 @@ const envs: Array<{file: string; defaultFile: string}> = [
 ];
 
 interface Env {
-	VITE_GIT_HASH: string;
 	COOKIE_KEYS: string;
+	VITE_GIT_HASH: string;
 	VITE_DEPLOY_SERVER_HOST: string;
+	VITE_HELP_EMAIL_ADDRESS: string;
 	DEPLOY_IP: string;
 	DEPLOY_USER: string;
-	EMAIL_ADDRESS: string;
+	CERTBOT_EMAIL_ADDRESS: string;
 }
 
 let loaded = false;

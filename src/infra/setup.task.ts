@@ -20,7 +20,7 @@ export const task: Task<SetupTaskArgs> = {
 		const DEPLOY_IP = fromEnv('DEPLOY_IP');
 		const DEPLOY_USER = fromEnv('DEPLOY_USER');
 		const VITE_DEPLOY_SERVER_HOST = fromEnv('VITE_DEPLOY_SERVER_HOST');
-		const EMAIL_ADDRESS = fromEnv('EMAIL_ADDRESS');
+		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
 		// TODO this is hacky because of `import.meta` env handling
 		const {API_SERVER_HOST} = await import('../lib/config.js');
 		const NODE_VERSION = '18';
@@ -109,7 +109,7 @@ export const task: Task<SetupTaskArgs> = {
 			// Install certbot for HTTPS:
 			logSequence('Enabling HTTPS with cerbot and nginx...') +
 				`apt install -y certbot python3-certbot-nginx;
-				certbot --nginx --non-interactive --agree-tos --email ${EMAIL_ADDRESS} -d ${VITE_DEPLOY_SERVER_HOST};
+				certbot --nginx --non-interactive --agree-tos --email ${CERTBOT_EMAIL_ADDRESS} -d ${VITE_DEPLOY_SERVER_HOST};
 				systemctl restart nginx.service;`,
 			//
 			//

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {VITE_GIT_HASH} from '$lib/config';
+	import {VITE_GIT_HASH, VITE_HELP_EMAIL_ADDRESS} from '$lib/config';
 </script>
 
 <div class="markup padded-xl">
@@ -19,7 +19,8 @@
 		</a>
 	</p>
 	<p>
-		Questions, comments, concerns? Email us at <a href="mailto:team@felt.social">team@felt.social</a
+		Questions, comments, concerns? Email us at <a href="mailto:{VITE_HELP_EMAIL_ADDRESS}"
+			>{VITE_HELP_EMAIL_ADDRESS}</a
 		>
 	</p>
 </div>

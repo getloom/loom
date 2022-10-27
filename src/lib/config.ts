@@ -8,6 +8,7 @@
 // This probably means supporting `import.meta.env` or `$app/environment` in Gro.
 
 const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production';
+
 export const VITE_DEPLOY_SERVER_HOST = dev
 	? 'localhost'
 	: import.meta.env
@@ -17,6 +18,10 @@ export const VITE_DEPLOY_SERVER_HOST = dev
 export const VITE_GIT_HASH = import.meta.env
 	? import.meta.env.VITE_GIT_HASH
 	: process.env.VITE_GIT_HASH;
+
+export const VITE_HELP_EMAIL_ADDRESS = import.meta.env
+	? import.meta.env.VITE_HELP_EMAIL_ADDRESS
+	: process.env.VITE_HELP_EMAIL_ADDRESS;
 
 export const API_SERVER_PORT = 3000; // same as in vite.config.js
 export const API_SERVER_HOST = `localhost:${API_SERVER_PORT}`;
