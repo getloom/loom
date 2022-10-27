@@ -56,10 +56,12 @@ export const randomAssignmentParams = (
 	actor: number,
 	persona_id: number,
 	community_id: number,
+	role_id: number,
 ): CreateAssignmentParams => ({
 	actor,
 	persona_id,
 	community_id,
+	role_id,
 });
 export const randomCommunityParams = (actor: number): CreateCommunityParams => {
 	const name = randomCommunnityName();

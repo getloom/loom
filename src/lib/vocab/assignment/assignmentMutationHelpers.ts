@@ -16,11 +16,7 @@ export const stashAssignments = (
 	const $ms = assignments.get().value;
 	for (const $m of $assignments) {
 		// TODO speed this up after adding the `assignment_id` field
-		if (
-			!$ms.find(
-				(m) => $m.community_id === m.get().community_id && $m.persona_id === m.get().persona_id,
-			)
-		) {
+		if (!$ms.find((m) => $m.assignment_id === m.get().assignment_id)) {
 			$ms.push(writable($m));
 			mutated.add(assignments);
 		}

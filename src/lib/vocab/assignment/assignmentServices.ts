@@ -14,7 +14,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 	event: CreateAssignment,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {community_id, persona_id} = params;
+			const {community_id, persona_id, role_id} = params;
 			log.trace('[CreateAssignment] creating assignment', persona_id, community_id);
 
 			// Personal communities disallow assignments as a hard rule.
@@ -31,14 +31,16 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 			}
 
 			// Check for duplicate assignments.
-			const existingAssignment = unwrap(await repos.assignment.findById(persona_id, community_id));
+			const existingAssignment = unwrap(
+				await repos.assignment.findByUniqueIds(persona_id, community_id, role_id),
+			);
 			if (existingAssignment) {
 				return {ok: false, status: 409, message: 'assignment already exists'};
 			}
 
 			// TODO test what happens if the persona doesn't exist
 
-			const assignment = unwrap(await repos.assignment.create(persona_id, community_id));
+			const assignment = unwrap(await repos.assignment.create(persona_id, community_id, role_id));
 			return {ok: true, status: 200, value: {assignment}};
 		}),
 };

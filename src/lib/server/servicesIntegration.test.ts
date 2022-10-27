@@ -55,6 +55,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 				actor: persona2.persona_id,
 				community_id: community.community_id,
 				persona_id: persona2.persona_id,
+				role_id: community.settings.defaultRoleId,
 			},
 		}),
 	);

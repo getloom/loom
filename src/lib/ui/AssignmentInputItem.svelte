@@ -5,25 +5,27 @@
 	import {getApp} from '$lib/ui/app';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import type {Role} from '$lib/vocab/role/role';
 
 	const {dispatch} = getApp();
 
 	export let persona: Readable<Persona>;
 	export let assignmentPersona: Readable<Persona>;
 	export let community: Readable<Community>;
+	export let role: Readable<Role>;
+
+	const createAssignment = async () => {
+		await dispatch.CreateAssignment({
+			actor: $persona.persona_id,
+			community_id: $community.community_id,
+			persona_id: $assignmentPersona.persona_id,
+			role_id: $role.role_id,
+		});
+	};
 </script>
 
 <p>
-	<button
-		type="button"
-		class="button-join"
-		on:click={() =>
-			dispatch.CreateAssignment({
-				actor: $persona.persona_id,
-				community_id: $community.community_id,
-				persona_id: $assignmentPersona.persona_id,
-			})}
-	>
+	<button type="button" class="button-join" on:click={() => createAssignment()}>
 		<PersonaAvatar persona={assignmentPersona} />
 	</button>
 </p>

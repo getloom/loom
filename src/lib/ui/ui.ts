@@ -68,6 +68,7 @@ export interface Ui {
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
 	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
+	assignmentsByRoleId: Readable<Map<number, Array<Readable<Assignment>>>>;
 	queryByKey: Map<number, {data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}>;
 	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
 	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
@@ -147,16 +148,16 @@ export const toUi = (
 		([$communities, $assignments]) => {
 			const map: Map<number, Array<Writable<Persona>>> = new Map();
 			for (const community of $communities.value) {
-				const communityPersonas: Array<Writable<Persona>> = [];
+				const communityPersonas: Set<Writable<Persona>> = new Set();
 				const {community_id} = community.get();
 				for (const assignment of $assignments.value) {
 					if (assignment.get().community_id === community_id) {
 						const persona = personaById.get(assignment.get().persona_id)!;
 						if (persona.get().type !== 'account') continue;
-						communityPersonas.push(persona);
+						communityPersonas.add(persona);
 					}
 				}
-				map.set(community_id, communityPersonas);
+				map.set(community_id, Array.from(communityPersonas));
 			}
 			return map;
 		},
@@ -175,6 +176,24 @@ export const toUi = (
 					}
 				}
 				map.set(community_id, communityRoles);
+			}
+			return map;
+		},
+	);
+
+	const assignmentsByRoleId: Readable<Map<number, Array<Writable<Assignment>>>> = derived(
+		[roles, assignments],
+		([$roles, $assignments]) => {
+			const map: Map<number, Array<Writable<Assignment>>> = new Map();
+			for (const role of $roles.value) {
+				const roleAssignments: Array<Writable<Assignment>> = [];
+				const {role_id} = role.get();
+				for (const assignment of $assignments.value) {
+					if (assignment.get().role_id === role_id) {
+						roleAssignments.push(assignment);
+					}
+				}
+				map.set(role_id, roleAssignments);
 			}
 			return map;
 		},
@@ -302,6 +321,7 @@ export const toUi = (
 		spacesByCommunityId,
 		personasByCommunityId,
 		rolesByCommunityId,
+		assignmentsByRoleId,
 		queryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,

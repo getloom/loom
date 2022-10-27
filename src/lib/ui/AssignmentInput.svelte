@@ -8,7 +8,7 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 
 	const {
-		ui: {personas, personaSelection, personasByCommunityId},
+		ui: {personas, personaSelection, personasByCommunityId, roleById},
 	} = getApp();
 
 	export let community: Readable<Community>;
@@ -16,6 +16,8 @@
 	$: selectedPersona = $personaSelection;
 
 	$: communityPersonas = $personasByCommunityId.get($community.community_id)!;
+
+	$: defaultRole = roleById.get($community.settings.defaultRoleId)!;
 
 	// TODO speed this up with a better cached data structures
 	$: invitableMembers = $community
@@ -38,7 +40,12 @@
 	</section>
 	{#if selectedPersona}
 		{#each invitableMembers as persona (persona)}
-			<AssignmentInputItem persona={selectedPersona} assignmentPersona={persona} {community} />
+			<AssignmentInputItem
+				persona={selectedPersona}
+				assignmentPersona={persona}
+				{community}
+				role={defaultRole}
+			/>
 		{:else}
 			<p>There's no one new to invite</p>
 		{/each}

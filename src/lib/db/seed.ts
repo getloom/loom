@@ -105,6 +105,7 @@ export const seed = async (db: Database): Promise<void> => {
 						actor: persona.persona_id,
 						persona_id: persona.persona_id,
 						community_id: community.community_id,
+						role_id: community.settings.defaultRoleId,
 					},
 				}),
 			);

@@ -125,12 +125,20 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				await repos.persona.createCommunityPersona(community.name, community.community_id),
 			);
 			const communityPersonaAssignment = unwrap(
-				await repos.assignment.create(communityPersona.persona_id, community.community_id),
+				await repos.assignment.create(
+					communityPersona.persona_id,
+					community.community_id,
+					community.settings.defaultRoleId,
+				),
 			);
 
 			// Create the assignment for the persona that's creating the community.
 			const creatorAssignment = unwrap(
-				await repos.assignment.create(params.actor, community.community_id),
+				await repos.assignment.create(
+					params.actor,
+					community.community_id,
+					community.settings.defaultRoleId,
+				),
 			);
 
 			// Create default spaces.
@@ -256,7 +264,13 @@ export const initAdminCommunity = async (
 	);
 
 	// Create the community persona's assignment.
-	unwrap(await repos.assignment.create(persona.persona_id, community.community_id));
+	unwrap(
+		await repos.assignment.create(
+			persona.persona_id,
+			community.community_id,
+			community.settings.defaultRoleId,
+		),
+	);
 
 	return {ok: true, value: {community, persona, role}};
 };

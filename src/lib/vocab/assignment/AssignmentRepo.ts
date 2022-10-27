@@ -8,10 +8,14 @@ import type {Assignment} from '$lib/vocab/assignment/assignment.js';
 const log = new Logger(gray('[') + blue('AssignmentRepo') + gray(']'));
 
 export class AssignmentRepo extends PostgresRepo {
-	async create(persona_id: number, community_id: number): Promise<Result<{value: Assignment}>> {
+	async create(
+		persona_id: number,
+		community_id: number,
+		role_id: number,
+	): Promise<Result<{value: Assignment}>> {
 		const data = await this.sql<Assignment[]>`
-			INSERT INTO assignments (persona_id, community_id) VALUES (
-				${persona_id},${community_id}
+			INSERT INTO assignments (persona_id, community_id, role_id) VALUES (
+				${persona_id},${community_id},${role_id}
 			) RETURNING *
 		`;
 		log.trace('created assignment', data[0]);
@@ -24,9 +28,22 @@ export class AssignmentRepo extends PostgresRepo {
 		community_id: number,
 	): Promise<Result<{value: Assignment | undefined}>> {
 		const data = await this.sql<Assignment[]>`
-			SELECT assignment_id, persona_id, community_id, created
+			SELECT assignment_id, persona_id, community_id, role_id, created
 			FROM assignments
 			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
+		`;
+		return {ok: true, value: data[0]};
+	}
+
+	async findByUniqueIds(
+		persona_id: number,
+		community_id: number,
+		role_id: number,
+	): Promise<Result<{value: Assignment | undefined}>> {
+		const data = await this.sql<Assignment[]>`
+			SELECT assignment_id, persona_id, community_id, role_id, created
+			FROM assignments
+			WHERE ${persona_id}=persona_id AND ${community_id}=community_id AND ${role_id}=role_id
 		`;
 		return {ok: true, value: data[0]};
 	}
@@ -34,7 +51,7 @@ export class AssignmentRepo extends PostgresRepo {
 	async filterByAccount(account_id: number): Promise<Result<{value: Assignment[]}>> {
 		log.trace(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Assignment[]>`
-			SELECT a.assignment_id, a.persona_id, a.community_id, a.created
+			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
 			FROM assignments a JOIN (
 				SELECT DISTINCT a.community_id FROM personas p 
 				JOIN assignments a 
@@ -48,7 +65,7 @@ export class AssignmentRepo extends PostgresRepo {
 	async filterByCommunityId(community_id: number): Promise<Result<{value: Assignment[]}>> {
 		log.trace(`[filterByCommunityId] ${community_id}`);
 		const data = await this.sql<Assignment[]>`
-			SELECT a.assignment_id, a.persona_id, a.community_id, a.created
+			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
 			FROM assignments a 
 			WHERE a.community_id=${community_id};
 		`;
@@ -61,9 +78,9 @@ export class AssignmentRepo extends PostgresRepo {
 	): Promise<Result<{value: Assignment[]}>> {
 		log.trace(`[filterByCommunityId] ${community_id}`);
 		const data = await this.sql<Assignment[]>`
-			SELECT a.assignment_id, a.persona_id, a.community_id, a.created
+			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
 			FROM personas p JOIN (
-				SELECT assignment_id, persona_id, community_id, created
+				SELECT assignment_id, persona_id, community_id, role_id, created
 				FROM assignments 
 				WHERE community_id=${community_id}
 			) as a ON a.persona_id = p.persona_id WHERE p.type = 'account';

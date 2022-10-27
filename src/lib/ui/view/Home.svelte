@@ -5,17 +5,17 @@
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import Forum from '$lib/ui/view/Forum.svelte';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import NewcomerSubmission from '$lib/ui/NewcomerSubmission.svelte';
+	import RoleItem from '$lib/ui/RoleItem.svelte';
 
 	const viewContext = getViewContext();
 	$: ({community, space, persona} = $viewContext);
 
 	const {
-		ui: {personasByCommunityId},
+		ui: {rolesByCommunityId, assignmentsByRoleId},
 		socket,
 		dispatch,
 	} = getApp();
@@ -38,8 +38,8 @@
 				<li>We encourage everyone to participate in moderation.</li>
 			</ol>`;
 
-	$: communityPersonas = $personasByCommunityId.get($community.community_id)!;
 	$: shouldLoadEntities = browser && $socket.open;
+	$: roles = $rolesByCommunityId.get($community.community_id)!;
 
 	//TODO this is all done because the Query event always returns an empty array on initial call
 	$: entitiesResult = shouldLoadEntities
@@ -141,16 +141,11 @@
 		</section>
 		<section class="roles">
 			<div class="panel">
-				<h4>roles</h4>
+				<h4>Community Role Assignments</h4>
 				<ul>
-					<li>
-						<span class="role-name">member</span>
-						<ul class="role-members">
-							{#each communityPersonas as persona (persona)}
-								<li><PersonaAvatar {persona} showIcon={false} /></li>
-							{/each}
-						</ul>
-					</li>
+					{#each roles as role (role)}
+						<RoleItem {role} {assignmentsByRoleId} />
+					{/each}
 				</ul>
 			</div>
 		</section>
@@ -186,18 +181,5 @@
 	}
 	.roles .panel {
 		padding: var(--spacing_xl);
-	}
-	.role-name {
-		font-weight: 600;
-		margin-right: var(--spacing_md);
-	}
-	.role-members {
-		display: flex;
-		flex-direction: row;
-		flex: 1;
-		flex-wrap: wrap;
-	}
-	.role-members li {
-		margin-right: var(--spacing_md);
 	}
 </style>

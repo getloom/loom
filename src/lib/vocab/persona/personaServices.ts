@@ -77,7 +77,13 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 
 			// Create the persona's assignment to its personal community.
 			assignments.push(
-				unwrap(await repos.assignment.create(persona.persona_id, community.community_id)),
+				unwrap(
+					await repos.assignment.create(
+						persona.persona_id,
+						community.community_id,
+						community.settings.defaultRoleId,
+					),
+				),
 			);
 
 			// Create the default spaces.
@@ -112,7 +118,13 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 
 				// Create the persona's assignment to the admin community.
 				assignments.push(
-					unwrap(await repos.assignment.create(persona.persona_id, adminCommunity.community_id)),
+					unwrap(
+						await repos.assignment.create(
+							persona.persona_id,
+							adminCommunity.community_id,
+							community.settings.defaultRoleId,
+						),
+					),
 				);
 			}
 

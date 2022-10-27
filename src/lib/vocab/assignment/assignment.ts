@@ -4,6 +4,7 @@ export interface Assignment {
 	assignment_id: number;
 	persona_id: number;
 	community_id: number;
+	role_id: number;
 	created: Date;
 }
 

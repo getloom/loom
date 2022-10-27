@@ -60,9 +60,8 @@
 			{/if}
 		</ul>
 	</div>
-	<!-- TODO this whole chunk should be it's own component-->
 	{#if selectedRole && $selectedRole}
-		<RoleDetails {persona} role={selectedRole} />
+		<RoleDetails {persona} role={selectedRole} {community} />
 	{/if}
 </div>
 

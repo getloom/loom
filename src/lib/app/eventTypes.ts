@@ -340,6 +340,7 @@ export interface CreateAssignmentParams {
 	actor: number;
 	persona_id: number;
 	community_id: number;
+	role_id: number;
 }
 export interface CreateAssignmentResponse {
 	assignment: Assignment;

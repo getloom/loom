@@ -25,6 +25,7 @@ test__assignmentServices('disallow creating duplicate assignments', async ({db, 
 				actor: personas[1].persona_id,
 				community_id: community.community_id,
 				persona_id: personas[1].persona_id,
+				role_id: community.settings.defaultRoleId,
 			},
 		}),
 	);
@@ -41,6 +42,7 @@ test__assignmentServices(
 					actor: persona.persona_id,
 					community_id: personalCommunity.community_id,
 					persona_id: (await random.persona()).persona.persona_id,
+					role_id: personalCommunity.settings.defaultRoleId,
 				},
 			}),
 		);
@@ -110,6 +112,7 @@ test__assignmentServices(
 					actor: persona2.persona_id,
 					persona_id: persona2.persona_id,
 					community_id: community.community_id,
+					role_id: community.settings.defaultRoleId,
 				},
 			}),
 		);
