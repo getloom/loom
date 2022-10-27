@@ -48,11 +48,38 @@ export const UpdateAccountSettings: ServiceEventInfo = {
 	},
 	response: {
 		$id: '/schemas/UpdateAccountSettingsResponse.json',
-		type: 'null',
+		type: 'object',
+		tsType: 'AccountModel',
 	},
 	returns: 'Promise<UpdateAccountSettingsResponseResult>',
 	route: {
 		path: '/api/v1/account/settings',
+		method: 'POST',
+	},
+};
+
+export const UpdateAccountPassword: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'UpdateAccountPassword',
+	authorize: false,
+	params: {
+		$id: '/schemas/UpdateAccountPasswordParams.json',
+		type: 'object',
+		properties: {
+			oldPassword: {type: 'string'},
+			newPassword: {type: 'string'},
+		},
+		required: ['oldPassword', 'newPassword'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/UpdateAccountPasswordResponse.json',
+		type: 'object',
+		tsType: 'AccountModel',
+	},
+	returns: 'Promise<UpdateAccountPasswordResponseResult>',
+	route: {
+		path: '/api/v1/account/password',
 		method: 'POST',
 	},
 };

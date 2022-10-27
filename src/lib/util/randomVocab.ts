@@ -30,6 +30,8 @@ import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 import {randomHue} from '$lib/ui/color';
 
+export type RandomTestAccount = Account & {__testPlaintextPassword: string};
+
 // TODO automate these from schemas, also use seeded rng
 export const randomString = (): string => 'r' + Math.random().toString().slice(2);
 export const randomAccountName = (): string => randomString() + '@email.com';
@@ -99,7 +101,7 @@ export const randomRoleParams = (actor: number, community_id: number): CreateRol
 
 // TODO maybe compute in relation to `RandomVocabContext`
 export interface RandomVocab {
-	account?: Account;
+	account?: RandomTestAccount;
 	persona?: Persona;
 	community?: Community;
 	space?: Space;
@@ -114,17 +116,17 @@ export interface RandomVocab {
 export class RandomVocabContext {
 	constructor(private readonly db: Database) {}
 
-	async account(params = randomAccountParams()): Promise<Account> {
+	async account(params = randomAccountParams()): Promise<RandomTestAccount> {
 		const account = unwrap(
 			await this.db.repos.account.create(
 				params.username,
 				params.password,
 				toDefaultAccountSettings(),
 			),
-		);
+		) as RandomTestAccount;
 		// This makes the unencrypted password available for tests,
 		// so things like `SignIn` can be tested with existing accounts.
-		(account as any).__testPlaintextPassword = params.password;
+		account.__testPlaintextPassword = params.password;
 		return account;
 	}
 

@@ -3,9 +3,14 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 import {unwrap} from '@feltcoop/felt';
 
 import type {ServiceByName} from '$lib/app/eventTypes';
-import {SignUp, UpdateAccountSettings} from '$lib/vocab/account/accountEvents';
+import {
+	SignUp,
+	UpdateAccountSettings,
+	UpdateAccountPassword,
+} from '$lib/vocab/account/accountEvents';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
+import {verifyPassword} from '$lib/util/password';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
@@ -46,7 +51,29 @@ export const UpdateAccountSettingsService: ServiceByName['UpdateAccountSettings'
 	perform: ({transact, account_id, params}) =>
 		transact(async (repos) => {
 			log.trace('updating settings for account', account_id, params.settings);
-			unwrap(await repos.account.updateSettings(account_id, params.settings));
-			return {ok: true, status: 200, value: null};
+			const updatedAccount = unwrap(
+				await repos.account.updateSettings(account_id, params.settings),
+			);
+			return {ok: true, status: 200, value: updatedAccount};
+		}),
+};
+
+export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'] = {
+	event: UpdateAccountPassword,
+	perform: ({transact, account_id, params}) =>
+		transact(async (repos) => {
+			const account = unwrap(await repos.account.findByIdForAuth(account_id));
+			if (!account) {
+				return {ok: false, status: 404, message: 'account does not exist'};
+			}
+
+			if (!(await verifyPassword(params.oldPassword, account.password))) {
+				return {ok: false, status: 400, message: 'incorrect password'};
+			}
+
+			const updatedAccount = unwrap(
+				await repos.account.updatePassword(account_id, params.newPassword),
+			);
+			return {ok: true, status: 200, value: updatedAccount};
 		}),
 };

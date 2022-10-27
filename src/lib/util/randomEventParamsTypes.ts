@@ -7,6 +7,7 @@ import type {
 	SignOutParams,
 	SignUpParams,
 	UpdateAccountSettingsParams,
+	UpdateAccountPasswordParams,
 	CreateCommunityParams,
 	ReadCommunityParams,
 	ReadCommunitiesParams,
@@ -56,6 +57,10 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<UpdateAccountSettingsParams>;
+	UpdateAccountPassword: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<UpdateAccountPasswordParams>;
 	CreateCommunity: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

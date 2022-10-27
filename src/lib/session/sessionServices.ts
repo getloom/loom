@@ -22,7 +22,7 @@ export const SignInService: ServiceByName['SignIn'] = {
 
 			const account = unwrap(await repos.account.findByName(username));
 			if (!account) {
-				return {ok: false, status: 400, message: 'account does not exist'};
+				return {ok: false, status: 404, message: 'account does not exist'};
 			}
 
 			if (!(await verifyPassword(params.password, account.password))) {

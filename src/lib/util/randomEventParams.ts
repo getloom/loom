@@ -11,6 +11,7 @@ import {
 	randomCommunityParams,
 	randomRoleName,
 	randomAccountName,
+	randomPassword,
 } from '$lib/util/randomVocab';
 import {randomHue} from '$lib/ui/color';
 import type {RandomEventParams} from '$lib/util/randomEventParamsTypes';
@@ -37,7 +38,7 @@ export const randomEventParams: RandomEventParams = {
 		if (!account) account = await random.account();
 		return {
 			username: account.name,
-			password: (account as any).__testPlaintextPassword,
+			password: account.__testPlaintextPassword,
 		};
 	},
 	SignOut: async () => {
@@ -52,6 +53,13 @@ export const randomEventParams: RandomEventParams = {
 	UpdateAccountSettings: async () => {
 		return {
 			settings: {darkmode: randomBool()},
+		};
+	},
+	UpdateAccountPassword: async (random, {account} = {}) => {
+		if (!account) account = await random.account();
+		return {
+			oldPassword: account.__testPlaintextPassword,
+			newPassword: randomPassword(),
 		};
 	},
 	CreateCommunity: async (random, {account, persona} = {}) => {

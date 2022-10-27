@@ -7,20 +7,18 @@ export const SignUp: Mutations['SignUp'] = async ({invoke, dispatch}) => {
 	return result;
 };
 
-export const UpdateAccountSettings: Mutations['UpdateAccountSettings'] = async ({
-	params,
-	invoke,
-	ui: {account},
-}) => {
-	// optimistic update
-	const originalSettings = account.get()!.settings;
-	account.update(($account) => ({
-		...$account!,
-		settings: {...$account!.settings, ...params.settings},
-	}));
+export const UpdateAccountSettings: Mutations['UpdateAccountSettings'] = async ({invoke, ui}) => {
 	const result = await invoke();
-	if (!result.ok) {
-		account.update(($account) => ({...$account!, settings: originalSettings}));
-	}
+	if (!result.ok) return result;
+	const $account = result.value;
+	ui.account.set($account);
+	return result;
+};
+
+export const UpdateAccountPassword: Mutations['UpdateAccountPassword'] = async ({invoke, ui}) => {
+	const result = await invoke();
+	if (!result.ok) return result;
+	const $account = result.value;
+	ui.account.set($account);
 	return result;
 };

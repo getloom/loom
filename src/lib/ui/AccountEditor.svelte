@@ -6,6 +6,7 @@
 	import {parseJson, serializeJson} from '$lib/util/json';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import type {Account} from '$lib/vocab/account/account';
+	import UpdateAccountPasswordForm from '$lib/ui/UpdateAccountPasswordForm.svelte';
 
 	export let account: Readable<Account>;
 
@@ -19,7 +20,7 @@
 
 <div class="entity-editor column">
 	<div class="markup padded-xl">
-		<h1>Edit Account Settings</h1>
+		<h1>Account Settings</h1>
 		<section class="row">
 			<span class="spaced">for {$account.name}</span>
 		</section>
@@ -30,13 +31,14 @@
 			{/if}
 		</section>
 	</div>
+	<UpdateAccountPasswordForm />
 	<!-- TODO add entity property contextmenu actions to this -->
 	<form>
 		<ul>
 			<li>
 				<PropertyEditor
 					value={$account.settings}
-					field="data"
+					field="settings"
 					update={updateAccountSettings}
 					parse={parseJson}
 					serialize={serializeJson}

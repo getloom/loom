@@ -10,6 +10,7 @@ import type {
 	NonAuthorizedService,
 	AuthorizedService,
 } from '$lib/server/service';
+import type {AccountModel} from '$lib/vocab/account/account';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -28,6 +29,7 @@ export type ServiceEventName =
 	| 'SignOut'
 	| 'SignUp'
 	| 'UpdateAccountSettings'
+	| 'UpdateAccountPassword'
 	| 'CreateCommunity'
 	| 'ReadCommunity'
 	| 'ReadCommunities'
@@ -76,6 +78,7 @@ export interface EventParamsByName {
 	SignOut: SignOutParams;
 	SignUp: SignUpParams;
 	UpdateAccountSettings: UpdateAccountSettingsParams;
+	UpdateAccountPassword: UpdateAccountPasswordParams;
 	CreateCommunity: CreateCommunityParams;
 	ReadCommunity: ReadCommunityParams;
 	ReadCommunities: ReadCommunitiesParams;
@@ -120,6 +123,7 @@ export interface EventResponseByName {
 	SignOut: SignOutResponse;
 	SignUp: SignUpResponse;
 	UpdateAccountSettings: UpdateAccountSettingsResponse;
+	UpdateAccountPassword: UpdateAccountPasswordResponse;
 	CreateCommunity: CreateCommunityResponse;
 	ReadCommunity: ReadCommunityResponse;
 	ReadCommunities: ReadCommunitiesResponse;
@@ -161,6 +165,10 @@ export interface ServiceByName {
 	UpdateAccountSettings: NonAuthorizedService<
 		UpdateAccountSettingsParams,
 		UpdateAccountSettingsResponseResult
+	>;
+	UpdateAccountPassword: NonAuthorizedService<
+		UpdateAccountPasswordParams,
+		UpdateAccountPasswordResponseResult
 	>;
 	CreateAccountPersona: NonAuthorizedService<
 		CreateAccountPersonaParams,
@@ -232,8 +240,15 @@ export interface UpdateAccountSettingsParams {
 		darkmode?: boolean;
 	};
 }
-export type UpdateAccountSettingsResponse = null;
+export type UpdateAccountSettingsResponse = AccountModel;
 export type UpdateAccountSettingsResponseResult = ApiResult<UpdateAccountSettingsResponse>;
+
+export interface UpdateAccountPasswordParams {
+	oldPassword: string;
+	newPassword: string;
+}
+export type UpdateAccountPasswordResponse = AccountModel;
+export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
 
 export interface CreateCommunityParams {
 	actor: number;
@@ -578,6 +593,9 @@ export interface Dispatch {
 	UpdateAccountSettings: (
 		params: UpdateAccountSettingsParams,
 	) => Promise<UpdateAccountSettingsResponseResult>;
+	UpdateAccountPassword: (
+		params: UpdateAccountPasswordParams,
+	) => Promise<UpdateAccountPasswordResponseResult>;
 	CreateCommunity: (params: CreateCommunityParams) => Promise<CreateCommunityResponseResult>;
 	ReadCommunity: (params: ReadCommunityParams) => Promise<ReadCommunityResponseResult>;
 	ReadCommunities: (params: ReadCommunitiesParams) => Promise<ReadCommunitiesResponseResult>;
@@ -641,6 +659,9 @@ export interface Mutations {
 	UpdateAccountSettings: (
 		ctx: DispatchContext<UpdateAccountSettingsParams, UpdateAccountSettingsResponseResult>,
 	) => Promise<UpdateAccountSettingsResponseResult>;
+	UpdateAccountPassword: (
+		ctx: DispatchContext<UpdateAccountPasswordParams, UpdateAccountPasswordResponseResult>,
+	) => Promise<UpdateAccountPasswordResponseResult>;
 	CreateCommunity: (
 		ctx: DispatchContext<CreateCommunityParams, CreateCommunityResponseResult>,
 	) => Promise<CreateCommunityResponseResult>;

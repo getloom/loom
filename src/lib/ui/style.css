@@ -134,3 +134,8 @@ maybe upstream to Felt? think about how to upstream without bloating bundles tha
 	font-weight: bold;
 	color: var(--error_color);
 }
+/* a minimal alternative to `<Message status="success">some success text</Message>` */
+.success-text {
+	font-weight: bold;
+	color: var(--help_color);
+}
