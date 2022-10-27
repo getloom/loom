@@ -1,12 +1,10 @@
-import type {Task} from '@feltcoop/gro';
-import type {DevTaskArgs} from '@feltcoop/gro/dist/devTask.js';
-import {DevTaskArgsSchema} from '@feltcoop/gro/dist/devTask.schema.js';
+import {task as baseTask} from '@feltcoop/gro/dist/dev.task.js';
 
-export const task: Task<DevTaskArgs> = {
+export const task: typeof baseTask = {
 	summary: 'start dev server',
-	args: DevTaskArgsSchema,
+	Args: baseTask.Args,
 	run: async ({invokeTask}) => {
 		await invokeTask('infra/updateEnv');
-		await invokeTask('gro/dev');
+		return invokeTask('gro/dev');
 	},
 };

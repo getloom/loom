@@ -1,17 +1,26 @@
 import type {Task} from '@feltcoop/gro';
 import {spawn} from '@feltcoop/felt/util/process.js';
+import {z} from 'zod';
 
 import {green, red} from '$lib/server/colors';
 import {fromEnv} from '$lib/server/env';
 import {toNginxConfig} from './nginxConfig';
 import {toLogSequence} from './helpers';
-import type {SetupTaskArgs} from './setupTask';
-import {SetupTaskArgsSchema} from './setupTask.schema';
 
-export const task: Task<SetupTaskArgs> = {
+const Args = z
+	.object({
+		dry: z
+			.boolean({description: 'log the generated script instead of executing it'})
+			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
+			.default(false),
+	})
+	.strict();
+type Args = z.infer<typeof Args>;
+
+export const task: Task<Args> = {
 	summary: 'setup a clean server to prepare for a felt-server deploy',
 	production: true,
-	args: SetupTaskArgsSchema,
+	Args,
 	run: async ({log, args: {dry}}) => {
 		// TODO env vars are currently messy with 3 strategies:
 		// 1 - calling `fromEnv('VAR')`

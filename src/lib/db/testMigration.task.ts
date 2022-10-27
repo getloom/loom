@@ -1,14 +1,27 @@
 import type {Task} from '@feltcoop/gro';
+import {z} from 'zod';
 
-import {DbTestMigrationTaskArgsSchema} from '$lib/db/testMigration/testMigrationTask.schema';
-import type {DbTestMigrationTaskArgs} from '$lib/db/testMigration/testMigrationTask';
 import {MIGRATIONS_DIR} from '$lib/db/migration';
 
-export const task: Task<DbTestMigrationTaskArgs> = {
+const Args = z
+	.object({
+		checkpoint: z
+			.boolean({description: 'if `true`, does not run the `count` number of final migrations'})
+			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
+			.default(false),
+		count: z
+			.number({description: 'number of migrations being tested; rarely might need more than 1'})
+			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
+			.default(1),
+	})
+	.strict();
+type Args = z.infer<typeof Args>;
+
+export const task: Task<Args> = {
 	summary: 'tests the most recent mogration file against the seeded database',
-	args: DbTestMigrationTaskArgsSchema,
+	Args,
 	run: async ({invokeTask, fs, args}) => {
-		const {checkpoint = false, count = 1} = args;
+		const {checkpoint, count} = args;
 
 		// First move the skipped migration files temporarily out of the migration dir
 		// and create the database with seeded data.
