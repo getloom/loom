@@ -23,6 +23,7 @@ import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {cleanOrphanCommunities} from '$lib/vocab/assignment/assignmentServices';
+import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -91,7 +92,11 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 		serviceRequest.transact(async (repos) => {
 			const {params, account_id} = serviceRequest;
 			log.trace('creating community account_id', account_id);
-			const name = params.name.trim();
+			const name = scrubPersonaName(params.name);
+			const nameErrorMessage = checkPersonaName(name);
+			if (nameErrorMessage) {
+				return {ok: false, status: 400, message: nameErrorMessage};
+			}
 
 			// run name through block list
 			if (BLOCKLIST.has(name.toLowerCase())) {

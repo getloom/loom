@@ -18,6 +18,7 @@ import type {Role} from '$lib/vocab/role/role';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
+import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
 
@@ -32,7 +33,11 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 		serviceRequest.transact(async (repos) => {
 			const {params, account_id} = serviceRequest;
 			log.trace('[CreateAccountPersona] creating persona', params.name);
-			const name = params.name.trim();
+			const name = scrubPersonaName(params.name);
+			const nameErrorMessage = checkPersonaName(name);
+			if (nameErrorMessage) {
+				return {ok: false, status: 400, message: nameErrorMessage};
+			}
 
 			if (BLOCKLIST.has(name.toLowerCase())) {
 				return {ok: false, status: 409, message: 'a persona with that name is not allowed'};

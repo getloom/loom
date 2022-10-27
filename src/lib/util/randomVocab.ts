@@ -31,7 +31,7 @@ import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 import {randomHue} from '$lib/ui/color';
 
 // TODO automate these from schemas, also use seeded rng
-export const randomString = (): string => Math.random().toString().slice(2);
+export const randomString = (): string => 'r' + Math.random().toString().slice(2);
 export const randomAccountName = (): string => randomString() + '@email.com';
 export const randomPassword = randomString;
 export const randomPersonaName = randomString;

@@ -8,6 +8,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
+	import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 
 	const {
 		dispatch,
@@ -24,10 +25,15 @@
 	// TODO add initial hue!
 
 	const create = async () => {
-		//TODO validate inputs
-		name = name.trim();
+		name = scrubPersonaName(name);
 		if (!name) {
 			errorMessage = 'please enter a name for your new persona';
+			nameEl.focus();
+			return;
+		}
+		const nameErrorMessage = checkPersonaName(name);
+		if (nameErrorMessage) {
+			errorMessage = nameErrorMessage;
 			nameEl.focus();
 			return;
 		}

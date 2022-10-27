@@ -13,6 +13,7 @@
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
+	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
 
 	const {
 		dispatch,
@@ -37,8 +38,15 @@
 	$: name, (errorMessage = null);
 
 	const create = async (): Promise<void> => {
+		name = scrubPersonaName(name);
 		if (!name) {
 			errorMessage = 'please enter a name for your new community';
+			nameEl.focus();
+			return;
+		}
+		const nameErrorMessage = checkPersonaName(name);
+		if (nameErrorMessage) {
+			errorMessage = nameErrorMessage;
 			nameEl.focus();
 			return;
 		}
