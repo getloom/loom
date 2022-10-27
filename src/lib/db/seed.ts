@@ -144,7 +144,7 @@ const createDefaultEntities = async (
 					params: {
 						actor: actor.persona_id,
 						data: {type: 'Note', content: entityContent},
-						source_id: space.directory_id,
+						ties: [{source_id: space.directory_id}],
 					},
 				}),
 			);
@@ -178,7 +178,7 @@ const generateTodo = async (
 			params: {
 				actor: actor.persona_id,
 				data: {type: 'Collection', name: 'Grocery List'},
-				source_id: space.directory_id,
+				ties: [{source_id: space.directory_id}],
 			},
 		}),
 	);
@@ -191,7 +191,7 @@ const generateTodo = async (
 				params: {
 					actor: actor.persona_id,
 					data: {type: 'Note', content},
-					source_id: list.entity.entity_id,
+					ties: [{source_id: list.entity.entity_id}],
 				},
 			}),
 		);

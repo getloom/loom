@@ -11,10 +11,33 @@ export const CreateEntity: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			data: {type: 'object', tsType: 'EntityData'},
-			source_id: {type: 'number'},
-			type: {type: 'string'}, //defaults to 'HasItem'
+			ties: {
+				type: 'array',
+				items: {
+					anyOf: [
+						{
+							type: 'object',
+							properties: {
+								source_id: {type: 'number'},
+								type: {type: 'string'},
+							},
+							required: ['source_id'],
+							additionalProperties: false,
+						},
+						{
+							type: 'object',
+							properties: {
+								dest_id: {type: 'number'},
+								type: {type: 'string'},
+							},
+							required: ['dest_id'],
+							additionalProperties: false,
+						},
+					],
+				},
+			},
 		},
-		required: ['actor', 'data', 'source_id'],
+		required: ['actor', 'data'],
 		additionalProperties: false,
 	},
 	response: {
@@ -22,9 +45,9 @@ export const CreateEntity: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			entity: {$ref: '/schemas/Entity.json', tsType: 'Entity'},
-			tie: {$ref: '/schemas/Tie.json', tsType: 'Tie'},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie.json', tsType: 'Tie'}},
 		},
-		required: ['entity', 'tie'],
+		required: ['entity', 'ties'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<CreateEntityResponseResult>',

@@ -60,7 +60,7 @@
 		const result = await dispatch.CreateEntity({
 			actor: persona_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?
-			source_id,
+			ties: [{source_id}],
 		});
 		status = 'success'; // TODO handle failure (also refactor to be generic)
 		if (result.ok) {

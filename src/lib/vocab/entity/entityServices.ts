@@ -10,6 +10,7 @@ import {
 	DeleteEntities,
 } from '$lib/vocab/entity/entityEvents';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
+import type {Tie} from '$lib/vocab/tie/tie';
 
 // TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
@@ -44,15 +45,22 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		transact(async (repos) => {
 			const entity = unwrap(await repos.entity.create(params.actor, params.data));
 
-			const tie = unwrap(
-				await repos.tie.create(
-					params.source_id,
-					entity.entity_id,
-					params.type ? params.type : 'HasItem',
-				),
-			);
+			const ties: Tie[] = [];
+			if (params.ties) {
+				for (const tieParams of params.ties) {
+					const {source_id, dest_id} =
+						'source_id' in tieParams
+							? {source_id: tieParams.source_id, dest_id: entity.entity_id}
+							: {source_id: entity.entity_id, dest_id: tieParams.dest_id};
+					ties.push(
+						unwrap(
+							await repos.tie.create(source_id, dest_id, tieParams.type || 'HasItem'), // eslint-disable-line no-await-in-loop
+						),
+					);
+				}
+			}
 
-			return {ok: true, status: 200, value: {entity, tie}};
+			return {ok: true, status: 200, value: {entity, ties}};
 		}),
 };
 

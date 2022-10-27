@@ -82,7 +82,7 @@ export const randomSpaceParams = (actor: number, community_id: number): CreateSp
 export const randomEntityParams = (actor: number, source_id: number): CreateEntityParams => ({
 	actor,
 	data: randomEntityData(),
-	source_id,
+	ties: [{source_id}],
 });
 export const randomTieParams = (
 	actor: number,
@@ -213,7 +213,7 @@ export class RandomVocabContext {
 		persona: Persona;
 		account: Account;
 		community: Community;
-		tie: Tie;
+		ties: Tie[];
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
@@ -222,7 +222,7 @@ export class RandomVocabContext {
 			const {space} = await this.space(persona, account, community);
 			source_id = space.directory_id;
 		}
-		const {entity, tie} = unwrap(
+		const {entity, ties} = unwrap(
 			await CreateEntityService.perform({
 				...toServiceRequestMock(this.db, persona),
 				params: {
@@ -231,7 +231,7 @@ export class RandomVocabContext {
 				},
 			}),
 		);
-		return {entity, persona, account, community, tie};
+		return {entity, persona, account, community, ties};
 	}
 
 	async tie(

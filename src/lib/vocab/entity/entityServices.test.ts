@@ -24,14 +24,14 @@ test_entityServices('create entities with data', async ({random}) => {
 
 	const entityData1: NoteEntityData = {type: 'Note', content: 'this is entity 1'};
 	const entityData2: NoteEntityData = {type: 'Note', content: 'entity: 2'};
-	const {entity: entity1, tie: tie1} = await random.entity(
+	const {entity: entity1, ties: ties1} = await random.entity(
 		persona,
 		account,
 		community,
 		space.directory_id,
 		{data: entityData1},
 	);
-	const {entity: entity2, tie: tie2} = await random.entity(
+	const {entity: entity2, ties: ties2} = await random.entity(
 		persona,
 		account,
 		community,
@@ -42,10 +42,12 @@ test_entityServices('create entities with data', async ({random}) => {
 	assert.is(entity2.persona_id, persona.persona_id);
 	assert.equal(entity1.data, entityData1);
 	assert.equal(entity2.data, entityData2);
-	assert.is(tie1.source_id, tie2.source_id);
-	assert.is(tie1.source_id, space.directory_id);
-	assert.is(tie1.dest_id, entity1.entity_id);
-	assert.is(tie2.dest_id, entity2.entity_id);
+	assert.is(ties1.length, 1);
+	assert.is(ties2.length, 1);
+	assert.is(ties1[0].source_id, ties2[0].source_id);
+	assert.is(ties1[0].source_id, space.directory_id);
+	assert.is(ties1[0].dest_id, entity1.entity_id);
+	assert.is(ties2[0].dest_id, entity2.entity_id);
 });
 
 test_entityServices('read paginated entities by source_id', async ({db, random}) => {
@@ -144,16 +146,16 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 		data: {type: 'Collection', name: `grocery list`},
 	});
 	const {entity: todo1} = await random.entity(persona, account, community, space.directory_id, {
-		source_id: list.entity_id,
 		data: {type: 'Note', content: `eggs`},
+		ties: [{source_id: list.entity_id}],
 	});
 	const {entity: todo2} = await random.entity(persona, account, community, space.directory_id, {
-		source_id: list.entity_id,
 		data: {type: 'Note', content: `bread`},
+		ties: [{source_id: list.entity_id}],
 	});
 	const {entity: todo3} = await random.entity(persona, account, community, space.directory_id, {
-		source_id: list.entity_id,
 		data: {type: 'Note', content: `milk`},
+		ties: [{source_id: list.entity_id}],
 	});
 	const entityIds = [todo1.entity_id, todo2.entity_id, todo3.entity_id];
 	const filterResult = unwrap(await db.repos.entity.filterByIds(entityIds));

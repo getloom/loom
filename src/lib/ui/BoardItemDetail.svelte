@@ -54,7 +54,7 @@
 		await dispatch.CreateEntity({
 			actor: $persona.persona_id,
 			data: {type: 'Note', content},
-			source_id: $entity.entity_id,
+			ties: [{source_id: $entity.entity_id}],
 		});
 		await dispatch.UpdateEntity({
 			actor: $persona.persona_id,

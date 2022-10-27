@@ -412,12 +412,20 @@ export type DeleteSpaceResponseResult = ApiResult<DeleteSpaceResponse>;
 export interface CreateEntityParams {
 	actor: number;
 	data: EntityData;
-	source_id: number;
-	type?: string;
+	ties?: (
+		| {
+				source_id: number;
+				type?: string;
+		  }
+		| {
+				dest_id: number;
+				type?: string;
+		  }
+	)[];
 }
 export interface CreateEntityResponse {
 	entity: Entity;
-	tie: Tie;
+	ties: Tie[];
 }
 export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;
 
