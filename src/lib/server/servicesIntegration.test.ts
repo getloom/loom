@@ -29,6 +29,9 @@ test_servicesIntegration.before(setupDb);
 test_servicesIntegration.after(teardownDb);
 
 test_servicesIntegration('services integration test', async ({db, random}) => {
+	// TODO test cleanup with this:
+	// const assertDbCounts = await testDbCounts(db);
+
 	// create everything
 	//
 	//
@@ -136,7 +139,8 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	//
 	//
 
-	// TODO delete entities here
+	// Delete one of the two entities, to test that cascading works as expected.
+	unwrap(await db.repos.entity.deleteByIds([entity1.entity_id]));
 
 	// delete spaces except the home space
 	for (const space of filteredSpaces) {
@@ -201,8 +205,8 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	// TODO delete accounts here
 
-	// TODO check to be sure the database has the same # rows in each table as when this test started --
-	// maybe do this with before/after hooks so it's easily reused?
+	// TODO check counts
+	// await assertDbCounts();
 });
 
 test_servicesIntegration.run();

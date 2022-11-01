@@ -2,7 +2,7 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {unwrap} from '@feltcoop/felt';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
+import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
 import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';
 
@@ -11,6 +11,30 @@ const test__EntityRepo = suite<TestDbContext & TestAppContext>('EntityRepo');
 
 test__EntityRepo.before(setupDb);
 test__EntityRepo.after(teardownDb);
+
+test__EntityRepo('create and delete entities', async ({db, random}) => {
+	const {
+		community,
+		account,
+		personas: [, persona],
+		spaces: [space],
+	} = await random.community();
+	const assertDbCounts = await testDbCounts(db);
+	// Create one entity and test that `assertDbCounts` works as expected.
+	const {entity: entity1} = await random.entity(persona, account, community, space.directory_id);
+	let failed = false;
+	try {
+		await assertDbCounts();
+	} catch (err) {
+		failed = true;
+	}
+	if (!failed) throw Error('Expected assertDbCounts to fail');
+	// Create a second entity.
+	const {entity: entity2} = await random.entity(persona, account, community, space.directory_id);
+	// Delete the created entities, and test that everything is cleaned up.
+	unwrap(await db.repos.entity.deleteByIds([entity1.entity_id, entity2.entity_id]));
+	await assertDbCounts();
+});
 
 test__EntityRepo('find entity by id', async ({db, random}) => {
 	const data = {type: 'Note', content: '1'} as const;
