@@ -44,12 +44,12 @@ export const toDispatch = (
 	const dispatch: Dispatch = new Proxy({} as any, {
 		get: (_target, eventName: string) => (params: unknown) => {
 			log.trace(...toLoggedArgs(eventName, params));
+			const client = toClient(eventName);
 			const mutation = mutations[eventName];
 			if (!mutation) {
-				log.warn('ignoring event with no mutation', eventName, params);
-				return;
+				log.warn('invoking event with no mutation', eventName, params);
+				return client?.invoke(eventName, params);
 			}
-			const client = toClient(eventName);
 			return mutation({
 				eventName,
 				params,
