@@ -99,3 +99,8 @@ and tests your DB restoration process all in one.
 1. Copy that dump from old to new server & restore it
 1. Deploy the latest `felt-server` code to your new server
 1. Restart
+
+## Managing production
+
+To manage a production instance,
+see [`src/docs/managing-production.md`](/src/docs/managing-production.md).

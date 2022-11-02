@@ -34,7 +34,7 @@ It starts both SvelteKit and an API server,
 and when files change the system should automatically update or restart as needed.
 See [Gro's docs](https://github.com/feltcoop/gro) for more.
 
-## manual processes
+## Manual dev processes
 
 There's two manual steps that you may sometimes need to perform:
 
@@ -77,5 +77,8 @@ See [Gro's build docs](https://github.com/feltcoop/gro/blob/main/src/docs/build.
 
 ## Deploying
 
-To deploy a self-hosted instance
+To deploy a self-hosted instance to production,
 see the instructions at [`src/infra/README.md`](/src/infra/README.md).
+
+To manage a production instance,
+see [`src/docs/managing-production.md`](/src/docs/managing-production.md).
