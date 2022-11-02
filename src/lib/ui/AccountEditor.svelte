@@ -20,7 +20,7 @@
 
 <div class="entity-editor column">
 	<div class="markup padded-xl">
-		<h1>Edit Account Settings</h1>
+		<h1>Account Settings</h1>
 		<section>
 			<p>account {$account.name}</p>
 			<p>created {format($account.created, 'PPPPp')}</p>

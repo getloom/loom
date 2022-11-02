@@ -5,4 +5,6 @@
 	const {dispatch} = getApp();
 </script>
 
-<button class="plain-button" on:click={() => dispatch.OpenDialog({Component: About})}>❔</button>
+<button class="plain-button" on:click={() => dispatch.OpenDialog({Component: About})}>
+	<div class="icon">?</div>
+</button>

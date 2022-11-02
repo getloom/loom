@@ -83,11 +83,13 @@ form ul {
 	/* allows the flex children to shrink */
 	min-width: 0;
 }
-.menu-item .icon {
+.menu-item .icon,
+button .icon {
 	width: var(--icon_size);
 	margin-right: var(--spacing_xs);
 	flex-shrink: 0;
 	text-align: center;
+	font-weight: 900;
 }
 .menu-item .title {
 	margin-right: var(--spacing_lg);

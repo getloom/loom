@@ -16,24 +16,10 @@
 
 <ContextmenuSubmenu>
 	<svelte:fragment slot="icon">
-		<UnicodeIcon icon="🔏" />
+		<UnicodeIcon icon="/" />
 	</svelte:fragment>
 	Account
-	<svelte:fragment slot="menu"
-		>{#if !$session.guest}
-			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
-						Component: AccountEditor,
-						props: {account},
-					})}
-			>
-				<svelte:fragment slot="icon">
-					<UnicodeIcon icon="⚙️" />
-				</svelte:fragment>
-				Settings
-			</ContextmenuEntry>
-		{/if}
+	<svelte:fragment slot="menu">
 		{#each $sessionPersonas.value as persona (persona)}
 			<SessionPersonaContextmenuEntry {persona} />
 		{/each}
@@ -46,21 +32,35 @@
 					})}
 			>
 				<svelte:fragment slot="icon">
-					<UnicodeIcon icon="➕" />
+					<UnicodeIcon icon="@" />
 				</svelte:fragment>
 				Create Persona
 			</ContextmenuEntry>
 		{/if}
+		{#if !$session.guest}
+			<ContextmenuEntry
+				action={() =>
+					dispatch.OpenDialog({
+						Component: AccountEditor,
+						props: {account},
+					})}
+			>
+				<svelte:fragment slot="icon">
+					<UnicodeIcon icon="$" />
+				</svelte:fragment>
+				Settings
+			</ContextmenuEntry>
+		{/if}
 		<ContextmenuEntry action={() => dispatch.OpenDialog({Component: About})}>
 			<svelte:fragment slot="icon">
-				<UnicodeIcon icon="❔" />
+				<UnicodeIcon icon="?" />
 			</svelte:fragment>
 			About
 		</ContextmenuEntry>
 		{#if !$session.guest}
 			<ContextmenuEntry action={() => dispatch.SignOut()}>
 				<svelte:fragment slot="icon">
-					<UnicodeIcon icon="↩" />
+					<UnicodeIcon icon="<" />
 				</svelte:fragment>
 				Sign out
 			</ContextmenuEntry>

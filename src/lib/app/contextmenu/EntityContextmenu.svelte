@@ -17,7 +17,7 @@
 
 <ContextmenuSubmenu>
 	<svelte:fragment slot="icon">
-		<UnicodeIcon icon="☉" />
+		<UnicodeIcon icon="~" />
 	</svelte:fragment>
 	Entity
 	<svelte:fragment slot="menu">
