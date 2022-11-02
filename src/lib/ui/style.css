@@ -38,6 +38,7 @@ main {
 	width: var(--icon_size);
 	height: var(--icon_size);
 	flex-shrink: 0;
+	font-weight: 900;
 }
 .plain-button {
 	border: none;
@@ -83,8 +84,7 @@ form ul {
 	/* allows the flex children to shrink */
 	min-width: 0;
 }
-.menu-item .icon,
-button .icon {
+.menu-item .icon {
 	width: var(--icon_size);
 	margin-right: var(--spacing_xs);
 	flex-shrink: 0;

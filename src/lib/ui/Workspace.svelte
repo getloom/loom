@@ -7,8 +7,8 @@
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
 	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
-	import PersonaInput from '$lib/ui/PersonaInput.svelte';
-	import CommunityInput from '$lib/ui/CommunityInput.svelte';
+	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
+	import CreateCommunityForm from '$lib/ui/CreateCommunityForm.svelte';
 
 	const {
 		dispatch,
@@ -59,10 +59,10 @@
 						<SpaceInput persona={selectedPersona} community={selectedCommunity} />
 					{/if}
 				{:else}
-					<CommunityInput persona={selectedPersona} />
+					<CreateCommunityForm persona={selectedPersona} />
 				{/if}
 			{:else}
-				<PersonaInput />
+				<CreateAccountPersonaForm />
 			{/if}
 		</div>
 		<MarqueeButton />

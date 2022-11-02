@@ -25,8 +25,8 @@
 </script>
 
 <div class="space-editor column">
-	<div class="markup padded-xl">
-		<h1>Edit Space</h1>
+	<form>
+		<legend>Edit Space</legend>
 		<ContextInfo {persona} {community} {space} />
 		<section>
 			<p>created {format($space.created, 'PPPPp')}</p>
@@ -34,27 +34,27 @@
 				<p>updated {format($space.updated, 'PPPPp')}</p>
 			{/if}
 		</section>
-	</div>
-	<form>
-		<ul>
-			<li>
-				<PropertyEditor value={$space.name} field="name" update={updateSpace} />
-			</li>
-			<li>
-				<PropertyEditor value={$space.url} field="url" update={updateSpace} />
-			</li>
-			<li>
-				<PropertyEditor
-					value={$space.icon}
-					field="icon"
-					update={updateSpace}
-					parse={parseSpaceIcon}
-				/>
-			</li>
-			<li>
-				<PropertyEditor value={$space.view} field="view" update={updateSpace} />
-			</li>
-		</ul>
+		<fieldset>
+			<ul>
+				<li>
+					<PropertyEditor value={$space.name} field="name" update={updateSpace} />
+				</li>
+				<li>
+					<PropertyEditor value={$space.url} field="url" update={updateSpace} />
+				</li>
+				<li>
+					<PropertyEditor
+						value={$space.icon}
+						field="icon"
+						update={updateSpace}
+						parse={parseSpaceIcon}
+					/>
+				</li>
+				<li>
+					<PropertyEditor value={$space.view} field="view" update={updateSpace} />
+				</li>
+			</ul>
+		</fieldset>
 	</form>
 	{#if $devmode}
 		<hr />
@@ -71,9 +71,6 @@
 		display: flex;
 		flex-direction: column;
 		padding: var(--spacing_xl);
-	}
-	h1 {
-		text-align: center;
 	}
 	form li {
 		flex-direction: column;

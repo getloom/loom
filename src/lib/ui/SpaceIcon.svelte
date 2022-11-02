@@ -6,4 +6,4 @@
 	export let space: Readable<Space>;
 </script>
 
-<UnicodeIcon icon={$space.icon} label={$space.name} {...$$restProps} />
+<UnicodeIcon icon={$space.icon} title={$space.name} {...$$restProps} />

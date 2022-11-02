@@ -8,9 +8,14 @@
 </script>
 
 <form>
-	<input value={$socket.url} on:input={(e) => socket.updateUrl(e.currentTarget.value)} />
-	<button type="button" on:click={$socket.ws ? disconnect : connect}>
-		{#if $socket.ws}disconnect{:else}connect{/if}
-	</button>
+	<legend>websocket status: <code>'{$socket.status}'</code></legend>
+	<fieldset>
+		<label>
+			<div class="title">url</div>
+			<input value={$socket.url} on:input={(e) => socket.updateUrl(e.currentTarget.value)} />
+		</label>
+		<button type="button" on:click={$socket.ws ? disconnect : connect}>
+			{#if $socket.ws}disconnect{:else}connect{/if}
+		</button>
+	</fieldset>
 </form>
-<div>status: <code>'{$socket.status}'</code></div>

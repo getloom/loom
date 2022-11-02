@@ -100,12 +100,15 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 			</div>
 
 			<div>
-				<button class="plain-button" aria-label="reply" on:click={() => (replying = !replying)}
-					>↩</button
+				<button
+					class="icon-button plain-button"
+					title="reply to @{$authorPersona.name}"
+					aria-label="reply to @{$authorPersona.name}"
+					on:click={() => (replying = !replying)}>↩</button
 				>
 				{#if replying}
 					<textarea
-						placeholder="> replying to {$authorPersona.name}"
+						placeholder="> replying to @{$authorPersona.name}"
 						on:keydown={onKeydown}
 						bind:value={text}
 						bind:this={replyInputEl}

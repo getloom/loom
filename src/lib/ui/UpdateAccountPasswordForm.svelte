@@ -65,68 +65,55 @@
 		}
 	};
 
-	const onKeypress = async (e: KeyboardEvent) => {
+	const onKeyDown = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			await updatePassword();
 		}
 	};
 </script>
 
-<form class="panel">
-	<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={updatePassword}
-		>change password</PendingButton
-	>
-	<div class="status" class:error-text={!!errorMessage} class:success-text={!!successMessage}>
-		{errorMessage || successMessage || '🔑'}
-	</div>
-	<label
-		>old password
-		<input
-			type="password"
-			bind:this={oldPasswordEl}
-			bind:value={oldPassword}
-			on:keypress={onKeypress}
-			{disabled}
-			placeholder=">"
-			use:autofocus
-		/>
-	</label>
-	<label
-		>new password
-		<input
-			type="password"
-			bind:this={passwordEl}
-			bind:value={newPassword}
-			on:keypress={onKeypress}
-			{disabled}
-			placeholder=">"
-		/>
-	</label>
-	<label
-		>confirm new password
-		<input
-			type="password"
-			bind:this={password2El}
-			bind:value={newPassword2}
-			on:keypress={onKeypress}
-			{disabled}
-			placeholder=">"
-		/>
-	</label>
+<form class="panel markup padded-xl">
+	<fieldset class="centered">
+		<legend>change account password</legend>
+		<label>
+			<div class="title">old password</div>
+			<input
+				type="password"
+				bind:this={oldPasswordEl}
+				bind:value={oldPassword}
+				on:keydown={onKeyDown}
+				{disabled}
+				placeholder=">"
+				use:autofocus
+			/>
+		</label>
+		<label>
+			<div class="title">new password</div>
+			<input
+				type="password"
+				bind:this={passwordEl}
+				bind:value={newPassword}
+				on:keydown={onKeyDown}
+				{disabled}
+				placeholder=">"
+			/>
+		</label>
+		<label>
+			<div class="title">confirm new password</div>
+			<input
+				type="password"
+				bind:this={password2El}
+				bind:value={newPassword2}
+				on:keydown={onKeyDown}
+				{disabled}
+				placeholder=">"
+			/>
+		</label>
+		<p class="centered" class:error-text={!!errorMessage} class:success-text={!!successMessage}>
+			{errorMessage || successMessage || '🔑'}
+		</p>
+		<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={updatePassword}
+			>change password</PendingButton
+		>
+	</fieldset>
 </form>
-
-<style>
-	form {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: var(--spacing_sm);
-	}
-	.status {
-		margin: var(--spacing_sm) 0;
-	}
-	label:not(:last-child) {
-		margin-bottom: var(--spacing_sm);
-	}
-</style>

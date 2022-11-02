@@ -6,7 +6,7 @@
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
-	import CommunityInput from '$lib/ui/CommunityInput.svelte';
+	import CreateCommunityForm from '$lib/ui/CreateCommunityForm.svelte';
 	import ManageAssignmentForm from '$lib/ui/ManageAssignmentForm.svelte';
 
 	const {dispatch} = getApp();
@@ -23,7 +23,7 @@
 		<ContextmenuEntry
 			action={() =>
 				dispatch.OpenDialog({
-					Component: CommunityInput,
+					Component: CreateCommunityForm,
 					props: {persona, done: () => dispatch.CloseDialog()},
 					dialogProps: {layout: 'page'},
 				})}

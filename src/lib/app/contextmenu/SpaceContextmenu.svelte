@@ -7,7 +7,7 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import type {Community} from '$lib/vocab/community/community';
-	import SpaceDelete from '$lib/ui/SpaceDelete.svelte';
+	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
 	import SpaceEditor from '$lib/ui/SpaceEditor.svelte';
 	import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
@@ -39,7 +39,7 @@
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({
-						Component: SpaceDelete,
+						Component: DeleteSpaceForm,
 						props: {persona, community, space, done: () => dispatch.CloseDialog()},
 					})}
 			>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {tick} from 'svelte';
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
+	import {swallow} from '@feltcoop/felt/util/dom.js';
 
 	import {autofocus} from '$lib/ui/actions';
 	import HeroIcon from '$lib/ui/HeroIcon.svelte';
@@ -50,8 +51,9 @@
 		}
 	};
 
-	const onKeypress = async (e: KeyboardEvent) => {
+	const onKeyDown = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
+			swallow(e);
 			await signIn();
 		}
 	};
@@ -59,28 +61,40 @@
 
 <HeroIcon />
 <form>
-	<input
-		bind:this={usernameEl}
-		bind:value={username}
-		on:keypress={onKeypress}
-		{disabled}
-		placeholder="email"
-		use:autofocus
-		autocomplete="username"
-	/>
-	<input
-		type="password"
-		bind:this={passwordEl}
-		bind:value={password}
-		on:keypress={onKeypress}
-		{disabled}
-		placeholder="password"
-		autocomplete="current-password"
-	/>
-	<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signIn}>sign in</PendingButton>
-	<div class:error-text={!!errorMessage}>{errorMessage || '💚'}</div>
+	<fieldset>
+		<label>
+			<div class="title">email</div>
+			<input
+				bind:this={usernameEl}
+				bind:value={username}
+				on:keydown={onKeyDown}
+				{disabled}
+				placeholder=">"
+				use:autofocus
+				autocomplete="username"
+			/></label
+		>
+		<label>
+			<div class="title">password</div>
+			<input
+				type="password"
+				bind:this={passwordEl}
+				bind:value={password}
+				on:keydown={onKeyDown}
+				{disabled}
+				placeholder=">"
+				autocomplete="current-password"
+			/></label
+		>
+		<div class="centered">
+			<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signIn}
+				>sign in</PendingButton
+			>
+			<p class:error-text={!!errorMessage}>{errorMessage || '💚'}</p>
+			<slot />
+		</div>
+	</fieldset>
 </form>
-<slot />
 
 <style>
 	form {
@@ -88,5 +102,9 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+	}
+	/* TODO make this into a utility class? */
+	.centered {
+		width: 100%;
 	}
 </style>

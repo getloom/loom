@@ -68,21 +68,28 @@
 	};
 </script>
 
-<div class="markup padded-xl">
-	<h1>Create a Persona</h1>
-	<form>
-		<input
-			placeholder="> name"
-			bind:this={nameEl}
-			bind:value={name}
-			use:autofocus
-			disabled={status === 'pending'}
-			on:keydown={onKeydown}
-		/>
-		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
-		{/if}
-		<PendingButton on:click={create} pending={status === 'pending'}>Create persona</PendingButton>
+<!-- TODO these centered classes -- ideally would have a single class or change the defaults,
+maybe `form.centered` should be interpreted a particular way in Felt? -->
+<div class="markup padded-xl centered">
+	<form class="centered">
+		<legend>Create a Persona</legend>
+		<fieldset class="centered">
+			<label>
+				<div class="title">name</div>
+				<input
+					placeholder=">"
+					bind:this={nameEl}
+					bind:value={name}
+					use:autofocus
+					disabled={status === 'pending'}
+					on:keydown={onKeydown}
+				/></label
+			>
+			{#if errorMessage}
+				<Message status="error">{errorMessage}</Message>
+			{/if}
+			<PendingButton on:click={create} pending={status === 'pending'}>create persona</PendingButton>
+		</fieldset>
+		<Message icon="‼">your persona names are visible to people in the communities you join</Message>
 	</form>
-	<Message icon="‼">your persona names are visible to people in the communities you join</Message>
 </div>

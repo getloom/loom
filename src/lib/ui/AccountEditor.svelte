@@ -32,17 +32,15 @@
 	<UpdateAccountPasswordForm />
 	<!-- TODO add entity property contextmenu actions to this -->
 	<form>
-		<ul>
-			<li>
-				<PropertyEditor
-					value={$account.settings}
-					field="settings"
-					update={updateAccountSettings}
-					parse={parseJson}
-					serialize={serializeJson}
-				/>
-			</li>
-		</ul>
+		<fieldset>
+			<PropertyEditor
+				value={$account.settings}
+				field="settings"
+				update={updateAccountSettings}
+				parse={parseJson}
+				serialize={serializeJson}
+			/>
+		</fieldset>
 	</form>
 </div>
 
@@ -52,9 +50,5 @@
 	}
 	h1 {
 		text-align: center;
-	}
-	form li {
-		flex-direction: column;
-		padding: var(--spacing_xl) 0;
 	}
 </style>

@@ -1,9 +1,9 @@
 <script lang="ts">
 	export let icon: string;
-	export let label: string | undefined = undefined;
+	export let title: string | undefined = undefined;
 </script>
 
-<div aria-label={label} {...$$restProps}>{icon}</div>
+<div {title} aria-label={title} {...$$restProps}>{icon}</div>
 
 <style>
 	div {

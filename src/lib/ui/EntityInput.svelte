@@ -81,40 +81,40 @@
 	};
 </script>
 
-<div class="entity-input markup">
-	<h1>New {entityName}</h1>
+<form class="markup padded-xl">
+	<legend>New {entityName}</legend>
 	<ContextInfo {persona} {community} {space} />
-	<form>
+	<fieldset>
 		{#if fields.name}
-			<input
-				placeholder="> name"
-				bind:this={nameEl}
-				bind:value={name}
-				use:autofocus
-				disabled={status === 'pending'}
-				on:keydown={onKeydown}
-			/>
+			<label>
+				<div class="title">name</div>
+				<input
+					placeholder=">"
+					bind:this={nameEl}
+					bind:value={name}
+					use:autofocus
+					disabled={status === 'pending'}
+					on:keydown={onKeydown}
+				/>
+			</label>
 		{/if}
 		{#if fields.content}
-			<textarea
-				placeholder="> content"
-				bind:this={contentEl}
-				bind:value={content}
-				disabled={status === 'pending'}
-				on:keydown={onKeydown}
-			/>
+			<label>
+				<div class="title">content</div>
+				<textarea
+					placeholder=">"
+					bind:this={contentEl}
+					bind:value={content}
+					disabled={status === 'pending'}
+					on:keydown={onKeydown}
+				/>
+			</label>
 		{/if}
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{/if}
 		<PendingButton on:click={create} pending={status === 'pending'}
-			>Create {entityName}</PendingButton
+			>create {entityName.toLowerCase()}</PendingButton
 		>
-	</form>
-</div>
-
-<style>
-	.entity-input {
-		padding: var(--spacing_xl);
-	}
-</style>
+	</fieldset>
+</form>

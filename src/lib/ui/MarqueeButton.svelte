@@ -14,6 +14,7 @@
 	class="plain-button icon-button"
 	class:expanded={$expandMarquee}
 	style="transform: translate3d({right}px, 0, 0)"
+	title="toggle marquee"
 	aria-label="toggle marquee"
 	on:click={() => dispatch.ToggleSecondaryNav()}
 >

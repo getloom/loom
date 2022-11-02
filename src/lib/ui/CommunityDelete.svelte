@@ -3,8 +3,7 @@
 	import Message from '@feltcoop/felt/ui/Message.svelte';
 
 	import {getApp} from '$lib/ui/app';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Community} from '$lib/vocab/community/community';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
@@ -45,28 +44,18 @@
 	};
 </script>
 
-<div class="markup padded-xl">
-	<h1>Delete Community?</h1>
-	<section class="row">
-		<CommunityAvatar {community} />
-	</section>
-	<section class="row">
-		<span class="spaced">as</span>
-		<PersonaAvatar {persona} />
-	</section>
-	<form>
-		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
-		{/if}
-		<input
-			type="text"
-			name="name"
-			placeholder=">enter name to unlock button"
-			bind:value={lockText}
-			on:keydown={onKeydown}
-		/>
-		<PendingButton {pending} disabled={locked || pending} on:click={deleteCommunity}>
-			Delete community
-		</PendingButton>
-	</form>
-</div>
+<form class="markup padded-xl">
+	<legend>Delete Community?</legend>
+	<ContextInfo {persona} {community} />
+	<label>
+		<div class="title">community name</div>
+		<input type="text" name="name" placeholder=">" bind:value={lockText} on:keydown={onKeydown} />
+		<p>enter the community name to unlock the delete button</p>
+	</label>
+	<PendingButton {pending} disabled={locked || pending} on:click={deleteCommunity}>
+		delete community
+	</PendingButton>
+	{#if errorMessage}
+		<Message status="error">{errorMessage}</Message>
+	{/if}
+</form>

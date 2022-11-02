@@ -67,34 +67,32 @@
 	</div>
 	<!-- TODO add entity property contextmenu actions to this -->
 	<form>
-		<ul>
-			{#if $entity.data.type === 'Tombstone'}
-				<div><TombstoneContent {entity} /></div>
-				<PendingButton on:click={() => deleteEntity()} pending={deletePending}
-					>Delete entity</PendingButton
-				>
-			{:else}
-				<li>
-					<!-- TODO how to make this use `EntityContent`? slot? could default to the `pre` -->
+		{#if $entity.data.type === 'Tombstone'}
+			<div><TombstoneContent {entity} /></div>
+			<PendingButton on:click={() => deleteEntity()} pending={deletePending}
+				>delete entity</PendingButton
+			>
+		{:else}
+			<fieldset>
+				<!-- TODO how to make this use `EntityContent`? slot? could default to the `pre` -->
+				<PropertyEditor
+					value={$entity.data.content}
+					field="content"
+					update={updateEntityDataProperty}
+				/>
+			</fieldset>
+			{#if $devmode}
+				<fieldset>
 					<PropertyEditor
-						value={$entity.data.content}
-						field="content"
-						update={updateEntityDataProperty}
+						value={$entity.data}
+						field="data"
+						update={updateEntityData}
+						parse={parseJson}
+						serialize={serializeJson}
 					/>
-				</li>
-				{#if $devmode}
-					<li>
-						<PropertyEditor
-							value={$entity.data}
-							field="data"
-							update={updateEntityData}
-							parse={parseJson}
-							serialize={serializeJson}
-						/>
-					</li>
-				{/if}
+				</fieldset>
 			{/if}
-		</ul>
+		{/if}
 	</form>
 	{#if $devmode}
 		<hr />
@@ -111,8 +109,7 @@
 	h1 {
 		text-align: center;
 	}
-	form li {
-		flex-direction: column;
+	fieldset {
 		padding: var(--spacing_xl) 0;
 	}
 </style>

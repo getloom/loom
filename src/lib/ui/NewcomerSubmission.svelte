@@ -60,93 +60,78 @@
 	};
 </script>
 
-<section class="panel">
+<div class="markup panel padded-xl">
 	<!-- TODO fix CommunityAvatar on newline-->
-	<div class="title">
-		<h4>
-			📝 Sign up for <CommunityAvatar {community} showName={true} contextmenuAction={null} />
-		</h4>
-	</div>
-</section>
-{#if !submitted}
-	<form>
-		<section class="panel">
-			<div class="question">
-				<h4>How did you find this community (& if you were invited to join, who invited you?)</h4>
-			</div>
-			<input
-				placeholder="> answer"
-				bind:this={q1El}
-				bind:value={q1}
-				use:autofocus
-				disabled={status === 'pending'}
-				on:keydown={onKeydown}
-			/>
-		</section>
-
-		<section class="panel">
-			<div class="question">
-				<h4>Why would you like to join this community?</h4>
-			</div>
-			<input
-				placeholder="> answer"
-				bind:this={q2El}
-				bind:value={q2}
-				use:autofocus
-				disabled={status === 'pending'}
-				on:keydown={onKeydown}
-			/>
-		</section>
-
-		<section class="panel">
-			<div class="question">
-				<h4>These are the norms of our community, how do you think you can contribute?</h4>
-				<!--TODO discuss a good way to reference the "rules" entity in another space-->
-			</div>
-			<input
-				placeholder="> answer"
-				bind:this={q3El}
-				bind:value={q3}
-				use:autofocus
-				disabled={status === 'pending'}
-				on:keydown={onKeydown}
-			/>
-		</section>
-		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
-		{/if}
-		<PendingButton on:click={submit} pending={status === 'pending'}>Submit</PendingButton>
-	</form>
-{:else}
-	<section class="panel">
-		<div class="question">
-			<h4>
+	<h1 class="row">
+		Submit application to <CommunityAvatar {community} showName={true} contextmenuAction={null} />
+	</h1>
+	{#if !submitted}
+		<form>
+			<fieldset>
+				<label>
+					<div class="title">
+						How did you find this community? If you were invited to join, who invited you?
+					</div>
+					<input
+						placeholder=">"
+						bind:this={q1El}
+						bind:value={q1}
+						use:autofocus
+						disabled={status === 'pending'}
+						on:keydown={onKeydown}
+					/>
+				</label>
+			</fieldset>
+			<fieldset>
+				<label>
+					<div class="title">Why would you like to join this community?</div>
+					<input
+						placeholder=">"
+						bind:this={q2El}
+						bind:value={q2}
+						use:autofocus
+						disabled={status === 'pending'}
+						on:keydown={onKeydown}
+					/>
+				</label>
+			</fieldset>
+			<fieldset>
+				<label>
+					<div class="title">
+						These are the norms of our community, how do you think you can contribute?
+					</div>
+					<!--TODO discuss a good way to reference the "rules" entity in another space-->
+					<input
+						placeholder=">"
+						bind:this={q3El}
+						bind:value={q3}
+						use:autofocus
+						disabled={status === 'pending'}
+						on:keydown={onKeydown}
+					/>
+				</label>
+			</fieldset>
+			{#if errorMessage}
+				<Message status="error">{errorMessage}</Message>
+			{/if}
+			<PendingButton on:click={submit} pending={status === 'pending'}
+				>submit application</PendingButton
+			>
+		</form>
+	{:else}
+		<section class="panel padded-xl">
+			<p>
 				Thank you for submitting! We will review your application and get back to you within a week.
 				This process takes time because we want to ensure you and our community are a good fit.
-			</h4>
-		</div>
-	</section>
-{/if}
+			</p>
+		</section>
+	{/if}
+</div>
 
 <style>
 	.panel {
 		margin-top: var(--spacing_xl);
 		margin-left: var(--spacing_xl);
 		margin-right: var(--spacing_xl);
-	}
-	.title {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-		align-items: center;
-		min-height: 50px;
-		--icon_size: var(--icon_size_sm);
-	}
-	.question {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-		align-items: center;
-		min-height: 50px;
 	}
 </style>

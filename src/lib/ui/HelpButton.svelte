@@ -5,6 +5,10 @@
 	const {dispatch} = getApp();
 </script>
 
-<button class="plain-button" on:click={() => dispatch.OpenDialog({Component: About})}>
-	<div class="icon">?</div>
+<button
+	type="button"
+	class="plain-button icon-button"
+	on:click={() => dispatch.OpenDialog({Component: About})}
+>
+	?
 </button>

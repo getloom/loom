@@ -47,9 +47,9 @@
 </script>
 
 <div class="markup padded-xl">
-	<h1>Delete Space?</h1>
-	<ContextInfo {persona} {community} {space} />
 	<form>
+		<legend>Delete Space?</legend>
+		<ContextInfo {persona} {community} {space} />
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{/if}
@@ -60,9 +60,8 @@
 			bind:value={lockText}
 			on:keydown={onKeydown}
 		/>
-
 		<PendingButton {pending} disabled={locked || pending} on:click={deleteSpace}>
-			Delete space
+			delete space
 		</PendingButton>
 	</form>
 </div>

@@ -7,6 +7,7 @@
 <div class="luggage">
 	<button
 		class="icon-button plain-button"
+		title="toggle luggage"
 		aria-label="toggle luggage"
 		on:click={() => dispatch.ToggleMainNav()}
 	>

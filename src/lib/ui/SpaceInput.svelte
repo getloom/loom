@@ -90,30 +90,38 @@
 </script>
 
 <div class="markup padded-xl">
-	<h1>Create a new Space</h1>
-	<ContextInfo {persona} {community} />
 	<form>
-		<input
-			name="name"
-			placeholder="> name"
-			bind:value={name}
-			bind:this={nameEl}
-			use:autofocus
-			on:keydown={onKeydown}
-		/>
-		<input placeholder="> icon" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
-		<label>
-			Select Type:
-			<select class="type-selector" bind:value={selectedViewTemplate}>
-				{#each creatableViewTemplates as viewTemplate}
-					<option value={viewTemplate}>{viewTemplate.name}</option>
-				{/each}
-			</select>
-		</label>
-		<PendingButton on:click={create} {pending}>Create space</PendingButton>
-		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
-		{/if}
+		<legend>Create a new Space</legend>
+		<ContextInfo {persona} {community} />
+		<fieldset>
+			<label>
+				<div class="title">name</div>
+				<input
+					name="name"
+					placeholder=">"
+					bind:value={name}
+					bind:this={nameEl}
+					use:autofocus
+					on:keydown={onKeydown}
+				/>
+			</label>
+			<label>
+				<div class="title">icon</div>
+				<input placeholder=">" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
+			</label>
+			<label>
+				<div class="title">type</div>
+				<select class="type-selector" bind:value={selectedViewTemplate}>
+					{#each creatableViewTemplates as viewTemplate}
+						<option value={viewTemplate}>{viewTemplate.name}</option>
+					{/each}
+				</select>
+			</label>
+			<PendingButton on:click={create} {pending}>create space</PendingButton>
+			{#if errorMessage}
+				<Message status="error">{errorMessage}</Message>
+			{/if}
+		</fieldset>
 	</form>
 </div>
 

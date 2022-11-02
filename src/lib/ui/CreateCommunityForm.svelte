@@ -8,12 +8,12 @@
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
+	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {
 		dispatch,
@@ -86,37 +86,37 @@
 </script>
 
 <div class="markup padded-xl">
-	<h1>Create a new Community</h1>
-	<section class="row">
-		<span class="spaced">as</span>
-		<PersonaAvatar {persona} />
-	</section>
-	<section>
-		<form>
-			<input
-				placeholder="> name"
-				bind:value={name}
-				bind:this={nameEl}
-				use:autofocus
-				on:keydown={onKeydown}
-			/>
-			<PendingButton on:click={create} {pending}>Create community</PendingButton>
+	<form>
+		<legend>Create a new Community</legend>
+		<ContextInfo {persona} />
+		<fieldset>
+			<label>
+				<div class="title">name</div>
+				<input
+					placeholder=">"
+					bind:value={name}
+					bind:this={nameEl}
+					use:autofocus
+					on:keydown={onKeydown}
+				/>
+			</label>
+			<PendingButton on:click={create} {pending}>create community</PendingButton>
 			{#if errorMessage}
 				<Message status="error">{errorMessage}</Message>
 			{/if}
-		</form>
-	</section>
-	{#if name}
-		<section>
-			<Avatar {name} type="Community" {hue} />
-		</section>
-		<details>
-			<summary>Customize</summary>
-			<div>
-				<HueInput {hue} on:input={(e) => (chosenHue = e.detail)} />
-			</div>
-		</details>
-	{/if}
+		</fieldset>
+		{#if name}
+			<section>
+				<Avatar {name} type="Community" {hue} />
+			</section>
+			<details>
+				<summary>Customize</summary>
+				<div>
+					<HueInput {hue} on:input={(e) => (chosenHue = e.detail)} />
+				</div>
+			</details>
+		{/if}
+	</form>
 </div>
 
 <style>
