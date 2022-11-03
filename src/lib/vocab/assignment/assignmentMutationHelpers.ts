@@ -8,18 +8,20 @@ import {Mutated} from '$lib/util/Mutated';
 
 export const stashAssignments = (
 	ui: WritableUi,
-	$assignments: Assignment[],
+	$assignmentsToStash: Assignment[],
 	mutated = new Mutated('stashAssignments'),
 ): void => {
-	const {assignments} = ui;
+	const {assignments, assignmentById} = ui;
 
-	const $ms = assignments.get().value;
-	for (const $m of $assignments) {
-		// TODO speed this up after adding the `assignment_id` field
-		if (!$ms.find((m) => $m.assignment_id === m.get().assignment_id)) {
-			$ms.push(writable($m));
-			mutated.add(assignments);
+	const $assignments = assignments.get().value;
+	for (const $assignment of $assignmentsToStash) {
+		if (assignmentById.has($assignment.assignment_id)) {
+			continue; // assignments are immutable, so no need to update them
 		}
+		const assignment = writable($assignment);
+		assignmentById.set($assignment.assignment_id, assignment);
+		$assignments.push(assignment);
+		mutated.add(assignments);
 	}
 
 	mutated.end('stashAssignments');
@@ -30,7 +32,7 @@ export const evictAssignments = (
 	assignmentsToEvict: Array<Writable<Assignment>>,
 	mutated = new Mutated('evictAssignments'),
 ): void => {
-	const {assignments, personaById} = ui;
+	const {assignments, assignmentById, personaById} = ui;
 
 	const assignmentsToEvictSet = new Set(assignmentsToEvict);
 
@@ -41,6 +43,9 @@ export const evictAssignments = (
 	assignments.swap(
 		$assignments.filter((assignment) => {
 			if (!assignmentsToEvictSet.has(assignment)) return true;
+
+			assignmentById.delete(assignment.get().assignment_id);
+
 			// Check if we need to delete the persona along with the assignment.
 			const {persona_id} = assignment.get();
 			if (!$assignments.some((m) => m.get().persona_id === persona_id && m !== assignment)) {

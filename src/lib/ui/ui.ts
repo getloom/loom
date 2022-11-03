@@ -60,6 +60,7 @@ export interface Ui {
 	personaById: Map<number, Readable<Persona>>;
 	communityById: Map<number, Readable<Community>>;
 	roleById: Map<number, Readable<Role>>;
+	assignmentById: Map<number, Readable<Assignment>>;
 	spaceById: Map<number, Readable<Space>>;
 	entityById: Map<number, Readable<Entity>>;
 	tieById: Map<number, Tie>;
@@ -118,6 +119,7 @@ export const toUi = (
 	const personaById: Map<number, Writable<Persona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();
+	const assignmentById: Map<number, Writable<Assignment>> = new Map();
 	const spaceById: Map<number, Writable<Space>> = new Map();
 	// TODO do these maps more efficiently
 	const spacesByCommunityId: Readable<Map<number, Array<Writable<Space>>>> = derived(
@@ -314,6 +316,7 @@ export const toUi = (
 		personaById,
 		communityById,
 		roleById,
+		assignmentById,
 		spaceById,
 		entityById,
 		tieById,
