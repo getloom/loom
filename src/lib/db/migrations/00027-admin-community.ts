@@ -16,7 +16,7 @@ export const up = async (sql: Sql<any>): Promise<void> => {
 		SET community_id = (1 + (SELECT max(community_id) from communities))
 		WHERE community_id = 1;
 	`;
-	// Move the existing persona -- all references to `personas.persona_id` cascade.
+	// Move the existing persona -- all references to `personas.persona_id` cascade except one (see ahead).
 	const [{persona_id}] = await sql`
 		UPDATE personas
 		SET persona_id = (1 + (SELECT max(persona_id) from personas))

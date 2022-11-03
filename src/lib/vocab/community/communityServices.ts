@@ -14,9 +14,9 @@ import {
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {createSpaces} from '$lib/vocab/space/spaceServices';
 import type {NonAuthorizedServiceRequest} from '$lib/server/service';
-import {ADMIN_COMMUNITY_ID, ADMIN_COMMUNITY_NAME} from '$lib/app/admin';
+import {ADMIN_COMMUNITY_ID, ADMIN_COMMUNITY_NAME} from '$lib/app/constants';
 import type {Community} from '$lib/vocab/community/community';
-import type {CommunityPersona} from '$lib/vocab/persona/persona';
+import type {CommunityPersona, GhostPersona} from '$lib/vocab/persona/persona';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
@@ -24,10 +24,9 @@ import type {Role} from '$lib/vocab/role/role';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {cleanOrphanCommunities} from '$lib/vocab/assignment/assignmentServices';
 import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
+import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
-
-const BLOCKLIST = new Set(['docs', 'schemas', 'about']);
 
 //TODO allow for more robust defaults at Community init
 const DEFAULT_ROLE = 'member';
@@ -98,8 +97,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				return {ok: false, status: 400, message: nameErrorMessage};
 			}
 
-			// run name through block list
-			if (BLOCKLIST.has(name.toLowerCase())) {
+			if (isPersonaNameReserved(name)) {
 				return {ok: false, status: 409, message: 'a community with that name is not allowed'};
 			}
 
@@ -237,7 +235,11 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 
 export const initAdminCommunity = async (
 	serviceRequest: NonAuthorizedServiceRequest,
-): Promise<Result<{value?: {community: Community; persona: CommunityPersona; role: Role}}>> => {
+): Promise<
+	Result<{
+		value?: {community: Community; persona: CommunityPersona; ghost: GhostPersona; role: Role};
+	}>
+> => {
 	const {repos} = serviceRequest;
 
 	if (await repos.community.hasAdminCommunity()) return OK;
@@ -272,7 +274,10 @@ export const initAdminCommunity = async (
 		),
 	);
 
-	return {ok: true, value: {community, persona, role}};
+	// Create the ghost persona.
+	const ghost = unwrap(await repos.persona.createGhostPersona());
+
+	return {ok: true, value: {community, persona, ghost, role}};
 };
 
 /**

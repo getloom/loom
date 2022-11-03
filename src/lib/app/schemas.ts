@@ -7,6 +7,7 @@ import {AccountSchema, AccountSettingsSchema} from '$lib/vocab/account/account.s
 import {
 	AccountPersonaSchema,
 	CommunityPersonaSchema,
+	GhostPersonaSchema,
 	PersonaSchema,
 } from '$lib/vocab/persona/persona.schema';
 import {
@@ -33,6 +34,7 @@ export const vocabSchemas = [
 	AccountSettingsSchema,
 	AccountPersonaSchema,
 	CommunityPersonaSchema,
+	GhostPersonaSchema,
 	PersonaSchema,
 	CommunitySchema,
 	CommunitySettingsSchema,

@@ -20,10 +20,10 @@
 		},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<Persona>; // TODO `SessionPersona` type
 
 	$: communityId =
-		$communityIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.community_id;
+		$communityIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.community_id!; // TODO remove the `!` when the `SessionPersona` type is used above
 	$: community = communityById.get(communityId)!;
 	$: spaceIdSelection = $spaceIdSelectionByCommunityId.value.get($community.community_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;

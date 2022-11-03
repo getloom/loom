@@ -13,7 +13,7 @@ and your account information is never visible to other users.
 
 ## `'community'` personas
 
-Community personas are created for every [`'standard'` community](./community-types.md)
+One community persona is created for every [`'standard'` community](./community-types.md)
 and have a `community_id` that points to it.
 They cannot be deleted directly, and instead they are deleted automatically with their community.
 Unlike account personas, they have no `account_id`.
@@ -21,3 +21,13 @@ They currently have no behavior in Felt,
 but the plan is to allow them to act as normal personas
 under the control of the entire community,
 and otherwise have most of the same behavior as account personas.
+
+## `'ghost'` personas
+
+Each instance has a single ghost persona.
+The ghost is used to anonymize the actor of entities and other objects,
+like when an account persona is deleted.
+Unlike other persona types, it's a global placeholder object, so features should not hang off it.
+For example, it cannot be used as an event actor and it cannot be assigned roles.
+Unlike account and community personas, it has no `community_id`.
+Like community personas, and unlike account personas, it has no `account_id`.

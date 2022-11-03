@@ -58,7 +58,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	// instead of using derived stores like `sessionPersonas` and `spacesByCommunityId`.
 	communityIdSelectionByPersonaId.swap(
 		// TODO first try to load this from localStorage
-		new Map(guest ? null : $session.sessionPersonas.map(($p) => [$p.persona_id, $p.community_id])),
+		new Map(guest ? null : $session.sessionPersonas.map(($p) => [$p.persona_id, $p.community_id!])),
 	);
 	spaceIdSelectionByCommunityId.swap(
 		//TODO lookup space by community_id+url (see this comment in multiple places)

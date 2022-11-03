@@ -19,10 +19,9 @@ import type {Community} from '$lib/vocab/community/community';
 import type {Persona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
+import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
-
-const BLOCKLIST = new Set(['admin']);
 
 //Creates a new persona
 export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] = {
@@ -39,7 +38,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				return {ok: false, status: 400, message: nameErrorMessage};
 			}
 
-			if (BLOCKLIST.has(name.toLowerCase())) {
+			if (isPersonaNameReserved(name)) {
 				return {ok: false, status: 409, message: 'a persona with that name is not allowed'};
 			}
 
@@ -104,6 +103,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				const adminCommunity = initAdminCommunityValue.community;
 				communities.push(adminCommunity);
 				personas.push(initAdminCommunityValue.persona);
+				personas.push(initAdminCommunityValue.ghost);
 				roles.push(initAdminCommunityValue.role);
 
 				// Create the admin community's default spaces.

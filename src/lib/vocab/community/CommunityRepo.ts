@@ -4,7 +4,7 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Community} from '$lib/vocab/community/community';
-import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('CommunityRepo') + gray(']'));
 

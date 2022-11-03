@@ -3,7 +3,7 @@ import {unwrap} from '@feltcoop/felt';
 import type {Space} from '$lib/vocab/space/space';
 import type {Community} from '$lib/vocab/community/community';
 import type {Account} from '$lib/vocab/account/account';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, Persona} from '$lib/vocab/persona/persona';
 import type {
 	CreateCommunityParams,
 	CreateAccountPersonaParams,
@@ -134,7 +134,7 @@ export class RandomVocabContext {
 	}
 
 	async persona(account?: Account): Promise<{
-		persona: Persona;
+		persona: AccountPersona;
 		personalCommunity: Community;
 		assignment: Assignment;
 		spaces: Space[];
@@ -152,7 +152,7 @@ export class RandomVocabContext {
 				params: {name: randomPersonaParams().name},
 			}),
 		);
-		return {persona, personalCommunity, assignment, spaces, account};
+		return {persona: persona as AccountPersona, personalCommunity, assignment, spaces, account};
 	}
 
 	async community(

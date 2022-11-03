@@ -3,7 +3,13 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {AccountPersona, CommunityPersona, Persona} from '$lib/vocab/persona/persona';
+import type {
+	AccountPersona,
+	CommunityPersona,
+	GhostPersona,
+	Persona,
+} from '$lib/vocab/persona/persona';
+import {GHOST_PERSONA_NAME} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('PersonaRepo') + gray(']'));
 
@@ -20,7 +26,7 @@ export class PersonaRepo extends PostgresRepo {
 			) RETURNING *
 		`;
 		const persona = data[0];
-		log.trace('[db] created persona', persona);
+		log.trace('[createAccountPersona] created persona', persona);
 		return {ok: true, value: persona};
 	}
 
@@ -34,8 +40,17 @@ export class PersonaRepo extends PostgresRepo {
 			) RETURNING *
 		`;
 		const persona = data[0];
-		log.trace('[db] created persona', persona);
+		log.trace('[createCommunityPersona] created persona', persona);
 		return {ok: true, value: persona};
+	}
+
+	async createGhostPersona(): Promise<Result<{value: GhostPersona}>> {
+		const data = await this.sql<GhostPersona[]>`
+			INSERT INTO personas (type, name) VALUES (
+				'ghost', ${GHOST_PERSONA_NAME}
+			) RETURNING *
+		`;
+		return {ok: true, value: data[0]};
 	}
 
 	async filterByAccount(account_id: number): Promise<Result<{value: Persona[]}>> {

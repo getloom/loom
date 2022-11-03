@@ -4,7 +4,7 @@ import {OK, unwrap, type Result} from '@feltcoop/felt';
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
-import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
 
 const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));

@@ -22,7 +22,7 @@ import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {EphemeraResponse} from '$lib/app/eventTypes';
 import type {ClientSession} from '$lib/session/clientSession';
 import type {Role} from '$lib/vocab/role/role';

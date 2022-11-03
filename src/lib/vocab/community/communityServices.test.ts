@@ -10,7 +10,7 @@ import {
 	CreateCommunityService,
 } from '$lib/vocab/community/communityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 
 /* test_communityServices */

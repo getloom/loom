@@ -97,7 +97,7 @@ export const evictCommunity = async (
 		if (communityIdSelection === community_id) {
 			communityIdSelectionByPersonaId
 				.get()
-				.value.set(persona_id, personaById.get(persona_id)!.get().community_id);
+				.value.set(persona_id, personaById.get(persona_id)!.get().community_id!);
 			mutated.add(communityIdSelectionByPersonaId);
 		}
 	}

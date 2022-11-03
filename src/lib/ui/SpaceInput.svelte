@@ -12,7 +12,7 @@
 	import type {Persona} from '$lib/vocab/persona/persona';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
-	import {ADMIN_COMMUNITY_ID} from '$lib/app/admin';
+	import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {
