@@ -77,7 +77,7 @@
 	<div class="assignments">
 		{#if assignments}
 			{#each assignments as assignment (assignment)}
-				<AssignmentItem {assignment} />
+				<AssignmentItem actor={persona} {assignment} />
 			{/each}
 		{/if}
 	</div>

@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Role} from '$lib/vocab/role/role';
-	import AssignmentItem from '$lib/ui/AssignmentItem.svelte';
+	import AssignmentDisplayItem from '$lib/ui/AssignmentDisplayItem.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
 
 	export let role: Readable<Role>;
@@ -15,7 +15,7 @@
 	<span class="role-name">{$role.name}:</span>
 	<ul class="role-members">
 		{#each assignments as assignment (assignment)}
-			<li><AssignmentItem {assignment} /></li>
+			<li><AssignmentDisplayItem {assignment} /></li>
 		{:else}
 			no assignments
 		{/each}

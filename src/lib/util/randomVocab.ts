@@ -109,6 +109,7 @@ export interface RandomVocab {
 	space?: Space;
 	entity?: Entity;
 	role?: Role;
+	assignments?: Assignment[];
 }
 
 /* eslint-disable no-param-reassign */

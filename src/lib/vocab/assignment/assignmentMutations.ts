@@ -29,18 +29,20 @@ export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 
 export const DeleteAssignment: Mutations['DeleteAssignment'] = async ({params, invoke, ui}) => {
 	const {assignments, sessionPersonaIds} = ui;
-	const {community_id, persona_id} = params;
+	const {assignment_id} = params;
 
 	const result = await invoke();
 	if (!result.ok) return result;
+	//TODO fix this with an `assignmentById` store
+	const assignmentIndex = assignments
+		.get()
+		.value.findIndex((a) => a.get().assignment_id === assignment_id)!;
+	const assignment = assignments.get().value.at(assignmentIndex);
 	assignments.mutate(($assignments) => {
-		const index = $assignments.findIndex((assignment) => {
-			const $m = assignment.get();
-			return $m.persona_id === persona_id && $m.community_id === community_id;
-		});
-		removeUnordered($assignments, index);
+		removeUnordered($assignments, assignmentIndex);
 	});
 
+	const {persona_id, community_id} = assignment!.get();
 	// If the deleted assignment was the session's, and there's no remaining session assignments,
 	// then delete the communtity from the client.
 	const $sessionPersonaIds = sessionPersonaIds.get();

@@ -41,10 +41,9 @@ export const DeleteAssignment: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			persona_id: {type: 'number'},
-			community_id: {type: 'number'},
+			assignment_id: {type: 'number'},
 		},
-		required: ['actor', 'persona_id', 'community_id'],
+		required: ['actor', 'assignment_id'],
 		additionalProperties: false,
 	},
 	response: {

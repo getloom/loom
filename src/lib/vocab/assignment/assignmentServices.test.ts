@@ -50,52 +50,51 @@ test__assignmentServices(
 );
 
 test__assignmentServices('delete a assignment in a community', async ({db, random}) => {
-	const {community, personas} = await random.community();
+	const {community, personas, assignments} = await random.community();
+	const assignment = assignments.find(
+		(a) => a.persona_id === personas[1].persona_id && a.community_id === community.community_id,
+	)!;
 	unwrap(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(db, personas[1]),
 			params: {
 				actor: personas[1].persona_id,
-				persona_id: personas[1].persona_id,
-				community_id: community.community_id,
+				assignment_id: assignment.assignment_id,
 			},
 		}),
 	);
-	assert.ok(
-		!unwrap(await db.repos.assignment.findById(personas[1].persona_id, community.community_id)),
-	);
+	assert.ok(!unwrap(await db.repos.assignment.findById(assignment.assignment_id)));
 });
 
 test__assignmentServices('fail to delete a personal assignment', async ({db, random}) => {
-	const {persona} = await random.persona();
+	const {persona, assignment} = await random.persona();
 	unwrapError(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(db, persona),
 			params: {
 				actor: persona.persona_id,
-				persona_id: persona.persona_id,
-				community_id: persona.community_id,
+				assignment_id: assignment.assignment_id,
 			},
 		}),
 	);
-	assert.ok(unwrap(await db.repos.assignment.findById(persona.persona_id, persona.community_id)));
+	assert.ok(unwrap(await db.repos.assignment.findById(assignment.assignment_id)));
 });
 
 test__assignmentServices('fail to delete a community persona assignment', async ({db, random}) => {
-	const {community, personas} = await random.community();
+	const {community, personas, assignments} = await random.community();
+	const assignment = assignments.find(
+		(a) => a.persona_id === personas[0].persona_id && a.community_id === community.community_id,
+	)!;
 	unwrapError(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(db, personas[0]),
 			params: {
 				actor: personas[0].persona_id,
-				persona_id: personas[0].persona_id,
-				community_id: community.community_id,
+				assignment_id: assignment.assignment_id,
 			},
 		}),
 	);
-	assert.ok(
-		unwrap(await db.repos.assignment.findById(personas[0].persona_id, community.community_id)),
-	);
+	assert.ok(unwrap(await db.repos.assignment.findById(assignment.assignment_id)));
 });
 
 test__assignmentServices(
@@ -103,9 +102,12 @@ test__assignmentServices(
 	async ({db, random}) => {
 		//Need a community with two account members
 		const {persona: persona1} = await random.persona();
-		const {community} = await random.community(persona1);
+		const {community, assignments} = await random.community(persona1);
+		const assignment = assignments.find(
+			(a) => a.persona_id === persona1.persona_id && a.community_id === community.community_id,
+		)!;
 		const {persona: persona2} = await random.persona();
-		unwrap(
+		const {assignment: assignment2} = unwrap(
 			await CreateAssignmentService.perform({
 				...toServiceRequestMock(db, persona1),
 				params: {
@@ -127,8 +129,7 @@ test__assignmentServices(
 				...toServiceRequestMock(db, persona2),
 				params: {
 					actor: persona2.persona_id,
-					persona_id: persona2.persona_id,
-					community_id: community.community_id,
+					assignment_id: assignment2.assignment_id,
 				},
 			}),
 		);
@@ -144,8 +145,7 @@ test__assignmentServices(
 				...toServiceRequestMock(db, persona1),
 				params: {
 					actor: persona1.persona_id,
-					persona_id: persona1.persona_id,
-					community_id: community.community_id,
+					assignment_id: assignment.assignment_id,
 				},
 			}),
 		);

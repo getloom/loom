@@ -52,17 +52,18 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 	event: DeleteAssignment,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {persona_id, community_id} = params;
-			log.trace(
-				'[DeleteAssignment] deleting assignment for persona in community',
-				persona_id,
-				community_id,
-			);
+			const {assignment_id} = params;
+			log.trace('[DeleteAssignment] deleting assignment ', assignment_id);
 			// TODO why can't this be parallelized? bug in our code? or the driver? failed to reproduce in the driver.
 			// const [personaResult, communityResult] = await Promise.all([
 			// 	repos.persona.findById(persona_id),
 			// 	repos.community.findById(community_id),
 			// ]);
+			const assignment = unwrap(await repos.assignment.findById(assignment_id));
+			if (!assignment) {
+				return {ok: false, status: 404, message: 'no assignment found'};
+			}
+			const {persona_id, community_id} = assignment;
 			const persona = unwrap(await repos.persona.findById(persona_id));
 			if (!persona) {
 				return {ok: false, status: 404, message: 'no persona found'};
@@ -86,10 +87,9 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 
-			//TODO replace with deleteById
-			unwrap(await repos.assignment.deleteByCommunity(persona_id, community_id));
+			unwrap(await repos.assignment.deleteById(assignment_id));
 
-			unwrap(await cleanOrphanCommunities(params.community_id, repos));
+			unwrap(await cleanOrphanCommunities(community_id, repos));
 
 			return {ok: true, status: 200, value: null};
 		}),

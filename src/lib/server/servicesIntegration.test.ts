@@ -51,7 +51,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	const {community} = await random.community(persona1);
 
 	// join the community with the second persona
-	unwrap(
+	const {assignment} = unwrap(
 		await CreateAssignmentService.perform({
 			...serviceRequest1, // add `persona2` with `persona1`
 			params: {
@@ -166,8 +166,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 			...serviceRequest2,
 			params: {
 				actor: persona2.persona_id,
-				persona_id: persona2.persona_id,
-				community_id: community.community_id,
+				assignment_id: assignment.assignment_id,
 			},
 		}),
 	);

@@ -23,14 +23,11 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	//TODO refactor to use assignment_id
-	async findById(
-		persona_id: number,
-		community_id: number,
-	): Promise<Result<{value: Assignment | undefined}>> {
+	async findById(assignment_id: number): Promise<Result<{value: Assignment | undefined}>> {
 		const data = await this.sql<Assignment[]>`
 			SELECT assignment_id, persona_id, community_id, role_id, created
 			FROM assignments
-			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
+			WHERE assignment_id=${assignment_id}
 		`;
 		return {ok: true, value: data[0]};
 	}

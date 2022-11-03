@@ -111,13 +111,13 @@ export const randomEventParams: RandomEventParams = {
 			community.settings.defaultRoleId,
 		);
 	},
-	DeleteAssignment: async (random, {account, persona, community} = {}) => {
+	DeleteAssignment: async (random, {account, persona, community, assignments} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona));
+		if (!community) ({community, assignments} = await random.community(persona));
+		const assignment = assignments!.find((a) => a.persona_id === persona!.persona_id);
 		return {
 			actor: persona.persona_id,
-			persona_id: persona.persona_id,
-			community_id: community.community_id,
+			assignment_id: assignment!.assignment_id,
 		};
 	},
 	CreateSpace: async (random, {account, persona, community} = {}) => {

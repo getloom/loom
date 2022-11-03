@@ -349,8 +349,7 @@ export type CreateAssignmentResponseResult = ApiResult<CreateAssignmentResponse>
 
 export interface DeleteAssignmentParams {
 	actor: number;
-	persona_id: number;
-	community_id: number;
+	assignment_id: number;
 }
 export type DeleteAssignmentResponse = null;
 export type DeleteAssignmentResponseResult = ApiResult<DeleteAssignmentResponse>;
