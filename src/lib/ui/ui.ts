@@ -56,11 +56,11 @@ export interface Ui {
 	communities: Mutable<Array<Readable<Community>>>;
 	roles: Mutable<Array<Readable<Role>>>;
 	spaces: Mutable<Array<Readable<Space>>>;
-	assignments: Mutable<Array<Readable<Assignment>>>;
+	assignments: Mutable<Set<Assignment>>;
 	personaById: Map<number, Readable<Persona>>;
 	communityById: Map<number, Readable<Community>>;
 	roleById: Map<number, Readable<Role>>;
-	assignmentById: Map<number, Readable<Assignment>>;
+	assignmentById: Map<number, Assignment>;
 	spaceById: Map<number, Readable<Space>>;
 	entityById: Map<number, Readable<Entity>>;
 	tieById: Map<number, Tie>;
@@ -69,7 +69,7 @@ export interface Ui {
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
 	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
 	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
-	assignmentsByRoleId: Readable<Map<number, Array<Readable<Assignment>>>>;
+	assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
 	queryByKey: Map<number, {data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}>;
 	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
 	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
@@ -115,11 +115,11 @@ export const toUi = (
 	const communities = mutable<Array<Writable<Community>>>([]);
 	const roles = mutable<Array<Writable<Role>>>([]);
 	const spaces = mutable<Array<Writable<Space>>>([]);
-	const assignments = mutable<Array<Writable<Assignment>>>([]);
+	const assignments = mutable<Set<Assignment>>(new Set());
 	const personaById: Map<number, Writable<Persona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();
-	const assignmentById: Map<number, Writable<Assignment>> = new Map();
+	const assignmentById: Map<number, Assignment> = new Map();
 	const spaceById: Map<number, Writable<Space>> = new Map();
 	// TODO do these maps more efficiently
 	const spacesByCommunityId: Readable<Map<number, Array<Writable<Space>>>> = derived(
@@ -153,8 +153,8 @@ export const toUi = (
 				const communityPersonas: Set<Writable<Persona>> = new Set();
 				const {community_id} = community.get();
 				for (const assignment of $assignments.value) {
-					if (assignment.get().community_id === community_id) {
-						const persona = personaById.get(assignment.get().persona_id)!;
+					if (assignment.community_id === community_id) {
+						const persona = personaById.get(assignment.persona_id)!;
 						if (persona.get().type !== 'account') continue;
 						communityPersonas.add(persona);
 					}
@@ -183,15 +183,15 @@ export const toUi = (
 		},
 	);
 
-	const assignmentsByRoleId: Readable<Map<number, Array<Writable<Assignment>>>> = derived(
+	const assignmentsByRoleId: Readable<Map<number, Assignment[]>> = derived(
 		[roles, assignments],
 		([$roles, $assignments]) => {
-			const map: Map<number, Array<Writable<Assignment>>> = new Map();
+			const map: Map<number, Assignment[]> = new Map();
 			for (const role of $roles.value) {
-				const roleAssignments: Array<Writable<Assignment>> = [];
+				const roleAssignments: Assignment[] = [];
 				const {role_id} = role.get();
 				for (const assignment of $assignments.value) {
-					if (assignment.get().role_id === role_id) {
+					if (assignment.role_id === role_id) {
 						roleAssignments.push(assignment);
 					}
 				}
@@ -232,10 +232,9 @@ export const toUi = (
 					for (const community of $communities.value) {
 						const $community = community.get();
 						for (const assignment of $assignments.value) {
-							const $assignment = assignment.get();
 							if (
-								$assignment.community_id === $community.community_id &&
-								$assignment.persona_id === $sessionPersona.persona_id
+								assignment.community_id === $community.community_id &&
+								assignment.persona_id === $sessionPersona.persona_id
 							) {
 								sessionPersonaCommunities.push(community);
 								break;

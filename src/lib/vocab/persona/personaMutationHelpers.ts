@@ -41,16 +41,23 @@ export const stashPersonas = (
 };
 
 export const evictPersonas = (
-	{personas, personaById}: WritableUi,
+	ui: WritableUi,
 	personasToEvict: Set<Writable<Persona>>,
 	mutated = new Mutated('evictPersonas'),
 ): void => {
 	for (const p of personasToEvict) {
-		removeUnordered(personas.get().value, personas.get().value.indexOf(p));
-	}
-	mutated.add(personas);
-	for (const persona of personasToEvict) {
-		personaById.delete(persona.get().persona_id);
+		evictPersona(ui, p, mutated);
 	}
 	mutated.end('evictPersonas');
+};
+
+export const evictPersona = (
+	{personas, personaById}: WritableUi,
+	personaToEvict: Writable<Persona>,
+	mutated = new Mutated('evictPersona'),
+): void => {
+	removeUnordered(personas.get().value, personas.get().value.indexOf(personaToEvict));
+	mutated.add(personas);
+	personaById.delete(personaToEvict.get().persona_id);
+	mutated.end('evictPersona');
 };

@@ -225,7 +225,7 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 
-			unwrap(await repos.assignment.deleteByCommunity(actor, community_id));
+			unwrap(await repos.assignment.deleteByPersonaAndCommunity(actor, community_id));
 
 			unwrap(await cleanOrphanCommunities(params.community_id, repos));
 

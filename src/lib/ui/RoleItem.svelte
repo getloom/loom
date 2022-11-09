@@ -6,7 +6,7 @@
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
 
 	export let role: Readable<Role>;
-	export let assignmentsByRoleId: Readable<Map<number, Array<Readable<Assignment>>>>;
+	export let assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
 
 	$: assignments = $assignmentsByRoleId.get($role.role_id)!;
 </script>

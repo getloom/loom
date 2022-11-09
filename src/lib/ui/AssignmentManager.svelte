@@ -24,9 +24,7 @@
 	$: assignablePersonas = communityPersonas.filter(
 		(p) =>
 			!assignments.some(
-				(a) =>
-					a.get().persona_id === p.get().persona_id &&
-					a.get().community_id === $community.community_id,
+				(a) => a.persona_id === p.get().persona_id && a.community_id === $community.community_id,
 			),
 	);
 </script>

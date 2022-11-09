@@ -45,25 +45,25 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 		}),
 };
 
-//deletes an assignment of a given persona in a given community
-//TODO after front end data normalization make this use assignment_id
-//TODO refactor this to use assignment_id instead
+/**
+ * Deletes an assignment of a persona to a role in a community.
+ */
 export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 	event: DeleteAssignment,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {assignment_id} = params;
 			log.trace('[DeleteAssignment] deleting assignment ', assignment_id);
-			// TODO why can't this be parallelized? bug in our code? or the driver? failed to reproduce in the driver.
-			// const [personaResult, communityResult] = await Promise.all([
-			// 	repos.persona.findById(persona_id),
-			// 	repos.community.findById(community_id),
-			// ]);
 			const assignment = unwrap(await repos.assignment.findById(assignment_id));
 			if (!assignment) {
 				return {ok: false, status: 404, message: 'no assignment found'};
 			}
 			const {persona_id, community_id} = assignment;
+			// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
+			// const [personaResult, communityResult] = await Promise.all([
+			// 	repos.persona.findById(persona_id),
+			// 	repos.community.findById(community_id),
+			// ]);
 			const persona = unwrap(await repos.persona.findById(persona_id));
 			if (!persona) {
 				return {ok: false, status: 404, message: 'no persona found'};

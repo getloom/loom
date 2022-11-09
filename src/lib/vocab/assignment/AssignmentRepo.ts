@@ -22,7 +22,6 @@ export class AssignmentRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
-	//TODO refactor to use assignment_id
 	async findById(assignment_id: number): Promise<Result<{value: Assignment | undefined}>> {
 		const data = await this.sql<Assignment[]>`
 			SELECT assignment_id, persona_id, community_id, role_id, created
@@ -94,7 +93,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return OK;
 	}
 
-	async deleteByCommunity(
+	async deleteByPersonaAndCommunity(
 		persona_id: number,
 		community_id: number,
 	): Promise<Result<{value: Assignment[]}>> {

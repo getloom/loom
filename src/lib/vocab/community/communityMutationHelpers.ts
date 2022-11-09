@@ -11,6 +11,7 @@ import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers'
 import {toCommunityUrl} from '$lib/ui/url';
 import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
+import type {Assignment} from '$lib/vocab/assignment/assignment';
 
 export const stashCommunities = (
 	ui: WritableUi,
@@ -68,7 +69,8 @@ export const evictCommunity = async (
 		rolesByCommunityId,
 	} = ui;
 
-	const community = communityById.get(community_id)!;
+	const community = communityById.get(community_id);
+	if (!community) return;
 	const communityRoleIds = rolesByCommunityId.get().get(community_id);
 
 	if (communityRoleIds) {
@@ -102,11 +104,14 @@ export const evictCommunity = async (
 		}
 	}
 
-	evictAssignments(
-		ui,
-		assignments.get().value.filter((m) => m.get().community_id === community_id),
-		mutated,
-	);
+	// TODO could speed this up a cache of assignments by community, see in multiple places
+	const assignmentsToEvict: Assignment[] = [];
+	for (const a of assignments.get().value) {
+		if (a.community_id === community_id) {
+			assignmentsToEvict.push(a);
+		}
+	}
+	await evictAssignments(ui, assignmentsToEvict, mutated);
 
 	mutated.end('evictCommunity');
 };

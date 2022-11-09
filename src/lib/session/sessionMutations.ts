@@ -1,5 +1,4 @@
 import {browser} from '$app/environment';
-import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import type {Mutations} from '$lib/app/eventTypes';
@@ -13,6 +12,7 @@ import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashCommunities} from '$lib/vocab/community/communityMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
+import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 
 const log = new Logger('[ui]');
 
@@ -20,7 +20,6 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	const {
 		session,
 		account,
-		assignments,
 		personaIdSelection,
 		communityIdSelectionByPersonaId,
 		spaceIdSelectionByCommunityId,
@@ -46,10 +45,9 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	stashPersonas(ui, guest ? [] : toInitialPersonas($session), mutated, true);
 	stashCommunities(ui, guest ? [] : $session.communities, mutated, true);
 	stashRoles(ui, guest ? [] : $session.roles, mutated, true);
+	stashAssignments(ui, guest ? [] : $session.assignments, mutated, true);
 	stashSpaces(ui, guest ? [] : $session.spaces, undefined, mutated, true);
 	mutated.end('SetSession');
-
-	assignments.swap(guest ? [] : $session.assignments.map((s) => writable(s)));
 
 	personaIdSelection.set(guest ? null : $session.sessionPersonas[0]?.persona_id ?? null);
 

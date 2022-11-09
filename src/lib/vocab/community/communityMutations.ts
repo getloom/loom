@@ -5,6 +5,7 @@ import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
+import type {Assignment} from '$lib/vocab/assignment/assignment';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
@@ -90,20 +91,15 @@ export const LeaveCommunity: Mutations['LeaveCommunity'] = async ({params, invok
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor, community_id} = params;
-	const otherAssignments = assignments
-		.get()
-		.value.filter((m) => m.get().community_id === community_id && m.get().persona_id !== actor);
 
-	if (otherAssignments.length > 0) {
-		evictAssignments(
-			ui,
-			assignments
-				.get()
-				.value.filter((m) => m.get().community_id === community_id && m.get().persona_id === actor),
-		);
-	} else {
-		await evictCommunity(ui, community_id);
+	const assignmentsToEvict: Assignment[] = [];
+	// TODO could speed this up a cache of assignments by community, see in multiple places
+	for (const assignment of assignments.get().value) {
+		if (assignment.persona_id === actor && assignment.community_id === community_id) {
+			assignmentsToEvict.push(assignment);
+		}
 	}
+	await evictAssignments(ui, assignmentsToEvict);
 
 	return result;
 };
