@@ -12,6 +12,7 @@ import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashCommunities} from '$lib/vocab/community/communityMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
+import {gotoUnlessActive, toUrl} from '$lib/ui/url';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 
 const log = new Logger('[ui]');
@@ -117,5 +118,6 @@ export const SignOut: Mutations['SignOut'] = async ({invoke, dispatch}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	dispatch.SetSession({session: {guest: true}});
+	await gotoUnlessActive(toUrl('/', ''));
 	return result;
 };

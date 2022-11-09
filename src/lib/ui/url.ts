@@ -1,4 +1,7 @@
+import {goto} from '$app/navigation';
 import {base} from '$app/paths';
+import {page} from '$app/stores';
+import {get} from 'svelte/store';
 
 export const PERSONA_QUERY_KEY = 'persona';
 
@@ -54,3 +57,15 @@ export const toSearchParams = (
  */
 export const isUrlEqual = (targetPath: string, currentUrl: URL): boolean =>
 	targetPath === currentUrl.pathname + currentUrl.search;
+
+/**
+ * Same as `goto`, but does nothing if already at the target path.
+ * @param path The path to `goto`.
+ * @param opts The `goto` options.
+ * @returns `false` if navigation was short-circuited, otherwise a promise wrapping `true`.
+ */
+export const gotoUnlessActive = (
+	path: string,
+	opts?: Parameters<typeof goto>[1],
+): false | Promise<true> =>
+	isUrlEqual(path, get(page).url) ? false : goto(path, opts).then(() => true);
