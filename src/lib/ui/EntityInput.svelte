@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {AsyncStatus} from '@feltcoop/felt';
+	import type {AsyncStatus} from '@feltcoop/felt/util/async.js';
 	import Message from '@feltcoop/felt/ui/Message.svelte';
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';

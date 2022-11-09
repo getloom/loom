@@ -1,4 +1,4 @@
-import type {AsyncStatus} from '@feltcoop/felt';
+import type {AsyncStatus} from '@feltcoop/felt/util/async.js';
 
 import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltcoop/felt/util/log.js';

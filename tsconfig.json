@@ -15,7 +15,6 @@
 		"allowSyntheticDefaultImports": true,
 		"sourceMap": true,
 		"importHelpers": true,
-		"skipLibCheck": true,
 		"checkJs": true,
 		"preserveValueImports": true
 	}

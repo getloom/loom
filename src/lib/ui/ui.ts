@@ -9,7 +9,7 @@ import {
 import {setContext, getContext, type SvelteComponent} from 'svelte';
 import type {DialogData} from '@feltcoop/felt/ui/dialog/dialog.js';
 import {browser} from '$app/environment';
-import type {AsyncStatus} from '@feltcoop/felt';
+import type {AsyncStatus} from '@feltcoop/felt/util/async.js';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';

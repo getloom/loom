@@ -38,12 +38,8 @@ npm run build
 # or
 gro build
 
-# run it
+# run the server
 npm start
-# or
-gro start
-# TODO support custom port, like:
-PORT=3003 gro start
 ```
 
 ## deploy
