@@ -1,5 +1,3 @@
-// TODO ClientAccountPersona, ClientCommunityPersona, SessionAccountPersona, SessionCommunityPersona
-
 export const PersonaSchema = {
 	$id: '/schemas/Persona.json',
 	anyOf: [
