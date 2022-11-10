@@ -3,10 +3,6 @@ import type {Sql} from 'postgres';
 const GHOST_PERSONA_ID = 2;
 
 export const up = async (sql: Sql<any>): Promise<void> => {
-	await sql`
-		ALTER TYPE persona_type ADD VALUE 'ghost';
-	`;
-
 	const [ghostPersona] = await sql`SELECT * FROM personas WHERE persona_id=${GHOST_PERSONA_ID}`;
 	if (!ghostPersona || ghostPersona.type === 'ghost') return;
 
