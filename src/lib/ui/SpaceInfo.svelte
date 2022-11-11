@@ -12,7 +12,7 @@
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 
 	const {
-		ui: {contextmenu, sessionPersonaIndices},
+		ui: {contextmenu, sessionPersonaIndexById},
 	} = getApp();
 
 	export let persona: Readable<Persona>;
@@ -22,7 +22,7 @@
 
 	$: hue = randomHue($space.name); // TODO add custom setting on spaces
 
-	$: personaIndex = $sessionPersonaIndices.get(persona)!;
+	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
 </script>
 
 <a

@@ -15,7 +15,7 @@
 			contextmenu,
 			spaceIdSelectionByCommunityId,
 			spaceById,
-			sessionPersonaIndices,
+			sessionPersonaIndexById,
 			freshnessByCommunityId,
 		},
 	} = getApp();
@@ -32,7 +32,7 @@
 
 	$: isPersonaHomeCommunity = $community.name === $persona.name;
 
-	$: personaIndex = $sessionPersonaIndices.get(persona)!;
+	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
 
 	$: fresh = freshnessByCommunityId.get($community.community_id);
 </script>

@@ -13,7 +13,7 @@
 
 	const {
 		dispatch,
-		ui: {contextmenu, mobile, expandMainNav, sessionPersonaIndices, freshnessByDirectoryId},
+		ui: {contextmenu, mobile, expandMainNav, sessionPersonaIndexById, freshnessByDirectoryId},
 	} = getApp();
 
 	export let persona: Readable<Persona>;
@@ -21,7 +21,7 @@
 	export let space: Readable<Space>;
 	export let selected: boolean;
 
-	$: personaIndex = $sessionPersonaIndices.get(persona)!;
+	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
 	$: fresh = freshnessByDirectoryId.get($space.directory_id)!;
 </script>
 

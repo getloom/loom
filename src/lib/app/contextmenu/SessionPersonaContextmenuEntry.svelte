@@ -16,7 +16,7 @@
 			spaceById,
 			communityIdSelectionByPersonaId,
 			communityById,
-			sessionPersonaIndices,
+			sessionPersonaIndexById,
 		},
 	} = getApp();
 
@@ -27,7 +27,7 @@
 	$: community = communityById.get(communityId)!;
 	$: spaceIdSelection = $spaceIdSelectionByCommunityId.value.get($community.community_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
-	$: personaIndex = $sessionPersonaIndices.get(persona)!;
+	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
 </script>
 
 {#if $personaSelection === persona}

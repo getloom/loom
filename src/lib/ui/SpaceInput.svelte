@@ -17,7 +17,7 @@
 
 	const {
 		dispatch,
-		ui: {sessionPersonaIndices, adminPersonas},
+		ui: {sessionPersonaIndexById, adminPersonas},
 	} = getApp();
 
 	export let persona: Readable<Persona>;
@@ -71,7 +71,7 @@
 					$community.name,
 					result.value.space.url,
 					toSearchParams($page.url.searchParams, {
-						persona: $sessionPersonaIndices.get(persona) + '',
+						persona: $sessionPersonaIndexById.get($persona.persona_id) + '',
 					}),
 				),
 			);

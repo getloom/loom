@@ -51,8 +51,7 @@ export interface Ui {
 	personas: Mutable<Array<Readable<Persona>>>;
 	session: Readable<ClientSession>;
 	sessionPersonas: Mutable<Array<Readable<Persona>>>;
-	sessionPersonaIds: Readable<Set<number>>;
-	sessionPersonaIndices: Readable<Map<Readable<Persona>, number>>;
+	sessionPersonaIndexById: Readable<Map<number, number>>;
 	communities: Mutable<Array<Readable<Community>>>;
 	roles: Mutable<Array<Readable<Role>>>;
 	spaces: Mutable<Array<Readable<Space>>>;
@@ -213,13 +212,9 @@ export const toUi = (
 		([$personaSelection, $sessionPersonas]) =>
 			$personaSelection ? $sessionPersonas.value.indexOf($personaSelection) : null,
 	);
-	const sessionPersonaIds = derived(
+	const sessionPersonaIndexById = derived(
 		[sessionPersonas],
-		([$sessionPersonas]) => new Set($sessionPersonas.value.map((p) => p.get().persona_id)),
-	);
-	const sessionPersonaIndices = derived(
-		[sessionPersonas],
-		([$sessionPersonas]) => new Map($sessionPersonas.value.map((p, i) => [p, i])),
+		([$sessionPersonas]) => new Map($sessionPersonas.value.map((p, i) => [p.get().persona_id, i])),
 	);
 	const communitiesBySessionPersona: Readable<Map<Writable<Persona>, Array<Writable<Community>>>> =
 		derived(
@@ -307,8 +302,7 @@ export const toUi = (
 		roles,
 		session,
 		sessionPersonas,
-		sessionPersonaIds,
-		sessionPersonaIndices,
+		sessionPersonaIndexById,
 		spaces,
 		communities,
 		assignments,

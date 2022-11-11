@@ -38,9 +38,9 @@ export const evictAssignments = async (
 	mutated = new Mutated('evictAssignments'),
 ): Promise<void> => {
 	if (!assignmentsToEvict.length) return;
-	const {assignments, assignmentById, personaById, sessionPersonaIds} = ui;
+	const {assignments, assignmentById, personaById, sessionPersonaIndexById} = ui;
 	const $assignments = assignments.get().value;
-	const $sessionPersonaIds = sessionPersonaIds.get();
+	const $sessionPersonaIndexById = sessionPersonaIndexById.get();
 
 	for (const assignment of assignmentsToEvict) {
 		assignmentById.delete(assignment.assignment_id);
@@ -64,11 +64,11 @@ export const evictAssignments = async (
 			// When a non-session persona leaves a community,
 			// the community is never evicted,
 			// and the persona is evicted unless it has an assignment in another community.
-			if ($sessionPersonaIds.has(persona_id)) {
+			if ($sessionPersonaIndexById.has(persona_id)) {
 				let doesCommunityHaveOtherSessionAssignment = false;
 				for (const a of $assignments) {
 					// TODO could speed this up a cache of assignments by community, see in multiple places
-					if (a.community_id === community_id && $sessionPersonaIds.has(a.persona_id)) {
+					if (a.community_id === community_id && $sessionPersonaIndexById.has(a.persona_id)) {
 						doesCommunityHaveOtherSessionAssignment = true;
 						break;
 					}
