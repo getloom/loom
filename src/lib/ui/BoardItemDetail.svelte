@@ -11,6 +11,7 @@
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Persona} from '$lib/vocab/persona/persona';
+	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
@@ -21,16 +22,14 @@
 	export let persona: Readable<Persona>;
 	export let space: Readable<Space>;
 
-	$: destTies = $destTiesBySourceEntityId.value.get($entity.entity_id);
+	$: destTies = lookupTies(destTiesBySourceEntityId, $entity.entity_id);
 
-	$: items =
-		$destTies &&
-		Array.from($destTies.value).reduce((acc, tie) => {
-			if (tie.type === 'HasItem') {
-				acc.push(entityById.get(tie.dest_id)!);
-			}
-			return acc;
-		}, [] as Array<Readable<Entity>>);
+	$: items = Array.from($destTies.value).reduce((acc, tie) => {
+		if (tie.type === 'HasItem') {
+			acc.push(entityById.get(tie.dest_id)!);
+		}
+		return acc;
+	}, [] as Array<Readable<Entity>>);
 
 	$: authorPersona = personaById.get($entity.persona_id)!;
 

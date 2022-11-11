@@ -71,8 +71,8 @@ export interface Ui {
 	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
 	queryByKey: Map<number, {data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}>;
-	sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
-	destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>>;
+	sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>>;
+	destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>>;
 	communitiesBySessionPersona: Readable<Map<Readable<Persona>, Array<Readable<Community>>>>;
 	adminPersonas: Readable<Set<Readable<Persona>>>;
 	// view state
@@ -276,8 +276,8 @@ export const toUi = (
 		number,
 		{data: Mutable<Set<Writable<Entity>>>; status: Writable<AsyncStatus>}
 	> = new Map();
-	const sourceTiesByDestEntityId: Mutable<Map<number, Mutable<Set<Tie>>>> = mutable(new Map());
-	const destTiesBySourceEntityId: Mutable<Map<number, Mutable<Set<Tie>>>> = mutable(new Map());
+	const sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>> = new Map();
+	const destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>> = new Map();
 
 	const lastSeenByDirectoryId: Map<number, Writable<number> | null> = new Map();
 	const freshnessByDirectoryId: Map<number, Readable<boolean>> = new Map();

@@ -79,8 +79,8 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	entityById.clear();
 	queryByKey.clear();
-	sourceTiesByDestEntityId.mutate(($v) => $v.clear());
-	destTiesBySourceEntityId.mutate(($v) => $v.clear());
+	sourceTiesByDestEntityId.clear();
+	destTiesBySourceEntityId.clear();
 
 	lastSeenByDirectoryId.clear();
 	freshnessByDirectoryId.clear();

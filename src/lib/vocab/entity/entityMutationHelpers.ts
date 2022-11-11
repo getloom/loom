@@ -11,6 +11,7 @@ import {
 	setFreshnessByDirectoryId,
 } from '$lib/ui/uiMutationHelpers';
 import {Mutated} from '$lib/util/Mutated';
+import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 
 const log = new Logger('[entityMutationHelpers]');
 
@@ -47,9 +48,6 @@ export const stashTies = (
 	$ties: Tie[],
 	mutated = new Mutated('stashTies'),
 ): void => {
-	const $sourceTiesByDestEntityId = sourceTiesByDestEntityId.get().value;
-	const $destTiesBySourceEntityId = destTiesBySourceEntityId.get().value;
-
 	for (const $tie of $ties) {
 		// Ties are immutable, so if they're already in the system,
 		// we can safely assume they're fully stashed.
@@ -58,24 +56,14 @@ export const stashTies = (
 		tieById.set(tie_id, $tie);
 
 		const {source_id, dest_id} = $tie;
-		let sourceTies = $sourceTiesByDestEntityId.get(dest_id);
-		if (!sourceTies) {
-			sourceTies = mutable(new Set());
-			$sourceTiesByDestEntityId.set(dest_id, sourceTies);
-			mutated.add(sourceTiesByDestEntityId);
-		}
+		const sourceTies = lookupTies(sourceTiesByDestEntityId, dest_id);
 		const $sourceTies = sourceTies.get().value;
 		if (!$sourceTies.has($tie)) {
 			$sourceTies.add($tie);
 			mutated.add(sourceTies);
 		}
 
-		let destTies = $destTiesBySourceEntityId.get(source_id);
-		if (!destTies) {
-			destTies = mutable(new Set());
-			$destTiesBySourceEntityId.set(source_id, destTies);
-			mutated.add(destTiesBySourceEntityId);
-		}
+		const destTies = lookupTies(destTiesBySourceEntityId, source_id);
 		const $destTies = destTies.get().value;
 		if (!$destTies.has($tie)) {
 			$destTies.add($tie);
@@ -118,23 +106,21 @@ export const evictTie = (
 
 	const {dest_id, source_id} = $tie;
 
-	const sourceTies = sourceTiesByDestEntityId.get().value.get(dest_id);
+	const sourceTies = sourceTiesByDestEntityId.get(dest_id);
 	if (sourceTies) {
 		sourceTies.get().value.delete($tie);
 		mutated.add(sourceTies);
 		if (sourceTies.get().value.size === 0) {
-			sourceTiesByDestEntityId.get().value.delete(dest_id);
-			mutated.add(sourceTiesByDestEntityId);
+			sourceTiesByDestEntityId.delete(dest_id);
 		}
 	}
 
-	const destTies = destTiesBySourceEntityId.get().value.get(source_id);
+	const destTies = destTiesBySourceEntityId.get(source_id);
 	if (destTies) {
 		destTies.get().value.delete($tie);
 		mutated.add(destTies);
 		if (destTies.get().value.size === 0) {
-			destTiesBySourceEntityId.get().value.delete(source_id);
-			mutated.add(destTiesBySourceEntityId);
+			destTiesBySourceEntityId.delete(source_id);
 		}
 	}
 
@@ -156,9 +142,6 @@ export const evictEntities = (
 		destTiesBySourceEntityId,
 	} = ui;
 
-	const $sourceTiesByDestEntityId = sourceTiesByDestEntityId.get().value;
-	const $destTiesBySourceEntityId = destTiesBySourceEntityId.get().value;
-
 	for (const entity_id of entityIds) {
 		const entity = entityById.get(entity_id)!;
 		entityById.delete(entity_id);
@@ -168,10 +151,10 @@ export const evictEntities = (
 		// See also the TODO below.
 
 		// Evict ties for entity.
-		const sourceTies = $sourceTiesByDestEntityId.get(entity_id);
+		const sourceTies = sourceTiesByDestEntityId.get(entity_id);
 		if (sourceTies) {
 			for (const $sourceTie of sourceTies.get().value) {
-				const ties = $destTiesBySourceEntityId.get($sourceTie.source_id);
+				const ties = destTiesBySourceEntityId.get($sourceTie.source_id);
 				if (ties) {
 					const $ties = ties.get().value;
 					for (const $tie of $ties) {
@@ -184,14 +167,13 @@ export const evictEntities = (
 				}
 				tieById.delete($sourceTie.tie_id);
 			}
-			$sourceTiesByDestEntityId.delete(entity_id);
-			mutated.add(sourceTiesByDestEntityId);
+			sourceTiesByDestEntityId.delete(entity_id);
 		}
 
-		const destTies = $destTiesBySourceEntityId.get(entity_id);
+		const destTies = destTiesBySourceEntityId.get(entity_id);
 		if (destTies) {
 			for (const $destTie of destTies.get().value) {
-				const ties = $sourceTiesByDestEntityId.get($destTie.dest_id);
+				const ties = sourceTiesByDestEntityId.get($destTie.dest_id);
 				if (ties) {
 					const $ties = ties.get().value;
 					for (const $tie of $ties) {
@@ -204,8 +186,7 @@ export const evictEntities = (
 				}
 				tieById.delete($destTie.tie_id);
 			}
-			$destTiesBySourceEntityId.delete(entity_id);
-			mutated.add(destTiesBySourceEntityId);
+			destTiesBySourceEntityId.delete(entity_id);
 		}
 
 		// TODO instead of looping through every collection here,

@@ -67,7 +67,7 @@
 
 	const clearDone = async () => {
 		if (!selectedList) return;
-		const destTies = $destTiesBySourceEntityId.value.get($selectedList!.entity_id);
+		const destTies = destTiesBySourceEntityId.get($selectedList!.entity_id);
 		const items =
 			destTies &&
 			Array.from(destTies.get().value).reduce((acc, tie) => {
