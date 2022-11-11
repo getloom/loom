@@ -5,6 +5,7 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Account, AccountModel} from '$lib/vocab/account/account.js';
 import {toPasswordKey} from '$lib/util/password';
+import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
@@ -24,21 +25,14 @@ export class AccountRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
-	async findById(account_id: number): Promise<Result<{value: AccountModel | undefined}>> {
+	async findById<T extends Partial<Account> = AccountModel>(
+		account_id: number,
+		columns = ACCOUNT_COLUMNS.AccountModel,
+	): Promise<Result<{value: T | undefined}>> {
 		log.trace('loading account', account_id);
-		const data = await this.sql<AccountModel[]>`
-			SELECT account_id, name, settings, created, updated
+		const data = await this.sql<T[]>`
+			SELECT ${this.sql(columns)}
 			FROM accounts WHERE account_id = ${account_id}
-		`;
-		return {ok: true, value: data[0]};
-	}
-
-	// TODO this shouldn't exist, should be `findById` with custom fields
-	async findByIdForAuth(account_id: number): Promise<Result<{value: Account | undefined}>> {
-		log.trace('loading account', account_id);
-		const data = await this.sql<Account[]>`
-			SELECT account_id, password
-			FROM accounts WHERE account_id=${account_id}
 		`;
 		return {ok: true, value: data[0]};
 	}
