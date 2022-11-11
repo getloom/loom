@@ -28,7 +28,7 @@ export const task: Task<Args> = {
 		// 3 - defaults setup by `$lib/db/postgres`
 		const DEPLOY_IP = fromEnv('DEPLOY_IP');
 		const DEPLOY_USER = fromEnv('DEPLOY_USER');
-		const VITE_DEPLOY_SERVER_HOST = fromEnv('VITE_DEPLOY_SERVER_HOST');
+		const PUBLIC_DEPLOY_SERVER_HOST = fromEnv('PUBLIC_DEPLOY_SERVER_HOST');
 		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
 		// TODO this is hacky because of `import.meta` env handling
 		const {API_SERVER_HOST} = await import('../lib/config.js');
@@ -41,7 +41,7 @@ export const task: Task<Args> = {
 
 		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt-server.conf';
 		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt-server.conf';
-		const nginxConfig = toNginxConfig(fromEnv('VITE_DEPLOY_SERVER_HOST'), API_SERVER_HOST);
+		const nginxConfig = toNginxConfig(fromEnv('PUBLIC_DEPLOY_SERVER_HOST'), API_SERVER_HOST);
 
 		// This file is used to detect if the setup script has already run.
 		const FELT_SETUP_STATE_FILE_PATH = '~/felt_state_setup';
@@ -118,7 +118,7 @@ export const task: Task<Args> = {
 			// Install certbot for HTTPS:
 			logSequence('Enabling HTTPS with cerbot and nginx...') +
 				`apt install -y certbot python3-certbot-nginx;
-				certbot --nginx --non-interactive --agree-tos --email ${CERTBOT_EMAIL_ADDRESS} -d ${VITE_DEPLOY_SERVER_HOST};
+				certbot --nginx --non-interactive --agree-tos --email ${CERTBOT_EMAIL_ADDRESS} -d ${PUBLIC_DEPLOY_SERVER_HOST};
 				systemctl restart nginx.service;`,
 			//
 			//

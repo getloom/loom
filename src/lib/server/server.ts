@@ -11,7 +11,7 @@ import {ApiServer} from '$lib/server/ApiServer.js';
 import {WebsocketServer} from '$lib/server/WebsocketServer.js';
 import {services} from '$lib/server/services';
 import {db} from '$lib/db/db';
-import {API_SERVER_PORT, VITE_DEPLOY_SERVER_HOST} from '$lib/config';
+import {API_SERVER_PORT, PUBLIC_DEPLOY_SERVER_HOST} from '$lib/config';
 
 // Global logging setup
 if (process.env.NODE_ENV === 'production') {
@@ -27,8 +27,8 @@ const create_server = (): HttpServer | HttpsServer => {
 	if (process.env.NODE_ENV === 'production') {
 		return create_https_server({
 			//TODO double check this aligns with GRO standard (load_https_credentials)
-			cert: fs.readFileSync(`/etc/letsencrypt/live/${VITE_DEPLOY_SERVER_HOST}/fullchain.pem`),
-			key: fs.readFileSync(`/etc/letsencrypt/live/${VITE_DEPLOY_SERVER_HOST}/privkey.pem`),
+			cert: fs.readFileSync(`/etc/letsencrypt/live/${PUBLIC_DEPLOY_SERVER_HOST}/fullchain.pem`),
+			key: fs.readFileSync(`/etc/letsencrypt/live/${PUBLIC_DEPLOY_SERVER_HOST}/privkey.pem`),
 			//cert: fs.readFileSync('localhost.crt'),
 			//key: fs.readFileSync('localhost.key'),
 		});

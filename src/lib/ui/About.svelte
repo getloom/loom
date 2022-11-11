@@ -1,11 +1,11 @@
 <script lang="ts">
-	import {VITE_GIT_HASH, VITE_HELP_EMAIL_ADDRESS} from '$lib/config';
+	import {PUBLIC_GIT_HASH, PUBLIC_HELP_EMAIL_ADDRESS} from '$env/static/public';
 </script>
 
 <div class="markup padded-xl">
 	<h1>About this Instance</h1>
 	<p>Need help? Have questions, comments, concerns?</p>
-	<p>Email us at <a href="mailto:{VITE_HELP_EMAIL_ADDRESS}">{VITE_HELP_EMAIL_ADDRESS}</a></p>
+	<p>Email us at <a href="mailto:{PUBLIC_HELP_EMAIL_ADDRESS}">{PUBLIC_HELP_EMAIL_ADDRESS}</a></p>
 	<p class="title">
 		💚
 		<a href="https://github.com/feltcoop/felt-server" target="_blank" rel="noreferrer"
@@ -13,11 +13,11 @@
 		>
 		version
 		<a
-			href="https://github.com/feltcoop/felt-server/commit/{VITE_GIT_HASH}"
+			href="https://github.com/feltcoop/felt-server/commit/{PUBLIC_GIT_HASH}"
 			target="_blank"
 			rel="noreferrer"
 		>
-			{VITE_GIT_HASH}
+			{PUBLIC_GIT_HASH}
 		</a>
 	</p>
 </div>

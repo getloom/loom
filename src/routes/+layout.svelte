@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import {configureLogLevel, LogLevel, Logger} from '@feltcoop/felt/util/log.js';
 
-	if (import.meta.env.PROD) {
+	if (!dev) {
 		configureLogLevel(LogLevel.Info);
 		if (!browser) {
 			Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
@@ -15,7 +15,7 @@
 	import {setDevmode} from '@feltcoop/felt/ui/devmode.js';
 	import DevmodeControls from '@feltcoop/felt/ui/DevmodeControls.svelte';
 	import {page} from '$app/stores';
-	import {browser} from '$app/environment';
+	import {browser, dev} from '$app/environment';
 	import Dialogs from '@feltcoop/felt/ui/dialog/Dialogs.svelte';
 	import {isEditable, swallow} from '@feltcoop/felt/util/dom.js';
 	import {format} from 'date-fns';

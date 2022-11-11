@@ -8,30 +8,24 @@ export const ENV_DEV = '.env.development';
 
 const dev = import.meta?.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO support in Gro and remove second half
 
-const envs: Array<{file: string; defaultFile: string}> = [
-	{file: '.env', defaultFile: 'src/infra/.env.default'},
-	dev
-		? {file: ENV_DEV, defaultFile: `src/infra/${ENV_DEV}.default`}
-		: {file: ENV_PROD, defaultFile: `src/infra/${ENV_PROD}.default`},
+const envs: Array<{file: string; defaultFile: string; load: boolean}> = [
+	{file: '.env', defaultFile: 'src/infra/.env.default', load: true},
+	{file: ENV_DEV, defaultFile: `src/infra/${ENV_DEV}.default`, load: dev},
+	{file: ENV_PROD, defaultFile: `src/infra/${ENV_PROD}.default`, load: !dev},
 ];
 
 interface Env {
 	COOKIE_KEYS: string;
-	VITE_GIT_HASH: string;
-	VITE_DEPLOY_SERVER_HOST: string;
-	VITE_HELP_EMAIL_ADDRESS: string;
+	PUBLIC_GIT_HASH: string;
+	PUBLIC_DEPLOY_SERVER_HOST: string;
+	PUBLIC_HELP_EMAIL_ADDRESS: string;
 	DEPLOY_IP: string;
 	DEPLOY_USER: string;
 	CERTBOT_EMAIL_ADDRESS: string;
 }
 
-let loaded = false;
-
 export const fromEnv = (key: keyof Env): string => {
-	if (!loaded) {
-		loaded = true;
-		loadEnvs();
-	}
+	initEnv();
 	const value = process.env[key];
 	if (value === undefined) {
 		throw Error(`Missing environment variable: ${key}`);
@@ -39,12 +33,16 @@ export const fromEnv = (key: keyof Env): string => {
 	return value;
 };
 
-const loadEnvs = () => {
+let initedEnv = false;
+
+export const initEnv = (): void => {
+	if (initedEnv) return;
+	initedEnv = true;
 	for (const env of envs) {
 		if (!existsSync(env.file)) {
 			copyFileSync(env.defaultFile, env.file);
 		}
-		dotenv.config({path: env.file});
+		if (env.load) dotenv.config({path: env.file});
 	}
 };
 

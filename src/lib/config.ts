@@ -9,22 +9,22 @@
 
 const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production';
 
-export const VITE_DEPLOY_SERVER_HOST = dev
+export const PUBLIC_DEPLOY_SERVER_HOST = dev
 	? 'localhost'
 	: import.meta.env
-	? import.meta.env.VITE_DEPLOY_SERVER_HOST
-	: process.env.VITE_DEPLOY_SERVER_HOST;
+	? import.meta.env.PUBLIC_DEPLOY_SERVER_HOST
+	: process.env.PUBLIC_DEPLOY_SERVER_HOST;
 
-export const VITE_GIT_HASH = import.meta.env
-	? import.meta.env.VITE_GIT_HASH
-	: process.env.VITE_GIT_HASH;
+export const PUBLIC_GIT_HASH = import.meta.env
+	? import.meta.env.PUBLIC_GIT_HASH
+	: process.env.PUBLIC_GIT_HASH;
 
-export const VITE_HELP_EMAIL_ADDRESS = import.meta.env
-	? import.meta.env.VITE_HELP_EMAIL_ADDRESS
-	: process.env.VITE_HELP_EMAIL_ADDRESS;
+export const PUBLIC_HELP_EMAIL_ADDRESS = import.meta.env
+	? import.meta.env.PUBLIC_HELP_EMAIL_ADDRESS
+	: process.env.PUBLIC_HELP_EMAIL_ADDRESS;
 
 export const API_SERVER_PORT = 3000; // same as in vite.config.js
 export const API_SERVER_HOST = `localhost:${API_SERVER_PORT}`;
 export const WEBSOCKET_URL_DEV = `ws://localhost:${API_SERVER_PORT}/ws`;
-export const WEBSOCKET_URL_PROD = `wss://${VITE_DEPLOY_SERVER_HOST}/ws`;
+export const WEBSOCKET_URL_PROD = `wss://${PUBLIC_DEPLOY_SERVER_HOST}/ws`;
 export const WEBSOCKET_URL = dev ? WEBSOCKET_URL_DEV : WEBSOCKET_URL_PROD;

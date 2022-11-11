@@ -11,7 +11,7 @@ export const task: Task = {
 			fs.readFile(envFile, 'utf8'),
 		]);
 		const gitHash = gitHashContents.trim().substring(0, 7);
-		const updatedEnvContents = updateEnv(currentEnvContents, 'VITE_GIT_HASH', gitHash);
+		const updatedEnvContents = updateEnv(currentEnvContents, 'PUBLIC_GIT_HASH', gitHash);
 		if (currentEnvContents !== updatedEnvContents) {
 			log.info(`writing updated git hash ${gitHash} to ${envFile}`);
 			await fs.writeFile(envFile, updatedEnvContents, 'utf8');

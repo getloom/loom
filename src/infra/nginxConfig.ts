@@ -2,14 +2,14 @@ import {HEARTBEAT_INTERVAL} from '$lib/ui/socket';
 
 // Outputs an nginx config with configured values.
 export const toNginxConfig = (
-	VITE_DEPLOY_SERVER_HOST: string,
+	PUBLIC_DEPLOY_SERVER_HOST: string,
 	API_SERVER_HOST_PROD: string,
 ): string => {
 	const websocketTimeout = `${HEARTBEAT_INTERVAL / 1000 + 60}s`; // 60 second padding
 	return `
 
 server {
-  server_name ${VITE_DEPLOY_SERVER_HOST};
+  server_name ${PUBLIC_DEPLOY_SERVER_HOST};
 
   location /api {
     proxy_pass https://${API_SERVER_HOST_PROD};

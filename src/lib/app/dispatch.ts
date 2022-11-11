@@ -1,6 +1,6 @@
 import {setContext, getContext} from 'svelte';
 import {Logger} from '@feltcoop/felt/util/log.js';
-import {browser} from '$app/environment';
+import {browser, dev} from '$app/environment';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {ApiClient} from '$lib/ui/ApiClient';
@@ -102,6 +102,6 @@ const toLoggedArgs = (eventName: string, params: unknown): any[] => {
 };
 
 const toLoggedEventName = (eventName: string): any[] =>
-	browser && import.meta.env.DEV
+	browser && dev
 		? ['%c[dispatch.%c' + eventName + '%c]', 'color: gray', 'color: cornflowerblue', 'color: gray']
 		: ['[dispatch.' + eventName + ']'];

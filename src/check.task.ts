@@ -31,9 +31,10 @@ export const task: Task<Args> = {
 	Args,
 	run: async ({invokeTask, fs, args, log}) => {
 		const {migrations, 'no-migrations': noMigrations, ...restArgs} = args;
+
+		// Check that migration files are properly numbered.
 		if (migrations) {
 			log.info('checking migrations');
-			// Check migration files are properly numbered.
 			const migrationFiles = (await fs.readDir(MIGRATIONS_DIR)).sort();
 			for (let i = 0; i < migrationFiles.length; i++) {
 				const migrationFile = migrationFiles[i];
