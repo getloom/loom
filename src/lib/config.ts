@@ -9,9 +9,7 @@
 
 const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production';
 
-export const PUBLIC_DEPLOY_SERVER_HOST = dev
-	? 'localhost'
-	: import.meta.env
+export const PUBLIC_DEPLOY_SERVER_HOST = import.meta.env
 	? import.meta.env.PUBLIC_DEPLOY_SERVER_HOST
 	: process.env.PUBLIC_DEPLOY_SERVER_HOST;
 

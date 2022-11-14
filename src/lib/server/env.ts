@@ -39,10 +39,12 @@ export const initEnv = (): void => {
 	if (initedEnv) return;
 	initedEnv = true;
 	for (const env of envs) {
-		if (!existsSync(env.file)) {
-			copyFileSync(env.defaultFile, env.file);
+		if (env.load) {
+			if (!existsSync(env.file)) {
+				copyFileSync(env.defaultFile, env.file);
+			}
+			dotenv.config({path: env.file});
 		}
-		if (env.load) dotenv.config({path: env.file});
 	}
 };
 
