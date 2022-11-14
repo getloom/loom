@@ -3,7 +3,7 @@
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
 	import {readable} from '@feltcoop/svelte-gettable-stores';
 
-	import RoomItems from '$lib/ui/RoomItems.svelte';
+	import ChatItems from '$lib/ui/ChatItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import TextInput from '$lib/ui/TextInput.svelte';
@@ -50,10 +50,10 @@
 	};
 </script>
 
-<div class="room">
+<div class="chat">
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<RoomItems {persona} {entities} />
+			<ChatItems {persona} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}
@@ -62,7 +62,7 @@
 </div>
 
 <style>
-	.room {
+	.chat {
 		display: flex;
 		flex-direction: column;
 		flex: 1;

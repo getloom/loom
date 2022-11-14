@@ -93,7 +93,7 @@
 	};
 </script>
 
-<div class="room">
+<div class="todo">
 	<div class="entities">
 		<!-- TODO handle failures here-->
 		{#if entities && $queryStatus === 'success'}
@@ -125,7 +125,7 @@
 </div>
 
 <style>
-	.room {
+	.todo {
 		display: flex;
 		flex-direction: column;
 		flex: 1;

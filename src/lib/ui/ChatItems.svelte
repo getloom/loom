@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import RoomItem from '$lib/ui/RoomItem.svelte';
+	import ChatItem from '$lib/ui/ChatItem.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
 
 	export let persona: Readable<Persona>;
@@ -12,6 +12,6 @@
 <!-- TODO possibly remove the `ul` wrapper and change the `li`s to `div`s -->
 <ul>
 	{#each $entities as entity (entity)}
-		<RoomItem {persona} {entity} />
+		<ChatItem {persona} {entity} />
 	{/each}
 </ul>

@@ -41,7 +41,7 @@ export const randomCommunnityName = randomString;
 export const randomSpaceUrl = randomString;
 export const randomSpaceIcon = (): string => '🥥';
 export const randomSpaceName = randomString;
-export const randomView = (): string => '<Room />';
+export const randomView = (): string => '<Chat />';
 export const randomEntityData = (): EntityData => ({type: 'Note', content: randomString()});
 export const randomTieType = randomString;
 export const randomRoleName = randomString;

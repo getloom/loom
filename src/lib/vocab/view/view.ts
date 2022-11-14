@@ -25,7 +25,7 @@ export interface ViewTemplate {
  */
 export const viewTemplates: ViewTemplate[] = [
 	{name: 'Home', view: '<Home />', icon: '🏠', creatable: false},
-	{name: 'Room', view: '<Room />', icon: '🗨'},
+	{name: 'Chat', view: '<Chat />', icon: '🗨'},
 	{name: 'Board', view: '<Board />', icon: '📚'},
 	{name: 'Forum', view: '<Forum />', icon: '📋'},
 	{name: 'Notes', view: '<Notes />', icon: '🏷'},

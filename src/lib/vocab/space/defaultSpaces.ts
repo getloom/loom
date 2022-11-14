@@ -7,7 +7,7 @@ export const toDefaultSpaces = (
 	{community_id, name}: Community,
 ): CreateSpaceParams[] => [
 	{...toViewTemplateDefaults('Home'), actor, community_id, name, url: '/'},
-	{...toViewTemplateDefaults('Room'), actor, community_id, name: 'room', url: '/room'},
+	{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', url: '/chat'},
 	{...toViewTemplateDefaults('Board'), actor, community_id, name: 'board', url: '/board'},
 	{...toViewTemplateDefaults('Forum'), actor, community_id, name: 'forum', url: '/forum'},
 	{...toViewTemplateDefaults('Notes'), actor, community_id, name: 'notes', url: '/notes'},
@@ -26,7 +26,7 @@ export const toDefaultAdminSpaces = (
 		name: 'instance',
 		url: '/instance',
 	},
-	{...toViewTemplateDefaults('Room'), actor, community_id, name: 'room', url: '/room'},
+	{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', url: '/chat'},
 ];
 
 const toViewTemplateDefaults = (name: string): {view: string; icon: string} => {

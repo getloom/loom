@@ -40,7 +40,7 @@
 	};
 </script>
 
-<div class="room">
+<div class="board">
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
 			<BoardItems {entities} {space} {persona} {selectedPost} {selectPost} />
@@ -69,7 +69,7 @@
 </div>
 
 <style>
-	.room {
+	.board {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
