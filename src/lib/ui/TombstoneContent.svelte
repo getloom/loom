@@ -10,6 +10,8 @@
 	export let entity: Readable<Entity>;
 
 	$: formerType = ($entity.data as TombstoneEntityData).formerType || 'entity'; // TODO delete this typecast after finishing the above TODO
+
+	// TODO optionally render `$entity.data.deleted`
 </script>
 
 <span>🪦 <i>this {formerType} was erased</i></span>

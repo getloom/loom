@@ -9,8 +9,8 @@
 	export let done: (() => void) | undefined = undefined;
 	export let action: (() => any) | undefined = undefined;
 	export let promptText = 'Are you sure?';
-	export let confirmText = 'Confirm';
-	export let cancelText = 'Cancel';
+	export let confirmText = 'confirm';
+	export let cancelText = 'cancel';
 
 	let pending = false;
 	let errorMessage: string | undefined;

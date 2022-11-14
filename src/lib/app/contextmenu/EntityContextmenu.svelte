@@ -7,6 +7,7 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
+	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
 
 	export let entity: Readable<Entity>;
@@ -35,14 +36,33 @@
 		{#if $entity.data.type !== 'Tombstone'}
 			<ContextmenuEntry
 				action={() =>
-					dispatch.EraseEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]})}
+					dispatch.OpenDialog({
+						Component: ConfirmDialog,
+						props: {
+							action: () =>
+								dispatch.EraseEntities({
+									actor: $persona.persona_id,
+									entityIds: [$entity.entity_id],
+								}),
+							promptText: 'Erase this entity? This cannot be reversed.',
+							confirmText: 'erase entity',
+						},
+					})}
 			>
 				Erase Entity
 			</ContextmenuEntry>
 		{/if}
 		<ContextmenuEntry
 			action={() =>
-				dispatch.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]})}
+				dispatch.OpenDialog({
+					Component: ConfirmDialog,
+					props: {
+						action: () =>
+							dispatch.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]}),
+						promptText: 'Delete this entity? This cannot be reversed.',
+						confirmText: 'delete entity',
+					},
+				})}
 		>
 			Delete Entity
 		</ContextmenuEntry>

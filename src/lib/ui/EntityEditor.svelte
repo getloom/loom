@@ -11,6 +11,7 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
 	import type {Persona} from '$lib/vocab/persona/persona';
+	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 
 	export let persona: Readable<Persona>;
 	export let entity: Readable<Entity>;
@@ -49,6 +50,16 @@
 		deletePending = false;
 		done?.();
 	};
+
+	let erasePending = false;
+	const eraseEntity = async () => {
+		erasePending = true;
+		await dispatch.EraseEntities({
+			actor: $persona.persona_id,
+			entityIds: [$entity.entity_id],
+		});
+		erasePending = false;
+	};
 </script>
 
 <div class="entity-editor column">
@@ -68,10 +79,7 @@
 	<!-- TODO add entity property contextmenu actions to this -->
 	<form>
 		{#if $entity.data.type === 'Tombstone'}
-			<div><TombstoneContent {entity} /></div>
-			<PendingButton on:click={() => deleteEntity()} pending={deletePending}
-				>delete entity</PendingButton
-			>
+			<section><TombstoneContent {entity} /></section>
 		{:else}
 			<fieldset>
 				<!-- TODO how to make this use `EntityContent`? slot? could default to the `pre` -->
@@ -92,7 +100,33 @@
 					/>
 				</fieldset>
 			{/if}
+			<PendingButton
+				title="erase entity"
+				on:click={() =>
+					dispatch.OpenDialog({
+						Component: ConfirmDialog,
+						props: {
+							action: eraseEntity,
+							promptText: 'Erase this entity? This cannot be reversed.',
+							confirmText: 'erase entity',
+						},
+					})}
+				pending={erasePending}>erase entity</PendingButton
+			>
 		{/if}
+		<PendingButton
+			title="delete entity"
+			on:click={() =>
+				dispatch.OpenDialog({
+					Component: ConfirmDialog,
+					props: {
+						action: deleteEntity,
+						promptText: 'Delete this entity? This cannot be reversed.',
+						confirmText: 'delete entity',
+					},
+				})}
+			pending={deletePending}>delete entity</PendingButton
+		>
 	</form>
 	{#if $devmode}
 		<hr />

@@ -1,10 +1,10 @@
 <script lang="ts">
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
-
 	import type {Role} from '$lib/vocab/role/role';
 	import type {Persona} from '$lib/vocab/persona/persona';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import AssignmentItem from '$lib/ui/AssignmentItem.svelte';
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import type {Community} from '$lib/vocab/community/community';
@@ -46,10 +46,10 @@
 <div class="details">
 	<div class="actions">
 		<button
+			title="delete role"
 			on:click={() =>
 				dispatch.OpenDialog({
 					Component: ConfirmDialog,
-					dialogProps: {layout: 'page'},
 					props: {
 						action: () =>
 							dispatch.DeleteRole({
