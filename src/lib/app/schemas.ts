@@ -29,6 +29,14 @@ import {RoleSchema} from '$lib/vocab/role/role.schema';
 // but this has the downside of losing the inferred default types,
 // which are handy when the schemas are used directly.
 
+export interface FeltVocabSchema extends VocabSchema {
+	name: string;
+}
+export const toFeltVocabSchema = (schema: VocabSchema): FeltVocabSchema => {
+	schema.name = toSchemaName(schema.$id);
+	return schema as FeltVocabSchema;
+};
+
 export const vocabSchemas = [
 	AccountSchema,
 	AccountSettingsSchema,
@@ -44,7 +52,7 @@ export const vocabSchemas = [
 	EntitySchema,
 	TieSchema,
 	RoleSchema,
-] as VocabSchema[];
+].map((s) => toFeltVocabSchema(s as VocabSchema));
 
 export const schemas = vocabSchemas.concat(
 	eventInfos
@@ -52,12 +60,8 @@ export const schemas = vocabSchemas.concat(
 			eventInfo.params,
 			'response' in eventInfo ? eventInfo.response : (null as any),
 		])
-		.filter(Boolean),
+		.filter(Boolean)
+		.map(toFeltVocabSchema),
 	// Include external schema dependencies.
-	DialogDataSchema as VocabSchema,
+	toFeltVocabSchema(DialogDataSchema as VocabSchema),
 );
-
-// Add schema names
-for (const schema of schemas) {
-	schema.name = toSchemaName(schema.$id);
-}
