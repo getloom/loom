@@ -14,7 +14,7 @@ import type {AsyncStatus} from '@feltcoop/felt/util/async.js';
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
 import type {Persona} from '$lib/vocab/persona/persona';
-import type {AccountModel} from '$lib/vocab/account/account';
+import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {createContextmenuStore, type ContextmenuStore} from '$lib/ui/contextmenu/contextmenu';
@@ -47,7 +47,7 @@ export interface Ui {
 	// if the latter, we'd need to change the
 
 	// db state and caches
-	account: Readable<AccountModel | null>;
+	account: Readable<ClientAccount | null>;
 	personas: Mutable<Array<Readable<Persona>>>;
 	session: Readable<ClientSession>;
 	sessionPersonas: Mutable<Array<Readable<Persona>>>;
@@ -104,7 +104,7 @@ export const toUi = (
 	components: {[key: string]: typeof SvelteComponent},
 	onError: (message: string | undefined) => void,
 ) => {
-	const account = writable<AccountModel | null>(null);
+	const account = writable<ClientAccount | null>(null);
 	const session = writable<ClientSession>($session);
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.

@@ -12,8 +12,8 @@
 </script>
 
 <div class="community-editor column">
-	<div class="markup padded-xl">
-		<h1>Edit Community</h1>
+	<form>
+		<legend>Edit Community</legend>
 		<section class="row" style:font-size="var(--font_size_xl)">
 			<CommunityAvatar {community} />
 		</section>
@@ -23,7 +23,7 @@
 				<p>updated {format($community.updated, 'PPPPp')}</p>
 			{/if}
 		</section>
-	</div>
+	</form>
 	<section>
 		<CommunitySettingsHue {persona} {community} />
 	</section>
@@ -34,8 +34,5 @@
 		display: flex;
 		flex-direction: column;
 		padding: var(--spacing_xl);
-	}
-	h1 {
-		text-align: center;
 	}
 </style>

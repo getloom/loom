@@ -49,7 +49,7 @@ export const UpdateAccountSettings: ServiceEventInfo = {
 	response: {
 		$id: '/schemas/UpdateAccountSettingsResponse.json',
 		type: 'object',
-		tsType: 'AccountModel',
+		tsType: 'ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountSettingsResponseResult>',
 	route: {
@@ -75,7 +75,7 @@ export const UpdateAccountPassword: ServiceEventInfo = {
 	response: {
 		$id: '/schemas/UpdateAccountPasswordResponse.json',
 		type: 'object',
-		tsType: 'AccountModel',
+		tsType: 'ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountPasswordResponseResult>',
 	route: {

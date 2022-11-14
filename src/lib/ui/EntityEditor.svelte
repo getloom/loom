@@ -53,7 +53,7 @@
 
 <div class="entity-editor column">
 	<div class="markup padded-xl">
-		<h1>Edit Entity</h1>
+		<legend>Edit Entity</legend>
 		<section class="row">
 			<span class="spaced">created by</span>
 			<PersonaAvatar persona={authorPersona} />
@@ -105,9 +105,6 @@
 <style>
 	.entity-editor {
 		padding: var(--spacing_xl);
-	}
-	h1 {
-		text-align: center;
 	}
 	fieldset {
 		padding: var(--spacing_xl) 0;

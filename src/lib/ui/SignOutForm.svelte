@@ -3,7 +3,7 @@
 	import Message from '@feltcoop/felt/ui/Message.svelte';
 	import type {SignOutResponseResult} from '$lib/app/eventTypes';
 
-	import type {AccountModel} from '$lib/vocab/account/account';
+	import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 	import {getApp} from '$lib/ui/app';
 
 	const {
@@ -11,7 +11,7 @@
 		ui: {session},
 	} = getApp();
 
-	let account: AccountModel | undefined;
+	let account: ClientAccount | undefined;
 	$: account = $session.guest ? undefined : $session.account;
 
 	let errorMessage: string | undefined;

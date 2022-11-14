@@ -10,7 +10,7 @@ import type {
 	NonAuthorizedService,
 	AuthorizedService,
 } from '$lib/server/service';
-import type {AccountModel} from '$lib/vocab/account/account';
+import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -240,14 +240,14 @@ export interface UpdateAccountSettingsParams {
 		darkmode?: boolean;
 	};
 }
-export type UpdateAccountSettingsResponse = AccountModel;
+export type UpdateAccountSettingsResponse = ClientAccount;
 export type UpdateAccountSettingsResponseResult = ApiResult<UpdateAccountSettingsResponse>;
 
 export interface UpdateAccountPasswordParams {
 	oldPassword: string;
 	newPassword: string;
 }
-export type UpdateAccountPasswordResponse = AccountModel;
+export type UpdateAccountPasswordResponse = ClientAccount;
 export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
 
 export interface CreateCommunityParams {

@@ -3,7 +3,8 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Account, AccountModel} from '$lib/vocab/account/account.js';
+import type {Account} from '$lib/vocab/account/account';
+import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import {toPasswordKey} from '$lib/util/password';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
 
@@ -25,9 +26,9 @@ export class AccountRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
-	async findById<T extends Partial<Account> = AccountModel>(
+	async findById<T extends Partial<Account> = ClientAccount>(
 		account_id: number,
-		columns = ACCOUNT_COLUMNS.AccountModel,
+		columns = ACCOUNT_COLUMNS.ClientAccount,
 	): Promise<Result<{value: T | undefined}>> {
 		log.trace('loading account', account_id);
 		const data = await this.sql<T[]>`
@@ -47,8 +48,8 @@ export class AccountRepo extends PostgresRepo {
 
 	async updateSettings(
 		account_id: number,
-		settings: AccountModel['settings'],
-	): Promise<Result<{value: AccountModel}>> {
+		settings: ClientAccount['settings'],
+	): Promise<Result<{value: ClientAccount}>> {
 		const data = await this.sql<any[]>`
 			UPDATE accounts
 			SET updated=NOW(), settings=${this.sql.json(settings)}
@@ -62,7 +63,7 @@ export class AccountRepo extends PostgresRepo {
 	async updatePassword(
 		account_id: number,
 		password: string,
-	): Promise<Result<{value: AccountModel}>> {
+	): Promise<Result<{value: ClientAccount}>> {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<any[]>`
 			UPDATE accounts

@@ -35,7 +35,7 @@ import type {AsyncStatus} from '@feltcoop/felt/util/async.js';
 
 import type {ApiResult} from '$lib/server/api';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';
-import type {AccountModel} from '$lib/vocab/account/account';
+import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Community} from '$lib/vocab/community/community';
 import type {Persona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
