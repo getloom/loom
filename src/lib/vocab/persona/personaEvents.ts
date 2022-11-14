@@ -17,7 +17,10 @@ export const CreateAccountPersona: ServiceEventInfo = {
 		$id: '/schemas/CreateAccountPersonaResponse.json',
 		type: 'object',
 		properties: {
-			personas: {type: 'array', items: {$ref: '/schemas/Persona.json', tsType: 'Persona'}},
+			personas: {
+				type: 'array',
+				items: {$ref: '/schemas/ClientPersona.json', tsType: 'ClientPersona'},
+			},
 			communities: {type: 'array', items: {$ref: '/schemas/Community.json', tsType: 'Community'}},
 			roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
@@ -54,7 +57,7 @@ export const ReadPersona: ServiceEventInfo = {
 		$id: '/schemas/ReadPersonaResponse.json',
 		type: 'object',
 		properties: {
-			persona: {$ref: '/schemas/Persona.json', tsType: 'Persona'},
+			persona: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
 		},
 		required: ['persona'],
 		additionalProperties: false,

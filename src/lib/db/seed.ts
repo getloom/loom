@@ -8,7 +8,7 @@ import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';
 import type {Community} from '$lib/vocab/community/community';
 import type {CreateCommunityParams, SignInParams} from '$lib/app/eventTypes';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {parseView, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
 import {CreateCommunityService} from '$lib/vocab/community/communityServices';
@@ -45,7 +45,7 @@ export const seed = async (db: Database): Promise<void> => {
 		'b@b.b': ['betty', 'billy'],
 	};
 	const accounts: Account[] = [];
-	const personas: Persona[] = [];
+	const personas: AccountPersona[] = [];
 	for (const accountParams of accountsParams) {
 		const account = unwrap(
 			await db.repos.account.create(
@@ -63,22 +63,22 @@ export const seed = async (db: Database): Promise<void> => {
 			account.account_id,
 		);
 		for (const personaName of personasParams[account.name]) {
-			const {
-				personas: [persona],
-				spaces,
-			} = unwrap(
+			const created = unwrap(
 				await CreateAccountPersonaService.perform({
 					...accountServiceRequest,
 					params: {name: personaName},
 				}),
 			);
+			const persona = created.personas[0] as AccountPersona;
 			log.trace('created persona', persona);
 			personas.push(persona);
-			await createDefaultEntities({...accountServiceRequest, actor: persona}, spaces, [persona]);
+			await createDefaultEntities({...accountServiceRequest, actor: persona}, created.spaces, [
+				persona,
+			]);
 		}
 	}
 
-	const mainPersonaCreator = personas[0];
+	const mainPersonaCreator = personas[0] as AccountPersona;
 	const mainAccountServiceRequest = toServiceRequestMock(db, mainPersonaCreator);
 	const otherPersonas = personas.slice(1);
 
@@ -117,10 +117,10 @@ export const seed = async (db: Database): Promise<void> => {
 const createDefaultEntities = async (
 	serviceRequest: ReturnType<typeof toServiceRequestMock>,
 	spaces: Space[],
-	personas: Persona[],
+	personas: AccountPersona[],
 ) => {
 	let personaIndex = -1;
-	const nextPersona = (): Persona => {
+	const nextPersona = (): AccountPersona => {
 		personaIndex++;
 		if (personaIndex === personas.length) personaIndex = 0;
 		return personas[personaIndex];
@@ -168,7 +168,7 @@ const entitiesContents: Record<string, string[]> = {
 
 const generateTodo = async (
 	serviceRequest: ReturnType<typeof toServiceRequestMock>,
-	actor: Persona,
+	actor: AccountPersona,
 	space: Space,
 ) => {
 	const list = unwrap(

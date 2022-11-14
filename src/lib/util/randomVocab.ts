@@ -3,7 +3,7 @@ import {unwrap} from '@feltcoop/felt';
 import type {Space} from '$lib/vocab/space/space';
 import type {Community} from '$lib/vocab/community/community';
 import type {Account} from '$lib/vocab/account/account';
-import type {AccountPersona, Persona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {
 	CreateCommunityParams,
 	CreateAccountPersonaParams,
@@ -104,7 +104,7 @@ export const randomRoleParams = (actor: number, community_id: number): CreateRol
 // TODO maybe compute in relation to `RandomVocabContext`
 export interface RandomVocab {
 	account?: RandomTestAccount;
-	persona?: Persona;
+	persona?: AccountPersona;
 	community?: Community;
 	space?: Space;
 	entity?: Entity;
@@ -156,14 +156,15 @@ export class RandomVocabContext {
 	}
 
 	async community(
-		persona?: Persona,
+		persona?: AccountPersona,
 		account?: Account,
 	): Promise<{
 		community: Community;
 		role: Role;
 		assignments: Assignment[];
 		spaces: Space[];
-		personas: Persona[];
+		persona: AccountPersona;
+		personas: ClientPersona[];
 		account: Account;
 	}> {
 		if (!account) account = await this.account();
@@ -175,17 +176,25 @@ export class RandomVocabContext {
 				params,
 			}),
 		);
-		return {community, role, assignments, spaces, personas: personas.concat(persona), account};
+		return {
+			community,
+			role,
+			assignments,
+			spaces,
+			persona,
+			personas: personas.concat(persona),
+			account,
+		};
 	}
 
 	async space(
-		persona?: Persona,
+		persona?: AccountPersona,
 		account?: Account,
 		community?: Community,
 	): Promise<{
 		space: Space;
 		directory: Entity & {data: DirectoryEntityData};
-		persona: Persona;
+		persona: AccountPersona;
 		account: Account;
 		community: Community;
 	}> {
@@ -204,14 +213,14 @@ export class RandomVocabContext {
 
 	//TODO do we need space now? Should be source_id
 	async entity(
-		persona?: Persona,
+		persona?: AccountPersona,
 		account?: Account,
 		community?: Community,
 		source_id?: number,
 		paramsPartial?: Partial<CreateEntityParams>,
 	): Promise<{
 		entity: Entity;
-		persona: Persona;
+		persona: AccountPersona;
 		account: Account;
 		community: Community;
 		ties: Tie[];
@@ -238,7 +247,7 @@ export class RandomVocabContext {
 	async tie(
 		sourceEntity?: Entity,
 		destEntity?: Entity,
-		persona?: Persona,
+		persona?: AccountPersona,
 		account?: Account,
 		community?: Community,
 		parentSourceId?: number, // optional directory or other source id for the source and dest entities (not the tie)
@@ -247,7 +256,7 @@ export class RandomVocabContext {
 		tie: Tie;
 		sourceEntity: Entity;
 		destEntity: Entity;
-		persona: Persona;
+		persona: AccountPersona;
 		account: Account;
 		community: Community;
 		parentSourceId: number;
@@ -282,11 +291,11 @@ export class RandomVocabContext {
 
 	async role(
 		community?: Community,
-		persona?: Persona,
+		persona?: AccountPersona,
 		account?: Account,
 	): Promise<{
 		role: Role;
-		persona: Persona;
+		persona: AccountPersona;
 		account: Account;
 		community: Community;
 	}> {

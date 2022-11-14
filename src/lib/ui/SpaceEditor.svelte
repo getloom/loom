@@ -8,9 +8,9 @@
 	import {getApp} from '$lib/ui/app';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let space: Readable<Space>;
 	export let community: Readable<Community>;
 

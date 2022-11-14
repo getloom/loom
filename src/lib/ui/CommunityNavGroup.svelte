@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import CommunityNavItem from '$lib/ui/CommunityNavItem.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
 	import ActingPersonaContextmenu from '$lib/app/contextmenu/ActingPersonaContextmenu.svelte';
 
@@ -13,7 +13,7 @@
 	$: selectedPersona = $personaSelection!;
 	$: selectedCommunity = $communitySelection;
 
-	export let persona: Readable<Persona>; // session persona
+	export let persona: Readable<AccountPersona>; // session persona
 
 	$: personalCommunity = $communitiesBySessionPersona
 		.get(persona)!

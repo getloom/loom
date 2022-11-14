@@ -3,9 +3,9 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import NotesItem from '$lib/ui/NotesItem.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 
 	$: notes = $entities.slice().reverse(); // TODO definitely not this

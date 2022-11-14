@@ -12,7 +12,7 @@ import type {
 } from '$lib/server/service';
 import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Community} from '$lib/vocab/community/community';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -263,7 +263,7 @@ export interface CreateCommunityResponse {
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
 	assignments: Assignment[];
-	personas: Persona[];
+	personas: PublicPersona[];
 }
 export type CreateCommunityResponseResult = ApiResult<CreateCommunityResponse>;
 
@@ -277,7 +277,7 @@ export interface ReadCommunityResponse {
 	directories: (Entity & {data: DirectoryEntityData})[];
 	roles: Role[];
 	assignments: Assignment[];
-	personas: Persona[];
+	personas: PublicPersona[];
 }
 export type ReadCommunityResponseResult = ApiResult<ReadCommunityResponse>;
 
@@ -318,7 +318,7 @@ export interface CreateAccountPersonaParams {
 	name: string;
 }
 export interface CreateAccountPersonaResponse {
-	personas: Persona[];
+	personas: ClientPersona[];
 	communities: Community[];
 	roles: Role[];
 	spaces: Space[];
@@ -332,7 +332,7 @@ export interface ReadPersonaParams {
 	persona_id: number;
 }
 export interface ReadPersonaResponse {
-	persona: Persona;
+	persona: PublicPersona;
 }
 export type ReadPersonaResponseResult = ApiResult<ReadPersonaResponse>;
 

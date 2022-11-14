@@ -8,7 +8,7 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Community} from '$lib/vocab/community/community';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
 
@@ -19,7 +19,7 @@
 
 	export let done: (() => void) | undefined = undefined;
 	export let entityName = 'Entity';
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 	export let space: Readable<Space>;
 	export let type = 'Collection';

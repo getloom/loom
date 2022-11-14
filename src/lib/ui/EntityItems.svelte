@@ -3,9 +3,9 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityItem from '$lib/ui/EntityItem.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 </script>
 

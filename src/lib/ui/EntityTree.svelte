@@ -7,7 +7,7 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	const {
 		dispatch,
@@ -15,7 +15,7 @@
 		ui: {contextmenu, entityById},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;
 	export let ties: Readable<Array<Readable<Tie>>>; // TODO maybe don't pass these and do lookups instead
 	export let depth = 0;

@@ -4,7 +4,7 @@ import {Logger} from '@feltcoop/felt/util/log.js';
 import type {Mutations} from '$lib/app/eventTypes';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {ClientPersona} from '$lib/vocab/persona/persona';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/session/clientSession';
 import {Mutated} from '$lib/util/Mutated';
@@ -98,10 +98,10 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 // Any code that needs session personas given a regular persona could do a lookup,
 // but otherwise we'd be passing around the `Persona` objects in most cases.
 // This would make things typesafe as well.
-const toInitialPersonas = (session: ClientSession): Persona[] =>
+const toInitialPersonas = (session: ClientSession): ClientPersona[] =>
 	session.guest
 		? []
-		: session.sessionPersonas.concat(
+		: (session.sessionPersonas as ClientPersona[]).concat(
 				session.personas.filter(
 					(p1) => !session.sessionPersonas.find((p2) => p2.persona_id === p1.persona_id),
 				),

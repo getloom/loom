@@ -1,20 +1,18 @@
-import type {Result} from '@feltcoop/felt';
+import {NOT_OK, type Result} from '@feltcoop/felt';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {
-	AccountPersona,
-	CommunityPersona,
-	GhostPersona,
-	Persona,
-} from '$lib/vocab/persona/persona';
-import {GHOST_PERSONA_NAME} from '$lib/app/constants';
+import type {AccountPersona, Persona, PublicPersona} from '$lib/vocab/persona/persona';
+import {GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
+import {PERSONA_COLUMNS} from '$lib/vocab/persona/personaHelpers.server';
 
 const log = new Logger(gray('[') + blue('PersonaRepo') + gray(']'));
 
 export class PersonaRepo extends PostgresRepo {
-	// TODO instead of these null values, probably want a type union strongly typed for each persona type
+	// TODO is weird to return a `PublicPersona`, could fix by having
+	// `PublicGhostPersona`, `PublicCommunityPersona`, and `PublicAccountPersona`
+	// as separate types, see also `createCommunityPersona` and `createGhostPersona`
 	async createAccountPersona(
 		name: string,
 		account_id: number,
@@ -23,7 +21,7 @@ export class PersonaRepo extends PostgresRepo {
 		const data = await this.sql<AccountPersona[]>`
 			INSERT INTO personas (type, name, account_id, community_id) VALUES (
 				'account', ${name}, ${account_id}, ${community_id}
-			) RETURNING *
+			) RETURNING ${this.sql(PERSONA_COLUMNS.Persona)}
 		`;
 		const persona = data[0];
 		log.trace('[createAccountPersona] created persona', persona);
@@ -33,51 +31,57 @@ export class PersonaRepo extends PostgresRepo {
 	async createCommunityPersona(
 		name: string,
 		community_id: number,
-	): Promise<Result<{value: CommunityPersona}>> {
-		const data = await this.sql<CommunityPersona[]>`
+	): Promise<Result<{value: PublicPersona}>> {
+		const data = await this.sql<PublicPersona[]>`
 			INSERT INTO personas (type, name, community_id) VALUES (
 				'community', ${name}, ${community_id}
-			) RETURNING *
+			) RETURNING ${this.sql(PERSONA_COLUMNS.PublicPersona)}
 		`;
 		const persona = data[0];
 		log.trace('[createCommunityPersona] created persona', persona);
 		return {ok: true, value: persona};
 	}
 
-	async createGhostPersona(): Promise<Result<{value: GhostPersona}>> {
-		const data = await this.sql<GhostPersona[]>`
+	async createGhostPersona(): Promise<Result<{value: PublicPersona}>> {
+		const data = await this.sql<PublicPersona[]>`
 			INSERT INTO personas (type, name) VALUES (
 				'ghost', ${GHOST_PERSONA_NAME}
-			) RETURNING *
+			) RETURNING ${this.sql(PERSONA_COLUMNS.PublicPersona)}
 		`;
-		return {ok: true, value: data[0]};
+		const persona = data[0];
+		if (persona.persona_id !== GHOST_PERSONA_ID) return NOT_OK;
+		return {ok: true, value: persona};
 	}
 
-	async filterByAccount(account_id: number): Promise<Result<{value: Persona[]}>> {
+	async filterByAccount(account_id: number): Promise<Result<{value: AccountPersona[]}>> {
 		log.trace('[filterByAccount]', account_id);
-		const data = await this.sql<Persona[]>`
-			SELECT persona_id, type, name, account_id, community_id, created, updated
+		const data = await this.sql<AccountPersona[]>`
+			SELECT ${this.sql(PERSONA_COLUMNS.Persona)}
 			FROM personas WHERE account_id=${account_id}
 		`;
 		return {ok: true, value: data};
 	}
 
-	async findById(persona_id: number): Promise<Result<{value: Persona | undefined}>> {
+	async findById<T extends Partial<Persona> = PublicPersona>(
+		persona_id: number,
+		columns = PERSONA_COLUMNS.PublicPersona,
+	): Promise<Result<{value: T | undefined}>> {
 		log.trace('[findById]', persona_id);
-		const data = await this.sql<Persona[]>`
-			SELECT persona_id, type, name, account_id, community_id, created, updated 
+		const data = await this.sql<T[]>`
+			SELECT ${this.sql(columns)}
 			FROM personas WHERE persona_id=${persona_id}
 		`;
 		return {ok: true, value: data[0]};
 	}
 
 	// TODO handle count mismatch similar to to the entity version of this method
-	async filterByIds(
+	async filterByIds<T extends Partial<Persona> = PublicPersona>(
 		personaIds: number[],
-	): Promise<Result<{value: {personas: Persona[]; missing: null | number[]}}>> {
+		columns = PERSONA_COLUMNS.PublicPersona,
+	): Promise<Result<{value: {personas: T[]; missing: null | number[]}}>> {
 		if (personaIds.length === 0) return {ok: true, value: {personas: [], missing: null}};
-		const personas = await this.sql<Persona[]>`
-			SELECT persona_id, type, name, account_id, community_id, created, updated 
+		const personas = await this.sql<T[]>`
+			SELECT ${this.sql(columns)}
 			FROM personas WHERE persona_id IN ${this.sql(personaIds)}
 		`;
 		const missing =
@@ -87,29 +91,37 @@ export class PersonaRepo extends PostgresRepo {
 		return {ok: true, value: {personas, missing}};
 	}
 
-	async findByCommunityId(community_id: number): Promise<Result<{value: Persona | undefined}>> {
+	async findByCommunityId<T extends Partial<Persona> = PublicPersona>(
+		community_id: number,
+		columns = PERSONA_COLUMNS.PublicPersona,
+	): Promise<Result<{value: T | undefined}>> {
 		log.trace('[findByCommunityId]', community_id);
-		const data = await this.sql<Persona[]>`
-			SELECT persona_id, type, name, account_id, community_id, created, updated 
+		const data = await this.sql<T[]>`
+			SELECT ${this.sql(columns)}
 			FROM personas WHERE community_id=${community_id}
 		`;
 		return {ok: true, value: data[0]};
 	}
 
-	async findByName(name: string): Promise<Result<{value: Persona | undefined}>> {
+	async findByName<T extends Partial<Persona> = PublicPersona>(
+		name: string,
+		columns = PERSONA_COLUMNS.PublicPersona,
+	): Promise<Result<{value: T | undefined}>> {
 		log.trace('[findByName]', name);
-		const data = await this.sql<Persona[]>`
-			SELECT persona_id, type, name, account_id, community_id, created, updated
+		const data = await this.sql<T[]>`
+			SELECT ${this.sql(columns)}
 			FROM personas WHERE LOWER(name) = LOWER(${name})
 		`;
 		return {ok: true, value: data[0]};
 	}
 
 	// TODO needs to be a subset just for the session, maybe either `community_ids` or `account_id` as a param
-	// TODO this type isn't `Persona`, it's a public subset of fields
-	async getAll(): Promise<Result<{value: Persona[]}>> {
-		const data = await this.sql<Persona[]>`
-			SELECT persona_id, name, type FROM personas
+	async getAll<T extends Partial<Persona> = PublicPersona>(
+		columns = PERSONA_COLUMNS.PublicPersona,
+	): Promise<Result<{value: T[]}>> {
+		const data = await this.sql<T[]>`
+			SELECT ${this.sql(columns)}
+			FROM personas
 		`;
 		return {ok: true, value: data};
 	}

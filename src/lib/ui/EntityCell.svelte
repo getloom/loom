@@ -5,9 +5,9 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;
 	export let propertyName: string;
 

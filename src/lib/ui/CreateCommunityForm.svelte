@@ -9,7 +9,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import Avatar from '$lib/ui/Avatar.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
@@ -20,7 +20,7 @@
 		ui: {sessionPersonaIndexById},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let done: (() => void) | undefined = undefined;
 
 	let name = '';

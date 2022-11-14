@@ -4,14 +4,14 @@
 	import {getApp} from '$lib/ui/app';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	const {
 		dispatch,
 		ui: {personaById},
 	} = getApp();
 
-	export let actor: Readable<Persona>;
+	export let actor: Readable<AccountPersona>;
 	export let assignment: Assignment;
 
 	$: assignmentPersona = personaById.get(assignment.persona_id)!;

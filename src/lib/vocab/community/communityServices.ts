@@ -16,7 +16,7 @@ import {createSpaces} from '$lib/vocab/space/spaceServices';
 import type {NonAuthorizedServiceRequest} from '$lib/server/service';
 import {ADMIN_COMMUNITY_ID, ADMIN_COMMUNITY_NAME} from '$lib/app/constants';
 import type {Community} from '$lib/vocab/community/community';
-import type {CommunityPersona, GhostPersona} from '$lib/vocab/persona/persona';
+import type {ActorPersona, PublicPersona} from '$lib/vocab/persona/persona';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
@@ -152,7 +152,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 					role,
 					spaces,
 					directories,
-					personas: [communityPersona], // TODO add the requesting persona just for completion, after we add `actor` to all events
+					personas: [communityPersona],
 					assignments: [communityPersonaAssignment, creatorAssignment],
 				},
 			};
@@ -202,15 +202,20 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 			// 	repos.persona.findById(persona_id),
 			// 	repos.community.findById(community_id),
 			// ]);
-			const personaResult = unwrap(await repos.persona.findById(actor));
-			const communityResult = unwrap(await repos.community.findById(community_id));
-			if (!personaResult) {
+			const persona = unwrap(
+				await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(actor, [
+					'type',
+					'community_id',
+				]),
+			);
+			const community = unwrap(await repos.community.findById(community_id));
+			if (!persona) {
 				return {ok: false, status: 404, message: 'no persona found'};
 			}
-			if (!communityResult) {
+			if (!community) {
 				return {ok: false, status: 404, message: 'no community found'};
 			}
-			if (communityResult.type === 'personal') {
+			if (community.type === 'personal') {
 				return {ok: false, status: 405, message: 'cannot leave a personal community'};
 			}
 			if (community_id === ADMIN_COMMUNITY_ID) {
@@ -221,7 +226,7 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
 				}
 			}
-			if (personaResult.type === 'community' && personaResult.community_id === community_id) {
+			if (persona.type === 'community' && persona.community_id === community_id) {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 
@@ -237,7 +242,7 @@ export const initAdminCommunity = async (
 	serviceRequest: NonAuthorizedServiceRequest,
 ): Promise<
 	Result<{
-		value?: {community: Community; persona: CommunityPersona; ghost: GhostPersona; role: Role};
+		value?: {community: Community; persona: PublicPersona; ghost: PublicPersona; role: Role};
 	}>
 > => {
 	const {repos} = serviceRequest;

@@ -11,6 +11,7 @@ import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers'
 import {toCommunityUrl} from '$lib/ui/url';
 import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
+import type {AccountPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 
 export const stashCommunities = (
@@ -99,7 +100,7 @@ export const evictCommunity = async (
 		if (communityIdSelection === community_id) {
 			communityIdSelectionByPersonaId
 				.get()
-				.value.set(persona_id, personaById.get(persona_id)!.get().community_id!);
+				.value.set(persona_id, (personaById.get(persona_id)!.get() as AccountPersona).community_id);
 			mutated.add(communityIdSelectionByPersonaId);
 		}
 	}

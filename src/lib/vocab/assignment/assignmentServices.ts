@@ -6,6 +6,7 @@ import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
+import type {ActorPersona} from '$lib/vocab/persona/persona';
 
 const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 
@@ -64,7 +65,12 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 			// 	repos.persona.findById(persona_id),
 			// 	repos.community.findById(community_id),
 			// ]);
-			const persona = unwrap(await repos.persona.findById(persona_id));
+			const persona = unwrap(
+				await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(persona_id, [
+					'type',
+					'community_id',
+				]),
+			);
 			if (!persona) {
 				return {ok: false, status: 404, message: 'no persona found'};
 			}

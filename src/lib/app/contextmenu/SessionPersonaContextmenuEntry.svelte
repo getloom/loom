@@ -7,7 +7,7 @@
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	const {
 		ui: {
@@ -20,10 +20,10 @@
 		},
 	} = getApp();
 
-	export let persona: Readable<Persona>; // TODO `SessionPersona` type
+	export let persona: Readable<AccountPersona>;
 
 	$: communityId =
-		$communityIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.community_id!; // TODO remove the `!` when the `SessionPersona` type is used above
+		$communityIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.community_id;
 	$: community = communityById.get(communityId)!;
 	$: spaceIdSelection = $spaceIdSelectionByCommunityId.value.get($community.community_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;

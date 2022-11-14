@@ -4,7 +4,7 @@
 
 	import type {Space} from '$lib/vocab/space/space.js';
 	import type {Community} from '$lib/vocab/community/community.js';
-	import type {Persona} from '$lib/vocab/persona/persona.js';
+	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import {getApp} from '$lib/ui/app';
@@ -15,7 +15,7 @@
 		ui: {contextmenu, sessionPersonaIndexById},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let space: Readable<Space>;
 	export let community: Readable<Community>;
 	export let selected = false;

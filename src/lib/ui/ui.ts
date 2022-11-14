@@ -13,7 +13,7 @@ import type {AsyncStatus} from '@feltcoop/felt/util/async.js';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {ClientPersona, AccountPersona} from '$lib/vocab/persona/persona';
 import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -48,15 +48,15 @@ export interface Ui {
 
 	// db state and caches
 	account: Readable<ClientAccount | null>;
-	personas: Mutable<Array<Readable<Persona>>>;
+	personas: Mutable<Array<Readable<ClientPersona>>>;
 	session: Readable<ClientSession>;
-	sessionPersonas: Mutable<Array<Readable<Persona>>>;
+	sessionPersonas: Mutable<Array<Readable<AccountPersona>>>;
 	sessionPersonaIndexById: Readable<Map<number, number>>;
 	communities: Mutable<Array<Readable<Community>>>;
 	roles: Mutable<Array<Readable<Role>>>;
 	spaces: Mutable<Array<Readable<Space>>>;
 	assignments: Mutable<Set<Assignment>>;
-	personaById: Map<number, Readable<Persona>>;
+	personaById: Map<number, Readable<ClientPersona>>;
 	communityById: Map<number, Readable<Community>>;
 	roleById: Map<number, Readable<Role>>;
 	assignmentById: Map<number, Assignment>;
@@ -66,14 +66,14 @@ export interface Ui {
 	// derived state
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
-	personasByCommunityId: Readable<Map<number, Array<Readable<Persona>>>>;
+	personasByCommunityId: Readable<Map<number, Array<Readable<ClientPersona>>>>;
 	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
 	queryByKey: Map<number, {data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}>;
 	sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>>;
 	destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>>;
-	communitiesBySessionPersona: Readable<Map<Readable<Persona>, Array<Readable<Community>>>>;
-	adminPersonas: Readable<Set<Readable<Persona>>>;
+	communitiesBySessionPersona: Readable<Map<Readable<AccountPersona>, Array<Readable<Community>>>>;
+	adminPersonas: Readable<Set<Readable<ClientPersona>>>;
 	// view state
 	mobile: Readable<boolean>;
 	layout: Writable<{width: number; height: number}>; // TODO maybe make `Readable` and update with an event? `resizeLayout`?
@@ -84,7 +84,7 @@ export interface Ui {
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the community
 	ephemera: Readable<EphemeraResponse | null>;
 	personaIdSelection: Readable<number | null>;
-	personaSelection: Readable<Readable<Persona> | null>;
+	personaSelection: Readable<Readable<AccountPersona> | null>;
 	personaIndexSelection: Readable<number | null>;
 	communityIdSelectionByPersonaId: Mutable<Map<number, number | null>>;
 	communitySelection: Readable<Readable<Community> | null>;
@@ -109,13 +109,13 @@ export const toUi = (
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
 	// TODO these `Persona`s need additional data compared to every other `Persona`
-	const sessionPersonas = mutable<Array<Writable<Persona>>>([]);
-	const personas = mutable<Array<Writable<Persona>>>([]);
+	const sessionPersonas = mutable<Array<Writable<AccountPersona>>>([]);
+	const personas = mutable<Array<Writable<ClientPersona>>>([]);
 	const communities = mutable<Array<Writable<Community>>>([]);
 	const roles = mutable<Array<Writable<Role>>>([]);
 	const spaces = mutable<Array<Writable<Space>>>([]);
 	const assignments = mutable<Set<Assignment>>(new Set());
-	const personaById: Map<number, Writable<Persona>> = new Map();
+	const personaById: Map<number, Writable<ClientPersona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();
 	const assignmentById: Map<number, Assignment> = new Map();
@@ -144,12 +144,12 @@ export const toUi = (
 		},
 	);
 
-	const personasByCommunityId: Readable<Map<number, Array<Writable<Persona>>>> = derived(
+	const personasByCommunityId: Readable<Map<number, Array<Writable<ClientPersona>>>> = derived(
 		[communities, assignments],
 		([$communities, $assignments]) => {
-			const map: Map<number, Array<Writable<Persona>>> = new Map();
+			const map: Map<number, Array<Writable<ClientPersona>>> = new Map();
 			for (const community of $communities.value) {
-				const communityPersonas: Set<Writable<Persona>> = new Set();
+				const communityPersonas: Set<Writable<ClientPersona>> = new Set();
 				const {community_id} = community.get();
 				for (const assignment of $assignments.value) {
 					if (assignment.community_id === community_id) {
@@ -205,7 +205,8 @@ export const toUi = (
 	const personaSelection = derived(
 		[personaIdSelection],
 		([$personaIdSelection]) =>
-			($personaIdSelection && personaById.get($personaIdSelection)) || null,
+			($personaIdSelection && (personaById.get($personaIdSelection) as Writable<AccountPersona>)) ||
+			null,
 	);
 	const personaIndexSelection = derived(
 		[personaSelection, sessionPersonas],
@@ -216,31 +217,32 @@ export const toUi = (
 		[sessionPersonas],
 		([$sessionPersonas]) => new Map($sessionPersonas.value.map((p, i) => [p.get().persona_id, i])),
 	);
-	const communitiesBySessionPersona: Readable<Map<Writable<Persona>, Array<Writable<Community>>>> =
-		derived(
-			[sessionPersonas, assignments, communities],
-			([$sessionPersonas, $assignments, $communities]) => {
-				const map: Map<Writable<Persona>, Array<Writable<Community>>> = new Map();
-				for (const sessionPersona of $sessionPersonas.value) {
-					const $sessionPersona = sessionPersona.get();
-					const sessionPersonaCommunities: Array<Writable<Community>> = [];
-					for (const community of $communities.value) {
-						const $community = community.get();
-						for (const assignment of $assignments.value) {
-							if (
-								assignment.community_id === $community.community_id &&
-								assignment.persona_id === $sessionPersona.persona_id
-							) {
-								sessionPersonaCommunities.push(community);
-								break;
-							}
+	const communitiesBySessionPersona: Readable<
+		Map<Writable<AccountPersona>, Array<Writable<Community>>>
+	> = derived(
+		[sessionPersonas, assignments, communities],
+		([$sessionPersonas, $assignments, $communities]) => {
+			const map: Map<Writable<AccountPersona>, Array<Writable<Community>>> = new Map();
+			for (const sessionPersona of $sessionPersonas.value) {
+				const $sessionPersona = sessionPersona.get();
+				const sessionPersonaCommunities: Array<Writable<Community>> = [];
+				for (const community of $communities.value) {
+					const $community = community.get();
+					for (const assignment of $assignments.value) {
+						if (
+							assignment.community_id === $community.community_id &&
+							assignment.persona_id === $sessionPersona.persona_id
+						) {
+							sessionPersonaCommunities.push(community);
+							break;
 						}
 					}
-					map.set(sessionPersona, sessionPersonaCommunities);
 				}
-				return map;
-			},
-		);
+				map.set(sessionPersona, sessionPersonaCommunities);
+			}
+			return map;
+		},
+	);
 	// TODO should these be store references instead of ids?
 	const communityIdSelectionByPersonaId = mutable<Map<number, number | null>>(new Map());
 	const communitySelection = derived(

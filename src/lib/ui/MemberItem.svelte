@@ -3,14 +3,14 @@
 
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {ClientPersona} from '$lib/vocab/persona/persona';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 
 	const {
 		ui: {contextmenu, personaById},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<ClientPersona>;
 </script>
 
 <li

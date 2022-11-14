@@ -4,11 +4,11 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import type {Community} from '$lib/vocab/community/community';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import type {Space} from '$lib/vocab/space/space';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 
-	export let persona: Readable<Persona> | null = null;
+	export let persona: Readable<AccountPersona> | null = null;
 	export let community: Readable<Community> | null = null;
 	export let space: Readable<Space> | null = null;
 </script>

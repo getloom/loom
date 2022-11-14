@@ -3,14 +3,14 @@
 
 	import type {Community} from '$lib/vocab/community/community.js';
 	import {getApp} from '$lib/ui/app';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {Role} from '$lib/vocab/role/role';
 
 	const {dispatch} = getApp();
 
-	export let persona: Readable<Persona>;
-	export let assignmentPersona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
+	export let assignmentPersona: Readable<ClientPersona>;
 	export let community: Readable<Community>;
 	export let role: Readable<Role>;
 

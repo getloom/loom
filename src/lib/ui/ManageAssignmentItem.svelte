@@ -5,12 +5,12 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {Community} from '$lib/vocab/community/community';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 
 	const {dispatch} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 
 	let errorMessage: string | undefined;

@@ -3,11 +3,11 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	const dispatcher = createEventDispatcher<{submit: string}>();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let value = '';
 
 	const onKeydown = async (e: KeyboardEvent) => {

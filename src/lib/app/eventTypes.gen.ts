@@ -37,7 +37,7 @@ import type {ApiResult} from '$lib/server/api';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';
 import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Community} from '$lib/vocab/community/community';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';

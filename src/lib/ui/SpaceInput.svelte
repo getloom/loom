@@ -9,7 +9,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
 	import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
@@ -20,7 +20,7 @@
 		ui: {sessionPersonaIndexById, adminPersonas},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 	export let done: (() => void) | undefined = undefined;
 

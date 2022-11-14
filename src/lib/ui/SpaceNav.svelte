@@ -3,7 +3,7 @@
 	import type {Community} from '$lib/vocab/community/community.js';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import SpaceNavItem from '$lib/ui/SpaceNavItem.svelte';
-	import type {Persona} from '$lib/vocab/persona/persona.js';
+	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
 	import {getApp} from '$lib/ui/app';
 	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
 
@@ -11,7 +11,7 @@
 		ui: {contextmenu},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 	export let spaces: Array<Readable<Space>>;
 	export let selectedSpace: Readable<Space> | null;

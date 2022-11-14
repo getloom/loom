@@ -4,7 +4,7 @@
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import type {Role} from '$lib/vocab/role/role';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import AssignmentItem from '$lib/ui/AssignmentItem.svelte';
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import type {Community} from '$lib/vocab/community/community';
@@ -14,7 +14,7 @@
 		ui: {assignmentsByRoleId},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let role: Readable<Role>;
 	export let community: Readable<Community>;
 	$: assignments = $assignmentsByRoleId.get($role.role_id);

@@ -9,7 +9,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 
 	const {
@@ -17,7 +17,7 @@
 		dispatch,
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;
 	export let space: Readable<Space>;
 	export let selectedList: Readable<Entity> | null;

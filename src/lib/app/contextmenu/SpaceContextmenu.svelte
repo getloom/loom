@@ -5,7 +5,7 @@
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import type {Community} from '$lib/vocab/community/community';
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
@@ -14,7 +14,7 @@
 
 	const {dispatch} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 	export let space: Readable<Space>;
 </script>

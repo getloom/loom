@@ -2,12 +2,12 @@ import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {removeUnordered} from '@feltcoop/felt/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import {Mutated} from '$lib/util/Mutated';
 
 export const stashPersonas = (
 	{personaById, personas, sessionPersonas, communityIdSelectionByPersonaId}: WritableUi,
-	$personas: Persona[],
+	$personas: ClientPersona[],
 	mutated = new Mutated('stashPersonas'),
 	replace = false,
 ): void => {
@@ -28,9 +28,9 @@ export const stashPersonas = (
 			personaById.set($persona.persona_id, persona);
 			personas.get().value.push(persona);
 			mutated.add(personas);
-			if ($persona.account_id) {
+			if ('account_id' in $persona) {
 				// Adding a session persona.
-				sessionPersonas.get().value.push(persona);
+				sessionPersonas.get().value.push(persona as Writable<AccountPersona>);
 				mutated.add(sessionPersonas);
 				communityIdSelectionByPersonaId.get().value.set($persona.persona_id, $persona.community_id);
 				mutated.add(communityIdSelectionByPersonaId);
@@ -42,7 +42,7 @@ export const stashPersonas = (
 
 export const evictPersonas = (
 	ui: WritableUi,
-	personasToEvict: Set<Writable<Persona>>,
+	personasToEvict: Set<Writable<ClientPersona>>,
 	mutated = new Mutated('evictPersonas'),
 ): void => {
 	for (const p of personasToEvict) {
@@ -53,7 +53,7 @@ export const evictPersonas = (
 
 export const evictPersona = (
 	{personas, personaById}: WritableUi,
-	personaToEvict: Writable<Persona>,
+	personaToEvict: Writable<ClientPersona>,
 	mutated = new Mutated('evictPersona'),
 ): void => {
 	removeUnordered(personas.get().value, personas.get().value.indexOf(personaToEvict));

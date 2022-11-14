@@ -5,10 +5,12 @@ import {eventInfos} from '$lib/app/events';
 import {toSchemaName} from '$lib/util/schema';
 import {AccountSchema, AccountSettingsSchema} from '$lib/vocab/account/account.schema';
 import {
+	PersonaSchema,
 	AccountPersonaSchema,
 	CommunityPersonaSchema,
 	GhostPersonaSchema,
-	PersonaSchema,
+	PublicPersonaSchema,
+	ClientPersonaSchema,
 } from '$lib/vocab/persona/persona.schema';
 import {
 	CommunitySchema,
@@ -40,10 +42,12 @@ export const toFeltVocabSchema = (schema: VocabSchema): FeltVocabSchema => {
 export const vocabSchemas = [
 	AccountSchema,
 	AccountSettingsSchema,
+	PersonaSchema,
 	AccountPersonaSchema,
 	CommunityPersonaSchema,
 	GhostPersonaSchema,
-	PersonaSchema,
+	PublicPersonaSchema,
+	ClientPersonaSchema,
 	CommunitySchema,
 	CommunitySettingsSchema,
 	InitialCommunitySettingsSchema,

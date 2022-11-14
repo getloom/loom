@@ -3,7 +3,7 @@ import {browser} from '$app/environment';
 import {goto} from '$app/navigation';
 import {Logger} from '@feltcoop/felt/util/log.js';
 
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {PERSONA_QUERY_KEY, toSearchParams} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
 
@@ -29,7 +29,7 @@ export const syncUiToUrl = (
 
 	const rawPersonaIndex = url.searchParams.get(PERSONA_QUERY_KEY);
 	const personaIndex = rawPersonaIndex ? Number(rawPersonaIndex) : null;
-	const persona: Readable<Persona> | null =
+	const persona: Readable<AccountPersona> | null =
 		personaIndex === null ? null : sessionPersonas.get().value[personaIndex];
 	if (!persona) {
 		if (browser) {

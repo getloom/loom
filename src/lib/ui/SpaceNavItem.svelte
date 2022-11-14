@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
 
-	import type {Persona} from '$lib/vocab/persona/persona.js';
+	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
 	import type {Space} from '$lib/vocab/space/space.js';
 	import type {Community} from '$lib/vocab/community/community.js';
 	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
@@ -16,7 +16,7 @@
 		ui: {contextmenu, mobile, expandMainNav, sessionPersonaIndexById, freshnessByDirectoryId},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 	export let space: Readable<Space>;
 	export let selected: boolean;

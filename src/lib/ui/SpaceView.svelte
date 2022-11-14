@@ -3,7 +3,7 @@
 
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Community} from '$lib/vocab/community/community';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
 	import {setViewContext} from '$lib/vocab/view/view';
 	import SvastText from '$lib/ui/SvastText.svelte';
@@ -13,7 +13,7 @@
 		ui: {viewBySpace},
 	} = getApp();
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 	export let space: Readable<Space>;
 

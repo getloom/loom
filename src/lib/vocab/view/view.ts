@@ -5,7 +5,7 @@ import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import type {Space} from '$lib/vocab/space/space';
 import type {Community} from '$lib/vocab/community/community';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {parseSvast} from '$lib/util/parseSvast';
 
 export type ViewData = Root;
@@ -82,7 +82,7 @@ export const toViewProps = (
 };
 
 export interface ViewContext {
-	persona: Readable<Persona>;
+	persona: Readable<AccountPersona>;
 	community: Readable<Community>;
 	space: Readable<Space>;
 }

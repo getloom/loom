@@ -4,14 +4,14 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Community} from '$lib/vocab/community/community.js';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
 
 	import type {Role} from '$lib/vocab/role/role';
 	import RoleDetails from '$lib/ui/RoleDetails.svelte';
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
 
 	$: defaultRoleId = $community.settings.defaultRoleId;

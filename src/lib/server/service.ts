@@ -4,7 +4,7 @@ import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {Database} from '$lib/db/Database';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {ActorPersona} from '$lib/vocab/persona/persona';
 
 export type ServiceMethod =
 	| 'GET'
@@ -58,7 +58,7 @@ export interface NonAuthorizedServiceRequest<TParams = any, TResult = any>
 }
 export interface AuthorizedServiceRequest<TParams = any, TResult = any>
 	extends NonAuthorizedServiceRequest<TParams, TResult> {
-	actor: Persona;
+	actor: ActorPersona;
 }
 
 export function toServiceRequest<TParams = any, TResult extends Result = any>(
@@ -79,14 +79,14 @@ export function toServiceRequest<TParams = any, TResult extends Result = any>(
 	db: Database,
 	params: TParams,
 	account_id: number,
-	actor: Persona,
+	actor: ActorPersona,
 	session: ISessionApi,
 ): AuthorizedServiceRequest<TParams, TResult>;
 export function toServiceRequest<TParams = any, TResult extends Result = any>(
 	db: Database,
 	params: TParams,
 	account_id: number | undefined,
-	actor: Persona | undefined,
+	actor: ActorPersona | undefined,
 	session: ISessionApi,
 ): ServiceRequest {
 	let repos: Repos | undefined; // cache for service composition

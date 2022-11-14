@@ -3,7 +3,8 @@ import {OK, unwrap, type Result} from '@feltcoop/felt';
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {ActorPersona, Persona} from '$lib/vocab/persona/persona';
+import {PERSONA_COLUMNS} from '$lib/vocab/persona/personaHelpers.server';
 
 // This currently only checks for the existence of an `account_id` on the request.
 // We'll want to allow services to declare more complex rules.
@@ -12,7 +13,7 @@ export const authorize = async (
 	repos: Repos,
 	account_id: number | undefined,
 	params: {actor?: number; [key: string]: unknown},
-): Promise<Result<{value?: {actor?: Persona}}, ErrorResponse & {status: number}>> => {
+): Promise<Result<{value?: {actor?: ActorPersona}}, ErrorResponse & {status: number}>> => {
 	// Authorize all services by default; each service can opt-out as needed.
 	const requiresAuthentication = service.event.authenticate ?? true;
 	if (!requiresAuthentication) return OK;
@@ -34,9 +35,14 @@ export const authorize = async (
 	if (!params.actor) {
 		return {ok: false, status: 400, message: 'actor is required'};
 	}
-	const actor = unwrap(await repos.persona.findById(params.actor));
+	const actor = unwrap(
+		await repos.persona.findById<Persona>(params.actor, PERSONA_COLUMNS.Persona),
+	);
 	if (!actor) {
 		return {ok: false, status: 400, message: 'actor cannot be found'};
+	}
+	if (actor.type === 'ghost') {
+		return {ok: false, status: 400, message: 'ghost cannot be an actor'};
 	}
 	if (actor.account_id !== account_id) {
 		return {ok: false, status: 403, message: 'actor is not authorized for this account'};

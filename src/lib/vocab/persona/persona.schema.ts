@@ -8,6 +8,12 @@ export const PersonaSchema = {
 	tsType: 'AccountPersona | CommunityPersona | GhostPersona',
 };
 
+export const ActorPersonaSchema = {
+	$id: '/schemas/ActorPersona.json',
+	anyOf: [{$ref: '/schemas/AccountPersona.json'}, {$ref: '/schemas/CommunityPersona.json'}],
+	tsType: 'AccountPersona | CommunityPersona',
+};
+
 export const AccountPersonaSchema = {
 	$id: '/schemas/AccountPersona.json',
 	type: 'object',
@@ -57,4 +63,27 @@ export const GhostPersonaSchema = {
 	},
 	required: ['persona_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
+};
+
+// TODO this will need to be split into a type union to support community "group" personas,
+// and it's related to `community_id` being overloaded for account/community persona types.
+// see: https://github.com/feltcoop/felt-server/pull/545#discussion_r1013465948
+export const PublicPersonaSchema = {
+	$id: '/schemas/PublicPersona.json',
+	type: 'object',
+	properties: {
+		persona_id: {type: 'number'},
+		type: {type: 'string', enum: ['account', 'community', 'ghost']},
+		name: {type: 'string'},
+		icon: {type: 'string'},
+		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
+	},
+	required: ['persona_id', 'type', 'name', 'created'],
+	additionalProperties: false,
+};
+
+export const ClientPersonaSchema = {
+	$id: '/schemas/ClientPersona.json',
+	anyOf: [{$ref: '/schemas/AccountPersona.json'}, {$ref: '/schemas/PublicPersona.json'}],
+	tsType: 'AccountPersona | PublicPersona',
 };

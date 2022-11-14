@@ -4,9 +4,9 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import TodoItem from '$lib/ui/TodoItem.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 	export let space: Readable<Space>;
 	export let selectedList: Readable<Entity> | null;

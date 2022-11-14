@@ -9,6 +9,7 @@ import {
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
+import type {CommunityPersona} from '$lib/vocab/persona/persona';
 
 /* test__assignmentServices */
 const test__assignmentServices = suite<TestDbContext & TestAppContext>('assignmentServices');
@@ -17,14 +18,14 @@ test__assignmentServices.before(setupDb);
 test__assignmentServices.after(teardownDb);
 
 test__assignmentServices('disallow creating duplicate assignments', async ({db, random}) => {
-	const {community, personas} = await random.community();
+	const {community, persona} = await random.community();
 	unwrapError(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(db, personas[1]),
+			...toServiceRequestMock(db, persona),
 			params: {
-				actor: personas[1].persona_id,
+				actor: persona.persona_id,
 				community_id: community.community_id,
-				persona_id: personas[1].persona_id,
+				persona_id: persona.persona_id,
 				role_id: community.settings.defaultRoleId,
 			},
 		}),
@@ -50,15 +51,15 @@ test__assignmentServices(
 );
 
 test__assignmentServices('delete a assignment in a community', async ({db, random}) => {
-	const {community, personas, assignments} = await random.community();
+	const {community, persona, assignments} = await random.community();
 	const assignment = assignments.find(
-		(a) => a.persona_id === personas[1].persona_id && a.community_id === community.community_id,
+		(a) => a.persona_id === persona.persona_id && a.community_id === community.community_id,
 	)!;
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(db, personas[1]),
+			...toServiceRequestMock(db, persona),
 			params: {
-				actor: personas[1].persona_id,
+				actor: persona.persona_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -82,14 +83,16 @@ test__assignmentServices('fail to delete a personal assignment', async ({db, ran
 
 test__assignmentServices('fail to delete a community persona assignment', async ({db, random}) => {
 	const {community, personas, assignments} = await random.community();
+	const communityPersona = personas.find((p) => p.type === 'community') as CommunityPersona;
 	const assignment = assignments.find(
-		(a) => a.persona_id === personas[0].persona_id && a.community_id === community.community_id,
+		(a) =>
+			a.persona_id === communityPersona.persona_id && a.community_id === community.community_id,
 	)!;
 	unwrapError(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(db, personas[0]),
+			...toServiceRequestMock(db, communityPersona),
 			params: {
-				actor: personas[0].persona_id,
+				actor: communityPersona.persona_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),

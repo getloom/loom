@@ -16,7 +16,7 @@ test__EntityRepo('create and delete entities', async ({db, random}) => {
 	const {
 		community,
 		account,
-		personas: [, persona],
+		persona,
 		spaces: [space],
 	} = await random.community();
 	const assertDbCounts = await testDbCounts(db);

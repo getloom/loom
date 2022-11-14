@@ -5,13 +5,13 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Community} from '$lib/vocab/community/community';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
 
 	const {dispatch} = getApp();
 
 	export let community: Readable<Community>;
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let done: (() => void) | undefined = undefined;
 
 	let errorMessage: string | undefined;

@@ -11,7 +11,7 @@ import {
 	type NonAuthenticatedServiceRequest,
 	type NonAuthorizedServiceRequest,
 } from '$lib/server/service';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {ActorPersona} from '$lib/vocab/persona/persona';
 
 configureLogLevel(LogLevel.Info);
 
@@ -41,13 +41,13 @@ export function toServiceRequestMock(
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	db: Database,
-	actor: Persona,
+	actor: ActorPersona,
 	session?: SessionApiMock,
 	account_id?: number,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	db: Database,
-	actor?: Persona,
+	actor?: ActorPersona,
 	session = new SessionApiMock(), // some tests need to reuse the same mock session
 	account_id = actor?.account_id || undefined,
 ): OmitStrict<ServiceRequest, 'params'> {

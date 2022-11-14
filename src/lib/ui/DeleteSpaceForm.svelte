@@ -6,14 +6,14 @@
 	import {getApp} from '$lib/ui/app';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Community} from '$lib/vocab/community/community';
-	import type {Persona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {dispatch} = getApp();
 
 	export let space: Readable<Space>;
 	export let community: Readable<Community>;
-	export let persona: Readable<Persona>;
+	export let persona: Readable<AccountPersona>;
 	export let done: (() => void) | undefined = undefined;
 	export let pending = false;
 

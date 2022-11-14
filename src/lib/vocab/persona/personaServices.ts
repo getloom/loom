@@ -16,7 +16,7 @@ import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Role} from '$lib/vocab/role/role';
 import type {Community} from '$lib/vocab/community/community';
-import type {Persona} from '$lib/vocab/persona/persona';
+import type {ClientPersona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
@@ -48,7 +48,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				return {ok: false, status: 409, message: 'a persona with that name already exists'};
 			}
 
-			const personas: Persona[] = [];
+			const personas: ClientPersona[] = [];
 			const communities: Community[] = [];
 			const assignments: Assignment[] = [];
 			const roles: Role[] = [];

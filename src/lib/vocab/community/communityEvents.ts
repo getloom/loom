@@ -26,7 +26,10 @@ export const CreateCommunity: ServiceEventInfo = {
 				items: {$ref: '/schemas/Entity.json', tsType: '(Entity & {data: DirectoryEntityData})'},
 			},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
-			personas: {type: 'array', items: {$ref: '/schemas/Persona.json', tsType: 'Persona'}},
+			personas: {
+				type: 'array',
+				items: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
+			},
 		},
 		required: ['community', 'role', 'spaces', 'directories', 'assignments', 'personas'],
 		additionalProperties: false,
@@ -63,7 +66,10 @@ export const ReadCommunity: ServiceEventInfo = {
 			},
 			roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
-			personas: {type: 'array', items: {$ref: '/schemas/Persona.json', tsType: 'Persona'}},
+			personas: {
+				type: 'array',
+				items: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
+			},
 		},
 		required: ['community', 'spaces', 'directories', 'roles', 'assignments', 'personas'],
 		additionalProperties: false,
