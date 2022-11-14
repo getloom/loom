@@ -1,6 +1,7 @@
 import type {SvelteChild, Text} from 'svast';
 import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
+import {checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 
 // Used to avoids infinite loops because newly added children get walked.
 const ADDED_BY_FELT = Symbol();
@@ -50,6 +51,7 @@ const parseSvastText = (node: Text): SvelteChild => {
 	let word: string;
 	let lastCharIndex: number;
 	let firstChar: string;
+	let restStr: string;
 	let lastChar: string;
 	// eslint-disable-next-line @typescript-eslint/prefer-for-of
 	for (let i = 0; i < words.length; i++) {
@@ -92,6 +94,25 @@ const parseSvastText = (node: Text): SvelteChild => {
 				children: [
 					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
 				],
+			});
+		} else if (firstChar === '@' && !checkPersonaName((restStr = word.substring(1)))) {
+			// `@persona` mentions
+			flushPlainText();
+			(children || (children = [])).push({
+				[ADDED_BY_FELT as any]: true,
+				type: 'svelteComponent',
+				tagName: 'PersonaMention',
+				properties: [
+					{
+						type: 'svelteProperty',
+						name: 'name',
+						value: [{[ADDED_BY_FELT as any]: true, type: 'text', value: restStr}],
+						modifiers: [],
+						shorthand: 'none',
+					},
+				],
+				selfClosing: false,
+				children: [],
 			});
 		} else {
 			plainText += word;

@@ -13,7 +13,7 @@
 
 	const {dispatch} = getApp();
 
-	$: value = ($entity as any)[propertyName];
+	$: value = $entity[propertyName as keyof Entity];
 
 	const serialize = (propertyName: string, $entity: Entity) =>
 		propertyName === 'data' || propertyName === 'view' ? JSON.stringify($entity.data) : undefined;

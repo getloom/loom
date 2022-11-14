@@ -4,10 +4,10 @@ import {GUEST_PERSONA_NAME} from '$lib/vocab/persona/constants';
 import type {Entity} from '$lib/vocab/entity/entity';
 
 export const toName = (entity: null | undefined | {name?: string}): string =>
-	(entity as any)?.name ?? GUEST_PERSONA_NAME;
+	entity?.name ?? GUEST_PERSONA_NAME;
 
 export const toIcon = (entity: null | undefined | {icon?: string}): string | null =>
-	(entity as any)?.icon ?? null;
+	entity?.icon ?? null;
 
 // TODO generic sort helpers -- maybe we want abstractions
 // with with cached+sorted views of arrays with splice insertion for efficiency
