@@ -66,6 +66,7 @@ form ul {
 }
 .menu-item {
 	width: 100%;
+	min-height: var(--icon_size_sm);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
