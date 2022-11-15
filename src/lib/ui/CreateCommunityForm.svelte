@@ -86,7 +86,7 @@
 </script>
 
 <div class="markup padded-xl">
-	<form>
+	<form {...$$restProps}>
 		<legend>Create a new Community</legend>
 		<ContextInfo {persona} />
 		<fieldset>

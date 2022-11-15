@@ -31,7 +31,7 @@
 	};
 </script>
 
-<form>
+<form {...$$restProps}>
 	<PendingButton pending={!!submitting} on:click={signOut} {disabled}>sign out</PendingButton>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>

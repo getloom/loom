@@ -72,7 +72,7 @@
 	};
 </script>
 
-<form class="panel markup padded-xl">
+<form class="panel markup padded-xl" {...$$restProps}>
 	<fieldset class="centered">
 		<legend>change account password</legend>
 		<label>

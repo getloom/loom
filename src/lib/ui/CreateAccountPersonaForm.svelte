@@ -69,7 +69,7 @@
 <!-- TODO these centered classes -- ideally would have a single class or change the defaults,
 maybe `form.centered` should be interpreted a particular way in Felt? -->
 <div class="markup padded-xl centered">
-	<form class="centered">
+	<form class="centered" {...$$restProps}>
 		<legend>Create a Persona</legend>
 		<fieldset class="centered">
 			<label>

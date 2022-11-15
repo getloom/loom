@@ -11,7 +11,7 @@
 	$: communities = $communitiesBySessionPersona.get(persona)!;
 </script>
 
-<form class="padded-xl">
+<form class="padded-xl" {...$$restProps}>
 	<legend>Manage Assignments</legend>
 	<ContextInfo {persona} />
 	<ul>

@@ -47,7 +47,7 @@
 </script>
 
 <div class="markup padded-xl">
-	<form>
+	<form {...$$restProps}>
 		<legend>Delete Space?</legend>
 		<ContextInfo {persona} {community} {space} />
 		{#if errorMessage}

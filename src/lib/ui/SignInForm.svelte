@@ -60,7 +60,7 @@
 </script>
 
 <HeroIcon />
-<form>
+<form {...$$restProps}>
 	<fieldset>
 		<label>
 			<div class="title">email</div>
