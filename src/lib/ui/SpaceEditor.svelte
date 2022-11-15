@@ -8,11 +8,13 @@
 	import {getApp} from '$lib/ui/app';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
+	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	export let persona: Readable<AccountPersona>;
 	export let space: Readable<Space>;
 	export let community: Readable<Community>;
+	export let done: (() => void) | undefined = undefined;
 
 	const {dispatch, devmode} = getApp();
 
@@ -55,7 +57,26 @@
 				</li>
 			</ul>
 		</fieldset>
+		<fieldset>
+			<button
+				title="delete space"
+				on:click={() =>
+					dispatch.OpenDialog({
+						Component: DeleteSpaceForm,
+						props: {
+							persona,
+							community,
+							space,
+							done: () => {
+								dispatch.CloseDialog();
+								done?.();
+							},
+						},
+					})}>delete space</button
+			>
+		</fieldset>
 	</form>
+
 	{#if $devmode}
 		<hr />
 		<section>
