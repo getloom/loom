@@ -13,6 +13,7 @@ import type {
 	CreateTieParams,
 	CreateRoleParams,
 	SignInParams,
+	CreatePolicyParams,
 } from '$lib/app/eventTypes';
 import type {Database} from '$lib/db/Database';
 import type {DirectoryEntityData, EntityData} from '$lib/vocab/entity/entityData';
@@ -29,6 +30,8 @@ import type {Role} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 import {randomHue} from '$lib/ui/color';
+import type {Policy} from '$lib/vocab/policy/policy';
+import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 
@@ -45,6 +48,7 @@ export const randomView = (): string => '<Chat />';
 export const randomEntityData = (): EntityData => ({type: 'Note', content: randomString()});
 export const randomTieType = randomString;
 export const randomRoleName = randomString;
+export const randomPermissionName = randomString;
 export const randomAccountParams = (): SignInParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
@@ -101,6 +105,12 @@ export const randomRoleParams = (actor: number, community_id: number): CreateRol
 	name: randomRoleName(),
 });
 
+export const randomPolicyParams = (actor: number, role_id: number): CreatePolicyParams => ({
+	actor,
+	role_id,
+	permission: randomPermissionName(),
+});
+
 // TODO maybe compute in relation to `RandomVocabContext`
 export interface RandomVocab {
 	account?: RandomTestAccount;
@@ -109,6 +119,7 @@ export interface RandomVocab {
 	space?: Space;
 	entity?: Entity;
 	role?: Role;
+	policy?: Policy;
 	assignments?: Assignment[];
 }
 
@@ -310,5 +321,28 @@ export class RandomVocabContext {
 			}),
 		);
 		return {role, persona, account, community};
+	}
+
+	async policy(
+		community?: Community,
+		persona?: AccountPersona,
+		account?: Account,
+	): Promise<{
+		policy: Policy;
+		persona: AccountPersona;
+		account: Account;
+		community: Community;
+	}> {
+		if (!account) account = await this.account();
+		if (!persona) ({persona} = await this.persona(account));
+		if (!community) ({community} = await this.community(persona, account));
+		const params = randomPolicyParams(persona.persona_id, community.settings.defaultRoleId);
+		const {policy} = unwrap(
+			await CreatePolicyService.perform({
+				...toServiceRequestMock(this.db, persona),
+				params,
+			}),
+		);
+		return {policy, persona, account, community};
 	}
 }

@@ -22,6 +22,7 @@ import {SpaceSchema} from '$lib/vocab/space/space.schema';
 import {EntitySchema} from '$lib/vocab/entity/entity.schema';
 import {TieSchema} from '$lib/vocab/tie/tie.schema';
 import {RoleSchema} from '$lib/vocab/role/role.schema';
+import {PolicySchema} from '$lib/vocab/policy/policy.schema';
 
 // TODO The casts to `as VocabSchema` in this file
 // are needed because the `json-schema` types are very strict,
@@ -56,6 +57,7 @@ export const vocabSchemas = [
 	EntitySchema,
 	TieSchema,
 	RoleSchema,
+	PolicySchema,
 ].map((s) => toFeltVocabSchema(s as VocabSchema));
 
 export const schemas = vocabSchemas.concat(

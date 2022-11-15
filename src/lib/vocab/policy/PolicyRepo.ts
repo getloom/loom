@@ -7,12 +7,12 @@ import type {Policy} from '$lib/vocab/policy/policy';
 
 const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
 
-export class RoleRepo extends PostgresRepo {
-	async filterByPolicyId(policy_id: number): Promise<Result<{value: Policy[]}>> {
-		log.trace('[filterByPolicyId]', policy_id);
+export class PolicyRepo extends PostgresRepo {
+	async filterByRoleId(role_id: number): Promise<Result<{value: Policy[]}>> {
+		log.trace('[filterByRoleId]', role_id);
 		const result = await this.sql<Policy[]>`
 			SELECT policy_id, role_id, permission, data, created, updated 
-			FROM policies WHERE policy_id=${policy_id}
+			FROM policies WHERE role_id=${role_id}
 		`;
 		return {ok: true, value: result};
 	}
@@ -28,9 +28,12 @@ export class RoleRepo extends PostgresRepo {
 		return {ok: true, value: result[0]};
 	}
 
-	async updatePolicy(policy_id: number, data: object): Promise<Result<{value: Policy}>> {
+	async updatePolicy(
+		policy_id: number,
+		data: object | null | undefined,
+	): Promise<Result<{value: Policy}>> {
 		const result = await this.sql<Policy[]>`
-			UPDATE roles SET data=${this.sql.json(data as any)} WHERE policy_id=${policy_id}
+			UPDATE policies SET data=${this.sql.json(data as any)} WHERE policy_id=${policy_id}
 			RETURNING *
 		`;
 		if (!result.count) return NOT_OK;

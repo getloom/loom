@@ -19,6 +19,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
+import type {Policy} from '$lib/vocab/policy/policy';
 import type {DispatchContext} from '$lib/app/dispatch';
 import type {ClientSession, ClientAccountSession} from '$lib/session/clientSession';
 
@@ -58,6 +59,10 @@ export type ServiceEventName =
 	| 'ReadRoles'
 	| 'UpdateRole'
 	| 'DeleteRole'
+	| 'CreatePolicy'
+	| 'ReadPolicies'
+	| 'UpdatePolicy'
+	| 'DeletePolicy'
 	| 'Ping'
 	| 'Ephemera';
 
@@ -108,6 +113,10 @@ export interface EventParamsByName {
 	ReadRoles: ReadRolesParams;
 	UpdateRole: UpdateRoleParams;
 	DeleteRole: DeleteRoleParams;
+	CreatePolicy: CreatePolicyParams;
+	ReadPolicies: ReadPoliciesParams;
+	UpdatePolicy: UpdatePolicyParams;
+	DeletePolicy: DeletePolicyParams;
 	Ping: PingParams;
 	Ephemera: EphemeraParams;
 	ToggleMainNav: ToggleMainNavParams;
@@ -152,6 +161,10 @@ export interface EventResponseByName {
 	ReadRoles: ReadRolesResponse;
 	UpdateRole: UpdateRoleResponse;
 	DeleteRole: DeleteRoleResponse;
+	CreatePolicy: CreatePolicyResponse;
+	ReadPolicies: ReadPoliciesResponse;
+	UpdatePolicy: UpdatePolicyResponse;
+	DeletePolicy: DeletePolicyResponse;
 	Ping: PingResponse;
 	Ephemera: EphemeraResponse;
 }
@@ -207,6 +220,10 @@ export interface ServiceByName {
 	ReadRoles: AuthorizedService<ReadRolesParams, ReadRolesResponseResult>;
 	UpdateRole: AuthorizedService<UpdateRoleParams, UpdateRoleResponseResult>;
 	DeleteRole: AuthorizedService<DeleteRoleParams, DeleteRoleResponseResult>;
+	CreatePolicy: AuthorizedService<CreatePolicyParams, CreatePolicyResponseResult>;
+	DeletePolicy: AuthorizedService<DeletePolicyParams, DeletePolicyResponseResult>;
+	ReadPolicies: AuthorizedService<ReadPoliciesParams, ReadPoliciesResponseResult>;
+	UpdatePolicy: AuthorizedService<UpdatePolicyParams, UpdatePolicyResponseResult>;
 }
 
 export interface SetSessionParams {
@@ -544,6 +561,44 @@ export interface DeleteRoleParams {
 export type DeleteRoleResponse = null;
 export type DeleteRoleResponseResult = ApiResult<DeleteRoleResponse>;
 
+export interface CreatePolicyParams {
+	actor: number;
+	role_id: number;
+	permission: string;
+}
+export interface CreatePolicyResponse {
+	policy: Policy;
+}
+export type CreatePolicyResponseResult = ApiResult<CreatePolicyResponse>;
+
+export interface ReadPoliciesParams {
+	actor: number;
+	role_id: number;
+}
+export interface ReadPoliciesResponse {
+	policies: Policy[];
+}
+export type ReadPoliciesResponseResult = ApiResult<ReadPoliciesResponse>;
+
+export interface UpdatePolicyParams {
+	actor: number;
+	policy_id: number;
+	data: {
+		[k: string]: unknown;
+	} | null;
+}
+export interface UpdatePolicyResponse {
+	policy: Policy;
+}
+export type UpdatePolicyResponseResult = ApiResult<UpdatePolicyResponse>;
+
+export interface DeletePolicyParams {
+	actor: number;
+	policy_id: number;
+}
+export type DeletePolicyResponse = null;
+export type DeletePolicyResponseResult = ApiResult<DeletePolicyResponse>;
+
 export type PingParams = null;
 export type PingResponse = null;
 export type PingResponseResult = ApiResult<PingResponse>;
@@ -642,6 +697,10 @@ export interface Dispatch {
 	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
 	UpdateRole: (params: UpdateRoleParams) => Promise<UpdateRoleResponseResult>;
 	DeleteRole: (params: DeleteRoleParams) => Promise<DeleteRoleResponseResult>;
+	CreatePolicy: (params: CreatePolicyParams) => Promise<CreatePolicyResponseResult>;
+	ReadPolicies: (params: ReadPoliciesParams) => Promise<ReadPoliciesResponseResult>;
+	UpdatePolicy: (params: UpdatePolicyParams) => Promise<UpdatePolicyResponseResult>;
+	DeletePolicy: (params: DeletePolicyParams) => Promise<DeletePolicyResponseResult>;
 	Ping: () => Promise<ApiResult<null>>;
 	Ephemera: (params: EphemeraParams) => Promise<EphemeraResponseResult>;
 	ToggleMainNav: (params: ToggleMainNavParams) => void;
@@ -758,6 +817,18 @@ export interface Mutations {
 	DeleteRole: (
 		ctx: DispatchContext<DeleteRoleParams, DeleteRoleResponseResult>,
 	) => Promise<DeleteRoleResponseResult>;
+	CreatePolicy: (
+		ctx: DispatchContext<CreatePolicyParams, CreatePolicyResponseResult>,
+	) => Promise<CreatePolicyResponseResult>;
+	ReadPolicies: (
+		ctx: DispatchContext<ReadPoliciesParams, ReadPoliciesResponseResult>,
+	) => Promise<ReadPoliciesResponseResult>;
+	UpdatePolicy: (
+		ctx: DispatchContext<UpdatePolicyParams, UpdatePolicyResponseResult>,
+	) => Promise<UpdatePolicyResponseResult>;
+	DeletePolicy: (
+		ctx: DispatchContext<DeletePolicyParams, DeletePolicyResponseResult>,
+	) => Promise<DeletePolicyResponseResult>;
 	Ping: (ctx: DispatchContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
 	Ephemera: (
 		ctx: DispatchContext<EphemeraParams, EphemeraResponseResult>,

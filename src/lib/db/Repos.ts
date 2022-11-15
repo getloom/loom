@@ -8,6 +8,7 @@ import {SpaceRepo} from '$lib/vocab/space/SpaceRepo';
 import {EntityRepo} from '$lib/vocab/entity/EntityRepo';
 import {TieRepo} from '$lib/vocab/tie/TieRepo';
 import {RoleRepo} from '$lib/vocab/role/RoleRepo';
+import {PolicyRepo} from '$lib/vocab/policy/PolicyRepo';
 
 /**
  * The `Repos` is instantiated with a `postgres.Sql` instance,
@@ -23,6 +24,7 @@ export class Repos {
 	readonly entity: EntityRepo;
 	readonly tie: TieRepo;
 	readonly role: RoleRepo;
+	readonly policy: PolicyRepo;
 
 	constructor(sql: PostgresSql) {
 		this.session = new SessionRepo(this, sql);
@@ -34,5 +36,6 @@ export class Repos {
 		this.entity = new EntityRepo(this, sql);
 		this.tie = new TieRepo(this, sql);
 		this.role = new RoleRepo(this, sql);
+		this.policy = new PolicyRepo(this, sql);
 	}
 }

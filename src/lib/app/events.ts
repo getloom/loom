@@ -34,6 +34,12 @@ import {
 import {CreateTie, ReadTies, DeleteTie} from '$lib/vocab/tie/tieEvents';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleEvents';
 import {
+	CreatePolicy,
+	ReadPolicies,
+	UpdatePolicy,
+	DeletePolicy,
+} from '$lib/vocab/policy/policyEvents';
+import {
 	Ping,
 	Ephemera,
 	ToggleMainNav,
@@ -90,6 +96,11 @@ export const eventInfos: EventInfo[] = [
 	ReadRoles,
 	UpdateRole,
 	DeleteRole,
+	// policyEvents
+	CreatePolicy,
+	ReadPolicies,
+	UpdatePolicy,
+	DeletePolicy,
 	// uiEvents
 	Ping,
 	Ephemera,

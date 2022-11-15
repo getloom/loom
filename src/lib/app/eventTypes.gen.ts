@@ -44,6 +44,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
+import type {Policy} from '$lib/vocab/policy/policy';
 import type {DispatchContext} from '$lib/app/dispatch';
 import type {ClientSession, ClientAccountSession} from '$lib/session/clientSession';
 

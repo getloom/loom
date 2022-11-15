@@ -10,6 +10,7 @@ import {
 	randomSpaceName,
 	randomCommunityParams,
 	randomRoleName,
+	randomPermissionName,
 	randomAccountName,
 	randomPassword,
 } from '$lib/util/randomVocab';
@@ -248,6 +249,33 @@ export const randomEventParams: RandomEventParams = {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!role) ({role} = await random.role(community, persona, account));
 		return {actor: persona.persona_id, role_id: role.role_id};
+	},
+	CreatePolicy: async (random, {account, persona, community, role} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!role) ({role} = await random.role(community, persona, account));
+		return {actor: persona.persona_id, role_id: role.role_id, permission: randomPermissionName()};
+	},
+	ReadPolicies: async (random, {account, persona, community, role} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!role) ({role} = await random.role(community, persona, account));
+		return {actor: persona.persona_id, role_id: role.role_id};
+	},
+	UpdatePolicy: async (random, {account, persona, community, policy} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!policy) ({policy} = await random.policy(community, persona, account));
+		return {
+			actor: persona.persona_id,
+			policy_id: policy.policy_id,
+			data: {},
+		};
+	},
+	DeletePolicy: async (random, {account, persona, community, policy} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		if (!policy) ({policy} = await random.policy(community, persona, account));
+		return {
+			actor: persona.persona_id,
+			policy_id: policy.policy_id,
+		};
 	},
 
 	ToggleMainNav: async () => {

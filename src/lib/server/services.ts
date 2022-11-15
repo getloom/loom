@@ -37,6 +37,12 @@ import {
 	UpdateRoleService,
 } from '$lib/vocab/role/roleServices';
 import {
+	CreatePolicyService,
+	DeletePolicyService,
+	ReadPoliciesService,
+	UpdatePolicyService,
+} from '$lib/vocab/policy/policyServices';
+import {
 	SignUpService,
 	UpdateAccountSettingsService,
 	UpdateAccountPasswordService,
@@ -89,5 +95,10 @@ export const services: Map<string, Service> = new Map(
 		ReadRolesService,
 		UpdateRoleService,
 		DeleteRoleService,
+		// policyServices
+		CreatePolicyService,
+		DeletePolicyService,
+		ReadPoliciesService,
+		UpdatePolicyService,
 	].map((s) => [s.event.name, s]),
 );
