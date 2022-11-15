@@ -7,9 +7,7 @@ import {
 } from 'kleur/colors';
 import {identity} from '@feltcoop/felt/util/function.js';
 
-// TODO make sure kleur is not included in the build for production
-
-const dev = process.env.NODE_ENV !== 'production';
+const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
 export const gray = dev ? grayKleur : identity;
 export const blue = dev ? blueKleur : identity;

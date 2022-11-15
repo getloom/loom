@@ -65,7 +65,7 @@ export const task: Task<Args> = {
 				logSequence(`Checking setup state at ${FELT_SETUP_STATE_FILE_PATH}`) +
 				`if [ -f ${FELT_SETUP_STATE_FILE_PATH} ]; then
 					echo '${red('Felt setup task has already run on this instance, exiting without changes')}'
-					exit 1
+					exit
 				fi;
 				touch ${FELT_SETUP_STATE_FILE_PATH};`,
 			//
@@ -149,8 +149,5 @@ export const task: Task<Args> = {
 			if (result.signal) log.error('spawn failed with signal', result.signal);
 			throw Error('Failed setup task');
 		}
-
-		// TODO streamline the deployment, also see `/src/infra/README.md` and the above DB setup TODO
-		// await invokeTask('infra/serverDeploy');
 	},
 };

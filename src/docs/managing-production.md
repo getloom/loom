@@ -1,9 +1,11 @@
 # Managing a production deployment
 
-This document describes how to manage a deployed instance of Felt.
+This document describes how to manage a deployed instance of
+[`@feltcoop/felt-server`](https://github.com/feltcoop/felt-server).
 
 To deploy a self-hosted instance to production,
-see the instructions at [`src/infra/README.md`](/src/infra/README.md).
+see the instructions at
+[`src/docs/deploying-production.md`](/src/docs/deploying-production.md).
 
 ## Log into the instance
 
@@ -35,4 +37,28 @@ sudo -i -u postgres psql
 \c felt # connect to `felt`
 \dt # list tables
 SELECT count(*) FROM accounts; # any SQL
+```
+
+## Nginx
+
+See this tutorial:
+<https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04>
+
+```bash
+sudo ln -s /etc/nginx/sites-available/${PUBLIC_DEPLOY_SERVER} /etc/nginx/sites-enabled/
+sudo systemctl stop nginx
+sudo systemctl start nginx
+sudo systemctl restart nginx
+sudo systemctl reload nginx
+```
+
+## Letsencrypt
+
+Backup your https credentials:
+
+```bash
+# on server:
+tar zcvf /tmp/letsencrypt_backup_$(date +'%Y-%m-%d_%H%M').tar.gz /etc/letsencrypt
+# then local:
+scp ${DEPLOY_USER}@${DEPLOY_IP}:/tmp/letsencrypt_backup_2022-11-14_0444.tar.gz letsencrypt_backup.tar.gz
 ```

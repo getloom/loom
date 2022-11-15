@@ -100,8 +100,10 @@
 	.header {
 		position: sticky;
 		top: 0;
+		z-index: 1;
 		display: flex;
 		width: 100%;
+		background-color: var(--tint_light);
 	}
 	.luggage-placeholder {
 		width: var(--luggage_size);

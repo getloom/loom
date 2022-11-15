@@ -1,10 +1,10 @@
 import type {Task} from '@feltcoop/gro';
-import {ENV_DEV, ENV_PROD, updateEnv} from '$lib/server/env';
+import {ENV_FILE_DEV, ENV_FILE_PROD, updateEnv} from '$lib/server/env';
 
 export const task: Task = {
 	summary: 'write git hash to the appropriate environment variables file',
 	run: async ({fs, log, dev}) => {
-		const envFile = dev ? ENV_DEV : ENV_PROD;
+		const envFile = dev ? ENV_FILE_DEV : ENV_FILE_PROD;
 		const branch = (await fs.readFile('.git/HEAD', 'utf8')).trim().substring(5);
 		const [gitHashContents, currentEnvContents] = await Promise.all([
 			fs.readFile('.git/' + branch, 'utf8'),

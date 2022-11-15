@@ -1,6 +1,7 @@
 import {stripAfter} from '@feltcoop/felt/util/string.js';
 
-export const MIGRATIONS_DIR = 'src/lib/db/migrations';
+export const MIGRATIONS_PATH = 'lib/db/migrations';
+export const MIGRATIONS_DIR = 'src/' + MIGRATIONS_PATH;
 
 /**
  * Extracts the numerical index of the given migraiton file name,

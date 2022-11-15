@@ -4,7 +4,7 @@ import type {ServerResponse} from 'http';
 
 import {fromEnv} from '$lib/server/env';
 
-const dev = process.env.NODE_ENV !== 'production';
+const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
 const MAX_AGE = 60 * 60 * 24 * 7 * 5; // 5 weeks
 const RESET_EXPIRY = new Date('Tue, 06 Apr 2021 15:36:00 GMT');

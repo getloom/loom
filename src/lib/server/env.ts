@@ -1,17 +1,18 @@
 import dotenv from 'dotenv';
 import {copyFileSync, existsSync} from 'fs';
 
+const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
+
 // TODO how to configure this stuff in user projects? felt/gro config?
 
-export const ENV_PROD = '.env.production';
-export const ENV_DEV = '.env.development';
-
-const dev = import.meta?.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO support in Gro and remove second half
+export const ENV_FILE_BASE = '.env';
+export const ENV_FILE_PROD = '.env.production';
+export const ENV_FILE_DEV = '.env.development';
 
 const envs: Array<{file: string; defaultFile: string; load: boolean}> = [
-	{file: '.env', defaultFile: 'src/infra/.env.default', load: true},
-	{file: ENV_DEV, defaultFile: `src/infra/${ENV_DEV}.default`, load: dev},
-	{file: ENV_PROD, defaultFile: `src/infra/${ENV_PROD}.default`, load: !dev},
+	{file: ENV_FILE_BASE, defaultFile: `src/infra/${ENV_FILE_BASE}.default`, load: true},
+	{file: ENV_FILE_DEV, defaultFile: `src/infra/${ENV_FILE_DEV}.default`, load: dev},
+	{file: ENV_FILE_PROD, defaultFile: `src/infra/${ENV_FILE_PROD}.default`, load: !dev},
 ];
 
 interface Env {
@@ -39,12 +40,10 @@ export const initEnv = (): void => {
 	if (initedEnv) return;
 	initedEnv = true;
 	for (const env of envs) {
-		if (env.load) {
-			if (!existsSync(env.file)) {
-				copyFileSync(env.defaultFile, env.file);
-			}
-			dotenv.config({path: env.file});
+		if (!existsSync(env.file) && existsSync(env.defaultFile)) {
+			copyFileSync(env.defaultFile, env.file);
 		}
+		if (env.load) dotenv.config({path: env.file});
 	}
 };
 

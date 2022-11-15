@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "@feltcoop/eslint-config": "^0.2.1",
-    "@feltcoop/gro": "^0.64.0",
     "@sveltejs/adapter-node": "^1.0.0-next.100",
     "@sveltejs/kit": "^1.0.0-next.542",
     "@types/body-parser": "^1.19.2",
@@ -42,7 +41,6 @@
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.27.0",
     "eslint-plugin-svelte3": "^4.0.0",
-    "ley": "^0.8.1",
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.8.0",
     "strict-event-emitter-types": "^2.0.0",
@@ -51,13 +49,13 @@
     "svelte-check": "^2.9.2",
     "svelte-preprocess-esbuild": "^3.0.1",
     "tslib": "^2.4.1",
-    "tsm": "^2.2.2",
     "typescript": "^4.8.4",
     "uvu": "^0.5.6",
     "zod": "^3.19.1"
   },
   "dependencies": {
     "@feltcoop/felt": "^0.42.0",
+    "@feltcoop/gro": "^0.67.2",
     "@feltcoop/svelte-gettable-stores": "^0.2.0",
     "@polka/send-type": "^0.5.2",
     "@ryanatkn/json-schema-to-typescript": "^11.1.2",
@@ -70,12 +68,14 @@
     "dotenv": "^16.0.3",
     "estree-walker": "^3.0.1",
     "kleur": "^4.1.5",
+    "ley": "^0.8.1",
     "polka": "^1.0.0-next.22",
     "postgres": "^3.3.1",
     "regexparam": "^2.0.1",
     "svast-stringify": "^0.1.0",
     "svelte-parse": "^0.1.0",
     "throttle-debounce": "^5.0.0",
+    "tsm": "^2.2.2",
     "ws": "^8.11.0"
   },
   "optionalDependencies": {

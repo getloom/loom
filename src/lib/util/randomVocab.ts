@@ -222,7 +222,6 @@ export class RandomVocabContext {
 		return {space, directory, persona, account, community};
 	}
 
-	//TODO do we need space now? Should be source_id
 	async entity(
 		persona?: AccountPersona,
 		account?: Account,

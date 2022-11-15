@@ -1,13 +1,14 @@
 [<img src="/src/static/felt.png" align="right" width="192" height="178">](https://felt.dev)
 
-# Getting started with felt-server
+# Getting started with `@feltcoop/felt-server`
 
-> docs for devs on [felt-server](https://github.com/feltcoop/felt-server),
+> docs for devs and operators of
+> [`@feltcoop/felt-server`](https://github.com/feltcoop/felt-server),
 > a tool for building and maintaining communities 💚
 
 ## Overview
 
-At a high level, felt-server depends on the following core technologies:
+`@feltcoop/felt-server` depends on the following core technologies:
 
 - [Node](https://nodejs.org)
 - [PostgreSQL](https://www.postgresql.org) aka Postgres
@@ -16,15 +17,7 @@ At a high level, felt-server depends on the following core technologies:
 
 ## Setup
 
-1. Configure your environment to the Node & NPM versions listed in [package.json](/package.json)
-1. Run `npm i`
-1. Follow [the PostgreSQL db setup instructions](/src/lib/db/README.md)
-1. Optionally install [Gro](https://github.com/feltcoop/gro)
-   globally to [run tasks](https://github.com/feltcoop/gro/tree/main/src/docs/task.md):
-   `npm i -g @feltcoop/gro` (or prefix `gro` commands with `npx`)
-1. Run `gro lib/db/create` to initialize the database'
-1. Run [`gro dev`](https://github.com/feltcoop/gro/blob/main/src/docs/dev.md)
-   and navigate to localhost:3000 to start!
+Set up [a local dev environment](/src/docs/setup-dev-environment.md).
 
 ## Developing
 
@@ -78,7 +71,8 @@ See [Gro's build docs](https://github.com/feltcoop/gro/blob/main/src/docs/build.
 ## Deploying
 
 To deploy a self-hosted instance to production,
-see the instructions at [`src/infra/README.md`](/src/infra/README.md).
+see the instructions at
+[`src/docs/deploying-production.md`](/src/docs/deploying-production.md).
 
 To manage a production instance,
 see [`src/docs/managing-production.md`](/src/docs/managing-production.md).

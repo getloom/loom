@@ -18,12 +18,12 @@ export class TieRepo extends PostgresRepo {
 		return {ok: true, value: tie[0]};
 	}
 
-	async filterBySourceId(directory_id: number): Promise<Result<{value: Tie[]}>> {
-		log.trace(`preparing to walk graph starting with directory: ${directory_id}`);
+	async filterBySourceId(source_id: number): Promise<Result<{value: Tie[]}>> {
+		log.trace(`preparing to walk graph starting with directory: ${source_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
 				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
-					FROM ties t WHERE source_id=${directory_id}
+					FROM ties t WHERE source_id=${source_id}
 				UNION ALL
 					SELECT t.tie_id, t.source_id, t.dest_id, t.type,t.created, p.path || ARRAY[t.dest_id]
 					FROM paths p

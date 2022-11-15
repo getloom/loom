@@ -15,16 +15,16 @@ For build & deployment docs, see the [Infra README](/src/infra/README.md)
 
 ## getting started
 
-First [setup for dev](/src/docs/getting-started.md), then:
+First set up [a local dev environment](/src/docs/getting-started.md), then:
 
 ```bash
-# node >=16.6
+# node >=18.6
 npm i
 
-# start the SvelteKit/Vite frontend dev build, Node builds with Gro, and Polka API server
+# start SvelteKit/Vite and the Node server
 npm run dev
 
-# browse to localhost:3000
+# browse to localhost:5173 or whatever it says
 
 # you can also run `gro dev` with Gro installed globally: npm i -g @feltcoop/gro
 gro dev # args are forwarded to `svelte-kit` like `npm run dev`
@@ -36,7 +36,7 @@ gro test
 ```
 
 > learn more [about Gro](https://github.com/feltcoop/gro),
-> [setting up a dev environment](/src/docs/getting-started.md),
+> [getting started with `@feltcoop/felt-server`](/src/docs/getting-started.md),
 > and [contributing](/contributing.md)
 
 ## credits 🐢<sub>🐢</sub><sub><sub>🐢</sub></sub>
@@ -53,6 +53,7 @@ Open source software including
 [uvu](https://github.com/lukeed/uvu) ∙
 [Postgres.js](https://github.com/porsager/postgres) ∙
 [Ley](https://github.com/lukeed/ley) ∙
+[tsm](https://github.com/lukeed/tsm) ∙
 [Gro](https://github.com/feltcoop/gro) ∙
 [Felt](https://github.com/feltcoop/felt) ∙
 [ESLint](https://github.com/eslint/eslint) ∙

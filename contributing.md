@@ -10,7 +10,7 @@ Thanks for your interest in contributing!
 To learn more about the Felt project, see
 [felt.social/about](https://www.felt.social/about).
 
-To setup your local machine,
+To set up your local machine,
 see the ["Getting started"](/src/docs/getting-started.md) docs.
 
 We use the [MIT License](/LICENSE)

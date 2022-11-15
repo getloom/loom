@@ -1,12 +1,12 @@
-# felt-server/db
+# Database docs
 
-## tech
+## Dependencies
 
 - [PostgreSQL](https://www.postgresql.org)
 - [`postgres`](https://github.com/porsager/postgres)
 - [Ley](https://github.com/lukeed/ley)
 
-## postgres setup
+## Postgres setup
 
 The Felt server has a dependency on [PostgreSQL](https://www.postgresql.org) 13.2+.
 You can find [setup instructions](https://www.postgresql.org/download/) on their website.
@@ -42,14 +42,14 @@ create database felt; # notice the semicolon
 
 > TODO figure out config, maybe through `src/gro.config.ts`
 
-## creating migrations
+## Creating migrations
 
 Felt server uses [Ley](https://github.com/lukeed/ley) to manage its DB migrations.
 Migration files are located in the [migrations](./migrations) directory.
 To create a new migration file use the `ley new` command (see Ley's docs for more details)
 Use `gro lib/db/migrate` to run migrations.
 
-## creating backups
+## Creating backups
 
 Using the following command one can quickly take backups of the `felt` database.
 
@@ -57,7 +57,7 @@ Using the following command one can quickly take backups of the `felt` database.
 sudo -u postgres pg_dump felt > backup.sql
 ```
 
-## database tasks
+## Database tasks
 
 Felt has a number of [Gro](https://github.com/feltcoop/gro) tasks for managing the database.
 To view all of them, run `gro lib/db`.
