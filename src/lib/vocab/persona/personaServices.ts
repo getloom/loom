@@ -105,6 +105,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				personas.push(initAdminCommunityValue.persona);
 				personas.push(initAdminCommunityValue.ghost);
 				roles.push(initAdminCommunityValue.role);
+				assignments.push(initAdminCommunityValue.assignment);
 
 				// Create the admin community's default spaces.
 				const defaultAdminSpaces = unwrap(
@@ -122,7 +123,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 						await repos.assignment.create(
 							persona.persona_id,
 							adminCommunity.community_id,
-							community.settings.defaultRoleId,
+							adminCommunity.settings.defaultRoleId,
 						),
 					),
 				);

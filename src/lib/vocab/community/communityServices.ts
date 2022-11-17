@@ -25,6 +25,7 @@ import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {cleanOrphanCommunities} from '$lib/vocab/assignment/assignmentServices';
 import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
+import type {Assignment} from '$lib/vocab/assignment/assignment';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -242,7 +243,13 @@ export const initAdminCommunity = async (
 	serviceRequest: NonAuthorizedServiceRequest,
 ): Promise<
 	Result<{
-		value?: {community: Community; persona: PublicPersona; ghost: PublicPersona; role: Role};
+		value?: {
+			community: Community;
+			persona: PublicPersona;
+			ghost: PublicPersona;
+			role: Role;
+			assignment: Assignment;
+		};
 	}>
 > => {
 	const {repos} = serviceRequest;
@@ -271,7 +278,7 @@ export const initAdminCommunity = async (
 	);
 
 	// Create the community persona's assignment.
-	unwrap(
+	const assignment = unwrap(
 		await repos.assignment.create(
 			persona.persona_id,
 			community.community_id,
@@ -282,7 +289,7 @@ export const initAdminCommunity = async (
 	// Create the ghost persona.
 	const ghost = unwrap(await repos.persona.createGhostPersona());
 
-	return {ok: true, value: {community, persona, ghost, role}};
+	return {ok: true, value: {community, persona, ghost, role, assignment}};
 };
 
 /**
