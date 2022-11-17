@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {page} from '$app/stores';
-	import {stripStart} from '@feltcoop/felt/util/string.js';
+	import {stripStart} from '@feltcoop/util/string.js';
 
 	import {getApp} from '$lib/ui/app';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';

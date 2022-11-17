@@ -1,5 +1,5 @@
 import type ws from 'ws';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 
 import {red, blue, gray} from '$lib/server/colors';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc';
@@ -9,7 +9,7 @@ import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
 import type {BroadcastMessage, WebsocketResult} from '$lib/util/websocket';
 import {toServiceRequest} from '$lib/server/service';
-import {ResultError} from '@feltcoop/felt';
+import {ResultError} from '@feltcoop/util';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 

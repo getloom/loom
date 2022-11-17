@@ -1,4 +1,4 @@
-import {unwrap} from '@feltcoop/felt';
+import {unwrap} from '@feltcoop/util';
 
 import {verifyPassword} from '$lib/util/password';
 import {SignIn, SignOut} from '$lib/session/sessionEvents';

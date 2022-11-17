@@ -1,4 +1,4 @@
-import {traverse} from '@feltcoop/felt/util/object.js';
+import {traverse} from '@feltcoop/util/object.js';
 
 // TODO where does this belong? vocab utils?
 

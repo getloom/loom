@@ -1,7 +1,7 @@
 import type {Readable, Writable} from '@feltcoop/svelte-gettable-stores';
 import {browser} from '$app/environment';
 import {goto} from '$app/navigation';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {PERSONA_QUERY_KEY, toSearchParams} from '$lib/ui/url';

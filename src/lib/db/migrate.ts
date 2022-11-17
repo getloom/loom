@@ -1,6 +1,6 @@
 import ley from 'ley';
 import {defaultPostgresOptions} from '$lib/db/postgres.js';
-import type {Logger} from '@feltcoop/felt/util/log.js';
+import type {Logger} from '@feltcoop/util/log.js';
 
 import {MIGRATIONS_DIR} from '$lib/db/migration';
 

@@ -1,6 +1,6 @@
-import {unwrap} from '@feltcoop/felt';
-import {Logger} from '@feltcoop/felt/util/log.js';
-import {traverse} from '@feltcoop/felt/util/object.js';
+import {unwrap} from '@feltcoop/util';
+import {Logger} from '@feltcoop/util/log.js';
+import {traverse} from '@feltcoop/util/object.js';
 
 import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';

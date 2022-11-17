@@ -1,6 +1,6 @@
 import sourcemapSupport from 'source-map-support';
-import {configureLogLevel, Logger, LogLevel} from '@feltcoop/felt/util/log.js';
-import type {OmitStrict} from '@feltcoop/felt';
+import {configureLogLevel, Logger, LogLevel} from '@feltcoop/util/log.js';
+import type {OmitStrict} from '@feltcoop/util';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';
 import type {Database} from '$lib/db/Database';

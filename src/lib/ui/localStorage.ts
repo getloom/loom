@@ -1,6 +1,6 @@
 import {browser} from '$app/environment';
-import type {Json} from '@feltcoop/felt/util/json.js';
-// import {Logger} from '@feltcoop/felt/util/log.js';
+import type {Json} from '@feltcoop/util/json.js';
+// import {Logger} from '@feltcoop/util/log.js';
 
 // const log = new Logger('[storage]');
 

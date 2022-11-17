@@ -2,7 +2,7 @@ import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
-import {removeUnordered} from '@feltcoop/felt/util/array.js';
+import {removeUnordered} from '@feltcoop/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Space} from '$lib/vocab/space/space';

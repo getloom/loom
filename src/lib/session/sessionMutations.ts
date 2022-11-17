@@ -1,5 +1,5 @@
 import {browser} from '$app/environment';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {deserialize, deserializers} from '$lib/util/deserialize';

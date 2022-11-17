@@ -1,6 +1,6 @@
 <script lang="ts">
-	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
-	import Message from '@feltcoop/felt/ui/Message.svelte';
+	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
+	import Message from '@feltcoop/felt/Message.svelte';
 
 	import {getApp} from '$lib/ui/app';
 

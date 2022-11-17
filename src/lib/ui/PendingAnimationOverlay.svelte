@@ -1,6 +1,6 @@
 <script lang="ts">
 	// TODO extract to Felt
-	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
+	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
 </script>
 
 <div class="pending-animation-overlay">

@@ -1,4 +1,4 @@
-import {plural} from '@feltcoop/felt/util/string.js';
+import {plural} from '@feltcoop/util/string.js';
 
 /**
  * Converts a persona name string to its regular form.

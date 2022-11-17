@@ -1,4 +1,4 @@
-import type {OmitStrict} from '@feltcoop/felt';
+import type {OmitStrict} from '@feltcoop/util';
 
 import type {Account} from '$lib/vocab/account/account';
 

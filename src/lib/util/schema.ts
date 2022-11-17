@@ -1,4 +1,4 @@
-import {stripEnd, stripStart} from '@feltcoop/felt/util/string.js';
+import {stripEnd, stripStart} from '@feltcoop/util/string.js';
 
 // see also $lib/util/ajv.ts
 

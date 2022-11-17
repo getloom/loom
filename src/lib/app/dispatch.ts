@@ -1,5 +1,5 @@
 import {setContext, getContext} from 'svelte';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 import {browser, dev} from '$app/environment';
 
 import type {WritableUi} from '$lib/ui/ui';

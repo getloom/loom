@@ -1,4 +1,4 @@
-import {OK, unwrap, type Result} from '@feltcoop/felt';
+import {OK, unwrap, type Result} from '@feltcoop/util';
 
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';

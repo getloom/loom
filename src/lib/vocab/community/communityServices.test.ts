@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, unwrapError} from '@feltcoop/felt';
+import {unwrap, unwrapError} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {randomCommunityParams} from '$lib/util/randomVocab';

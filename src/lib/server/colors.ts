@@ -5,7 +5,7 @@ import {
 	red as redKleur,
 	cyan as cyanKleur,
 } from 'kleur/colors';
-import {identity} from '@feltcoop/felt/util/function.js';
+import {identity} from '@feltcoop/util/function.js';
 
 const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 

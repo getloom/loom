@@ -1,5 +1,5 @@
 import type {Sql, Options} from 'postgres';
-import {toEnvNumber, toEnvString} from '@feltcoop/felt/util/env.js';
+import {toEnvNumber, toEnvString} from '@feltcoop/util/env.js';
 
 // Postgres.js - PostgreSQL client for Node.js
 // https://github.com/porsager/postgres

@@ -1,5 +1,5 @@
-import {NOT_OK, OK, type Result} from '@feltcoop/felt';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {NOT_OK, OK, type Result} from '@feltcoop/util';
+import {Logger} from '@feltcoop/util/log.js';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Tie} from '$lib/vocab/tie/tie';

@@ -31,7 +31,7 @@ export const gen: Gen = async ({originId}) => {
   
 import type {SvelteComponent} from 'svelte';
 import type {Readable, Mutable} from '@feltcoop/svelte-gettable-stores';
-import type {AsyncStatus} from '@feltcoop/felt/util/async.js';
+import type {AsyncStatus} from '@feltcoop/util/async.js';
 
 import type {ApiResult} from '$lib/server/api';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';

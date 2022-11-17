@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
+	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
 
 	import {getContextmenu, type ContextmenuAction} from '$lib/ui/contextmenu/contextmenu';
 

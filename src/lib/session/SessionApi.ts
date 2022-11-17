@@ -1,9 +1,9 @@
 import type {ServerResponse} from 'http';
-import {OK, type Result} from '@feltcoop/felt';
+import {OK, type Result} from '@feltcoop/util';
 
 import type {ApiServerRequest} from '$lib/server/ApiServer';
 import {setSessionCookie} from '$lib/session/sessionCookie';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 import type {ErrorResponse} from '$lib/util/error';
 
 const log = new Logger('[SessionApi]');

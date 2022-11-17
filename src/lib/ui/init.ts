@@ -1,4 +1,4 @@
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 /* eslint-disable no-console */
 
 export const initBrowser = (): void => {

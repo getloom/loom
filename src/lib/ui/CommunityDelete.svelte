@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Message from '@feltcoop/felt/ui/Message.svelte';
+	import Message from '@feltcoop/felt/Message.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Community} from '$lib/vocab/community/community';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
+	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
 
 	const {dispatch} = getApp();
 

@@ -1,4 +1,4 @@
-import {unwrap} from '@feltcoop/felt';
+import {unwrap} from '@feltcoop/util';
 
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {

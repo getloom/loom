@@ -1,5 +1,5 @@
 import type {LayoutServerLoad} from './$types';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 
 import {db} from '$lib/db/db';
 

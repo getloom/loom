@@ -1,6 +1,6 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
-import {removeUnordered} from '@feltcoop/felt/util/array.js';
+import {removeUnordered} from '@feltcoop/util/array.js';
 import {get} from 'svelte/store';
 import {page} from '$app/stores';
 

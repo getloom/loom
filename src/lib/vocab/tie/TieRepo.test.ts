@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltcoop/felt';
+import {unwrap} from '@feltcoop/util';
 import {isDeepStrictEqual} from 'util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';

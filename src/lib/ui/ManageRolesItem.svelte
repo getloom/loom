@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Message from '@feltcoop/felt/ui/Message.svelte';
+	import Message from '@feltcoop/felt/Message.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Role} from '$lib/vocab/role/role';

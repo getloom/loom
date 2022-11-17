@@ -1,4 +1,4 @@
-import {OK, type Result} from '@feltcoop/felt';
+import {OK, type Result} from '@feltcoop/util';
 
 import type {ISessionApi} from '$lib/session/SessionApi';
 import type {ErrorResponse} from '$lib/util/error';

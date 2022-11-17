@@ -1,5 +1,5 @@
 import type {Task} from '@feltcoop/gro';
-import {spawn} from '@feltcoop/felt/util/process.js';
+import {spawn} from '@feltcoop/util/process.js';
 import {z} from 'zod';
 
 import {green, red} from '$lib/server/colors';

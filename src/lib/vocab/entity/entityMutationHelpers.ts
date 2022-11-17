@@ -1,5 +1,5 @@
 import {writable, mutable} from '@feltcoop/svelte-gettable-stores';
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Entity} from '$lib/vocab/entity/entity';

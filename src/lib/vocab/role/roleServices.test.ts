@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import {unwrap, unwrapError} from '@feltcoop/felt';
+import {unwrap, unwrapError} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TestAppContext} from '$lib/util/testAppHelpers';

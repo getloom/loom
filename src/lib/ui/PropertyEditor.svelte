@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Message from '@feltcoop/felt/ui/Message.svelte';
-	import {identity} from '@feltcoop/felt/util/function.js';
-	import type {Result} from '@feltcoop/felt';
-	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
+	import Message from '@feltcoop/felt/Message.svelte';
+	import {identity} from '@feltcoop/util/function.js';
+	import type {Result} from '@feltcoop/util';
+	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
 
 	import {autofocus} from '$lib/ui/actions';

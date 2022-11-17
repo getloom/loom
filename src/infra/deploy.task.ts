@@ -1,7 +1,7 @@
 import type {Task} from '@feltcoop/gro';
-import {spawn} from '@feltcoop/felt/util/process.js';
+import {spawn} from '@feltcoop/util/process.js';
 import {DIST_DIRNAME} from '@feltcoop/gro/dist/paths.js';
-import {unwrap} from '@feltcoop/felt';
+import {unwrap} from '@feltcoop/util';
 
 import {ENV_FILE_BASE, ENV_FILE_PROD, fromEnv} from '$lib/server/env';
 import {DEPLOYED_SCRIPT_PATH} from './helpers';

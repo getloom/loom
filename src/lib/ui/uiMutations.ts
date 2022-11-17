@@ -1,5 +1,5 @@
-import {Logger} from '@feltcoop/felt/util/log.js';
-import {round} from '@feltcoop/felt/util/maths.js';
+import {Logger} from '@feltcoop/util/log.js';
+import {round} from '@feltcoop/util/maths.js';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 

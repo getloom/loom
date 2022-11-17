@@ -1,5 +1,5 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
-import {removeUnordered} from '@feltcoop/felt/util/array.js';
+import {removeUnordered} from '@feltcoop/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';

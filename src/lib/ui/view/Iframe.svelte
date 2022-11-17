@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FeltWindowHost from '@feltcoop/felt/ui/FeltWindowHost.svelte';
+	import FeltWindowHost from '@feltcoop/felt/FeltWindowHost.svelte';
 
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';

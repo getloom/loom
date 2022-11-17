@@ -1,6 +1,6 @@
 import {writable} from '@feltcoop/svelte-gettable-stores';
-import {Logger} from '@feltcoop/felt/util/log.js';
-import {removeUnordered} from '@feltcoop/felt/util/array.js';
+import {Logger} from '@feltcoop/util/log.js';
+import {removeUnordered} from '@feltcoop/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Role} from '$lib/vocab/role/role';

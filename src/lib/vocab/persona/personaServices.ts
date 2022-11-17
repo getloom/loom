@@ -1,5 +1,5 @@
-import {Logger} from '@feltcoop/felt/util/log.js';
-import {unwrap} from '@feltcoop/felt';
+import {Logger} from '@feltcoop/util/log.js';
+import {unwrap} from '@feltcoop/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@feltcoop/felt/ui/PendingAnimation.svelte';
+	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
 	import {readable} from '@feltcoop/svelte-gettable-stores';
 
 	import TextInput from '$lib/ui/TextInput.svelte';

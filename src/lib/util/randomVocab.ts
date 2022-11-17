@@ -1,4 +1,4 @@
-import {unwrap} from '@feltcoop/felt';
+import {unwrap} from '@feltcoop/util';
 
 import type {Space} from '$lib/vocab/space/space';
 import type {Community} from '$lib/vocab/community/community';

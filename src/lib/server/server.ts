@@ -4,7 +4,7 @@ import type {Server as HttpsServer} from 'https';
 import {createServer as create_http_server} from 'http';
 import {createServer as create_https_server} from 'https';
 import fs from 'fs';
-import {configureLogLevel, Logger, LogLevel} from '@feltcoop/felt/util/log.js';
+import {configureLogLevel, Logger, LogLevel} from '@feltcoop/util/log.js';
 import {format} from 'date-fns';
 
 import {ApiServer} from '$lib/server/ApiServer.js';

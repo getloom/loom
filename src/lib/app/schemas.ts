@@ -1,4 +1,4 @@
-import {DialogDataSchema} from '@feltcoop/felt/ui/dialog/dialog.schema.js';
+import {DialogDataSchema} from '@feltcoop/felt/dialog/dialog.schema.js';
 import type {VocabSchema} from '@feltcoop/gro/dist/utils/schema.js';
 
 import {eventInfos} from '$lib/app/events';

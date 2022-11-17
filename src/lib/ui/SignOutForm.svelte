@@ -1,6 +1,6 @@
 <script lang="ts">
-	import PendingButton from '@feltcoop/felt/ui/PendingButton.svelte';
-	import Message from '@feltcoop/felt/ui/Message.svelte';
+	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
+	import Message from '@feltcoop/felt/Message.svelte';
 	import type {SignOutResponseResult} from '$lib/app/eventTypes';
 
 	import type {ClientAccount} from '$lib/vocab/account/accountHelpers';

@@ -1,4 +1,4 @@
-import {Logger} from '@feltcoop/felt/util/log.js';
+import {Logger} from '@feltcoop/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import type {PostgresSql} from '$lib/db/postgres.js';

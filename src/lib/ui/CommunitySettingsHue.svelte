@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {throttle} from 'throttle-debounce';
-	import HueInput from '@feltcoop/felt/ui/HueInput.svelte';
+	import HueInput from '@feltcoop/felt/HueInput.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Community} from '$lib/vocab/community/community';
