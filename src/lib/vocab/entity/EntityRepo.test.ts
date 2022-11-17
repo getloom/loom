@@ -125,5 +125,44 @@ test__EntityRepo('disallow mutating tombstones', async ({db, random}) => {
 
 // TODO add similar tests for Tombstones
 
+test__EntityRepo('check filtering for directories by entity id', async ({db, random}) => {
+	//Gen space
+	//Gen index entity -> thread entity -> post -> reply
+	const {persona, account, community, space} = await random.space();
+	const {space: space2} = await random.space();
+	const {entity: entityIndex} = await random.entity(
+		persona,
+		account,
+		community,
+		space.directory_id,
+	);
+	const {entity: entityThread} = await random.entity(
+		persona,
+		account,
+		community,
+		space.directory_id,
+	);
+	const {entity: entityPost} = await random.entity(persona, account, community, space.directory_id);
+	const {entity: entityReply} = await random.entity(
+		persona,
+		account,
+		community,
+		space.directory_id,
+	);
+
+	unwrap(await db.repos.tie.create(entityIndex.entity_id, entityThread.entity_id, 'HasThread'));
+
+	unwrap(await db.repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost'));
+
+	unwrap(await db.repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply'));
+
+	unwrap(await db.repos.tie.create(space2.directory_id, entityPost.entity_id, 'HasPost'));
+	const query1 = unwrap(await db.repos.entity.directoriesByEntityId(entityIndex.entity_id));
+	assert.equal(query1.length, 1);
+
+	const query2 = unwrap(await db.repos.entity.directoriesByEntityId(entityPost.entity_id));
+	assert.equal(query2.length, 2);
+});
+
 test__EntityRepo.run();
 /* test__EntityRepo */

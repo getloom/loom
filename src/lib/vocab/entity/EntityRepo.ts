@@ -99,4 +99,27 @@ export class EntityRepo extends PostgresRepo {
 		`;
 		return {ok: true, value: data.flatMap((e) => e.entity_id)};
 	}
+
+	async directoriesByEntityId(entity_id: number): Promise<Result<{value: Entity[]}>> {
+		log.trace(`looking for directories for entity: ${entity_id}`);
+		const directories = await this.sql<Entity[]>`
+			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated FROM entities e
+			JOIN (
+			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
+				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
+					FROM ties t WHERE dest_id=${entity_id}
+				UNION ALL
+					SELECT t.tie_id, t.source_id, t.dest_id, t.type,t.created, p.path || ARRAY[t.source_id]
+					FROM paths p
+					JOIN ties t
+					ON p.source_id = t.dest_id AND t.source_id != ALL(p.path)
+			)
+			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths
+			) as tdest
+			ON e.entity_id = tdest.source_id
+			WHERE data ? 'space_id';
+		`;
+		log.trace('all directories pointing at entity', directories);
+		return {ok: true, value: directories};
+	}
 }

@@ -12,7 +12,7 @@ const test__TieRepo = suite<TestDbContext & TestAppContext>('TieRepo');
 test__TieRepo.before(setupDb);
 test__TieRepo.after(teardownDb);
 
-test__TieRepo('check tie queries', async ({db, random}) => {
+test__TieRepo('check filtering down by source id', async ({db, random}) => {
 	//Gen space
 	//Gen dir entity -> thread entity -> post -> reply
 	const {persona, account, community, space} = await random.space();
@@ -50,6 +50,54 @@ test__TieRepo('check tie queries', async ({db, random}) => {
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie1)));
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie2)));
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie3)));
+});
+
+test__TieRepo('check filtering up by dest id', async ({db, random}) => {
+	//Gen space
+	//Gen index entity -> thread entity -> post -> reply
+	const {persona, account, community, space} = await random.space();
+	const {entity: entityIndex} = await random.entity(
+		persona,
+		account,
+		community,
+		space.directory_id,
+	);
+	const {entity: entityThread} = await random.entity(
+		persona,
+		account,
+		community,
+		space.directory_id,
+	);
+	const {entity: entityPost} = await random.entity(persona, account, community, space.directory_id);
+	const {entity: entityReply} = await random.entity(
+		persona,
+		account,
+		community,
+		space.directory_id,
+	);
+
+	const tie1 = unwrap(
+		await db.repos.tie.create(entityIndex.entity_id, entityThread.entity_id, 'HasThread'),
+	);
+
+	const tie2 = unwrap(
+		await db.repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost'),
+	);
+
+	const tie3 = unwrap(
+		await db.repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply'),
+	);
+	const query1 = unwrap(await db.repos.tie.filterByDestId(entityIndex.entity_id));
+	assert.equal(query1.length, 1);
+
+	const query2 = unwrap(await db.repos.tie.filterByDestId(entityReply.entity_id));
+	assert.equal(query2.length, 7);
+	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie1)));
+	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie2)));
+	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie3)));
+
+	const query3 = unwrap(await db.repos.tie.filterByDestId(space.directory_id));
+	assert.equal(query3.length, 0);
 });
 
 test__TieRepo.run();

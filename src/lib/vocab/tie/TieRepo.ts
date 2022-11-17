@@ -19,7 +19,7 @@ export class TieRepo extends PostgresRepo {
 	}
 
 	async filterBySourceId(source_id: number): Promise<Result<{value: Tie[]}>> {
-		log.trace(`preparing to walk graph starting with directory: ${source_id}`);
+		log.trace(`preparing to walk graph starting with source: ${source_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
 				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
@@ -32,7 +32,25 @@ export class TieRepo extends PostgresRepo {
 			)
 			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths;
 		`;
-		log.trace('directory ties', ties);
+		log.trace('ties under source', ties);
+		return {ok: true, value: ties};
+	}
+
+	async filterByDestId(dest_id: number): Promise<Result<{value: Tie[]}>> {
+		log.trace(`preparing to walk graph starting with dest: ${dest_id}`);
+		const ties = await this.sql<Tie[]>`
+			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
+				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
+					FROM ties t WHERE dest_id=${dest_id}
+				UNION ALL
+					SELECT t.tie_id, t.source_id, t.dest_id, t.type,t.created, p.path || ARRAY[t.source_id]
+					FROM paths p
+					JOIN ties t
+					ON p.source_id = t.dest_id AND t.source_id != ALL(p.path)
+			)
+			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths;
+		`;
+		log.trace('all ties pointing at dest', ties);
 		return {ok: true, value: ties};
 	}
 
