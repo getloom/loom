@@ -60,6 +60,12 @@ form ul {
 	width: 100%;
 }
 
+/* TODO upstream? put inside `.markup`? */
+fieldset {
+	padding: var(--spacing_xl) 0;
+	margin: var(--spacing_xl) 0;
+}
+
 /* TODO refactor or upstream */
 [role='menuitem'] {
 	cursor: pointer;

@@ -11,9 +11,9 @@
 	export let community: Readable<Community>;
 </script>
 
-<div class="community-editor column">
+<div class="community-editor column markup">
 	<form>
-		<legend>Edit Community</legend>
+		<h2>Edit Community</h2>
 		<section class="row" style:font-size="var(--font_size_xl)">
 			<CommunityAvatar {community} />
 		</section>
@@ -23,13 +23,15 @@
 				<p>updated {format($community.updated, 'PPPPp')}</p>
 			{/if}
 		</section>
+		<fieldset>
+			<legend>settings</legend>
+			<CommunitySettingsHue {persona} {community} />
+		</fieldset>
 	</form>
-	<section>
-		<CommunitySettingsHue {persona} {community} />
-	</section>
 </div>
 
 <style>
+	/* TODO maybe extract .dialog-content */
 	.community-editor {
 		display: flex;
 		flex-direction: column;

@@ -20,12 +20,12 @@
 
 <div class="entity-editor column">
 	<div class="markup padded-xl">
-		<h1>Account Settings</h1>
+		<h2>Account settings</h2>
 		<section>
-			<p>account {$account.name}</p>
-			<p>created {format($account.created, 'PPPPp')}</p>
+			<div style:font-size="var(--font_size_xl)">{$account.name}</div>
+			<div>created {format($account.created, 'PPPPp')}</div>
 			{#if $account.updated !== null}
-				<p>updated {format($account.updated, 'PPPPp')}</p>
+				<div>updated {format($account.updated, 'PPPPp')}</div>
 			{/if}
 		</section>
 	</div>
@@ -47,8 +47,5 @@
 <style>
 	.entity-editor {
 		padding: var(--spacing_xl);
-	}
-	h1 {
-		text-align: center;
 	}
 </style>

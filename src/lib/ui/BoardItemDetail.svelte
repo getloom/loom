@@ -115,7 +115,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 				{/if}
 			</div>
 		</div>
-		{#if items}
+		{#if items.length}
 			<div class="items">
 				<ul class="panel">
 					{#each items as item (item)}

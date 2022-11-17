@@ -6,8 +6,12 @@
 	import {afterUpdate} from 'svelte';
 
 	import {autofocus} from '$lib/ui/actions';
+	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
+	import {getApp} from '$lib/ui/app';
 
 	// TODO make this work with other kinds of inputs, starting with numbers
+
+	const {dispatch} = getApp();
 
 	type TValue = $$Generic;
 
@@ -63,7 +67,6 @@
 
 	const save = async () => {
 		errorMessage = null;
-		if (!changed) return;
 		const parsed = parse(fieldValue);
 		if (!parsed.ok) {
 			errorMessage = parsed.message;
@@ -86,13 +89,32 @@
 		}
 	};
 
+	const deleteField = () => {
+		dispatch.OpenDialog({
+			Component: ConfirmDialog,
+			props: {
+				action: async () => {
+					fieldValue = undefined;
+					await save();
+				},
+				promptText: `Delete '${field}' from this entity? The data will be lost.`,
+				confirmText: `delete '${field}' property`,
+			},
+		});
+	};
+
 	$: currentSerialized = serialize(value, true);
 	$: changed = serialized !== currentSerialized;
 </script>
 
 <div class="field">{field}</div>
 <div class="preview markup panel">
-	<pre>{currentSerialized}</pre>
+	{#if value === undefined}
+		<em>undefined</em>
+		<!-- TODO add a button to add/instantiate the field with some value -->
+	{:else}
+		<pre>{currentSerialized}</pre>
+	{/if}
 </div>
 {#if editing}
 	<button type="button" on:click={stopEditing}>cancel</button>
@@ -111,6 +133,10 @@
 				save
 			</PendingButton>
 		</div>
+	{:else if fieldValue !== undefined}
+		<PendingButton on:click={deleteField} {pending} disabled={pending || !!errorMessage}>
+			delete '{field}' property
+		</PendingButton>
 	{/if}
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>

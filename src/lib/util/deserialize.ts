@@ -16,7 +16,8 @@ export const deserialize =
 		});
 	};
 
-export const deserializeDate = (v: string): Date => new Date(v);
+export const deserializeDate = (v: string | null | undefined): Date | null | undefined =>
+	v == null ? v : new Date(v);
 
 export interface Deserializer<TInput = any, TOutput = any> {
 	(v: TInput): TOutput;

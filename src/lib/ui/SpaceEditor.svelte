@@ -28,7 +28,7 @@
 
 <div class="space-editor column">
 	<form>
-		<legend>Edit Space</legend>
+		<h2>Edit Space</h2>
 		<ContextInfo {persona} {community} {space} />
 		<section>
 			<p>created {format($space.created, 'PPPPp')}</p>
@@ -37,6 +37,7 @@
 			{/if}
 		</section>
 		<fieldset>
+			<legend>properties</legend>
 			<ul>
 				<li>
 					<PropertyEditor value={$space.name} field="name" update={updateSpace} />
@@ -58,6 +59,7 @@
 			</ul>
 		</fieldset>
 		<fieldset>
+			<legend>danger! zone</legend>
 			<button
 				title="delete space"
 				on:click={() =>

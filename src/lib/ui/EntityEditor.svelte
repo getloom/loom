@@ -1,133 +1,21 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {format} from 'date-fns';
-	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import EntityTable from '$lib/ui/EntityTable.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import {parseJson, serializeJson} from '$lib/util/json';
-	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
+	import EditEntityForm from '$lib/ui/EditEntityForm.svelte';
 
 	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;
 	export let done: (() => void) | undefined = undefined;
 
-	const {
-		dispatch,
-		devmode,
-		ui: {personaById},
-	} = getApp();
-
-	$: authorPersona = personaById.get($entity.persona_id)!;
-
-	const updateEntityDataProperty = async (updated: any, field: string) =>
-		dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			entity_id: $entity.entity_id,
-			data: {...$entity.data, [field]: updated},
-		});
-
-	const updateEntityData = async (updated: any) =>
-		dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			entity_id: $entity.entity_id,
-			data: updated,
-		});
-
-	// TODO factor this out into a component or something, and handle failures
-	let deletePending = false;
-	const deleteEntity = async () => {
-		deletePending = true;
-		await dispatch.DeleteEntities({
-			actor: $persona.persona_id,
-			entityIds: [$entity.entity_id],
-		});
-		deletePending = false;
-		done?.();
-	};
-
-	let erasePending = false;
-	const eraseEntity = async () => {
-		erasePending = true;
-		await dispatch.EraseEntities({
-			actor: $persona.persona_id,
-			entityIds: [$entity.entity_id],
-		});
-		erasePending = false;
-	};
+	const {devmode} = getApp();
 </script>
 
 <div class="entity-editor column">
-	<div class="markup padded-xl">
-		<legend>Edit Entity</legend>
-		<section class="row">
-			<span class="spaced">created by</span>
-			<PersonaAvatar persona={authorPersona} />
-		</section>
-		<section style:--icon_size="var(--icon_size_sm)">
-			<p>created {format($entity.created, 'PPPPp')}</p>
-			{#if $entity.updated !== null}
-				<p>updated {format($entity.updated, 'PPPPp')}</p>
-			{/if}
-		</section>
-	</div>
-	<!-- TODO add entity property contextmenu actions to this -->
-	<form>
-		{#if $entity.data.type === 'Tombstone'}
-			<section><TombstoneContent {entity} /></section>
-		{:else}
-			<fieldset>
-				<!-- TODO how to make this use `EntityContent`? slot? could default to the `pre` -->
-				<PropertyEditor
-					value={$entity.data.content}
-					field="content"
-					update={updateEntityDataProperty}
-				/>
-			</fieldset>
-			{#if $devmode}
-				<fieldset>
-					<PropertyEditor
-						value={$entity.data}
-						field="data"
-						update={updateEntityData}
-						parse={parseJson}
-						serialize={serializeJson}
-					/>
-				</fieldset>
-			{/if}
-			<PendingButton
-				title="erase entity"
-				on:click={() =>
-					dispatch.OpenDialog({
-						Component: ConfirmDialog,
-						props: {
-							action: eraseEntity,
-							promptText: 'Erase this entity? This cannot be reversed.',
-							confirmText: 'erase entity',
-						},
-					})}
-				pending={erasePending}>erase entity</PendingButton
-			>
-		{/if}
-		<PendingButton
-			title="delete entity"
-			on:click={() =>
-				dispatch.OpenDialog({
-					Component: ConfirmDialog,
-					props: {
-						action: deleteEntity,
-						promptText: 'Delete this entity? This cannot be reversed.',
-						confirmText: 'delete entity',
-					},
-				})}
-			pending={deletePending}>delete entity</PendingButton
-		>
-	</form>
+	<EditEntityForm {persona} {entity} {done} />
 	{#if $devmode}
 		<hr />
 		<section>
@@ -139,8 +27,5 @@
 <style>
 	.entity-editor {
 		padding: var(--spacing_xl);
-	}
-	fieldset {
-		padding: var(--spacing_xl) 0;
 	}
 </style>
