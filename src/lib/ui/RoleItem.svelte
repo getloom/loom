@@ -11,8 +11,8 @@
 	$: assignments = $assignmentsByRoleId.get($role.role_id)!;
 </script>
 
-<li>
-	<span class="role-name">{$role.name}:</span>
+<li class="centered-hz">
+	<span class="role-name panel">{$role.name}</span>
 	<ul class="role-members">
 		{#each assignments as assignment (assignment)}
 			<li><AssignmentDisplayItem {assignment} /></li>
@@ -23,10 +23,11 @@
 </li>
 
 <style>
+	/* TODO extract some sort of reusable class/component */
 	.role-name {
-		font-size: larger;
-		text-decoration: underline;
+		font-size: var(--font_size_xl);
 		font-weight: 600;
+		padding: var(--spacing_xs2) var(--spacing_sm);
 		margin-right: var(--spacing_md);
 	}
 	.role-members {

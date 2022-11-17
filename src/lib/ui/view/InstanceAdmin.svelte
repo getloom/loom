@@ -19,8 +19,8 @@
 	};
 </script>
 
-<div class="markup">
-	<h1>admin</h1>
+<div class="markup padded-xl">
+	<h1>instance admin</h1>
 	<h2>communities</h2>
 	{#if communities}
 		<ul>

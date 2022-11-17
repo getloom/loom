@@ -41,6 +41,6 @@
 		font-weight: 700;
 	}
 	.has-icon {
-		padding-left: var(--spacing_sm);
+		padding-left: var(--spacing_xs);
 	}
 </style>

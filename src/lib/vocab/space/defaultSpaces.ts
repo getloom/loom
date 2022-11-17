@@ -1,24 +1,29 @@
 import {viewTemplates} from '$lib/vocab/view/view';
 import type {CreateSpaceParams} from '$lib/app/eventTypes';
 import type {Community} from '$lib/vocab/community/community';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 
-export const toDefaultSpaces = (
-	actor: number,
-	{community_id, name}: Community,
-): CreateSpaceParams[] => [
-	{...toViewTemplateDefaults('Home'), actor, community_id, name, url: '/'},
-	{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', url: '/chat'},
-	{...toViewTemplateDefaults('Board'), actor, community_id, name: 'board', url: '/board'},
-	{...toViewTemplateDefaults('Forum'), actor, community_id, name: 'forum', url: '/forum'},
-	{...toViewTemplateDefaults('Notes'), actor, community_id, name: 'notes', url: '/notes'},
-	{...toViewTemplateDefaults('Todo'), actor, community_id, name: 'todo', url: '/todo'},
-];
+export const toDefaultSpaces = (actor: number, community: Community): CreateSpaceParams[] => {
+	const {community_id, name, type} = community;
+	return community_id === ADMIN_COMMUNITY_ID
+		? toDefaultAdminSpaces(actor, community)
+		: [
+				type === 'personal'
+					? {...toViewTemplateDefaults('PersonalHome'), actor, community_id, name, url: '/'}
+					: {...toViewTemplateDefaults('Home'), actor, community_id, name, url: '/'},
+				{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', url: '/chat'},
+				{...toViewTemplateDefaults('Board'), actor, community_id, name: 'board', url: '/board'},
+				{...toViewTemplateDefaults('Forum'), actor, community_id, name: 'forum', url: '/forum'},
+				{...toViewTemplateDefaults('Notes'), actor, community_id, name: 'notes', url: '/notes'},
+				{...toViewTemplateDefaults('Todo'), actor, community_id, name: 'todo', url: '/todo'},
+		  ];
+};
 
 export const toDefaultAdminSpaces = (
 	actor: number,
 	{community_id, name}: Community,
 ): CreateSpaceParams[] => [
-	{...toViewTemplateDefaults('Home'), actor, community_id, name, url: '/'},
+	{...toViewTemplateDefaults('AdminHome'), actor, community_id, name, url: '/'},
 	{
 		...toViewTemplateDefaults('InstanceAdmin'),
 		actor,

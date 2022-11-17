@@ -12,6 +12,6 @@
 	$: assignmentPersona = personaById.get(assignment.persona_id)!;
 </script>
 
-<div class="assignment-item">
-	<PersonaAvatar persona={assignmentPersona} showIcon={false} />
+<div style:--icon_size="var(--icon_size_xs)">
+	<PersonaAvatar persona={assignmentPersona} />
 </div>

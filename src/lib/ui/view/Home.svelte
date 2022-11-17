@@ -9,16 +9,12 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import NewcomerSubmission from '$lib/ui/NewcomerSubmission.svelte';
-	import RoleItem from '$lib/ui/RoleItem.svelte';
+	import RolesList from '$lib/ui/RolesList.svelte';
 
 	const viewContext = getViewContext();
-	$: ({community, space, persona} = $viewContext);
+	$: ({space, persona} = $viewContext);
 
-	const {
-		ui: {rolesByCommunityId, assignmentsByRoleId},
-		socket,
-		dispatch,
-	} = getApp();
+	const {socket, dispatch} = getApp();
 
 	const DEFAULT_RULES = `<ol>
 				<li>
@@ -39,7 +35,6 @@
 			</ol>`;
 
 	$: shouldLoadEntities = browser && $socket.open;
-	$: roles = $rolesByCommunityId.get($community.community_id)!;
 
 	//TODO this is all done because the Query event always returns an empty array on initial call
 	$: entitiesResult = shouldLoadEntities
@@ -141,12 +136,8 @@
 		</section>
 		<section class="roles">
 			<div class="panel">
-				<h4>Community Role Assignments</h4>
-				<ul>
-					{#each roles as role (role)}
-						<RoleItem {role} {assignmentsByRoleId} />
-					{/each}
-				</ul>
+				<h2>roles</h2>
+				<RolesList />
 			</div>
 		</section>
 		<Forum />
