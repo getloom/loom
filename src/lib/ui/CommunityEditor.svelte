@@ -11,18 +11,20 @@
 	export let community: Readable<Community>;
 </script>
 
-<div class="community-editor column markup">
-	<form>
-		<h2>Edit Community</h2>
-		<section class="row" style:font-size="var(--font_size_xl)">
-			<CommunityAvatar {community} />
-		</section>
-		<section>
-			<p>created {format($community.created, 'PPPPp')}</p>
-			{#if $community.updated !== null}
-				<p>updated {format($community.updated, 'PPPPp')}</p>
-			{/if}
-		</section>
+<div class="community-editor column">
+	<form {...$$restProps} class="markup">
+		<header>
+			<h2>Edit Community</h2>
+			<p style:font-size="var(--font_size_xl)">
+				<CommunityAvatar {community} />
+			</p>
+			<section>
+				<p>created {format($community.created, 'PPPPp')}</p>
+				{#if $community.updated !== null}
+					<p>updated {format($community.updated, 'PPPPp')}</p>
+				{/if}
+			</section>
+		</header>
 		<fieldset>
 			<legend>settings</legend>
 			<CommunitySettingsHue {persona} {community} />

@@ -20,8 +20,8 @@
 
 <li
 	use:contextmenu.action={[
-		[PersonaContextmenu, {persona: authorPersona}],
 		[EntityContextmenu, {persona, entity}],
+		[PersonaContextmenu, {persona: authorPersona}],
 	]}
 >
 	<div class="markup padded-xl formatted">

@@ -61,8 +61,8 @@
 </script>
 
 <!-- TODO add entity property contextmenu actions to this -->
-<form {...$$restProps}>
-	<div class="markup" style:--icon_size="var(--icon_size_sm)">
+<form {...$$restProps} class="markup">
+	<header style:--icon_size="var(--icon_size_sm)">
 		<h2>Edit Entity</h2>
 		<section>
 			<!-- TODO resembles `ContextInfo` closely -->
@@ -75,7 +75,7 @@
 				<div>updated {format($entity.updated, 'PPPPp')}</div>
 			{/if}
 		</section>
-	</div>
+	</header>
 	{#if $entity.data.type === 'Tombstone'}
 		<section><TombstoneContent {entity} /></section>
 	{:else}
@@ -91,7 +91,7 @@
 		</fieldset>
 	{/if}
 	<fieldset>
-		<legend>danger! zone</legend>
+		<legend><span class="error-text">danger!</span> zone</legend>
 		{#if $entity.data.type !== 'Tombstone'}
 			<PendingButton
 				title="erase entity"

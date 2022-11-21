@@ -27,39 +27,31 @@
 </script>
 
 <div class="space-editor column">
-	<form>
-		<h2>Edit Space</h2>
-		<ContextInfo {persona} {community} {space} />
-		<section>
-			<p>created {format($space.created, 'PPPPp')}</p>
-			{#if $space.updated !== null}
-				<p>updated {format($space.updated, 'PPPPp')}</p>
-			{/if}
-		</section>
+	<form {...$$restProps} class="markup">
+		<header>
+			<h2>Edit Space</h2>
+			<ContextInfo {persona} {community} {space} />
+			<section>
+				<p>created {format($space.created, 'PPPPp')}</p>
+				{#if $space.updated !== null}
+					<p>updated {format($space.updated, 'PPPPp')}</p>
+				{/if}
+			</section>
+		</header>
 		<fieldset>
 			<legend>properties</legend>
-			<ul>
-				<li>
-					<PropertyEditor value={$space.name} field="name" update={updateSpace} />
-				</li>
-				<li>
-					<PropertyEditor value={$space.url} field="url" update={updateSpace} />
-				</li>
-				<li>
-					<PropertyEditor
-						value={$space.icon}
-						field="icon"
-						update={updateSpace}
-						parse={parseSpaceIcon}
-					/>
-				</li>
-				<li>
-					<PropertyEditor value={$space.view} field="view" update={updateSpace} />
-				</li>
-			</ul>
+			<PropertyEditor value={$space.name} field="name" update={updateSpace} />
+			<PropertyEditor value={$space.url} field="url" update={updateSpace} />
+			<PropertyEditor
+				value={$space.icon}
+				field="icon"
+				update={updateSpace}
+				parse={parseSpaceIcon}
+			/>
+			<PropertyEditor value={$space.view} field="view" update={updateSpace} />
 		</fieldset>
 		<fieldset>
-			<legend>danger! zone</legend>
+			<legend><span class="error-text">danger!</span> zone</legend>
 			<button
 				title="delete space"
 				on:click={() =>
@@ -94,9 +86,5 @@
 		display: flex;
 		flex-direction: column;
 		padding: var(--spacing_xl);
-	}
-	form li {
-		flex-direction: column;
-		padding: var(--spacing_xl) 0;
 	}
 </style>

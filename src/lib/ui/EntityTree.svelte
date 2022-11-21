@@ -6,8 +6,8 @@
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import {getApp} from '$lib/ui/app';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
-	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
 
 	const {
 		dispatch,
@@ -19,6 +19,7 @@
 	export let entity: Readable<Entity>;
 	export let ties: Readable<Array<Readable<Tie>>>; // TODO maybe don't pass these and do lookups instead
 	export let depth = 0;
+	export let itemComponent = EntityTreeItem;
 
 	let expanded = false;
 
@@ -52,19 +53,13 @@
 		{:else}
 			<div class="icon-button" />
 		{/if}
-		<span
-			>{#if $entity.data.name}{$entity.data.name}:{/if}
-			{$entity.data.type}:</span
-		>
-		{#if $entity.data.content || $entity.data.type === 'Tombstone'}<div class="content">
-				<EntityContent {entity} />
-			</div>{/if}
+		<svelte:component this={itemComponent} {entity} />
 	</div>
 	<!-- TODO key? -->
 	{#if expanded && hasDestEntities}
 		<ul>
 			{#each $destEntities as destEntity (destEntity)}
-				<svelte:self entity={destEntity} {ties} depth={depth + 1} />
+				<svelte:self entity={destEntity} {ties} depth={depth + 1} {itemComponent} />
 			{/each}
 		</ul>
 	{/if}
@@ -81,12 +76,6 @@
 	}
 	.icon-button {
 		margin-right: var(--spacing_sm);
-	}
-	.content {
-		padding: 0 var(--spacing_sm);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 	}
 	li {
 		display: flex;

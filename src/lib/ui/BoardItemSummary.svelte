@@ -37,8 +37,8 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 	<li
 		style="--hue: {hue}"
 		use:contextmenu.action={[
-			[PersonaContextmenu, {persona: authorPersona}],
 			[EntityContextmenu, {persona, entity}],
+			[PersonaContextmenu, {persona: authorPersona}],
 		]}
 	>
 		<!-- TODO remove this override after implementing links -->

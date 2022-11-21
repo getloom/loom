@@ -19,8 +19,8 @@
 
 <li
 	use:contextmenu.action={[
-		[PersonaContextmenu, {persona: authorPersona}],
 		[EntityContextmenu, {persona, entity}],
+		[PersonaContextmenu, {persona: authorPersona}],
 	]}
 >
 	<pre>{JSON.stringify($entity, null, 2)}</pre>

@@ -10,6 +10,7 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
+	import EntityTreeItemPlaintext from '$lib/ui/EntityTreeItemPlaintext.svelte';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
@@ -61,7 +62,7 @@
 		{#if entities2}
 			<ul>
 				{#each $entities2 as entity (entity)}
-					<EntityTree {persona} {entity} ties={ties2} />
+					<EntityTree {persona} {entity} ties={ties2} itemComponent={EntityTreeItemPlaintext} />
 				{/each}
 			</ul>
 		{:else}
@@ -81,8 +82,6 @@
 	.entity-explorer {
 		display: flex;
 		flex-direction: column;
-		flex: 1;
-		overflow: hidden; /* make the content scroll */
 	}
 	.entities {
 		flex: 1;
