@@ -16,6 +16,7 @@ export const toDefaultSpaces = (actor: number, community: Community): CreateSpac
 				{...toViewTemplateDefaults('Forum'), actor, community_id, name: 'forum', url: '/forum'},
 				{...toViewTemplateDefaults('Notes'), actor, community_id, name: 'notes', url: '/notes'},
 				{...toViewTemplateDefaults('Todo'), actor, community_id, name: 'todo', url: '/todo'},
+				{...toViewTemplateDefaults('List'), actor, community_id, name: 'list', url: '/list'},
 				{...toViewTemplateDefaults('Lists'), actor, community_id, name: 'lists', url: '/lists'},
 		  ];
 };

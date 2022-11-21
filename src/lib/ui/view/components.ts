@@ -11,6 +11,7 @@ import Notes from '$lib/ui/view/Notes.svelte';
 import Iframe from '$lib/ui/view/Iframe.svelte';
 import EntityExplorer from '$lib/ui/view/EntityExplorer.svelte';
 import Todo from '$lib/ui/view/Todo.svelte';
+import List from '$lib/mods/ryanatkn/list/List.svelte';
 import Lists from '$lib/mods/ryanatkn/lists/Lists.svelte';
 
 export const viewComponents: Record<string, typeof SvelteComponent> = {
@@ -25,5 +26,6 @@ export const viewComponents: Record<string, typeof SvelteComponent> = {
 	Iframe,
 	EntityExplorer,
 	Todo,
+	List,
 	Lists, // TODO how to import namespace? maybe this should be a `Mod` or `Plugin` interface in a list?
 };
