@@ -2,10 +2,9 @@
 
 import type {RandomVocab, RandomVocabContext} from '$lib/util/randomVocab';
 import type {
-	SetSessionParams,
+	SignUpParams,
 	SignInParams,
 	SignOutParams,
-	SignUpParams,
 	UpdateAccountSettingsParams,
 	UpdateAccountPasswordParams,
 	CreateCommunityParams,
@@ -43,6 +42,7 @@ import type {
 	DeletePolicyParams,
 	PingParams,
 	EphemeraParams,
+	SetSessionParams,
 	ToggleMainNavParams,
 	ToggleSecondaryNavParams,
 	SetMobileParams,
@@ -53,10 +53,9 @@ import type {
 } from '$lib/app/eventTypes';
 
 export interface RandomEventParams {
-	SetSession: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetSessionParams>;
+	SignUp: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignUpParams>;
 	SignIn: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignInParams>;
 	SignOut: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignOutParams>;
-	SignUp: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignUpParams>;
 	UpdateAccountSettings: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
@@ -172,6 +171,7 @@ export interface RandomEventParams {
 	) => Promise<DeletePolicyParams>;
 	Ping: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<PingParams>;
 	Ephemera: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<EphemeraParams>;
+	SetSession: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetSessionParams>;
 	ToggleMainNav: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

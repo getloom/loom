@@ -1,7 +1,8 @@
 import type {Mutation} from '$lib/ui/mutation';
-import {SignIn, SignOut, SetSession} from '$lib/session/sessionMutations';
 import {
 	SignUp,
+	SignIn,
+	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
 } from '$lib/vocab/account/accountMutations';
@@ -30,6 +31,7 @@ import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/rol
 import {
 	Ping,
 	Ephemera,
+	SetSession,
 	SetMobile,
 	OpenDialog,
 	CloseDialog,
@@ -40,12 +42,10 @@ import {
 } from '$lib/ui/uiMutations';
 
 export const mutations: Record<string, Mutation> = {
-	// sessionMutations
-	SetSession,
-	SignIn,
-	SignOut,
 	// accountMutations
 	SignUp,
+	SignIn,
+	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
 	// personaMutations
@@ -84,6 +84,7 @@ export const mutations: Record<string, Mutation> = {
 	// uiMutations
 	Ping,
 	Ephemera,
+	SetSession,
 	SetMobile,
 	OpenDialog,
 	CloseDialog,

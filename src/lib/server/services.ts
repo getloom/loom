@@ -1,6 +1,5 @@
 import type {Service} from '$lib/server/service';
 import {PingService, EphemeraService} from '$lib/server/uiServices';
-import {SignInService, SignOutService} from '$lib/session/sessionServices';
 import {CreateAccountPersonaService, ReadPersonaService} from '$lib/vocab/persona/personaServices';
 import {
 	ReadCommunityService,
@@ -44,6 +43,8 @@ import {
 } from '$lib/vocab/policy/policyServices';
 import {
 	SignUpService,
+	SignInService,
+	SignOutService,
 	UpdateAccountSettingsService,
 	UpdateAccountPasswordService,
 } from '$lib/vocab/account/accountServices';
@@ -53,11 +54,10 @@ export const services: Map<string, Service> = new Map(
 		// uiServices
 		PingService,
 		EphemeraService,
-		// sessionServices
-		SignInService,
-		SignOutService,
 		// accountServices
 		SignUpService,
+		SignInService,
+		SignOutService,
 		UpdateAccountSettingsService,
 		UpdateAccountPasswordService,
 		// personaServices

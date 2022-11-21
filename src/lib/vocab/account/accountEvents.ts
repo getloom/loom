@@ -83,3 +83,56 @@ export const UpdateAccountPassword: ServiceEventInfo = {
 		method: 'POST',
 	},
 };
+
+export const SignIn: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'SignIn',
+	authenticate: false,
+	authorize: false,
+	params: {
+		$id: '/schemas/SignInParams.json',
+		type: 'object',
+		properties: {
+			username: {type: 'string'},
+			password: {type: 'string'},
+		},
+		required: ['username', 'password'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/SignInResponse.json',
+		type: 'object',
+		properties: {
+			// TODO session schema type
+			// session: {$ref: 'Session.json', tsType: 'Persona'},
+			session: {type: 'object', tsType: 'ClientAccountSession'},
+		},
+		required: ['session'],
+		additionalProperties: false,
+	},
+	returns: 'Promise<SignInResponseResult>',
+	route: {
+		path: '/api/v1/signin',
+		method: 'POST',
+	},
+};
+
+export const SignOut: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'SignOut',
+	authorize: false,
+	websockets: false,
+	params: {
+		$id: '/schemas/SignOutParams.json',
+		type: 'null',
+	},
+	response: {
+		$id: '/schemas/SignOutResponse.json',
+		type: 'null',
+	},
+	returns: 'Promise<SignOutResponseResult>',
+	route: {
+		path: '/api/v1/signout',
+		method: 'POST',
+	},
+};

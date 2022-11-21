@@ -1,4 +1,4 @@
-import {NOT_OK, type Result} from '@feltcoop/util';
+import {NOT_OK, unwrap, type Result} from '@feltcoop/util';
 import {Logger} from '@feltcoop/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -7,6 +7,9 @@ import type {Account} from '$lib/vocab/account/account';
 import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import {toPasswordKey} from '$lib/util/password';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
+import type {ClientAccountSession} from '$lib/session/clientSession';
+import type {Entity} from '$lib/vocab/entity/entity';
+import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
@@ -24,6 +27,54 @@ export class AccountRepo extends PostgresRepo {
 		`;
 		log.trace('created account', data[0]);
 		return {ok: true, value: data[0]};
+	}
+
+	async loadClientSession(account_id: number): Promise<Result<{value: ClientAccountSession}>> {
+		log.trace('loadClientSession', account_id);
+		const account = unwrap(await this.repos.account.findById(account_id));
+		if (!account) return NOT_OK; // TODO custom error?
+
+		// TODO make this a single query
+		const [
+			spacesResult,
+			sessionPersonasResult,
+			communitiesResult,
+			rolesResult,
+			assignmentsResult,
+			personasResult,
+		] = await Promise.all([
+			this.repos.space.filterByAccountWithDirectories(account.account_id),
+			this.repos.persona.filterByAccount(account.account_id),
+			this.repos.community.filterByAccount(account.account_id),
+			this.repos.role.filterByAccount(account.account_id),
+			this.repos.assignment.filterByAccount(account.account_id),
+			this.repos.persona.getAll(), //TODO don't getAll
+		]);
+		if (!spacesResult.ok) return spacesResult;
+		if (!sessionPersonasResult.ok) return sessionPersonasResult;
+		if (!communitiesResult.ok) return communitiesResult;
+		if (!rolesResult.ok) return rolesResult;
+		if (!assignmentsResult.ok) return assignmentsResult;
+		if (!personasResult.ok) return personasResult;
+
+		const spaces = spacesResult.value.map((r) => r.space);
+		const directories = spacesResult.value.map((r) => r.entity) as Array<
+			Entity & {data: DirectoryEntityData}
+		>;
+
+		return {
+			ok: true,
+			value: {
+				account,
+				sessionPersonas: sessionPersonasResult.value,
+				communities: communitiesResult.value,
+				roles: rolesResult.value,
+				spaces,
+				directories,
+				assignments: assignmentsResult.value,
+				personas: personasResult.value,
+			},
+		};
 	}
 
 	async findById<T extends Partial<Account> = ClientAccount>(

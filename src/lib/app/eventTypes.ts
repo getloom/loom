@@ -26,9 +26,9 @@ import type {ClientSession, ClientAccountSession} from '$lib/session/clientSessi
 /* eslint-disable @typescript-eslint/array-type */
 
 export type ServiceEventName =
+	| 'SignUp'
 	| 'SignIn'
 	| 'SignOut'
-	| 'SignUp'
 	| 'UpdateAccountSettings'
 	| 'UpdateAccountPassword'
 	| 'CreateCommunity'
@@ -67,8 +67,8 @@ export type ServiceEventName =
 	| 'Ephemera';
 
 export type ClientEventName =
-	| 'SetSession'
 	| 'QueryEntities'
+	| 'SetSession'
 	| 'ToggleMainNav'
 	| 'ToggleSecondaryNav'
 	| 'SetMobile'
@@ -78,10 +78,9 @@ export type ClientEventName =
 	| 'ClearFreshness';
 
 export interface EventParamsByName {
-	SetSession: SetSessionParams;
+	SignUp: SignUpParams;
 	SignIn: SignInParams;
 	SignOut: SignOutParams;
-	SignUp: SignUpParams;
 	UpdateAccountSettings: UpdateAccountSettingsParams;
 	UpdateAccountPassword: UpdateAccountPasswordParams;
 	CreateCommunity: CreateCommunityParams;
@@ -119,6 +118,7 @@ export interface EventParamsByName {
 	DeletePolicy: DeletePolicyParams;
 	Ping: PingParams;
 	Ephemera: EphemeraParams;
+	SetSession: SetSessionParams;
 	ToggleMainNav: ToggleMainNavParams;
 	ToggleSecondaryNav: ToggleSecondaryNavParams;
 	SetMobile: SetMobileParams;
@@ -128,9 +128,9 @@ export interface EventParamsByName {
 	ClearFreshness: ClearFreshnessParams;
 }
 export interface EventResponseByName {
+	SignUp: SignUpResponse;
 	SignIn: SignInResponse;
 	SignOut: SignOutResponse;
-	SignUp: SignUpResponse;
 	UpdateAccountSettings: UpdateAccountSettingsResponse;
 	UpdateAccountPassword: UpdateAccountPasswordResponse;
 	CreateCommunity: CreateCommunityResponse;
@@ -172,9 +172,9 @@ export interface EventResponseByName {
 export interface ServiceByName {
 	Ping: NonAuthorizedService<PingParams, PingResponseResult>;
 	Ephemera: AuthorizedService<EphemeraParams, EphemeraResponseResult>;
+	SignUp: NonAuthenticatedService<SignUpParams, SignUpResponseResult>;
 	SignIn: NonAuthenticatedService<SignInParams, SignInResponseResult>;
 	SignOut: NonAuthorizedService<SignOutParams, SignOutResponseResult>;
-	SignUp: NonAuthenticatedService<SignUpParams, SignUpResponseResult>;
 	UpdateAccountSettings: NonAuthorizedService<
 		UpdateAccountSettingsParams,
 		UpdateAccountSettingsResponseResult
@@ -226,9 +226,14 @@ export interface ServiceByName {
 	UpdatePolicy: AuthorizedService<UpdatePolicyParams, UpdatePolicyResponseResult>;
 }
 
-export interface SetSessionParams {
-	session: ClientSession;
+export interface SignUpParams {
+	username: string;
+	password: string;
 }
+export interface SignUpResponse {
+	session: ClientAccountSession;
+}
+export type SignUpResponseResult = ApiResult<SignUpResponse>;
 
 export interface SignInParams {
 	username: string;
@@ -242,15 +247,6 @@ export type SignInResponseResult = ApiResult<SignInResponse>;
 export type SignOutParams = null;
 export type SignOutResponse = null;
 export type SignOutResponseResult = ApiResult<SignOutResponse>;
-
-export interface SignUpParams {
-	username: string;
-	password: string;
-}
-export interface SignUpResponse {
-	session: ClientAccountSession;
-}
-export type SignUpResponseResult = ApiResult<SignUpResponse>;
 
 export interface UpdateAccountSettingsParams {
 	settings: {
@@ -621,6 +617,10 @@ export interface EphemeraResponse {
 }
 export type EphemeraResponseResult = ApiResult<EphemeraResponse>;
 
+export interface SetSessionParams {
+	session: ClientSession;
+}
+
 export type ToggleMainNavParams = void;
 
 export type ToggleSecondaryNavParams = void;
@@ -649,10 +649,9 @@ export interface ClearFreshnessParams {
 }
 
 export interface Dispatch {
-	SetSession: (params: SetSessionParams) => void;
+	SignUp: (params: SignUpParams) => Promise<SignUpResponseResult>;
 	SignIn: (params: SignInParams) => Promise<SignInResponseResult>;
 	SignOut: () => Promise<SignOutResponseResult>;
-	SignUp: (params: SignUpParams) => Promise<SignUpResponseResult>;
 	UpdateAccountSettings: (
 		params: UpdateAccountSettingsParams,
 	) => Promise<UpdateAccountSettingsResponseResult>;
@@ -703,6 +702,7 @@ export interface Dispatch {
 	DeletePolicy: (params: DeletePolicyParams) => Promise<DeletePolicyResponseResult>;
 	Ping: () => Promise<ApiResult<null>>;
 	Ephemera: (params: EphemeraParams) => Promise<EphemeraResponseResult>;
+	SetSession: (params: SetSessionParams) => void;
 	ToggleMainNav: (params: ToggleMainNavParams) => void;
 	ToggleSecondaryNav: (params: ToggleSecondaryNavParams) => void;
 	SetMobile: (params: SetMobileParams) => void;
@@ -713,16 +713,15 @@ export interface Dispatch {
 }
 
 export interface Mutations {
-	SetSession: (ctx: DispatchContext<SetSessionParams, void>) => void;
+	SignUp: (
+		ctx: DispatchContext<SignUpParams, SignUpResponseResult>,
+	) => Promise<SignUpResponseResult>;
 	SignIn: (
 		ctx: DispatchContext<SignInParams, SignInResponseResult>,
 	) => Promise<SignInResponseResult>;
 	SignOut: (
 		ctx: DispatchContext<SignOutParams, SignOutResponseResult>,
 	) => Promise<SignOutResponseResult>;
-	SignUp: (
-		ctx: DispatchContext<SignUpParams, SignUpResponseResult>,
-	) => Promise<SignUpResponseResult>;
 	UpdateAccountSettings: (
 		ctx: DispatchContext<UpdateAccountSettingsParams, UpdateAccountSettingsResponseResult>,
 	) => Promise<UpdateAccountSettingsResponseResult>;
@@ -833,6 +832,7 @@ export interface Mutations {
 	Ephemera: (
 		ctx: DispatchContext<EphemeraParams, EphemeraResponseResult>,
 	) => Promise<EphemeraResponseResult>;
+	SetSession: (ctx: DispatchContext<SetSessionParams, void>) => void;
 	ToggleMainNav: (ctx: DispatchContext<ToggleMainNavParams, void>) => void;
 	ToggleSecondaryNav: (ctx: DispatchContext<ToggleSecondaryNavParams, void>) => void;
 	SetMobile: (ctx: DispatchContext<SetMobileParams, void>) => void;

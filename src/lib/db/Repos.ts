@@ -1,5 +1,4 @@
 import type {PostgresSql} from '$lib/db/postgres';
-import {SessionRepo} from '$lib/session/SessionRepo';
 import {AccountRepo} from '$lib/vocab/account/AccountRepo';
 import {PersonaRepo} from '$lib/vocab/persona/PersonaRepo';
 import {AssignmentRepo} from '$lib/vocab/assignment/AssignmentRepo';
@@ -15,7 +14,6 @@ import {PolicyRepo} from '$lib/vocab/policy/PolicyRepo';
  * which can be a normal connection or transaction.
  */
 export class Repos {
-	readonly session: SessionRepo;
 	readonly account: AccountRepo;
 	readonly persona: PersonaRepo;
 	readonly assignment: AssignmentRepo;
@@ -27,7 +25,6 @@ export class Repos {
 	readonly policy: PolicyRepo;
 
 	constructor(sql: PostgresSql) {
-		this.session = new SessionRepo(this, sql);
 		this.account = new AccountRepo(this, sql);
 		this.persona = new PersonaRepo(this, sql);
 		this.assignment = new AssignmentRepo(this, sql);

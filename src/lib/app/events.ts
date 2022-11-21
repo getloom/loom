@@ -1,6 +1,7 @@
 import type {EventInfo} from '$lib/vocab/event/event';
-import {SignIn, SignOut, SetSession} from '$lib/session/sessionEvents';
 import {
+	SignIn,
+	SignOut,
 	SignUp,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
@@ -42,6 +43,7 @@ import {
 import {
 	Ping,
 	Ephemera,
+	SetSession,
 	ToggleMainNav,
 	ToggleSecondaryNav,
 	SetMobile,
@@ -52,12 +54,10 @@ import {
 } from '$lib/ui/uiEvents';
 
 export const eventInfos: EventInfo[] = [
-	// sessionEvents
-	SetSession,
-	SignIn,
-	SignOut,
 	// accountEvents
 	SignUp,
+	SignIn,
+	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
 	// communityEvents
@@ -104,6 +104,7 @@ export const eventInfos: EventInfo[] = [
 	// uiEvents
 	Ping,
 	Ephemera,
+	SetSession,
 	ToggleMainNav,
 	ToggleSecondaryNav,
 	SetMobile,

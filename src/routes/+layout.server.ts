@@ -8,7 +8,7 @@ const log = new Logger('[hooks]');
 export const load: LayoutServerLoad = async (event) => {
 	const {account_id} = event.locals;
 	if (!account_id) return {guest: true};
-	const result = await db.repos.session.loadClientSession(account_id);
+	const result = await db.repos.account.loadClientSession(account_id);
 	if (!result.ok) {
 		// TODO what's the best UX for this condition? just ask the user to try again?
 		// If needed, could set `event.locals` to have `handle` manage this condition:
