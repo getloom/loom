@@ -1,0 +1,52 @@
+<script lang="ts">
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+
+	import TextInput from '$lib/ui/TextInput.svelte';
+	import {getApp} from '$lib/ui/app';
+	import {getViewContext} from '$lib/vocab/view/view';
+	import type {Entity} from '$lib/vocab/entity/entity';
+
+	const viewContext = getViewContext();
+	$: ({persona, space} = $viewContext);
+
+	const {dispatch} = getApp();
+
+	export let list: Readable<Entity>;
+	export let el: HTMLTextAreaElement | undefined = undefined;
+
+	let text = '';
+
+	const createEntity = async () => {
+		const content = text.trim(); // TODO parse to trim? regularize step?
+		if (!content) {
+			el?.focus();
+			return;
+		}
+
+		//TODO better error handling
+		await dispatch.CreateEntity({
+			actor: $persona.persona_id,
+			data: {type: 'Note', content, checked: false},
+			ties: [{source_id: $list.entity_id}],
+		});
+		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
+			data: null,
+			entity_id: $space.directory_id,
+		});
+		text = '';
+	};
+	const onSubmit = async () => {
+		await createEntity();
+	};
+</script>
+
+<TextInput
+	style="height: var(--input_height)"
+	{persona}
+	placeholder=">"
+	on:submit={onSubmit}
+	bind:value={text}
+	bind:el
+/>
+<button on:click={createEntity}>add item</button>

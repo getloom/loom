@@ -9,6 +9,7 @@
 
 	export let persona: Readable<AccountPersona>;
 	export let value = '';
+	export let el: HTMLTextAreaElement | undefined = undefined;
 
 	const onKeydown = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
@@ -19,7 +20,7 @@
 
 <div class="text-input">
 	<PersonaAvatar {persona} showName={false} />
-	<textarea on:keydown={onKeydown} bind:value {...$$restProps} />
+	<textarea on:keydown={onKeydown} bind:value {...$$restProps} bind:this={el} />
 </div>
 
 <style>

@@ -38,6 +38,7 @@ main {
 	width: var(--icon_size);
 	height: var(--icon_size);
 	flex-shrink: 0;
+	min-width: var(--input_height);
 	font-weight: 900;
 }
 .plain-button {

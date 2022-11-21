@@ -21,6 +21,7 @@
 		height: var(--icon_size);
 		width: var(--icon_size);
 		flex-shrink: 0;
+		user-select: none;
 	}
 	div.entity-icon {
 		background-color: hsl(var(--hue), 50%, 50%);

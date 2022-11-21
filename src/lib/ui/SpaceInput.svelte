@@ -106,16 +106,24 @@
 				/>
 			</label>
 			<label>
-				<div class="title">icon</div>
-				<input placeholder=">" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
+				<div class="title">type</div>
+				<!-- TODO selectable menu -->
+				<fieldset class="buttons type-selector">
+					{#each creatableViewTemplates as viewTemplate (viewTemplate.name)}
+						<button
+							type="button"
+							value={viewTemplate}
+							class:selected={selectedViewTemplate === viewTemplate}
+							on:click={() => {
+								selectedViewTemplate = viewTemplate;
+							}}>{viewTemplate.icon} {viewTemplate.name}</button
+						>
+					{/each}
+				</fieldset>
 			</label>
 			<label>
-				<div class="title">type</div>
-				<select class="type-selector" bind:value={selectedViewTemplate}>
-					{#each creatableViewTemplates as viewTemplate}
-						<option value={viewTemplate}>{viewTemplate.name}</option>
-					{/each}
-				</select>
+				<div class="title">icon</div>
+				<input placeholder=">" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
 			</label>
 			<PendingButton on:click={create} {pending}>create space</PendingButton>
 			{#if errorMessage}
@@ -126,7 +134,14 @@
 </div>
 
 <style>
+	/* TODO refactor this into a more abstract component */
 	.type-selector {
+		display: flex;
 		margin-left: var(--spacing_xs);
+	}
+	.type-selector button {
+		white-space: nowrap;
+		margin: 0;
+		justify-content: flex-start;
 	}
 </style>
