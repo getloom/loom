@@ -8,6 +8,7 @@
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import CreateCommunityForm from '$lib/ui/CreateCommunityForm.svelte';
 	import ManageAssignmentForm from '$lib/ui/ManageAssignmentForm.svelte';
+	import DeletePersonaForm from '$lib/ui/DeletePersonaForm.svelte';
 
 	const {dispatch} = getApp();
 
@@ -32,6 +33,15 @@
 		</ContextmenuEntry>
 		<ContextmenuEntry action={() => dispatch.OpenDialog({Component: ManageAssignmentForm})}>
 			Manage Assignments
+		</ContextmenuEntry>
+		<ContextmenuEntry
+			action={() =>
+				dispatch.OpenDialog({
+					Component: DeletePersonaForm,
+					props: {persona, done: () => dispatch.CloseDialog()},
+				})}
+		>
+			Delete Persona
 		</ContextmenuEntry>
 	</svelte:fragment>
 </ContextmenuSubmenu>

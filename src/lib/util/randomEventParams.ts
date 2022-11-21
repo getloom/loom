@@ -102,6 +102,10 @@ export const randomEventParams: RandomEventParams = {
 		if (!persona) ({persona} = await random.persona());
 		return {actor: persona.persona_id, persona_id: persona.persona_id};
 	},
+	DeletePersona: async (random, {account, persona} = {}) => {
+		if (!persona) ({persona} = await random.persona(account));
+		return {actor: persona.persona_id, persona_id: persona.persona_id};
+	},
 	CreateAssignment: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community()); // don't forward `persona`/`account` bc that's the service's job

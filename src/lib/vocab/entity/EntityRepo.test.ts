@@ -3,11 +3,10 @@ import * as assert from 'uvu/assert';
 import {unwrap} from '@feltcoop/util';
 
 import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';
 
 /* test__EntityRepo */
-const test__EntityRepo = suite<TestDbContext & TestAppContext>('EntityRepo');
+const test__EntityRepo = suite<TestDbContext>('EntityRepo');
 
 test__EntityRepo.before(setupDb);
 test__EntityRepo.after(teardownDb);

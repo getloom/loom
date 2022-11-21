@@ -1,9 +1,13 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {goto} from '$app/navigation';
+import {page} from '$app/stores';
+import {get} from 'svelte/store';
 import {removeUnordered} from '@feltcoop/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import {Mutated} from '$lib/util/Mutated';
+import {toCommunityUrl, toSearchParams} from '$lib/ui/url';
 
 export const stashPersonas = (
 	{personaById, personas, sessionPersonas, communityIdSelectionByPersonaId}: WritableUi,
@@ -40,24 +44,45 @@ export const stashPersonas = (
 	mutated.end('stashPersonas');
 };
 
-export const evictPersonas = (
+export const evictPersonas = async (
 	ui: WritableUi,
 	personasToEvict: Set<Writable<ClientPersona>>,
 	mutated = new Mutated('evictPersonas'),
-): void => {
-	for (const p of personasToEvict) {
-		evictPersona(ui, p, mutated);
-	}
+): Promise<void> => {
+	await Promise.all(Array.from(personasToEvict).map((p) => evictPersona(ui, p, mutated)));
 	mutated.end('evictPersonas');
 };
 
-export const evictPersona = (
-	{personas, personaById}: WritableUi,
+export const evictPersona = async (
+	{personas, personaById, personaIdSelection, sessionPersonas, sessionPersonaIndexById}: WritableUi,
 	personaToEvict: Writable<ClientPersona>,
 	mutated = new Mutated('evictPersona'),
-): void => {
+): Promise<void> => {
 	removeUnordered(personas.get().value, personas.get().value.indexOf(personaToEvict));
 	mutated.add(personas);
-	personaById.delete(personaToEvict.get().persona_id);
+
+	const $personaToEvict = personaToEvict.get();
+
+	personaById.delete($personaToEvict.persona_id);
+
+	if ($personaToEvict.persona_id === personaIdSelection.get()) {
+		const $sessionPersonas = sessionPersonas.get().value;
+		const nextSelectedPersona =
+			$sessionPersonas[0] === personaToEvict ? $sessionPersonas[1] : $sessionPersonas[0];
+		const nextSelectedPersonaIndex = sessionPersonaIndexById
+			.get()
+			.get(nextSelectedPersona.get().persona_id);
+		await goto(
+			toCommunityUrl(
+				nextSelectedPersona?.get().name || '',
+				null,
+				toSearchParams(get(page).url.searchParams, {
+					persona: nextSelectedPersonaIndex ? nextSelectedPersonaIndex + '' : null,
+				}),
+			),
+			{replaceState: true},
+		);
+	}
+
 	mutated.end('evictPersona');
 };

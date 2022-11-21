@@ -93,16 +93,22 @@ export class AssignmentRepo extends PostgresRepo {
 		return OK;
 	}
 
+	async deleteByPersona(persona_id: number): Promise<Result<{value: number}>> {
+		const data = await this.sql<any[]>`
+			DELETE FROM assignments
+			WHERE persona_id=${persona_id}
+		`;
+		return {ok: true, value: data.count};
+	}
+
 	async deleteByPersonaAndCommunity(
 		persona_id: number,
 		community_id: number,
-	): Promise<Result<{value: Assignment[]}>> {
+	): Promise<Result<{value: number}>> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments 
 			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
-			RETURNING *
 		`;
-		if (!data.count) return NOT_OK;
-		return {ok: true, value: data};
+		return {ok: true, value: data.count};
 	}
 }

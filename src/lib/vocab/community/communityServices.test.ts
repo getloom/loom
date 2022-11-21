@@ -4,7 +4,6 @@ import {unwrap, unwrapError} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {randomCommunityParams} from '$lib/util/randomVocab';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {
 	DeleteCommunityService,
 	CreateCommunityService,
@@ -14,7 +13,7 @@ import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 
 /* test_communityServices */
-const test_communityServices = suite<TestDbContext & TestAppContext>('communityRepo');
+const test_communityServices = suite<TestDbContext>('communityRepo');
 
 test_communityServices.before(setupDb);
 test_communityServices.after(teardownDb);

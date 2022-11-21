@@ -3,12 +3,11 @@ import {unwrap} from '@feltcoop/util';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {DeleteSpaceService} from '$lib/vocab/space/spaceServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 
 /* test__spaceServices */
-const test__spaceServices = suite<TestDbContext & TestAppContext>('spaceServices');
+const test__spaceServices = suite<TestDbContext>('spaceServices');
 
 test__spaceServices.before(setupDb);
 test__spaceServices.after(teardownDb);

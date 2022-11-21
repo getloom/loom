@@ -1,4 +1,4 @@
-import {NOT_OK, type Result} from '@feltcoop/util';
+import {NOT_OK, OK, type Result} from '@feltcoop/util';
 import {Logger} from '@feltcoop/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -51,6 +51,14 @@ export class PersonaRepo extends PostgresRepo {
 		const persona = data[0];
 		if (persona.persona_id !== GHOST_PERSONA_ID) return NOT_OK;
 		return {ok: true, value: persona};
+	}
+
+	async deleteById(persona_id: number): Promise<Result> {
+		const data = await this.sql<any[]>`
+			DELETE FROM personas WHERE persona_id=${persona_id}
+		`;
+		if (!data.count) return NOT_OK;
+		return OK;
 	}
 
 	async filterByAccount(account_id: number): Promise<Result<{value: AccountPersona[]}>> {

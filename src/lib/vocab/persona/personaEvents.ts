@@ -68,3 +68,27 @@ export const ReadPersona: ServiceEventInfo = {
 		method: 'GET',
 	},
 };
+
+export const DeletePersona: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'DeletePersona',
+	params: {
+		$id: '/schemas/DeletePersonaParams.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number'},
+			persona_id: {type: 'number'},
+		},
+		required: ['actor', 'persona_id'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/DeletePersonaResponse.json',
+		type: 'null',
+	},
+	returns: 'Promise<DeletePersonaResponseResult>',
+	route: {
+		path: '/api/v1/personas/:persona_id',
+		method: 'DELETE',
+	},
+};

@@ -88,7 +88,7 @@ export const evictAssignments = async (
 				if (!doesPersonaHaveOtherAssignment) {
 					const persona = personaById.get(persona_id);
 					if (persona) {
-						evictPersona(ui, persona, mutated);
+						await evictPersona(ui, persona, mutated); // eslint-disable-line no-await-in-loop
 					}
 				}
 			}

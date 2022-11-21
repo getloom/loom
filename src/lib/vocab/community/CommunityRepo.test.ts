@@ -3,10 +3,9 @@ import * as assert from 'uvu/assert';
 import {unwrap} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 
 /* test__CommunityRepo */
-const test__CommunityRepo = suite<TestDbContext & TestAppContext>('CommunityRepo');
+const test__CommunityRepo = suite<TestDbContext>('CommunityRepo');
 
 test__CommunityRepo.before(setupDb);
 test__CommunityRepo.after(teardownDb);

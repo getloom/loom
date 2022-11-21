@@ -3,14 +3,13 @@ import {unwrap, unwrapError} from '@feltcoop/util';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
 
 /* test__personaService */
-const test__personaService = suite<TestDbContext & TestAppContext>('personaService');
+const test__personaService = suite<TestDbContext>('personaService');
 
 test__personaService.before(setupDb);
 test__personaService.after(teardownDb);

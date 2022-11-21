@@ -3,7 +3,6 @@ import * as assert from 'uvu/assert';
 import {unwrap, unwrapError} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
@@ -12,7 +11,7 @@ import {toServiceRequestMock} from '$lib/util/testHelpers';
 import type {CommunityPersona} from '$lib/vocab/persona/persona';
 
 /* test__assignmentServices */
-const test__assignmentServices = suite<TestDbContext & TestAppContext>('assignmentServices');
+const test__assignmentServices = suite<TestDbContext>('assignmentServices');
 
 test__assignmentServices.before(setupDb);
 test__assignmentServices.after(teardownDb);

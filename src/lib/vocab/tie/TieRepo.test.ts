@@ -4,10 +4,9 @@ import {unwrap} from '@feltcoop/util';
 import {isDeepStrictEqual} from 'util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 
 /* test__TieRepo */
-const test__TieRepo = suite<TestDbContext & TestAppContext>('TieRepo');
+const test__TieRepo = suite<TestDbContext>('TieRepo');
 
 test__TieRepo.before(setupDb);
 test__TieRepo.after(teardownDb);

@@ -5,6 +5,7 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {EntityData} from '$lib/vocab/entity/entityData';
+import {GHOST_PERSONA_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
@@ -87,6 +88,22 @@ export class EntityRepo extends PostgresRepo {
 		if (!data.count) return NOT_OK;
 		if (data.count !== entityIds.length) return NOT_OK;
 		return OK;
+	}
+
+	// TODO needs to handle `data.attributedTo` and other data properties containing personas,
+	// if possible in the same SQL statement --
+	// if `data.attributedTo` exists, replace with `GHOST_PERSONA_ID`
+	// how? see https://www.postgresql.org/docs/current/functions-json.html
+	// `WHERE data ? 'attributedTo'`
+	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
+	async attributeToGhostByPersona(persona_id: number): Promise<Result<{value: number}>> {
+		log.trace('[ghost]', persona_id);
+		const data = await this.sql<any[]>`
+			UPDATE entities
+			SET persona_id=${GHOST_PERSONA_ID}
+			WHERE persona_id=${persona_id};
+		`;
+		return {ok: true, value: data.count};
 	}
 
 	//This function finds all non-directory entities with no ties pointing to them & returns an array of their ids

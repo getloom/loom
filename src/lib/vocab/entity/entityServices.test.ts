@@ -3,7 +3,6 @@ import * as assert from 'uvu/assert';
 import {unwrap} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
 import type {NoteEntityData} from '$lib/vocab/entity/entityData';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {
@@ -14,7 +13,7 @@ import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
 
 /* test_entityServices */
-const test_entityServices = suite<TestDbContext & TestAppContext>('communityRepo');
+const test_entityServices = suite<TestDbContext>('communityRepo');
 
 test_entityServices.before(setupDb);
 test_entityServices.after(teardownDb);

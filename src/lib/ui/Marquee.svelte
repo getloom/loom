@@ -17,29 +17,31 @@
 	export let community: Readable<Community>;
 	export let space: Readable<Space | null>;
 
-	$: communityPersonas = $personasByCommunityId.get($community.community_id)!;
+	$: communityPersonas = $personasByCommunityId.get($community.community_id);
 </script>
 
-<MarqueeNav {space} {communityPersonas} />
+{#if communityPersonas}
+	<MarqueeNav {space} {communityPersonas} />
 
-<!-- TODO display other meta info about the community -->
-{#if $expandMarquee}
-	<section>
-		<ul>
-			<!-- TODO probably want these to be sorted so the selected persona is always first -->
-			{#each communityPersonas as persona (persona)}
-				<MemberItem {persona} />
-			{/each}
-		</ul>
-	</section>
-	{#if $devmode}
+	<!-- TODO display other meta info about the community -->
+	{#if $expandMarquee}
 		<section>
-			<menu>
-				<li><a href="/docs">/docs</a></li>
-			</menu>
+			<ul>
+				<!-- TODO probably want these to be sorted so the selected persona is always first -->
+				{#each communityPersonas as persona (persona)}
+					<MemberItem {persona} />
+				{/each}
+			</ul>
 		</section>
-		<section>
-			<SocketConnectionControls {socket} />
-		</section>
+		{#if $devmode}
+			<section>
+				<menu>
+					<li><a href="/docs">/docs</a></li>
+				</menu>
+			</section>
+			<section>
+				<SocketConnectionControls {socket} />
+			</section>
+		{/if}
 	{/if}
 {/if}

@@ -173,7 +173,8 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 	event: DeleteCommunity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const community = unwrap(await repos.community.findById(params.community_id));
+			const {community_id} = params;
+			const community = unwrap(await repos.community.findById(community_id));
 			if (!community) {
 				return {ok: false, status: 404, message: 'no community found'};
 			}
@@ -183,7 +184,8 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 			if (community.community_id === ADMIN_COMMUNITY_ID) {
 				return {ok: false, status: 405, message: 'cannot delete admin community'};
 			}
-			unwrap(await repos.community.deleteById(params.community_id));
+			unwrap(await repos.community.deleteById(community_id));
+
 			return {ok: true, status: 200, value: null};
 		}),
 };

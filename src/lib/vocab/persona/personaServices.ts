@@ -3,7 +3,7 @@ import {unwrap} from '@feltcoop/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
-import {CreateAccountPersona, ReadPersona} from '$lib/vocab/persona/personaEvents';
+import {CreateAccountPersona, ReadPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {createSpaces} from '$lib/vocab/space/spaceServices';
 import {
@@ -16,10 +16,11 @@ import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Role} from '$lib/vocab/role/role';
 import type {Community} from '$lib/vocab/community/community';
-import type {ClientPersona} from '$lib/vocab/persona/persona';
+import type {ActorPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
+import {ADMIN_PERSONA_ID, GHOST_PERSONA_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
 
@@ -147,5 +148,41 @@ export const ReadPersonaService: ServiceByName['ReadPersona'] = {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
 		return {ok: true, status: 200, value: {persona}};
+	},
+};
+
+export const DeletePersonaService: ServiceByName['DeletePersona'] = {
+	event: DeletePersona,
+	perform: async ({repos, params}) => {
+		const {persona_id} = params;
+
+		// first check if deleting the persona is allowed
+		if (persona_id === ADMIN_PERSONA_ID || persona_id === GHOST_PERSONA_ID) {
+			return {ok: false, status: 400, message: 'cannot delete that persona'};
+		}
+		const persona = unwrap(
+			await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(persona_id, [
+				'type',
+				'community_id',
+			]),
+		);
+		if (!persona) {
+			return {ok: false, status: 404, message: 'no persona found'};
+		}
+		if (persona.type === 'community') {
+			return {ok: false, status: 400, message: 'cannot delete community personas'};
+		}
+
+		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
+
+		// swap in the ghost persona id for this `persona_id` for those objects that we don't delete
+		unwrap(await repos.entity.attributeToGhostByPersona(persona_id));
+
+		// delete the persona and its related objects
+		unwrap(await repos.assignment.deleteByPersona(persona_id));
+		unwrap(await repos.persona.deleteById(persona_id));
+		unwrap(await repos.community.deleteById(persona.community_id)); // must follow `persona.deleteById` it seems
+
+		return {ok: true, status: 200, value: null};
 	},
 };
