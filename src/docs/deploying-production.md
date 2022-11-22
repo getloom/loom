@@ -32,7 +32,6 @@ Then:
 ```bash
 gro deploy
 # TODO automate all of this
-# manually run `gro lib/db/migrate` from a cloned instance of felt-server
 # manually run `pm2 start npm -- run start --prefix ~/current_felt_server_deploy`
 ```
 

@@ -2,14 +2,16 @@ import ley from 'ley';
 import {defaultPostgresOptions} from '$lib/db/postgres.js';
 import type {Logger} from '@feltcoop/util/log.js';
 
-import {MIGRATIONS_DIR} from '$lib/db/migration';
+import {MIGRATIONS_DIR, MIGRATIONS_DIR_PROD} from '$lib/db/migration';
 
 // Note: this requires the dependency `tsm`
 
-export const migrate = async (log: Logger): Promise<void> => {
+export const migrate = async (prod: boolean, log: Logger): Promise<void> => {
+	const dir = prod ? MIGRATIONS_DIR_PROD : MIGRATIONS_DIR;
+
 	const status = await ley.status({
 		require: 'tsm',
-		dir: MIGRATIONS_DIR,
+		dir,
 		driver: 'postgres',
 		config: defaultPostgresOptions as any,
 	});
@@ -23,7 +25,7 @@ export const migrate = async (log: Logger): Promise<void> => {
 
 	const successes = await ley.up({
 		require: 'tsm',
-		dir: MIGRATIONS_DIR,
+		dir,
 		driver: 'postgres',
 		config: defaultPostgresOptions as any,
 	});

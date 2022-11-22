@@ -2,8 +2,8 @@
 	<h1>About this Instance</h1>
 	<p>Need help? Have questions, comments, concerns?</p>
 	<p>
-		Email us at <a href="mailto:{import.meta.env.PUBLIC_HELP_EMAIL_ADDRESS}"
-			>{import.meta.env.PUBLIC_HELP_EMAIL_ADDRESS}</a
+		Email the admin at <a href="mailto:{import.meta.env.PUBLIC_ADMIN_EMAIL_ADDRESS}"
+			>{import.meta.env.PUBLIC_ADMIN_EMAIL_ADDRESS}</a
 		>
 	</p>
 	<p class="title">

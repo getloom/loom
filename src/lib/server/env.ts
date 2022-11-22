@@ -19,7 +19,7 @@ interface Env {
 	COOKIE_KEYS: string;
 	PUBLIC_GIT_HASH: string;
 	PUBLIC_DEPLOY_SERVER_HOST: string;
-	PUBLIC_HELP_EMAIL_ADDRESS: string;
+	PUBLIC_ADMIN_EMAIL_ADDRESS: string;
 	DEPLOY_IP: string;
 	DEPLOY_USER: string;
 	CERTBOT_EMAIL_ADDRESS: string;
