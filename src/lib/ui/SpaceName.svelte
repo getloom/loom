@@ -6,7 +6,8 @@
 	export let space: Readable<Space>;
 </script>
 
-<SpaceIcon {space} />
+<!-- TODO better API to set icon font size? -->
+<SpaceIcon {space} style="font-size: var(--font_size_lg)" />
 <span>{$space.name} </span>
 
 <style>

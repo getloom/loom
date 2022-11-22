@@ -27,7 +27,8 @@
 		background-color: hsl(var(--hue), 50%, 50%);
 		border-radius: 50%;
 		color: white;
-		font-weight: 700;
+		font-weight: 300;
+		font-size: calc(var(--icon_size) * 0.8);
 		line-height: 1;
 		display: flex;
 		align-items: center;
