@@ -7,6 +7,9 @@ export interface Community {
 	settings: {
 		hue: number;
 		defaultRoleId: number;
+		instance?: {
+			allowedAccountNames?: string[];
+		};
 	};
 	created: Date;
 	updated: Date | null;
@@ -14,6 +17,9 @@ export interface Community {
 export interface CommunitySettings {
 	hue: number;
 	defaultRoleId: number;
+	instance?: {
+		allowedAccountNames?: string[];
+	};
 }
 export interface InitialCommunitySettings {
 	hue: number;

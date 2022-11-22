@@ -6,6 +6,7 @@
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import CommunitySettingsHue from '$lib/ui/CommunitySettingsHue.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import EditCommunityAdvanced from '$lib/ui/EditCommunityAdvanced.svelte';
 
 	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
@@ -29,6 +30,7 @@
 			<legend>settings</legend>
 			<CommunitySettingsHue {persona} {community} />
 		</fieldset>
+		<EditCommunityAdvanced actor={persona} {community} />
 	</form>
 </div>
 

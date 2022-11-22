@@ -312,6 +312,9 @@ export interface UpdateCommunitySettingsParams {
 	settings: {
 		hue: number;
 		defaultRoleId: number;
+		instance?: {
+			allowedAccountNames?: string[];
+		};
 	};
 }
 export type UpdateCommunitySettingsResponse = null;

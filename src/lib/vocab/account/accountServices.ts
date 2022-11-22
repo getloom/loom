@@ -14,6 +14,7 @@ import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 import {verifyPassword} from '$lib/util/password';
 import type {Account} from '$lib/vocab/account/account';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
@@ -35,6 +36,19 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			const existingAccount = unwrap(await repos.account.findByName(username));
 			if (existingAccount) {
 				return {ok: false, status: 409, message: 'account already exists'};
+			}
+
+			// check `instance.allowedAccountNames`
+			// TODO does this belong in `checkAccountName` above?
+			// TODO consider `const settings = repos.entity.filterByUrl('/instance');` (but scoped to admin?)
+			// should entities be scoped?  or /e/ to reference any url or id?
+			const adminCommunity = unwrap(await repos.community.findById(ADMIN_COMMUNITY_ID));
+			if (!adminCommunity) throw Error();
+			const allowedAccountNames = adminCommunity.settings.instance?.allowedAccountNames;
+			if (allowedAccountNames) {
+				if (!allowedAccountNames.includes(username.toLowerCase())) {
+					return {ok: false, status: 400, message: 'cannot create account'};
+				}
 			}
 
 			const account = unwrap(

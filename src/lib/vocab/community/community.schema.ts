@@ -22,6 +22,13 @@ export const CommunitySettingsSchema = {
 	properties: {
 		hue: {type: 'number'},
 		defaultRoleId: {type: 'number'},
+		instance: {
+			type: 'object',
+			properties: {
+				allowedAccountNames: {type: 'array', items: {type: 'string'}},
+			},
+			additionalProperties: false,
+		},
 	},
 	required: ['hue', 'defaultRoleId'],
 	additionalProperties: false,
