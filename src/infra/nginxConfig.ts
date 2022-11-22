@@ -12,7 +12,7 @@ server {
   server_name ${PUBLIC_DEPLOY_SERVER_HOST};
 
   location /api {
-    proxy_pass https://${API_SERVER_HOST_PROD};
+    proxy_pass http://${API_SERVER_HOST_PROD};
   }
 
   location /ws {
@@ -21,13 +21,13 @@ server {
     proxy_http_version 1.1;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $host;
-    proxy_pass https://${API_SERVER_HOST_PROD};
+    proxy_pass http://${API_SERVER_HOST_PROD};
     proxy_read_timeout ${websocketTimeout};
     proxy_send_timeout ${websocketTimeout};
   }
 
   location / {
-    proxy_pass https://${API_SERVER_HOST_PROD};
+    proxy_pass http://${API_SERVER_HOST_PROD};
   }
 }
 

@@ -50,6 +50,7 @@ sudo systemctl stop nginx
 sudo systemctl start nginx
 sudo systemctl restart nginx
 sudo systemctl reload nginx
+sudo service nginx status # this is an alternative to systemctl for restart, etc
 ```
 
 ## Letsencrypt
