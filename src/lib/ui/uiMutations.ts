@@ -18,6 +18,7 @@ import {stashCommunities} from '$lib/vocab/community/communityMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
+import {stashPolicies} from '$lib/vocab/policy/policyMutationHelper';
 
 const log = new Logger('[uiMutations]');
 
@@ -66,6 +67,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	stashCommunities(ui, guest ? [] : $session.communities, mutated, true);
 	stashRoles(ui, guest ? [] : $session.roles, mutated, true);
 	stashAssignments(ui, guest ? [] : $session.assignments, mutated, true);
+	stashPolicies(ui, guest ? [] : $session.policies, mutated, true);
 	stashSpaces(ui, guest ? [] : $session.spaces, undefined, mutated, true);
 	mutated.end('SetSession');
 

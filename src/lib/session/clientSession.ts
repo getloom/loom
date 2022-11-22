@@ -5,6 +5,7 @@ import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Role} from '$lib/vocab/role/role';
+import type {Policy} from '$lib/vocab/policy/policy';
 
 export type ClientSession = ClientAccountSession | ClientGuestSession;
 
@@ -16,6 +17,7 @@ export interface ClientAccountSession {
 	spaces: Space[];
 	directories: Entity[];
 	assignments: Assignment[];
+	policies: Policy[];
 	personas: ClientPersona[];
 	guest?: false; // is only for types; this property doesn't exist at runtime
 }

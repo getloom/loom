@@ -26,6 +26,7 @@ import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {EphemeraResponse} from '$lib/app/eventTypes';
 import type {ClientSession} from '$lib/session/clientSession';
 import type {Role} from '$lib/vocab/role/role';
+import type {Policy} from '$lib/vocab/policy/policy';
 
 if (browser) initBrowser();
 
@@ -56,10 +57,12 @@ export interface Ui {
 	roles: Mutable<Array<Readable<Role>>>;
 	spaces: Mutable<Array<Readable<Space>>>;
 	assignments: Mutable<Set<Assignment>>;
+	policies: Mutable<Array<Readable<Policy>>>;
 	personaById: Map<number, Readable<ClientPersona>>;
 	communityById: Map<number, Readable<Community>>;
 	roleById: Map<number, Readable<Role>>;
 	assignmentById: Map<number, Assignment>;
+	policyById: Map<number, Readable<Policy>>;
 	spaceById: Map<number, Readable<Space>>;
 	entityById: Map<number, Readable<Entity>>;
 	tieById: Map<number, Tie>;
@@ -69,6 +72,7 @@ export interface Ui {
 	personasByCommunityId: Readable<Map<number, Array<Readable<ClientPersona>>>>;
 	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
+	policiesByRoleId: Readable<Map<number, Map<string, Readable<Policy>>>>;
 	queryByKey: Map<number, {data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}>;
 	sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>>;
 	destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>>;
@@ -115,10 +119,12 @@ export const toUi = (
 	const roles = mutable<Array<Writable<Role>>>([]);
 	const spaces = mutable<Array<Writable<Space>>>([]);
 	const assignments = mutable<Set<Assignment>>(new Set());
+	const policies = mutable<Array<Writable<Policy>>>([]);
 	const personaById: Map<number, Writable<ClientPersona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();
 	const assignmentById: Map<number, Assignment> = new Map();
+	const policyById: Map<number, Writable<Policy>> = new Map();
 	const spaceById: Map<number, Writable<Space>> = new Map();
 	// TODO do these maps more efficiently
 	const spacesByCommunityId: Readable<Map<number, Array<Writable<Space>>>> = derived(
@@ -195,6 +201,24 @@ export const toUi = (
 					}
 				}
 				map.set(role_id, roleAssignments);
+			}
+			return map;
+		},
+	);
+
+	const policiesByRoleId: Readable<Map<number, Map<string, Writable<Policy>>>> = derived(
+		[roles, policies],
+		([$roles, $policies]) => {
+			const map: Map<number, Map<string, Writable<Policy>>> = new Map();
+			for (const role of $roles.value) {
+				const rolePolicies: Map<string, Writable<Policy>> = new Map();
+				const {role_id} = role.get();
+				for (const policy of $policies.value) {
+					if (policy.get().role_id === role_id) {
+						rolePolicies.set(policy.get().permission, policy);
+					}
+				}
+				map.set(role_id, rolePolicies);
 			}
 			return map;
 		},
@@ -308,10 +332,12 @@ export const toUi = (
 		spaces,
 		communities,
 		assignments,
+		policies,
 		personaById,
 		communityById,
 		roleById,
 		assignmentById,
+		policyById,
 		spaceById,
 		entityById,
 		tieById,
@@ -320,6 +346,7 @@ export const toUi = (
 		personasByCommunityId,
 		rolesByCommunityId,
 		assignmentsByRoleId,
+		policiesByRoleId,
 		queryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,

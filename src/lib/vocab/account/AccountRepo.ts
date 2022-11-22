@@ -41,6 +41,7 @@ export class AccountRepo extends PostgresRepo {
 			communitiesResult,
 			rolesResult,
 			assignmentsResult,
+			policiesResult,
 			personasResult,
 		] = await Promise.all([
 			this.repos.space.filterByAccountWithDirectories(account.account_id),
@@ -48,6 +49,7 @@ export class AccountRepo extends PostgresRepo {
 			this.repos.community.filterByAccount(account.account_id),
 			this.repos.role.filterByAccount(account.account_id),
 			this.repos.assignment.filterByAccount(account.account_id),
+			this.repos.policy.filterByAccount(account.account_id),
 			this.repos.persona.getAll(), //TODO don't getAll
 		]);
 		if (!spacesResult.ok) return spacesResult;
@@ -55,6 +57,7 @@ export class AccountRepo extends PostgresRepo {
 		if (!communitiesResult.ok) return communitiesResult;
 		if (!rolesResult.ok) return rolesResult;
 		if (!assignmentsResult.ok) return assignmentsResult;
+		if (!policiesResult.ok) return policiesResult;
 		if (!personasResult.ok) return personasResult;
 
 		const spaces = spacesResult.value.map((r) => r.space);
@@ -72,6 +75,7 @@ export class AccountRepo extends PostgresRepo {
 				spaces,
 				directories,
 				assignments: assignmentsResult.value,
+				policies: policiesResult.value,
 				personas: personasResult.value,
 			},
 		};

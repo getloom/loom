@@ -7,17 +7,20 @@
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import AssignmentItem from '$lib/ui/AssignmentItem.svelte';
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
+	import PolicyItem from '$lib/ui/PolicyItem.svelte';
 	import type {Community} from '$lib/vocab/community/community';
+	import {PERMISSIONS} from '$lib/vocab/policy/permissions';
 
 	const {
 		dispatch,
-		ui: {assignmentsByRoleId},
+		ui: {assignmentsByRoleId, policiesByRoleId},
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let role: Readable<Role>;
 	export let community: Readable<Community>;
 	$: assignments = $assignmentsByRoleId.get($role.role_id);
+	$: policies = $policiesByRoleId.get($role.role_id);
 
 	let newName = '';
 
@@ -82,7 +85,13 @@
 		{/if}
 	</div>
 	<h2>Permissions</h2>
-	[list of toggles goes here]
+	<div class="policies">
+		{#if policies}
+			{#each PERMISSIONS as permission (permission)}
+				<PolicyItem {permission} policy={policies.get(permission)} />
+			{/each}
+		{/if}
+	</div>
 </div>
 
 <style>

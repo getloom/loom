@@ -60,7 +60,7 @@ export class PolicyRepo extends PostgresRepo {
 				) apc
 				ON r.community_id=apc.community_id
 		) apcr
-		ON pol.role_id = apcr
+		ON pol.role_id = apcr.role_id
 		`;
 		log.trace('[filterByAccount]', result.length);
 		return {ok: true, value: result};
