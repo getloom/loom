@@ -10,9 +10,9 @@ export const ENV_FILE_PROD = '.env.production';
 export const ENV_FILE_DEV = '.env.development';
 
 const envs: Array<{file: string; defaultFile: string; load: boolean}> = [
-	{file: ENV_FILE_BASE, defaultFile: `src/infra/${ENV_FILE_BASE}.default`, load: true},
-	{file: ENV_FILE_DEV, defaultFile: `src/infra/${ENV_FILE_DEV}.default`, load: dev},
-	{file: ENV_FILE_PROD, defaultFile: `src/infra/${ENV_FILE_PROD}.default`, load: !dev},
+	{file: ENV_FILE_BASE, defaultFile: `src/lib/infra/${ENV_FILE_BASE}.default`, load: true},
+	{file: ENV_FILE_DEV, defaultFile: `src/lib/infra/${ENV_FILE_DEV}.default`, load: dev},
+	{file: ENV_FILE_PROD, defaultFile: `src/lib/infra/${ENV_FILE_PROD}.default`, load: !dev},
 ];
 
 interface Env {

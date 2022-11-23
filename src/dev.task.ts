@@ -4,7 +4,7 @@ export const task: typeof baseTask = {
 	summary: 'start dev server',
 	Args: baseTask.Args,
 	run: async ({invokeTask}) => {
-		await invokeTask('infra/updateEnv');
+		await invokeTask('lib/infra/updateEnv');
 		return invokeTask('gro/dev');
 	},
 };

@@ -5,8 +5,8 @@ export const task: typeof baseTask = {
 	production: true,
 	Args: baseTask.Args,
 	run: async ({invokeTask}) => {
-		await invokeTask('infra/setup');
-		await invokeTask('infra/deploy');
-		await invokeTask('infra/restartProd');
+		await invokeTask('lib/infra/setup');
+		await invokeTask('lib/infra/deploy');
+		await invokeTask('lib/infra/restartProd');
 	},
 };

@@ -4,8 +4,8 @@ import {z} from 'zod';
 
 import {green, red} from '$lib/server/colors';
 import {fromEnv} from '$lib/server/env';
-import {toNginxConfig} from './nginxConfig';
-import {toLogSequence} from './helpers';
+import {toNginxConfig} from '$lib/infra/nginxConfig';
+import {toLogSequence} from '$lib/infra/helpers';
 
 const Args = z
 	.object({
@@ -31,10 +31,10 @@ export const task: Task<Args> = {
 		const PUBLIC_DEPLOY_SERVER_HOST = fromEnv('PUBLIC_DEPLOY_SERVER_HOST');
 		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
 		// TODO this is hacky because of `import.meta` env handling
-		const {API_SERVER_HOST} = await import('../lib/config.js');
+		const {API_SERVER_HOST} = await import('../config.js');
 		const NODE_VERSION = '18';
 		// TODO hacky -- see notes above
-		const {defaultPostgresOptions} = await import('../lib/db/postgres.js');
+		const {defaultPostgresOptions} = await import('../db/postgres.js');
 		const PGDATABASE = defaultPostgresOptions.database;
 		const PGUSERNAME = defaultPostgresOptions.username;
 		const PGPASSWORD = defaultPostgresOptions.password;

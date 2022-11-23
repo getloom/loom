@@ -1,21 +1,71 @@
 import type {GroConfigCreator} from '@feltcoop/gro';
-import {API_SERVER_BUILD_NAME} from '@feltcoop/gro/dist/build/buildConfigDefaults.js';
+import {
+	API_SERVER_BUILD_NAME,
+	NODE_LIBRARY_BUILD_NAME,
+} from '@feltcoop/gro/dist/build/buildConfigDefaults.js';
 
 import {MIGRATIONS_DIR, MIGRATIONS_PATH} from '$lib/db/migration';
-import {DEPLOYED_SCRIPT_PATH} from './infra/helpers';
+import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
+
+const files = [
+	'lib/index.ts', // same as 'lib/server/server.ts'
+
+	// exported user modules
+	'lib/app/components.ts',
+	'lib/app/contextmenu/ActingPersonaContextmenu.svelte',
+	'lib/app/contextmenu/AppContextmenu.svelte',
+	'lib/app/contextmenu/LinkContextmenu.svelte',
+	'lib/app/dispatch.ts',
+	'lib/app/events.ts',
+	'lib/app/mutations.ts',
+	'lib/app/schemas.ts',
+	'lib/config.ts',
+	'lib/db/db.ts',
+	'lib/server/server.ts',
+	'lib/session/clientSession.ts',
+	'lib/ui/AccountForm.svelte',
+	'lib/ui/ErrorMessage.svelte',
+	'lib/ui/HttpApiClient.ts',
+	'lib/ui/Luggage.svelte',
+	'lib/ui/MainNav.svelte',
+	'lib/ui/Onboard.svelte',
+	'lib/ui/SchemaInfo.svelte',
+	'lib/ui/SocketConnection.svelte',
+	'lib/ui/WebsocketApiClient.ts',
+	'lib/ui/Workspace.svelte',
+	'lib/ui/app.ts',
+	'lib/ui/contextmenu/Contextmenu.svelte',
+	'lib/ui/services.ts',
+	'lib/ui/socket.ts',
+	'lib/ui/style.css',
+	'lib/ui/syncUiToUrl.ts',
+	'lib/ui/ui.ts',
+	'lib/util/deserialize.ts',
+
+	// tasks
+	'lib/db/create.task.ts',
+	'lib/db/destroy.task.ts',
+	'lib/db/migrate.task.ts',
+	'lib/db/seed.task.ts',
+	'lib/db/testMigration.task.ts',
+	'lib/infra/deploy.task.ts',
+	'lib/infra/restartProd.task.ts',
+	'lib/infra/setup.task.ts',
+	'lib/infra/updateEnv.task.ts',
+];
 
 const config: GroConfigCreator = async ({config, fs, dev}) => {
 	// Production bundle includes more than just the default server entrypoint.
 	if (!dev) {
-		const buildConfig = config.builds.find((b) => b.name === API_SERVER_BUILD_NAME);
-		if (!buildConfig) {
+		const serverBuildConfig = config.builds.find((b) => b.name === API_SERVER_BUILD_NAME);
+		if (!serverBuildConfig) {
 			throw Error('Expected to find build config with name ' + API_SERVER_BUILD_NAME);
 		}
 		const addFile = (path: string): void => {
-			buildConfig.input.push(path);
+			serverBuildConfig.input.push(path);
 		};
 
-		// Production bundle includes the post-deploy script at `src/infra/deployed.ts`:
+		// Production bundle includes the post-deploy script at `src/lib/infra/deployed.ts`:
 		addFile(DEPLOYED_SCRIPT_PATH + '.ts');
 
 		// Production bundle includes all migration files:
@@ -23,6 +73,13 @@ const config: GroConfigCreator = async ({config, fs, dev}) => {
 		for (const migrationFile of migrationFiles) {
 			addFile(MIGRATIONS_PATH + '/' + migrationFile);
 		}
+
+		const libraryBuildConfig = config.builds.find((b) => b.name === NODE_LIBRARY_BUILD_NAME);
+		if (!libraryBuildConfig) {
+			throw Error('Expected to find build config with name ' + NODE_LIBRARY_BUILD_NAME);
+		}
+		libraryBuildConfig.input.length = 0; // TODO could do assignment in a one-liner if the gro type was changed to not be readonly
+		libraryBuildConfig.input.push(...files); // TODO could do assignment in a one-liner if the gro type was changed to not be readonly
 	}
 
 	return config;

@@ -35,13 +35,13 @@ see [`src/docs/managing-production.md`](/src/docs/managing-production.md).
 ### Set environment variables
 
 Open `.env.production` and set all of the values. See also
-[`src/infra/.env.production.default`](/src/infra/.env.production.default):
+[`src/lib/infra/.env.production.default`](/src/lib/infra/.env.production.default):
 
 - `DEPLOY_IP` to the IP address of your server
 - `DEPLOY_USER` to your server's user (defaults to `root`)
 - `PUBLIC_DEPLOY_SERVER_HOST` is your domain, e.g. `felt.social`
 - `CERTBOT_EMAIL_ADDRESS` is the email address to register with LetsEncrypt for an https certificate
-- `COOKIE_KEYS` should be randomized (TODO do this during `gro infra/setup`)
+- `COOKIE_KEYS` should be randomized (TODO do this during `gro lib/infra/setup`)
 
 ### Log into the VPS:
 

@@ -4,13 +4,13 @@ import {DIST_DIRNAME} from '@feltcoop/gro/dist/paths.js';
 import {unwrap} from '@feltcoop/util';
 
 import {ENV_FILE_BASE, ENV_FILE_PROD, fromEnv} from '$lib/server/env';
-import {DEPLOYED_SCRIPT_PATH} from './helpers';
+import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
 
 export const task: Task = {
 	summary: 'deploy felt-server to production',
 	production: true,
 	run: async ({invokeTask, log}) => {
-		await invokeTask('infra/updateEnv');
+		await invokeTask('lib/infra/updateEnv');
 
 		//build the actual tar deployment artifact,
 		//using `spawn` instead of `invokeTask` to ensure the environment modified above is updated

@@ -11,7 +11,7 @@ For more in depth development docs, please see
 [Getting started](/src/docs/getting-started.md) and
 [Contributing](/contributing.md)
 
-For build & deployment docs, see the [Infra README](/src/infra/README.md)
+For build & deployment docs, see the [Infra README](/src/lib/infra/README.md)
 
 ## getting started
 
@@ -33,6 +33,10 @@ gro # print available tasks
 npm test
 # or
 gro test
+
+# felt-server can be installed as a library for your custom servers:
+npm i -D @feltcoop/felt-server # see the available modules at `/src/gro.config.ts`
+# TODO add docs for how to use it as a library
 ```
 
 > learn more [about Gro](https://github.com/feltcoop/gro),

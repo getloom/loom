@@ -56,7 +56,7 @@ and tests your DB restoration process all in one.
 
 1. Spin up a new server with the new OS
 1. Point your DNS record to the new IP
-1. Run `infra/setup` on the new server
+1. Run `gro lib/infra/setup` on the new server
 1. Set up your DB password
 1. Use [`pg_dump`](https://www.postgresql.org/docs/current/backup-dump.html)
    to get a copy of the DB from your old server instance

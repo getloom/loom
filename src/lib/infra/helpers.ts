@@ -12,4 +12,4 @@ export const toLogSequence = (): LogSequence => {
 };
 
 // TODO where does this belong?
-export const DEPLOYED_SCRIPT_PATH = 'infra/deployed'; // keep in sync with the actual file!
+export const DEPLOYED_SCRIPT_PATH = 'lib/infra/deployed'; // keep in sync with the actual file!

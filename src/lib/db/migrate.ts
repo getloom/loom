@@ -10,7 +10,7 @@ export const migrate = async (prod: boolean, log: Logger): Promise<void> => {
 	const dir = prod ? MIGRATIONS_DIR_PROD : MIGRATIONS_DIR;
 
 	const status = await ley.status({
-		require: 'tsm',
+		require: prod ? undefined : 'tsm',
 		dir,
 		driver: 'postgres',
 		config: defaultPostgresOptions as any,
@@ -24,7 +24,7 @@ export const migrate = async (prod: boolean, log: Logger): Promise<void> => {
 	log.info('running migrations: ', status);
 
 	const successes = await ley.up({
-		require: 'tsm',
+		require: prod ? undefined : 'tsm',
 		dir,
 		driver: 'postgres',
 		config: defaultPostgresOptions as any,
