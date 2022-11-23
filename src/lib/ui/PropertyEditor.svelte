@@ -17,14 +17,14 @@
 
 	export let value: TValue;
 	export let field: string;
-	export let update: (
-		updated: TValue,
-		field: string,
-	) => Promise<Result<unknown, {message: string}>>;
+	export let update:
+		| ((updated: TValue, field: string) => Promise<Result<unknown, {message: string}>>)
+		| null = null;
 	export let parse: (serialized: string) => Result<{value: TValue}, {message: string}> = (
 		serialized,
 	) => ({ok: true, value: serialized as any}); // TODO consider extracting an `ok` helper
 	export let serialize: (value: TValue, print?: boolean) => string = identity as any; // TODO type
+	export let deletable = false;
 
 	let editing = false;
 
@@ -66,6 +66,7 @@
 	});
 
 	const save = async () => {
+		if (!update) return;
 		errorMessage = null;
 		const parsed = parse(fieldValue);
 		if (!parsed.ok) {
@@ -116,39 +117,41 @@
 		<pre>{currentSerialized}</pre>
 	{/if}
 </div>
-{#if editing}
-	<button type="button" on:click={stopEditing}>cancel</button>
-	<textarea
-		placeholder="> value"
-		bind:this={fieldValueEl}
-		bind:value={fieldValue}
-		use:autofocus
-		disabled={pending}
-		on:keydown={onKeydown}
-	/>
-	{#if changed}
-		<div class="buttons">
-			<button type="button" on:click={reset}> reset </button>
-			<PendingButton on:click={save} {pending} disabled={pending || !!errorMessage}>
-				save
+{#if update}
+	{#if editing}
+		<button type="button" on:click={stopEditing}>cancel</button>
+		<textarea
+			placeholder="> value"
+			bind:this={fieldValueEl}
+			bind:value={fieldValue}
+			use:autofocus
+			disabled={pending}
+			on:keydown={onKeydown}
+		/>
+		{#if changed}
+			<div class="buttons">
+				<button type="button" on:click={reset}> reset </button>
+				<PendingButton on:click={save} {pending} disabled={pending || !!errorMessage}>
+					save
+				</PendingButton>
+			</div>
+		{:else if deletable && fieldValue !== undefined}
+			<PendingButton on:click={deleteField} {pending} disabled={pending || !!errorMessage}>
+				delete property '{field}'
 			</PendingButton>
-		</div>
-	{:else if fieldValue !== undefined}
-		<PendingButton on:click={deleteField} {pending} disabled={pending || !!errorMessage}>
-			delete '{field}' property
-		</PendingButton>
+		{/if}
+		{#if errorMessage}
+			<Message status="error">{errorMessage}</Message>
+		{:else if changed}
+			<div class="preview markup panel">
+				<p>
+					{#if fieldValue}<pre>{serialized}</pre>{:else}<em>(empty)</em>{/if}
+				</p>
+			</div>
+		{/if}
+	{:else}
+		<button type="button" on:click={edit}>edit</button>
 	{/if}
-	{#if errorMessage}
-		<Message status="error">{errorMessage}</Message>
-	{:else if changed}
-		<div class="preview markup panel">
-			<p>
-				{#if fieldValue}<pre>{serialized}</pre>{:else}<em>(empty)</em>{/if}
-			</p>
-		</div>
-	{/if}
-{:else}
-	<button type="button" on:click={edit}>edit</button>
 {/if}
 
 <style>

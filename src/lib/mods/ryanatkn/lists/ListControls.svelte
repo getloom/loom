@@ -19,7 +19,6 @@
 		--icon_size: var(--icon_size_sm);
 		display: flex;
 		align-items: center;
-		flex-wrap: wrap;
 		width: 100%;
 		padding-left: var(--icon_size_md);
 	}

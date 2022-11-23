@@ -11,6 +11,8 @@
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
+	import SourceEntities from '$lib/ui/SourceEntities.svelte';
+	import DestEntities from '$lib/ui/DestEntities.svelte';
 
 	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;
@@ -80,13 +82,24 @@
 		<section><TombstoneContent {entity} /></section>
 	{:else}
 		<fieldset>
-			<legend>properties</legend>
-			<PropertyEditor value={$entity.data.type} field="type" update={updateEntityDataProperty} />
-			<PropertyEditor value={$entity.data.name} field="name" update={updateEntityDataProperty} />
+			<legend>data</legend>
+			<PropertyEditor
+				value={$entity.data.type}
+				field="type"
+				update={updateEntityDataProperty}
+				deletable={true}
+			/>
+			<PropertyEditor
+				value={$entity.data.name}
+				field="name"
+				update={updateEntityDataProperty}
+				deletable={true}
+			/>
 			<PropertyEditor
 				value={$entity.data.content}
 				field="content"
 				update={updateEntityDataProperty}
+				deletable={true}
 			/>
 		</fieldset>
 	{/if}
@@ -123,6 +136,9 @@
 	</fieldset>
 	<fieldset>
 		<legend>advanced</legend>
+		<PropertyEditor value={$entity.entity_id} field="entity_id" />
+		<!-- TODO add contextmenu entries for this persona -->
+		<PropertyEditor value={$entity.persona_id} field="persona_id" />
 		<PropertyEditor
 			value={$entity.data}
 			field="data"
@@ -131,4 +147,6 @@
 			serialize={serializeJson}
 		/>
 	</fieldset>
+	<SourceEntities {persona} {entity} />
+	<DestEntities {persona} {entity} />
 </form>
