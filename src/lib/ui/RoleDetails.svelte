@@ -88,7 +88,7 @@
 	<div class="policies">
 		{#if policies}
 			{#each PERMISSIONS as permission (permission)}
-				<PolicyItem {permission} policy={policies.get(permission)} />
+				<PolicyItem actor={persona} {role} {permission} policy={policies.get(permission)} />
 			{/each}
 		{/if}
 	</div>

@@ -1,7 +1,11 @@
+import {Logger} from '@feltcoop/util/log.js';
 import type {WritableUi} from '$lib/ui/ui';
 import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Mutated} from '$lib/util/Mutated';
 import type {Policy} from '$lib/vocab/policy/policy';
+import {removeUnordered} from '@feltcoop/util/array.js';
+
+const log = new Logger('[policyMutationHelpers]');
 
 export const stashPolicies = (
 	ui: WritableUi,
@@ -33,4 +37,26 @@ export const stashPolicies = (
 	}
 
 	mutated.end('stashPolicies');
+};
+
+export const evictPolicies = (
+	ui: WritableUi,
+	policyIds: number[],
+	mutated = new Mutated('evictPolicies'),
+): void => {
+	const {policies, policyById} = ui;
+
+	for (const policy_id of policyIds) {
+		log.trace('evicting policy', policy_id);
+
+		const policy = policyById.get(policy_id);
+		if (!policy) continue;
+
+		policyById.delete(policy_id);
+
+		removeUnordered(policies.get().value, policies.get().value.indexOf(policy));
+		mutated.add(policies);
+	}
+
+	mutated.end('evictPolicies');
 };
