@@ -113,6 +113,7 @@
 	.explorer {
 		display: flex;
 		flex: 1;
+		align-items: flex-start;
 	}
 	.explorer-button {
 		--icon_size: var(--icon_size_sm);

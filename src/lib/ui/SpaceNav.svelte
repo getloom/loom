@@ -30,5 +30,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
+		position: sticky;
+		top: var(--navbar_size);
 	}
 </style>

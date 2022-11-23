@@ -1,6 +1,7 @@
 import {unwrap} from '@feltcoop/util';
 import {Logger} from '@feltcoop/util/log.js';
 import {traverse} from '@feltcoop/util/object.js';
+import {randomItem} from '@feltcoop/util/random.js';
 
 import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';
@@ -9,13 +10,15 @@ import type {Space} from '$lib/vocab/space/space.js';
 import type {Community} from '$lib/vocab/community/community';
 import type {CreateCommunityParams, SignInParams} from '$lib/app/eventTypes';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
-import {parseView, type ViewData} from '$lib/vocab/view/view';
+import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
 import {CreateCommunityService} from '$lib/vocab/community/communityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
+import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
+import {ALPHABET} from '$lib/util/randomVocab';
 
 /* eslint-disable no-await-in-loop */
 
@@ -23,7 +26,7 @@ import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
 
 const log = new Logger([cyan('[seed]')]);
 
-export const seed = async (db: Database): Promise<void> => {
+export const seed = async (db: Database, much = false): Promise<void> => {
 	const {sql} = db;
 
 	log.trace('adding initial dataset to database');
@@ -40,10 +43,17 @@ export const seed = async (db: Database): Promise<void> => {
 		{username: 'a@a.a', password: 'a'},
 		{username: 'b@b.b', password: 'b'},
 	];
-	const personasParams: {[key: string]: string[]} = {
+	const personasParams: Record<string, string[]> = {
 		'a@a.a': ['alice', 'andy'],
 		'b@b.b': ['betty', 'billy'],
 	};
+	if (much) {
+		let i = 0;
+		for (const personaNames of Object.values(personasParams)) {
+			personaNames.push(...ALPHABET.slice(2).map((a) => a.repeat(3) + i));
+			i++;
+		}
+	}
 	const accounts: Account[] = [];
 	const personas: AccountPersona[] = [];
 	for (const accountParams of accountsParams) {
@@ -110,6 +120,7 @@ export const seed = async (db: Database): Promise<void> => {
 				}),
 			);
 		}
+		if (much) await createMuchSpaces(mainAccountServiceRequest, community, personas);
 		await createDefaultEntities(mainAccountServiceRequest, spaces, personas);
 	}
 };
@@ -207,4 +218,41 @@ const findFirstComponentName = (view: ViewData): string | undefined => {
 		}
 	});
 	return result;
+};
+
+const MUCH_SPACE_COUNT = 100;
+
+const createMuchSpaces = async (
+	serviceRequest: ReturnType<typeof toServiceRequestMock>,
+	community: Community,
+	personas: AccountPersona[],
+) => {
+	let personaIndex = -1;
+	const nextPersona = (): AccountPersona => {
+		personaIndex++;
+		if (personaIndex === personas.length) personaIndex = 0;
+		return personas[personaIndex];
+	};
+
+	const viewTemplates = toCreatableViewTemplates(false);
+
+	for (let i = 0; i < MUCH_SPACE_COUNT; i++) {
+		const actor = nextPersona();
+		const view = randomItem(viewTemplates);
+		const name = view.name.toLowerCase() + i;
+		unwrap(
+			await CreateSpaceService.perform({
+				...serviceRequest,
+				actor,
+				params: {
+					actor: actor.persona_id,
+					community_id: community.community_id,
+					name,
+					url: '/' + name,
+					view: view.view,
+					icon: view.icon,
+				},
+			}),
+		);
+	}
 };

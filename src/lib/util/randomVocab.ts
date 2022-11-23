@@ -345,3 +345,33 @@ export class RandomVocabContext {
 		return {policy, persona, account, community};
 	}
 }
+
+// TODO better way to do this? and where does this belong? maybe @feltcoop/util/string.js?
+export const ALPHABET = [
+	'a',
+	'b',
+	'c',
+	'd',
+	'e',
+	'f',
+	'g',
+	'h',
+	'i',
+	'j',
+	'k',
+	'l',
+	'm',
+	'n',
+	'o',
+	'p',
+	'q',
+	'r',
+	's',
+	't',
+	'u',
+	'v',
+	'w',
+	'x',
+	'y',
+	'z',
+];
