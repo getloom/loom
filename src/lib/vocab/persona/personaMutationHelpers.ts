@@ -54,34 +54,48 @@ export const evictPersonas = async (
 };
 
 export const evictPersona = async (
-	{personas, personaById, personaIdSelection, sessionPersonas, sessionPersonaIndexById}: WritableUi,
+	{
+		personas,
+		personaById,
+		personaIdSelection,
+		sessionPersonas,
+		sessionPersonaIndexById,
+		communityIdSelectionByPersonaId,
+	}: WritableUi,
 	personaToEvict: Writable<ClientPersona>,
 	mutated = new Mutated('evictPersona'),
 ): Promise<void> => {
-	removeUnordered(personas.get().value, personas.get().value.indexOf(personaToEvict));
-	mutated.add(personas);
-
 	const $personaToEvict = personaToEvict.get();
 
 	personaById.delete($personaToEvict.persona_id);
+	removeUnordered(personas.get().value, personas.get().value.indexOf(personaToEvict));
+	mutated.add(personas);
 
-	if ($personaToEvict.persona_id === personaIdSelection.get()) {
+	// evict session account personas
+	if ('account_id' in $personaToEvict) {
 		const $sessionPersonas = sessionPersonas.get().value;
-		const nextSelectedPersona =
-			$sessionPersonas[0] === personaToEvict ? $sessionPersonas[1] : $sessionPersonas[0];
-		const nextSelectedPersonaIndex = sessionPersonaIndexById
-			.get()
-			.get(nextSelectedPersona.get().persona_id);
-		await goto(
-			toCommunityUrl(
-				nextSelectedPersona?.get().name || '',
-				null,
-				toSearchParams(get(page).url.searchParams, {
-					persona: nextSelectedPersonaIndex ? nextSelectedPersonaIndex + '' : null,
-				}),
-			),
-			{replaceState: true},
-		);
+
+		removeUnordered($sessionPersonas, $sessionPersonas.indexOf(personaToEvict as any));
+		mutated.add(sessionPersonas);
+		communityIdSelectionByPersonaId.get().value.delete($personaToEvict.persona_id);
+		mutated.add(communityIdSelectionByPersonaId);
+
+		if ($personaToEvict.persona_id === personaIdSelection.get()) {
+			const nextSelectedPersona = $sessionPersonas[$sessionPersonas[0] === personaToEvict ? 1 : 0];
+			const nextSelectedPersonaIndex = sessionPersonaIndexById
+				.get()
+				.get(nextSelectedPersona.get().persona_id);
+			await goto(
+				toCommunityUrl(
+					nextSelectedPersona.get().name || '',
+					null,
+					toSearchParams(get(page).url.searchParams, {
+						persona: nextSelectedPersonaIndex ? nextSelectedPersonaIndex + '' : null,
+					}),
+				),
+				{replaceState: true},
+			);
+		}
 	}
 
 	mutated.end('evictPersona');

@@ -16,28 +16,30 @@
 	export let persona: Readable<AccountPersona>; // session persona
 
 	$: personalCommunity = $communitiesBySessionPersona
-		.get(persona)!
-		.find((c) => c.get().type === 'personal')!;
+		.get(persona)
+		?.find((c) => c.get().type === 'personal');
 
 	$: standardCommunities = $communitiesBySessionPersona
-		.get(persona)!
-		.filter((c) => c.get().type !== 'personal')!;
+		.get(persona)
+		?.filter((c) => c.get().type !== 'personal');
 </script>
 
-<div class="persona-group" use:contextmenu.action={[[ActingPersonaContextmenu, {persona}]]}>
-	<CommunityNavItem
-		community={personalCommunity}
-		{persona}
-		selected={persona === selectedPersona && personalCommunity === selectedCommunity}
-	/>
-	{#each standardCommunities as community (community)}
+{#if personalCommunity && standardCommunities}
+	<div class="persona-group" use:contextmenu.action={[[ActingPersonaContextmenu, {persona}]]}>
 		<CommunityNavItem
-			{community}
+			community={personalCommunity}
 			{persona}
-			selected={persona === selectedPersona && community === selectedCommunity}
+			selected={persona === selectedPersona && personalCommunity === selectedCommunity}
 		/>
-	{/each}
-</div>
+		{#each standardCommunities as community (community)}
+			<CommunityNavItem
+				{community}
+				{persona}
+				selected={persona === selectedPersona && community === selectedCommunity}
+			/>
+		{/each}
+	</div>
+{/if}
 
 <style>
 	.persona-group {
