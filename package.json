@@ -1,6 +1,6 @@
 {
   "name": "@feltcoop/felt-server",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "server for Felt, a tool for building and maintaining communities",
   "author": {
