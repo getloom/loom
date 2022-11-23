@@ -21,7 +21,9 @@
 
 	// TODO speed this up with a better cached data structures
 	$: invitableMembers = $community
-		? $personas.value.filter((p) => !communityPersonas.includes(p) && p.get().type === 'account')
+		? Array.from($personas.value).filter(
+				(p) => !communityPersonas.includes(p) && p.get().type === 'account',
+		  )
 		: [];
 </script>
 

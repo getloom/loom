@@ -1,6 +1,5 @@
 import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltcoop/util/log.js';
-import {removeUnordered} from '@feltcoop/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Role} from '$lib/vocab/role/role';
@@ -17,7 +16,7 @@ export const stashRoles = (
 	const {roleById, roles} = ui;
 	if (replace) {
 		roleById.clear();
-		roles.get().value.length = 0;
+		roles.get().value.clear();
 		mutated.add(roles);
 	}
 	for (const $role of $roles) {
@@ -28,7 +27,7 @@ export const stashRoles = (
 		} else {
 			role = writable($role);
 			roleById.set(role_id, role);
-			roles.get().value.push(role);
+			roles.get().value.add(role);
 			mutated.add(roles);
 		}
 	}
@@ -50,7 +49,7 @@ export const evictRoles = (
 
 		roleById.delete(role_id);
 
-		removeUnordered(roles.get().value, roles.get().value.indexOf(role));
+		roles.get().value.delete(role);
 		mutated.add(roles);
 	}
 

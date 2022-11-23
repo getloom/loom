@@ -12,7 +12,7 @@
 		// TODO needs to be fixed when personas on session are scoped
 		// const result = await dispatch.ReadPersonas({actor: $persona.persona_id});
 		// if (!result.ok) throw Error(); // TODO querying helpers
-		personas = $allPersonas.value.map((v) => v.get());
+		personas = Array.from($allPersonas.value).map((v) => v.get());
 	};
 </script>
 

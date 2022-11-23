@@ -2,7 +2,6 @@ import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
-import {removeUnordered} from '@feltcoop/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Space} from '$lib/vocab/space/space';
@@ -25,7 +24,7 @@ export const stashSpaces = (
 
 	if (replace) {
 		spaceById.clear();
-		spaces.get().value.length = 0;
+		spaces.get().value.clear();
 		mutated.add(spaces);
 	}
 
@@ -50,7 +49,7 @@ export const stashSpaces = (
 			// Insert the space. We don't need to handle navigation in this case.
 			space = writable($space);
 			spaceById.set($space.space_id, space);
-			spaces.get().value.push(space);
+			spaces.get().value.add(space);
 			mutated.add(spaces);
 
 			// Set the community's space selection if needed.
@@ -107,7 +106,7 @@ export const evictSpaces = async (
 	}
 
 	for (const space of spacesToEvict) {
-		removeUnordered(spaces.get().value, spaces.get().value.indexOf(space));
+		spaces.get().value.delete(space);
 	}
 	mutated.add(spaces);
 

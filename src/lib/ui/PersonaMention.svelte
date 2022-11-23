@@ -12,8 +12,8 @@
 	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
 
 	// TODO maybe add a cache of persona by name
-	$: community = $communities.value.find((c) => c.get().name === name);
-	$: persona = $personas.value.find((p) => p.get().name === name);
+	$: community = Array.from($communities.value).find((c) => c.get().name === name);
+	$: persona = Array.from($personas.value).find((p) => p.get().name === name);
 </script>
 
 {#if community && $persona?.type === 'community'}

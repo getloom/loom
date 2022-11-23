@@ -49,7 +49,9 @@ export const syncUiToUrl = (
 	} // else already selected
 
 	// TODO speed this up with a map of communityByName
-	const community = communities.get().value.find((c) => c.get().name === params.community);
+	const community = Array.from(communities.get().value).find(
+		(c) => c.get().name === params.community,
+	);
 	if (!community) {
 		// occurs when routing to an inaccessible or nonexistent community
 		selectCommunity(ui, null);

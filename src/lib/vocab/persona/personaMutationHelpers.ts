@@ -2,7 +2,6 @@ import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
-import {removeUnordered} from '@feltcoop/util/array.js';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
@@ -17,7 +16,7 @@ export const stashPersonas = (
 ): void => {
 	if (replace) {
 		personaById.clear();
-		personas.get().value.length = 0;
+		personas.get().value.clear();
 		mutated.add(personas);
 		sessionPersonas.get().value.length = 0;
 		mutated.add(sessionPersonas);
@@ -30,7 +29,7 @@ export const stashPersonas = (
 		} else {
 			persona = writable($persona);
 			personaById.set($persona.persona_id, persona);
-			personas.get().value.push(persona);
+			personas.get().value.add(persona);
 			mutated.add(personas);
 			if ('account_id' in $persona) {
 				// Adding a session persona.
@@ -68,14 +67,14 @@ export const evictPersona = async (
 	const $personaToEvict = personaToEvict.get();
 
 	personaById.delete($personaToEvict.persona_id);
-	removeUnordered(personas.get().value, personas.get().value.indexOf(personaToEvict));
+	personas.get().value.delete(personaToEvict);
 	mutated.add(personas);
 
 	// evict session account personas
 	if ('account_id' in $personaToEvict) {
 		const $sessionPersonas = sessionPersonas.get().value;
 
-		removeUnordered($sessionPersonas, $sessionPersonas.indexOf(personaToEvict as any));
+		$sessionPersonas.splice($sessionPersonas.indexOf(personaToEvict as any), 1);
 		mutated.add(sessionPersonas);
 		communityIdSelectionByPersonaId.get().value.delete($personaToEvict.persona_id);
 		mutated.add(communityIdSelectionByPersonaId);

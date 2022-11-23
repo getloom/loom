@@ -49,15 +49,15 @@ export interface Ui {
 
 	// db state and caches
 	account: Readable<ClientAccount | null>;
-	personas: Mutable<Array<Readable<ClientPersona>>>;
+	personas: Mutable<Set<Readable<ClientPersona>>>;
 	session: Readable<ClientSession>;
-	sessionPersonas: Mutable<Array<Readable<AccountPersona>>>;
+	sessionPersonas: Mutable<Array<Readable<AccountPersona>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
 	sessionPersonaIndexById: Readable<Map<number, number>>;
-	communities: Mutable<Array<Readable<Community>>>;
-	roles: Mutable<Array<Readable<Role>>>;
-	spaces: Mutable<Array<Readable<Space>>>;
+	communities: Mutable<Set<Readable<Community>>>;
+	roles: Mutable<Set<Readable<Role>>>;
+	spaces: Mutable<Set<Readable<Space>>>;
 	assignments: Mutable<Set<Assignment>>;
-	policies: Mutable<Array<Readable<Policy>>>;
+	policies: Mutable<Set<Readable<Policy>>>;
 	personaById: Map<number, Readable<ClientPersona>>;
 	communityById: Map<number, Readable<Community>>;
 	roleById: Map<number, Readable<Role>>;
@@ -114,12 +114,12 @@ export const toUi = (
 	// not when the items themselves change; each item is a store that can be subscribed to.
 	// TODO these `Persona`s need additional data compared to every other `Persona`
 	const sessionPersonas = mutable<Array<Writable<AccountPersona>>>([]);
-	const personas = mutable<Array<Writable<ClientPersona>>>([]);
-	const communities = mutable<Array<Writable<Community>>>([]);
-	const roles = mutable<Array<Writable<Role>>>([]);
-	const spaces = mutable<Array<Writable<Space>>>([]);
+	const personas = mutable<Set<Writable<ClientPersona>>>(new Set());
+	const communities = mutable<Set<Writable<Community>>>(new Set());
+	const roles = mutable<Set<Writable<Role>>>(new Set());
+	const spaces = mutable<Set<Writable<Space>>>(new Set());
 	const assignments = mutable<Set<Assignment>>(new Set());
-	const policies = mutable<Array<Writable<Policy>>>([]);
+	const policies = mutable<Set<Writable<Policy>>>(new Set());
 	const personaById: Map<number, Writable<ClientPersona>> = new Map();
 	const communityById: Map<number, Writable<Community>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();

@@ -3,7 +3,6 @@ import type {WritableUi} from '$lib/ui/ui';
 import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Mutated} from '$lib/util/Mutated';
 import type {Policy} from '$lib/vocab/policy/policy';
-import {removeUnordered} from '@feltcoop/util/array.js';
 
 const log = new Logger('[policyMutationHelpers]');
 
@@ -19,7 +18,7 @@ export const stashPolicies = (
 	if (replace) {
 		// TODO do we need to evict the current policies? or should upstream usage handle that?
 		policyById.clear();
-		$policies.length = 0;
+		$policies.clear();
 		mutated.add(policies);
 	}
 
@@ -31,7 +30,7 @@ export const stashPolicies = (
 		} else {
 			policy = writable($policy);
 			policyById.set(policy_id, policy);
-			$policies.push(policy);
+			$policies.add(policy);
 			mutated.add(policies);
 		}
 	}
@@ -54,7 +53,7 @@ export const evictPolicies = (
 
 		policyById.delete(policy_id);
 
-		removeUnordered(policies.get().value, policies.get().value.indexOf(policy));
+		policies.get().value.delete(policy);
 		mutated.add(policies);
 	}
 

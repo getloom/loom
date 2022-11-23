@@ -1,6 +1,5 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
-import {removeUnordered} from '@feltcoop/util/array.js';
 import {get} from 'svelte/store';
 import {page} from '$app/stores';
 
@@ -23,7 +22,7 @@ export const stashCommunities = (
 	const {communityById, communities} = ui;
 	if (replace) {
 		communityById.clear();
-		communities.get().value.length = 0;
+		communities.get().value.clear();
 		mutated.add(communities);
 	}
 	for (const $community of $communities) {
@@ -45,7 +44,7 @@ export const stashCommunity = (
 	} else {
 		community = writable($community);
 		communityById.set($community.community_id, community);
-		communities.get().value.push(community);
+		communities.get().value.add(community);
 		mutated.add(communities);
 	}
 
@@ -93,7 +92,7 @@ export const evictCommunity = async (
 
 	communityById.delete(community_id);
 
-	removeUnordered(communities.get().value, communities.get().value.indexOf(community));
+	communities.get().value.delete(community);
 	mutated.add(communities);
 
 	for (const [persona_id, communityIdSelection] of communityIdSelectionByPersonaId.get().value) {
