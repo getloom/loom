@@ -5,11 +5,11 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAccountPersona, ReadPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
-import {createSpaces} from '$lib/vocab/space/spaceServices';
+import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	initAdminCommunity,
 	initDefaultRoleForCommunity,
-} from '$lib/vocab/community/communityServices';
+} from '$lib/vocab/community/communityHelpers.server';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';

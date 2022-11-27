@@ -1,9 +1,8 @@
 import {Logger} from '@feltcoop/util/log.js';
-import {unwrap, type Result} from '@feltcoop/util';
+import {unwrap} from '@feltcoop/util';
 
-import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {blue, gray} from '$lib/server/colors';
-import type {CreateSpaceParams, ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/eventTypes';
 import {
 	CreateSpace,
 	ReadSpace,
@@ -12,7 +11,6 @@ import {
 	DeleteSpace,
 } from '$lib/vocab/space/spaceEvents';
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
-import type {Space} from '$lib/vocab/space/space';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {DeleteEntitiesService} from '$lib/vocab/entity/entityServices';
@@ -150,22 +148,4 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 
 			return {ok: true, status: 200, value: null};
 		}),
-};
-
-export const createSpaces = async (
-	serviceRequest: AuthorizedServiceRequest,
-	serviceParams: CreateSpaceParams[],
-): Promise<
-	Result<{value: {spaces: Space[]; directories: Array<Entity & {data: DirectoryEntityData}>}}>
-> => {
-	const spaces: Space[] = [];
-	const directories: Array<Entity & {data: DirectoryEntityData}> = [];
-	for (const params of serviceParams) {
-		const {space, directory} = unwrap(
-			await CreateSpaceService.perform({...serviceRequest, params}), // eslint-disable-line no-await-in-loop
-		);
-		spaces.push(space);
-		directories.push(directory);
-	}
-	return {ok: true, value: {spaces, directories}};
 };

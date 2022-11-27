@@ -1,12 +1,12 @@
 import {Logger} from '@feltcoop/util/log.js';
-import {OK, unwrap, type Result} from '@feltcoop/util';
+import {unwrap} from '@feltcoop/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
-import type {Repos} from '$lib/db/Repos';
 import type {ActorPersona} from '$lib/vocab/persona/persona';
+import {cleanOrphanCommunities} from '$lib/vocab/community/communityHelpers.server';
 
 const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 
@@ -99,19 +99,4 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 
 			return {ok: true, status: 200, value: null};
 		}),
-};
-
-export const cleanOrphanCommunities = async (
-	community_id: number,
-	repos: Repos,
-): Promise<Result> => {
-	log.trace('[assignmentServices] checking if community is orphaned', community_id);
-	const accountPersonaAssignments = unwrap(
-		await repos.assignment.filterAccountPersonaAssignmentsByCommunityId(community_id),
-	);
-	if (accountPersonaAssignments.length === 0) {
-		log.trace('[assignmentServices] no assignments found for community, cleaning up', community_id);
-		unwrap(await repos.community.deleteById(community_id));
-	}
-	return OK;
 };
