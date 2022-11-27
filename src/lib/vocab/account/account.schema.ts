@@ -1,5 +1,3 @@
-import type {AccountSettings} from '$lib/vocab/account/account';
-
 export const AccountSchema = {
 	$id: '/schemas/Account.json',
 	type: 'object',
@@ -24,7 +22,3 @@ export const AccountSettingsSchema = {
 	required: [],
 	additionalProperties: false,
 };
-
-export const toDefaultAccountSettings = (): AccountSettings => ({
-	darkmode: false,
-});

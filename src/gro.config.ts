@@ -61,18 +61,9 @@ const config: GroConfigCreator = async ({config, fs, dev}) => {
 		if (!serverBuildConfig) {
 			throw Error('Expected to find build config with name ' + API_SERVER_BUILD_NAME);
 		}
-		const addFile = (path: string): void => {
-			serverBuildConfig.input.push(path);
-		};
 
-		// Production bundle includes the post-deploy script at `src/lib/infra/deployed.ts`:
-		addFile(DEPLOYED_SCRIPT_PATH + '.ts');
-
-		// Production bundle includes all migration files:
-		const migrationFiles = await fs.readDir(MIGRATIONS_DIR);
-		for (const migrationFile of migrationFiles) {
-			addFile(MIGRATIONS_PATH + '/' + migrationFile);
-		}
+		// Server bundle includes the post-deploy script at `src/lib/infra/deployed.ts`:
+		serverBuildConfig.input.push(DEPLOYED_SCRIPT_PATH + '.ts');
 
 		const libraryBuildConfig = config.builds.find((b) => b.name === NODE_LIBRARY_BUILD_NAME);
 		if (!libraryBuildConfig) {
@@ -80,6 +71,14 @@ const config: GroConfigCreator = async ({config, fs, dev}) => {
 		}
 		libraryBuildConfig.input.length = 0; // TODO could do assignment in a one-liner if the gro type was changed to not be readonly
 		libraryBuildConfig.input.push(...files); // TODO could do assignment in a one-liner if the gro type was changed to not be readonly
+
+		// Both the server and library bundles include all migration files:
+		const migrationFiles = await fs.readDir(MIGRATIONS_DIR);
+		for (const migrationFile of migrationFiles) {
+			const migrationFilePath = MIGRATIONS_PATH + '/' + migrationFile;
+			serverBuildConfig.input.push(migrationFilePath);
+			libraryBuildConfig.input.push(migrationFilePath);
+		}
 	}
 
 	return config;

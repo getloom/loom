@@ -10,7 +10,7 @@ import {
 	UpdateAccountSettings,
 	UpdateAccountPassword,
 } from '$lib/vocab/account/accountEvents';
-import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
+import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 import {verifyPassword} from '$lib/util/password';
 import type {Account} from '$lib/vocab/account/account';

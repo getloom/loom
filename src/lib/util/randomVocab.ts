@@ -28,7 +28,7 @@ import {CreateTieService} from '$lib/vocab/tie/tieServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import type {Role} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
-import {toDefaultAccountSettings} from '$lib/vocab/account/account.schema';
+import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {randomHue} from '$lib/ui/color';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
