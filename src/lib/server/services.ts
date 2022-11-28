@@ -11,6 +11,7 @@ import {
 	CreateCommunityService,
 	UpdateCommunitySettingsService,
 	DeleteCommunityService,
+	InviteToCommunityService,
 	LeaveCommunityService,
 } from '$lib/vocab/community/communityServices';
 import {
@@ -74,6 +75,7 @@ export const services: Map<string, Service> = new Map(
 		CreateCommunityService,
 		UpdateCommunitySettingsService,
 		DeleteCommunityService,
+		InviteToCommunityService,
 		LeaveCommunityService,
 		// assignmentServices
 		CreateAssignmentService,

@@ -85,39 +85,37 @@
 	};
 </script>
 
-<div class="markup padded-xl">
-	<form {...$$restProps}>
-		<legend>Create a new Community</legend>
-		<ContextInfo {persona} />
-		<fieldset>
-			<label>
-				<div class="title">name</div>
-				<input
-					placeholder=">"
-					bind:value={name}
-					bind:this={nameEl}
-					use:autofocus
-					on:keydown={onKeydown}
-				/>
-			</label>
-			<PendingButton on:click={create} {pending}>create community</PendingButton>
-			{#if errorMessage}
-				<Message status="error">{errorMessage}</Message>
-			{/if}
-		</fieldset>
-		{#if name}
-			<section>
-				<Avatar {name} type="Community" {hue} />
-			</section>
-			<details>
-				<summary>Customize</summary>
-				<div>
-					<HueInput {hue} on:input={(e) => (chosenHue = e.detail)} />
-				</div>
-			</details>
+<form {...$$restProps} class="markup padded-xl">
+	<legend>Create a new Community</legend>
+	<ContextInfo {persona} />
+	<fieldset>
+		<label>
+			<div class="title">name</div>
+			<input
+				placeholder=">"
+				bind:value={name}
+				bind:this={nameEl}
+				use:autofocus
+				on:keydown={onKeydown}
+			/>
+		</label>
+		<PendingButton on:click={create} {pending}>create community</PendingButton>
+		{#if errorMessage}
+			<Message status="error">{errorMessage}</Message>
 		{/if}
-	</form>
-</div>
+	</fieldset>
+	{#if name}
+		<section>
+			<Avatar {name} type="Community" {hue} />
+		</section>
+		<details>
+			<summary>Customize</summary>
+			<div>
+				<HueInput {hue} on:input={(e) => (chosenHue = e.detail)} />
+			</div>
+		</details>
+	{/if}
+</form>
 
 <style>
 	details {

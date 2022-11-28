@@ -12,6 +12,7 @@ import type {
 	ReadCommunitiesParams,
 	UpdateCommunitySettingsParams,
 	DeleteCommunityParams,
+	InviteToCommunityParams,
 	LeaveCommunityParams,
 	CreateAccountPersonaParams,
 	ReadPersonaParams,
@@ -85,6 +86,10 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<DeleteCommunityParams>;
+	InviteToCommunity: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<InviteToCommunityParams>;
 	LeaveCommunity: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

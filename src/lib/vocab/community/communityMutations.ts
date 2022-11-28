@@ -86,6 +86,19 @@ export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, inv
 	return result;
 };
 
+export const InviteToCommunity: Mutations['InviteToCommunity'] = async ({invoke, ui}) => {
+	const result = await invoke();
+	if (!result.ok) return result;
+
+	const {assignment, persona} = result.value;
+	const mutated = new Mutated('InviteToCommunity');
+	stashPersonas(ui, [persona], mutated);
+	stashAssignments(ui, [assignment], mutated);
+	mutated.end('InviteToCommunity');
+
+	return result;
+};
+
 export const LeaveCommunity: Mutations['LeaveCommunity'] = async ({params, invoke, ui}) => {
 	const {assignments} = ui;
 	const result = await invoke();

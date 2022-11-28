@@ -41,21 +41,19 @@
 	};
 </script>
 
-<div class="markup padded-xl">
-	<form {...$$restProps}>
-		<legend>Delete <strong>@{$persona.name}</strong>?</legend>
-		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
-		{/if}
-		<input
-			type="text"
-			name="name"
-			placeholder=">enter name to unlock button"
-			bind:value={lockText}
-			on:keydown={onKeydown}
-		/>
-		<PendingButton {pending} disabled={locked || pending} on:click={deletePersona}>
-			delete persona
-		</PendingButton>
-	</form>
-</div>
+<form {...$$restProps} class="markup padded-xl">
+	<legend>Delete <strong>@{$persona.name}</strong>?</legend>
+	{#if errorMessage}
+		<Message status="error">{errorMessage}</Message>
+	{/if}
+	<input
+		type="text"
+		name="name"
+		placeholder=">enter name to unlock button"
+		bind:value={lockText}
+		on:keydown={onKeydown}
+	/>
+	<PendingButton {pending} disabled={locked || pending} on:click={deletePersona}>
+		delete persona
+	</PendingButton>
+</form>

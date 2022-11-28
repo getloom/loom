@@ -12,6 +12,7 @@ import {
 	ReadCommunities,
 	UpdateCommunitySettings,
 	DeleteCommunity,
+	InviteToCommunity,
 	LeaveCommunity,
 } from '$lib/vocab/community/communityEvents';
 import {CreateAccountPersona, ReadPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
@@ -66,6 +67,7 @@ export const eventInfos: EventInfo[] = [
 	ReadCommunities,
 	UpdateCommunitySettings,
 	DeleteCommunity,
+	InviteToCommunity,
 	LeaveCommunity,
 	// personaEvents
 	CreateAccountPersona,

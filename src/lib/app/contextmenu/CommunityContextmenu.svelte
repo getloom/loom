@@ -8,7 +8,7 @@
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import SpaceInput from '$lib/ui/SpaceInput.svelte';
-	import AssignmentInput from '$lib/ui/AssignmentInput.svelte';
+	import InviteToCommunityForm from '$lib/ui/InviteToCommunityForm.svelte';
 	import CommunityEditor from '$lib/ui/CommunityEditor.svelte';
 	import CommunityDelete from '$lib/ui/CommunityDelete.svelte';
 	import ManageRolesForm from '$lib/ui/ManageRolesForm.svelte';
@@ -57,11 +57,11 @@
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({
-						Component: AssignmentInput,
-						props: {community},
+						Component: InviteToCommunityForm,
+						props: {persona, community, done: () => dispatch.CloseDialog()},
 					})}
 			>
-				Invite Members
+				Invite People
 			</ContextmenuEntry>
 			<ContextmenuEntry
 				action={() =>

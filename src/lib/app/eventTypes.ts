@@ -35,6 +35,7 @@ export type ServiceEventName =
 	| 'ReadCommunities'
 	| 'UpdateCommunitySettings'
 	| 'DeleteCommunity'
+	| 'InviteToCommunity'
 	| 'LeaveCommunity'
 	| 'CreateAccountPersona'
 	| 'ReadPersona'
@@ -88,6 +89,7 @@ export interface EventParamsByName {
 	ReadCommunities: ReadCommunitiesParams;
 	UpdateCommunitySettings: UpdateCommunitySettingsParams;
 	DeleteCommunity: DeleteCommunityParams;
+	InviteToCommunity: InviteToCommunityParams;
 	LeaveCommunity: LeaveCommunityParams;
 	CreateAccountPersona: CreateAccountPersonaParams;
 	ReadPersona: ReadPersonaParams;
@@ -139,6 +141,7 @@ export interface EventResponseByName {
 	ReadCommunities: ReadCommunitiesResponse;
 	UpdateCommunitySettings: UpdateCommunitySettingsResponse;
 	DeleteCommunity: DeleteCommunityResponse;
+	InviteToCommunity: InviteToCommunityResponse;
 	LeaveCommunity: LeaveCommunityResponse;
 	CreateAccountPersona: CreateAccountPersonaResponse;
 	ReadPersona: ReadPersonaResponse;
@@ -199,6 +202,7 @@ export interface ServiceByName {
 		UpdateCommunitySettingsResponseResult
 	>;
 	DeleteCommunity: AuthorizedService<DeleteCommunityParams, DeleteCommunityResponseResult>;
+	InviteToCommunity: AuthorizedService<InviteToCommunityParams, InviteToCommunityResponseResult>;
 	LeaveCommunity: AuthorizedService<LeaveCommunityParams, LeaveCommunityResponseResult>;
 	CreateAssignment: AuthorizedService<CreateAssignmentParams, CreateAssignmentResponseResult>;
 	DeleteAssignment: AuthorizedService<DeleteAssignmentParams, DeleteAssignmentResponseResult>;
@@ -341,6 +345,17 @@ export interface DeleteCommunityParams {
 }
 export type DeleteCommunityResponse = null;
 export type DeleteCommunityResponseResult = ApiResult<DeleteCommunityResponse>;
+
+export interface InviteToCommunityParams {
+	actor: number;
+	community_id: number;
+	name: string;
+}
+export interface InviteToCommunityResponse {
+	persona: PublicPersona;
+	assignment: Assignment;
+}
+export type InviteToCommunityResponseResult = ApiResult<InviteToCommunityResponse>;
 
 export interface LeaveCommunityParams {
 	actor: number;
@@ -694,6 +709,7 @@ export interface Dispatch {
 		params: UpdateCommunitySettingsParams,
 	) => Promise<UpdateCommunitySettingsResponseResult>;
 	DeleteCommunity: (params: DeleteCommunityParams) => Promise<DeleteCommunityResponseResult>;
+	InviteToCommunity: (params: InviteToCommunityParams) => Promise<InviteToCommunityResponseResult>;
 	LeaveCommunity: (params: LeaveCommunityParams) => Promise<LeaveCommunityResponseResult>;
 	CreateAccountPersona: (
 		params: CreateAccountPersonaParams,
@@ -773,6 +789,9 @@ export interface Mutations {
 	DeleteCommunity: (
 		ctx: DispatchContext<DeleteCommunityParams, DeleteCommunityResponseResult>,
 	) => Promise<DeleteCommunityResponseResult>;
+	InviteToCommunity: (
+		ctx: DispatchContext<InviteToCommunityParams, InviteToCommunityResponseResult>,
+	) => Promise<InviteToCommunityResponseResult>;
 	LeaveCommunity: (
 		ctx: DispatchContext<LeaveCommunityParams, LeaveCommunityResponseResult>,
 	) => Promise<LeaveCommunityResponseResult>;

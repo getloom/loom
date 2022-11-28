@@ -89,49 +89,47 @@
 	};
 </script>
 
-<div class="markup padded-xl">
-	<form>
-		<legend>Create a new Space</legend>
-		<ContextInfo {persona} {community} />
-		<fieldset>
-			<label>
-				<div class="title">name</div>
-				<input
-					name="name"
-					placeholder=">"
-					bind:value={name}
-					bind:this={nameEl}
-					use:autofocus
-					on:keydown={onKeydown}
-				/>
-			</label>
-			<label>
-				<div class="title">type</div>
-				<!-- TODO selectable menu -->
-				<fieldset class="buttons type-selector">
-					{#each creatableViewTemplates as viewTemplate (viewTemplate.name)}
-						<button
-							type="button"
-							value={viewTemplate}
-							class:selected={selectedViewTemplate === viewTemplate}
-							on:click={() => {
-								selectedViewTemplate = viewTemplate;
-							}}>{viewTemplate.icon} {viewTemplate.name}</button
-						>
-					{/each}
-				</fieldset>
-			</label>
-			<label>
-				<div class="title">icon</div>
-				<input placeholder=">" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
-			</label>
-			<PendingButton on:click={create} {pending}>create space</PendingButton>
-			{#if errorMessage}
-				<Message status="error">{errorMessage}</Message>
-			{/if}
-		</fieldset>
-	</form>
-</div>
+<form class="markup padded-xl">
+	<legend>Create a new Space</legend>
+	<ContextInfo {persona} {community} />
+	<fieldset>
+		<label>
+			<div class="title">name</div>
+			<input
+				name="name"
+				placeholder=">"
+				bind:value={name}
+				bind:this={nameEl}
+				use:autofocus
+				on:keydown={onKeydown}
+			/>
+		</label>
+		<label>
+			<div class="title">type</div>
+			<!-- TODO selectable menu -->
+			<fieldset class="buttons type-selector">
+				{#each creatableViewTemplates as viewTemplate (viewTemplate.name)}
+					<button
+						type="button"
+						value={viewTemplate}
+						class:selected={selectedViewTemplate === viewTemplate}
+						on:click={() => {
+							selectedViewTemplate = viewTemplate;
+						}}>{viewTemplate.icon} {viewTemplate.name}</button
+					>
+				{/each}
+			</fieldset>
+		</label>
+		<label>
+			<div class="title">icon</div>
+			<input placeholder=">" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
+		</label>
+		<PendingButton on:click={create} {pending}>create space</PendingButton>
+		{#if errorMessage}
+			<Message status="error">{errorMessage}</Message>
+		{/if}
+	</fieldset>
+</form>
 
 <style>
 	/* TODO refactor this into a more abstract component */

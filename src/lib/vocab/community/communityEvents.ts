@@ -159,6 +159,38 @@ export const DeleteCommunity: ServiceEventInfo = {
 	},
 };
 
+export const InviteToCommunity: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'InviteToCommunity',
+	broadcast: true,
+	params: {
+		$id: '/schemas/InviteToCommunityParams.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number'},
+			community_id: {type: 'number'},
+			name: {type: 'string'},
+		},
+		required: ['actor', 'community_id', 'name'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/InviteToCommunityResponse.json',
+		type: 'object',
+		properties: {
+			persona: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
+			assignment: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'},
+		},
+		required: ['persona', 'assignment'],
+		additionalProperties: false,
+	},
+	returns: 'Promise<InviteToCommunityResponseResult>',
+	route: {
+		path: '/api/v1/community/invite',
+		method: 'POST',
+	},
+};
+
 export const LeaveCommunity: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'LeaveCommunity',

@@ -9,6 +9,7 @@ import {
 	ReadCommunity,
 	UpdateCommunitySettings,
 	DeleteCommunity,
+	InviteToCommunity,
 	LeaveCommunity,
 } from '$lib/vocab/community/communityEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
@@ -24,6 +25,8 @@ import {
 	initDefaultRoleForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
+import {CreateAssignmentService} from '../assignment/assignmentServices';
+import type {AuthorizedServiceRequest} from '$lib/server/service';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -182,6 +185,40 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 			unwrap(await repos.community.deleteById(community_id));
 
 			return {ok: true, status: 200, value: null};
+		}),
+};
+
+export const InviteToCommunityService: ServiceByName['InviteToCommunity'] = {
+	event: InviteToCommunity,
+	perform: (serviceRequest) =>
+		serviceRequest.transact(async (repos) => {
+			const {params} = serviceRequest;
+
+			const {actor, community_id, name} = params;
+
+			const community = unwrap(await repos.community.findById(community_id));
+			if (!community) {
+				return {ok: false, status: 404, message: 'no community found'};
+			}
+
+			const persona = unwrap(await repos.persona.findByName(name));
+			if (!persona) {
+				return {ok: false, status: 404, message: `cannot find a persona named ${name}`};
+			}
+
+			const {assignment} = unwrap(
+				await CreateAssignmentService.perform({
+					...(serviceRequest as AuthorizedServiceRequest), // TODO figure out how to avoid casting without extracting a helper
+					params: {
+						actor,
+						community_id,
+						persona_id: persona.persona_id,
+						role_id: community.settings.defaultRoleId,
+					},
+				}),
+			);
+
+			return {ok: true, status: 200, value: {persona, assignment}};
 		}),
 };
 
