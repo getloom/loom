@@ -22,7 +22,6 @@ const files = [
 	'lib/config.ts',
 	'lib/db/db.ts',
 	'lib/server/server.ts',
-	'lib/session/clientSession.ts',
 	'lib/ui/AccountForm.svelte',
 	'lib/ui/ErrorMessage.svelte',
 	'lib/ui/HttpApiClient.ts',

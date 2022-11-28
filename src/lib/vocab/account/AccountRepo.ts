@@ -3,11 +3,9 @@ import {Logger} from '@feltcoop/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Account} from '$lib/vocab/account/account';
-import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
+import type {Account, ClientAccount, ClientAccountSession} from '$lib/vocab/account/account';
 import {toPasswordKey} from '$lib/util/password';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
-import type {ClientAccountSession} from '$lib/session/clientSession';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 

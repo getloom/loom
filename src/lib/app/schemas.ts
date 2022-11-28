@@ -3,7 +3,14 @@ import type {VocabSchema} from '@feltcoop/gro/dist/utils/schema.js';
 
 import {eventInfos} from '$lib/app/events';
 import {toSchemaName} from '$lib/util/schema';
-import {AccountSchema, AccountSettingsSchema} from '$lib/vocab/account/account.schema';
+import {
+	AccountSchema,
+	ClientAccountSchema,
+	AccountSettingsSchema,
+	ClientSessionSchema,
+	ClientAccountSessionSchema,
+	ClientGuestSessionSchema,
+} from '$lib/vocab/account/account.schema';
 import {
 	PersonaSchema,
 	AccountPersonaSchema,
@@ -42,7 +49,11 @@ export const toFeltVocabSchema = (schema: VocabSchema): FeltVocabSchema => {
 
 export const vocabSchemas = [
 	AccountSchema,
+	ClientAccountSchema,
 	AccountSettingsSchema,
+	ClientSessionSchema,
+	ClientAccountSessionSchema,
+	ClientGuestSessionSchema,
 	PersonaSchema,
 	AccountPersonaSchema,
 	CommunityPersonaSchema,

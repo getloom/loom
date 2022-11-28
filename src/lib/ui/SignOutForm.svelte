@@ -3,7 +3,7 @@
 	import Message from '@feltcoop/felt/Message.svelte';
 	import type {SignOutResponseResult} from '$lib/app/eventTypes';
 
-	import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
+	import type {ClientAccount} from '$lib/vocab/account/account';
 	import {getApp} from '$lib/ui/app';
 
 	const {

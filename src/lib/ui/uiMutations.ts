@@ -11,7 +11,7 @@ import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {ClientPersona} from '$lib/vocab/persona/persona';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
-import type {ClientSession} from '$lib/session/clientSession';
+import type {ClientSession} from '$lib/vocab/account/account';
 import {Mutated} from '$lib/util/Mutated';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashCommunities} from '$lib/vocab/community/communityMutationHelpers';

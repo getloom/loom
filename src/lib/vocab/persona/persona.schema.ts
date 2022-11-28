@@ -5,13 +5,13 @@ export const PersonaSchema = {
 		{$ref: '/schemas/CommunityPersona.json'},
 		{$ref: '/schemas/GhostPersona.json'},
 	],
-	tsType: 'AccountPersona | CommunityPersona | GhostPersona',
+	tsType: '(AccountPersona | CommunityPersona | GhostPersona)',
 };
 
 export const ActorPersonaSchema = {
 	$id: '/schemas/ActorPersona.json',
 	anyOf: [{$ref: '/schemas/AccountPersona.json'}, {$ref: '/schemas/CommunityPersona.json'}],
-	tsType: 'AccountPersona | CommunityPersona',
+	tsType: '(AccountPersona | CommunityPersona)',
 };
 
 export const AccountPersonaSchema = {
@@ -85,5 +85,5 @@ export const PublicPersonaSchema = {
 export const ClientPersonaSchema = {
 	$id: '/schemas/ClientPersona.json',
 	anyOf: [{$ref: '/schemas/AccountPersona.json'}, {$ref: '/schemas/PublicPersona.json'}],
-	tsType: 'AccountPersona | PublicPersona',
+	tsType: '(AccountPersona | PublicPersona)',
 };

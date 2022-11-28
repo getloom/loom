@@ -19,9 +19,7 @@ export const SignUp: ServiceEventInfo = {
 		$id: '/schemas/SignUpResponse.json',
 		type: 'object',
 		properties: {
-			// TODO session schema type
-			// session: {$ref: 'Session.json', tsType: 'Persona'},
-			session: {type: 'object', tsType: 'ClientAccountSession'},
+			session: {$ref: '/schemas/ClientAccountSession.json', tsType: 'ClientAccountSession'},
 		},
 		required: ['session'],
 		additionalProperties: false,
@@ -48,8 +46,7 @@ export const UpdateAccountSettings: ServiceEventInfo = {
 	},
 	response: {
 		$id: '/schemas/UpdateAccountSettingsResponse.json',
-		type: 'object',
-		tsType: 'ClientAccount',
+		$ref: '/schemas/ClientAccount.json',
 	},
 	returns: 'Promise<UpdateAccountSettingsResponseResult>',
 	route: {
@@ -74,8 +71,7 @@ export const UpdateAccountPassword: ServiceEventInfo = {
 	},
 	response: {
 		$id: '/schemas/UpdateAccountPasswordResponse.json',
-		type: 'object',
-		tsType: 'ClientAccount',
+		$ref: '/schemas/ClientAccount.json',
 	},
 	returns: 'Promise<UpdateAccountPasswordResponseResult>',
 	route: {
@@ -103,9 +99,7 @@ export const SignIn: ServiceEventInfo = {
 		$id: '/schemas/SignInResponse.json',
 		type: 'object',
 		properties: {
-			// TODO session schema type
-			// session: {$ref: 'Session.json', tsType: 'Persona'},
-			session: {type: 'object', tsType: 'ClientAccountSession'},
+			session: {$ref: '/schemas/ClientAccountSession.json', tsType: 'ClientAccountSession'},
 		},
 		required: ['session'],
 		additionalProperties: false,

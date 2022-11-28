@@ -14,7 +14,7 @@ import type {AsyncStatus} from '@feltcoop/util/async.js';
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
 import type {ClientPersona, AccountPersona} from '$lib/vocab/persona/persona';
-import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
+import type {ClientAccount, ClientSession} from '$lib/vocab/account/account';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {createContextmenuStore, type ContextmenuStore} from '$lib/ui/contextmenu/contextmenu';
@@ -24,7 +24,6 @@ import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {EphemeraResponse} from '$lib/app/eventTypes';
-import type {ClientSession} from '$lib/session/clientSession';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
 

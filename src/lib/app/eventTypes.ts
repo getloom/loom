@@ -10,7 +10,6 @@ import type {
 	NonAuthorizedService,
 	AuthorizedService,
 } from '$lib/server/service';
-import type {ClientAccount} from '$lib/vocab/account/accountHelpers';
 import type {Community} from '$lib/vocab/community/community';
 import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -21,7 +20,7 @@ import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {DispatchContext} from '$lib/app/dispatch';
-import type {ClientSession, ClientAccountSession} from '$lib/session/clientSession';
+import type {ClientSession, ClientAccountSession} from '$lib/vocab/account/account';
 
 /* eslint-disable @typescript-eslint/array-type */
 
@@ -257,14 +256,30 @@ export interface UpdateAccountSettingsParams {
 		darkmode?: boolean;
 	};
 }
-export type UpdateAccountSettingsResponse = ClientAccount;
+export interface UpdateAccountSettingsResponse {
+	account_id: number;
+	name: string;
+	settings: {
+		darkmode?: boolean;
+	};
+	created: Date;
+	updated: Date | null;
+}
 export type UpdateAccountSettingsResponseResult = ApiResult<UpdateAccountSettingsResponse>;
 
 export interface UpdateAccountPasswordParams {
 	oldPassword: string;
 	newPassword: string;
 }
-export type UpdateAccountPasswordResponse = ClientAccount;
+export interface UpdateAccountPasswordResponse {
+	account_id: number;
+	name: string;
+	settings: {
+		darkmode?: boolean;
+	};
+	created: Date;
+	updated: Date | null;
+}
 export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
 
 export interface CreateCommunityParams {

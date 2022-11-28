@@ -42,7 +42,7 @@
 	import LinkContextmenu from '$lib/app/contextmenu/LinkContextmenu.svelte';
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
 	import {deserialize, deserializers} from '$lib/util/deserialize';
-	import type {ClientSession} from '$lib/session/clientSession';
+	import type {ClientSession} from '$lib/vocab/account/account';
 
 	export let data: ClientSession; // TODO should be `LayoutServerLoad`, right? but doesn't typecheck if so
 
