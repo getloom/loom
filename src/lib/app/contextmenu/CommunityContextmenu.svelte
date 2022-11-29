@@ -10,7 +10,8 @@
 	import SpaceInput from '$lib/ui/SpaceInput.svelte';
 	import InviteToCommunityForm from '$lib/ui/InviteToCommunityForm.svelte';
 	import CommunityEditor from '$lib/ui/CommunityEditor.svelte';
-	import CommunityDelete from '$lib/ui/CommunityDelete.svelte';
+	import LeaveCommunityForm from '$lib/ui/LeaveCommunityForm.svelte';
+	import DeleteCommunityForm from '$lib/ui/DeleteCommunityForm.svelte';
 	import ManageRolesForm from '$lib/ui/ManageRolesForm.svelte';
 
 	const {dispatch} = getApp();
@@ -29,7 +30,7 @@
 			action={() =>
 				dispatch.OpenDialog({
 					Component: CommunityEditor,
-					props: {persona, community},
+					props: {persona, community, done: () => dispatch.CloseDialog()},
 				})}
 		>
 			Edit Community
@@ -66,7 +67,16 @@
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({
-						Component: CommunityDelete,
+						Component: LeaveCommunityForm,
+						props: {persona, community, done: () => dispatch.CloseDialog()},
+					})}
+			>
+				Leave Community
+			</ContextmenuEntry>
+			<ContextmenuEntry
+				action={() =>
+					dispatch.OpenDialog({
+						Component: DeleteCommunityForm,
 						props: {persona, community, done: () => dispatch.CloseDialog()},
 					})}
 			>

@@ -104,7 +104,7 @@
 		</fieldset>
 	{/if}
 	<fieldset>
-		<legend><span class="error-text">danger!</span> zone</legend>
+		<legend><span class="error-text">danger! zone</span></legend>
 		{#if $entity.data.type !== 'Tombstone'}
 			<PendingButton
 				title="erase entity"
