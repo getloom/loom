@@ -68,20 +68,19 @@ export class AssignmentRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
-	//TODO refactor once generic queries are available in psql driver
-	async filterAccountPersonaAssignmentsByCommunityId(
+	async countAccountPersonaAssignmentsByCommunityId(
 		community_id: number,
-	): Promise<Result<{value: Assignment[]}>> {
+	): Promise<Result<{value: number}>> {
 		log.trace(`[filterByCommunityId] ${community_id}`);
-		const data = await this.sql<Assignment[]>`
-			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
+		const data = await this.sql<Array<{count: string}>>`
+			SELECT count(*)
 			FROM personas p JOIN (
-				SELECT assignment_id, persona_id, community_id, role_id, created
+				SELECT persona_id
 				FROM assignments 
 				WHERE community_id=${community_id}
 			) as a ON a.persona_id = p.persona_id WHERE p.type = 'account';
 		`;
-		return {ok: true, value: data};
+		return {ok: true, value: Number(data[0].count)};
 	}
 
 	async deleteById(assignment_id: number): Promise<Result> {

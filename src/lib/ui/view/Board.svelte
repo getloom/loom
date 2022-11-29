@@ -59,7 +59,7 @@
 						})}>Submit a new post</button
 				>
 			{/if}
-			<!-- TODO handle query failures, see https://github.com/feltcoop/felt-server/pull/514#discussion_r998626893 -->
+			<!-- TODO handle query failures and add retry button, see https://github.com/feltcoop/felt-server/pull/514#discussion_r998626893 -->
 			<!-- {:else if $queryStatus === 'failure'}
 				<Message status="error">{$queryError.message}</Message> -->
 		{:else}

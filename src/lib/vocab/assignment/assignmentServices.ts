@@ -82,10 +82,10 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 				return {ok: false, status: 405, message: 'cannot leave a personal community'};
 			}
 			if (community_id === ADMIN_COMMUNITY_ID) {
-				const adminAssignments = unwrap(
-					await repos.assignment.filterAccountPersonaAssignmentsByCommunityId(community_id),
+				const adminAssignmentsCount = unwrap(
+					await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community_id),
 				);
-				if (adminAssignments.length === 1) {
+				if (adminAssignmentsCount === 1) {
 					return {ok: false, status: 405, message: 'cannot orphan the admin community'};
 				}
 			}

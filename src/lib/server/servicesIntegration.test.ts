@@ -176,10 +176,8 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 	assert.is(
 		unwrap(
-			await db.repos.assignment.filterAccountPersonaAssignmentsByCommunityId(
-				community.community_id,
-			),
-		).length,
+			await db.repos.assignment.countAccountPersonaAssignmentsByCommunityId(community.community_id),
+		),
 		1,
 	);
 
