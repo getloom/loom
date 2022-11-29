@@ -21,11 +21,14 @@ export const task: Task<Args> = {
 	summary: 'setup a clean server to prepare for a felt-server deploy',
 	production: true,
 	Args,
-	run: async ({log, args: {dry}}) => {
+	run: async ({log, args: {dry}, invokeTask}) => {
+		await invokeTask('lib/infra/updateEnv');
+
 		// TODO env vars are currently messy with 3 strategies:
 		// 1 - calling `fromEnv('VAR')`
 		// 2 - defaults setup by `$lib/config.js`
 		// 3 - defaults setup by `$lib/db/postgres`
+
 		const DEPLOY_IP = fromEnv('DEPLOY_IP');
 		const DEPLOY_USER = fromEnv('DEPLOY_USER');
 		const PUBLIC_DEPLOY_SERVER_HOST = fromEnv('PUBLIC_DEPLOY_SERVER_HOST');
