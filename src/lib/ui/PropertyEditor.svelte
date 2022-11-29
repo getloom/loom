@@ -167,4 +167,7 @@
 		/* TODO customize this for different values */
 		height: 120px;
 	}
+	pre {
+		white-space: pre-wrap;
+	}
 </style>
