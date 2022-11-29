@@ -28,7 +28,7 @@
 		border-radius: 50%;
 		color: white;
 		font-weight: 400;
-		font-size: calc(var(--icon_size) * 0.5);
+		font-size: calc(var(--icon_size) * 0.38);
 		line-height: 1;
 		display: flex;
 		align-items: center;
