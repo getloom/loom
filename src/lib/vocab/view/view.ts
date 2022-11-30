@@ -28,6 +28,7 @@ export const viewTemplates: ViewTemplate[] = [
 	{name: 'PersonalHome', view: '<PersonalHome />', icon: '🏠', creatable: false},
 	{name: 'AdminHome', view: '<AdminHome />', icon: '🏠', creatable: false},
 	{name: 'Chat', view: '<Chat />', icon: '🗨'},
+	{name: 'ReplyChat', view: '<ReplyChat />', icon: '↳'},
 	{name: 'Board', view: '<Board />', icon: '📚'},
 	{name: 'Forum', view: '<Forum />', icon: '📋'},
 	{name: 'Notes', view: '<Notes />', icon: '🏷'},

@@ -1,0 +1,104 @@
+<script lang="ts">
+	import {browser} from '$app/environment';
+	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
+	import {readable, type Readable} from '@feltcoop/svelte-gettable-stores';
+
+	import ReplyChatItems from '$lib/plugins/greatbacon/reply-chat/ReplyChatItems.svelte';
+	import {getApp} from '$lib/ui/app';
+	import {getViewContext} from '$lib/vocab/view/view';
+	import TextInput from '$lib/ui/TextInput.svelte';
+	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
+	import type {Entity} from '$lib/vocab/entity/entity';
+
+	const viewContext = getViewContext();
+	$: ({persona, space} = $viewContext);
+
+	const {
+		dispatch,
+		socket,
+		ui: {personaById},
+	} = getApp();
+
+	let text = '';
+
+	$: shouldLoadEntities = browser && $socket.open;
+	$: query = shouldLoadEntities
+		? dispatch.QueryEntities({
+				actor: $persona.persona_id,
+				source_id: $space.directory_id,
+		  })
+		: null;
+	$: queryData = query?.data;
+	$: queryStatus = query?.status;
+	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
+	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+
+	const createEntity = async () => {
+		const content = text.trim(); // TODO parse to trim? regularize step?
+		const ties = [{source_id: $space.directory_id, type: 'HasItem'}];
+		if (selectedReply) {
+			ties.push({source_id: $selectedReply!.entity_id, type: 'HasReply'});
+		}
+
+		if (!content) return;
+		await dispatch.CreateEntity({
+			actor: $persona.persona_id,
+			data: {type: 'Note', content},
+			ties,
+		});
+		await dispatch.UpdateEntity({
+			actor: $persona.persona_id,
+			data: null,
+			entity_id: $space.directory_id,
+		});
+		selectedReply = null;
+		text = '';
+	};
+
+	const onSubmit = async () => {
+		await createEntity();
+	};
+
+	let selectedReply: Readable<Entity> | null = null as any;
+	$: selectedReplyPersona = selectedReply && personaById.get($selectedReply!.persona_id)!;
+	const selectReply = (reply: Readable<Entity>) => {
+		if (selectedReply === reply) {
+			selectedReply = null;
+		} else {
+			selectedReply = reply;
+		}
+	};
+</script>
+
+<div class="chat">
+	<div class="entities">
+		{#if entities && $queryStatus === 'success'}
+			<ReplyChatItems {persona} {entities} {selectReply} />
+		{:else}
+			<PendingAnimation />
+		{/if}
+	</div>
+	<div>
+		{#if selectedReply && $selectedReplyPersona && $queryStatus === 'success'}
+			replying to {$selectedReplyPersona.name}
+		{/if}
+	</div>
+	<TextInput {persona} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
+</div>
+
+<style>
+	.chat {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		overflow: hidden; /* make the content scroll */
+	}
+	.entities {
+		max-width: var(--column_width);
+		overflow: auto;
+		flex: 1;
+		display: flex;
+		/* makes scrolling start at the bottom */
+		flex-direction: column-reverse;
+	}
+</style>

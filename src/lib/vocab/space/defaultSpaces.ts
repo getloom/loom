@@ -12,6 +12,13 @@ export const toDefaultSpaces = (actor: number, community: Community): CreateSpac
 					? {...toViewTemplateDefaults('PersonalHome'), actor, community_id, name, url: '/'}
 					: {...toViewTemplateDefaults('Home'), actor, community_id, name, url: '/'},
 				{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', url: '/chat'},
+				{
+					...toViewTemplateDefaults('ReplyChat'),
+					actor,
+					community_id,
+					name: 'reply-chat',
+					url: '/reply-chat',
+				},
 				{...toViewTemplateDefaults('Board'), actor, community_id, name: 'board', url: '/board'},
 				{...toViewTemplateDefaults('Forum'), actor, community_id, name: 'forum', url: '/forum'},
 				{...toViewTemplateDefaults('Notes'), actor, community_id, name: 'notes', url: '/notes'},

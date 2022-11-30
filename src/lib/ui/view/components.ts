@@ -5,6 +5,7 @@ import PersonalHome from '$lib/ui/view/PersonalHome.svelte';
 import AdminHome from '$lib/ui/view/AdminHome.svelte';
 import InstanceAdmin from '$lib/ui/view/InstanceAdmin.svelte';
 import Chat from '$lib/ui/view/Chat.svelte';
+import ReplyChat from '$lib/plugins/greatbacon/reply-chat/ReplyChat.svelte';
 import Board from '$lib/ui/view/Board.svelte';
 import Forum from '$lib/ui/view/Forum.svelte';
 import Notes from '$lib/ui/view/Notes.svelte';
@@ -20,6 +21,7 @@ export const viewComponents: Record<string, typeof SvelteComponent> = {
 	AdminHome,
 	InstanceAdmin,
 	Chat,
+	ReplyChat,
 	Board,
 	Forum,
 	Notes,
