@@ -359,6 +359,7 @@ export type InviteToCommunityResponseResult = ApiResult<InviteToCommunityRespons
 
 export interface LeaveCommunityParams {
 	actor: number;
+	persona_id: number;
 	community_id: number;
 }
 export type LeaveCommunityResponse = null;

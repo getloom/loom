@@ -103,12 +103,12 @@ export const LeaveCommunity: Mutations['LeaveCommunity'] = async ({params, invok
 	const {assignments} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {actor, community_id} = params;
+	const {persona_id, community_id} = params;
 
 	const assignmentsToEvict: Assignment[] = [];
 	// TODO could speed this up a cache of assignments by community, see in multiple places
 	for (const assignment of assignments.get().value) {
-		if (assignment.persona_id === actor && assignment.community_id === community_id) {
+		if (assignment.persona_id === persona_id && assignment.community_id === community_id) {
 			assignmentsToEvict.push(assignment);
 		}
 	}

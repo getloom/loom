@@ -24,6 +24,7 @@
 		errorMessage = '';
 		const result = await dispatch.LeaveCommunity({
 			actor: $persona.persona_id,
+			persona_id: $persona.persona_id,
 			community_id: $community.community_id,
 		});
 		if (result.ok) {

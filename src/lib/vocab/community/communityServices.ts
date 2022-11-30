@@ -226,10 +226,11 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 	event: LeaveCommunity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {actor, community_id} = params;
+			const {actor, persona_id, community_id} = params;
 			log.trace(
 				'[LeaveCommunity] removing all assignments for persona in community',
 				actor,
+				persona_id,
 				community_id,
 			);
 			// TODO why can't this be parallelized? bug in our code? or the driver? failed to reproduce in the driver.
@@ -238,7 +239,7 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 			// 	repos.community.findById(community_id),
 			// ]);
 			const persona = unwrap(
-				await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(actor, [
+				await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(persona_id, [
 					'type',
 					'community_id',
 				]),
@@ -265,7 +266,7 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 				return {ok: false, status: 405, message: 'community persona cannot leave its community'};
 			}
 
-			unwrap(await repos.assignment.deleteByPersonaAndCommunity(actor, community_id));
+			unwrap(await repos.assignment.deleteByPersonaAndCommunity(persona_id, community_id));
 
 			unwrap(await cleanOrphanCommunities(params.community_id, repos));
 

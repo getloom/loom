@@ -200,9 +200,10 @@ export const LeaveCommunity: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
+			persona_id: {type: 'number'},
 			community_id: {type: 'number'},
 		},
-		required: ['actor', 'community_id'],
+		required: ['actor', 'persona_id', 'community_id'],
 		additionalProperties: false,
 	},
 	response: {

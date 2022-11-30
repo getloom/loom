@@ -37,7 +37,7 @@
 			<CommunitySettingsHue {persona} {community} />
 		</fieldset>
 		<fieldset>
-			<legend><span class="error-text">danger! zone</span></legend>
+			<legend class="error-text">danger! zone</legend>
 			<button
 				title="leave community"
 				on:click={() =>
