@@ -3,7 +3,7 @@
 	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
 	import {type Readable, readable} from '@feltcoop/svelte-gettable-stores';
 
-	import BoardItems from '$lib/ui/BoardItems.svelte';
+	import BoardItems from '$lib/plugins/feltcoop/board/BoardItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getViewContext} from '$lib/vocab/view/view';

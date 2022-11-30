@@ -4,7 +4,7 @@
 	import {readable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
-	import TodoItems from '$lib/ui/TodoItems.svelte';
+	import TodoItems from '$lib/plugins/feltcoop/todo/TodoItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getViewContext} from '$lib/vocab/view/view';

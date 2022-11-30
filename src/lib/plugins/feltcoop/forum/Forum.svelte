@@ -4,7 +4,7 @@
 	import {readable} from '@feltcoop/svelte-gettable-stores';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
-	import NotesItems from '$lib/ui/NotesItems.svelte';
+	import ForumItems from '$lib/plugins/feltcoop/forum/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
@@ -50,11 +50,11 @@
 	};
 </script>
 
-<div class="notes">
-	<TextInput {persona} on:submit={onSubmit} bind:value={text} placeholder="> note" />
+<div class="forum">
+	<TextInput {persona} placeholder="> new topic" on:submit={onSubmit} bind:value={text} />
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<NotesItems {persona} {entities} />
+			<ForumItems {persona} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}
@@ -62,16 +62,17 @@
 </div>
 
 <style>
-	.notes {
+	.forum {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
 		overflow: hidden; /* make the content scroll */
 	}
 	.entities {
+		max-width: var(--column_width);
+		overflow: auto;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		overflow: auto;
 	}
 </style>

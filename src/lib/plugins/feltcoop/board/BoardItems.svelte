@@ -2,8 +2,8 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import BoardItemSummary from '$lib/ui/BoardItemSummary.svelte';
-	import BoardItemDetail from '$lib/ui/BoardItemDetail.svelte';
+	import BoardItemSummary from '$lib/plugins/feltcoop/board/BoardItemSummary.svelte';
+	import BoardItemDetail from '$lib/plugins/feltcoop/board/BoardItemDetail.svelte';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 

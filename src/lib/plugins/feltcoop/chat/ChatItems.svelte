@@ -3,7 +3,7 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import ChatItem from '$lib/ui/ChatItem.svelte';
+	import ChatItem from '$lib/plugins/feltcoop/chat/ChatItem.svelte';
 
 	export let persona: Readable<AccountPersona>;
 	export let entities: Readable<Array<Readable<Entity>>>;

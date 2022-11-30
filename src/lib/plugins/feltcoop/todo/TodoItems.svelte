@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import TodoItem from '$lib/ui/TodoItem.svelte';
+	import TodoItem from '$lib/plugins/feltcoop/todo/TodoItem.svelte';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 

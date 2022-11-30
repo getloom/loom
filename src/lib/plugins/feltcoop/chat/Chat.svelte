@@ -3,7 +3,7 @@
 	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
 	import {readable} from '@feltcoop/svelte-gettable-stores';
 
-	import ChatItems from '$lib/ui/ChatItems.svelte';
+	import ChatItems from '$lib/plugins/feltcoop/chat/ChatItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import TextInput from '$lib/ui/TextInput.svelte';

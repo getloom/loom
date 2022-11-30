@@ -4,7 +4,7 @@
 
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
-	import Forum from '$lib/ui/view/Forum.svelte';
+	import Forum from '$lib/plugins/feltcoop/forum/Forum.svelte';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityContent from '$lib/ui/EntityContent.svelte';

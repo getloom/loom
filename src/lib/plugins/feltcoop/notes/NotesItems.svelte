@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import NotesItem from '$lib/ui/NotesItem.svelte';
+	import NotesItem from '$lib/plugins/feltcoop/notes/NotesItem.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	export let persona: Readable<AccountPersona>;

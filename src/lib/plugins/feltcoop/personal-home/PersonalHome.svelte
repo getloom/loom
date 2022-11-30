@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {getViewContext} from '$lib/vocab/view/view';
-	import Notes from '$lib/ui/view/Notes.svelte';
+	import Notes from '$lib/plugins/feltcoop/notes/Notes.svelte';
 	import PersonaMention from '$lib/ui/PersonaMention.svelte';
 
 	const viewContext = getViewContext();

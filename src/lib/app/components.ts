@@ -1,6 +1,6 @@
 import type {SvelteComponent} from 'svelte';
 
-import {viewComponents} from '$lib/ui/view/components';
+import {viewComponents} from '$lib/app/views';
 import Link from '$lib/ui/Link.svelte';
 import PersonaMention from '$lib/ui/PersonaMention.svelte';
 

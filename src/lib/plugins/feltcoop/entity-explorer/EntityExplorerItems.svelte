@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import EntityItem from '$lib/ui/EntityItem.svelte';
+	import EntityExplorerItem from '$lib/plugins/feltcoop/entity-explorer/EntityExplorerItem.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	export let persona: Readable<AccountPersona>;
@@ -11,7 +11,7 @@
 
 <ul>
 	{#each $entities as entity (entity)}
-		<EntityItem {persona} {entity} />
+		<EntityExplorerItem {persona} {entity} />
 	{/each}
 </ul>
 

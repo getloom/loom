@@ -3,7 +3,7 @@
 	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
 	import {readable, writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import EntityItems from '$lib/ui/EntityItems.svelte';
+	import EntityExplorerItems from '$lib/plugins/feltcoop/entity-explorer/EntityExplorerItems.svelte';
 	import EntityTree from '$lib/ui/EntityTree.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
@@ -71,7 +71,7 @@
 	</div>
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<EntityItems {persona} {entities} />
+			<EntityExplorerItems {persona} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}
