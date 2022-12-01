@@ -4,7 +4,7 @@ import {Logger} from '@feltcoop/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {AccountPersona, Persona, PublicPersona} from '$lib/vocab/persona/persona';
-import {GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
+import {ADMIN_PERSONA_ID, GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
 import {PERSONA_COLUMNS} from '$lib/vocab/persona/personaHelpers.server';
 
 const log = new Logger(gray('[') + blue('PersonaRepo') + gray(']'));
@@ -80,6 +80,10 @@ export class PersonaRepo extends PostgresRepo {
 					ON p.persona_id=a.persona_id) c
 				ON a2.community_id=c.community_id) p2
 			ON p3.persona_id=p2.persona_id
+			UNION
+			SELECT ${this.sql(
+				PERSONA_COLUMNS.PublicPersona,
+			)} FROM personas WHERE persona_id=${ADMIN_PERSONA_ID} OR persona_id=${GHOST_PERSONA_ID}
 		`;
 		return {ok: true, value: data};
 	}
