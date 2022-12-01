@@ -6,6 +6,9 @@
 > [`@feltcoop/felt-server`](https://github.com/feltcoop/felt-server),
 > a tool for building and maintaining communities 💚
 
+Looking for instructions for how to use this project as a library?
+See [library-usage](./library-usage.md).
+
 ## Overview
 
 `@feltcoop/felt-server` depends on the following core technologies:

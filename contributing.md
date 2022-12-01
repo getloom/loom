@@ -2,23 +2,21 @@
 
 # Contributing to `@feltcoop/felt-server`
 
-> server for [Felt](https://github.com/feltcoop/felt),
-> a tool for building and maintaining communities 💚
+Thanks for your interest in contributing.
+In order to keep our development velocity high,
+we're currently practicing closed development on our open source projects,
+meaning we publish our source code as we write it,
+but most decisions are made in private among the core team.
 
-Thanks for your interest in contributing!
-
-To learn more about the Felt project, see
-[felt.social/about](https://www.felt.social/about).
-
-To set up your local machine,
-see the ["Getting started"](/src/docs/getting-started.md) docs.
-
-We use the [MIT License](/LICENSE)
-and we're currently practicing closed development --
-we publish our source code as we write it,
-but decision making mostly happens in private.
-We plan to publish a public roadmap and discuss increasingly more in public.
-We're happy to discuss issues on GitHub,
+We plan to publish a public roadmap and discuss increasingly more in public,
+and the license is MIT, so you can do whatever you want with the code.
+We're happy to discuss things on GitHub -
+please feel free to
+[open issues](https://github.com/feltcoop/felt-server),
 and for private feedback email [team@felt.social](mailto:team@felt.social).
 
-More to come!
+To develop, start here: ["Getting started"](/src/docs/getting-started.md)
+
+The Felt project is governed by a
+[Temporary Benevolent Dictator (TBD)](https://github.com/feltcoop/felt/blob/main/GOVERNANCE.md),
+[@feltcoop](https://github.com/feltcoop).
