@@ -48,7 +48,7 @@ export class AccountRepo extends PostgresRepo {
 			this.repos.role.filterByAccount(account.account_id),
 			this.repos.assignment.filterByAccount(account.account_id),
 			this.repos.policy.filterByAccount(account.account_id),
-			this.repos.persona.getAll(), //TODO don't getAll
+			this.repos.persona.filterAssociatesByAccount(account.account_id),
 		]);
 		if (!spacesResult.ok) return spacesResult;
 		if (!sessionPersonasResult.ok) return sessionPersonasResult;

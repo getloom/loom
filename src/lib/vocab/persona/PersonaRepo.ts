@@ -70,6 +70,20 @@ export class PersonaRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
+	async filterAssociatesByAccount(account_id: number): Promise<Result<{value: PublicPersona[]}>> {
+		const data = await this.sql<PublicPersona[]>`
+			SELECT ${this.sql(PERSONA_COLUMNS.PublicPersona.map((c) => 'p3.' + c))}
+			FROM personas p3
+			JOIN (SELECT DISTINCT persona_id FROM assignments a2
+				JOIN (SELECT DISTINCT a.community_id FROM assignments a
+					JOIN (SELECT * FROM personas WHERE account_id=${account_id}) p
+					ON p.persona_id=a.persona_id) c
+				ON a2.community_id=c.community_id) p2
+			ON p3.persona_id=p2.persona_id
+		`;
+		return {ok: true, value: data};
+	}
+
 	async findById<T extends Partial<Persona> = PublicPersona>(
 		persona_id: number,
 		columns = PERSONA_COLUMNS.PublicPersona,
@@ -121,16 +135,5 @@ export class PersonaRepo extends PostgresRepo {
 			FROM personas WHERE LOWER(name) = LOWER(${name})
 		`;
 		return {ok: true, value: data[0]};
-	}
-
-	// TODO needs to be a subset just for the session, maybe either `community_ids` or `account_id` as a param
-	async getAll<T extends Partial<Persona> = PublicPersona>(
-		columns = PERSONA_COLUMNS.PublicPersona,
-	): Promise<Result<{value: T[]}>> {
-		const data = await this.sql<T[]>`
-			SELECT ${this.sql(columns)}
-			FROM personas
-		`;
-		return {ok: true, value: data};
 	}
 }
