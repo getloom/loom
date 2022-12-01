@@ -21,7 +21,10 @@
 </script>
 
 <fieldset>
-	<legend>advanced</legend>
+	<legend>properties</legend>
+	<PropertyEditor value={$community.community_id} field="community_id" />
+	<PropertyEditor value={$community.name} field="name" />
+	<PropertyEditor value={$community.type} field="type" />
 	<PropertyEditor
 		value={$community.settings}
 		field="settings"

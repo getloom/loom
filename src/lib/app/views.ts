@@ -15,7 +15,7 @@ import Todo from '$lib/plugins/feltcoop/todo/Todo.svelte';
 import List from '$lib/plugins/ryanatkn/list/List.svelte';
 import Lists from '$lib/plugins/ryanatkn/lists/Lists.svelte';
 
-export const viewComponents: Record<string, typeof SvelteComponent> = {
+export const views: Record<string, typeof SvelteComponent> = {
 	Home,
 	PersonalHome,
 	AdminHome,

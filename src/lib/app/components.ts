@@ -1,6 +1,6 @@
 import type {SvelteComponent} from 'svelte';
 
-import {viewComponents} from '$lib/app/views';
+import {views} from '$lib/app/views';
 import Link from '$lib/ui/Link.svelte';
 import PersonaMention from '$lib/ui/PersonaMention.svelte';
 
@@ -10,7 +10,7 @@ import PersonaMention from '$lib/ui/PersonaMention.svelte';
 // instead of preloading the entire component library
 
 export const components: {[key: string]: typeof SvelteComponent} = {
-	...viewComponents,
+	...views,
 	Link,
 	PersonaMention,
 };
