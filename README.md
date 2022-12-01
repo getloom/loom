@@ -1,21 +1,46 @@
 [<img src="src/static/felt.png" align="right" width="192" height="178">](https://felt.dev)
 
-# felt-server
+# `@feltcoop/felt-server`
 
 > server for [Felt](https://github.com/feltcoop/felt),
 > a tool for building and maintaining communities 💚
 
 > **work in progress**: pre-alpha
 
-For more in depth development docs, please see
-[Getting started](/src/docs/getting-started.md) and
+[`@feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
+is a [Node](https://nodejs.org/) server that you can use in many different ways:
+
+- as an end user on an instance deployed to the web,
+  communicating with people and managing information
+- as an operator user deploying an instance to the web via servers IRL,
+  doing admin and maintenance
+- as a dev user making a custom server using the library on npm,
+  installing it with
+  [`npm i -D @feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
+- as a dev user downloading or forking the repo with git,
+  adding or changing anything you wish
+
+## getting started developing
+
+For more, see [Getting started](/src/docs/getting-started.md) and
 [Contributing](/contributing.md)
 
 For build & deployment docs, see the [Infra README](/src/lib/infra/README.md)
 
-## getting started
+## using @feltcoop/felt-server as a library
 
-First set up [a local dev environment](/src/docs/getting-started.md), then:
+[`@feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
+can be installed as a library to make custom servers:
+
+```bash
+npm i -D @feltcoop/felt-server # see the available modules at `/src/gro.config.ts`
+# TODO add docs for how to use it as a library
+```
+
+## using @feltcoop/felt-server as a git repo
+
+To work directly on the codebase,
+first set up [a local dev environment](/src/docs/getting-started.md), then:
 
 ```bash
 # node >=18.6
@@ -33,10 +58,6 @@ gro # print available tasks
 npm test
 # or
 gro test
-
-# felt-server can be installed as a library for your custom servers:
-npm i -D @feltcoop/felt-server # see the available modules at `/src/gro.config.ts`
-# TODO add docs for how to use it as a library
 ```
 
 > learn more [about Gro](https://github.com/feltcoop/gro),
