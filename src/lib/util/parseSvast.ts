@@ -101,7 +101,7 @@ const parseSvastText = (node: Text): SvelteChild => {
 			(children || (children = [])).push({
 				[ADDED_BY_FELT as any]: true,
 				type: 'svelteComponent',
-				tagName: 'PersonaMention',
+				tagName: 'Mention',
 				properties: [
 					{
 						type: 'svelteProperty',

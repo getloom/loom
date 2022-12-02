@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {getViewContext} from '$lib/vocab/view/view';
 	import Notes from '$lib/plugins/feltcoop/notes/Notes.svelte';
-	import PersonaMention from '$lib/ui/PersonaMention.svelte';
+	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 
 	const viewContext = getViewContext();
 	$: ({persona} = $viewContext);
@@ -9,7 +9,7 @@
 
 <div class="personal-home">
 	<section class="markup padded-xl">
-		<h1><PersonaMention name={$persona.name} />'s personal workspace</h1>
+		<h1><Mention name={$persona.name} />'s personal workspace</h1>
 	</section>
 	<Notes />
 </div>

@@ -34,7 +34,7 @@
 	import {toHttpApiClient} from '$lib/ui/HttpApiClient';
 	import {findHttpService, findWebsocketService} from '$lib/ui/services';
 	import Contextmenu from '$lib/ui/contextmenu/Contextmenu.svelte';
-	import {components} from '$lib/app/components';
+	import {views} from '$lib/app/views';
 	import {mutations} from '$lib/app/mutations';
 	import AppContextmenu from '$lib/app/contextmenu/AppContextmenu.svelte';
 	import ActingPersonaContextmenu from '$lib/app/contextmenu/ActingPersonaContextmenu.svelte';
@@ -65,7 +65,7 @@
 		(message) => websocketClient.handle(message.data),
 		() => dispatch.Ping(),
 	);
-	const ui = toUi(data, initialMobileValue, components, (errorMessage) => {
+	const ui = toUi(data, initialMobileValue, views, (errorMessage) => {
 		dispatch.OpenDialog({Component: ErrorMessage, props: {text: errorMessage}});
 	});
 	setUi(ui);

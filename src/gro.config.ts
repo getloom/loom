@@ -11,7 +11,7 @@ const files = [
 	'lib/index.ts', // same as 'lib/server/server.ts'
 
 	// exported user modules
-	'lib/app/components.ts',
+	'lib/app/views.ts',
 	'lib/app/contextmenu/ActingPersonaContextmenu.svelte',
 	'lib/app/contextmenu/AppContextmenu.svelte',
 	'lib/app/contextmenu/LinkContextmenu.svelte',

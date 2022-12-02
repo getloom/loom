@@ -1,5 +1,7 @@
 import type {SvelteComponent} from 'svelte';
 
+import Link from '$lib/plugins/feltcoop/link/Link.svelte';
+import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 import Home from '$lib/plugins/feltcoop/home/Home.svelte';
 import PersonalHome from '$lib/plugins/feltcoop/personal-home/PersonalHome.svelte';
 import AdminHome from '$lib/plugins/feltcoop/admin-home/AdminHome.svelte';
@@ -16,6 +18,8 @@ import List from '$lib/plugins/ryanatkn/list/List.svelte';
 import Lists from '$lib/plugins/ryanatkn/lists/Lists.svelte';
 
 export const views: Record<string, typeof SvelteComponent> = {
+	Link,
+	Mention,
 	Home,
 	PersonalHome,
 	AdminHome,
