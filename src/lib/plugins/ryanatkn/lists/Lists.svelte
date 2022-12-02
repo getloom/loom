@@ -29,7 +29,7 @@
 	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
 </script>
 
-<div class="room">
+<div class="lists">
 	<div class="entities">
 		<!-- TODO handle failures here-->
 		{#if entities && $queryStatus === 'success'}
@@ -45,7 +45,7 @@
 </div>
 
 <style>
-	.room {
+	.lists {
 		display: flex;
 		flex-direction: column;
 		flex: 1;

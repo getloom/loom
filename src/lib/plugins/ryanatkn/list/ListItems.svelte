@@ -13,3 +13,10 @@
 		<ListItem {entity} />
 	{/each}
 </ul>
+
+<style>
+	ul {
+		display: flex;
+		flex-direction: var(--items_direction);
+	}
+</style>

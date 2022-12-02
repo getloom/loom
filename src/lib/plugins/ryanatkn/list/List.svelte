@@ -12,6 +12,9 @@
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
 
+	export let layoutDirection = 'column'; // is a `flex-direction` property
+	export let itemsDirection = 'column'; // is a `flex-direction` property
+
 	// TODO make the item component/props generic (maybe `itemComponent` and `itemProps`?) or slots?
 	// TODO select multiple, act on groups of selected items
 	// TODO collapse button?
@@ -38,14 +41,18 @@
 	let listInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
 </script>
 
-<div class="room">
+<div
+	class="list"
+	style:--layout_direction={layoutDirection}
+	style:--items_direction={itemsDirection}
+>
 	<div class="entities">
 		<!-- TODO handle failures here-->
 		{#if entities && $queryStatus === 'success'}
-			<ListItems {entities} />
 			{#if directory}
 				<ListControls list={directory} bind:listInputEl />
 			{/if}
+			<ListItems {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}
@@ -53,7 +60,7 @@
 </div>
 
 <style>
-	.room {
+	.list {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -64,7 +71,6 @@
 		overflow: auto;
 		flex: 1;
 		display: flex;
-		/* makes scrolling start at the bottom */
-		flex-direction: column;
+		flex-direction: var(--layout_direction);
 	}
 </style>
