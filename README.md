@@ -14,10 +14,10 @@ is a [Node](https://nodejs.org/) server that you can use in many different ways:
   communicating with people and managing information
 - as an operator user deploying an instance to the web via servers IRL,
   doing admin and maintenance
-- as a dev user making a custom server using the library on npm,
-  installing it with
-  [`npm i -D @feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
-- as a dev user downloading or forking the repo with git,
+- as a dev user making a custom server using
+  [the library on npm](https://www.npmjs.com/package/@feltcoop/felt-server)
+  via `npm i -D @feltcoop/felt-server`
+- as a dev user downloading or forking this repo with git,
   adding or changing anything you wish
 
 ## getting started developing
@@ -30,12 +30,13 @@ For build & deployment docs, see the [Infra README](/src/lib/infra/README.md)
 ## using @feltcoop/felt-server as a library
 
 [`@feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
-can be installed as a library to make custom servers:
+can be installed as a library on npm to make custom servers:
 
 ```bash
 npm i -D @feltcoop/felt-server # see the available modules at `/src/gro.config.ts`
-# TODO add docs for how to use it as a library
 ```
+
+Learn more about [using `@feltcoop/felt-server` as a library](/src/docs/library-usage.md).
 
 ## using @feltcoop/felt-server as a git repo
 
