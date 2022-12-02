@@ -89,7 +89,7 @@ test__parseSvast('parses http:// links', async () => {
 
 test__parseSvast('parses absolute links', async () => {
 	const parsed = parseSvast({
-		value: '/felt.dev/some-link',
+		value: '/felt/some-link',
 		generatePositions: false,
 	});
 	assert.equal(parsed, {
@@ -102,13 +102,13 @@ test__parseSvast('parses absolute links', async () => {
 					{
 						type: 'svelteProperty',
 						name: 'href',
-						value: [{type: 'text', value: '/felt.dev/some-link'}],
+						value: [{type: 'text', value: '/felt/some-link'}],
 						modifiers: [],
 						shorthand: 'none',
 					},
 				],
 				selfClosing: false,
-				children: [{type: 'text', value: '/felt.dev/some-link'}],
+				children: [{type: 'text', value: '/felt/some-link'}],
 			},
 		],
 	});

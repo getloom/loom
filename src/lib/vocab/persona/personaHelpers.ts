@@ -8,7 +8,7 @@ import {plural} from '@feltcoop/util/string.js';
  */
 export const scrubPersonaName = (name: string): string => name.trim();
 
-const PERSONA_NAME_CHARACTER_MATCHER = /^[a-z\d-]+$/iu;
+export const PERSONA_NAME_CHARACTER_MATCHER = /^[a-z\d-]+$/iu;
 // TODO maybe add these to the schema? problem is ajv will return less friendly errors from service calls
 const PERSONA_NAME_MAX_LENGTH = 39; // same as github
 const PERSONA_NAME_MIN_LENGTH = 3;

@@ -1,5 +1,8 @@
 <script lang="ts">
+	import {base} from '$app/paths';
+
 	import {getViewContext} from '$lib/vocab/view/view';
+	import {isAbsolutePathValid} from '$lib/util/fuz';
 
 	const viewContext = getViewContext();
 	$: ({community} = $viewContext);
@@ -7,10 +10,10 @@
 	export let href: string;
 
 	$: absolute = href.startsWith('/');
+	$: valid = absolute ? isAbsolutePathValid(href) : true;
 	// Absolute paths are community-relative,
 	// similar to how links work in markdown documents on GitHub repos.
-	$: finalHref = absolute ? '/' + $community.name + href : href;
-
+	$: finalHref = absolute ? base + '/' + $community.name + href : href;
 	$: external = !(absolute || href.startsWith('.'));
 	$: rel = external ? 'external noreferrer nofollow' : undefined;
 	$: target = external ? '_blank' : undefined;
@@ -18,4 +21,5 @@
 	// $: prefetch = external ? undefined : (true as const);
 </script>
 
-<a {...$$restProps} href={finalHref} {rel} {target} on:click><slot /></a>
+{#if valid}<a {...$$restProps} href={finalHref} {rel} {target} on:click><slot /></a>{:else}<slot
+	/>{/if}

@@ -2,6 +2,7 @@ import type {SvelteChild, Text} from 'svast';
 import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
 import {checkPersonaName} from '$lib/vocab/persona/personaHelpers';
+import {isAbsolutePathValid} from '$lib/util/fuz';
 
 // Used to avoids infinite loops because newly added children get walked.
 const ADDED_BY_FELT = Symbol();
@@ -63,7 +64,11 @@ const parseSvastText = (node: Text): SvelteChild => {
 		lastCharIndex = word.length - 1;
 		firstChar = word[0];
 		lastChar = word[lastCharIndex];
-		if (firstChar === '/' || word.startsWith('https://') || word.startsWith('http://')) {
+		if (
+			(firstChar === '/' && isAbsolutePathValid(word)) ||
+			word.startsWith('https://') ||
+			word.startsWith('http://')
+		) {
 			// linkify text like /this and https://that.net
 			flushPlainText();
 			(children || (children = [])).push({
