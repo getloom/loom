@@ -8,16 +8,16 @@
 > **work in progress**: pre-alpha
 
 [`@feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
-is a [Node](https://nodejs.org/) server that you can use in many different ways:
+is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
 
-- as an end user on an instance deployed to the web,
+- as an <strong>end user</strong> on an instance deployed to the web,
   communicating with people and managing information
-- as an operator user deploying an instance to the web via servers IRL,
+- as an <strong>operator user</strong> deploying an instance to the web via servers IRL,
   doing admin and maintenance
-- as a dev user making a custom server using
+- as a <strong>dev user</strong> making a custom server using
   [the library on npm](https://www.npmjs.com/package/@feltcoop/felt-server)
   via `npm i -D @feltcoop/felt-server`
-- as a dev user downloading or forking this repo with git,
+- as a <strong>dev user</strong> downloading or forking this repo with git,
   adding or changing anything you wish
 
 ## getting started developing
