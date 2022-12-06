@@ -90,7 +90,7 @@
 			<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signIn}
 				>sign in</PendingButton
 			>
-			<p class:error-text={!!errorMessage}>{errorMessage || '💚'}</p>
+			<p class:error-text={!!errorMessage}>{errorMessage || import.meta.env.PUBLIC_ADMIN_ICON}</p>
 			<slot />
 		</div>
 	</fieldset>

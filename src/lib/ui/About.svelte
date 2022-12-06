@@ -7,7 +7,7 @@
 		>
 	</p>
 	<p class="title">
-		💚
+		{import.meta.env.PUBLIC_ADMIN_ICON}
 		<a href="https://github.com/feltcoop/felt-server" target="_blank" rel="noreferrer"
 			>felt-server</a
 		>

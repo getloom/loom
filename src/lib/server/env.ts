@@ -15,11 +15,13 @@ const envs: Array<{file: string; defaultFile: string; load: boolean}> = [
 	{file: ENV_FILE_PROD, defaultFile: `src/lib/infra/${ENV_FILE_PROD}.default`, load: !dev},
 ];
 
+// TODO shouldn't need to redeclare now that SvelteKit has this built in
 interface Env {
 	COOKIE_KEYS: string;
 	PUBLIC_GIT_HASH: string;
 	PUBLIC_DEPLOY_SERVER_HOST: string;
 	PUBLIC_ADMIN_EMAIL_ADDRESS: string;
+	PUBLIC_ADMIN_ICON: string;
 	DEPLOY_IP: string;
 	DEPLOY_USER: string;
 	CERTBOT_EMAIL_ADDRESS: string;
