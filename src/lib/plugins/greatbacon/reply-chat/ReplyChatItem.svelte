@@ -91,7 +91,12 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		align-items: center;
 	}
 	.reply {
-		--icon_size: var(--icon_size_xs);
+		--icon_size: var(--icon_size_sm);
+		--input_height: var(--icon_size_sm);
+	}
+	.markup {
+		/* needed for letters like y j g */
+		padding-bottom: var(--spacing_xs3);
 	}
 	.panel {
 		background-color: var(--tint_dark_2);

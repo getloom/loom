@@ -69,7 +69,10 @@
 		} else {
 			selectedReply = reply;
 		}
+		textInputEl?.focus();
 	};
+
+	let textInputEl: HTMLTextAreaElement | undefined;
 </script>
 
 <div class="chat">
@@ -85,7 +88,13 @@
 			replying to <Mention name={$selectedReplyPersona.name} />
 		</div>
 	{/if}
-	<TextInput {persona} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
+	<TextInput
+		{persona}
+		placeholder="> chat"
+		on:submit={onSubmit}
+		bind:value={text}
+		bind:el={textInputEl}
+	/>
 </div>
 
 <style>
