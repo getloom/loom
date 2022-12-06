@@ -2,13 +2,14 @@ import {unwrap} from '@feltcoop/util';
 import {Logger} from '@feltcoop/util/log.js';
 import {traverse} from '@feltcoop/util/object.js';
 import {randomItem} from '@feltcoop/util/random.js';
+import {magenta} from 'kleur/colors';
 
 import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';
 import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';
 import type {Community} from '$lib/vocab/community/community';
-import type {CreateCommunityParams, SignInParams} from '$lib/app/eventTypes';
+import type {CreateCommunityParams, CreateEntityResponse, SignInParams} from '$lib/app/eventTypes';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
@@ -19,6 +20,7 @@ import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
+import type {EntityData} from '$lib/vocab/entity/entityData';
 
 /* eslint-disable no-await-in-loop */
 
@@ -138,75 +140,91 @@ const createDefaultEntities = async (
 	};
 
 	for (const space of spaces) {
-		const componentName = findFirstComponentName(parseView(space.view));
-		if (componentName === 'Todo') {
-			await generateTodo(serviceRequest, nextPersona(), space);
-		}
-		if (!componentName || !(componentName in entitiesContents)) {
+		const viewName = findFirstComponentName(parseView(space.view));
+		if (!viewName) continue;
+		const generateEntities = SEED_BY_VIEW_NAME[viewName];
+		if (!generateEntities) {
+			log.warn(`skipping entity seeding for view ${magenta(viewName)}`);
 			continue;
 		}
-		const entityContents = entitiesContents[componentName];
-		for (const entityContent of entityContents) {
-			const actor = nextPersona();
-			unwrap(
-				await CreateEntityService.perform({
-					...serviceRequest,
-					actor,
-					params: {
-						actor: actor.persona_id,
-						data: {type: 'Note', content: entityContent},
-						ties: [{source_id: space.directory_id}],
-					},
-				}),
-			);
-		}
+		await generateEntities({serviceRequest, nextPersona, space});
 	}
 };
 
-const entitiesContents: Record<string, string[]> = {
-	Chat: ['Those who know do not speak.', 'Those who speak do not know.'],
-	Board: ["All the world's a stage.", 'And all the men and women merely players.'],
-	Forum: [
-		'If the evidence says you’re wrong, you don’t have the right theory.',
-		'You change the theory, not the evidence.',
-	],
-	Notes: [
-		'We have no guarantee about the future',
-		'but we exist in the hope of something better.',
-		'The 14th Dalai Lama',
-	],
-};
-
-const generateTodo = async (
-	serviceRequest: ReturnType<typeof toServiceRequestMock>,
-	actor: AccountPersona,
-	space: Space,
-) => {
-	const list = unwrap(
+const generateEntity = async (
+	ctx: SeedContext,
+	data: EntityData,
+	source_id = ctx.space.directory_id,
+): Promise<CreateEntityResponse> => {
+	const actor = ctx.nextPersona();
+	return unwrap(
 		await CreateEntityService.perform({
-			...serviceRequest,
+			...ctx.serviceRequest,
 			actor,
 			params: {
 				actor: actor.persona_id,
-				data: {type: 'Collection', name: 'Grocery List'},
-				ties: [{source_id: space.directory_id}],
+				data,
+				ties: [{source_id}],
 			},
 		}),
 	);
-	const itemsContents = ['eggs', 'milk', 'bread'];
-	for (const content of itemsContents) {
-		unwrap(
-			await CreateEntityService.perform({
-				...serviceRequest,
-				actor,
-				params: {
-					actor: actor.persona_id,
-					data: {type: 'Note', content},
-					ties: [{source_id: list.entity.entity_id}],
-				},
-			}),
+};
+
+const generateEntities = async (
+	ctx: SeedContext,
+	datas: Array<EntityData | string>,
+	source_id = ctx.space.directory_id,
+): Promise<CreateEntityResponse[]> => {
+	const results: CreateEntityResponse[] = [];
+	for (const data of datas) {
+		results.push(
+			await generateEntity(
+				ctx,
+				typeof data === 'string' ? {type: 'Note', content: data} : data,
+				source_id,
+			),
 		);
 	}
+	return results;
+};
+
+interface SeedContext {
+	serviceRequest: ReturnType<typeof toServiceRequestMock>;
+	nextPersona: () => AccountPersona;
+	space: Space;
+}
+
+const SEED_BY_VIEW_NAME: Record<string, (ctx: SeedContext) => Promise<void>> = {
+	Chat: async (ctx) => {
+		await generateEntities(ctx, ['Those who know do not speak.', 'Those who speak do not know.']);
+	},
+	Board: async (ctx) => {
+		await generateEntities(ctx, [
+			"All the world's a stage.",
+			'And all the men and women merely players.',
+		]);
+	},
+	Forum: async (ctx) => {
+		await generateEntities(ctx, [
+			'If the evidence says you’re wrong, you don’t have the right theory.',
+			'You change the theory, not the evidence.',
+		]);
+	},
+	Notes: async (ctx) => {
+		await generateEntities(ctx, [
+			'We have no guarantee about the future\nbut we exist in the hope of something better.\n- The 14th Dalai Lama',
+		]);
+	},
+	List: async (ctx) => {
+		await generateEntities(ctx, ['a', 'b', 'c']);
+	},
+	Lists: async (ctx) => {
+		await generateEntities(ctx, ['1', '2', '3']);
+	},
+	Todo: async (ctx) => {
+		const list = await generateEntity(ctx, {type: 'Collection', name: 'Grocery List'});
+		await generateEntities(ctx, ['eggs', 'milk', 'bread'], list.entity.entity_id);
+	},
 };
 
 const findFirstComponentName = (view: ViewData): string | undefined => {
