@@ -4,16 +4,15 @@
 	export let name: string;
 	export let icon: string | null = null;
 	export let type: EntityType = 'Persona';
+	export let inline = false;
 
 	$: squared = type === 'Community';
 </script>
 
 {#if icon}
-	<img class="entity-icon" class:squared src={icon} alt="icon for {name}" />
+	<img class="entity-icon" class:squared class:inline src={icon} alt="icon for {name}" />
 {:else}
-	<div class="entity-icon" class:squared>
-		{name[0]}
-	</div>
+	<span class="entity-icon" class:squared class:inline>{name[0]}</span>
 {/if}
 
 <style>
@@ -23,21 +22,33 @@
 		flex-shrink: 0;
 		user-select: none;
 	}
-	div.entity-icon {
+	span.entity-icon {
 		background-color: hsl(var(--hue), 50%, 50%);
 		border-radius: 50%;
 		color: white;
-		font-weight: 400;
+		font-weight: 600;
 		font-size: calc(var(--icon_size) * 0.38);
 		line-height: 1;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		text-align: center;
 	}
-	div.squared {
+	.entity-icon.inline,
+	.entity-icon.inline > :global(*) {
+		display: inline-block;
+		vertical-align: text-bottom;
+	}
+	span.entity-icon.inline {
+		/* TODO big hack, not sure what to do to center vertically
+		as an inline-block without adding another wrapper element, which would be nice to avoid */
+		line-height: 2.7;
+	}
+	/* TODO should these apply to `img` as well? */
+	span.squared {
 		border-radius: calc(var(--icon_size) / 4);
 	}
-	div.squared:active {
+	span.squared:active {
 		border-radius: calc(var(--icon_size) / 4 + 2px);
 	}
 </style>

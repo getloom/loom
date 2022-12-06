@@ -1,41 +1,41 @@
 <script lang="ts">
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
-	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
+	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 	import {getApp} from '$lib/ui/app';
 
 	const {
-		ui: {personas, contextmenu, communities},
+		ui: {personas, communities},
 	} = getApp();
 
 	export let name: string;
 	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
+	export let inline = true;
 
 	// TODO maybe add a cache of persona by name
 	$: community = Array.from($communities.value).find((c) => c.get().name === name);
 	$: persona = Array.from($personas.value).find((p) => p.get().name === name);
 </script>
 
-{#if community && $persona?.type === 'community'}
-	<span
-		class="mention"
-		use:contextmenu.action={contextmenuAction || [[CommunityContextmenu, {community, persona}]]}
-	>
+<span class="mention" class:inline>
+	{#if community && $persona?.type === 'community'}
+		<CommunityAvatar {community} {contextmenuAction} {inline}>@</CommunityAvatar>
+	{:else if persona}
+		<PersonaAvatar {persona} {contextmenuAction} {inline}>@</PersonaAvatar>
+	{:else}
 		@{name}
-	</span>
-{:else if persona}
-	<span
-		class="mention"
-		use:contextmenu.action={contextmenuAction || [[PersonaContextmenu, {persona}]]}
-	>
-		@{name}
-	</span>
-{:else}
-	@{name}
-{/if}
+	{/if}
+</span>
 
 <style>
 	.mention {
-		font-weight: bold;
+		--icon_size: var(--icon_size_xs);
+		display: flex;
+		align-items: center;
+	}
+	.mention.inline {
+		display: inline;
+		white-space: nowrap;
+		/* TODO might need to max-width this and `text-overflow: ellipsis;` */
 	}
 </style>

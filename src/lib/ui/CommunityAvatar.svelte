@@ -10,6 +10,7 @@
 	export let showName = true;
 	export let showIcon = true;
 	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
+	export let inline = false;
 </script>
 
 <Avatar
@@ -21,4 +22,5 @@
 	contextmenuAction={contextmenuAction === undefined
 		? [[CommunityContextmenu, {community}]]
 		: contextmenuAction}
-/>
+	{inline}><slot /></Avatar
+>

@@ -13,6 +13,7 @@
 	export let showIcon = true;
 	export let type: EntityType = 'Persona';
 	export let contextmenuAction: ContextmenuItems | null = null;
+	export let inline = false;
 
 	$: finalHue = hue ?? randomHue(name);
 
@@ -23,14 +24,17 @@
 
 <!-- TODO add link option? -->
 
-<div class="avatar" style="--hue: {finalHue}" use:contextmenu.action={contextmenuAction}>
-	{#if showIcon}
-		<EntityIcon {name} {icon} {type} />
-	{/if}
-	{#if showName}
-		<span class="actor" class:has-icon={showIcon}>{name}</span>
-	{/if}
-</div>
+<span
+	class="avatar"
+	class:inline
+	class:has-icon={showIcon}
+	style="--hue: {finalHue}"
+	use:contextmenu.action={contextmenuAction}
+>
+	{#if showIcon}<EntityIcon {name} {icon} {type} {inline} />{/if}{#if showName}<span class="actor"
+			><slot />{name}</span
+		>{/if}
+</span>
 
 <style>
 	.avatar {
@@ -40,7 +44,14 @@
 	.actor {
 		font-weight: 700;
 	}
-	.has-icon {
+	.avatar.has-icon .actor {
 		padding-left: var(--spacing_xs);
+	}
+	.avatar.has-icon.inline .actor {
+		padding-left: var(--spacing_xs3);
+	}
+	.avatar.inline,
+	.avatar.inline .actor {
+		display: inline;
 	}
 </style>
