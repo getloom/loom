@@ -7,8 +7,10 @@
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import TextInput from '$lib/ui/TextInput.svelte';
+	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import type {Entity} from '$lib/vocab/entity/entity';
+	import {slide} from 'svelte/transition';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
@@ -78,11 +80,11 @@
 			<PendingAnimation />
 		{/if}
 	</div>
-	<div>
-		{#if selectedReply && $selectedReplyPersona && $queryStatus === 'success'}
-			replying to {$selectedReplyPersona.name}
-		{/if}
-	</div>
+	{#if selectedReply && $selectedReplyPersona && $queryStatus === 'success'}
+		<div class="replying" transition:slide|local>
+			replying to <Mention name={$selectedReplyPersona.name} />
+		</div>
+	{/if}
 	<TextInput {persona} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
 </div>
 
@@ -92,6 +94,9 @@
 		flex-direction: column;
 		flex: 1;
 		overflow: hidden; /* make the content scroll */
+	}
+	.replying {
+		padding: var(--spacing_xs);
 	}
 	.entities {
 		max-width: var(--column_width);

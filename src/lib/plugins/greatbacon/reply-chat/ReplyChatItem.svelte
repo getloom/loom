@@ -10,6 +10,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 
 	const {
 		ui: {contextmenu, personaById, entityById, sourceTiesByDestEntityId},
@@ -25,6 +26,7 @@
 	$: replyTie =
 		$sourceTiesSet?.value && Array.from($sourceTiesSet.value).find((t) => t.type === 'HasReply');
 	$: repliedToEntity = replyTie && entityById.get(replyTie.source_id);
+	$: repliedToPersona = $repliedToEntity && personaById.get($repliedToEntity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);
@@ -39,20 +41,27 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		[PersonaContextmenu, {persona: authorPersona}],
 	]}
 >
-	<div class="signature">
+	<div class="icon">
 		<PersonaAvatar persona={authorPersona} showName={false} />
 	</div>
-	<div class="markup padded-md formatted">
+	<div class="formatted content">
 		<div class="signature">
 			<PersonaAvatar persona={authorPersona} showIcon={false} />
-			<div class="timestamp">{format($entity.created, 'Pp')}</div>
-			<!-- TODO fix a11y -->
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div on:click={() => selectReply(entity)} class="reply">↳</div>
+			<div class="controls">
+				<small class="timestamp">{format($entity.created, 'Pp')}</small>
+				<button
+					class="plain-button icon-button reply"
+					title="reply"
+					on:click={() => selectReply(entity)}>↳</button
+				>
+			</div>
 		</div>
-		<div>
-			{#if $repliedToEntity}
-				<div class="panel">replied to: {$repliedToEntity.data.content}</div>
+		<div class="markup">
+			{#if $repliedToEntity && $repliedToPersona}
+				<div class="panel">
+					<Mention name={$repliedToPersona.name} /> said:
+					{$repliedToEntity.data.content}
+				</div>
 			{/if}
 			<EntityContent {entity} />
 		</div>
@@ -66,16 +75,30 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		/* TODO experiment with a border color instead of bg */
 		background-color: hsl(var(--hue), var(--bg_saturation), calc(var(--tint_lightness_8)));
 	}
+	.content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding-left: var(--spacing_sm);
+	}
 	.signature {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
-	.markup {
-		/* the bottom padding prevents chars like y and g from being cut off */
-		padding: 0 0 var(--spacing_xs) var(--spacing_md);
+	.controls {
+		display: flex;
+		align-items: center;
+	}
+	.reply {
+		--icon_size: var(--icon_size_xs);
 	}
 	.panel {
 		background-color: var(--tint_dark_2);
+		padding: var(--spacing_xs);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		margin-bottom: var(--spacing_xs);
 	}
 </style>
