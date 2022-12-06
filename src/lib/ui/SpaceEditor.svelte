@@ -41,7 +41,7 @@
 		<fieldset>
 			<legend>properties</legend>
 			<PropertyEditor value={$space.name} field="name" update={updateSpace} />
-			<PropertyEditor value={$space.url} field="url" update={updateSpace} />
+			<PropertyEditor value={$space.path} field="path" update={updateSpace} />
 			<PropertyEditor
 				value={$space.icon}
 				field="icon"

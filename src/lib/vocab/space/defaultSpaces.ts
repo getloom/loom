@@ -9,22 +9,22 @@ export const toDefaultSpaces = (actor: number, community: Community): CreateSpac
 		? toDefaultAdminSpaces(actor, community)
 		: [
 				type === 'personal'
-					? {...toViewTemplateDefaults('PersonalHome'), actor, community_id, name, url: '/'}
-					: {...toViewTemplateDefaults('Home'), actor, community_id, name, url: '/'},
-				{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', url: '/chat'},
+					? {...toViewTemplateDefaults('PersonalHome'), actor, community_id, name, path: '/'}
+					: {...toViewTemplateDefaults('Home'), actor, community_id, name, path: '/'},
+				{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', path: '/chat'},
 				{
 					...toViewTemplateDefaults('ReplyChat'),
 					actor,
 					community_id,
 					name: 'reply-chat',
-					url: '/reply-chat',
+					path: '/reply-chat',
 				},
-				{...toViewTemplateDefaults('Board'), actor, community_id, name: 'board', url: '/board'},
-				{...toViewTemplateDefaults('Forum'), actor, community_id, name: 'forum', url: '/forum'},
-				{...toViewTemplateDefaults('Notes'), actor, community_id, name: 'notes', url: '/notes'},
-				{...toViewTemplateDefaults('Todo'), actor, community_id, name: 'todo', url: '/todo'},
-				{...toViewTemplateDefaults('List'), actor, community_id, name: 'list', url: '/list'},
-				{...toViewTemplateDefaults('Lists'), actor, community_id, name: 'lists', url: '/lists'},
+				{...toViewTemplateDefaults('Board'), actor, community_id, name: 'board', path: '/board'},
+				{...toViewTemplateDefaults('Forum'), actor, community_id, name: 'forum', path: '/forum'},
+				{...toViewTemplateDefaults('Notes'), actor, community_id, name: 'notes', path: '/notes'},
+				{...toViewTemplateDefaults('Todo'), actor, community_id, name: 'todo', path: '/todo'},
+				{...toViewTemplateDefaults('List'), actor, community_id, name: 'list', path: '/list'},
+				{...toViewTemplateDefaults('Lists'), actor, community_id, name: 'lists', path: '/lists'},
 		  ];
 };
 
@@ -32,15 +32,15 @@ export const toDefaultAdminSpaces = (
 	actor: number,
 	{community_id, name}: Community,
 ): CreateSpaceParams[] => [
-	{...toViewTemplateDefaults('AdminHome'), actor, community_id, name, url: '/'},
+	{...toViewTemplateDefaults('AdminHome'), actor, community_id, name, path: '/'},
 	{
 		...toViewTemplateDefaults('InstanceAdmin'),
 		actor,
 		community_id,
 		name: 'instance',
-		url: '/instance',
+		path: '/instance',
 	},
-	{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', url: '/chat'},
+	{...toViewTemplateDefaults('Chat'), actor, community_id, name: 'chat', path: '/chat'},
 ];
 
 const toViewTemplateDefaults = (name: string): {view: string; icon: string} => {

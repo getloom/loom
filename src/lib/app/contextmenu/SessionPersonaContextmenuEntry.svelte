@@ -44,7 +44,7 @@
 			goto(
 				toCommunityUrl(
 					$community.name,
-					$selectedSpace?.url,
+					$selectedSpace?.path,
 					toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 				),
 			)}

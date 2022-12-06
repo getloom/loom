@@ -27,7 +27,7 @@ For more, see [Getting started](/src/docs/getting-started.md) and
 
 For build & deployment docs, see the [Infra README](/src/lib/infra/README.md)
 
-## using @feltcoop/felt-server as a library
+## using `@feltcoop/felt-server` as a library
 
 [`@feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
 can be installed as a library on npm to make custom servers:
@@ -38,7 +38,7 @@ npm i -D @feltcoop/felt-server # see the available modules at `/src/gro.config.t
 
 Learn more about [using `@feltcoop/felt-server` as a library](/src/docs/library-usage.md).
 
-## using @feltcoop/felt-server as a git repo
+## using `@feltcoop/felt-server` as a git repo
 
 To work directly on the codebase,
 first set up [a local dev environment](/src/docs/getting-started.md), then:

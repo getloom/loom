@@ -43,7 +43,7 @@ export const randomAccountName = (): string => randomString() + '@email.com';
 export const randomPassword = randomString;
 export const randomPersonaName = randomString;
 export const randomCommunnityName = randomString;
-export const randomSpaceUrl = randomString;
+export const randomSpacePath = randomString;
 export const randomSpaceIcon = (): string => '🥥';
 export const randomSpaceName = randomString;
 export const randomView = (): string => '<Chat />';
@@ -82,7 +82,7 @@ export const randomSpaceParams = (actor: number, community_id: number): CreateSp
 	community_id,
 	view: randomView(),
 	name: randomSpaceName(),
-	url: randomSpaceUrl(),
+	path: randomSpacePath(),
 	icon: randomSpaceIcon(),
 });
 export const randomEntityParams = (actor: number, source_id: number): CreateEntityParams => ({

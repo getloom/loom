@@ -62,15 +62,15 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	// TODO verify `params.persona_id` is  one of the `account_id`'s personas
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			log.trace('[CreateSpace] validating space url uniqueness');
+			log.trace('[CreateSpace] validating space path uniqueness');
 			const {community_id} = params;
 
-			// TODO run this same logic when a space url is updated
+			// TODO run this same logic when a space path is updated
 			const existingSpaceWithUrl = unwrap(
-				await repos.space.findByCommunityUrl(community_id, params.url),
+				await repos.space.findByCommunityUrl(community_id, params.path),
 			);
 			if (existingSpaceWithUrl) {
-				return {ok: false, status: 409, message: 'a space with that url already exists'};
+				return {ok: false, status: 409, message: 'a space with that path already exists'};
 			}
 
 			const communityPersona = unwrap(await repos.persona.findByCommunityId(community_id));
@@ -91,7 +91,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 				await repos.space.create(
 					params.name,
 					params.view,
-					params.url,
+					params.path,
 					params.icon,
 					community_id,
 					uninitializedDirectory.entity_id,

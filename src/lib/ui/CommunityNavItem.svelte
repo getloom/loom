@@ -42,7 +42,7 @@
 	class="community selectable"
 	href={toCommunityUrl(
 		$community.name,
-		$selectedSpace?.url,
+		$selectedSpace?.path,
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class:selected

@@ -28,7 +28,7 @@
 <a
 	href={toCommunityUrl(
 		$community.name,
-		$space.url,
+		$space.path,
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class:selected
@@ -38,7 +38,7 @@
 >
 	<div class="name"><SpaceName {space} /></div>
 	<div>
-		{$space.url}
+		{$space.path}
 	</div>
 </a>
 

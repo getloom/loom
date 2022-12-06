@@ -29,7 +29,7 @@
 			/><span class="title">{$community.name}</span>{/if}{#if space}<span
 				style:font-size="var(--font_size_lg)"><SpaceIcon {space} /></span
 			>
-			<span class="title">{$space?.url.split('/').filter(Boolean).join(' / ') || ''}</span>{/if}
+			<span class="title">{$space?.path.split('/').filter(Boolean).join(' / ') || ''}</span>{/if}
 	</li>
 	<li class="marquee-button-placeholder" />
 </ul>

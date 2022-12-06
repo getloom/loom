@@ -41,7 +41,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			// check `instance.allowedAccountNames`
 			// TODO does this belong in `checkAccountName` above?
 			// TODO consider `const settings = repos.entity.filterByUrl('/instance');` (but scoped to admin?)
-			// should entities be scoped?  or /e/ to reference any url or id?
+			// should entities be scoped?  or /e/ to reference any path or id?
 			const adminCommunity = unwrap(await repos.community.findById(ADMIN_COMMUNITY_ID));
 			if (!adminCommunity) throw Error();
 			const allowedAccountNames = adminCommunity.settings.instance?.allowedAccountNames;

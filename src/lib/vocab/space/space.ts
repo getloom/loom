@@ -3,7 +3,7 @@
 export interface Space {
 	space_id: number;
 	name: string;
-	url: string;
+	path: string;
 	icon: string;
 	view: string;
 	created: Date;

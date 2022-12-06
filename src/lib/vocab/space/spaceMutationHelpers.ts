@@ -32,14 +32,14 @@ export const stashSpaces = (
 		let space = spaceById.get($space.space_id);
 		if (space) {
 			// Update the existing space store.
-			// If `space.url` changed and the space is selected, navigate to it.
-			const prevUrl = space.get().url;
+			// If `space.path` changed and the space is selected, navigate to it.
+			const prevUrl = space.get().path;
 			space.set($space);
-			if (space === selectedSpace && $space.url !== prevUrl) {
+			if (space === selectedSpace && $space.path !== prevUrl) {
 				void goto(
 					toCommunityUrl(
 						communityById.get($space.community_id)!.get().name,
-						$space.url,
+						$space.path,
 						get(page).url.search,
 					),
 					{replaceState: true},
@@ -92,7 +92,7 @@ export const evictSpaces = async (
 					replaceState: true,
 				});
 			} else {
-				//TODO lookup space by community_id+url (see this comment in multiple places)
+				//TODO lookup space by community_id+path (see this comment in multiple places)
 				const homeSpace = spacesByCommunityId
 					.get()
 					.get(community_id)!

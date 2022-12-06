@@ -28,7 +28,7 @@
 <a
 	href={toCommunityUrl(
 		$community.name,
-		$space.url,
+		$space.path,
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class="selectable"

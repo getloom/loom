@@ -81,7 +81,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		new Map(guest ? null : $session.sessionPersonas.map(($p) => [$p.persona_id, $p.community_id!])),
 	);
 	spaceIdSelectionByCommunityId.swap(
-		//TODO lookup space by community_id+url (see this comment in multiple places)
+		//TODO lookup space by community_id+path (see this comment in multiple places)
 		new Map(
 			guest
 				? null
@@ -167,7 +167,7 @@ export const ViewSpace: Mutations['ViewSpace'] = async ({
 	await gotoUnlessActive(
 		toCommunityUrl(
 			communityById.get($space.community_id)!.get().name,
-			$space.url,
+			$space.path,
 			get(page).url.search,
 		),
 	);

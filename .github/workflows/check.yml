@@ -42,4 +42,3 @@ jobs:
       - run: npx gro lib/db/create
       - run: npx gro check
       - run: npx gro build
-      - run: npx gro lib/db/testMigration

@@ -58,7 +58,7 @@
 			actor: $persona.persona_id,
 			community_id: $community.community_id,
 			name,
-			url: `/${name}`,
+			path: `/${name}`,
 			icon: iconResult.value,
 			view: selectedViewTemplate.view,
 		});
@@ -69,7 +69,7 @@
 			await goto(
 				toCommunityUrl(
 					$community.name,
-					result.value.space.url,
+					result.value.space.path,
 					toSearchParams($page.url.searchParams, {
 						persona: $sessionPersonaIndexById.get($persona.persona_id) + '',
 					}),

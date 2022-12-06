@@ -266,7 +266,7 @@ const createMuchSpaces = async (
 					actor: actor.persona_id,
 					community_id: community.community_id,
 					name,
-					url: '/' + name,
+					path: '/' + name,
 					view: view.view,
 					icon: view.icon,
 				},

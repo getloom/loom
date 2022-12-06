@@ -4,7 +4,7 @@ export const SpaceSchema = {
 	properties: {
 		space_id: {type: 'number'},
 		name: {type: 'string'},
-		url: {type: 'string'},
+		path: {type: 'string'},
 		icon: {type: 'string'},
 		view: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
@@ -15,7 +15,7 @@ export const SpaceSchema = {
 	required: [
 		'space_id',
 		'name',
-		'url',
+		'path',
 		'icon',
 		'view',
 		'created',

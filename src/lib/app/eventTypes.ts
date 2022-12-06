@@ -416,7 +416,7 @@ export interface CreateSpaceParams {
 	actor: number;
 	community_id: number;
 	name: string;
-	url: string;
+	path: string;
 	icon: string;
 	view: string;
 }
@@ -450,7 +450,7 @@ export interface UpdateSpaceParams {
 	actor: number;
 	space_id: number;
 	name?: string;
-	url?: string;
+	path?: string;
 	icon?: string;
 	view?: string;
 }

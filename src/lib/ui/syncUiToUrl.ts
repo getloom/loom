@@ -62,12 +62,12 @@ export const syncUiToUrl = (
 		selectCommunity(ui, community_id);
 	}
 
-	const spaceUrl = '/' + (params.space || '');
-	//TODO lookup space by community_id+url (see this comment in multiple places)
+	const spacePath = '/' + (params.space || '');
+	//TODO lookup space by community_id+path (see this comment in multiple places)
 	const space = spacesByCommunityId
 		.get()
 		.get(community_id)!
-		.find((s) => s.get().url === spaceUrl);
+		.find((s) => s.get().path === spacePath);
 	if (!space) {
 		// occurs when routing to an inaccessible or nonexistent space
 		selectSpace(ui, community_id, null);
