@@ -9,7 +9,7 @@
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
 	import type {Community} from '$lib/vocab/community/community';
-	import {PERMISSIONS} from '$lib/vocab/policy/permissions';
+	import {permissionNames} from '$lib/vocab/policy/permissions';
 
 	const {
 		dispatch,
@@ -87,7 +87,7 @@
 	<h2>Permissions</h2>
 	<div class="policies">
 		{#if policies}
-			{#each PERMISSIONS as permission (permission)}
+			{#each permissionNames as permission (permission)}
 				<PolicyItem actor={persona} {role} {permission} policy={policies.get(permission)} />
 			{/each}
 		{/if}

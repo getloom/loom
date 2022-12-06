@@ -20,12 +20,12 @@ export const cleanOrphanCommunities = async (
 	community_id: number,
 	repos: Repos,
 ): Promise<Result> => {
-	log.trace('[assignmentServices] checking if community is orphaned', community_id);
+	log.trace('checking if community is orphaned', community_id);
 	const accountPersonaAssignmentsCount = unwrap(
 		await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community_id),
 	);
 	if (accountPersonaAssignmentsCount === 0) {
-		log.trace('[assignmentServices] no assignments found for community, cleaning up', community_id);
+		log.trace('no assignments found for community, cleaning up', community_id);
 		unwrap(await repos.community.deleteById(community_id));
 	}
 	return OK;

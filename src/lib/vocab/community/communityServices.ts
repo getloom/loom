@@ -27,6 +27,8 @@ import {
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {CreateAssignmentService} from '../assignment/assignmentServices';
 import type {AuthorizedServiceRequest} from '$lib/server/service';
+import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {permissions} from '$lib/vocab/policy/permissions';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -162,6 +164,14 @@ export const UpdateCommunitySettingsService: ServiceByName['UpdateCommunitySetti
 	event: UpdateCommunitySettings,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
+			unwrap(
+				await checkPolicy(
+					params.actor,
+					params.community_id,
+					permissions.UpdateCommunitySettings,
+					repos,
+				),
+			);
 			unwrap(await repos.community.updateSettings(params.community_id, params.settings));
 			return {ok: true, status: 200, value: null};
 		}),

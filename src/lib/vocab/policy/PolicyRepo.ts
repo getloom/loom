@@ -17,6 +17,22 @@ export class PolicyRepo extends PostgresRepo {
 		return {ok: true, value: result};
 	}
 
+	async filterByActorCommunityPermission(
+		actor_id: number,
+		community_id: number,
+		permission: string,
+	): Promise<Result<{value: Policy[]}>> {
+		log.trace('[findByActorCommunityPermission]', actor_id, community_id, permission);
+		const result = await this.sql<Policy[]>`
+		SELECT * FROM policies JOIN
+			(SELECT roles.role_id FROM roles JOIN
+				(SELECT * FROM assignments WHERE persona_id=${actor_id} AND community_id=${community_id}) a
+				ON a.role_id = roles.role_id) r
+		ON policies.role_id = r.role_id AND permission=${permission};
+		`;
+		return {ok: true, value: result};
+	}
+
 	async createPolicy(role_id: number, permission: string): Promise<Result<{value: Policy}>> {
 		log.trace('[createPolicy]', role_id, permission);
 		const result = await this.sql<Policy[]>`

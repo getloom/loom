@@ -32,6 +32,8 @@ import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server
 import {randomHue} from '$lib/ui/color';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
+import {randomItem} from '@feltcoop/util/random.js';
+import {permissionNames} from '$lib/vocab/policy/permissions';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 
@@ -48,7 +50,7 @@ export const randomView = (): string => '<Chat />';
 export const randomEntityData = (): EntityData => ({type: 'Note', content: randomString()});
 export const randomTieType = randomString;
 export const randomRoleName = randomString;
-export const randomPermissionName = randomString;
+export const randomPermissionName = (): string => randomItem(permissionNames);
 export const randomAccountParams = (): SignInParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
@@ -105,10 +107,14 @@ export const randomRoleParams = (actor: number, community_id: number): CreateRol
 	name: randomRoleName(),
 });
 
-export const randomPolicyParams = (actor: number, role_id: number): CreatePolicyParams => ({
+export const randomPolicyParams = (
+	actor: number,
+	role_id: number,
+	permission?: string,
+): CreatePolicyParams => ({
 	actor,
 	role_id,
-	permission: randomPermissionName(),
+	permission: permission || randomPermissionName(),
 });
 
 // TODO maybe compute in relation to `RandomVocabContext`
@@ -326,6 +332,7 @@ export class RandomVocabContext {
 		community?: Community,
 		persona?: AccountPersona,
 		account?: Account,
+		permission?: string,
 	): Promise<{
 		policy: Policy;
 		persona: AccountPersona;
@@ -335,7 +342,11 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!community) ({community} = await this.community(persona, account));
-		const params = randomPolicyParams(persona.persona_id, community.settings.defaultRoleId);
+		const params = randomPolicyParams(
+			persona.persona_id,
+			community.settings.defaultRoleId,
+			permission,
+		);
 		const {policy} = unwrap(
 			await CreatePolicyService.perform({
 				...toServiceRequestMock(this.db, persona),
