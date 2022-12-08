@@ -11,6 +11,7 @@ import {
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
+import {permissions} from '../policy/permissions';
 
 /* test_communityServices */
 const test_communityServices = suite<TestDbContext>('communityRepo');
@@ -19,7 +20,14 @@ test_communityServices.before(setupDb);
 test_communityServices.after(teardownDb);
 
 test_communityServices('disallow deleting personal community', async ({db, random}) => {
-	const {persona} = await random.persona();
+	const {persona, personalCommunity} = await random.persona();
+	//TODO hack to allow for authorization; remove on init default impl
+	unwrap(
+		await db.repos.policy.createPolicy(
+			personalCommunity.settings.defaultRoleId,
+			permissions.DeleteCommunity,
+		),
+	);
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
@@ -33,6 +41,23 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 
 test_communityServices('disallow deleting admin community', async ({db, random}) => {
 	const {persona} = await random.persona();
+	//TODO next 3 chunks are hack to allow for authorization; remove on init default impl
+	const adminCommunity = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
+	unwrap(
+		await db.repos.assignment.create(
+			persona.persona_id,
+			ADMIN_COMMUNITY_ID,
+			adminCommunity.settings.defaultRoleId,
+		),
+	);
+	unwrap(
+		await db.repos.policy.createPolicy(
+			adminCommunity.settings.defaultRoleId,
+			permissions.DeleteCommunity,
+		),
+	);
+	//END HACK
+
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
@@ -99,6 +124,14 @@ test_communityServices('new communities have a default role', async ({db, random
 test_communityServices('deleted communities cleanup after themselves', async ({db, random}) => {
 	const {persona} = await random.persona();
 	const {community} = await random.community(persona);
+
+	//TODO hack to allow for authorization; remove on init default impl
+	unwrap(
+		await db.repos.policy.createPolicy(
+			community.settings.defaultRoleId,
+			permissions.DeleteCommunity,
+		),
+	);
 	const serviceRequest = toServiceRequestMock(db, persona);
 
 	unwrap(

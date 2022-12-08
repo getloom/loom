@@ -164,15 +164,9 @@ export const UpdateCommunitySettingsService: ServiceByName['UpdateCommunitySetti
 	event: UpdateCommunitySettings,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			unwrap(
-				await checkPolicy(
-					params.actor,
-					params.community_id,
-					permissions.UpdateCommunitySettings,
-					repos,
-				),
-			);
-			unwrap(await repos.community.updateSettings(params.community_id, params.settings));
+			const {actor, community_id, settings} = params;
+			unwrap(await checkPolicy(permissions.UpdateCommunitySettings, actor, community_id, repos));
+			unwrap(await repos.community.updateSettings(community_id, settings));
 			return {ok: true, status: 200, value: null};
 		}),
 };
@@ -181,11 +175,14 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 	event: DeleteCommunity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {community_id} = params;
+			const {actor, community_id} = params;
+			unwrap(await checkPolicy(permissions.DeleteCommunity, actor, community_id, repos));
+
 			const community = unwrap(await repos.community.findById(community_id));
 			if (!community) {
 				return {ok: false, status: 404, message: 'no community found'};
 			}
+
 			if (community.type === 'personal') {
 				return {ok: false, status: 405, message: 'cannot delete personal community'};
 			}
@@ -205,6 +202,7 @@ export const InviteToCommunityService: ServiceByName['InviteToCommunity'] = {
 			const {params} = serviceRequest;
 
 			const {actor, community_id, name} = params;
+			unwrap(await checkPolicy(permissions.InviteToCommunity, actor, community_id, repos));
 
 			const community = unwrap(await repos.community.findById(community_id));
 			if (!community) {

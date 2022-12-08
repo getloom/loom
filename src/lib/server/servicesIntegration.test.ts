@@ -21,6 +21,7 @@ import {
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {permissions} from '$lib/vocab/policy/permissions';
 
 /* test_servicesIntegration */
 const test_servicesIntegration = suite<TestDbContext>('repos');
@@ -182,6 +183,13 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 
 	// delete community
+	//TODO hack to allow for authorization; remove on init default impl
+	unwrap(
+		await db.repos.policy.createPolicy(
+			community.settings.defaultRoleId,
+			permissions.DeleteCommunity,
+		),
+	);
 	unwrap(
 		await DeleteCommunityService.perform({
 			...serviceRequest1,

@@ -8,16 +8,16 @@ import type {Repos} from '$lib/db/Repos';
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
 export const checkPolicy = async (
+	permission: string,
 	actor_id: number,
 	community_id: number,
-	permission: string,
 	repos: Repos,
 ): Promise<Result<object, {message: string}>> => {
 	log.trace(
 		'checking for policies with permission for actor in community',
+		permission,
 		actor_id,
 		community_id,
-		permission,
 	);
 
 	const policy = unwrap(
