@@ -3,6 +3,7 @@ import type {WritableUi} from '$lib/ui/ui';
 import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Mutated} from '$lib/util/Mutated';
 import type {Policy} from '$lib/vocab/policy/policy';
+import {setIfUpdated} from '$lib/util/store';
 
 const log = new Logger('[policyMutationHelpers]');
 
@@ -26,7 +27,7 @@ export const stashPolicies = (
 		const {policy_id} = $policy;
 		let policy = policyById.get(policy_id);
 		if (policy) {
-			policy.set($policy);
+			setIfUpdated(policy, $policy);
 		} else {
 			policy = writable($policy);
 			policyById.set(policy_id, policy);

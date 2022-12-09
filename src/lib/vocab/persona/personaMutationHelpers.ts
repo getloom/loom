@@ -25,6 +25,7 @@ export const stashPersonas = (
 	for (const $persona of $personas) {
 		let persona = personaById.get($persona.persona_id);
 		if (persona) {
+			// can't use `setIfUpdated` because `updated` is private
 			persona.set($persona);
 		} else {
 			persona = writable($persona);

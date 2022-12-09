@@ -77,6 +77,7 @@ export const PublicPersonaSchema = {
 		name: {type: 'string'},
 		icon: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
+		// `updated` is private
 	},
 	required: ['persona_id', 'type', 'name', 'created'],
 	additionalProperties: false,

@@ -12,6 +12,7 @@ import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
+import {setIfUpdated} from '$lib/util/store';
 
 export const stashCommunities = (
 	ui: WritableUi,
@@ -40,7 +41,7 @@ export const stashCommunity = (
 
 	let community = communityById.get($community.community_id);
 	if (community) {
-		community.set($community);
+		setIfUpdated(community, $community);
 	} else {
 		community = writable($community);
 		communityById.set($community.community_id, community);

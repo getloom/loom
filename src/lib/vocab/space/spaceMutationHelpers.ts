@@ -10,6 +10,7 @@ import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelp
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
 import {Mutated} from '$lib/util/Mutated';
+import {setIfUpdated} from '$lib/util/store';
 
 export const stashSpaces = (
 	ui: WritableUi,
@@ -34,7 +35,7 @@ export const stashSpaces = (
 			// Update the existing space store.
 			// If `space.path` changed and the space is selected, navigate to it.
 			const prevUrl = space.get().path;
-			space.set($space);
+			setIfUpdated(space, $space);
 			if (space === selectedSpace && $space.path !== prevUrl) {
 				void goto(
 					toCommunityUrl(

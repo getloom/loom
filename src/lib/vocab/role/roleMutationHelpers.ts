@@ -4,6 +4,7 @@ import {Logger} from '@feltcoop/util/log.js';
 import type {WritableUi} from '$lib/ui/ui';
 import type {Role} from '$lib/vocab/role/role';
 import {Mutated} from '$lib/util/Mutated';
+import {setIfUpdated} from '$lib/util/store';
 
 const log = new Logger('[roleMutationHelpers]');
 
@@ -23,7 +24,7 @@ export const stashRoles = (
 		const {role_id} = $role;
 		let role = roleById.get(role_id);
 		if (role) {
-			role.set($role);
+			setIfUpdated(role, $role);
 		} else {
 			role = writable($role);
 			roleById.set(role_id, role);

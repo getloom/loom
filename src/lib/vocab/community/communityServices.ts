@@ -25,7 +25,7 @@ import {
 	initDefaultRoleForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
-import {CreateAssignmentService} from '../assignment/assignmentServices';
+import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';

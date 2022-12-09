@@ -12,6 +12,7 @@ import {
 } from '$lib/ui/uiMutationHelpers';
 import {Mutated} from '$lib/util/Mutated';
 import {lookupTies} from '$lib/vocab/tie/tieHelpers';
+import {setIfUpdated} from '$lib/util/store';
 
 const log = new Logger('[entityMutationHelpers]');
 
@@ -22,7 +23,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 		const {entity_id} = $entity;
 		let entity = entityById.get(entity_id);
 		if (entity) {
-			entity.set($entity);
+			setIfUpdated(entity, $entity);
 		} else {
 			entityById.set(entity_id, (entity = writable($entity)));
 		}

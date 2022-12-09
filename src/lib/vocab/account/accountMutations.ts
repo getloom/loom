@@ -1,5 +1,6 @@
 import type {Mutations} from '$lib/app/eventTypes';
 import {gotoUnlessActive, toUrl} from '$lib/ui/url';
+import {setIfUpdated} from '$lib/util/store';
 
 export const SignUp: Mutations['SignUp'] = async ({invoke, dispatch}) => {
 	const result = await invoke();
@@ -27,7 +28,7 @@ export const UpdateAccountSettings: Mutations['UpdateAccountSettings'] = async (
 	const result = await invoke();
 	if (!result.ok) return result;
 	const $account = result.value;
-	ui.account.set($account);
+	setIfUpdated(ui.account, $account);
 	return result;
 };
 
@@ -35,6 +36,6 @@ export const UpdateAccountPassword: Mutations['UpdateAccountPassword'] = async (
 	const result = await invoke();
 	if (!result.ok) return result;
 	const $account = result.value;
-	ui.account.set($account);
+	setIfUpdated(ui.account, $account);
 	return result;
 };
