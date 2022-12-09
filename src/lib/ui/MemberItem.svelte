@@ -7,15 +7,13 @@
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 
 	const {
-		ui: {contextmenu, personaById},
+		ui: {contextmenu},
 	} = getApp();
 
 	export let persona: Readable<ClientPersona>;
 </script>
 
-<li
-	use:contextmenu.action={[[PersonaContextmenu, {persona: personaById.get($persona.persona_id)}]]}
->
+<li use:contextmenu.action={[[PersonaContextmenu, {persona}]]}>
 	<PersonaAvatar {persona} />
 </li>
 

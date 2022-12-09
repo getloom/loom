@@ -14,6 +14,7 @@
 	import ListControls from './ListControls.svelte';
 	import ClearCheckedButton from './ClearCheckedButton.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
@@ -38,7 +39,7 @@
 
 	$: ({checked} = $entity.data);
 
-	$: authorPersona = personaById.get($entity.persona_id)!;
+	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);

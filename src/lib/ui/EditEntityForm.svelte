@@ -15,6 +15,7 @@
 	import DestEntities from '$lib/ui/DestEntities.svelte';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;
@@ -25,7 +26,7 @@
 		ui: {contextmenu, personaById},
 	} = getApp();
 
-	$: authorPersona = personaById.get($entity.persona_id)!;
+	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
 		dispatch.UpdateEntity({

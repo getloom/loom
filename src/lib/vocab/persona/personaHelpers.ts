@@ -1,4 +1,13 @@
 import {plural} from '@feltcoop/util/string.js';
+import type {Readable} from '@feltcoop/svelte-gettable-stores';
+
+import type {
+	AccountPersona,
+	ActorPersona,
+	ClientPersona,
+	Persona,
+} from '$lib/vocab/persona/persona';
+import {GHOST_PERSONA_ID} from '$lib/app/constants';
 
 /**
  * Converts a persona name string to its regular form.
@@ -42,3 +51,12 @@ export const checkPersonaName = (name: string): string | null => {
 	}
 	return null;
 };
+
+export const lookupPersona = (
+	personaById: Map<number, Readable<ClientPersona>>,
+	persona_id: number,
+): Readable<ClientPersona> => personaById.get(persona_id) || personaById.get(GHOST_PERSONA_ID)!;
+
+export const isAccountPersona = (
+	persona: Persona | ClientPersona | ActorPersona | undefined | null,
+): persona is AccountPersona => persona?.type === 'account' && 'community_id' in persona;

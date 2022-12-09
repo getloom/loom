@@ -11,6 +11,7 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
@@ -37,7 +38,7 @@
 
 	$: ({checked} = $entity.data);
 
-	$: authorPersona = personaById.get($entity.persona_id)!;
+	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);

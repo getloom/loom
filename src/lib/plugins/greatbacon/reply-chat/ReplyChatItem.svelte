@@ -11,6 +11,7 @@
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const {
 		ui: {contextmenu, personaById, entityById, sourceTiesByDestEntityId},
@@ -20,13 +21,13 @@
 	export let entity: Readable<Entity>;
 	export let selectReply: (reply: Readable<Entity>) => void;
 
-	$: authorPersona = personaById.get($entity.persona_id)!;
+	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	$: sourceTiesSet = sourceTiesByDestEntityId.get($entity.entity_id);
 	$: replyTie =
 		$sourceTiesSet?.value && Array.from($sourceTiesSet.value).find((t) => t.type === 'HasReply');
 	$: repliedToEntity = replyTie && entityById.get(replyTie.source_id);
-	$: repliedToPersona = $repliedToEntity && personaById.get($repliedToEntity.persona_id);
+	$: repliedToPersona = $repliedToEntity && lookupPersona(personaById, $repliedToEntity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);

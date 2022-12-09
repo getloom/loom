@@ -5,6 +5,7 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const {
 		dispatch,
@@ -14,7 +15,7 @@
 	export let actor: Readable<AccountPersona>;
 	export let assignment: Assignment;
 
-	$: assignmentPersona = personaById.get(assignment.persona_id)!;
+	$: assignmentPersona = lookupPersona(personaById, assignment.persona_id);
 
 	const deleteAssignment = async () => {
 		//TODO better error handling

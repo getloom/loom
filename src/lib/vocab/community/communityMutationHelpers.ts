@@ -10,9 +10,9 @@ import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers'
 import {toCommunityUrl} from '$lib/ui/url';
 import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
-import type {AccountPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {setIfUpdated} from '$lib/util/store';
+import {isAccountPersona} from '../persona/personaHelpers';
 
 export const stashCommunities = (
 	ui: WritableUi,
@@ -96,13 +96,14 @@ export const evictCommunity = async (
 	communities.get().value.delete(community);
 	mutated.add(communities);
 
-	for (const [persona_id, communityIdSelection] of communityIdSelectionByPersonaId.get().value) {
-		if (communityIdSelection === community_id) {
-			communityIdSelectionByPersonaId
-				.get()
-				.value.set(persona_id, (personaById.get(persona_id)!.get() as AccountPersona).community_id);
-			mutated.add(communityIdSelectionByPersonaId);
-		}
+	const $communityIdSelectionByPersonaId = communityIdSelectionByPersonaId.get().value;
+	for (const [persona_id, communityIdSelection] of $communityIdSelectionByPersonaId) {
+		if (communityIdSelection !== community_id) continue;
+		const persona = personaById.get(persona_id);
+		const $persona = persona?.get();
+		if (!isAccountPersona($persona)) continue; // TODO this check could be refactored, shouldn't be necessary here
+		$communityIdSelectionByPersonaId.set(persona_id, $persona.community_id);
+		mutated.add(communityIdSelectionByPersonaId);
 	}
 
 	// TODO could speed this up a cache of assignments by community, see in multiple places

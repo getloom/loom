@@ -158,7 +158,8 @@ export const toUi = (
 				const {community_id} = community.get();
 				for (const assignment of $assignments.value) {
 					if (assignment.community_id === community_id) {
-						const persona = personaById.get(assignment.persona_id)!;
+						const persona = personaById.get(assignment.persona_id);
+						if (!persona) continue;
 						if (persona.get().type !== 'account') continue;
 						communityPersonas.add(persona);
 					}

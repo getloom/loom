@@ -11,6 +11,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {slide} from 'svelte/transition';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
@@ -62,7 +63,7 @@
 	};
 
 	let selectedReply: Readable<Entity> | null = null as any;
-	$: selectedReplyPersona = selectedReply && personaById.get($selectedReply!.persona_id)!;
+	$: selectedReplyPersona = $selectedReply && lookupPersona(personaById, $selectedReply.persona_id);
 	const selectReply = (reply: Readable<Entity>) => {
 		if (selectedReply === reply) {
 			selectedReply = null;

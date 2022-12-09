@@ -10,6 +10,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona} = $viewContext);
@@ -21,7 +22,7 @@
 
 	export let entity: Readable<Entity>;
 
-	$: authorPersona = personaById.get($entity.persona_id)!;
+	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);

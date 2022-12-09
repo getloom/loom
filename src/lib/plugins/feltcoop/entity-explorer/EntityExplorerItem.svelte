@@ -6,6 +6,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const {
 		ui: {contextmenu, personaById},
@@ -14,7 +15,7 @@
 	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;
 
-	$: authorPersona = personaById.get($entity.persona_id)!;
+	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 </script>
 
 <li
