@@ -37,6 +37,7 @@
 	import {views} from '$lib/app/views';
 	import {mutations} from '$lib/app/mutations';
 	import AppContextmenu from '$lib/app/contextmenu/AppContextmenu.svelte';
+	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
 	import ActingPersonaContextmenu from '$lib/app/contextmenu/ActingPersonaContextmenu.svelte';
 	import SocketConnection from '$lib/ui/SocketConnection.svelte';
 	import LinkContextmenu from '$lib/app/contextmenu/LinkContextmenu.svelte';
@@ -110,11 +111,20 @@
 	dispatch.SetSession({session: $session});
 	$: syncUiToUrl(ui, $page.params, $page.url);
 
-	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection} = ui;
+	const {
+		mobile,
+		layout,
+		contextmenu,
+		dialogs,
+		sessionPersonas,
+		personaSelection,
+		communitySelection,
+	} = ui;
 
 	$: guest = $session.guest;
 	$: onboarding = !guest && !$sessionPersonas.value.length;
-	$: selectedPersona = $personaSelection; // this line must be after `syncUiToUrl`
+	$: persona = $personaSelection; // this line must be after `syncUiToUrl`
+	$: community = $communitySelection; // this line must be after `syncUiToUrl`
 
 	let clientWidth: number;
 	let clientHeight: number;
@@ -131,7 +141,8 @@
 
 <svelte:body
 	use:contextmenu.action={[
-		[ActingPersonaContextmenu, selectedPersona ? {persona: selectedPersona} : undefined],
+		[CommunityContextmenu, community && persona ? {community, persona} : undefined],
+		[ActingPersonaContextmenu, persona ? {persona} : undefined],
 		[AppContextmenu, null],
 	]}
 />
