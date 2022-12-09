@@ -3,6 +3,7 @@ import {Logger} from '@feltcoop/util/log.js';
 import {traverse} from '@feltcoop/util/object.js';
 import {randomItem} from '@feltcoop/util/random.js';
 import {magenta} from 'kleur/colors';
+import {toNext} from '@feltcoop/util/array.js';
 
 import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';
@@ -21,6 +22,11 @@ import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
 import type {EntityData} from '$lib/vocab/entity/entityData';
+import {
+	spaceTemplateToCreateSpaceParams,
+	type CommunityTemplate,
+	type EntityTemplate,
+} from '$lib/app/templates';
 
 /* eslint-disable no-await-in-loop */
 
@@ -84,24 +90,26 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			const persona = created.personas[0] as AccountPersona;
 			log.trace('created persona', persona);
 			personas.push(persona);
-			await createDefaultEntities({...accountServiceRequest, actor: persona}, created.spaces, [
-				persona,
-			]);
+			await createDefaultEntities(
+				{...accountServiceRequest, actor: persona},
+				created.spaces,
+				() => persona,
+			);
 		}
 	}
 
 	const mainPersonaCreator = personas[0] as AccountPersona;
 	const mainAccountServiceRequest = toServiceRequestMock(db, mainPersonaCreator);
 	const otherPersonas = personas.slice(1);
+	const nextPersona = toNext(personas);
 
-	const communitiesParams: CreateCommunityParams[] = [
-		{name: 'felt', actor: mainPersonaCreator.persona_id},
-		{name: 'dev', actor: mainPersonaCreator.persona_id},
-		{name: 'backpackers-anonymous', actor: mainPersonaCreator.persona_id},
-	];
 	const communities: Community[] = [];
 
-	for (const communityParams of communitiesParams) {
+	for (const communityTemplate of communityTemplates) {
+		const communityParams: CreateCommunityParams = {
+			name: communityTemplate.name,
+			actor: mainPersonaCreator.persona_id,
+		};
 		const {community, spaces} = unwrap(
 			await CreateCommunityService.perform({
 				...mainAccountServiceRequest,
@@ -122,23 +130,36 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				}),
 			);
 		}
-		if (much) await createMuchSpaces(mainAccountServiceRequest, community, personas);
-		await createDefaultEntities(mainAccountServiceRequest, spaces, personas);
+		if (communityTemplate.spaces) {
+			for (const spaceTemplate of communityTemplate.spaces) {
+				const {space} = unwrap(
+					await CreateSpaceService.perform({
+						...mainAccountServiceRequest,
+						params: spaceTemplateToCreateSpaceParams(
+							spaceTemplate,
+							mainPersonaCreator.persona_id,
+							community.community_id,
+						),
+					}),
+				);
+				if (spaceTemplate.entities) {
+					await generateEntities(
+						{serviceRequest: mainAccountServiceRequest, nextPersona, space},
+						spaceTemplate.entities,
+					);
+				}
+			}
+		}
+		if (much) await createMuchSpaces(mainAccountServiceRequest, community, nextPersona);
+		await createDefaultEntities(mainAccountServiceRequest, spaces, nextPersona);
 	}
 };
 
 const createDefaultEntities = async (
 	serviceRequest: ReturnType<typeof toServiceRequestMock>,
 	spaces: Space[],
-	personas: AccountPersona[],
+	nextPersona: () => AccountPersona,
 ) => {
-	let personaIndex = -1;
-	const nextPersona = (): AccountPersona => {
-		personaIndex++;
-		if (personaIndex === personas.length) personaIndex = 0;
-		return personas[personaIndex];
-	};
-
 	for (const space of spaces) {
 		const viewName = findFirstComponentName(parseView(space.view));
 		if (!viewName) continue;
@@ -172,7 +193,7 @@ const generateEntity = async (
 
 const generateEntities = async (
 	ctx: SeedContext,
-	datas: Array<EntityData | string>,
+	datas: EntityTemplate[],
 	source_id = ctx.space.directory_id,
 ): Promise<CreateEntityResponse[]> => {
 	const results: CreateEntityResponse[] = [];
@@ -187,6 +208,28 @@ const generateEntities = async (
 	}
 	return results;
 };
+
+const communityTemplates: CommunityTemplate[] = [
+	{name: 'felt'},
+	{name: 'dev'},
+	{
+		name: 'example',
+		spaces: [
+			{
+				name: 'list1',
+				view: `<div><code>List</code> with default <code>layoutDirection="column"</code></div><List /><div><code>List</code> with <code>layoutDirection="column-reverse"</code></div><List layoutDirection="column-reverse" /><div><code>List</code> with <code>layoutDirection="row"</code></div><List layoutDirection="row" /><div><code>List</code> with <code>layoutDirection="row-reverse"</code></div><List layoutDirection="row-reverse" />`,
+				icon: '?',
+				entities: ['a', 'b', 'c'],
+			},
+			{
+				name: 'list2',
+				view: `<div><code>List</code> with <code>itemsDirection="column-reverse"</code></div><List itemsDirection="column-reverse" /><div><code>List</code> with <code>itemsDirection="row"</code></div><List itemsDirection="row" /><div><code>List</code> with <code>itemsDirection="row-reverse"</code></div><List itemsDirection="row-reverse" /><div><code>List</code> with <code>layoutDirection="row" itemsDirection="row-reverse"</code></div><List layoutDirection="row" itemsDirection="row-reverse" />`,
+				icon: '?',
+				entities: ['1', '2', '3'],
+			},
+		],
+	},
+];
 
 interface SeedContext {
 	serviceRequest: ReturnType<typeof toServiceRequestMock>;
@@ -243,15 +286,8 @@ const MUCH_SPACE_COUNT = 100;
 const createMuchSpaces = async (
 	serviceRequest: ReturnType<typeof toServiceRequestMock>,
 	community: Community,
-	personas: AccountPersona[],
+	nextPersona: () => AccountPersona,
 ) => {
-	let personaIndex = -1;
-	const nextPersona = (): AccountPersona => {
-		personaIndex++;
-		if (personaIndex === personas.length) personaIndex = 0;
-		return personas[personaIndex];
-	};
-
 	const viewTemplates = toCreatableViewTemplates(false);
 
 	for (let i = 0; i < MUCH_SPACE_COUNT; i++) {

@@ -39,6 +39,9 @@ export const viewTemplates: ViewTemplate[] = [
 	{name: 'Lists', view: '<Lists />', icon: '🔨'},
 	{name: 'InstanceAdmin', view: '<InstanceAdmin />', icon: '🪄', admin: true},
 ];
+export const viewTemplatesByName: Map<string, ViewTemplate> = new Map(
+	viewTemplates.map((t) => [t.name, t]),
+);
 
 export const toCreatableViewTemplates = (
 	admin: boolean,
