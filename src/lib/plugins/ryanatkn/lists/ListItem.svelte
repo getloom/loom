@@ -104,7 +104,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 			<!-- TODO maybe use Felt checkbox component when available-->
 			<input type="checkbox" disabled={pending} bind:checked />
 		{/if}
-		<div class="content">
+		<div class="content markup">
 			{#if $entity.data.type === 'Collection'}
 				{$entity.data.name}
 			{:else}

@@ -40,7 +40,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 >
 	<!-- TODO fix a11y -->
 	<div class="entity">
-		<div class="content">
+		<div class="content markup">
 			{#if $entity.data.type === 'Collection'}
 				{$entity.data.name}
 			{:else}

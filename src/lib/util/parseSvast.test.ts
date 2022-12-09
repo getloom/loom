@@ -114,6 +114,33 @@ test__parseSvast('parses absolute links', async () => {
 	});
 });
 
+test__parseSvast('parses relative links', async () => {
+	const parsed = parseSvast({
+		value: './some-path/some-link',
+		generatePositions: false,
+	});
+	assert.equal(parsed, {
+		type: 'root',
+		children: [
+			{
+				type: 'svelteComponent',
+				tagName: 'Link',
+				properties: [
+					{
+						type: 'svelteProperty',
+						name: 'href',
+						value: [{type: 'text', value: './some-path/some-link'}],
+						modifiers: [],
+						shorthand: 'none',
+					},
+				],
+				selfClosing: false,
+				children: [{type: 'text', value: './some-path/some-link'}],
+			},
+		],
+	});
+});
+
 test__parseSvast('parses a SVAST with links and preserves whitespace', async () => {
 	const parsed = parseSvast({
 		value:
