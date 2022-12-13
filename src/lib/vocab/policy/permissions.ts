@@ -4,4 +4,4 @@ export const permissions = {
 	DeleteCommunity: 'DeleteCommunity',
 	InviteToCommunity: 'InviteToCommunity',
 };
-export const permissionNames: string[] = Object.keys(permissions);
+export const permissionNames: PermissionName[] = Object.keys(permissions) as PermissionName[];

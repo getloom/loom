@@ -23,10 +23,14 @@ import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
 import type {EntityData} from '$lib/vocab/entity/entityData';
 import {
+	policyTemplateToCreatePolicyParams,
+	roleTemplateToCreateRoleParams,
 	spaceTemplateToCreateSpaceParams,
 	type CommunityTemplate,
 	type EntityTemplate,
 } from '$lib/app/templates';
+import {CreateRoleService} from '$lib/vocab/role/roleServices';
+import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
 
 /* eslint-disable no-await-in-loop */
 
@@ -150,6 +154,36 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				}
 			}
 		}
+		const roleIdByName: Record<string, number> = {};
+		if (communityTemplate.roles) {
+			for (const roleTemplate of communityTemplate.roles) {
+				const {role} = unwrap(
+					await CreateRoleService.perform({
+						...mainAccountServiceRequest,
+						params: roleTemplateToCreateRoleParams(
+							roleTemplate,
+							mainPersonaCreator.persona_id,
+							community.community_id,
+						),
+					}),
+				);
+				roleIdByName[role.name] = role.role_id;
+				if (roleTemplate.policies) {
+					for (const policyTemplate of roleTemplate.policies) {
+						unwrap(
+							await CreatePolicyService.perform({
+								...mainAccountServiceRequest,
+								params: policyTemplateToCreatePolicyParams(
+									policyTemplate,
+									mainPersonaCreator.persona_id,
+									roleIdByName[roleTemplate.name],
+								),
+							}),
+						);
+					}
+				}
+			}
+		}
 		if (much) await createMuchSpaces(mainAccountServiceRequest, community, nextPersona);
 		await createDefaultEntities(mainAccountServiceRequest, spaces, nextPersona);
 	}
@@ -226,6 +260,22 @@ const communityTemplates: CommunityTemplate[] = [
 				view: `<div><code>List</code> with <code>itemsDirection="column-reverse"</code></div><List itemsDirection="column-reverse" /><div><code>List</code> with <code>itemsDirection="row"</code></div><List itemsDirection="row" /><div><code>List</code> with <code>itemsDirection="row-reverse"</code></div><List itemsDirection="row-reverse" /><div><code>List</code> with <code>layoutDirection="row" itemsDirection="row-reverse"</code></div><List layoutDirection="row" itemsDirection="row-reverse" />`,
 				icon: '?',
 				entities: ['1', '2', '3'],
+			},
+		],
+		roles: [
+			{
+				name: 'Steward',
+				creator: true,
+				policies: [
+					{permission: 'UpdateCommunitySettings'},
+					{permission: 'DeleteCommunity'},
+					{permission: 'InviteToCommunity'},
+				],
+			},
+			{
+				name: 'Member',
+				default: true,
+				policies: [{permission: 'InviteToCommunity'}],
 			},
 		],
 	},
