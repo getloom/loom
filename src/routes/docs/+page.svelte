@@ -4,47 +4,94 @@
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
 	import {eventInfos} from '$lib/app/events';
 	import {vocabSchemas} from '$lib/app/schemas';
+	import {viewTemplates} from '$lib/vocab/view/view';
 
 	const title = 'docs';
 
 	$: hash = $page.url.hash.substring(1);
 
 	// TODO use IntersectionObserver to update hash on scroll
+
+	// TODO display plugins
+	// TODO display source code links to views and events and such
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
 
 <div class="wrapper">
+	<!-- TODO extract an accessible menu component, see PRS
+	https://github.com/feltcoop/felt-server/pull/362
+	and https://github.com/feltcoop/felt/pull/197 -->
+	<div class="menu-wrapper markup padded-xl column-sm">
+		<menu class="menu">
+			<li><h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3></li>
+			<li><h4><a href="#views" class:selected={hash === 'views'}>views</a></h4></li>
+			<menu>
+				{#each viewTemplates as viewTemplate (viewTemplate)}
+					<li>
+						<a href="#{viewTemplate.name}" class:selected={hash === viewTemplate.name}
+							>{viewTemplate.name}</a
+						>
+					</li>
+				{/each}
+			</menu>
+			<li><h4><a href="#vocab" class:selected={hash === 'vocab'}>vocab</a></h4></li>
+			<menu>
+				{#each vocabSchemas as schema (schema)}
+					<li>
+						<a href="#{schema.name}" class:selected={hash === schema.name}>{schema.name}</a>
+					</li>
+				{/each}
+			</menu>
+			<li><h4><a href="#events" class:selected={hash === 'events'}>events</a></h4></li>
+			<menu>
+				{#each eventInfos as eventInfo (eventInfo.name)}
+					<li>
+						<a href="#{eventInfo.name}" class:selected={hash === eventInfo.name}>{eventInfo.name}</a
+						>
+					</li>
+				{/each}
+			</menu>
+			<li>
+				<h4>
+					💚 <a href="https://www.felt.dev">felt.dev</a> ∙
+					<a href="https://github.com/feltcoop/felt-server">GitHub</a> ∙
+					<a href="https://npmjs.com/@feltcoop/felt-server">npm</a>
+				</h4>
+			</li>
+		</menu>
+	</div>
 	<div class="column">
 		<div class="markup padded-xl">
 			<h1 id="docs">docs</h1>
 		</div>
-		<!-- TODO extract an accessible menu component, see PRS
-		https://github.com/feltcoop/felt-server/pull/362
-		and https://github.com/feltcoop/felt/pull/197 -->
-		<div class="menu-wrapper markup padded-xl column-sm">
-			<menu class="menu">
-				<li><h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3></li>
-				<li><h4><a href="#vocab" class:selected={hash === 'vocab'}>vocab</a></h4></li>
-				<menu>
-					{#each vocabSchemas as schema (schema)}
-						<li>
-							<a href="#{schema.name}" class:selected={hash === schema.name}>{schema.name}</a>
-						</li>
-					{/each}
-				</menu>
-				<li><h4><a href="#events" class:selected={hash === 'events'}>events</a></h4></li>
-				<menu>
-					{#each eventInfos as eventInfo (eventInfo.name)}
-						<li>
-							<a href="#{eventInfo.name}" class:selected={hash === eventInfo.name}
-								>{eventInfo.name}</a
-							>
-						</li>
-					{/each}
-				</menu>
-			</menu>
+		<div class="markup padded-xl">
+			<h2 id="views">views</h2>
 		</div>
+		<ul>
+			{#each viewTemplates as viewTemplate (viewTemplate)}
+				<li id={viewTemplate.name}>
+					<span class="padded-xs">
+						<span style:font-size="var(--font_size_lg)">
+							{viewTemplate.icon}
+							{viewTemplate.name}
+						</span>
+						{#if viewTemplate.creatable !== false}
+							<span
+								class="chip"
+								title="users are given the option to create this view in normal circumstances"
+								>creatable</span
+							>
+						{/if}
+						{#if viewTemplate.admin}
+							<span class="chip" title="requires instance admin permissions to function">admin</span
+							>
+						{/if}
+					</span>
+					<code class="padded-xs">{viewTemplate.view}</code>
+				</li>
+			{/each}
+		</ul>
 		<div class="markup padded-xl">
 			<h2 id="vocab">vocab</h2>
 		</div>
@@ -110,10 +157,14 @@
 	.wrapper {
 		width: 100%;
 		height: 100%;
-		overflow: auto;
+		position: relative;
+		display: flex;
 	}
 	.column {
 		position: relative;
+		overflow: auto;
+		flex: 1;
+		padding: var(--spacing_md);
 	}
 	li {
 		display: flex;
@@ -124,11 +175,8 @@
 		padding: 0;
 	}
 	.menu-wrapper {
-		position: absolute;
-		right: 0;
-		top: 0;
 		height: 100%;
-		transform: translate3d(calc(100% + 10px), 0, 0);
+		overflow: auto;
 	}
 	.menu {
 		position: sticky;
@@ -160,6 +208,9 @@
 		padding: var(--spacing_lg);
 		background: none;
 		font-family: var(--font_family_mono);
+	}
+	menu {
+		margin-bottom: var(--spacing_lg);
 	}
 	.property {
 		display: flex;

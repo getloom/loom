@@ -151,3 +151,12 @@ maybe upstream to Felt? think about how to upstream without bloating bundles tha
 	font-weight: bold;
 	color: var(--help_color);
 }
+
+/* TODO upstream? */
+.chip {
+	font-size: var(--font_size_sm);
+	font-weight: 600;
+	padding: var(--spacing_xs4) var(--spacing_sm);
+	background-color: var(--tint_dark_1);
+	border-radius: var(--border_radius_xs);
+}
