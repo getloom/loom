@@ -29,7 +29,7 @@
 
 <style>
 	.mention {
-		--icon_size: var(--icon_size_xs);
+		--icon_size: var(--mention_icon_size, var(--icon_size_xs));
 		display: flex;
 		align-items: center;
 	}

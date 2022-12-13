@@ -48,7 +48,7 @@
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="$" />
 				</svelte:fragment>
-				Settings
+				Account settings
 			</ContextmenuEntry>
 		{/if}
 		<ContextmenuEntry action={() => dispatch.OpenDialog({Component: About})}>

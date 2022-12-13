@@ -9,7 +9,9 @@
 
 <div class="personal-home">
 	<section class="markup padded-xl">
-		<h1><Mention name={$persona.name} />'s personal workspace</h1>
+		<h1 style:--mention_icon_size="var(--icon_size_md)">
+			<Mention name={$persona.name} />'s personal workspace
+		</h1>
 	</section>
 	<Notes />
 </div>

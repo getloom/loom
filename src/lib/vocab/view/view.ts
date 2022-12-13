@@ -33,7 +33,7 @@ export const viewTemplates: ViewTemplate[] = [
 	{name: 'Forum', view: '<Forum />', icon: '📋'},
 	{name: 'Notes', view: '<Notes />', icon: '🏷'},
 	{name: 'Iframe', view: '<Iframe />', icon: '💻'}, // TODO does this need a default `src`?
-	{name: 'EntityExplorer', view: '<EntityExplorer />', icon: '✏️'},
+	{name: 'EntityExplorer', view: '<EntityExplorer />', icon: '✏️', creatable: false},
 	{name: 'Todo', view: '<Todo />', icon: '🗒'},
 	{name: 'List', view: '<List />', icon: '🪜'},
 	{name: 'Lists', view: '<Lists />', icon: '🔨'},
