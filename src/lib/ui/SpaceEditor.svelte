@@ -27,7 +27,7 @@
 </script>
 
 <div class="space-editor column">
-	<form {...$$restProps} class="markup">
+	<form class="markup" {...$$restProps}>
 		<header>
 			<h2>Edit Space</h2>
 			<ContextInfo {persona} {community} {space} />

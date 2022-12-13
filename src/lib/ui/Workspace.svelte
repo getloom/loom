@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SpaceView from '$lib/ui/SpaceView.svelte';
-	import SpaceInput from '$lib/ui/SpaceInput.svelte';
+	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
 	import Marquee from '$lib/ui/Marquee.svelte';
 	import WorkspaceHeader from '$lib/ui/WorkspaceHeader.svelte';
 	import MarqueeButton from '$lib/ui/MarqueeButton.svelte';
@@ -56,7 +56,7 @@
 							space={selectedSpace}
 						/>
 					{:else}
-						<SpaceInput persona={selectedPersona} community={selectedCommunity} />
+						<CreateSpaceForm persona={selectedPersona} community={selectedCommunity} />
 					{/if}
 				{:else}
 					<CreateCommunityForm persona={selectedPersona} />

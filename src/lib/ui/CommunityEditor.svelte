@@ -19,7 +19,7 @@
 </script>
 
 <div class="community-editor column">
-	<form {...$$restProps} class="markup">
+	<form class="markup" {...$$restProps}>
 		<header>
 			<h2>Edit Community</h2>
 			<p style:font-size="var(--font_size_xl)">

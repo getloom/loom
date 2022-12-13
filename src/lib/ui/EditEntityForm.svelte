@@ -66,8 +66,8 @@
 </script>
 
 <form
-	{...$$restProps}
 	class="markup"
+	{...$$restProps}
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
 		[PersonaContextmenu, {persona: authorPersona}],

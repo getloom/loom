@@ -81,8 +81,8 @@
 	};
 </script>
 
-<form class="markup padded-xl">
-	<legend>New {entityName}</legend>
+<form class="markup padded-xl" {...$$restProps}>
+	<h2>New {entityName}</h2>
 	<ContextInfo {persona} {community} {space} />
 	<fieldset>
 		{#if fields.name}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
-	import EntityInput from '$lib/ui/EntityInput.svelte';
+	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 
 	const viewContext = getViewContext();
 	$: ({persona, space, community} = $viewContext);
@@ -12,7 +12,7 @@
 <button
 	on:click={() =>
 		dispatch.OpenDialog({
-			Component: EntityInput,
+			Component: CreateEntityForm,
 			props: {
 				done: () => dispatch.CloseDialog(),
 				entityName: 'Todo',

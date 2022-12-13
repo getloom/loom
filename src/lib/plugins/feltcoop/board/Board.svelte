@@ -7,7 +7,7 @@
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getViewContext} from '$lib/vocab/view/view';
-	import EntityInput from '$lib/ui/EntityInput.svelte';
+	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
@@ -48,7 +48,7 @@
 				<button
 					on:click={() =>
 						dispatch.OpenDialog({
-							Component: EntityInput,
+							Component: CreateEntityForm,
 							props: {
 								done: () => dispatch.CloseDialog(),
 								entityName: 'Post',

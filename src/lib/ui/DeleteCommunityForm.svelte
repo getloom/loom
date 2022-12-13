@@ -44,7 +44,7 @@
 	};
 </script>
 
-<form class="markup padded-xl">
+<form class="markup padded-xl" {...$$restProps}>
 	<legend>Delete Community?</legend>
 	<ContextInfo {persona} {community} />
 	<label>

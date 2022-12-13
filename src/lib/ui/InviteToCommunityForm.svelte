@@ -54,7 +54,7 @@
 	};
 </script>
 
-<form {...$$restProps} class="markup padded-xl">
+<form class="markup padded-xl" {...$$restProps}>
 	<legend>Invite to Community</legend>
 	<ContextInfo {persona} {community} />
 	<fieldset>

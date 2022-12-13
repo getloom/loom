@@ -41,7 +41,7 @@
 	};
 </script>
 
-<form {...$$restProps} class="markup padded-xl">
+<form class="markup padded-xl" {...$$restProps}>
 	<legend>Delete <strong>@{$persona.name}</strong>?</legend>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>
