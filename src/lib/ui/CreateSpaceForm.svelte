@@ -22,12 +22,13 @@
 
 	export let persona: Readable<AccountPersona>;
 	export let community: Readable<Community>;
+	export let initialName = ''; // TODO consider exporting `name` instead and delete this
 	export let done: (() => void) | undefined = undefined;
 
 	$: admin = $community.community_id === ADMIN_COMMUNITY_ID && $adminPersonas.has(persona);
 	$: creatableViewTemplates = toCreatableViewTemplates(admin);
 
-	let name = '';
+	let name = initialName;
 	$: selectedViewTemplate = creatableViewTemplates[0];
 	$: ({icon} = selectedViewTemplate);
 

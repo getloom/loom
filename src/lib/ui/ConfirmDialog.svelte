@@ -41,6 +41,7 @@
 
 <div class="markup padded-xl">
 	<h1>{promptText}</h1>
+	<!-- TODO a11y -->
 	<div class="buttons">
 		<button on:click={close}>{cancelText}</button>
 		<PendingButton {pending} on:click={confirm}>{confirmText}</PendingButton>

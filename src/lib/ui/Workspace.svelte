@@ -1,6 +1,5 @@
 <script lang="ts">
 	import SpaceView from '$lib/ui/SpaceView.svelte';
-	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
 	import Marquee from '$lib/ui/Marquee.svelte';
 	import WorkspaceHeader from '$lib/ui/WorkspaceHeader.svelte';
 	import MarqueeButton from '$lib/ui/MarqueeButton.svelte';
@@ -9,6 +8,7 @@
 	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
 	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
 	import CreateCommunityForm from '$lib/ui/CreateCommunityForm.svelte';
+	import EmptyPath from '$lib/ui/EmptyPath.svelte';
 
 	const {
 		dispatch,
@@ -56,7 +56,7 @@
 							space={selectedSpace}
 						/>
 					{:else}
-						<CreateSpaceForm persona={selectedPersona} community={selectedCommunity} />
+						<EmptyPath persona={selectedPersona} community={selectedCommunity} />
 					{/if}
 				{:else}
 					<CreateCommunityForm persona={selectedPersona} />

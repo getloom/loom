@@ -12,10 +12,7 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
 
-	const {
-		dispatch,
-		ui: {personaSelection, spaceSelection},
-	} = getApp();
+	const {dispatch} = getApp();
 
 	export let done: (() => void) | undefined = undefined;
 	export let entityName = 'Entity';
@@ -24,11 +21,6 @@
 	export let space: Readable<Space>;
 	export let type = 'Collection';
 	export let fields: {name?: boolean; content?: boolean} = {name: true, content: true}; // TODO add customization like display names for each field
-
-	$: selectedPersona = $personaSelection;
-	$: persona_id = $selectedPersona!.persona_id;
-	$: selectedSpace = $spaceSelection;
-	$: source_id = $selectedSpace!.directory_id;
 
 	let name = '';
 	let content = '';
@@ -58,10 +50,10 @@
 		if (fields.name) data.name = name;
 		if (fields.content) data.content = content;
 		const result = await dispatch.CreateEntity({
-			actor: persona_id,
+			actor: $persona.persona_id,
 			space_id: $space.space_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?
-			ties: [{source_id}],
+			ties: [{source_id: $space.directory_id}],
 		});
 		status = 'success'; // TODO handle failure (also refactor to be generic)
 		if (result.ok) {
@@ -83,7 +75,7 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<h2>New {entityName}</h2>
+	<h2>Create a new {entityName}</h2>
 	<ContextInfo {persona} {community} {space} />
 	<fieldset>
 		{#if fields.name}

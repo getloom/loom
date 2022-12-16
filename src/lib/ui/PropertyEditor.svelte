@@ -129,6 +129,7 @@
 			on:keydown={onKeydown}
 		/>
 		{#if changed}
+			<!-- TODO a11y -->
 			<div class="buttons">
 				<button type="button" on:click={reset}> reset </button>
 				<PendingButton on:click={save} {pending} disabled={pending || !!errorMessage}>
