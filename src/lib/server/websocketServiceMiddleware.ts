@@ -101,6 +101,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			return;
 		}
 
+		// TODO maybe do this in production too
 		if (process.env.NODE_ENV !== 'production') {
 			const validateResponse = validateSchema(service.event.response);
 			if (!validateResponse(result.value)) {

@@ -6,8 +6,6 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Account, ClientAccount, ClientAccountSession} from '$lib/vocab/account/account';
 import {toPasswordKey} from '$lib/util/password';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
@@ -32,9 +30,10 @@ export class AccountRepo extends PostgresRepo {
 		const account = unwrap(await this.repos.account.findById(account_id));
 		if (!account) return NOT_OK; // TODO custom error?
 
-		// TODO make this a single query
+		// TODO optimize?
 		const [
 			spacesResult,
+			directoriesResult,
 			sessionPersonasResult,
 			communitiesResult,
 			rolesResult,
@@ -42,7 +41,8 @@ export class AccountRepo extends PostgresRepo {
 			policiesResult,
 			personasResult,
 		] = await Promise.all([
-			this.repos.space.filterByAccountWithDirectories(account.account_id),
+			this.repos.space.filterByAccount(account.account_id),
+			this.repos.entity.filterDirectoriesByAccount(account.account_id),
 			this.repos.persona.filterByAccount(account.account_id),
 			this.repos.community.filterByAccount(account.account_id),
 			this.repos.role.filterByAccount(account.account_id),
@@ -51,17 +51,13 @@ export class AccountRepo extends PostgresRepo {
 			this.repos.persona.filterAssociatesByAccount(account.account_id),
 		]);
 		if (!spacesResult.ok) return spacesResult;
+		if (!directoriesResult.ok) return directoriesResult;
 		if (!sessionPersonasResult.ok) return sessionPersonasResult;
 		if (!communitiesResult.ok) return communitiesResult;
 		if (!rolesResult.ok) return rolesResult;
 		if (!assignmentsResult.ok) return assignmentsResult;
 		if (!policiesResult.ok) return policiesResult;
 		if (!personasResult.ok) return personasResult;
-
-		const spaces = spacesResult.value.map((r) => r.space);
-		const directories = spacesResult.value.map((r) => r.entity) as Array<
-			Entity & {data: DirectoryEntityData}
-		>;
 
 		return {
 			ok: true,
@@ -70,8 +66,8 @@ export class AccountRepo extends PostgresRepo {
 				sessionPersonas: sessionPersonasResult.value,
 				communities: communitiesResult.value,
 				roles: rolesResult.value,
-				spaces,
-				directories,
+				spaces: spacesResult.value,
+				directories: directoriesResult.value,
 				assignments: assignmentsResult.value,
 				policies: policiesResult.value,
 				personas: personasResult.value,

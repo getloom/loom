@@ -83,6 +83,7 @@ export const toHttpServiceMiddleware =
 			send(res, result.status || 500, {message: result.message});
 			return;
 		}
+		// TODO maybe do this in production too
 		if (process.env.NODE_ENV !== 'production') {
 			const validateResponse = validateSchema(service.event.response);
 			if (!validateResponse(result.value)) {

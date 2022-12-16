@@ -4,7 +4,7 @@ import {Logger} from '@feltcoop/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {EntityData} from '$lib/vocab/entity/entityData';
+import type {DirectoryEntityData, EntityData} from '$lib/vocab/entity/entityData';
 import {GHOST_PERSONA_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
@@ -50,6 +50,23 @@ export class EntityRepo extends PostgresRepo {
 				? null
 				: entityIds.filter((id) => !entities.some((e) => e.entity_id === id));
 		return {ok: true, value: {entities, missing}};
+	}
+
+	async filterDirectoriesByAccount(
+		account_id: number,
+	): Promise<Result<{value: Array<Entity & {data: DirectoryEntityData}>}>> {
+		const data = await this.sql<Array<Entity & {data: DirectoryEntityData}>>`
+			SELECT entity_id, data, persona_id, created, updated
+			FROM entities e JOIN (
+				SELECT DISTINCT s.directory_id FROM spaces s
+				JOIN (
+					SELECT DISTINCT a.community_id FROM personas p
+					JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
+				) c ON s.community_id=c.community_id
+			) es
+			ON e.entity_id=es.directory_id
+		`;
+		return {ok: true, value: data};
 	}
 
 	async updateEntity(

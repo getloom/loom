@@ -2,6 +2,7 @@
 	import {tick} from 'svelte';
 	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
 	import {swallow} from '@feltcoop/util/dom.js';
+	import {dev} from '$app/environment';
 
 	import {autofocus} from '$lib/ui/actions';
 	import HeroIcon from '$lib/ui/HeroIcon.svelte';
@@ -11,7 +12,7 @@
 	const {dispatch} = getApp();
 
 	export let username = '';
-	let password = '';
+	let password = dev ? 'a' : '';
 	let usernameEl: HTMLInputElement;
 	let passwordEl: HTMLInputElement;
 	let buttonEl: HTMLButtonElement;

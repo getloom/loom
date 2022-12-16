@@ -4,7 +4,6 @@ import {Logger} from '@feltcoop/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Space} from '$lib/vocab/space/space.js';
-import type {Entity} from '$lib/vocab/entity/entity';
 
 const log = new Logger(gray('[') + blue('SpaceRepo') + gray(']'));
 
@@ -29,24 +28,6 @@ export class SpaceRepo extends PostgresRepo {
 			) apc
 			ON s.community_id=apc.community_id;
 		`;
-		return {ok: true, value: data};
-	}
-
-	async filterByAccountWithDirectories(
-		account_id: number,
-	): Promise<Result<{value: Array<{space: Space; entity: Entity}>}>> {
-		const data = await this.sql<Array<{space: Space; entity: Entity}>>`
-		SELECT json_build_object('space_id',s.space_id,'name',s.name,'path',s.path,'icon',s.icon,'view',s.view,'created',s.created,'updated',s.updated,'community_id',s.community_id,'directory_id',s.directory_id) space, 
-		json_build_object('entity_id',e.entity_id,'data',e.data,'persona_id',e.persona_id,'created',e.created,'updated',e.updated) entity  
-		FROM entities e JOIN (			     
-		SELECT s.space_id, s.name, s.path, s.icon, s.view, s.created,s.updated, s.community_id, s.directory_id
-						FROM spaces s JOIN (
-							SELECT DISTINCT a.community_id FROM personas p
-							JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
-						) apc
-						ON s.community_id=apc.community_id
-		) s ON e.entity_id=s.directory_id;
-			`;
 		return {ok: true, value: data};
 	}
 
