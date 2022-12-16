@@ -55,7 +55,7 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<legend>Invite to Community</legend>
+	<h2>Invite to Community</h2>
 	<ContextInfo {persona} {community} />
 	<fieldset>
 		<label>

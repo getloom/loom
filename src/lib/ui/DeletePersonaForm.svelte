@@ -5,6 +5,7 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 
 	const {dispatch} = getApp();
 
@@ -42,7 +43,7 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<legend>Delete <strong>@{$persona.name}</strong>?</legend>
+	<h2>Delete <Mention name={$persona.name} />?</h2>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>
 	{/if}

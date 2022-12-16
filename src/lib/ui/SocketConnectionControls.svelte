@@ -8,7 +8,7 @@
 </script>
 
 <form>
-	<legend>websocket status: <code>'{$socket.status}'</code></legend>
+	<h2>websocket status: <code>'{$socket.status}'</code></h2>
 	<fieldset>
 		<label>
 			<div class="title">url</div>

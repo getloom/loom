@@ -46,7 +46,7 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<legend>Leave Community?</legend>
+	<h2>Leave Community?</h2>
 	<ContextInfo {persona} {community} />
 	<label>
 		<div class="title">community name</div>

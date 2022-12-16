@@ -70,7 +70,7 @@
 maybe `form.centered` should be interpreted a particular way in Felt? -->
 <div class="markup padded-xl centered">
 	<form class="centered" {...$$restProps}>
-		<legend>Create a Persona</legend>
+		<h2>Create a new Persona</h2>
 		<fieldset class="centered">
 			<label>
 				<div class="title">name</div>

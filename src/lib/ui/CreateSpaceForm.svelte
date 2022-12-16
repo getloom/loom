@@ -90,7 +90,7 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<legend>Create a new Space</legend>
+	<h2>Create a new Space</h2>
 	<ContextInfo {persona} {community} />
 	<fieldset>
 		<label>
