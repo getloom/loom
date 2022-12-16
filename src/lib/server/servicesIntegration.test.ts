@@ -71,8 +71,20 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	const defaultSpaceCount = defaultSpaces.length;
 
 	// create some entities
-	const {entity: entity1} = await random.entity(persona1, account, community, space.directory_id);
-	const {entity: entity2} = await random.entity(persona1, account, community, space.directory_id);
+	const {entity: entity1} = await random.entity(
+		persona1,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
+	const {entity: entity2} = await random.entity(
+		persona1,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
 
 	// TODO create some ties
 

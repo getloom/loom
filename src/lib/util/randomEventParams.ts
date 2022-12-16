@@ -173,7 +173,7 @@ export const randomEventParams: RandomEventParams = {
 	CreateEntity: async (random, {account, persona, community, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!space) ({space} = await random.space(persona, account, community));
-		return randomEntityParams(persona.persona_id, space.directory_id);
+		return randomEntityParams(persona.persona_id, space.space_id, space.directory_id);
 	},
 	ReadEntities: async (random, {account, persona, community, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
@@ -196,15 +196,15 @@ export const randomEventParams: RandomEventParams = {
 		if (!persona) ({persona} = await random.persona(account));
 		return {
 			actor: persona.persona_id,
-			entity_id: (await random.entity(persona, account, community, space?.directory_id)).entity
-				.entity_id,
+			entity_id: (await random.entity(persona, account, community, space, space?.directory_id))
+				.entity.entity_id,
 			data: randomEntityData(),
 		};
 	},
 	EraseEntities: async (random, {account, persona, community, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		const entity1 = await random.entity(persona, account, community, space?.directory_id);
-		const entity2 = await random.entity(persona, account, community, space?.directory_id);
+		const entity1 = await random.entity(persona, account, community, space, space?.directory_id);
+		const entity2 = await random.entity(persona, account, community, space, space?.directory_id);
 		return {
 			actor: persona.persona_id,
 			entityIds: [entity1.entity.entity_id, entity2.entity.entity_id],
@@ -212,8 +212,8 @@ export const randomEventParams: RandomEventParams = {
 	},
 	DeleteEntities: async (random, {account, persona, community, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		const entity1 = await random.entity(persona, account, community, space?.directory_id);
-		const entity2 = await random.entity(persona, account, community, space?.directory_id);
+		const entity1 = await random.entity(persona, account, community, space, space?.directory_id);
+		const entity2 = await random.entity(persona, account, community, space, space?.directory_id);
 		return {
 			actor: persona.persona_id,
 			entityIds: [entity1.entity.entity_id, entity2.entity.entity_id],
@@ -223,9 +223,9 @@ export const randomEventParams: RandomEventParams = {
 		if (!persona) ({persona} = await random.persona(account));
 		return {
 			actor: persona.persona_id,
-			source_id: (await random.entity(persona, account, community, space?.directory_id)).entity
-				.entity_id,
-			dest_id: (await random.entity(persona, account, community, space?.directory_id)).entity
+			source_id: (await random.entity(persona, account, community, space, space?.directory_id))
+				.entity.entity_id,
+			dest_id: (await random.entity(persona, account, community, space, space?.directory_id)).entity
 				.entity_id,
 			type: 'HasReply',
 		};
@@ -243,6 +243,7 @@ export const randomEventParams: RandomEventParams = {
 			persona,
 			account,
 			community,
+			space,
 			space?.directory_id,
 		);
 		return {

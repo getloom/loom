@@ -10,6 +10,7 @@ export const CreateEntity: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
+			space_id: {type: 'number'},
 			data: {type: 'object', tsType: 'EntityData'},
 			ties: {
 				type: 'array',
@@ -37,7 +38,7 @@ export const CreateEntity: ServiceEventInfo = {
 				},
 			},
 		},
-		required: ['actor', 'data'],
+		required: ['actor', 'space_id', 'data'],
 		additionalProperties: false,
 	},
 	response: {

@@ -11,6 +11,7 @@ import {
 } from '$lib/vocab/entity/entityEvents';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
+import {cleanOrphanEntities} from './entityHelpers.server';
 
 // TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
@@ -43,7 +44,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	event: CreateEntity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const entity = unwrap(await repos.entity.create(params.actor, params.data));
+			const entity = unwrap(await repos.entity.create(params.actor, params.data, params.space_id));
 
 			const ties: Tie[] = [];
 			if (params.ties) {
@@ -68,7 +69,7 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 	event: UpdateEntity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const entity = unwrap(await repos.entity.updateEntityData(params.entity_id, params.data));
+			const entity = unwrap(await repos.entity.updateEntity(params.entity_id, params.data));
 			return {ok: true, status: 200, value: {entity}};
 		}),
 };
@@ -90,15 +91,7 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 		transact(async (repos) => {
 			unwrap(await repos.entity.deleteByIds(params.entityIds));
 
-			// Deleting one entity may orphan others, so loop until there are no more orphans.
-			// TODO optimize this into a single SQL statement (recursive?)
-			while (true) {
-				const orphans = unwrap(await repos.entity.findOrphanedEntities()); // eslint-disable-line no-await-in-loop
-				if (orphans.length === 0) {
-					break;
-				}
-				unwrap(await repos.entity.deleteByIds(orphans)); // eslint-disable-line no-await-in-loop
-			}
+			unwrap(await cleanOrphanEntities(repos));
 
 			return {ok: true, status: 200, value: null};
 		}),

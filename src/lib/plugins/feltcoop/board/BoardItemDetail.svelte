@@ -53,6 +53,7 @@
 		//TODO better error handling
 		await dispatch.CreateEntity({
 			actor: $persona.persona_id,
+			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties: [{source_id: $entity.entity_id}],
 		});

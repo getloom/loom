@@ -13,7 +13,7 @@ import {
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
-import {DeleteEntitiesService} from '$lib/vocab/entity/entityServices';
+import {cleanOrphanEntities} from '$lib/vocab/entity/entityHelpers.server';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 
@@ -80,10 +80,14 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 
 			log.trace('[CreateSpace] initializing directory for space');
 			const uninitializedDirectory = unwrap(
-				await repos.entity.create(communityPersona.persona_id, {
-					type: 'Collection',
-					space_id: undefined as any, // `space_id` gets added below, after the space is created
-				}),
+				await repos.entity.create(
+					communityPersona.persona_id,
+					{
+						type: 'Collection',
+						space_id: undefined as any, // `space_id` gets added below, after the space is created
+					},
+					null,
+				),
 			) as Entity & {data: DirectoryEntityData};
 
 			log.trace('[CreateSpace] creating space for community', community_id);
@@ -100,10 +104,14 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 
 			// set `uninitializedDirectory.data.space_id` now that the space has been created
 			const directory = unwrap(
-				await repos.entity.updateEntityData(uninitializedDirectory.entity_id, {
-					...uninitializedDirectory.data,
-					space_id: space.space_id,
-				}),
+				await repos.entity.updateEntity(
+					uninitializedDirectory.entity_id,
+					{
+						...uninitializedDirectory.data,
+						space_id: space.space_id,
+					},
+					space.space_id,
+				),
 			) as Entity & {data: DirectoryEntityData};
 
 			return {ok: true, status: 200, value: {space, directory}};
@@ -139,12 +147,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 
 			unwrap(await repos.space.deleteById(params.space_id));
 
-			unwrap(
-				await DeleteEntitiesService.perform({
-					...serviceRequest,
-					params: {actor: params.actor, entityIds: [space.directory_id]},
-				}),
-			);
+			unwrap(await cleanOrphanEntities(repos));
 
 			return {ok: true, status: 200, value: null};
 		}),

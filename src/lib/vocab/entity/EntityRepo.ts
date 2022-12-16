@@ -10,11 +10,15 @@ import {GHOST_PERSONA_ID} from '$lib/app/constants';
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
 export class EntityRepo extends PostgresRepo {
-	async create(persona_id: number, data: EntityData): Promise<Result<{value: Entity}>> {
+	async create(
+		persona_id: number,
+		data: EntityData,
+		space_id: number | null,
+	): Promise<Result<{value: Entity}>> {
 		log.trace('[createEntity]', persona_id);
 		const entity = await this.sql<Entity[]>`
-			INSERT INTO entities (persona_id, data) VALUES (
-				${persona_id},${this.sql.json(data as any)}
+			INSERT INTO entities (persona_id, space_id, data) VALUES (
+				${persona_id},${space_id},${this.sql.json(data as any)}
 			) RETURNING *
 		`;
 		// log.trace('create entity', data);
@@ -23,7 +27,7 @@ export class EntityRepo extends PostgresRepo {
 
 	async findById(entity_id: number): Promise<Result<{value: Entity | undefined}>> {
 		const data = await this.sql<Entity[]>`
-			SELECT entity_id, data, persona_id, created, updated 
+			SELECT entity_id, space_id, data, persona_id, created, updated 
 			FROM entities WHERE entity_id=${entity_id}
 		`;
 		return {ok: true, value: data[0]};
@@ -37,7 +41,7 @@ export class EntityRepo extends PostgresRepo {
 		if (entityIds.length === 0) return {ok: true, value: {entities: [], missing: null}};
 		log.trace('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
-			SELECT entity_id, data, persona_id, created, updated 
+			SELECT entity_id, space_id, data, persona_id, created, updated 
 			FROM entities WHERE entity_id IN ${this.sql(entityIds)}
 			ORDER BY entity_id DESC
 		`;
@@ -48,15 +52,17 @@ export class EntityRepo extends PostgresRepo {
 		return {ok: true, value: {entities, missing}};
 	}
 
-	async updateEntityData(
+	async updateEntity(
 		entity_id: number,
 		data: EntityData | null,
+		space_id?: number,
 	): Promise<Result<{value: Entity}>> {
 		log.trace('[updateEntityData]', entity_id);
 		const _data = await this.sql<Entity[]>`
-			UPDATE entities SET ${
-				data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``
-			} updated=NOW()
+			UPDATE entities SET 
+				${data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``} 
+				${space_id ? this.sql`space_id=${space_id},` : this.sql``} 
+				updated=NOW()
 			WHERE entity_id=${entity_id} AND NOT (data @> '{"type":"Tombstone"}'::jsonb) AND NOT (data ? 'space_id')
 			RETURNING *
 		`;

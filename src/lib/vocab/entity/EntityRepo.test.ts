@@ -20,7 +20,13 @@ test__EntityRepo('create and delete entities', async ({db, random}) => {
 	} = await random.community();
 	const assertDbCounts = await testDbCounts(db);
 	// Create one entity and test that `assertDbCounts` works as expected.
-	const {entity: entity1} = await random.entity(persona, account, community, space.directory_id);
+	const {entity: entity1} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
 	let failed = false;
 	try {
 		await assertDbCounts();
@@ -29,7 +35,13 @@ test__EntityRepo('create and delete entities', async ({db, random}) => {
 	}
 	if (!failed) throw Error('Expected assertDbCounts to fail');
 	// Create a second entity.
-	const {entity: entity2} = await random.entity(persona, account, community, space.directory_id);
+	const {entity: entity2} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
 	// Delete the created entities, and test that everything is cleaned up.
 	unwrap(await db.repos.entity.deleteByIds([entity1.entity_id, entity2.entity_id]));
 	await assertDbCounts();
@@ -37,7 +49,9 @@ test__EntityRepo('create and delete entities', async ({db, random}) => {
 
 test__EntityRepo('find entity by id', async ({db, random}) => {
 	const data = {type: 'Note', content: '1'} as const;
-	const {entity} = await random.entity(undefined, undefined, undefined, undefined, {data});
+	const {entity} = await random.entity(undefined, undefined, undefined, undefined, undefined, {
+		data,
+	});
 	assert.equal(entity.data, data); // just in case
 	const found = unwrap(await db.repos.entity.findById(entity.entity_id));
 	assert.ok(found);
@@ -47,13 +61,31 @@ test__EntityRepo('find entity by id', async ({db, random}) => {
 });
 
 test__EntityRepo('entites return sorted by descending id', async ({db, random}) => {
-	const {space, persona, account} = await random.space();
-	const {entity: entity0} = await random.entity(persona, account, undefined, space.directory_id);
-	const {entity: entity1} = await random.entity(persona, account, undefined, space.directory_id);
-	const {entity: entity2} = await random.entity(persona, account, undefined, space.directory_id);
+	const {space, community, persona, account} = await random.space();
+	const {entity: entity0} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
+	const {entity: entity1} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
+	const {entity: entity2} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
 
 	// Ensure db sort order is shuffled from the insertion order.
-	unwrap(await db.repos.entity.updateEntityData(entity1.entity_id, entity1.data));
+	unwrap(await db.repos.entity.updateEntity(entity1.entity_id, entity1.data));
 	const {entities} = unwrap(
 		await db.repos.entity.filterByIds([entity0.entity_id, entity2.entity_id, entity1.entity_id]),
 	);
@@ -66,11 +98,13 @@ test__EntityRepo('disallow mutating directories', async ({db, random}) => {
 	const {space: space1} = await random.space();
 	const {space: space2} = await random.space();
 	const data = {type: 'Collection', space_id: space1.space_id} as const;
-	const {entity} = await random.entity(undefined, undefined, undefined, undefined, {data});
+	const {entity} = await random.entity(undefined, undefined, undefined, undefined, undefined, {
+		data,
+	});
 	assert.equal(entity.data, data); // just in case
 
 	// Disallow `updateEntityData`
-	const updateResult = await db.repos.entity.updateEntityData(entity.entity_id, {
+	const updateResult = await db.repos.entity.updateEntity(entity.entity_id, {
 		type: 'Collection',
 		space_id: space2.space_id,
 	});
@@ -90,7 +124,9 @@ test__EntityRepo('disallow mutating directories', async ({db, random}) => {
 
 test__EntityRepo('disallow mutating tombstones', async ({db, random}) => {
 	const data = {type: 'Note', content: '1'} as const;
-	const {entity} = await random.entity(undefined, undefined, undefined, undefined, {data});
+	const {entity} = await random.entity(undefined, undefined, undefined, undefined, undefined, {
+		data,
+	});
 	assert.equal(entity.data, data); // just in case
 
 	// Erase the entity.
@@ -103,7 +139,7 @@ test__EntityRepo('disallow mutating tombstones', async ({db, random}) => {
 	assert.ok(!eraseResult2.ok);
 
 	// Disallow `updateEntityData`
-	const updateResult = await db.repos.entity.updateEntityData(entity.entity_id, {
+	const updateResult = await db.repos.entity.updateEntity(entity.entity_id, {
 		type: 'Note',
 		content: '2',
 	});
@@ -133,19 +169,28 @@ test__EntityRepo('check filtering for directories by entity id', async ({db, ran
 		persona,
 		account,
 		community,
+		space,
 		space.directory_id,
 	);
 	const {entity: entityThread} = await random.entity(
 		persona,
 		account,
 		community,
+		space,
 		space.directory_id,
 	);
-	const {entity: entityPost} = await random.entity(persona, account, community, space.directory_id);
+	const {entity: entityPost} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+	);
 	const {entity: entityReply} = await random.entity(
 		persona,
 		account,
 		community,
+		space,
 		space.directory_id,
 	);
 

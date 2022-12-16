@@ -59,6 +59,7 @@
 		if (fields.content) data.content = content;
 		const result = await dispatch.CreateEntity({
 			actor: persona_id,
+			space_id: $space.space_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?
 			ties: [{source_id}],
 		});

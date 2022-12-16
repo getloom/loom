@@ -27,6 +27,7 @@ test_entityServices('create entities with data', async ({random}) => {
 		persona,
 		account,
 		community,
+		space,
 		space.directory_id,
 		{data: entityData1},
 	);
@@ -34,6 +35,7 @@ test_entityServices('create entities with data', async ({random}) => {
 		persona,
 		account,
 		community,
+		space,
 		space.directory_id,
 		{data: entityData2},
 	);
@@ -66,7 +68,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	const entities = (
 		await Promise.all(
 			Array.from({length: DEFAULT_PAGE_SIZE + 1}, (_, i) =>
-				random.entity(persona, account, community, space.directory_id, {
+				random.entity(persona, account, community, space, space.directory_id, {
 					data: {type: 'Note', content: `This is note ${i}`},
 				}),
 			),
@@ -141,21 +143,49 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 	const {space, persona, account, community} = await random.space();
 	const serviceRequest = toServiceRequestMock(db, persona);
 	//generate a collection with 3 notes
-	const {entity: list} = await random.entity(persona, account, community, space.directory_id, {
-		data: {type: 'Collection', name: `grocery list`},
-	});
-	const {entity: todo1} = await random.entity(persona, account, community, space.directory_id, {
-		data: {type: 'Note', content: `eggs`},
-		ties: [{source_id: list.entity_id}],
-	});
-	const {entity: todo2} = await random.entity(persona, account, community, space.directory_id, {
-		data: {type: 'Note', content: `bread`},
-		ties: [{source_id: list.entity_id}],
-	});
-	const {entity: todo3} = await random.entity(persona, account, community, space.directory_id, {
-		data: {type: 'Note', content: `milk`},
-		ties: [{source_id: list.entity_id}],
-	});
+	const {entity: list} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+		{
+			data: {type: 'Collection', name: `grocery list`},
+		},
+	);
+	const {entity: todo1} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+		{
+			data: {type: 'Note', content: `eggs`},
+			ties: [{source_id: list.entity_id}],
+		},
+	);
+	const {entity: todo2} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+		{
+			data: {type: 'Note', content: `bread`},
+			ties: [{source_id: list.entity_id}],
+		},
+	);
+	const {entity: todo3} = await random.entity(
+		persona,
+		account,
+		community,
+		space,
+		space.directory_id,
+		{
+			data: {type: 'Note', content: `milk`},
+			ties: [{source_id: list.entity_id}],
+		},
+	);
 	const entityIds = [todo1.entity_id, todo2.entity_id, todo3.entity_id];
 	const filterResult = unwrap(await db.repos.entity.filterByIds(entityIds));
 	assert.is(filterResult.entities.length, 3);

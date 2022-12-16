@@ -468,6 +468,7 @@ export type DeleteSpaceResponseResult = ApiResult<DeleteSpaceResponse>;
 
 export interface CreateEntityParams {
 	actor: number;
+	space_id: number;
 	data: EntityData;
 	ties?: (
 		| {

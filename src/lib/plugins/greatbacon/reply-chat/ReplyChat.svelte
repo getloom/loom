@@ -46,6 +46,7 @@
 		if (!content) return;
 		await dispatch.CreateEntity({
 			actor: $persona.persona_id,
+			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties,
 		});

@@ -85,8 +85,13 @@ export const randomSpaceParams = (actor: number, community_id: number): CreateSp
 	path: randomSpacePath(),
 	icon: randomSpaceIcon(),
 });
-export const randomEntityParams = (actor: number, source_id: number): CreateEntityParams => ({
+export const randomEntityParams = (
+	actor: number,
+	space_id: number,
+	source_id: number,
+): CreateEntityParams => ({
 	actor,
+	space_id,
 	data: randomEntityData(),
 	ties: [{source_id}],
 });
@@ -232,6 +237,7 @@ export class RandomVocabContext {
 		persona?: AccountPersona,
 		account?: Account,
 		community?: Community,
+		space?: Space,
 		source_id?: number,
 		paramsPartial?: Partial<CreateEntityParams>,
 	): Promise<{
@@ -239,25 +245,26 @@ export class RandomVocabContext {
 		persona: AccountPersona;
 		account: Account;
 		community: Community;
+		space: Space;
 		ties: Tie[];
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!community) ({community} = await this.community(persona, account));
+		if (!space) ({space} = await this.space(persona, account, community));
 		if (!source_id) {
-			const {space} = await this.space(persona, account, community);
 			source_id = space.directory_id;
 		}
 		const {entity, ties} = unwrap(
 			await CreateEntityService.perform({
 				...toServiceRequestMock(this.db, persona),
 				params: {
-					...randomEntityParams(persona.persona_id, source_id),
+					...randomEntityParams(persona.persona_id, space.space_id, source_id),
 					...paramsPartial,
 				},
 			}),
 		);
-		return {entity, persona, account, community, ties};
+		return {entity, persona, account, community, space, ties};
 	}
 
 	async tie(
@@ -266,6 +273,7 @@ export class RandomVocabContext {
 		persona?: AccountPersona,
 		account?: Account,
 		community?: Community,
+		space?: Space,
 		parentSourceId?: number, // optional directory or other source id for the source and dest entities (not the tie)
 		type?: Tie['type'],
 	): Promise<{
@@ -280,15 +288,27 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!community) ({community} = await this.community(persona, account));
+		if (!space) ({space} = await this.space(persona, account, community));
 		if (!parentSourceId) {
-			const {space} = await this.space(persona, account, community);
 			parentSourceId = space.directory_id;
 		}
 		if (!sourceEntity) {
-			({entity: sourceEntity} = await this.entity(persona, account, community, parentSourceId));
+			({entity: sourceEntity} = await this.entity(
+				persona,
+				account,
+				community,
+				space,
+				parentSourceId,
+			));
 		}
 		if (!destEntity) {
-			({entity: destEntity} = await this.entity(persona, account, community, parentSourceId));
+			({entity: destEntity} = await this.entity(
+				persona,
+				account,
+				community,
+				space,
+				parentSourceId,
+			));
 		}
 		const params = randomTieParams(
 			persona.persona_id,

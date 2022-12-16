@@ -218,6 +218,7 @@ const generateEntity = async (
 			actor,
 			params: {
 				actor: actor.persona_id,
+				space_id: ctx.space.space_id,
 				data,
 				ties: [{source_id}],
 			},
