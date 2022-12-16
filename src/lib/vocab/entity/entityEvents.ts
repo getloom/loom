@@ -45,10 +45,10 @@ export const CreateEntity: ServiceEventInfo = {
 		$id: '/schemas/CreateEntityResponse.json',
 		type: 'object',
 		properties: {
-			entity: {$ref: '/schemas/Entity.json', tsType: 'Entity'},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
 			ties: {type: 'array', items: {$ref: '/schemas/Tie.json', tsType: 'Tie'}},
 		},
-		required: ['entity', 'ties'],
+		required: ['entities', 'ties'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<CreateEntityResponseResult>',

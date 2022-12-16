@@ -482,7 +482,7 @@ export interface CreateEntityParams {
 	)[];
 }
 export interface CreateEntityResponse {
-	entity: Entity;
+	entities: Entity[];
 	ties: Tie[];
 }
 export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;

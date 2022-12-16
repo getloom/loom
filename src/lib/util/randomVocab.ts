@@ -242,6 +242,7 @@ export class RandomVocabContext {
 		paramsPartial?: Partial<CreateEntityParams>,
 	): Promise<{
 		entity: Entity;
+		directories: Entity[];
 		persona: AccountPersona;
 		account: Account;
 		community: Community;
@@ -255,7 +256,10 @@ export class RandomVocabContext {
 		if (!source_id) {
 			source_id = space.directory_id;
 		}
-		const {entity, ties} = unwrap(
+		const {
+			entities: [entity, ...directories],
+			ties,
+		} = unwrap(
 			await CreateEntityService.perform({
 				...toServiceRequestMock(this.db, persona),
 				params: {
@@ -264,7 +268,7 @@ export class RandomVocabContext {
 				},
 			}),
 		);
-		return {entity, persona, account, community, space, ties};
+		return {entity, persona, account, community, space, directories, ties};
 	}
 
 	async tie(

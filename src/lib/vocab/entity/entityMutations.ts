@@ -9,8 +9,8 @@ import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityM
 export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {entity, ties} = result.value;
-	stashEntities(ui, [entity]);
+	const {entities, ties} = result.value;
+	stashEntities(ui, entities);
 	stashTies(ui, ties);
 	return result;
 };

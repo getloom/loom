@@ -30,11 +30,6 @@
 			data: {type: 'Note', content, checked: false},
 			ties: [{source_id: $list.entity_id}],
 		});
-		await dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			data: null,
-			entity_id: $space.directory_id,
-		});
 		text = '';
 	};
 	const onSubmit = async () => {

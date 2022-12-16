@@ -17,7 +17,7 @@
 	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({persona} = $viewContext);
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
@@ -53,11 +53,6 @@
 			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: {...$entity.data, checked},
-		});
-		await dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			data: null,
-			entity_id: $space.directory_id,
 		});
 		pending = false;
 	};

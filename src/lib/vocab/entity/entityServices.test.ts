@@ -8,6 +8,7 @@ import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {
 	ReadEntitiesPaginatedService,
 	DeleteEntitiesService,
+	CreateEntityService,
 } from '$lib/vocab/entity/entityServices';
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
@@ -49,6 +50,38 @@ test_entityServices('create entities with data', async ({random}) => {
 	assert.is(ties1[0].source_id, space.directory_id);
 	assert.is(ties1[0].dest_id, entity1.entity_id);
 	assert.is(ties2[0].dest_id, entity2.entity_id);
+});
+
+test_entityServices('create entity and return it and directories', async ({db, random}) => {
+	const {space, persona, account, community} = await random.space();
+	const {space: space2} = await random.space(persona, account, community);
+
+	const serviceRequest = toServiceRequestMock(db, persona);
+
+	const entityData = {type: 'Note', content: 'test'} as const;
+	const sourceIds = [space.directory_id, space2.directory_id].sort((a, b) => a - b);
+
+	const {entities} = unwrap(
+		await CreateEntityService.perform({
+			...serviceRequest,
+			params: {
+				actor: persona.persona_id,
+				space_id: space.space_id,
+				data: entityData,
+				ties: sourceIds.map((source_id) => ({source_id})),
+			},
+		}),
+	);
+
+	assert.is(entities.length, 3);
+	assert.equal(entities[0].data, entityData);
+	assert.equal(
+		sourceIds,
+		entities
+			.slice(1)
+			.map((e) => e.entity_id)
+			.sort((a, b) => a - b),
+	);
 });
 
 test_entityServices('read paginated entities by source_id', async ({db, random}) => {

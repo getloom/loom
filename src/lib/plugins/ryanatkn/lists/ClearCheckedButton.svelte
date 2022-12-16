@@ -8,7 +8,7 @@
 	import {getViewContext} from '$lib/vocab/view/view';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({persona} = $viewContext);
 
 	const {
 		dispatch,
@@ -46,11 +46,6 @@
 		await dispatch.DeleteEntities({
 			actor: $persona.persona_id,
 			entityIds,
-		});
-		await dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			data: null,
-			entity_id: $space.directory_id,
 		});
 	};
 </script>

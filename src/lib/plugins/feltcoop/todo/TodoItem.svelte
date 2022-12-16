@@ -56,11 +56,6 @@
 			entity_id: $entity.entity_id,
 			data: {...$entity.data, checked},
 		});
-		await dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			data: null,
-			entity_id: $space.directory_id,
-		});
 		pending = false;
 	};
 

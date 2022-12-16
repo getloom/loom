@@ -50,11 +50,6 @@
 			data: {type: 'Note', content},
 			ties,
 		});
-		await dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			data: null,
-			entity_id: $space.directory_id,
-		});
 		selectedReply = null;
 		text = '';
 	};

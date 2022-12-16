@@ -38,11 +38,6 @@
 			data: {type: 'Note', content},
 			ties: [{source_id: $space.directory_id}],
 		});
-		await dispatch.UpdateEntity({
-			actor: $persona.persona_id,
-			data: null,
-			entity_id: $space.directory_id,
-		});
 		text = '';
 	};
 

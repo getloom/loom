@@ -46,6 +46,8 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		transact(async (repos) => {
 			const entity = unwrap(await repos.entity.create(params.actor, params.data, params.space_id));
 
+			const entities = [entity];
+
 			const ties: Tie[] = [];
 			if (params.ties) {
 				for (const tieParams of params.ties) {
@@ -61,7 +63,14 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 				}
 			}
 
-			return {ok: true, status: 200, value: {entity, ties}};
+			// TODO optimize overfetching, we only want the `entity_id`
+			const directories = unwrap(await repos.entity.directoriesByEntityId(entity.entity_id));
+			// TODO optimize batch update
+			for (const directory of directories) {
+				entities.push(unwrap(await repos.entity.updateEntity(directory.entity_id, null))); // eslint-disable-line no-await-in-loop
+			}
+
+			return {ok: true, status: 200, value: {entities, ties}};
 		}),
 };
 
