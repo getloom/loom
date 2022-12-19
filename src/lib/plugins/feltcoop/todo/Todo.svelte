@@ -95,11 +95,11 @@
 						Component: CreateEntityForm,
 						props: {
 							done: () => dispatch.CloseDialog(),
-							entityName: 'Todo',
+							entityName: 'todo',
 							persona,
 							community,
 							space,
-							fields: {name: true},
+							fields: {content: true},
 						},
 					})}>+ Create List</button
 			>
@@ -109,7 +109,7 @@
 	</div>
 	{#if selectedList}
 		<div class="selected-tools">
-			<TextInput {persona} placeholder="> create new todo" on:submit={onSubmit} bind:value={text} />
+			<TextInput {persona} placeholder="> new todo" on:submit={onSubmit} bind:value={text} />
 			<button on:click={clearDone}>Clear Done</button>
 		</div>
 	{/if}

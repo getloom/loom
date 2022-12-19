@@ -51,7 +51,7 @@
 							Component: CreateEntityForm,
 							props: {
 								done: () => dispatch.CloseDialog(),
-								entityName: 'Post',
+								entityName: 'post',
 								persona,
 								community,
 								space,

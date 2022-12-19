@@ -91,11 +91,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 				<input type="checkbox" disabled={pending} bind:checked />
 			{/if}
 			<div class="text">
-				{#if $entity.data.type === 'Collection'}
-					{$entity.data.name}
-				{:else}
-					<EntityContent {entity} />
-				{/if}
+				<EntityContent {entity} />
 			</div>
 			<div class="signature">
 				<PersonaAvatar persona={authorPersona} showName={false} />

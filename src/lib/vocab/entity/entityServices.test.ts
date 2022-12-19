@@ -182,9 +182,7 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 		community,
 		space,
 		space.directory_id,
-		{
-			data: {type: 'Collection', name: `grocery list`},
-		},
+		{data: {type: 'Collection', content: `grocery list`}},
 	);
 	const {entity: todo1} = await random.entity(
 		persona,

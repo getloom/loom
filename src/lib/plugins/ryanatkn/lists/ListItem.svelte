@@ -101,11 +101,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 			<input type="checkbox" disabled={pending} bind:checked />
 		{/if}
 		<div class="content markup">
-			{#if $entity.data.type === 'Collection'}
-				{$entity.data.name}
-			{:else}
-				<EntityContent {entity} />
-			{/if}
+			<EntityContent {entity} />
 		</div>
 		{#if items?.length}
 			<span style:padding="var(--spacing_sm)">{items.length}</span>

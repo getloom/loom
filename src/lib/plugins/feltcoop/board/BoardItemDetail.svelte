@@ -88,8 +88,8 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 
 			<div class="markup formatted">
 				{#if $entity.data.type === 'Collection'}
-					{$entity.data.name}
-					<EntityContent {entity} />
+					<div>{$entity.data.name}</div>
+					<div><EntityContent {entity} /></div>
 				{:else}
 					<EntityContent {entity} />
 				{/if}

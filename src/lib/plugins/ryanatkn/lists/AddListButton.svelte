@@ -7,6 +7,8 @@
 	$: ({persona, space, community} = $viewContext);
 
 	const {dispatch} = getApp();
+
+	// TODO could be made more generic as a `CreateEntityButton` and take options for everything
 </script>
 
 <button
@@ -15,11 +17,11 @@
 			Component: CreateEntityForm,
 			props: {
 				done: () => dispatch.CloseDialog(),
-				entityName: 'Todo',
+				entityName: 'list',
 				persona,
 				community,
 				space,
-				fields: {name: true},
+				fields: {content: true},
 			},
 		})}>add list</button
 >

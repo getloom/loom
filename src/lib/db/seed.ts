@@ -316,7 +316,7 @@ const SEED_BY_VIEW_NAME: Record<string, (ctx: SeedContext) => Promise<void>> = {
 		await generateEntities(ctx, ['1', '2', '3']);
 	},
 	Todo: async (ctx) => {
-		const list = await generateEntity(ctx, {type: 'Collection', name: 'Grocery List'});
+		const list = await generateEntity(ctx, {type: 'Collection', content: 'Grocery List'});
 		await generateEntities(ctx, ['eggs', 'milk', 'bread'], list.entities[0].entity_id);
 	},
 };
