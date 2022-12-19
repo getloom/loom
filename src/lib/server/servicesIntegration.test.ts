@@ -170,10 +170,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	assert.is(unwrap(await db.repos.space.filterByCommunity(community.community_id)).length, 1);
 
 	// delete assignment
-	assert.is(
-		unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
-		3,
-	);
+	assert.is(unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
 			...serviceRequest2,
@@ -183,10 +180,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 			},
 		}),
 	);
-	assert.is(
-		unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
-		2,
-	);
+	assert.is(unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length, 2);
 	assert.is(
 		unwrap(
 			await db.repos.assignment.countAccountPersonaAssignmentsByCommunityId(community.community_id),
@@ -213,10 +207,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 		params: {actor: persona1.persona_id, community_id: community.community_id},
 	});
 	assert.is(readCommunityResult.status, 404);
-	assert.is(
-		unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
-		0,
-	);
+	assert.is(unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length, 0);
 
 	// TODO delete personas here
 

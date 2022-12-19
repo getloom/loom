@@ -48,11 +48,23 @@ export class CommunityRepo extends PostgresRepo {
 			SELECT c.community_id, c.type, c.name, c.settings, c.created, c.updated							
 			FROM communities c JOIN (
 				SELECT DISTINCT a.community_id FROM personas p
-				JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id = ${account_id}
+				JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
 			) apc
 			ON c.community_id=apc.community_id;
 		`;
 		log.trace('[filterByAccount]', data.length);
+		return {ok: true, value: data};
+	}
+
+	async filterByPersona(persona_id: number): Promise<Result<{value: Community[]}>> {
+		const data = await this.sql<Community[]>`
+			SELECT c.community_id, c.type, c.name, c.settings, c.created, c.updated
+			FROM communities c JOIN (
+				SELECT DISTINCT community_id FROM assignments
+				WHERE persona_id=${persona_id}
+			) ac
+			ON c.community_id=ac.community_id;
+		`;
 		return {ok: true, value: data};
 	}
 

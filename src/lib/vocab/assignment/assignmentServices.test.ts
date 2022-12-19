@@ -121,7 +121,7 @@ test__assignmentServices(
 			}),
 		);
 		assert.is(
-			unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
+			unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length,
 			3,
 		);
 
@@ -136,7 +136,7 @@ test__assignmentServices(
 			}),
 		);
 		assert.is(
-			unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
+			unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length,
 			2,
 		);
 		assert.ok(unwrap(await db.repos.community.findById(community.community_id)));
@@ -153,7 +153,7 @@ test__assignmentServices(
 		);
 
 		assert.is(
-			unwrap(await db.repos.assignment.filterByCommunityId(community.community_id)).length,
+			unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length,
 			0,
 		);
 		assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));

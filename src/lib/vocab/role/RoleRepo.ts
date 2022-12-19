@@ -8,8 +8,8 @@ import type {Role} from '$lib/vocab/role/role';
 const log = new Logger(gray('[') + blue('RoleRepo') + gray(']'));
 
 export class RoleRepo extends PostgresRepo {
-	async filterByCommunityId(community_id: number): Promise<Result<{value: Role[]}>> {
-		log.trace('[filterByCommunityId]', community_id);
+	async filterByCommunity(community_id: number): Promise<Result<{value: Role[]}>> {
+		log.trace('[filterByCommunity]', community_id);
 		const result = await this.sql<Role[]>`
 			SELECT role_id, community_id, name, created, updated 
 			FROM roles WHERE community_id=${community_id}
@@ -47,12 +47,12 @@ export class RoleRepo extends PostgresRepo {
 	}
 
 	async filterByAccount(account_id: number): Promise<Result<{value: Role[]}>> {
-		log.trace('[filterByAccountId]', account_id);
+		log.trace('[filterByAccount]', account_id);
 		const result = await this.sql<Role[]>`
-		SELECT r.role_id, r.community_id, r.name, r.created, r.updated							
+			SELECT r.role_id, r.community_id, r.name, r.created, r.updated							
 			FROM roles r JOIN (
 				SELECT DISTINCT a.community_id FROM personas p
-				JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id = ${account_id}
+				JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
 			) apc
 			ON r.community_id=apc.community_id;
 		`;

@@ -7,6 +7,7 @@ import {CreateAccountPersona, ReadPersona, DeletePersona} from '$lib/vocab/perso
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
+	cleanOrphanCommunities,
 	initAdminCommunity,
 	initDefaultRoleForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
@@ -174,6 +175,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		}
 
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
+		const communities = unwrap(await repos.community.filterByPersona(persona_id));
 
 		// swap in the ghost persona id for this `persona_id` for those objects that we don't delete
 		unwrap(await repos.entity.attributeToGhostByPersona(persona_id));
@@ -182,6 +184,12 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		unwrap(await repos.assignment.deleteByPersona(persona_id));
 		unwrap(await repos.persona.deleteById(persona_id));
 		unwrap(await repos.community.deleteById(persona.community_id)); // must follow `persona.deleteById` it seems
+		unwrap(
+			await cleanOrphanCommunities(
+				communities.map((c) => c.community_id).filter((c) => c !== persona.community_id),
+				repos,
+			),
+		);
 
 		return {ok: true, status: 200, value: null};
 	},

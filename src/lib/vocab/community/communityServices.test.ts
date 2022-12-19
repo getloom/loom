@@ -150,12 +150,12 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 
 	//check community assignments are gone
 	const assignmentResult = unwrap(
-		await db.repos.assignment.filterByCommunityId(community.community_id),
+		await db.repos.assignment.filterByCommunity(community.community_id),
 	);
 	assert.equal(assignmentResult.length, 0);
 
 	//check roles are gone
-	const roleResult = unwrap(await db.repos.role.filterByCommunityId(community.community_id));
+	const roleResult = unwrap(await db.repos.role.filterByCommunity(community.community_id));
 	assert.equal(roleResult.length, 0);
 
 	//check community is gone

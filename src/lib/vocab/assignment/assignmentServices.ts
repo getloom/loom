@@ -95,7 +95,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 
 			unwrap(await repos.assignment.deleteById(assignment_id));
 
-			unwrap(await cleanOrphanCommunities(community_id, repos));
+			unwrap(await cleanOrphanCommunities([community_id], repos));
 
 			return {ok: true, status: 200, value: null};
 		}),

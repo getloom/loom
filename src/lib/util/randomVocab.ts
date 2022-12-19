@@ -252,6 +252,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!community) ({community} = await this.community(persona, account));
+		// TODO create assignment on the fly here (`this.assignment`?) if needed to `community.settings.defaultRoleId`, and return it
 		if (!space) ({space} = await this.space(persona, account, community));
 		if (!source_id) {
 			source_id = space.directory_id;

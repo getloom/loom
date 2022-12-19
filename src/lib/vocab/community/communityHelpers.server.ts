@@ -17,16 +17,17 @@ const log = new Logger(gray('[') + blue('communityHelpers.server') + gray(']'));
 const DEFAULT_ROLE = 'member';
 
 export const cleanOrphanCommunities = async (
-	community_id: number,
+	communityIds: number[],
 	repos: Repos,
 ): Promise<Result> => {
-	log.trace('checking if community is orphaned', community_id);
-	const accountPersonaAssignmentsCount = unwrap(
-		await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community_id),
-	);
-	if (accountPersonaAssignmentsCount === 0) {
-		log.trace('no assignments found for community, cleaning up', community_id);
-		unwrap(await repos.community.deleteById(community_id));
+	for (const community_id of communityIds) {
+		const accountPersonaAssignmentsCount = unwrap(
+			await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community_id), // eslint-disable-line no-await-in-loop
+		);
+		if (accountPersonaAssignmentsCount === 0) {
+			log.trace('no assignments found for community, cleaning up', community_id);
+			unwrap(await repos.community.deleteById(community_id)); // eslint-disable-line no-await-in-loop
+		}
 	}
 	return OK;
 };

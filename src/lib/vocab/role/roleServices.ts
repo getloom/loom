@@ -23,7 +23,7 @@ export const ReadRolesService: ServiceByName['ReadRoles'] = {
 	perform: async ({repos, params}) => {
 		const {community_id} = params;
 		log.trace('retrieving roles for community', community_id);
-		const roles = unwrap(await repos.role.filterByCommunityId(community_id));
+		const roles = unwrap(await repos.role.filterByCommunity(community_id));
 		return {ok: true, status: 200, value: {roles}};
 	},
 };

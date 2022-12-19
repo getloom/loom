@@ -51,15 +51,27 @@ export class AssignmentRepo extends PostgresRepo {
 			FROM assignments a JOIN (
 				SELECT DISTINCT a.community_id FROM personas p 
 				JOIN assignments a 
-				ON p.persona_id=a.persona_id AND p.account_id = ${account_id}
+				ON p.persona_id=a.persona_id AND p.account_id=${account_id}
 			) apc
 			ON a.community_id=apc.community_id;
 		`;
 		return {ok: true, value: data};
 	}
 
-	async filterByCommunityId(community_id: number): Promise<Result<{value: Assignment[]}>> {
-		log.trace(`[filterByCommunityId] ${community_id}`);
+	async filterByPersona(persona_id: number): Promise<Result<{value: Assignment[]}>> {
+		const data = await this.sql<Assignment[]>`
+			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
+			FROM assignments a JOIN (
+				SELECT DISTINCT community_id FROM assignments
+				WHERE persona_id=${persona_id}
+			) ac
+			ON a.community_id=ac.community_id;
+		`;
+		return {ok: true, value: data};
+	}
+
+	async filterByCommunity(community_id: number): Promise<Result<{value: Assignment[]}>> {
+		log.trace(`[filterByCommunity] ${community_id}`);
 		const data = await this.sql<Assignment[]>`
 			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
 			FROM assignments a 
@@ -71,7 +83,7 @@ export class AssignmentRepo extends PostgresRepo {
 	async countAccountPersonaAssignmentsByCommunityId(
 		community_id: number,
 	): Promise<Result<{value: number}>> {
-		log.trace(`[filterByCommunityId] ${community_id}`);
+		log.trace(`[filterByCommunity] ${community_id}`);
 		const data = await this.sql<Array<{count: string}>>`
 			SELECT count(*)
 			FROM personas p JOIN (

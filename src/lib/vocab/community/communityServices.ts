@@ -57,8 +57,8 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 
 		const [spacesResult, rolesResult, assignmentsResult] = await Promise.all([
 			repos.space.filterByCommunity(community_id),
-			repos.role.filterByCommunityId(community_id),
-			repos.assignment.filterByCommunityId(community_id),
+			repos.role.filterByCommunity(community_id),
+			repos.assignment.filterByCommunity(community_id),
 		]);
 		const spaces = unwrap(spacesResult);
 		const roles = unwrap(rolesResult);
@@ -276,7 +276,7 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 
 			unwrap(await repos.assignment.deleteByPersonaAndCommunity(persona_id, community_id));
 
-			unwrap(await cleanOrphanCommunities(params.community_id, repos));
+			unwrap(await cleanOrphanCommunities([params.community_id], repos));
 
 			return {ok: true, status: 200, value: null};
 		}),
