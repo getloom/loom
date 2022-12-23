@@ -117,11 +117,11 @@ export class PersonaRepo extends PostgresRepo {
 		return {ok: true, value: {personas, missing}};
 	}
 
-	async findByCommunityId<T extends Partial<Persona> = PublicPersona>(
+	async findByCommunity<T extends Partial<Persona> = PublicPersona>(
 		community_id: number,
 		columns = PERSONA_COLUMNS.PublicPersona,
 	): Promise<Result<{value: T | undefined}>> {
-		log.trace('[findByCommunityId]', community_id);
+		log.trace('[findByCommunity]', community_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE community_id=${community_id}

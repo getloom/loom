@@ -191,10 +191,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	// delete community
 	//TODO hack to allow for authorization; remove on init default impl
 	unwrap(
-		await db.repos.policy.createPolicy(
-			community.settings.defaultRoleId,
-			permissions.DeleteCommunity,
-		),
+		await db.repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity),
 	);
 	unwrap(
 		await DeleteCommunityService.perform({

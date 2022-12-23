@@ -18,7 +18,7 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 		transact(async (repos) => {
 			const {role_id, permission} = params;
 			log.trace('creating policy', role_id, permission);
-			const policy = unwrap(await repos.policy.createPolicy(role_id, permission));
+			const policy = unwrap(await repos.policy.create(role_id, permission));
 			return {ok: true, status: 200, value: {policy}};
 		}),
 };
@@ -28,7 +28,7 @@ export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
 	perform: async ({repos, params}) => {
 		const {role_id} = params;
 		log.trace('retrieving policies for role', role_id);
-		const policies = unwrap(await repos.policy.filterByRoleId(role_id));
+		const policies = unwrap(await repos.policy.filterByRole(role_id));
 		return {ok: true, status: 200, value: {policies}};
 	},
 };
@@ -39,7 +39,7 @@ export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
 		transact(async (repos) => {
 			const {policy_id, data} = params;
 			log.trace('updating role', policy_id, data);
-			const policy = unwrap(await repos.policy.updatePolicy(policy_id, data));
+			const policy = unwrap(await repos.policy.update(policy_id, data));
 			return {ok: true, status: 200, value: {policy}};
 		}),
 };

@@ -101,8 +101,8 @@ export class CommunityRepo extends PostgresRepo {
 		return exists;
 	}
 
-	async findByRoleId(role_id: number): Promise<Result<{value: Community}>> {
-		log.trace(`[findByRoleId] ${role_id}`);
+	async findByRole(role_id: number): Promise<Result<{value: Community}>> {
+		log.trace(`[findByRole] ${role_id}`);
 		const data = await this.sql<Community[]>`
 			SELECT c.community_id, c.type, c.name, c.settings, c.created, c.updated
 			FROM communities c 

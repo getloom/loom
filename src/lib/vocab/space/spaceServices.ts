@@ -13,7 +13,7 @@ import {
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
-import {cleanOrphanEntities} from '$lib/vocab/entity/entityHelpers.server';
+import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 
@@ -73,7 +73,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 				return {ok: false, status: 409, message: 'a space with that path already exists'};
 			}
 
-			const communityPersona = unwrap(await repos.persona.findByCommunityId(community_id));
+			const communityPersona = unwrap(await repos.persona.findByCommunity(community_id));
 			if (!communityPersona) {
 				return {ok: false, status: 409, message: 'failed to find the community persona'};
 			}
@@ -104,7 +104,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 
 			// set `uninitializedDirectory.data.space_id` now that the space has been created
 			const directory = unwrap(
-				await repos.entity.updateEntity(
+				await repos.entity.update(
 					uninitializedDirectory.entity_id,
 					{
 						...uninitializedDirectory.data,
@@ -147,7 +147,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 
 			unwrap(await repos.space.deleteById(params.space_id));
 
-			unwrap(await cleanOrphanEntities(repos));
+			unwrap(await cleanOrphanedEntities(repos));
 
 			return {ok: true, status: 200, value: null};
 		}),

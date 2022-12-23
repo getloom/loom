@@ -13,7 +13,7 @@ export const CreateRoleService: ServiceByName['CreateRole'] = {
 		transact(async (repos) => {
 			const {community_id, name} = params;
 			log.trace('creating community role', community_id, name);
-			const role = unwrap(await repos.role.createRole(community_id, name));
+			const role = unwrap(await repos.role.create(community_id, name));
 			return {ok: true, status: 200, value: {role}};
 		}),
 };
@@ -34,7 +34,7 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 		transact(async (repos) => {
 			const {role_id, name} = params;
 			log.trace('updating role', role_id, name);
-			const role = unwrap(await repos.role.updateRole(role_id, name));
+			const role = unwrap(await repos.role.update(role_id, name));
 			return {ok: true, status: 200, value: {role}};
 		}),
 };
@@ -45,7 +45,7 @@ export const DeleteRoleService: ServiceByName['DeleteRole'] = {
 		transact(async (repos) => {
 			const {role_id} = params;
 			log.trace('deleting role', role_id);
-			const community = unwrap(await repos.community.findByRoleId(role_id));
+			const community = unwrap(await repos.community.findByRole(role_id));
 
 			if (community.settings.defaultRoleId === role_id) {
 				return {ok: false, status: 405, message: 'deleting the default role is not allowed'};

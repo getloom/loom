@@ -36,7 +36,7 @@ export const DeleteTieService: ServiceByName['DeleteTie'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			log.trace('[DeleteTie] deleting tie with ids:', params.tie_id);
-			unwrap(await repos.tie.deleteTie(params.tie_id));
+			unwrap(await repos.tie.deleteById(params.tie_id));
 			return {ok: true, status: 200, value: null};
 		}),
 };

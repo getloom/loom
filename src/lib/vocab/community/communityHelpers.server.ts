@@ -93,7 +93,7 @@ export const initDefaultRoleForCommunity = async (
 	repos: Repos,
 	community: Community,
 ): Promise<Result<{value: Role}>> => {
-	const defaultRole = unwrap(await repos.role.createRole(community.community_id, DEFAULT_ROLE));
+	const defaultRole = unwrap(await repos.role.create(community.community_id, DEFAULT_ROLE));
 
 	const settings = {...community.settings, defaultRoleId: defaultRole.role_id};
 

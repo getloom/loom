@@ -69,12 +69,12 @@ export class EntityRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
-	async updateEntity(
+	async update(
 		entity_id: number,
 		data: EntityData | null,
 		space_id?: number,
 	): Promise<Result<{value: Entity}>> {
-		log.trace('[updateEntityData]', entity_id);
+		log.trace('[update]', entity_id);
 		const _data = await this.sql<Entity[]>`
 			UPDATE entities SET 
 				${data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``} 
@@ -128,17 +128,17 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	//This function finds all non-directory entities with no ties pointing to them & returns an array of their ids
-	async findOrphanedEntities(): Promise<Result<{value: number[]}>> {
-		const data = await this.sql<Entity[]>`
+	async filterOrphanedEntities(): Promise<Result<{value: Array<Pick<Entity, 'entity_id'>>}>> {
+		const data = await this.sql<Array<Pick<Entity, 'entity_id'>>>`
 			SELECT entity_id FROM entities e
 			LEFT JOIN ties t
 			ON e.entity_id = t.dest_id
 			WHERE NOT (e.data ? 'space_id') AND t.dest_id IS NULL;
 		`;
-		return {ok: true, value: data.flatMap((e) => e.entity_id)};
+		return {ok: true, value: data};
 	}
 
-	async directoriesByEntityId(entity_id: number): Promise<Result<{value: Entity[]}>> {
+	async filterDirectoriesByEntity(entity_id: number): Promise<Result<{value: Entity[]}>> {
 		log.trace(`looking for directories for entity: ${entity_id}`);
 		const directories = await this.sql<Entity[]>`
 			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated FROM entities e

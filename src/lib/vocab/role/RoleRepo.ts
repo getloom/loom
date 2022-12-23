@@ -17,8 +17,8 @@ export class RoleRepo extends PostgresRepo {
 		return {ok: true, value: result};
 	}
 
-	async createRole(community_id: number, name: string): Promise<Result<{value: Role}>> {
-		log.trace('[createRole]', community_id, name);
+	async create(community_id: number, name: string): Promise<Result<{value: Role}>> {
+		log.trace('[create]', community_id, name);
 		const result = await this.sql<Role[]>`
     INSERT INTO roles (community_id, name) VALUES (
       ${community_id}, ${name}
@@ -28,7 +28,7 @@ export class RoleRepo extends PostgresRepo {
 		return {ok: true, value: result[0]};
 	}
 
-	async updateRole(role_id: number, name: string): Promise<Result<{value: Role}>> {
+	async update(role_id: number, name: string): Promise<Result<{value: Role}>> {
 		const result = await this.sql<Role[]>`
 			UPDATE roles SET name=${name} WHERE role_id=${role_id}
 			RETURNING *

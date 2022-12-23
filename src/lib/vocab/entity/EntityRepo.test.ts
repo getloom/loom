@@ -85,7 +85,7 @@ test__EntityRepo('entites return sorted by descending id', async ({db, random}) 
 	);
 
 	// Ensure db sort order is shuffled from the insertion order.
-	unwrap(await db.repos.entity.updateEntity(entity1.entity_id, entity1.data));
+	unwrap(await db.repos.entity.update(entity1.entity_id, entity1.data));
 	const {entities} = unwrap(
 		await db.repos.entity.filterByIds([entity0.entity_id, entity2.entity_id, entity1.entity_id]),
 	);
@@ -110,8 +110,8 @@ test__EntityRepo('disallow mutating tombstones', async ({db, random}) => {
 	const eraseResult2 = await db.repos.entity.eraseByIds([entity.entity_id]);
 	assert.ok(!eraseResult2.ok);
 
-	// Disallow `updateEntityData`
-	const updateResult = await db.repos.entity.updateEntity(entity.entity_id, {
+	// Disallow `update`
+	const updateResult = await db.repos.entity.update(entity.entity_id, {
 		type: 'Note',
 		content: '2',
 	});
@@ -173,10 +173,10 @@ test__EntityRepo('check filtering for directories by entity id', async ({db, ran
 	unwrap(await db.repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply'));
 
 	unwrap(await db.repos.tie.create(space2.directory_id, entityPost.entity_id, 'HasPost'));
-	const query1 = unwrap(await db.repos.entity.directoriesByEntityId(entityIndex.entity_id));
+	const query1 = unwrap(await db.repos.entity.filterDirectoriesByEntity(entityIndex.entity_id));
 	assert.equal(query1.length, 1);
 
-	const query2 = unwrap(await db.repos.entity.directoriesByEntityId(entityPost.entity_id));
+	const query2 = unwrap(await db.repos.entity.filterDirectoriesByEntity(entityPost.entity_id));
 	assert.equal(query2.length, 2);
 });
 

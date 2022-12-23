@@ -23,7 +23,7 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 	const {persona, personalCommunity} = await random.persona();
 	//TODO hack to allow for authorization; remove on init default impl
 	unwrap(
-		await db.repos.policy.createPolicy(
+		await db.repos.policy.create(
 			personalCommunity.settings.defaultRoleId,
 			permissions.DeleteCommunity,
 		),
@@ -51,7 +51,7 @@ test_communityServices('disallow deleting admin community', async ({db, random})
 		),
 	);
 	unwrap(
-		await db.repos.policy.createPolicy(
+		await db.repos.policy.create(
 			adminCommunity.settings.defaultRoleId,
 			permissions.DeleteCommunity,
 		),
@@ -127,10 +127,7 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 
 	//TODO hack to allow for authorization; remove on init default impl
 	unwrap(
-		await db.repos.policy.createPolicy(
-			community.settings.defaultRoleId,
-			permissions.DeleteCommunity,
-		),
+		await db.repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity),
 	);
 	const serviceRequest = toServiceRequestMock(db, persona);
 
@@ -142,7 +139,7 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 	);
 
 	//check community personas are gone
-	assert.ok(!unwrap(await db.repos.persona.findByCommunityId(community.community_id)));
+	assert.ok(!unwrap(await db.repos.persona.findByCommunity(community.community_id)));
 
 	//check community spaces are gone
 	const spaceResult = unwrap(await db.repos.space.filterByCommunity(community.community_id));

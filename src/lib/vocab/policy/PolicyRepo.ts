@@ -8,8 +8,8 @@ import type {Policy} from '$lib/vocab/policy/policy';
 const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
 
 export class PolicyRepo extends PostgresRepo {
-	async filterByRoleId(role_id: number): Promise<Result<{value: Policy[]}>> {
-		log.trace('[filterByRoleId]', role_id);
+	async filterByRole(role_id: number): Promise<Result<{value: Policy[]}>> {
+		log.trace('[filterByRole]', role_id);
 		const result = await this.sql<Policy[]>`
 			SELECT policy_id, role_id, permission, data, created, updated 
 			FROM policies WHERE role_id=${role_id}
@@ -33,7 +33,7 @@ export class PolicyRepo extends PostgresRepo {
 		return {ok: true, value: result};
 	}
 
-	async createPolicy(role_id: number, permission: string): Promise<Result<{value: Policy}>> {
+	async create(role_id: number, permission: string): Promise<Result<{value: Policy}>> {
 		log.trace('[createPolicy]', role_id, permission);
 		const result = await this.sql<Policy[]>`
     INSERT INTO policies (role_id, permission) VALUES (
@@ -44,7 +44,7 @@ export class PolicyRepo extends PostgresRepo {
 		return {ok: true, value: result[0]};
 	}
 
-	async updatePolicy(
+	async update(
 		policy_id: number,
 		data: object | null | undefined,
 	): Promise<Result<{value: Policy}>> {

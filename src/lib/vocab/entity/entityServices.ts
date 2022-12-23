@@ -11,7 +11,7 @@ import {
 } from '$lib/vocab/entity/entityEvents';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {cleanOrphanEntities} from './entityHelpers.server';
+import {cleanOrphanedEntities} from './entityHelpers.server';
 
 // TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
@@ -64,10 +64,10 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			}
 
 			// TODO optimize overfetching, we only want the `entity_id`
-			const directories = unwrap(await repos.entity.directoriesByEntityId(entity.entity_id));
+			const directories = unwrap(await repos.entity.filterDirectoriesByEntity(entity.entity_id));
 			// TODO optimize batch update
 			for (const directory of directories) {
-				entities.push(unwrap(await repos.entity.updateEntity(directory.entity_id, null))); // eslint-disable-line no-await-in-loop
+				entities.push(unwrap(await repos.entity.update(directory.entity_id, null))); // eslint-disable-line no-await-in-loop
 			}
 
 			return {ok: true, status: 200, value: {entities, ties}};
@@ -78,7 +78,7 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 	event: UpdateEntity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const entity = unwrap(await repos.entity.updateEntity(params.entity_id, params.data));
+			const entity = unwrap(await repos.entity.update(params.entity_id, params.data));
 			return {ok: true, status: 200, value: {entity}};
 		}),
 };
@@ -100,7 +100,7 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 		transact(async (repos) => {
 			unwrap(await repos.entity.deleteByIds(params.entityIds));
 
-			unwrap(await cleanOrphanEntities(repos));
+			unwrap(await cleanOrphanedEntities(repos));
 
 			return {ok: true, status: 200, value: null};
 		}),
