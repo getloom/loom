@@ -182,7 +182,8 @@ export class RandomVocabContext {
 		account?: Account,
 	): Promise<{
 		community: Community;
-		role: Role;
+		roles: Role[];
+		policies: Policy[];
 		assignments: Assignment[];
 		spaces: Space[];
 		persona: AccountPersona;
@@ -192,7 +193,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona, account} = await this.persona(account));
 		const params = randomCommunityParams(persona.persona_id);
-		const {community, role, personas, assignments, spaces} = unwrap(
+		const {community, roles, policies, personas, assignments, spaces} = unwrap(
 			await CreateCommunityService.perform({
 				...toServiceRequestMock(this.db, persona),
 				params,
@@ -200,7 +201,8 @@ export class RandomVocabContext {
 		);
 		return {
 			community,
-			role,
+			roles,
+			policies,
 			assignments,
 			spaces,
 			persona,

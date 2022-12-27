@@ -17,7 +17,7 @@ test__assignmentServices.before(setupDb);
 test__assignmentServices.after(teardownDb);
 
 test__assignmentServices('disallow creating duplicate assignments', async ({db, random}) => {
-	const {community, persona} = await random.community();
+	const {community, persona, roles} = await random.community();
 	unwrapError(
 		await CreateAssignmentService.perform({
 			...toServiceRequestMock(db, persona),
@@ -25,7 +25,7 @@ test__assignmentServices('disallow creating duplicate assignments', async ({db, 
 				actor: persona.persona_id,
 				community_id: community.community_id,
 				persona_id: persona.persona_id,
-				role_id: community.settings.defaultRoleId,
+				role_id: roles[0].role_id,
 			},
 		}),
 	);
@@ -49,7 +49,7 @@ test__assignmentServices(
 	},
 );
 
-test__assignmentServices('delete a assignment in a community', async ({db, random}) => {
+test__assignmentServices('delete an assignment in a community', async ({db, random}) => {
 	const {community, persona, assignments} = await random.community();
 	const assignment = assignments.find(
 		(a) => a.persona_id === persona.persona_id && a.community_id === community.community_id,

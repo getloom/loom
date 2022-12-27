@@ -22,13 +22,14 @@ import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelp
 import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
 import {
 	cleanOrphanCommunities,
-	initDefaultRoleForCommunity,
+	initTemplateGovernanceForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
+import {defaultRoles} from '$lib/app/templates';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -116,8 +117,12 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			// Create the community
 			const community = unwrap(await repos.community.create('standard', name, settings));
 
-			// Create the default role and assign it
-			const role = unwrap(await initDefaultRoleForCommunity(repos, community));
+			//TODO allow for creating user to select template from a list
+			// pull in role/policy template
+			const roleTemplates = defaultRoles;
+			const {roles, creatorAssignment, policies} = unwrap(
+				await initTemplateGovernanceForCommunity(repos, roleTemplates, community, params.actor),
+			);
 
 			// Create the community persona and its assignment
 			const communityPersona = unwrap(
@@ -126,15 +131,6 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			const communityPersonaAssignment = unwrap(
 				await repos.assignment.create(
 					communityPersona.persona_id,
-					community.community_id,
-					community.settings.defaultRoleId,
-				),
-			);
-
-			// Create the assignment for the persona that's creating the community.
-			const creatorAssignment = unwrap(
-				await repos.assignment.create(
-					params.actor,
 					community.community_id,
 					community.settings.defaultRoleId,
 				),
@@ -150,7 +146,8 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				status: 200,
 				value: {
 					community,
-					role,
+					roles,
+					policies,
 					spaces,
 					directories,
 					personas: [communityPersona],

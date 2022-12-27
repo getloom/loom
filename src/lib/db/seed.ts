@@ -23,14 +23,11 @@ import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
 import type {EntityData} from '$lib/vocab/entity/entityData';
 import {
-	policyTemplateToCreatePolicyParams,
-	roleTemplateToCreateRoleParams,
+	defaultRoles,
 	spaceTemplateToCreateSpaceParams,
 	type CommunityTemplate,
 	type EntityTemplate,
 } from '$lib/app/templates';
-import {CreateRoleService} from '$lib/vocab/role/roleServices';
-import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
 
 /* eslint-disable no-await-in-loop */
 
@@ -126,7 +123,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				await CreateAssignmentService.perform({
 					...mainAccountServiceRequest,
 					params: {
-						actor: persona.persona_id,
+						actor: communityParams.actor,
 						persona_id: persona.persona_id,
 						community_id: community.community_id,
 						role_id: community.settings.defaultRoleId,
@@ -154,36 +151,37 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				}
 			}
 		}
-		const roleIdByName: Record<string, number> = {};
-		if (communityTemplate.roles) {
-			for (const roleTemplate of communityTemplate.roles) {
-				const {role} = unwrap(
-					await CreateRoleService.perform({
-						...mainAccountServiceRequest,
-						params: roleTemplateToCreateRoleParams(
-							roleTemplate,
-							mainPersonaCreator.persona_id,
-							community.community_id,
-						),
-					}),
-				);
-				roleIdByName[role.name] = role.role_id;
-				if (roleTemplate.policies) {
-					for (const policyTemplate of roleTemplate.policies) {
-						unwrap(
-							await CreatePolicyService.perform({
-								...mainAccountServiceRequest,
-								params: policyTemplateToCreatePolicyParams(
-									policyTemplate,
-									mainPersonaCreator.persona_id,
-									roleIdByName[roleTemplate.name],
-								),
-							}),
-						);
-					}
-				}
-			}
-		}
+		//TODO re-enable role template generation once templates are available in CreateCommunity API
+		// const roleIdByName: Record<string, number> = {};
+		// if (communityTemplate.roles) {
+		// 	for (const roleTemplate of communityTemplate.roles) {
+		// 		const {role} = unwrap(
+		// 			await CreateRoleService.perform({
+		// 				...mainAccountServiceRequest,
+		// 				params: roleTemplateToCreateRoleParams(
+		// 					roleTemplate,
+		// 					mainPersonaCreator.persona_id,
+		// 					community.community_id,
+		// 				),
+		// 			}),
+		// 		);
+		// 		roleIdByName[role.name] = role.role_id;
+		// 		if (roleTemplate.policies) {
+		// 			for (const policyTemplate of roleTemplate.policies) {
+		// 				unwrap(
+		// 					await CreatePolicyService.perform({
+		// 						...mainAccountServiceRequest,
+		// 						params: policyTemplateToCreatePolicyParams(
+		// 							policyTemplate,
+		// 							mainPersonaCreator.persona_id,
+		// 							roleIdByName[roleTemplate.name],
+		// 						),
+		// 					}),
+		// 				);
+		// 			}
+		// 		}
+		// 	}
+		// }
 		if (much) await createMuchSpaces(mainAccountServiceRequest, community, nextPersona);
 		await createDefaultEntities(mainAccountServiceRequest, spaces, nextPersona);
 	}
@@ -263,22 +261,7 @@ const communityTemplates: CommunityTemplate[] = [
 				entities: ['1', '2', '3'],
 			},
 		],
-		roles: [
-			{
-				name: 'Steward',
-				creator: true,
-				policies: [
-					{permission: 'UpdateCommunitySettings'},
-					{permission: 'DeleteCommunity'},
-					{permission: 'InviteToCommunity'},
-				],
-			},
-			{
-				name: 'Member',
-				default: true,
-				policies: [{permission: 'InviteToCommunity'}],
-			},
-		],
+		roles: defaultRoles,
 	},
 ];
 

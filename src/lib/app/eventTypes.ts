@@ -295,10 +295,11 @@ export interface CreateCommunityParams {
 }
 export interface CreateCommunityResponse {
 	community: Community;
-	role: Role;
+	roles: Role[];
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
 	assignments: Assignment[];
+	policies: Policy[];
 	personas: PublicPersona[];
 }
 export type CreateCommunityResponseResult = ApiResult<CreateCommunityResponse>;
@@ -372,6 +373,7 @@ export interface CreateAccountPersonaResponse {
 	personas: ClientPersona[];
 	communities: Community[];
 	roles: Role[];
+	policies: Policy[];
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
 	assignments: Assignment[];

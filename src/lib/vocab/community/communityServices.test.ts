@@ -11,7 +11,8 @@ import {
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
-import {permissions} from '../policy/permissions';
+import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
+import {ReadPoliciesService} from '$lib/vocab/policy/policyServices';
 
 /* test_communityServices */
 const test_communityServices = suite<TestDbContext>('communityRepo');
@@ -41,7 +42,7 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 
 test_communityServices('disallow deleting admin community', async ({db, random}) => {
 	const {persona} = await random.persona();
-	//TODO next 3 chunks are hack to allow for authorization; remove on init default impl
+
 	const adminCommunity = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
 	unwrap(
 		await db.repos.assignment.create(
@@ -50,13 +51,6 @@ test_communityServices('disallow deleting admin community', async ({db, random})
 			adminCommunity.settings.defaultRoleId,
 		),
 	);
-	unwrap(
-		await db.repos.policy.create(
-			adminCommunity.settings.defaultRoleId,
-			permissions.DeleteCommunity,
-		),
-	);
-	//END HACK
 
 	assert.is(
 		unwrapError(
@@ -68,6 +62,29 @@ test_communityServices('disallow deleting admin community', async ({db, random})
 		405,
 	);
 });
+
+test_communityServices('default admin community role has all permissions', async ({db}) => {
+	const adminCommunity = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
+	const adminDefaultPolicies = unwrap(
+		await db.repos.policy.filterByRole(adminCommunity.settings.defaultRoleId),
+	);
+
+	assert.equal(adminDefaultPolicies.length, permissionNames.length);
+});
+
+test_communityServices(
+	'default personal community role has all permissions',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+
+		const personalCommunity = unwrap(await db.repos.community.findById(persona.community_id))!;
+		const personalDefaultPolicies = unwrap(
+			await db.repos.policy.filterByRole(personalCommunity.settings.defaultRoleId),
+		);
+
+		assert.equal(personalDefaultPolicies.length, permissionNames.length);
+	},
+);
 
 test_communityServices('disallow duplicate community names', async ({db, random}) => {
 	const {persona} = await random.persona();
@@ -102,24 +119,54 @@ test_communityServices('disallow reserved community names', async ({db, random})
 	);
 });
 
-test_communityServices('new communities have a default role', async ({db, random}) => {
-	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(db, persona);
+test_communityServices(
+	'new communities have default template roles & policies',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+		const serviceRequest = toServiceRequestMock(db, persona);
 
-	const params = randomCommunityParams(persona.persona_id);
-	const communityResult = unwrap(await CreateCommunityService.perform({...serviceRequest, params}));
+		const params = randomCommunityParams(persona.persona_id);
+		const communityResult = unwrap(
+			await CreateCommunityService.perform({...serviceRequest, params}),
+		);
 
-	const roleResult = unwrap(
-		await ReadRolesService.perform({
-			...serviceRequest,
-			params: {actor: persona.persona_id, community_id: communityResult.community.community_id},
-		}),
-	);
+		const roleResult = unwrap(
+			await ReadRolesService.perform({
+				...serviceRequest,
+				params: {actor: persona.persona_id, community_id: communityResult.community.community_id},
+			}),
+		);
 
-	assert.equal(roleResult.roles.length, 1);
-	assert.equal(roleResult.roles[0].role_id, communityResult.role.role_id);
-	assert.equal(roleResult.roles[0].role_id, communityResult.community.settings.defaultRoleId);
-});
+		const stewardPolicyResults = unwrap(
+			await ReadPoliciesService.perform({
+				...serviceRequest,
+				params: {actor: persona.persona_id, role_id: communityResult.roles[0].role_id},
+			}),
+		);
+
+		assert.equal(stewardPolicyResults.policies.length, permissionNames.length);
+
+		const memberPolicyResults = unwrap(
+			await ReadPoliciesService.perform({
+				...serviceRequest,
+				params: {actor: persona.persona_id, role_id: communityResult.roles[1].role_id},
+			}),
+		);
+
+		assert.equal(memberPolicyResults.policies.length, 1);
+
+		assert.equal(roleResult.roles.length, 2);
+		assert.equal(
+			roleResult.roles.map((r) => r.role_id).sort((a, b) => a - b),
+			communityResult.roles.map((r) => r.role_id).sort((a, b) => a - b),
+		);
+		assert.equal(
+			roleResult.roles.filter((r) => r.role_id === communityResult.community.settings.defaultRoleId)
+				.length,
+			1,
+		);
+	},
+);
 
 test_communityServices('deleted communities cleanup after themselves', async ({db, random}) => {
 	const {persona} = await random.persona();

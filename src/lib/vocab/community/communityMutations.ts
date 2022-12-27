@@ -6,6 +6,7 @@ import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
+import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
 export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
 	const result = await invoke();
@@ -43,7 +44,8 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 	if (!result.ok) return result;
 	const {
 		community: $community,
-		role: $role,
+		roles: $roles,
+		policies: $policies,
 		spaces: $spaces,
 		directories: $directories,
 		assignments: $assignments,
@@ -54,7 +56,8 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 	stashCommunity(ui, $community, mutated);
 	stashSpaces(ui, $spaces, $directories, mutated);
 	stashAssignments(ui, $assignments, mutated);
-	stashRoles(ui, [$role], mutated);
+	stashRoles(ui, $roles, mutated);
+	stashPolicies(ui, $policies, mutated);
 	mutated.end('CreateCommunity');
 	return result;
 };

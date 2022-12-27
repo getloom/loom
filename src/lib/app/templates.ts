@@ -61,3 +61,20 @@ export const policyTemplateToCreatePolicyParams = (
 	role_id,
 	permission: template.permission,
 });
+
+export const defaultRoles: RoleTemplate[] = [
+	{
+		name: 'Steward',
+		creator: true,
+		policies: [
+			{permission: 'UpdateCommunitySettings'},
+			{permission: 'DeleteCommunity'},
+			{permission: 'InviteToCommunity'},
+		],
+	},
+	{
+		name: 'Member',
+		default: true,
+		policies: [{permission: 'InviteToCommunity'}],
+	},
+];
