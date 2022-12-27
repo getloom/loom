@@ -84,7 +84,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 					communityPersona.persona_id,
 					{
 						type: 'Collection',
-						space_id: undefined as any, // `space_id` gets added below, after the space is created
+						directory: true,
 					},
 					null,
 				),
@@ -102,16 +102,9 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 				),
 			);
 
-			// set `uninitializedDirectory.data.space_id` now that the space has been created
+			// set `uninitializedDirectory.space_id` now that the space has been created
 			const directory = unwrap(
-				await repos.entity.update(
-					uninitializedDirectory.entity_id,
-					{
-						...uninitializedDirectory.data,
-						space_id: space.space_id,
-					},
-					space.space_id,
-				),
+				await repos.entity.update(uninitializedDirectory.entity_id, null, space.space_id),
 			) as Entity & {data: DirectoryEntityData};
 
 			return {ok: true, status: 200, value: {space, directory}};

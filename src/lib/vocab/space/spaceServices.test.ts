@@ -12,10 +12,14 @@ const test__spaceServices = suite<TestDbContext>('spaceServices');
 test__spaceServices.before(setupDb);
 test__spaceServices.after(teardownDb);
 
-test__spaceServices('space directory data has community and space ids', async ({random}) => {
-	const {space, directory} = await random.space();
-	assert.is(space.space_id, directory.data.space_id);
-});
+test__spaceServices(
+	'space directory data has space_id and directory attribute',
+	async ({random}) => {
+		const {space, directory} = await random.space();
+		assert.is(space.space_id, directory.space_id);
+		assert.is(directory.data.directory, true);
+	},
+);
 
 test__spaceServices('delete a space in multiple communities', async ({db, random}) => {
 	const {space, persona} = await random.space();

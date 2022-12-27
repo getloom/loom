@@ -34,7 +34,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 				setLastSeen(ui, entity_id, ($entity.updated || $entity.created).getTime());
 				setFreshnessByDirectoryId(ui, entity);
 			}
-			upsertFreshnessByCommunityId(ui, spaceById.get($entity.data.space_id)!.get().community_id);
+			upsertFreshnessByCommunityId(ui, spaceById.get($entity.space_id)!.get().community_id);
 			// Is the directory's space selected? If so we don't want a notification.
 			if (entity_id === spaceSelection.get()?.get().directory_id) {
 				updateLastSeen(ui, entity_id);

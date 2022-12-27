@@ -133,7 +133,7 @@ export class EntityRepo extends PostgresRepo {
 			SELECT entity_id FROM entities e
 			LEFT JOIN ties t
 			ON e.entity_id = t.dest_id
-			WHERE NOT (e.data ? 'space_id') AND t.dest_id IS NULL;
+			WHERE NOT (e.data ? 'directory') AND t.dest_id IS NULL;
 		`;
 		return {ok: true, value: data};
 	}
@@ -155,7 +155,7 @@ export class EntityRepo extends PostgresRepo {
 			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths
 			) as tdest
 			ON e.entity_id = tdest.source_id
-			WHERE data ? 'space_id';
+			WHERE data ? 'directory';
 		`;
 		log.trace('all directories pointing at entity', directories);
 		return {ok: true, value: directories};

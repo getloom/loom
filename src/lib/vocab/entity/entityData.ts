@@ -14,7 +14,7 @@ export interface BaseEntityData {
 
 export interface DirectoryEntityData extends BaseEntityData {
 	type: 'Collection';
-	space_id: number;
+	directory: true;
 }
 
 export interface NoteEntityData extends BaseEntityData {

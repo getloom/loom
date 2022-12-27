@@ -63,7 +63,7 @@ export const updateLastSeen = (ui: WritableUi, directory_id: number, time = Date
 		upsertFreshnessByCommunityId(
 			ui,
 			//TODO add directory field to space & vice versa to avoid this mess below
-			spaceById.get(directory.get().data.space_id)!.get().community_id,
+			spaceById.get(directory.get().space_id)!.get().community_id,
 		);
 	}
 };
