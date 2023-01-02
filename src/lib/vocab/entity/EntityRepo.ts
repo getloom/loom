@@ -56,7 +56,7 @@ export class EntityRepo extends PostgresRepo {
 		account_id: number,
 	): Promise<Result<{value: Array<Entity & {data: DirectoryEntityData}>}>> {
 		const data = await this.sql<Array<Entity & {data: DirectoryEntityData}>>`
-			SELECT entity_id, data, persona_id, created, updated
+			SELECT entity_id, data, persona_id, created, updated, space_id
 			FROM entities e JOIN (
 				SELECT DISTINCT s.directory_id FROM spaces s
 				JOIN (
@@ -141,7 +141,7 @@ export class EntityRepo extends PostgresRepo {
 	async filterDirectoriesByEntity(entity_id: number): Promise<Result<{value: Entity[]}>> {
 		log.trace(`looking for directories for entity: ${entity_id}`);
 		const directories = await this.sql<Entity[]>`
-			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated FROM entities e
+			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated, e.space_id FROM entities e
 			JOIN (
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
 				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
