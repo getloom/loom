@@ -18,7 +18,7 @@ import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
-// TODO security considerations
+// TODO security considerations, mainly that signup leaks account name existence
 // https://github.com/feltcoop/felt-server/pull/525#discussion_r1002323512
 
 export const SignUpService: ServiceByName['SignUp'] = {
@@ -76,12 +76,8 @@ export const SignInService: ServiceByName['SignIn'] = {
 			}
 
 			const account = unwrap(await repos.account.findByName(username));
-			if (!account) {
-				return {ok: false, status: 404, message: 'account does not exist'};
-			}
-
-			if (!(await verifyPassword(params.password, account.password))) {
-				return {ok: false, status: 400, message: 'incorrect password'};
+			if (!account || !(await verifyPassword(params.password, account.password))) {
+				return {ok: false, status: 400, message: 'invalid username or password'};
 			}
 
 			const clientSession = unwrap(await repos.account.loadClientSession(account.account_id));
