@@ -55,8 +55,7 @@
 		errorMessage = null;
 		const result = await dispatch.CreateCommunity({
 			actor: $persona.persona_id,
-			name,
-			settings: {hue},
+			template: {name, settings: {hue}},
 		});
 		pending = false;
 		if (result.ok) {

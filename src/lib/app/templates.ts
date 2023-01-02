@@ -1,12 +1,14 @@
 import type {EntityData} from '$lib/vocab/entity/entityData';
 import type {CreatePolicyParams, CreateRoleParams, CreateSpaceParams} from '$lib/app/eventTypes';
 import type {Policy} from '$lib/vocab/policy/policy';
-import type {PermissionName} from '$lib/vocab/policy/permissions';
+import {permissionNames, type PermissionName} from '$lib/vocab/policy/permissions';
+import type {InitialCommunitySettings} from '$lib/vocab/community/community';
 
 // TODO where does this belong? vocab?
 
 export interface CommunityTemplate {
 	name: string;
+	settings?: InitialCommunitySettings;
 	spaces?: SpaceTemplate[];
 	roles?: RoleTemplate[];
 }
@@ -62,7 +64,19 @@ export const policyTemplateToCreatePolicyParams = (
 	permission: template.permission,
 });
 
-export const defaultRoles: RoleTemplate[] = [
+// TODO integrate with default space data, `$lib/vocab/space/defaultSpaces.ts`
+const allPolicies: PolicyTemplate[] = permissionNames.map((permission) => ({permission}));
+
+export const defaultAdminCommunityRoles: RoleTemplate[] = [
+	{
+		name: 'Admin',
+		creator: true,
+		default: true,
+		policies: allPolicies,
+	},
+];
+
+export const defaultStandardCommunityRoles: RoleTemplate[] = [
 	{
 		name: 'Steward',
 		creator: true,
@@ -76,5 +90,14 @@ export const defaultRoles: RoleTemplate[] = [
 		name: 'Member',
 		default: true,
 		policies: [{permission: 'InviteToCommunity'}],
+	},
+];
+
+export const defaultPersonalCommunityRoles: RoleTemplate[] = [
+	{
+		name: 'Owner',
+		creator: true,
+		default: true,
+		policies: allPolicies,
 	},
 ];

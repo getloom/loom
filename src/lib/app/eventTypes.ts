@@ -21,6 +21,7 @@ import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {DispatchContext} from '$lib/app/dispatch';
 import type {ClientSession, ClientAccountSession} from '$lib/vocab/account/account';
+import type {CommunityTemplate} from '$lib/app/templates';
 
 /* eslint-disable @typescript-eslint/array-type */
 
@@ -288,10 +289,7 @@ export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswor
 
 export interface CreateCommunityParams {
 	actor: number;
-	name: string;
-	settings?: {
-		hue: number;
-	};
+	template: CommunityTemplate;
 }
 export interface CreateCommunityResponse {
 	community: Community;

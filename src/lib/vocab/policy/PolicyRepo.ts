@@ -33,11 +33,15 @@ export class PolicyRepo extends PostgresRepo {
 		return {ok: true, value: result};
 	}
 
-	async create(role_id: number, permission: string): Promise<Result<{value: Policy}>> {
+	async create(
+		role_id: number,
+		permission: string,
+		data?: object | null | undefined,
+	): Promise<Result<{value: Policy}>> {
 		log.trace('[createPolicy]', role_id, permission);
 		const result = await this.sql<Policy[]>`
-    INSERT INTO policies (role_id, permission) VALUES (
-      ${role_id}, ${permission}
+    INSERT INTO policies (role_id, permission, data) VALUES (
+      ${role_id}, ${permission}, ${data ? this.sql.json(data as any) : null}
     ) RETURNING *
   `;
 		if (!result.length) return NOT_OK;

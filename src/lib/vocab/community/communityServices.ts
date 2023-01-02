@@ -29,7 +29,7 @@ import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices'
 import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
-import {defaultRoles} from '$lib/app/templates';
+import {spaceTemplateToCreateSpaceParams, defaultStandardCommunityRoles} from '$lib/app/templates';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -91,9 +91,12 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 	event: CreateCommunity,
 	perform: (serviceRequest) =>
 		serviceRequest.transact(async (repos) => {
-			const {params, account_id} = serviceRequest;
+			const {
+				params: {actor, template},
+				account_id,
+			} = serviceRequest;
 			log.trace('creating community account_id', account_id);
-			const name = scrubPersonaName(params.name);
+			const name = scrubPersonaName(template.name);
 			const nameErrorMessage = checkPersonaName(name);
 			if (nameErrorMessage) {
 				return {ok: false, status: 400, message: nameErrorMessage};
@@ -109,37 +112,38 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 				return {ok: false, status: 409, message: 'a community with that name already exists'};
 			}
 
-			let settings = toDefaultCommunitySettings(name);
-			if (params.settings) {
-				settings = {...settings, ...params.settings};
+			const settings = toDefaultCommunitySettings(name);
+			if (template.settings) {
+				Object.assign(settings, template.settings);
 			}
 
 			// Create the community
 			const community = unwrap(await repos.community.create('standard', name, settings));
+			const {community_id} = community;
 
-			//TODO allow for creating user to select template from a list
-			// pull in role/policy template
-			const roleTemplates = defaultRoles;
-			const {roles, creatorAssignment, policies} = unwrap(
-				await initTemplateGovernanceForCommunity(repos, roleTemplates, community, params.actor),
+			const roleTemplates = template.roles?.length ? template.roles : defaultStandardCommunityRoles;
+			const {roles, assignments, policies} = unwrap(
+				await initTemplateGovernanceForCommunity(repos, roleTemplates, community, actor),
 			);
 
 			// Create the community persona and its assignment
 			const communityPersona = unwrap(
-				await repos.persona.createCommunityPersona(community.name, community.community_id),
+				await repos.persona.createCommunityPersona(community.name, community_id),
 			);
 			const communityPersonaAssignment = unwrap(
 				await repos.assignment.create(
 					communityPersona.persona_id,
-					community.community_id,
+					community_id,
 					community.settings.defaultRoleId,
 				),
 			);
+			assignments.push(communityPersonaAssignment);
 
 			// Create default spaces.
-			const {spaces, directories} = unwrap(
-				await createSpaces(serviceRequest, toDefaultSpaces(params.actor, community)),
-			);
+			const createSpacesParams = template.spaces?.length
+				? template.spaces.map((s) => spaceTemplateToCreateSpaceParams(s, actor, community_id))
+				: toDefaultSpaces(actor, community);
+			const {spaces, directories} = unwrap(await createSpaces(serviceRequest, createSpacesParams));
 
 			return {
 				ok: true,
@@ -151,7 +155,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 					spaces,
 					directories,
 					personas: [communityPersona],
-					assignments: [communityPersonaAssignment, creatorAssignment],
+					assignments,
 				},
 			};
 		}),

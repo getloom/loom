@@ -13,6 +13,12 @@ import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
 import {ReadPoliciesService} from '$lib/vocab/policy/policyServices';
+import type {Policy} from '$lib/vocab/policy/policy';
+import type {Role} from '$lib/vocab/role/role';
+
+const sortedPermissionNames = permissionNames.slice().sort();
+const toSortedPermissionNames = (policies: Policy[]) => policies.map((p) => p.permission).sort();
+const toSortedRoles = (roles: Role[]) => roles.slice().sort((a, b) => a.role_id - b.role_id);
 
 /* test_communityServices */
 const test_communityServices = suite<TestDbContext>('communityRepo');
@@ -69,7 +75,7 @@ test_communityServices('default admin community role has all permissions', async
 		await db.repos.policy.filterByRole(adminCommunity.settings.defaultRoleId),
 	);
 
-	assert.equal(adminDefaultPolicies.length, permissionNames.length);
+	assert.equal(toSortedPermissionNames(adminDefaultPolicies), sortedPermissionNames);
 });
 
 test_communityServices(
@@ -82,7 +88,7 @@ test_communityServices(
 			await db.repos.policy.filterByRole(personalCommunity.settings.defaultRoleId),
 		);
 
-		assert.equal(personalDefaultPolicies.length, permissionNames.length);
+		assert.equal(toSortedPermissionNames(personalDefaultPolicies), sortedPermissionNames);
 	},
 );
 
@@ -91,16 +97,16 @@ test_communityServices('disallow duplicate community names', async ({db, random}
 	const serviceRequest = toServiceRequestMock(db, persona);
 
 	const params = randomCommunityParams(persona.persona_id);
-	params.name += 'Aa';
+	params.template.name += 'Aa';
 	unwrap(await CreateCommunityService.perform({...serviceRequest, params}));
 
-	params.name = params.name.toLowerCase();
+	params.template.name = params.template.name.toLowerCase();
 	assert.is(
 		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
 		409,
 	);
 
-	params.name = params.name.toUpperCase();
+	params.template.name = params.template.name.toUpperCase();
 	assert.is(
 		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
 		409,
@@ -112,7 +118,7 @@ test_communityServices('disallow reserved community names', async ({db, random})
 	const serviceRequest = toServiceRequestMock(db, persona);
 
 	const params = randomCommunityParams(persona.persona_id);
-	params.name = 'docs';
+	params.template.name = 'docs';
 	assert.is(
 		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
 		409,
@@ -136,6 +142,11 @@ test_communityServices(
 				params: {actor: persona.persona_id, community_id: communityResult.community.community_id},
 			}),
 		);
+		assert.is(roleResult.roles.length, 2);
+		assert.equal(toSortedRoles(roleResult.roles), toSortedRoles(communityResult.roles));
+		assert.ok(
+			roleResult.roles.find((r) => r.role_id === communityResult.community.settings.defaultRoleId),
+		);
 
 		const stewardPolicyResults = unwrap(
 			await ReadPoliciesService.perform({
@@ -143,8 +154,7 @@ test_communityServices(
 				params: {actor: persona.persona_id, role_id: communityResult.roles[0].role_id},
 			}),
 		);
-
-		assert.equal(stewardPolicyResults.policies.length, permissionNames.length);
+		assert.equal(toSortedPermissionNames(stewardPolicyResults.policies), sortedPermissionNames);
 
 		const memberPolicyResults = unwrap(
 			await ReadPoliciesService.perform({
@@ -152,19 +162,7 @@ test_communityServices(
 				params: {actor: persona.persona_id, role_id: communityResult.roles[1].role_id},
 			}),
 		);
-
-		assert.equal(memberPolicyResults.policies.length, 1);
-
-		assert.equal(roleResult.roles.length, 2);
-		assert.equal(
-			roleResult.roles.map((r) => r.role_id).sort((a, b) => a - b),
-			communityResult.roles.map((r) => r.role_id).sort((a, b) => a - b),
-		);
-		assert.equal(
-			roleResult.roles.filter((r) => r.role_id === communityResult.community.settings.defaultRoleId)
-				.length,
-			1,
-		);
+		assert.is(memberPolicyResults.policies.length, 1);
 	},
 );
 
@@ -190,17 +188,17 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 
 	//check community spaces are gone
 	const spaceResult = unwrap(await db.repos.space.filterByCommunity(community.community_id));
-	assert.equal(spaceResult.length, 0);
+	assert.is(spaceResult.length, 0);
 
 	//check community assignments are gone
 	const assignmentResult = unwrap(
 		await db.repos.assignment.filterByCommunity(community.community_id),
 	);
-	assert.equal(assignmentResult.length, 0);
+	assert.is(assignmentResult.length, 0);
 
 	//check roles are gone
 	const roleResult = unwrap(await db.repos.role.filterByCommunity(community.community_id));
-	assert.equal(roleResult.length, 0);
+	assert.is(roleResult.length, 0);
 
 	//check community is gone
 	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));

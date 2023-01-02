@@ -9,21 +9,15 @@ import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	cleanOrphanCommunities,
 	initAdminCommunity,
-	initDefaultRoleForCommunity,
+	initTemplateGovernanceForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
-import type {Space} from '$lib/vocab/space/space';
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
-import type {Role} from '$lib/vocab/role/role';
 import type {Community} from '$lib/vocab/community/community';
 import type {ActorPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
-import {ADMIN_PERSONA_ID, GHOST_PERSONA_ID, PERSONAL_DEFAULT_ROLE} from '$lib/app/constants';
-import type {Policy} from '$lib/vocab/policy/policy';
-import {permissionNames} from '$lib/vocab/policy/permissions';
+import {ADMIN_PERSONA_ID, GHOST_PERSONA_ID} from '$lib/app/constants';
+import {defaultPersonalCommunityRoles} from '$lib/app/templates';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
 
@@ -54,31 +48,15 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 
 			const personas: ClientPersona[] = [];
 			const communities: Community[] = [];
-			const assignments: Assignment[] = [];
-			const roles: Role[] = [];
-			const policies: Policy[] = [];
-			const spaces: Space[] = [];
-			const directories: Array<Entity & {data: DirectoryEntityData}> = [];
 
 			// First create the admin community if it doesn't exist yet.
-			const initAdminCommunityValue = unwrap(await initAdminCommunity(serviceRequest));
+			const initAdminCommunityValue = unwrap(await initAdminCommunity(repos));
 
 			// Create the persona's personal community.
 			const community = unwrap(
 				await repos.community.create('personal', name, toDefaultCommunitySettings(name)),
 			);
 			communities.push(community);
-
-			// Create the default role with all permissions and assign it
-			const defaultRole = unwrap(
-				await initDefaultRoleForCommunity(repos, community, PERSONAL_DEFAULT_ROLE),
-			);
-			roles.push(defaultRole);
-			for (const permission of permissionNames) {
-				// eslint-disable-next-line no-await-in-loop
-				const policy = unwrap(await repos.policy.create(defaultRole.role_id, permission));
-				policies.push(policy);
-			}
 
 			// Create the persona.
 			log.trace('[CreateAccountPersona] creating persona', name);
@@ -87,26 +65,23 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			);
 			personas.push(persona);
 
-			// Create the persona's assignment to its personal community.
-			assignments.push(
-				unwrap(
-					await repos.assignment.create(
-						persona.persona_id,
-						community.community_id,
-						community.settings.defaultRoleId,
-					),
+			// Create the roles, policies, and persona assignment.
+			const {roles, policies, assignments} = unwrap(
+				await initTemplateGovernanceForCommunity(
+					repos,
+					defaultPersonalCommunityRoles,
+					community,
+					persona.persona_id,
 				),
 			);
 
 			// Create the default spaces.
-			const defaultSpaces = unwrap(
+			const {spaces, directories} = unwrap(
 				await createSpaces(
 					{...serviceRequest, actor: persona},
 					toDefaultSpaces(persona.persona_id, community),
 				),
 			);
-			spaces.push(...defaultSpaces.spaces);
-			directories.push(...defaultSpaces.directories);
 
 			// If the admin community was created, create the admin spaces and the persona's assignment.
 			// This is a separate step because we need to create the admin community before any others
@@ -117,9 +92,9 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				communities.push(adminCommunity);
 				personas.push(initAdminCommunityValue.persona);
 				personas.push(initAdminCommunityValue.ghost);
-				roles.push(initAdminCommunityValue.role);
+				roles.push(...initAdminCommunityValue.roles);
 				policies.push(...initAdminCommunityValue.policies);
-				assignments.push(initAdminCommunityValue.assignment);
+				assignments.push(...initAdminCommunityValue.assignments);
 
 				// Create the admin community's default spaces.
 				const defaultAdminSpaces = unwrap(

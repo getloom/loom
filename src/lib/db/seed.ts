@@ -10,7 +10,7 @@ import type {Database} from '$lib/db/Database.js';
 import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';
 import type {Community} from '$lib/vocab/community/community';
-import type {CreateCommunityParams, CreateEntityResponse, SignInParams} from '$lib/app/eventTypes';
+import type {CreateEntityResponse, SignInParams} from '$lib/app/eventTypes';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
@@ -21,17 +21,13 @@ import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
-import type {EntityData} from '$lib/vocab/entity/entityData';
 import {
-	defaultRoles,
-	spaceTemplateToCreateSpaceParams,
+	defaultStandardCommunityRoles,
 	type CommunityTemplate,
 	type EntityTemplate,
 } from '$lib/app/templates';
 
 /* eslint-disable no-await-in-loop */
-
-// TODO extract seed helpers and db methods
 
 const log = new Logger([cyan('[seed]')]);
 
@@ -107,14 +103,13 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const communities: Community[] = [];
 
 	for (const communityTemplate of communityTemplates) {
-		const communityParams: CreateCommunityParams = {
-			name: communityTemplate.name,
-			actor: mainPersonaCreator.persona_id,
-		};
 		const {community, spaces} = unwrap(
 			await CreateCommunityService.perform({
 				...mainAccountServiceRequest,
-				params: {name: communityParams.name, actor: communityParams.actor},
+				params: {
+					actor: mainPersonaCreator.persona_id,
+					template: communityTemplate,
+				},
 			}),
 		);
 		communities.push(community);
@@ -123,7 +118,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				await CreateAssignmentService.perform({
 					...mainAccountServiceRequest,
 					params: {
-						actor: communityParams.actor,
+						actor: mainPersonaCreator.persona_id,
 						persona_id: persona.persona_id,
 						community_id: community.community_id,
 						role_id: community.settings.defaultRoleId,
@@ -131,57 +126,15 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				}),
 			);
 		}
-		if (communityTemplate.spaces) {
-			for (const spaceTemplate of communityTemplate.spaces) {
-				const {space} = unwrap(
-					await CreateSpaceService.perform({
-						...mainAccountServiceRequest,
-						params: spaceTemplateToCreateSpaceParams(
-							spaceTemplate,
-							mainPersonaCreator.persona_id,
-							community.community_id,
-						),
-					}),
+		for (const space of spaces) {
+			const spaceTemplate = communityTemplate.spaces?.find((s) => s.name === space.name);
+			if (spaceTemplate?.entities) {
+				await generateEntities(
+					{serviceRequest: mainAccountServiceRequest, nextPersona, space},
+					spaceTemplate.entities,
 				);
-				if (spaceTemplate.entities) {
-					await generateEntities(
-						{serviceRequest: mainAccountServiceRequest, nextPersona, space},
-						spaceTemplate.entities,
-					);
-				}
 			}
 		}
-		//TODO re-enable role template generation once templates are available in CreateCommunity API
-		// const roleIdByName: Record<string, number> = {};
-		// if (communityTemplate.roles) {
-		// 	for (const roleTemplate of communityTemplate.roles) {
-		// 		const {role} = unwrap(
-		// 			await CreateRoleService.perform({
-		// 				...mainAccountServiceRequest,
-		// 				params: roleTemplateToCreateRoleParams(
-		// 					roleTemplate,
-		// 					mainPersonaCreator.persona_id,
-		// 					community.community_id,
-		// 				),
-		// 			}),
-		// 		);
-		// 		roleIdByName[role.name] = role.role_id;
-		// 		if (roleTemplate.policies) {
-		// 			for (const policyTemplate of roleTemplate.policies) {
-		// 				unwrap(
-		// 					await CreatePolicyService.perform({
-		// 						...mainAccountServiceRequest,
-		// 						params: policyTemplateToCreatePolicyParams(
-		// 							policyTemplate,
-		// 							mainPersonaCreator.persona_id,
-		// 							roleIdByName[roleTemplate.name],
-		// 						),
-		// 					}),
-		// 				);
-		// 			}
-		// 		}
-		// 	}
-		// }
 		if (much) await createMuchSpaces(mainAccountServiceRequest, community, nextPersona);
 		await createDefaultEntities(mainAccountServiceRequest, spaces, nextPersona);
 	}
@@ -206,7 +159,7 @@ const createDefaultEntities = async (
 
 const generateEntity = async (
 	ctx: SeedContext,
-	data: EntityData,
+	data: EntityTemplate,
 	source_id = ctx.space.directory_id,
 ): Promise<CreateEntityResponse> => {
 	const actor = ctx.nextPersona();
@@ -217,7 +170,7 @@ const generateEntity = async (
 			params: {
 				actor: actor.persona_id,
 				space_id: ctx.space.space_id,
-				data,
+				data: typeof data === 'string' ? {type: 'Note', content: data} : data,
 				ties: [{source_id}],
 			},
 		}),
@@ -231,13 +184,7 @@ const generateEntities = async (
 ): Promise<CreateEntityResponse[]> => {
 	const results: CreateEntityResponse[] = [];
 	for (const data of datas) {
-		results.push(
-			await generateEntity(
-				ctx,
-				typeof data === 'string' ? {type: 'Note', content: data} : data,
-				source_id,
-			),
-		);
+		results.push(await generateEntity(ctx, data, source_id));
 	}
 	return results;
 };
@@ -261,7 +208,7 @@ const communityTemplates: CommunityTemplate[] = [
 				entities: ['1', '2', '3'],
 			},
 		],
-		roles: defaultRoles,
+		roles: defaultStandardCommunityRoles,
 	},
 ];
 
@@ -272,8 +219,24 @@ interface SeedContext {
 }
 
 const SEED_BY_VIEW_NAME: Record<string, (ctx: SeedContext) => Promise<void>> = {
+	AdminHome: async () => {
+		// TODO
+	},
+	Home: async () => {
+		// TODO
+	},
+	PersonalHome: async () => {
+		// TODO
+	},
+	InstanceAdmin: async () => {
+		// TODO
+	},
 	Chat: async (ctx) => {
 		await generateEntities(ctx, ['Those who know do not speak.', 'Those who speak do not know.']);
+	},
+	ReplyChat: async (ctx) => {
+		const result = await generateEntity(ctx, 'Those who know do not speak.');
+		await generateEntity(ctx, 'Those who speak do not know.', result.entities[0].entity_id);
 	},
 	Board: async (ctx) => {
 		await generateEntities(ctx, [

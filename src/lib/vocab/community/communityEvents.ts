@@ -8,10 +8,9 @@ export const CreateCommunity: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			name: {type: 'string'},
-			settings: {$ref: '/schemas/InitialCommunitySettingsSchema.json'},
+			template: {type: 'object', tsType: 'CommunityTemplate'}, // TODO add template schemas and use $ref
 		},
-		required: ['actor', 'name'],
+		required: ['actor', 'template'],
 		additionalProperties: false,
 	},
 	response: {

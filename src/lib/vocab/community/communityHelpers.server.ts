@@ -2,17 +2,15 @@ import {OK, unwrap, type Result} from '@feltcoop/util';
 import {Logger} from '@feltcoop/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
-import type {NonAuthorizedServiceRequest} from '$lib/server/service';
-import {ADMIN_COMMUNITY_NAME, ADMIN_DEFAULT_ROLE, DEFAULT_ROLE} from '$lib/app/constants';
+import {ADMIN_COMMUNITY_NAME} from '$lib/app/constants';
 import type {Community} from '$lib/vocab/community/community';
 import type {PublicPersona} from '$lib/vocab/persona/persona';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
-import type {RoleTemplate} from '$lib/app/templates';
+import {defaultAdminCommunityRoles, type RoleTemplate} from '$lib/app/templates';
 import type {Policy} from '$lib/vocab/policy/policy';
-import {permissionNames} from '$lib/vocab/policy/permissions';
 
 const log = new Logger(gray('[') + blue('communityHelpers.server') + gray(']'));
 
@@ -33,21 +31,19 @@ export const cleanOrphanCommunities = async (
 };
 
 export const initAdminCommunity = async (
-	serviceRequest: NonAuthorizedServiceRequest,
+	repos: Repos,
 ): Promise<
 	Result<{
 		value?: {
 			community: Community;
 			persona: PublicPersona;
 			ghost: PublicPersona;
-			role: Role;
+			roles: Role[];
 			policies: Policy[];
-			assignment: Assignment;
+			assignments: Assignment[];
 		};
 	}>
 > => {
-	const {repos} = serviceRequest;
-
 	if (await repos.community.hasAdminCommunity()) return OK;
 
 	// The admin community doesn't exist, so this is a freshly installed instance!
@@ -63,61 +59,34 @@ export const initAdminCommunity = async (
 		),
 	);
 
-	// Create the default role with all permissions and assign it
-	const role = unwrap(await initDefaultRoleForCommunity(repos, community, ADMIN_DEFAULT_ROLE));
-	const policies: Policy[] = [];
-	for (const permission of permissionNames) {
-		// eslint-disable-next-line no-await-in-loop
-		const policy = unwrap(await repos.policy.create(role.role_id, permission));
-		policies.push(policy);
-	}
-
 	// Create the community persona.
 	const persona = unwrap(
 		await repos.persona.createCommunityPersona(community.name, community.community_id),
 	);
 
-	// Create the community persona's assignment.
-	const assignment = unwrap(
-		await repos.assignment.create(
+	// Init
+	const {roles, policies, assignments} = unwrap(
+		await initTemplateGovernanceForCommunity(
+			repos,
+			defaultAdminCommunityRoles,
+			community,
 			persona.persona_id,
-			community.community_id,
-			community.settings.defaultRoleId,
 		),
 	);
 
 	// Create the ghost persona.
 	const ghost = unwrap(await repos.persona.createGhostPersona());
 
-	return {ok: true, value: {community, persona, ghost, role, policies, assignment}};
+	return {ok: true, value: {community, persona, ghost, roles, policies, assignments}};
 };
 
 /**
- * Creates the default role for a community,
- * mutating the `community` instance with the changed settings.
- */
-export const initDefaultRoleForCommunity = async (
-	repos: Repos,
-	community: Community,
-	roleName: string = DEFAULT_ROLE,
-): Promise<Result<{value: Role}>> => {
-	const defaultRole = unwrap(await repos.role.create(community.community_id, roleName));
-
-	const settings = {...community.settings, defaultRoleId: defaultRole.role_id};
-
-	unwrap(await repos.community.updateSettings(community.community_id, settings));
-	community.settings = settings;
-
-	return {ok: true, value: defaultRole};
-};
-
-/**
- * This function takes in a RoleTemplate array & generates the provided Roles & Policies from it inside the community provided.
- * Lastly, it  creates the assignment to a role for the invoking actor.
- * @param repos - The db repo
- * @param roleTemplates - The array of role templates
- * @param community  - The community which the templates are being initialized
- * @param actor - The invoking persona
+ * Initializes community governance from templates,
+ * creating the initial roles and policies, and the assignment for the creator persona.
+ * @param repos - the db repo
+ * @param roleTemplates - the array of role templates
+ * @param community  - the community which the templates are being initialized
+ * @param actor - the creator persona
  * @returns
  */
 export const initTemplateGovernanceForCommunity = async (
@@ -125,56 +94,44 @@ export const initTemplateGovernanceForCommunity = async (
 	roleTemplates: RoleTemplate[],
 	community: Community,
 	actor: number,
-): Promise<Result<{value: {roles: Role[]; policies: Policy[]; creatorAssignment: Assignment}}>> => {
+): Promise<Result<{value: {roles: Role[]; policies: Policy[]; assignments: Assignment[]}}>> => {
+	if (!roleTemplates.length) throw Error('Expected at least one role template');
+
 	const roles: Role[] = [];
 	const policies: Policy[] = [];
 	let creatorRoleId: number | undefined;
 	let defaultRoleId: number | undefined;
-	for (const roleTemplate of roleTemplates) {
-		log.trace('generating role', roleTemplate);
-		let role: Role;
 
-		if (roleTemplate.default) {
-			// Create the default role and assign it
-			role = unwrap(
-				// eslint-disable-next-line no-await-in-loop
-				await initDefaultRoleForCommunity(repos, community, roleTemplate.name),
-			);
-			defaultRoleId = role.role_id;
-		} else {
-			role = unwrap(
-				// eslint-disable-next-line no-await-in-loop
-				await repos.role.create(community.community_id, roleTemplate.name),
-			);
-			if (roleTemplate.creator) {
-				creatorRoleId = role.role_id;
-			}
-		}
+	// TODO can this be safely batched?
+	for (const roleTemplate of roleTemplates) {
+		log.trace('creating role from template', roleTemplate);
+		const role = unwrap(
+			await repos.role.create(community.community_id, roleTemplate.name), // eslint-disable-line no-await-in-loop
+		);
 		roles.push(role);
 
+		if (roleTemplate.default) {
+			defaultRoleId = role.role_id;
+			community.settings.defaultRoleId = defaultRoleId;
+			unwrap(await repos.community.updateSettings(community.community_id, community.settings)); // eslint-disable-line no-await-in-loop
+		}
+		if (roleTemplate.creator) {
+			creatorRoleId = role.role_id;
+		}
+
 		if (roleTemplate.policies) {
+			// TODO batch with a repo method
 			for (const policyTemplate of roleTemplate.policies) {
-				const policy = unwrap(
-					// eslint-disable-next-line no-await-in-loop
-					await repos.policy.create(role.role_id, policyTemplate.permission),
-				);
-				policies.push(policy);
+				policies.push(unwrap(await repos.policy.create(role.role_id, policyTemplate.permission))); // eslint-disable-line no-await-in-loop
 			}
 		}
 	}
-	let creatorAssignment: Assignment;
-	if (creatorRoleId) {
-		creatorAssignment = unwrap(
-			await repos.assignment.create(actor, community.community_id, creatorRoleId),
-		);
-	} else if (defaultRoleId) {
-		creatorAssignment = unwrap(
-			await repos.assignment.create(actor, community.community_id, defaultRoleId),
-		);
-	} else {
-		creatorAssignment = unwrap(
-			await repos.assignment.create(actor, community.community_id, roles[0].role_id),
-		);
-	}
-	return {ok: true, value: {roles, creatorAssignment, policies}};
+
+	// TODO in some cases we probably want to add both the `creatorRoleId` and `defaultRoleId` assignment, how to express that in the template data?
+	const creatorAssignmentRoleId = creatorRoleId || defaultRoleId || roles[0].role_id;
+	const creatorAssignment = unwrap(
+		await repos.assignment.create(actor, community.community_id, creatorAssignmentRoleId),
+	);
+
+	return {ok: true, value: {roles, policies, assignments: [creatorAssignment]}};
 };

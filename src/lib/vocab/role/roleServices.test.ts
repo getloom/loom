@@ -22,6 +22,7 @@ test_roleServices('unable to delete default roles in communites', async ({db, ra
 			...serviceRequest,
 			params: {actor: persona.persona_id, role_id: community.settings.defaultRoleId},
 		}),
+		'deleting the default role is not allowed',
 	);
 
 	unwrap(
@@ -29,6 +30,7 @@ test_roleServices('unable to delete default roles in communites', async ({db, ra
 			...serviceRequest,
 			params: {actor: persona.persona_id, role_id: secondRole.role_id},
 		}),
+		'delete a non-default role',
 	);
 });
 

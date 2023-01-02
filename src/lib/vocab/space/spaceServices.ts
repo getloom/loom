@@ -67,7 +67,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 
 			// TODO run this same logic when a space path is updated
 			const existingSpaceWithUrl = unwrap(
-				await repos.space.findByCommunityUrl(community_id, params.path),
+				await repos.space.findByCommunityPath(community_id, params.path),
 			);
 			if (existingSpaceWithUrl) {
 				return {ok: false, status: 409, message: 'a space with that path already exists'};

@@ -40,16 +40,16 @@ export class SpaceRepo extends PostgresRepo {
 		return {ok: true, value: data};
 	}
 
-	async findByCommunityUrl(
+	async findByCommunityPath(
 		community_id: number,
 		path: string,
 	): Promise<Result<{value: Space | undefined}>> {
-		log.trace('[findByCommunityUrl]', community_id, path);
+		log.trace('[findByCommunityPath]', community_id, path);
 		const data = await this.sql<Space[]>`
 			SELECT space_id, name, path, icon, view, updated, created, community_id, directory_id
 			FROM spaces WHERE community_id=${community_id} AND path=${path}
 		`;
-		log.trace('[findByCommunityUrl] result', data);
+		log.trace('[findByCommunityPath] result', data);
 		return {ok: true, value: data[0]};
 	}
 

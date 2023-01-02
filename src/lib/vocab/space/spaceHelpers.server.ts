@@ -15,6 +15,7 @@ export const createSpaces = async (
 > => {
 	const spaces: Space[] = [];
 	const directories: Array<Entity & {data: DirectoryEntityData}> = [];
+	// TODO can this be safely batched? at what concurrency? or maybe make a batched repo method?
 	for (const params of serviceParams) {
 		const {space, directory} = unwrap(
 			await CreateSpaceService.perform({...serviceRequest, params}), // eslint-disable-line no-await-in-loop

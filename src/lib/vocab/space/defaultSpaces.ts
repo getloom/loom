@@ -4,6 +4,10 @@ import type {Community} from '$lib/vocab/community/community';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import {spaceTemplateToCreateSpaceParams} from '$lib/app/templates';
 
+// TODO these should probably be templates not params and integrated with the default template data,
+// and then callers can call `spaceTemplateToCreateSpaceParams` directly
+// or we can have a separate composed helper, maybe adding the suffix `Params` to these existing functions
+
 export const toDefaultSpaces = (actor: number, community: Community): CreateSpaceParams[] => {
 	const {community_id, name, type} = community;
 	return community_id === ADMIN_COMMUNITY_ID

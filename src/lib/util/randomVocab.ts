@@ -71,11 +71,7 @@ export const randomAssignmentParams = (
 });
 export const randomCommunityParams = (actor: number): CreateCommunityParams => {
 	const name = randomCommunnityName();
-	return {
-		name,
-		actor,
-		settings: {hue: randomHue(name)},
-	};
+	return {actor, template: {name, settings: {hue: randomHue(name)}}};
 };
 export const randomSpaceParams = (actor: number, community_id: number): CreateSpaceParams => ({
 	actor,
