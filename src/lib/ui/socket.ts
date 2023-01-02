@@ -39,9 +39,9 @@ export interface HandleSocketMessage {
  * The methods `connect`, `disconnect`, and `updateUrl` may be called in any state
  * to synchronously update the `status`.
  * The `open` property indicates the status of the internal `WebSocket` instance `ws`.
- * @param handleMessage Callback to handle incoming messages.
- * @param sendHeartbeat Callback to perform a heartbeat.
- * @param heartbeatInterval Milliseconds between keepalive heartbeat.
+ * @param handleMessage - The callback to handle incoming messages
+ * @param sendHeartbeat - The callback to perform a heartbeat
+ * @param heartbeatInterval - The number of milliseconds between keepalive heartbeat
  */
 export const toSocketStore = (
 	handleMessage: HandleSocketMessage,

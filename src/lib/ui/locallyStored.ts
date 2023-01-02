@@ -22,10 +22,10 @@ type Mapped<T> = T extends Map<infer TKey, infer TValue> ? Array<[TKey, TValue]>
  * There may be a way to get the best of both worlds and use `subscribe`.
  *
  * TODO try to improve the type so they need fewer or zero manual declarations
- * @param store
- * @param key localStorage key
- * @param toJson
- * @param fromJson
+ * @param store - The store to enhance
+ * @param key - The localStorage key
+ * @param toJson - An optional serializer, defaults to identity
+ * @param fromJson - An optional parser, defaults to identity
  * @returns
  */
 export const locallyStored = <

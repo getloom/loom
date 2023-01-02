@@ -12,7 +12,7 @@ import {GHOST_PERSONA_ID} from '$lib/app/constants';
 /**
  * Converts a persona name string to its regular form.
  * Used for both persona and community names.
- * @param name
+ * @param name - A persona name that may be invalid
  * @returns The scrubbed value.
  */
 export const scrubPersonaName = (name: string): string => name.trim();
@@ -25,7 +25,7 @@ const PERSONA_NAME_MIN_LENGTH = 3;
 /**
  * Checks if a persona name is valid.
  * Used for both persona and community names.
- * @param name
+ * @param name - A persona name that may be invalid
  * @returns `null` if valid, otherwise an error message
  */
 export const checkPersonaName = (name: string): string | null => {

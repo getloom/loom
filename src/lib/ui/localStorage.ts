@@ -7,9 +7,9 @@ import type {Json} from '@feltcoop/util/json.js';
 /**
  * Loads `key` and parses it as JSON.
  * If `validate` is provided and throws, it removes the `key` and returns `undefined`.
- * @param key
- * @param validate
- * @returns
+ * @param key - The unique storage key
+ * @param validate - An optional validation function to check the stored value
+ * @returns A valid value or undefined
  */
 export const loadFromStorage = <T extends Json>(
 	key: string,
@@ -36,8 +36,8 @@ export const loadFromStorage = <T extends Json>(
  * Sets `value` at `key`.
  * If `value` is `undefined` the `key` is removed,
  * but a `value` of `null` is stored.
- * @param key
- * @param value
+ * @param key - The unique storage key
+ * @param value - The `JSON.stringify`-able value to put into storage
  */
 export const setInStorage = (key: string, value: Json): void => {
 	if (!browser) return;

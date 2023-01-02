@@ -20,8 +20,8 @@ export interface CookieSessionRequest {
 
 /**
  * Parses a signed cookie value.
- * @param value Some cookie value.
- * @param options Options passed to the `cookie` parser.
+ * @param value - Some cookie value
+ * @param options - Options passed to the `cookie` parser
  * @returns If successful, the `account_id`. If invalid, `null`, and if missing, `undefined`.
  */
 export const parseSessionCookie = (
@@ -43,8 +43,8 @@ export const parseSessionCookie = (
 
 /**
  * Sets the cookie header with the given session cookie value.
- * @param res The Node or browser Response object.
- * @param value The session cookie value. (currently, the `account_id`)
+ * @param res - The Node or browser Response object
+ * @param value - The session cookie value - currently `account_id`
  */
 export const setSessionCookie = (
 	res: ServerResponse | {headers: Headers},

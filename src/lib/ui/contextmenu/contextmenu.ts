@@ -265,8 +265,13 @@ const contextmenuAction = (el: HTMLElement | SVGElement, params: ContextmenuItem
 /**
  * Opens the contextmenu, if appropriate,
  * querying the menu items from the DOM starting at the event target.
- * @param contextmenu
+ * @param target - The leaf element from which to open the contextmenu
+ * @param x - The page X coordinate at which to open the contextmenu, typically the mouse `pageX`
+ * @param y - The page Y coordinate at which to open the contextmenu, typically the mouse `pageY`
+ * @param contextmenu - The contextmenu store
+ * @param LinkContextmenu - Optional component for links
  * @returns An event handler that opens the contextmenu, unless the target is inside `excludeEl`.
+
  */
 export const openContextmenu = (
 	target: HTMLElement | SVGElement,

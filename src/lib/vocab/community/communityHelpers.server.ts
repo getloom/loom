@@ -114,10 +114,10 @@ export const initDefaultRoleForCommunity = async (
 /**
  * This function takes in a RoleTemplate array & generates the provided Roles & Policies from it inside the community provided.
  * Lastly, it  creates the assignment to a role for the invoking actor.
- * @param repos - the db repo
- * @param roleTemplates - the array of role templates
- * @param community  - the community which the templates are being initialized
- * @param actor - the invoking persona
+ * @param repos - The db repo
+ * @param roleTemplates - The array of role templates
+ * @param community  - The community which the templates are being initialized
+ * @param actor - The invoking persona
  * @returns
  */
 export const initTemplateGovernanceForCommunity = async (

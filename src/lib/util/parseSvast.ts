@@ -18,8 +18,8 @@ const ADDED_BY_FELT = Symbol();
  * This is a hacky initial implementation just to get links and mentions.
  * We plan to use MDsveX/Pfm to do this robustly/correctly:
  * https://github.com/pngwn/MDsveX/
- * @param opts `svelte-parse` options
- * @returns SVAST
+ * @param opts - `svelte-parse` options
+ * @returns A SVAST `Root` object
  */
 export const parseSvast: typeof parse = (opts) => {
 	const ast = parse(opts);

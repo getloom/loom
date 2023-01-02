@@ -66,7 +66,7 @@ export const DEFAULT_ALLOWED_HTML_ATTRIBUTES = new Set([
 /**
  * Returns the props object for a Svelte component SVAST,
  * e.g. `<Foo a="A" b="B" />` returns `{a: 'A', b: 'B'}`.
- * @param view
+ * @param view - A view's parsed SVAST
  * @returns Props object that can be splatted into a Svelte component.
  */
 export const toViewProps = (
