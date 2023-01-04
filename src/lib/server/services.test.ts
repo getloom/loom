@@ -81,7 +81,8 @@ for (const service of services.values()) {
 	const {event} = service;
 	test__services(`perform service ${event.name}`, async ({db, random}) => {
 		const account = await random.account();
-		const params = await randomEventParams[event.name](random, {account});
+		const {persona} = await random.persona(account);
+		const params = await randomEventParams[event.name](random, {account, persona});
 		if (!validateSchema(event.params)(params)) {
 			throw new Error(
 				`Failed to validate random params for service ${event.name}: ${toValidationErrorMessage(
@@ -91,7 +92,7 @@ for (const service of services.values()) {
 		}
 		const serviceRequest = toServiceRequestMock(
 			db,
-			event.authorize === false ? undefined! : (await random.persona(account)).persona,
+			event.authorize === false ? undefined! : persona,
 			session,
 			event.authenticate === false ? undefined : account.account_id,
 		);
