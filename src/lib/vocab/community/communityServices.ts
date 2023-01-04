@@ -25,11 +25,10 @@ import {
 	initTemplateGovernanceForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
-import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
-import type {AuthorizedServiceRequest} from '$lib/server/service';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {spaceTemplateToCreateSpaceParams, defaultStandardCommunityRoles} from '$lib/app/templates';
+import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
 
@@ -215,18 +214,14 @@ export const InviteToCommunityService: ServiceByName['InviteToCommunity'] = {
 				return {ok: false, status: 404, message: `cannot find a persona named ${name}`};
 			}
 
-			const {assignment} = unwrap(
-				await CreateAssignmentService.perform({
-					...(serviceRequest as AuthorizedServiceRequest), // TODO figure out how to avoid casting without extracting a helper
-					params: {
-						actor,
-						community_id,
-						persona_id: persona.persona_id,
-						role_id: community.settings.defaultRoleId,
-					},
-				}),
+			const assignment = unwrap(
+				await createAssignment(
+					persona.persona_id,
+					community,
+					community.settings.defaultRoleId,
+					repos,
+				),
 			);
-
 			return {ok: true, status: 200, value: {persona, assignment}};
 		}),
 };

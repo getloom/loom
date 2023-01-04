@@ -1,10 +1,12 @@
-import type {Result} from '@feltcoop/util';
+import {ResultError, type Result} from '@feltcoop/util';
 
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {Database} from '$lib/db/Database';
 import type {ActorPersona} from '$lib/vocab/persona/persona';
+
+// TODO try to make the `Result` types below be `ApiResult`
 
 export type ServiceMethod =
 	| 'GET'
@@ -105,10 +107,13 @@ export function toServiceRequest<TParams = any, TResult extends Result = any>(
 						})
 						.catch((err) => {
 							if (result === undefined) {
-								throw err; // rethrow errors that happen in `cb`
-							} else {
-								return result;
+								result = (
+									err instanceof ResultError
+										? {ok: false, status: (err.result as any).status || 500, message: err.message}
+										: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE}
+								) as any; // TODO try to remove typecast, see TODO above
 							}
+							return result;
 						}),
 		params,
 		session,

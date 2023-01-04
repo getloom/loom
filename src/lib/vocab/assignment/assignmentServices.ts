@@ -7,6 +7,9 @@ import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignme
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {ActorPersona} from '$lib/vocab/persona/persona';
 import {cleanOrphanCommunities} from '$lib/vocab/community/communityHelpers.server';
+import {permissions} from '$lib/vocab/policy/permissions';
+import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 
 const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 
@@ -15,33 +18,16 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 	event: CreateAssignment,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {community_id, persona_id, role_id} = params;
-			log.trace('[CreateAssignment] creating assignment', persona_id, community_id);
-
-			// Personal communities disallow assignments as a hard rule.
+			const {actor, community_id, persona_id, role_id} = params;
+			log.trace('[CreateAssignment] creating assignment for persona & role', persona_id, role_id);
+			log.trace('[CreateAssignment] checking policy', actor, community_id);
 			const community = unwrap(await repos.community.findById(community_id));
 			if (!community) {
-				return {ok: false, status: 400, message: 'community not found'};
+				return {ok: false, status: 404, message: 'no community found'};
 			}
-			if (community.type === 'personal') {
-				return {
-					ok: false,
-					status: 403,
-					message: 'personal communities disallow additional assignments',
-				};
-			}
-
-			// Check for duplicate assignments.
-			const existingAssignment = unwrap(
-				await repos.assignment.findByUniqueIds(persona_id, community_id, role_id),
-			);
-			if (existingAssignment) {
-				return {ok: false, status: 409, message: 'assignment already exists'};
-			}
-
-			// TODO test what happens if the persona doesn't exist
-
-			const assignment = unwrap(await repos.assignment.create(persona_id, community_id, role_id));
+			unwrap(await checkPolicy(permissions.CreateAssignment, actor, community_id, repos));
+			const assignment = unwrap(await createAssignment(persona_id, community, role_id, repos));
+			log.trace('[CreateAssignment] new assignment created', assignment.assignment_id);
 			return {ok: true, status: 200, value: {assignment}};
 		}),
 };
@@ -53,13 +39,14 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 	event: DeleteAssignment,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {assignment_id} = params;
+			const {actor, assignment_id} = params;
 			log.trace('[DeleteAssignment] deleting assignment ', assignment_id);
 			const assignment = unwrap(await repos.assignment.findById(assignment_id));
 			if (!assignment) {
 				return {ok: false, status: 404, message: 'no assignment found'};
 			}
 			const {persona_id, community_id} = assignment;
+			unwrap(await checkPolicy(permissions.DeleteAssignment, actor, community_id, repos));
 			// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
 			// const [personaResult, communityResult] = await Promise.all([
 			// 	repos.persona.findById(persona_id),

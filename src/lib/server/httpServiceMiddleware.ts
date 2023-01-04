@@ -72,11 +72,8 @@ export const toHttpServiceMiddleware =
 				log.error('service.perform failed with a message', service.event.name, result.message);
 			}
 		} catch (err) {
-			log.error('service.perform failed with an error', service.event.name, err);
-			result =
-				err instanceof ResultError
-					? {ok: false, status: (err.result as any).status || 500, message: err.message}
-					: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE};
+			log.error('service.perform failed with an unexpected error', service.event.name, err);
+			result = {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE};
 		}
 
 		if (!result.ok) {

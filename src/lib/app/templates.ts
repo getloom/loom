@@ -80,11 +80,7 @@ export const defaultStandardCommunityRoles: RoleTemplate[] = [
 	{
 		name: 'Steward',
 		creator: true,
-		policies: [
-			{permission: 'UpdateCommunitySettings'},
-			{permission: 'DeleteCommunity'},
-			{permission: 'InviteToCommunity'},
-		],
+		policies: allPolicies,
 	},
 	{
 		name: 'Member',

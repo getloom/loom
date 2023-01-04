@@ -121,6 +121,7 @@ export const randomPolicyParams = (
 // TODO maybe compute in relation to `RandomVocabContext`
 export interface RandomVocab {
 	account?: RandomTestAccount;
+	actor?: AccountPersona;
 	persona?: AccountPersona;
 	community?: Community;
 	space?: Space;

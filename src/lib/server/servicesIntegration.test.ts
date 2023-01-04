@@ -56,7 +56,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 		await CreateAssignmentService.perform({
 			...serviceRequest1, // add `persona2` with `persona1`
 			params: {
-				actor: persona2.persona_id,
+				actor: persona1.persona_id,
 				community_id: community.community_id,
 				persona_id: persona2.persona_id,
 				role_id: community.settings.defaultRoleId,
@@ -175,7 +175,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 		await DeleteAssignmentService.perform({
 			...serviceRequest2,
 			params: {
-				actor: persona2.persona_id,
+				actor: persona1.persona_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),

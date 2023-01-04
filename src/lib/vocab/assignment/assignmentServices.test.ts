@@ -81,7 +81,7 @@ test__assignmentServices('fail to delete a personal assignment', async ({db, ran
 });
 
 test__assignmentServices('fail to delete a community persona assignment', async ({db, random}) => {
-	const {community, personas, assignments} = await random.community();
+	const {community, persona, personas, assignments} = await random.community();
 	const communityPersona = personas.find((p) => p.type === 'community') as CommunityPersona;
 	const assignment = assignments.find(
 		(a) =>
@@ -91,7 +91,7 @@ test__assignmentServices('fail to delete a community persona assignment', async 
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(db, communityPersona),
 			params: {
-				actor: communityPersona.persona_id,
+				actor: persona.persona_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -113,7 +113,7 @@ test__assignmentServices(
 			await CreateAssignmentService.perform({
 				...toServiceRequestMock(db, persona1),
 				params: {
-					actor: persona2.persona_id,
+					actor: persona1.persona_id,
 					persona_id: persona2.persona_id,
 					community_id: community.community_id,
 					role_id: community.settings.defaultRoleId,
@@ -128,9 +128,9 @@ test__assignmentServices(
 		//Delete 1 account member, the community still exists
 		unwrap(
 			await DeleteAssignmentService.perform({
-				...toServiceRequestMock(db, persona2),
+				...toServiceRequestMock(db, persona1),
 				params: {
-					actor: persona2.persona_id,
+					actor: persona1.persona_id,
 					assignment_id: assignment2.assignment_id,
 				},
 			}),
