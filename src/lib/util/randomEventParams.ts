@@ -16,7 +16,6 @@ import {
 } from '$lib/util/randomVocab';
 import {randomHue} from '$lib/ui/color';
 import type {RandomEventParams} from '$lib/util/randomEventParamsTypes';
-import {permissions} from '$lib/vocab/policy/permissions';
 
 /* eslint-disable no-param-reassign */
 
@@ -71,8 +70,6 @@ export const randomEventParams: RandomEventParams = {
 	UpdateCommunitySettings: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community(persona, account));
-		//TODO hack to allow for authorization; remove on init default impl
-		await random.policy(community, persona, account, permissions.UpdateCommunitySettings);
 		return {
 			actor: persona.persona_id,
 			community_id: community.community_id,
@@ -87,8 +84,6 @@ export const randomEventParams: RandomEventParams = {
 	DeleteCommunity: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community(persona, account));
-		//TODO hack to allow for authorization; remove on init default impl
-		await random.policy(community, persona, account, permissions.DeleteCommunity);
 		return {actor: persona.persona_id, community_id: community.community_id};
 	},
 	ReadCommunities: async (random, {account, persona} = {}) => {
@@ -98,8 +93,6 @@ export const randomEventParams: RandomEventParams = {
 	InviteToCommunity: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community(persona, account));
-		//TODO hack to allow for authorization; remove on init default impl
-		await random.policy(community, persona, account, permissions.InviteToCommunity);
 		return {
 			actor: persona.persona_id,
 			community_id: community.community_id,

@@ -112,6 +112,68 @@ for (const service of services.values()) {
 			session.signOut(); // sign out after `SignUp` so `SignIn` works (otherwise "already signed in")
 		}
 		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
+
+		// Test failure of authorized services with an unauthorized actor.
+		if (
+			event.authorize !== false &&
+			![
+				// TODO when this list is empty, we're fully authorized!
+				'Ephemera',
+				'ReadPersona',
+				'DeletePersona',
+				'ReadCommunity',
+				'ReadCommunities',
+				'CreateCommunity',
+				'LeaveCommunity',
+				'CreateAssignment',
+				'DeleteAssignment',
+				'ReadSpace',
+				'ReadSpaces',
+				'CreateSpace',
+				'UpdateSpace',
+				'DeleteSpace',
+				'ReadEntities',
+				'ReadEntitiesPaginated',
+				'CreateEntity',
+				'UpdateEntity',
+				'EraseEntities',
+				'DeleteEntities',
+				'CreateTie',
+				'ReadTies',
+				'DeleteTie',
+				'CreateRole',
+				'ReadRoles',
+				'UpdateRole',
+				'DeleteRole',
+				'CreatePolicy',
+				'DeletePolicy',
+				'ReadPolicies',
+				'UpdatePolicy',
+			].includes(event.name)
+		) {
+			const {persona: unauthorizedPersona} = await random.persona(account);
+			const failedServiceRequest = toServiceRequestMock(
+				db,
+				unauthorizedPersona,
+				session,
+				account.account_id,
+			);
+			const failedParams = await randomEventParams[event.name](random, {
+				account,
+				persona: unauthorizedPersona,
+				community: (await random.community()).community, // create a new community without the persona, otherwise they might have permissions
+			});
+			const failedResult = await service.perform({...failedServiceRequest, params: failedParams});
+			assert.ok(
+				!failedResult.ok,
+				`Expected service ${event.name} to fail with invalid actor - are the policies checked?`,
+			);
+			assert.is(
+				failedResult.status,
+				403,
+				`Expected service ${event.name} to fail with status code 403`,
+			);
+		}
 	});
 }
 

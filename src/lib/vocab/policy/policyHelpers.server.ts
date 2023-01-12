@@ -1,8 +1,9 @@
-import {OK, unwrap, type Result} from '@feltcoop/util';
+import {unwrap} from '@feltcoop/util';
 import {Logger} from '@feltcoop/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
+import type {ApiResult} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
@@ -11,7 +12,7 @@ export const checkPolicy = async (
 	actor_id: number,
 	community_id: number,
 	repos: Repos,
-): Promise<Result<object, {message: string}>> => {
+): Promise<ApiResult<undefined>> => {
 	log.trace(
 		'checking for policies with permission for actor in community',
 		permission,
@@ -25,7 +26,7 @@ export const checkPolicy = async (
 
 	if (policy.length === 0) {
 		log.trace('no policy present for actor in community', actor_id, community_id);
-		return {ok: false, message: 'Provided actor does not have permission'};
+		return {ok: false, status: 403, message: 'actor does not have permission'};
 	}
-	return OK;
+	return {ok: true, status: 200, value: undefined};
 };
