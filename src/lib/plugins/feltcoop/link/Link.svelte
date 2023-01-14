@@ -5,9 +5,10 @@
 	import {
 		isCommunityRelativePath,
 		isCommunityRelativePathValid,
+		isNetworkRelativePath,
+		isNetworkRelativePathValid,
 		isSpaceRelativePath,
 		isSpaceRelativePathValid,
-		SPACE_RELATIVE_PATH_PREFIX,
 	} from '$lib/util/fuz';
 
 	const viewContext = getViewContext();
@@ -15,22 +16,22 @@
 
 	export let href: string;
 
+	$: networkRelative = isNetworkRelativePath(href);
 	$: communityRelative = isCommunityRelativePath(href);
 	$: spaceRelative = isSpaceRelativePath(href);
-	$: valid = communityRelative
+	$: valid = networkRelative
+		? isNetworkRelativePathValid(href)
+		: communityRelative
 		? isCommunityRelativePathValid(href)
 		: spaceRelative
 		? isSpaceRelativePathValid(href)
 		: true;
-	$: finalHref = communityRelative
+	$: finalHref = networkRelative
+		? 'https:' + href
+		: communityRelative
 		? base + '/' + $community.name + href
 		: spaceRelative
-		? base +
-		  '/' +
-		  $community.name +
-		  $space.path +
-		  '/' +
-		  href.substring(SPACE_RELATIVE_PATH_PREFIX.length)
+		? base + '/' + $community.name + $space.path + '/' + href.substring(2)
 		: href;
 	$: external = !(communityRelative || spaceRelative || href.startsWith('.'));
 	$: rel = external ? 'external noreferrer nofollow' : undefined;

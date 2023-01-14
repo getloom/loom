@@ -3,9 +3,12 @@ import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
 import {checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {
+	isCommunityRelativePath,
 	isCommunityRelativePathValid,
+	isNetworkRelativePath,
+	isNetworkRelativePathValid,
+	isSpaceRelativePath,
 	isSpaceRelativePathValid,
-	SPACE_RELATIVE_PATH_PREFIX,
 } from '$lib/util/fuz';
 
 // Used to avoids infinite loops because newly added children get walked.
@@ -69,12 +72,16 @@ const parseSvastText = (node: Text): SvelteChild => {
 		firstChar = word[0];
 		lastChar = word[lastCharIndex];
 		if (
-			(firstChar === '/' && isCommunityRelativePathValid(word)) ||
+			(isNetworkRelativePath(word) && isNetworkRelativePathValid(word)) ||
+			(isCommunityRelativePath(word) && isCommunityRelativePathValid(word)) ||
+			(isSpaceRelativePath(word) && isSpaceRelativePathValid(word)) ||
 			word.startsWith('https://') ||
-			word.startsWith('http://') ||
-			(word.startsWith(SPACE_RELATIVE_PATH_PREFIX) && isSpaceRelativePathValid(word))
+			word.startsWith('http://')
 		) {
-			// linkify text like /this and https://that.net
+			// linkify text:
+			// - /this becomes $HOST/$COMMUNITY/this
+			// - ./there becomes $HOST/$COMMUNITY/$SPACE/there
+			// - //that.net become https://that.net
 			flushPlainText();
 			(children || (children = [])).push({
 				[ADDED_BY_FELT as any]: true,
