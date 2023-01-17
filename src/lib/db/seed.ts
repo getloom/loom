@@ -238,13 +238,13 @@ const SEED_BY_VIEW_NAME: Record<string, (ctx: SeedContext) => Promise<void>> = {
 		const result = await generateEntity(ctx, 'Those who know do not speak.');
 		await generateEntity(ctx, 'Those who speak do not know.', result.entities[0].entity_id);
 	},
-	Board: async (ctx) => {
+	Forum: async (ctx) => {
 		await generateEntities(ctx, [
-			"All the world's a stage.",
-			'And all the men and women merely players.',
+			{type: 'Collection', name: 'First post', content: "All the world's a stage."},
+			{type: 'Collection', name: 'Second', content: 'And all the men and women merely players.'},
 		]);
 	},
-	Forum: async (ctx) => {
+	Board: async (ctx) => {
 		await generateEntities(ctx, [
 			'If the evidence says you’re wrong, you don’t have the right theory.',
 			'You change the theory, not the evidence.',

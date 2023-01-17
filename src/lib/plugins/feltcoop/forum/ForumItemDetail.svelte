@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {slide, scale} from 'svelte/transition';
+	import {format} from 'date-fns';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
@@ -27,7 +27,7 @@
 
 	$: items = Array.from($destTies.value).reduce((acc, tie) => {
 		if (tie.type === 'HasItem') {
-			acc.unshift(entityById.get(tie.dest_id)!);
+			acc.push(entityById.get(tie.dest_id)!);
 		}
 		return acc;
 	}, [] as Array<Readable<Entity>>);
@@ -36,8 +36,6 @@
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);
-
-	$: shouldRender = renderEntity($entity);
 
 	let replying = false;
 	let text = '';
@@ -74,56 +72,61 @@
 
 <!-- TODO delete `PersonaContextmenu` ? should that be handled by the entity contextmenu?
 And then PersonaContextmenu would be only for *session* personas? `SessionPersonaContextmenu` -->
-{#if shouldRender}
+{#if renderEntity($entity)}
 	<li
 		style="--hue: {hue}"
-		in:slide
-		out:scale
 		use:contextmenu.action={[
 			[EntityContextmenu, {persona, entity}],
 			[PersonaContextmenu, {persona: authorPersona}],
 		]}
 	>
-		<div class="item markup">
-			<button
-				class="icon-button plain-button inline deselectable"
-				class:selected={replying}
-				title="reply to @{$authorPersona.name}"
-				aria-label="reply to @{$authorPersona.name}"
-				on:click={() => (replying = !replying)}>↩</button
-			>
-			<PersonaAvatar persona={authorPersona} inline={true} />
-			<span class="content formatted">
-				<EntityContent {entity} />
-			</span>
-		</div>
-		{#if replying}
-			<!-- TODO wrapping with a div looks a little less janky to me, but still not great -->
-			<div in:slide class="reply-input">
-				<PersonaAvatar {persona} />
-				<textarea
-					placeholder="> replying to @{$authorPersona.name}"
-					on:keydown={onKeydown}
-					bind:value={text}
-					bind:this={replyInputEl}
-				/>
+		<div class="wrapper">
+			<div class="signature">
+				<PersonaAvatar persona={authorPersona} />
+				{format($entity.created, 'Pp')}
 			</div>
-		{/if}
+
+			<div class="markup formatted">
+				{#if $entity.data.type === 'Collection'}
+					<div>{$entity.data.name}</div>
+					<div><EntityContent {entity} /></div>
+				{:else}
+					<EntityContent {entity} />
+				{/if}
+			</div>
+
+			<div>
+				<button
+					class="icon-button plain-button"
+					title="reply to @{$authorPersona.name}"
+					aria-label="reply to @{$authorPersona.name}"
+					on:click={() => (replying = !replying)}>↩</button
+				>
+				{#if replying}
+					<textarea
+						placeholder="> replying to @{$authorPersona.name}"
+						on:keydown={onKeydown}
+						bind:value={text}
+						bind:this={replyInputEl}
+					/>
+				{/if}
+			</div>
+		</div>
 		{#if items.length}
 			<div class="items">
-				<ol class="panel">
+				<ul class="panel">
 					{#each items as item (item)}
 						<svelte:self entity={item} {space} {persona} />
 					{/each}
-				</ol>
+				</ul>
 			</div>
 		{/if}
 	</li>
 {/if}
 
 <style>
-	.content {
-		padding-left: var(--icon_size);
+	.wrapper {
+		width: 100%;
 	}
 	li {
 		align-items: flex-start;
@@ -133,16 +136,16 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 	li:last-child {
 		margin-bottom: 0;
 	}
-	ol {
+	ul {
 		padding: var(--spacing_md);
 		padding-right: var(--spacing_xs);
 		padding-bottom: var(--spacing_xs);
 	}
-	.item {
-		width: 100%;
+	.signature {
+		display: flex;
+		align-items: center;
 		--icon_size: var(--icon_size_xs);
-		/* TODO this shouldn't be needed after upgrading Felt for .markup -> .flow  */
-		display: block;
+		justify-content: space-between;
 	}
 	.items {
 		width: 100%;
@@ -150,14 +153,5 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		padding-left: var(--spacing_xl3);
 		padding-right: 0;
 		padding-bottom: 0;
-	}
-	.reply-input {
-		width: 100%;
-		padding-left: calc(2 * var(--icon_size_md));
-		--icon_size: var(--icon_size_xs);
-		display: flex;
-	}
-	.reply-input textarea {
-		margin-left: var(--icon_size);
 	}
 </style>

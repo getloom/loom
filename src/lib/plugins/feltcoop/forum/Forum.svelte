@@ -1,21 +1,21 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
-	import {readable} from '@feltcoop/svelte-gettable-stores';
+	import {type Readable, readable} from '@feltcoop/svelte-gettable-stores';
 
-	import TextInput from '$lib/ui/TextInput.svelte';
 	import ForumItems from '$lib/plugins/feltcoop/forum/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
+	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getViewContext} from '$lib/vocab/view/view';
+	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({persona, space, community} = $viewContext);
 
 	const {dispatch, socket} = getApp();
 
-	let text = '';
-
+	//TODO once QueryEntities interface is in place this should initialize a "posts" collection
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? dispatch.QueryEntities({
@@ -28,29 +28,41 @@
 	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
 	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
 
-	const createEntity = async () => {
-		const content = text.trim(); // TODO parse to trim? regularize step?
-
-		if (!content) return;
-		await dispatch.CreateEntity({
-			actor: $persona.persona_id,
-			space_id: $space.space_id,
-			data: {type: 'Note', content},
-			ties: [{source_id: $space.directory_id}],
-		});
-		text = '';
-	};
-
-	const onSubmit = async () => {
-		await createEntity();
+	//TODO this should be readable
+	let selectedPost: Readable<Entity> | null = null as any;
+	const selectPost = (post: Readable<Entity>) => {
+		if (post.get().data.type !== 'Collection') return;
+		if (selectedPost === post) {
+			selectedPost = null;
+		} else {
+			selectedPost = post;
+		}
 	};
 </script>
 
 <div class="forum">
-	<TextInput {persona} placeholder="> new topic" on:submit={onSubmit} bind:value={text} />
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<ForumItems {persona} {entities} />
+			<ForumItems {entities} {space} {persona} {selectedPost} {selectPost} />
+			{#if !selectedPost}
+				<button
+					on:click={() =>
+						dispatch.OpenDialog({
+							Component: CreateEntityForm,
+							props: {
+								done: () => dispatch.CloseDialog(),
+								entityName: 'post',
+								fields: {name: true, content: true},
+								persona,
+								community,
+								space,
+							},
+						})}>Submit a new post</button
+				>
+			{/if}
+			<!-- TODO handle query failures and add retry button, see https://github.com/feltcoop/felt-server/pull/514#discussion_r998626893 -->
+			<!-- {:else if $queryStatus === 'failure'}
+				<Message status="error">{$queryError.message}</Message> -->
 		{:else}
 			<PendingAnimation />
 		{/if}
@@ -69,6 +81,7 @@
 		overflow: auto;
 		flex: 1;
 		display: flex;
+		/* makes scrolling start at the bottom */
 		flex-direction: column;
 	}
 </style>

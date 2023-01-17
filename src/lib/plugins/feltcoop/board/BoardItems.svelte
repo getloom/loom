@@ -2,7 +2,6 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import BoardItemSummary from '$lib/plugins/feltcoop/board/BoardItemSummary.svelte';
 	import BoardItemDetail from '$lib/plugins/feltcoop/board/BoardItemDetail.svelte';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
@@ -10,34 +9,12 @@
 	export let entities: Readable<Array<Readable<Entity>>>;
 	export let space: Readable<Space>;
 	export let persona: Readable<AccountPersona>;
-	export let selectedPost: Readable<Entity> | null;
-	export let selectPost: (post: Readable<Entity>) => void;
-
-	const goBack = () => {
-		selectPost(selectedPost!);
-	};
-
-	//TODO in directory structure, this would just grab the "lists" collection from the dir
-	$: collectionEntities = $entities?.filter((e) => e.get().data.type === 'Collection');
 </script>
 
-<!-- TODO possibly remove the `ul` wrapper and change the `li`s to `div`s -->
+<!-- TODO possibly remove the `ol` wrapper and change the `li`s to `div`s -->
 
-{#if selectedPost}
-	<button on:click={goBack}>Go Back</button>
-	<div class="wrapper">
-		<BoardItemDetail entity={selectedPost} {space} {persona} />
-	</div>
-{:else}
-	<ul>
-		{#each collectionEntities as entity (entity)}
-			<BoardItemSummary {persona} {entity} {selectPost} />
-		{/each}
-	</ul>
-{/if}
-
-<style>
-	.wrapper {
-		padding: var(--spacing_md);
-	}
-</style>
+<ol>
+	{#each $entities as entity (entity)}
+		<BoardItemDetail {persona} {entity} {space} />
+	{/each}
+</ol>

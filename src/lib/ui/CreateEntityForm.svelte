@@ -20,7 +20,7 @@
 	export let community: Readable<Community>;
 	export let space: Readable<Space>;
 	export let type = 'Collection';
-	export let fields: {name?: boolean; content?: boolean} = {name: true, content: true}; // TODO add customization like display names for each field
+	export let fields: {name?: boolean; content?: boolean} = {content: true}; // TODO add customization like display names for each field
 
 	let name = '';
 	let content = '';
@@ -75,8 +75,10 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<h2>Create a new {entityName}</h2>
-	<ContextInfo {persona} {community} {space} />
+	<slot name="header">
+		<h2>Create a new {entityName}</h2>
+		<ContextInfo {persona} {community} {space} />
+	</slot>
 	<fieldset>
 		{#if fields.name}
 			<label>
@@ -93,7 +95,7 @@
 		{/if}
 		{#if fields.content}
 			<label>
-				<div class="title">content</div>
+				<div class="title"><slot name="content_title">content</slot></div>
 				<textarea
 					placeholder=">"
 					bind:this={contentEl}
@@ -103,9 +105,11 @@
 				/>
 			</label>
 		{/if}
-		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
-		{/if}
+		<slot name="error" {errorMessage}>
+			{#if errorMessage}
+				<Message status="error">{errorMessage}</Message>
+			{/if}
+		</slot>
 		<PendingButton on:click={create} pending={status === 'pending'}
 			>create {entityName.toLowerCase()}</PendingButton
 		>
