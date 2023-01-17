@@ -1,6 +1,10 @@
 export const AccountSchema = {
 	$id: '/schemas/Account.json',
 	type: 'object',
+	description: `
+		Represents the point of entry to the system and is responsible for managing authentication to the system. 
+		It holds top level user data and is the relation through which all other data is loaded for the client.
+	`,
 	properties: {
 		account_id: {type: 'number'},
 		name: {type: 'string'},
@@ -16,6 +20,9 @@ export const AccountSchema = {
 export const ClientAccountSchema = {
 	$id: '/schemas/ClientAccount.json',
 	type: 'object',
+	description: `
+		A client-facing subset of an Account. Excludes 'password' for security.
+	`,
 	properties: {
 		account_id: {type: 'number'},
 		name: {type: 'string'},
@@ -30,6 +37,9 @@ export const ClientAccountSchema = {
 export const AccountSettingsSchema = {
 	$id: '/schemas/AccountSettings.json',
 	type: 'object',
+	description: `
+		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+	`,
 	properties: {
 		darkmode: {type: 'boolean'},
 	},
@@ -39,6 +49,9 @@ export const AccountSettingsSchema = {
 
 export const ClientSessionSchema = {
 	$id: '/schemas/ClientSession.json',
+	description: `
+		The session data loaded on each page for authenticated and unauthenticated users.
+	`,
 	anyOf: [{$ref: '/schemas/ClientAccountSession.json'}, {$ref: '/schemas/ClientGuestSession.json'}],
 	tsType: '(ClientAccountSession | ClientGuestSession)',
 };
@@ -46,6 +59,9 @@ export const ClientSessionSchema = {
 export const ClientAccountSessionSchema = {
 	$id: '/schemas/ClientAccountSession.json',
 	type: 'object',
+	description: `
+		The session data loaded on each page for authenticated users.
+	`,
 	properties: {
 		account: {$ref: '/schemas/ClientAccount.json', tsType: 'ClientAccount'},
 		sessionPersonas: {
@@ -102,6 +118,9 @@ export const ClientAccountSessionSchema = {
 export const ClientGuestSessionSchema = {
 	$id: '/schemas/ClientGuestSession.json',
 	type: 'object',
+	description: `
+		A type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.
+	`,
 	properties: {
 		guest: {enum: [true]},
 	},

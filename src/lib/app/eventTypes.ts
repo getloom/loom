@@ -239,6 +239,11 @@ export interface SignUpParams {
 	password: string;
 }
 export interface SignUpResponse {
+	/**
+	 *
+	 * 		The session data loaded on each page for authenticated users.
+	 *
+	 */
 	session: ClientAccountSession;
 }
 export type SignUpResponseResult = ApiResult<SignUpResponse>;
@@ -248,6 +253,11 @@ export interface SignInParams {
 	password: string;
 }
 export interface SignInResponse {
+	/**
+	 *
+	 * 		The session data loaded on each page for authenticated users.
+	 *
+	 */
 	session: ClientAccountSession;
 }
 export type SignInResponseResult = ApiResult<SignInResponse>;
@@ -257,13 +267,28 @@ export type SignOutResponse = null;
 export type SignOutResponseResult = ApiResult<SignOutResponse>;
 
 export interface UpdateAccountSettingsParams {
+	/**
+	 *
+	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+	 *
+	 */
 	settings: {
 		darkmode?: boolean;
 	};
 }
+/**
+ *
+ * 		A client-facing subset of an Account. Excludes 'password' for security.
+ *
+ */
 export interface UpdateAccountSettingsResponse {
 	account_id: number;
 	name: string;
+	/**
+	 *
+	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+	 *
+	 */
 	settings: {
 		darkmode?: boolean;
 	};
@@ -276,9 +301,19 @@ export interface UpdateAccountPasswordParams {
 	oldPassword: string;
 	newPassword: string;
 }
+/**
+ *
+ * 		A client-facing subset of an Account. Excludes 'password' for security.
+ *
+ */
 export interface UpdateAccountPasswordResponse {
 	account_id: number;
 	name: string;
+	/**
+	 *
+	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+	 *
+	 */
 	settings: {
 		darkmode?: boolean;
 	};
@@ -292,6 +327,13 @@ export interface CreateCommunityParams {
 	template: CommunityTemplate;
 }
 export interface CreateCommunityResponse {
+	/**
+	 *
+	 * 		Communities represent the membrane around the places Personas can interact with each other or with system level data.
+	 * 		They have self contained governance and ownership of Spaces within them.
+	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
+	 *
+	 */
 	community: Community;
 	roles: Role[];
 	spaces: Space[];
@@ -307,6 +349,13 @@ export interface ReadCommunityParams {
 	community_id: number;
 }
 export interface ReadCommunityResponse {
+	/**
+	 *
+	 * 		Communities represent the membrane around the places Personas can interact with each other or with system level data.
+	 * 		They have self contained governance and ownership of Spaces within them.
+	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
+	 *
+	 */
 	community: Community;
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
@@ -327,6 +376,11 @@ export type ReadCommunitiesResponseResult = ApiResult<ReadCommunitiesResponse>;
 export interface UpdateCommunitySettingsParams {
 	actor: number;
 	community_id: number;
+	/**
+	 *
+	 * 		A nested set of attributes on Community. Holds all community level settings.
+	 *
+	 */
 	settings: {
 		hue: number;
 		defaultRoleId: number;
@@ -351,6 +405,11 @@ export interface InviteToCommunityParams {
 	name: string;
 }
 export interface InviteToCommunityResponse {
+	/**
+	 *
+	 * 		A subset of a Persona available to all clients in a community.
+	 *
+	 */
 	persona: PublicPersona;
 	assignment: Assignment;
 }
@@ -383,6 +442,11 @@ export interface ReadPersonaParams {
 	persona_id: number;
 }
 export interface ReadPersonaResponse {
+	/**
+	 *
+	 * 		A subset of a Persona available to all clients in a community.
+	 *
+	 */
 	persona: PublicPersona;
 }
 export type ReadPersonaResponseResult = ApiResult<ReadPersonaResponse>;

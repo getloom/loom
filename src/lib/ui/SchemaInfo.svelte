@@ -20,6 +20,11 @@
 			{/if}
 			<small class="type">{schema.type || 'unknown'}</small>
 		</div>
+		{#if schema.description}
+			<div class="description">
+				{schema.description}
+			</div>
+		{/if}
 		{#if properties}
 			{#each properties as [propertyName, propertySchema]}
 				<div class="property">
@@ -53,6 +58,14 @@
 	.type {
 		padding: var(--spacing_lg);
 		background: none;
+		font-family: var(--font_family_mono);
+	}
+	.description {
+		display: flex;
+		align-items: center;
+		background-color: var(--tint_dark_1);
+		font-size: var(--font_size_lg);
+		padding: var(--spacing_md);
 		font-family: var(--font_family_mono);
 	}
 	.property {

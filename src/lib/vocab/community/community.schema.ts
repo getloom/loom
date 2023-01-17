@@ -4,6 +4,11 @@ import type {CommunitySettings} from '$lib/vocab/community/community';
 export const CommunitySchema = {
 	$id: '/schemas/Community.json',
 	type: 'object',
+	description: `
+		Communities represent the membrane around the places Personas can interact with each other or with system level data.
+		They have self contained governance and ownership of Spaces within them.
+		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
+	`,
 	properties: {
 		community_id: {type: 'number'},
 		type: {type: 'string', enum: ['standard', 'personal']},
@@ -19,6 +24,9 @@ export const CommunitySchema = {
 export const CommunitySettingsSchema = {
 	$id: '/schemas/CommunitySettings.json',
 	type: 'object',
+	description: `
+		A nested set of attributes on Community. Holds all community level settings.
+	`,
 	properties: {
 		hue: {type: 'number'},
 		defaultRoleId: {type: 'number'},
@@ -37,6 +45,9 @@ export const CommunitySettingsSchema = {
 export const InitialCommunitySettingsSchema = {
 	$id: '/schemas/InitialCommunitySettingsSchema.json',
 	type: 'object',
+	description: `
+		A subset of CommunitySettings needed for defaults at the time of Community creation.
+	`,
 	properties: {
 		hue: {type: 'number'},
 	},
