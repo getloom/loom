@@ -7,7 +7,7 @@ export const up = async (sql: Sql<any>): Promise<void> => {
 		SELECT * FROM entities WHERE data ? 'name' AND NOT data ? 'content'
 	`;
 	for (const entity of entities) {
-		const data = {...entity.data, content: entity.name, name: undefined};
+		const data = {...entity.data, content: entity.data.name, name: undefined};
 		await sql`
 			UPDATE entities
 			SET data=${sql.json(data)}
