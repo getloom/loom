@@ -8,7 +8,6 @@ import {
 } from '$lib/vocab/account/accountMutations';
 import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaMutations';
 import {
-	ReadCommunities,
 	ReadCommunity,
 	CreateCommunity,
 	UpdateCommunitySettings,
@@ -54,7 +53,6 @@ export const mutations: Record<string, Mutation> = {
 	CreateAccountPersona,
 	DeletePersona,
 	// communityMutations
-	ReadCommunities,
 	ReadCommunity,
 	CreateCommunity,
 	UpdateCommunitySettings,

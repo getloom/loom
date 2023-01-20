@@ -86,10 +86,6 @@ export const randomEventParams: RandomEventParams = {
 		if (!community) ({community} = await random.community(persona, account));
 		return {actor: persona.persona_id, community_id: community.community_id};
 	},
-	ReadCommunities: async (random, {account, persona} = {}) => {
-		if (!persona) ({persona} = await random.persona(account));
-		return {actor: persona.persona_id};
-	},
 	InviteToCommunity: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community(persona, account));

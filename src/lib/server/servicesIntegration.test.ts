@@ -4,11 +4,7 @@ import {unwrap} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {
-	ReadCommunitiesService,
-	ReadCommunityService,
-	DeleteCommunityService,
-} from '$lib/vocab/community/communityServices';
+import {ReadCommunityService, DeleteCommunityService} from '$lib/vocab/community/communityServices';
 import {DeleteSpaceService, ReadSpacesService} from '$lib/vocab/space/spaceServices';
 import {ReadEntitiesService} from '$lib/vocab/entity/entityServices';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
@@ -113,13 +109,8 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 	assert.is(foundCommunity.name, community.name);
 
-	const {communities: filteredCommunities} = unwrap(
-		await ReadCommunitiesService.perform({
-			...serviceRequest2,
-			params: {actor: persona2.persona_id},
-		}),
-	);
-	assert.is(filteredCommunities.length, 3);
+	assert.is(unwrap(await db.repos.community.filterByAccount(persona2.account_id)).length, 3);
+	assert.is(unwrap(await db.repos.community.filterByPersona(persona2.persona_id)).length, 2);
 
 	// TODO add a service event?
 	assert.equal(

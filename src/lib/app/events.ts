@@ -9,7 +9,6 @@ import {
 import {
 	CreateCommunity,
 	ReadCommunity,
-	ReadCommunities,
 	UpdateCommunitySettings,
 	DeleteCommunity,
 	InviteToCommunity,
@@ -58,7 +57,6 @@ export const eventInfos: EventInfo[] = [
 	// communityEvents
 	CreateCommunity,
 	ReadCommunity,
-	ReadCommunities,
 	UpdateCommunitySettings,
 	DeleteCommunity,
 	InviteToCommunity,

@@ -89,34 +89,6 @@ export const ReadCommunity: ServiceEventInfo = {
 	},
 };
 
-export const ReadCommunities: ServiceEventInfo = {
-	type: 'ServiceEvent',
-	name: 'ReadCommunities',
-	params: {
-		$id: '/schemas/ReadCommunitiesParams.json',
-		type: 'object',
-		properties: {
-			actor: {type: 'number'},
-		},
-		required: ['actor'],
-		additionalProperties: false,
-	},
-	response: {
-		$id: '/schemas/ReadCommunitiesResponse.json',
-		type: 'object',
-		properties: {
-			communities: {type: 'array', items: {$ref: '/schemas/Community.json', tsType: 'Community'}},
-		},
-		required: ['communities'],
-		additionalProperties: false,
-	},
-	returns: 'Promise<ReadCommunitiesResponseResult>',
-	route: {
-		path: '/api/v1/communities',
-		method: 'GET',
-	},
-};
-
 export const UpdateCommunitySettings: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'UpdateCommunitySettings',

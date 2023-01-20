@@ -8,16 +8,6 @@ import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignme
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
-export const ReadCommunities: Mutations['ReadCommunities'] = async ({invoke}) => {
-	const result = await invoke();
-	// TODO These aren't cached like normal session communities because it's an admin-only endpoint.
-	// However if they were cached, we would be able to get things like contextmenu actions for them.
-	// But they'd conflict with existing data --
-	// for example, these communities shouldn't be added to the main nav,
-	// but that's what would happen if added to the current data stuctures.
-	return result;
-};
-
 export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;

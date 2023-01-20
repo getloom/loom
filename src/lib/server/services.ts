@@ -6,7 +6,6 @@ import {
 } from '$lib/vocab/persona/personaServices';
 import {
 	ReadCommunityService,
-	ReadCommunitiesService,
 	CreateCommunityService,
 	UpdateCommunitySettingsService,
 	DeleteCommunityService,
@@ -68,7 +67,6 @@ export const services: Map<string, Service> = new Map(
 		DeletePersonaService,
 		// communityServices
 		ReadCommunityService,
-		ReadCommunitiesService,
 		CreateCommunityService,
 		UpdateCommunitySettingsService,
 		DeleteCommunityService,

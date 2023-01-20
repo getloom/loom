@@ -33,7 +33,6 @@ export type ServiceEventName =
 	| 'UpdateAccountPassword'
 	| 'CreateCommunity'
 	| 'ReadCommunity'
-	| 'ReadCommunities'
 	| 'UpdateCommunitySettings'
 	| 'DeleteCommunity'
 	| 'InviteToCommunity'
@@ -85,7 +84,6 @@ export interface EventParamsByName {
 	UpdateAccountPassword: UpdateAccountPasswordParams;
 	CreateCommunity: CreateCommunityParams;
 	ReadCommunity: ReadCommunityParams;
-	ReadCommunities: ReadCommunitiesParams;
 	UpdateCommunitySettings: UpdateCommunitySettingsParams;
 	DeleteCommunity: DeleteCommunityParams;
 	InviteToCommunity: InviteToCommunityParams;
@@ -135,7 +133,6 @@ export interface EventResponseByName {
 	UpdateAccountPassword: UpdateAccountPasswordResponse;
 	CreateCommunity: CreateCommunityResponse;
 	ReadCommunity: ReadCommunityResponse;
-	ReadCommunities: ReadCommunitiesResponse;
 	UpdateCommunitySettings: UpdateCommunitySettingsResponse;
 	DeleteCommunity: DeleteCommunityResponse;
 	InviteToCommunity: InviteToCommunityResponse;
@@ -189,7 +186,6 @@ export interface ServiceByName {
 	>;
 	DeletePersona: AuthorizedService<DeletePersonaParams, DeletePersonaResponseResult>;
 	ReadCommunity: AuthorizedService<ReadCommunityParams, ReadCommunityResponseResult>;
-	ReadCommunities: AuthorizedService<ReadCommunitiesParams, ReadCommunitiesResponseResult>;
 	CreateCommunity: AuthorizedService<CreateCommunityParams, CreateCommunityResponseResult>;
 	UpdateCommunitySettings: AuthorizedService<
 		UpdateCommunitySettingsParams,
@@ -356,14 +352,6 @@ export interface ReadCommunityResponse {
 	personas: PublicPersona[];
 }
 export type ReadCommunityResponseResult = ApiResult<ReadCommunityResponse>;
-
-export interface ReadCommunitiesParams {
-	actor: number;
-}
-export interface ReadCommunitiesResponse {
-	communities: Community[];
-}
-export type ReadCommunitiesResponseResult = ApiResult<ReadCommunitiesResponse>;
 
 export interface UpdateCommunitySettingsParams {
 	actor: number;
@@ -738,7 +726,6 @@ export interface Dispatch {
 	) => Promise<UpdateAccountPasswordResponseResult>;
 	CreateCommunity: (params: CreateCommunityParams) => Promise<CreateCommunityResponseResult>;
 	ReadCommunity: (params: ReadCommunityParams) => Promise<ReadCommunityResponseResult>;
-	ReadCommunities: (params: ReadCommunitiesParams) => Promise<ReadCommunitiesResponseResult>;
 	UpdateCommunitySettings: (
 		params: UpdateCommunitySettingsParams,
 	) => Promise<UpdateCommunitySettingsResponseResult>;
@@ -812,9 +799,6 @@ export interface Mutations {
 	ReadCommunity: (
 		ctx: DispatchContext<ReadCommunityParams, ReadCommunityResponseResult>,
 	) => Promise<ReadCommunityResponseResult>;
-	ReadCommunities: (
-		ctx: DispatchContext<ReadCommunitiesParams, ReadCommunitiesResponseResult>,
-	) => Promise<ReadCommunitiesResponseResult>;
 	UpdateCommunitySettings: (
 		ctx: DispatchContext<UpdateCommunitySettingsParams, UpdateCommunitySettingsResponseResult>,
 	) => Promise<UpdateCommunitySettingsResponseResult>;

@@ -5,7 +5,6 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {
 	CreateCommunity,
-	ReadCommunities,
 	ReadCommunity,
 	UpdateCommunitySettings,
 	DeleteCommunity,
@@ -31,15 +30,6 @@ import {spaceTemplateToCreateSpaceParams, defaultStandardCommunityRoles} from '$
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 
 const log = new Logger(gray('[') + blue('communityServices') + gray(']'));
-
-// Returns a list of community objects
-export const ReadCommunitiesService: ServiceByName['ReadCommunities'] = {
-	event: ReadCommunities,
-	perform: async ({repos, account_id}) => {
-		const communities = unwrap(await repos.community.filterByAccount(account_id));
-		return {ok: true, status: 200, value: {communities}};
-	},
-};
 
 //Returns a single community with its related data.
 export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
