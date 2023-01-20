@@ -16,13 +16,7 @@ export interface Community {
 	 * 		A nested set of attributes on Community. Holds all community level settings.
 	 *
 	 */
-	settings: {
-		hue: number;
-		defaultRoleId: number;
-		instance?: {
-			allowedAccountNames?: string[];
-		};
-	};
+	settings: CommunitySettings;
 	created: Date;
 	updated: Date | null;
 }

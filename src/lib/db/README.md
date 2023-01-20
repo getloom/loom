@@ -75,4 +75,5 @@ gro lib/db/create --no-seed # creates the database with no initial data
 The tasks it composes can be run individually:
 
 - `gro lib/db/destroy`
+- `gro lib/db/migrate`
 - `gro lib/db/seed`

@@ -13,7 +13,7 @@ export const CommunitySchema = {
 		community_id: {type: 'number'},
 		type: {type: 'string', enum: ['standard', 'personal']},
 		name: {type: 'string'},
-		settings: {$ref: '/schemas/CommunitySettings.json'},
+		settings: {$ref: '/schemas/CommunitySettings.json', tsType: 'CommunitySettings'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
@@ -43,7 +43,7 @@ export const CommunitySettingsSchema = {
 };
 
 export const InitialCommunitySettingsSchema = {
-	$id: '/schemas/InitialCommunitySettingsSchema.json',
+	$id: '/schemas/InitialCommunitySettings.json',
 	type: 'object',
 	description: `
 		A subset of CommunitySettings needed for defaults at the time of Community creation.

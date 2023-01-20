@@ -59,7 +59,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		</div>
 		<div class="markup">
 			{#if $repliedToEntity && $repliedToPersona}
-				<div class="panel">
+				<div class="panel ellipsis">
 					<Mention name={$repliedToPersona.name} /> said:
 					{$repliedToEntity.data.content}
 				</div>
@@ -93,7 +93,6 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 	}
 	.reply {
 		--icon_size: var(--icon_size_sm);
-		--input_height: var(--icon_size_sm);
 	}
 	.markup {
 		/* needed for letters like y j g */
@@ -102,9 +101,6 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 	.panel {
 		background-color: var(--tint_dark_2);
 		padding: var(--spacing_xs);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 		margin-bottom: var(--spacing_xs);
 	}
 </style>

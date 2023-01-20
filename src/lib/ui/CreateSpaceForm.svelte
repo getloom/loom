@@ -112,7 +112,6 @@
 				{#each creatableViewTemplates as viewTemplate (viewTemplate.name)}
 					<button
 						type="button"
-						value={viewTemplate}
 						class:selected={selectedViewTemplate === viewTemplate}
 						on:click={() => {
 							selectedViewTemplate = viewTemplate;

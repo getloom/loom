@@ -35,7 +35,7 @@ import type {AsyncStatus} from '@feltcoop/util/async.js';
 
 import type {ApiResult} from '$lib/server/api';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';
-import type {Community} from '$lib/vocab/community/community';
+import type {Community, CommunitySettings} from '$lib/vocab/community/community';
 import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
@@ -45,7 +45,7 @@ import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {DispatchContext} from '$lib/app/dispatch';
-import type {ClientSession, ClientAccountSession} from '$lib/vocab/account/account';
+import type {ClientSession, ClientAccountSession, AccountSettings, ClientAccount} from '$lib/vocab/account/account';
 import type {CommunityTemplate} from '$lib/app/templates';
 
 /* eslint-disable @typescript-eslint/array-type */

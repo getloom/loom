@@ -9,7 +9,7 @@ export const AccountSchema = {
 		account_id: {type: 'number'},
 		name: {type: 'string'},
 		password: {type: 'string'},
-		settings: {$ref: '/schemas/AccountSettings.json'},
+		settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
@@ -26,7 +26,7 @@ export const ClientAccountSchema = {
 	properties: {
 		account_id: {type: 'number'},
 		name: {type: 'string'},
-		settings: {$ref: '/schemas/AccountSettings.json'},
+		settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
@@ -70,10 +70,7 @@ export const ClientAccountSessionSchema = {
 		},
 		communities: {
 			type: 'array',
-			items: {
-				$ref: '/schemas/Community.json',
-				tsType: 'Community',
-			},
+			items: {$ref: '/schemas/Community.json', tsType: 'Community'},
 		},
 		roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
 		spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},

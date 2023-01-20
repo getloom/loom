@@ -24,9 +24,7 @@ export interface Account {
 	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
 	 *
 	 */
-	settings: {
-		darkmode?: boolean;
-	};
+	settings: AccountSettings;
 	created: Date;
 	updated: Date | null;
 }
@@ -51,9 +49,7 @@ export interface ClientAccount {
 	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
 	 *
 	 */
-	settings: {
-		darkmode?: boolean;
-	};
+	settings: AccountSettings;
 	created: Date;
 	updated: Date | null;
 }

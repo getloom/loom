@@ -18,7 +18,7 @@
 	export let value: TValue;
 	export let field: string;
 	export let update:
-		| ((updated: TValue, field: string) => Promise<Result<unknown, {message: string}>>)
+		| ((updated: TValue, field: string) => void | Promise<Result<unknown, {message: string}>>)
 		| null = null;
 	export let parse: (serialized: string) => Result<{value: TValue}, {message: string}> = (
 		serialized,
@@ -76,10 +76,12 @@
 		pending = true;
 		const result = await update(parsed.value, field);
 		pending = false;
-		if (result.ok) {
-			stopEditing();
-		} else {
-			errorMessage = result.message;
+		if (result) {
+			if (result.ok) {
+				stopEditing();
+			} else {
+				errorMessage = result.message;
+			}
 		}
 	};
 
@@ -162,7 +164,7 @@
 	}
 	.preview {
 		overflow: auto;
-		padding: var(--spacing_xl);
+		padding: var(--spacing_lg);
 	}
 	textarea {
 		/* TODO customize this for different values */

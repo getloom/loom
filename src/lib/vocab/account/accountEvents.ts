@@ -39,7 +39,7 @@ export const UpdateAccountSettings: ServiceEventInfo = {
 		$id: '/schemas/UpdateAccountSettingsParams.json',
 		type: 'object',
 		properties: {
-			settings: {$ref: '/schemas/AccountSettings.json'},
+			settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
 		},
 		required: ['settings'],
 		additionalProperties: false,
@@ -47,6 +47,7 @@ export const UpdateAccountSettings: ServiceEventInfo = {
 	response: {
 		$id: '/schemas/UpdateAccountSettingsResponse.json',
 		$ref: '/schemas/ClientAccount.json',
+		tsType: 'ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountSettingsResponseResult>',
 	route: {
@@ -72,6 +73,7 @@ export const UpdateAccountPassword: ServiceEventInfo = {
 	response: {
 		$id: '/schemas/UpdateAccountPasswordResponse.json',
 		$ref: '/schemas/ClientAccount.json',
+		tsType: 'ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountPasswordResponseResult>',
 	route: {

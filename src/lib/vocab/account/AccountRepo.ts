@@ -18,7 +18,7 @@ export class AccountRepo extends PostgresRepo {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<Account[]>`
 			INSERT INTO accounts (name, password, settings) VALUES (
-				${name}, ${passwordKey}, ${this.sql.json(settings)}
+				${name}, ${passwordKey}, ${this.sql.json(settings as any)}
 			) RETURNING *
 		`;
 		log.trace('created account', data[0]);
@@ -101,7 +101,7 @@ export class AccountRepo extends PostgresRepo {
 	): Promise<Result<{value: ClientAccount}>> {
 		const data = await this.sql<any[]>`
 			UPDATE accounts
-			SET updated=NOW(), settings=${this.sql.json(settings)}
+			SET updated=NOW(), settings=${this.sql.json(settings as any)}
 			WHERE account_id=${account_id}
 			RETURNING account_id, name, settings, created, updated
 		`;

@@ -10,7 +10,7 @@
 	>{#if $entity.data.name}{$entity.data.name}:{/if}
 	{$entity.data.type}:</span
 >
-{#if $entity.data.content || $entity.data.type === 'Tombstone'}<pre class="content">
+{#if $entity.data.content || $entity.data.type === 'Tombstone'}<pre class="content ellipsis">
 		{JSON.stringify($entity)}
 	</pre>{/if}
 
@@ -20,9 +20,6 @@
 	}
 	.content {
 		padding: 0 var(--spacing_sm);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 		font-size: var(--font_size_sm);
 	}
 </style>

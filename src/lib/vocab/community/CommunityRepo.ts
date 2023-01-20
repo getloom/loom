@@ -3,7 +3,7 @@ import {Logger} from '@feltcoop/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Community} from '$lib/vocab/community/community';
+import type {Community, CommunitySettings} from '$lib/vocab/community/community';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('CommunityRepo') + gray(']'));
@@ -12,11 +12,11 @@ export class CommunityRepo extends PostgresRepo {
 	async create(
 		type: Community['type'],
 		name: string,
-		settings: Community['settings'],
+		settings: CommunitySettings,
 	): Promise<Result<{value: Community}>> {
 		const data = await this.sql<Community[]>`
 			INSERT INTO communities (type, name, settings) VALUES (
-				${type}, ${name}, ${this.sql.json(settings)}
+				${type}, ${name}, ${this.sql.json(settings as any)}
 			) RETURNING *
 		`;
 		log.trace('[db] created community', data[0]);
@@ -70,7 +70,7 @@ export class CommunityRepo extends PostgresRepo {
 
 	async updateSettings(community_id: number, settings: Community['settings']): Promise<Result> {
 		const data = await this.sql<any[]>`
-			UPDATE communities SET settings=${this.sql.json(settings)} WHERE community_id=${community_id}
+			UPDATE communities SET settings=${this.sql.json(settings as any)} WHERE community_id=${community_id}
 		`;
 		if (!data.count) return NOT_OK;
 		return OK;

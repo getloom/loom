@@ -10,7 +10,7 @@ import type {
 	NonAuthorizedService,
 	AuthorizedService,
 } from '$lib/server/service';
-import type {Community} from '$lib/vocab/community/community';
+import type {Community, CommunitySettings} from '$lib/vocab/community/community';
 import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
@@ -20,7 +20,12 @@ import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {DispatchContext} from '$lib/app/dispatch';
-import type {ClientSession, ClientAccountSession} from '$lib/vocab/account/account';
+import type {
+	ClientSession,
+	ClientAccountSession,
+	AccountSettings,
+	ClientAccount,
+} from '$lib/vocab/account/account';
 import type {CommunityTemplate} from '$lib/app/templates';
 
 /* eslint-disable @typescript-eslint/array-type */
@@ -260,29 +265,14 @@ export interface UpdateAccountSettingsParams {
 	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
 	 *
 	 */
-	settings: {
-		darkmode?: boolean;
-	};
+	settings: AccountSettings;
 }
 /**
  *
  * 		A client-facing subset of an Account. Excludes 'password' for security.
  *
  */
-export interface UpdateAccountSettingsResponse {
-	account_id: number;
-	name: string;
-	/**
-	 *
-	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
-	 *
-	 */
-	settings: {
-		darkmode?: boolean;
-	};
-	created: Date;
-	updated: Date | null;
-}
+export type UpdateAccountSettingsResponse = ClientAccount;
 export type UpdateAccountSettingsResponseResult = ApiResult<UpdateAccountSettingsResponse>;
 
 export interface UpdateAccountPasswordParams {
@@ -294,20 +284,7 @@ export interface UpdateAccountPasswordParams {
  * 		A client-facing subset of an Account. Excludes 'password' for security.
  *
  */
-export interface UpdateAccountPasswordResponse {
-	account_id: number;
-	name: string;
-	/**
-	 *
-	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
-	 *
-	 */
-	settings: {
-		darkmode?: boolean;
-	};
-	created: Date;
-	updated: Date | null;
-}
+export type UpdateAccountPasswordResponse = ClientAccount;
 export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
 
 export interface CreateCommunityParams {
@@ -361,13 +338,7 @@ export interface UpdateCommunitySettingsParams {
 	 * 		A nested set of attributes on Community. Holds all community level settings.
 	 *
 	 */
-	settings: {
-		hue: number;
-		defaultRoleId: number;
-		instance?: {
-			allowedAccountNames?: string[];
-		};
-	};
+	settings: CommunitySettings;
 }
 export type UpdateCommunitySettingsResponse = null;
 export type UpdateCommunitySettingsResponseResult = ApiResult<UpdateCommunitySettingsResponse>;
@@ -767,6 +738,11 @@ export interface EphemeraResponse {
 export type EphemeraResponseResult = ApiResult<EphemeraResponse>;
 
 export interface SetSessionParams {
+	/**
+	 *
+	 * 		The session data loaded on each page for authenticated and unauthenticated users.
+	 *
+	 */
 	session: ClientSession;
 }
 

@@ -99,7 +99,7 @@ export const UpdateCommunitySettings: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			community_id: {type: 'number'},
-			settings: {$ref: '/schemas/CommunitySettings.json'},
+			settings: {$ref: '/schemas/CommunitySettings.json', tsType: 'CommunitySettings'},
 		},
 		required: ['actor', 'community_id', 'settings'],
 		additionalProperties: false,

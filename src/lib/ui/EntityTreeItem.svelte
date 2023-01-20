@@ -11,15 +11,12 @@
 	>{#if $entity.data.name}{$entity.data.name}:{/if}
 	{$entity.data.type}:</span
 >
-{#if $entity.data.content || $entity.data.type === 'Tombstone'}<div class="content">
+{#if $entity.data.content || $entity.data.type === 'Tombstone'}<div class="content ellipsis">
 		<EntityContent {entity} />
 	</div>{/if}
 
 <style>
 	.content {
 		padding: 0 var(--spacing_sm);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 	}
 </style>

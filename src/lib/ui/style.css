@@ -37,8 +37,9 @@ main {
 .icon-button {
 	width: var(--icon_size);
 	height: var(--icon_size);
+	min-width: var(--icon_size);
+	min-height: var(--icon_size);
 	flex-shrink: 0;
-	min-width: var(--input_height);
 	font-weight: 900;
 	padding: 0;
 }
