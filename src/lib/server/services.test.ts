@@ -8,6 +8,7 @@ import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {services} from '$lib/server/services';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {SessionApiMock} from '$lib/session/SessionApiMock';
+import {ResultError, unwrap} from '@feltcoop/util';
 
 /* test__serviceDefinitions */
 const test__serviceDefinitions = suite('serviceDefinitions');
@@ -114,65 +115,68 @@ for (const service of services.values()) {
 		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
 
 		// Test failure of authorized services with an unauthorized actor.
-		if (
-			event.authorize !== false &&
-			![
-				// TODO when this list is empty, we're fully authorized!
-				'Ephemera',
-				'ReadPersona',
-				'DeletePersona',
-				'ReadCommunity',
-				'ReadCommunities',
-				'CreateCommunity',
-				'LeaveCommunity',
-				'CreateAssignment',
-				'DeleteAssignment',
-				'ReadSpace',
-				'ReadSpaces',
-				'CreateSpace',
-				'UpdateSpace',
-				'DeleteSpace',
-				'ReadEntities',
-				'ReadEntitiesPaginated',
-				'CreateEntity',
-				'UpdateEntity',
-				'EraseEntities',
-				'DeleteEntities',
-				'CreateTie',
-				'ReadTies',
-				'DeleteTie',
-				'CreateRole',
-				'ReadRoles',
-				'UpdateRole',
-				'DeleteRole',
-				'CreatePolicy',
-				'DeletePolicy',
-				'ReadPolicies',
-				'UpdatePolicy',
-			].includes(event.name)
-		) {
+		if (event.authorize !== false) {
 			const {persona: unauthorizedPersona} = await random.persona(account);
-			const failedServiceRequest = toServiceRequestMock(
-				db,
-				unauthorizedPersona,
-				session,
-				account.account_id,
-			);
+
+			const community = await random.community(undefined, account);
 			const failedParams = await randomEventParams[event.name](random, {
+				...community,
+				space: community.spaces[1],
 				account,
 				persona: unauthorizedPersona,
-				community: (await random.community()).community, // create a new community without the persona, otherwise they might have permissions
+				role: community.roles[0],
+				// create a new community without the persona, otherwise they might have permissions
 			});
-			const failedResult = await service.perform({...failedServiceRequest, params: failedParams});
-			assert.ok(
-				!failedResult.ok,
-				`Expected service ${event.name} to fail with invalid actor - are the policies checked?`,
-			);
-			assert.is(
-				failedResult.status,
-				403,
-				`Expected service ${event.name} to fail with status code 403`,
-			);
+
+			let failedResult;
+			try {
+				failedResult = await service.perform({
+					...toServiceRequestMock(db, unauthorizedPersona, session, account.account_id),
+					params: failedParams,
+				});
+			} catch (err) {
+				failedResult = (
+					err instanceof ResultError
+						? {ok: false, status: (err.result as any).status || 500, message: err.message}
+						: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE}
+				) as any; // TODO try to remove typecast, see TODO above
+			}
+
+			if (
+				[
+					// TODO when this list is empty, we're fully authorized!
+					'Ephemera',
+					'ReadPersona',
+					'DeletePersona',
+					'ReadCommunities',
+					'CreateCommunity',
+					'LeaveCommunity',
+					'ReadEntities',
+					'ReadEntitiesPaginated',
+					'CreateEntity',
+					'UpdateEntity',
+					'EraseEntities',
+					'DeleteEntities',
+					'CreateTie',
+					'ReadTies',
+					'DeleteTie',
+					'CreatePolicy',
+					'DeletePolicy',
+					'UpdatePolicy',
+				].includes(event.name)
+			) {
+				unwrap(failedResult);
+			} else {
+				assert.ok(
+					!failedResult.ok,
+					`Expected service ${event.name} to fail with invalid actor - are the policies checked?`,
+				);
+				assert.is(
+					failedResult.status,
+					403,
+					`Expected service ${event.name} to fail with status code 403`,
+				);
+			}
 		}
 	});
 }

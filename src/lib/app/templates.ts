@@ -1,7 +1,7 @@
 import type {EntityData} from '$lib/vocab/entity/entityData';
 import type {CreatePolicyParams, CreateRoleParams, CreateSpaceParams} from '$lib/app/eventTypes';
 import type {Policy} from '$lib/vocab/policy/policy';
-import {permissionNames, type PermissionName} from '$lib/vocab/policy/permissions';
+import {permissions, permissionNames, type PermissionName} from '$lib/vocab/policy/permissions';
 import type {InitialCommunitySettings} from '$lib/vocab/community/community';
 
 // TODO where does this belong? vocab?
@@ -85,7 +85,11 @@ export const defaultStandardCommunityRoles: RoleTemplate[] = [
 	{
 		name: 'Member',
 		default: true,
-		policies: [{permission: 'InviteToCommunity'}],
+		policies: [
+			{permission: permissions.InviteToCommunity},
+			{permission: permissions.CreateSpace},
+			{permission: permissions.UpdateSpace},
+		],
 	},
 ];
 

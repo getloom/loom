@@ -35,36 +35,6 @@ export const CreateSpace: ServiceEventInfo = {
 	},
 };
 
-export const ReadSpace: ServiceEventInfo = {
-	type: 'ServiceEvent',
-	name: 'ReadSpace',
-	params: {
-		$id: '/schemas/ReadSpaceParams.json',
-		type: 'object',
-		properties: {
-			actor: {type: 'number'},
-			space_id: {type: 'number'},
-		},
-		required: ['actor', 'space_id'],
-		additionalProperties: false,
-	},
-	response: {
-		$id: '/schemas/ReadSpaceResponse.json',
-		type: 'object',
-		properties: {
-			space: {$ref: '/schemas/Space.json', tsType: 'Space'},
-			directory: {$ref: '/schemas/Entity.json', tsType: 'Entity & {data: DirectoryEntityData}'},
-		},
-		required: ['space', 'directory'],
-		additionalProperties: false,
-	},
-	returns: 'Promise<ReadSpaceResponseResult>',
-	route: {
-		path: '/api/v1/spaces/:space_id',
-		method: 'GET',
-	},
-};
-
 export const ReadSpaces: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'ReadSpaces',

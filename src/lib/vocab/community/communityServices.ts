@@ -25,7 +25,7 @@ import {
 	initTemplateGovernanceForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
-import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {spaceTemplateToCreateSpaceParams, defaultStandardCommunityRoles} from '$lib/app/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
@@ -45,7 +45,7 @@ export const ReadCommunitiesService: ServiceByName['ReadCommunities'] = {
 export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 	event: ReadCommunity,
 	perform: async ({repos, params, account_id}) => {
-		const {community_id} = params;
+		const {actor, community_id} = params;
 
 		log.trace('[ReadCommunity] account', account_id); // TODO logging
 		log.trace('[ReadCommunity] community', community_id);
@@ -54,6 +54,8 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 		if (!community) {
 			return {ok: false, status: 404, message: 'no community found'};
 		}
+
+		unwrap(await checkCommunityAccess(actor, community_id, repos));
 
 		const [spacesResult, rolesResult, assignmentsResult] = await Promise.all([
 			repos.space.filterByCommunity(community_id),

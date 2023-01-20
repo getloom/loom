@@ -27,7 +27,7 @@ export const randomEventParams: RandomEventParams = {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!space) ({space} = await random.space(persona, account, community));
 		return {
-			actor: persona?.persona_id,
+			actor: persona.persona_id,
 			space_id: space.space_id,
 			data: {type: 'a'},
 		};
@@ -133,10 +133,12 @@ export const randomEventParams: RandomEventParams = {
 	DeleteAssignment: async (random, {account, persona, community, assignments} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community, assignments} = await random.community(persona));
-		const assignment = assignments!.find((a) => a.persona_id === persona!.persona_id);
+		//TODO create random assignment, sorry future me
+		const assignment =
+			assignments!.find((a) => a.persona_id === persona!.persona_id) || assignments![0];
 		return {
 			actor: persona.persona_id,
-			assignment_id: assignment!.assignment_id,
+			assignment_id: assignment.assignment_id,
 		};
 	},
 	CreateSpace: async (random, {account, persona, community} = {}) => {
@@ -150,11 +152,6 @@ export const randomEventParams: RandomEventParams = {
 		return {actor: persona.persona_id, space_id: space.space_id, name: randomSpaceName()};
 	},
 	DeleteSpace: async (random, {account, persona, community, space} = {}) => {
-		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
-		return {actor: persona.persona_id, space_id: space.space_id};
-	},
-	ReadSpace: async (random, {account, persona, community, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!space) ({space} = await random.space(persona, account, community));
 		return {actor: persona.persona_id, space_id: space.space_id};

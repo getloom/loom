@@ -8,5 +8,8 @@ export const permissions = {
 	DeleteRole: 'DeleteRole',
 	CreateAssignment: 'CreateAssignment',
 	DeleteAssignment: 'DeleteAssignment',
-};
+	CreateSpace: 'CreateSpace',
+	UpdateSpace: 'UpdateSpace',
+	DeleteSpace: 'DeleteSpace',
+} as const;
 export const permissionNames: PermissionName[] = Object.keys(permissions) as PermissionName[];

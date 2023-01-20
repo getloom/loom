@@ -4,7 +4,7 @@ import {unwrap} from '@feltcoop/util';
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleEvents';
-import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 
 const log = new Logger(gray('[') + blue('roleServices') + gray(']'));
@@ -24,7 +24,8 @@ export const CreateRoleService: ServiceByName['CreateRole'] = {
 export const ReadRolesService: ServiceByName['ReadRoles'] = {
 	event: ReadRoles,
 	perform: async ({repos, params}) => {
-		const {community_id} = params;
+		const {actor, community_id} = params;
+		unwrap(await checkCommunityAccess(actor, community_id, repos));
 		log.trace('retrieving roles for community', community_id);
 		const roles = unwrap(await repos.role.filterByCommunity(community_id));
 		return {ok: true, status: 200, value: {roles}};

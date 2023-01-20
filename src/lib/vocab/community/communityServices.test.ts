@@ -162,7 +162,7 @@ test_communityServices(
 				params: {actor: persona.persona_id, role_id: communityResult.roles[1].role_id},
 			}),
 		);
-		assert.is(memberPolicyResults.policies.length, 1);
+		assert.is(memberPolicyResults.policies.length, 3);
 	},
 );
 

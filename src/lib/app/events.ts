@@ -17,13 +17,7 @@ import {
 } from '$lib/vocab/community/communityEvents';
 import {CreateAccountPersona, ReadPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
-import {
-	CreateSpace,
-	ReadSpace,
-	ReadSpaces,
-	UpdateSpace,
-	DeleteSpace,
-} from '$lib/vocab/space/spaceEvents';
+import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceEvents';
 import {
 	CreateEntity,
 	UpdateEntity,
@@ -78,7 +72,6 @@ export const eventInfos: EventInfo[] = [
 	DeleteAssignment,
 	// spaceEvents
 	CreateSpace,
-	ReadSpace,
 	ReadSpaces,
 	UpdateSpace,
 	DeleteSpace,

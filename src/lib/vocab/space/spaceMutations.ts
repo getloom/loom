@@ -26,14 +26,6 @@ export const UpdateSpace: Mutations['UpdateSpace'] = async ({invoke, ui}) => {
 	return result;
 };
 
-export const ReadSpace: Mutations['ReadSpace'] = async ({invoke, ui}) => {
-	const result = await invoke();
-	if (!result.ok) return result;
-	const {space: $space, directory: $directory} = result.value;
-	stashSpaces(ui, [$space], [$directory]);
-	return result;
-};
-
 export const ReadSpaces: Mutations['ReadSpaces'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;

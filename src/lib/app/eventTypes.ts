@@ -44,7 +44,6 @@ export type ServiceEventName =
 	| 'CreateAssignment'
 	| 'DeleteAssignment'
 	| 'CreateSpace'
-	| 'ReadSpace'
 	| 'ReadSpaces'
 	| 'UpdateSpace'
 	| 'DeleteSpace'
@@ -98,7 +97,6 @@ export interface EventParamsByName {
 	CreateAssignment: CreateAssignmentParams;
 	DeleteAssignment: DeleteAssignmentParams;
 	CreateSpace: CreateSpaceParams;
-	ReadSpace: ReadSpaceParams;
 	ReadSpaces: ReadSpacesParams;
 	UpdateSpace: UpdateSpaceParams;
 	DeleteSpace: DeleteSpaceParams;
@@ -150,7 +148,6 @@ export interface EventResponseByName {
 	CreateAssignment: CreateAssignmentResponse;
 	DeleteAssignment: DeleteAssignmentResponse;
 	CreateSpace: CreateSpaceResponse;
-	ReadSpace: ReadSpaceResponse;
 	ReadSpaces: ReadSpacesResponse;
 	UpdateSpace: UpdateSpaceResponse;
 	DeleteSpace: DeleteSpaceResponse;
@@ -207,7 +204,6 @@ export interface ServiceByName {
 	LeaveCommunity: AuthorizedService<LeaveCommunityParams, LeaveCommunityResponseResult>;
 	CreateAssignment: AuthorizedService<CreateAssignmentParams, CreateAssignmentResponseResult>;
 	DeleteAssignment: AuthorizedService<DeleteAssignmentParams, DeleteAssignmentResponseResult>;
-	ReadSpace: AuthorizedService<ReadSpaceParams, ReadSpaceResponseResult>;
 	ReadSpaces: AuthorizedService<ReadSpacesParams, ReadSpacesResponseResult>;
 	CreateSpace: AuthorizedService<CreateSpaceParams, CreateSpaceResponseResult>;
 	UpdateSpace: AuthorizedService<UpdateSpaceParams, UpdateSpaceResponseResult>;
@@ -489,16 +485,6 @@ export interface CreateSpaceResponse {
 	directory: Entity & {data: DirectoryEntityData};
 }
 export type CreateSpaceResponseResult = ApiResult<CreateSpaceResponse>;
-
-export interface ReadSpaceParams {
-	actor: number;
-	space_id: number;
-}
-export interface ReadSpaceResponse {
-	space: Space;
-	directory: Entity & {data: DirectoryEntityData};
-}
-export type ReadSpaceResponseResult = ApiResult<ReadSpaceResponse>;
 
 export interface ReadSpacesParams {
 	actor: number;
@@ -785,7 +771,6 @@ export interface Dispatch {
 	CreateAssignment: (params: CreateAssignmentParams) => Promise<CreateAssignmentResponseResult>;
 	DeleteAssignment: (params: DeleteAssignmentParams) => Promise<DeleteAssignmentResponseResult>;
 	CreateSpace: (params: CreateSpaceParams) => Promise<CreateSpaceResponseResult>;
-	ReadSpace: (params: ReadSpaceParams) => Promise<ReadSpaceResponseResult>;
 	ReadSpaces: (params: ReadSpacesParams) => Promise<ReadSpacesResponseResult>;
 	UpdateSpace: (params: UpdateSpaceParams) => Promise<UpdateSpaceResponseResult>;
 	DeleteSpace: (params: DeleteSpaceParams) => Promise<DeleteSpaceResponseResult>;
@@ -879,9 +864,6 @@ export interface Mutations {
 	CreateSpace: (
 		ctx: DispatchContext<CreateSpaceParams, CreateSpaceResponseResult>,
 	) => Promise<CreateSpaceResponseResult>;
-	ReadSpace: (
-		ctx: DispatchContext<ReadSpaceParams, ReadSpaceResponseResult>,
-	) => Promise<ReadSpaceResponseResult>;
 	ReadSpaces: (
 		ctx: DispatchContext<ReadSpacesParams, ReadSpacesResponseResult>,
 	) => Promise<ReadSpacesResponseResult>;

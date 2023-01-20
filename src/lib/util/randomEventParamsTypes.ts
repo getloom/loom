@@ -20,7 +20,6 @@ import type {
 	CreateAssignmentParams,
 	DeleteAssignmentParams,
 	CreateSpaceParams,
-	ReadSpaceParams,
 	ReadSpacesParams,
 	UpdateSpaceParams,
 	DeleteSpaceParams,
@@ -118,7 +117,6 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<CreateSpaceParams>;
-	ReadSpace: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadSpaceParams>;
 	ReadSpaces: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadSpacesParams>;
 	UpdateSpace: (
 		random: RandomVocabContext,

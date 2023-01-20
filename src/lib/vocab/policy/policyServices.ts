@@ -9,6 +9,7 @@ import {
 	UpdatePolicy,
 	DeletePolicy,
 } from '$lib/vocab/policy/policyEvents';
+import {checkCommunityAccess} from './policyHelpers.server';
 
 const log = new Logger(gray('[') + blue('policyServices') + gray(']'));
 
@@ -26,7 +27,10 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
 	event: ReadPolicies,
 	perform: async ({repos, params}) => {
-		const {role_id} = params;
+		const {actor, role_id} = params;
+		const community = unwrap(await repos.community.findByRole(role_id));
+		unwrap(await checkCommunityAccess(actor, community.community_id, repos));
+
 		log.trace('retrieving policies for role', role_id);
 		const policies = unwrap(await repos.policy.filterByRole(role_id));
 		return {ok: true, status: 200, value: {policies}};

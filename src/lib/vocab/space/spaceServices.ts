@@ -3,49 +3,26 @@ import {unwrap} from '@feltcoop/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
-import {
-	CreateSpace,
-	ReadSpace,
-	ReadSpaces,
-	UpdateSpace,
-	DeleteSpace,
-} from '$lib/vocab/space/spaceEvents';
+import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceEvents';
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
+import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {permissions} from '$lib/vocab/policy/permissions';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
-
-//Returns a single space object and its directory.
-export const ReadSpaceService: ServiceByName['ReadSpace'] = {
-	event: ReadSpace,
-	perform: async ({repos, params}) => {
-		log.trace('[ReadSpace] space', params.space_id);
-
-		const space = unwrap(await repos.space.findById(params.space_id));
-		if (!space) {
-			return {ok: false, status: 404, message: 'no space found'};
-		}
-
-		const directory = unwrap(await repos.entity.findById(space.directory_id)) as
-			| (Entity & {data: DirectoryEntityData})
-			| undefined;
-		if (!directory) {
-			return {ok: false, status: 404, message: 'no directory found'};
-		}
-
-		return {ok: true, status: 200, value: {space, directory}};
-	},
-};
 
 //Returns all spaces in a given community
 export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 	event: ReadSpaces,
 	perform: async ({repos, params}) => {
-		log.trace('[ReadSpaces] retrieving spaces for community', params.community_id);
+		const {actor, community_id} = params;
+		log.trace('[ReadSpaces] retrieving spaces for community', community_id);
 
-		const spaces = unwrap(await repos.space.filterByCommunity(params.community_id));
+		unwrap(await checkCommunityAccess(actor, community_id, repos));
+
+		const spaces = unwrap(await repos.space.filterByCommunity(community_id));
 
 		const {entities: directories} = unwrap(
 			await repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
@@ -63,7 +40,9 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			log.trace('[CreateSpace] validating space path uniqueness');
-			const {community_id} = params;
+			const {actor, community_id} = params;
+
+			unwrap(await checkPolicy(permissions.CreateSpace, actor, community_id, repos));
 
 			// TODO run this same logic when a space path is updated
 			const existingSpaceWithUrl = unwrap(
@@ -115,9 +94,15 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 	event: UpdateSpace,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {space_id, actor: _actor, ...partial} = params;
-			const space = unwrap(await repos.space.update(space_id, partial));
-			return {ok: true, status: 200, value: {space}};
+			const {space_id, actor, ...partial} = params;
+			const space = unwrap(await repos.space.findById(space_id));
+			if (!space) {
+				return {ok: false, status: 404, message: 'no space found'};
+			}
+
+			unwrap(await checkPolicy(permissions.UpdateSpace, actor, space.community_id, repos));
+			const updatedSpace = unwrap(await repos.space.update(space_id, partial));
+			return {ok: true, status: 200, value: {space: updatedSpace}};
 		}),
 };
 
@@ -137,6 +122,8 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 			if (!canDeleteSpace(space)) {
 				return {ok: false, status: 405, message: 'cannot delete home space'};
 			}
+
+			unwrap(await checkPolicy(permissions.DeleteSpace, params.actor, space.community_id, repos));
 
 			unwrap(await repos.space.deleteById(params.space_id));
 

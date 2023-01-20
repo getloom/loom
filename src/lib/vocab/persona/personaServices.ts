@@ -96,16 +96,6 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				policies.push(...initAdminCommunityValue.policies);
 				assignments.push(...initAdminCommunityValue.assignments);
 
-				// Create the admin community's default spaces.
-				const defaultAdminSpaces = unwrap(
-					await createSpaces(
-						{...serviceRequest, actor: persona},
-						toDefaultAdminSpaces(persona.persona_id, adminCommunity),
-					),
-				);
-				spaces.push(...defaultAdminSpaces.spaces);
-				directories.push(...defaultAdminSpaces.directories);
-
 				// Create the persona's assignment to the admin community.
 				assignments.push(
 					unwrap(
@@ -116,6 +106,16 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 						),
 					),
 				);
+
+				// Create the admin community's default spaces.
+				const defaultAdminSpaces = unwrap(
+					await createSpaces(
+						{...serviceRequest, actor: persona},
+						toDefaultAdminSpaces(persona.persona_id, adminCommunity),
+					),
+				);
+				spaces.push(...defaultAdminSpaces.spaces);
+				directories.push(...defaultAdminSpaces.directories);
 			}
 
 			return {

@@ -30,3 +30,20 @@ export const checkPolicy = async (
 	}
 	return {ok: true, status: 200, value: undefined};
 };
+
+//TODO should we be bypassing policy system like this?
+export const checkCommunityAccess = async (
+	actor_id: number,
+	community_id: number,
+	repos: Repos,
+): Promise<ApiResult<undefined>> => {
+	log.trace('checking for community access for actor in community', actor_id, community_id);
+
+	const inCommunity = unwrap(await repos.assignment.isPersonaInCommunity(actor_id, community_id));
+
+	if (inCommunity) {
+		return {ok: true, status: 200, value: undefined};
+	} else {
+		return {ok: false, status: 403, message: 'actor does not have permission'};
+	}
+};

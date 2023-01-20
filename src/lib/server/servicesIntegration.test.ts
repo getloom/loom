@@ -9,11 +9,7 @@ import {
 	ReadCommunityService,
 	DeleteCommunityService,
 } from '$lib/vocab/community/communityServices';
-import {
-	DeleteSpaceService,
-	ReadSpaceService,
-	ReadSpacesService,
-} from '$lib/vocab/space/spaceServices';
+import {DeleteSpaceService, ReadSpacesService} from '$lib/vocab/space/spaceServices';
 import {ReadEntitiesService} from '$lib/vocab/entity/entityServices';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {
@@ -101,14 +97,6 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 	assert.equal(filteredEntities.slice(), [entity2, entity1]); // `slice` because `RowList` is not deep equal to arrays
 
-	const {space: foundSpace} = unwrap(
-		await ReadSpaceService.perform({
-			...serviceRequest2,
-			params: {actor: persona2.persona_id, space_id: space.space_id},
-		}),
-	);
-	assert.equal(foundSpace, space);
-
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
 			...serviceRequest2,
@@ -162,7 +150,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
 					...serviceRequest2,
-					params: {actor: persona2.persona_id, space_id: space.space_id},
+					params: {actor: persona1.persona_id, space_id: space.space_id},
 				}),
 			);
 		}

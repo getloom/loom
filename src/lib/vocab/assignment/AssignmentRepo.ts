@@ -95,6 +95,16 @@ export class AssignmentRepo extends PostgresRepo {
 		return {ok: true, value: Number(data[0].count)};
 	}
 
+	async isPersonaInCommunity(
+		persona_id: number,
+		community_id: number,
+	): Promise<Result<{value: boolean}>> {
+		const [{exists}] = await this.sql`
+			SELECT EXISTS(SELECT 1 FROM assignments WHERE community_id=${community_id} AND persona_id=${persona_id});
+		`;
+		return {ok: true, value: exists};
+	}
+
 	async deleteById(assignment_id: number): Promise<Result> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments 

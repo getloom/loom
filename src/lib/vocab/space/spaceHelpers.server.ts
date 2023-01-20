@@ -7,6 +7,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 
+//TODO change CreateSpace event to batched & refactor this away?
 export const createSpaces = async (
 	serviceRequest: AuthorizedServiceRequest,
 	serviceParams: CreateSpaceParams[],
