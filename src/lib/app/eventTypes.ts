@@ -391,6 +391,13 @@ export interface InviteToCommunityResponse {
 	 *
 	 */
 	persona: PublicPersona;
+	/**
+	 *
+	 * 	 Describes the relationship between a Persona and Role within a given Community.
+	 * 	 A Persona must have at least 1 assignment to be in a Community and see it in the nav.
+	 * 	 When initially joining a Community, Personas are given an Assignment to the default Role.
+	 *
+	 */
 	assignment: Assignment;
 }
 export type InviteToCommunityResponseResult = ApiResult<InviteToCommunityResponse>;
@@ -431,6 +438,13 @@ export interface CreateAssignmentParams {
 	role_id: number;
 }
 export interface CreateAssignmentResponse {
+	/**
+	 *
+	 * 	 Describes the relationship between a Persona and Role within a given Community.
+	 * 	 A Persona must have at least 1 assignment to be in a Community and see it in the nav.
+	 * 	 When initially joining a Community, Personas are given an Assignment to the default Role.
+	 *
+	 */
 	assignment: Assignment;
 }
 export type CreateAssignmentResponseResult = ApiResult<CreateAssignmentResponse>;
@@ -451,7 +465,24 @@ export interface CreateSpaceParams {
 	view: string;
 }
 export interface CreateSpaceResponse {
+	/**
+	 *
+	 * 	 Spaces are subdivisions within a Community that hold a View and reference to an Entity directory.
+	 * 	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
+	 * 	 Each is a Svelte component that conforms to the View interface.
+	 *
+	 */
 	space: Space;
+	/**
+	 *
+	 * 		An Entity is the core data type that represents an ActivityStreams object in the system.
+	 * 		Each has an "owning" space & persona that controls its governance.
+	 * 		Entities exist within a graph architecture, with Ties serving as the paths between nodes.
+	 * 		Conventionally, all entities within a given Space can be found by traversing
+	 * 		the graph starting at the directory Entity associated with the owning Space.
+	 * 		A directory is an ActivityStreams Collection referenced by each Space.
+	 *
+	 */
 	directory: Entity & {data: DirectoryEntityData};
 }
 export type CreateSpaceResponseResult = ApiResult<CreateSpaceResponse>;
@@ -475,6 +506,13 @@ export interface UpdateSpaceParams {
 	view?: string;
 }
 export interface UpdateSpaceResponse {
+	/**
+	 *
+	 * 	 Spaces are subdivisions within a Community that hold a View and reference to an Entity directory.
+	 * 	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
+	 * 	 Each is a Svelte component that conforms to the View interface.
+	 *
+	 */
 	space: Space;
 }
 export type UpdateSpaceResponseResult = ApiResult<UpdateSpaceResponse>;
@@ -513,6 +551,16 @@ export interface UpdateEntityParams {
 	data: EntityData | null;
 }
 export interface UpdateEntityResponse {
+	/**
+	 *
+	 * 		An Entity is the core data type that represents an ActivityStreams object in the system.
+	 * 		Each has an "owning" space & persona that controls its governance.
+	 * 		Entities exist within a graph architecture, with Ties serving as the paths between nodes.
+	 * 		Conventionally, all entities within a given Space can be found by traversing
+	 * 		the graph starting at the directory Entity associated with the owning Space.
+	 * 		A directory is an ActivityStreams Collection referenced by each Space.
+	 *
+	 */
 	entity: Entity;
 }
 export type UpdateEntityResponseResult = ApiResult<UpdateEntityResponse>;
@@ -567,6 +615,13 @@ export interface CreateTieParams {
 	type: string;
 }
 export interface CreateTieResponse {
+	/**
+	 *
+	 * 		Ties are part of the Entity/Tie graph data system.
+	 * 		Each represents a named, directional relationship between two entities.
+	 * 		A Tie specifies "the [source] has relationship of [type] with [dest]."
+	 *
+	 */
 	tie: Tie;
 }
 export type CreateTieResponseResult = ApiResult<CreateTieResponse>;
@@ -593,6 +648,13 @@ export interface CreateRoleParams {
 	name: string;
 }
 export interface CreateRoleResponse {
+	/**
+	 *
+	 * 		Roles are user-defined governance objects that exist within the context of a single Community.
+	 * 		They have Policies associated with them that allow for actions to be taken within the system.
+	 * 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+	 *
+	 */
 	role: Role;
 }
 export type CreateRoleResponseResult = ApiResult<CreateRoleResponse>;
@@ -612,6 +674,13 @@ export interface UpdateRoleParams {
 	name: string;
 }
 export interface UpdateRoleResponse {
+	/**
+	 *
+	 * 		Roles are user-defined governance objects that exist within the context of a single Community.
+	 * 		They have Policies associated with them that allow for actions to be taken within the system.
+	 * 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+	 *
+	 */
 	role: Role;
 }
 export type UpdateRoleResponseResult = ApiResult<UpdateRoleResponse>;
@@ -629,6 +698,13 @@ export interface CreatePolicyParams {
 	permission: string;
 }
 export interface CreatePolicyResponse {
+	/**
+	 *
+	 * 		Policies are associated with Roles to describe the actions a Role is able to take with the system.
+	 * 		Permissions are the enumeration of the those actions, often 1:1 with system Events.
+	 * 		Data is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
+	 *
+	 */
 	policy: Policy;
 }
 export type CreatePolicyResponseResult = ApiResult<CreatePolicyResponse>;
@@ -650,6 +726,13 @@ export interface UpdatePolicyParams {
 	} | null;
 }
 export interface UpdatePolicyResponse {
+	/**
+	 *
+	 * 		Policies are associated with Roles to describe the actions a Role is able to take with the system.
+	 * 		Permissions are the enumeration of the those actions, often 1:1 with system Events.
+	 * 		Data is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
+	 *
+	 */
 	policy: Policy;
 }
 export type UpdatePolicyResponseResult = ApiResult<UpdatePolicyResponse>;

@@ -1,6 +1,11 @@
 export const AssignmentSchema = {
 	$id: '/schemas/Assignment.json',
 	type: 'object',
+	description: `
+	 Describes the relationship between a Persona and Role within a given Community.
+	 A Persona must have at least 1 assignment to be in a Community and see it in the nav.
+	 When initially joining a Community, Personas are given an Assignment to the default Role.
+	`,
 	properties: {
 		assignment_id: {type: 'number'},
 		persona_id: {type: 'number'},
