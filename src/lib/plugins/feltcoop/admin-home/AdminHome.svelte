@@ -1,7 +1,6 @@
 <script lang="ts">
 	import RolesList from '$lib/ui/RolesList.svelte';
 	import Todo from '$lib/plugins/feltcoop/todo/Todo.svelte';
-	import PersonaExplorer from '$lib/ui/PersonaExplorer.svelte';
 	import CommunityExplorer from '$lib/ui/CommunityExplorer.svelte';
 </script>
 
@@ -25,9 +24,6 @@
 	</section>
 	<section>
 		<CommunityExplorer />
-	</section>
-	<section>
-		<PersonaExplorer />
 	</section>
 </div>
 
