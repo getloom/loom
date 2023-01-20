@@ -1,5 +1,6 @@
 import type ws from 'ws';
 import {Logger} from '@feltcoop/util/log.js';
+import {ResultError} from '@feltcoop/util';
 
 import {red, blue, gray} from '$lib/server/colors';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc';
@@ -7,9 +8,9 @@ import type {ApiServer} from '$lib/server/ApiServer';
 import {toValidationErrorMessage, validateSchema} from '$lib/util/ajv';
 import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
-import type {BroadcastMessage, WebsocketResult} from '$lib/util/websocket';
+import type {BroadcastMessage} from '$lib/util/websocket';
 import {toServiceRequest} from '$lib/server/service';
-import {ResultError} from '@feltcoop/util';
+import type {ApiResult} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 
@@ -54,7 +55,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			return;
 		}
 
-		let result: WebsocketResult;
+		let result: ApiResult;
 
 		//TODO parse/scrub params alongside validation
 		const validateParams = validateSchema<any>(service.event.params);
@@ -86,7 +87,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			}
 		}
 
-		const responseMessage: JsonRpcResponse<WebsocketResult> = {
+		const responseMessage: JsonRpcResponse<ApiResult> = {
 			jsonrpc: '2.0',
 			id: message.id, // TODO this should only be set for the client we're responding to -- maybe don't use `response`?
 			result,

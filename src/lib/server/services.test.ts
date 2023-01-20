@@ -8,7 +8,8 @@ import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {services} from '$lib/server/services';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {SessionApiMock} from '$lib/session/SessionApiMock';
-import {ResultError, unwrap} from '@feltcoop/util';
+import {unwrap} from '@feltcoop/util';
+import {toFailedApiResult} from '$lib/server/api';
 
 /* test__serviceDefinitions */
 const test__serviceDefinitions = suite('serviceDefinitions');
@@ -135,11 +136,7 @@ for (const service of services.values()) {
 					params: failedParams,
 				});
 			} catch (err) {
-				failedResult = (
-					err instanceof ResultError
-						? {ok: false, status: (err.result as any).status || 500, message: err.message}
-						: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE}
-				) as any; // TODO try to remove typecast, see TODO above
+				failedResult = toFailedApiResult(err);
 			}
 
 			if (

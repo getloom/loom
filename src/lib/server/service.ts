@@ -1,12 +1,9 @@
-import {ResultError, type Result} from '@feltcoop/util';
-
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {Database} from '$lib/db/Database';
 import type {ActorPersona} from '$lib/vocab/persona/persona';
-
-// TODO try to make the `Result` types below be `ApiResult`
+import {type ApiResult, toFailedApiResult} from '$lib/server/api';
 
 export type ServiceMethod =
 	| 'GET'
@@ -24,21 +21,21 @@ export type ServiceMethod =
 export type Service = NonAuthenticatedService | NonAuthorizedService | AuthorizedService;
 export interface NonAuthenticatedService<
 	TParams extends object | null = any,
-	TResult extends Result = any,
+	TResult extends ApiResult = ApiResult,
 > {
 	event: ServiceEventInfo;
 	perform: (serviceRequest: NonAuthenticatedServiceRequest<TParams, TResult>) => Promise<TResult>;
 }
 export interface NonAuthorizedService<
 	TParams extends object | null = any,
-	TResult extends Result = any,
+	TResult extends ApiResult = ApiResult,
 > {
 	event: ServiceEventInfo;
 	perform: (serviceRequest: NonAuthorizedServiceRequest<TParams, TResult>) => Promise<TResult>;
 }
 export interface AuthorizedService<
 	TParams extends object | null = any,
-	TResult extends Result = any,
+	TResult extends ApiResult = ApiResult,
 > {
 	event: ServiceEventInfo;
 	perform: (serviceRequest: AuthorizedServiceRequest<TParams, TResult>) => Promise<TResult>;
@@ -63,28 +60,28 @@ export interface AuthorizedServiceRequest<TParams = any, TResult = any>
 	actor: ActorPersona;
 }
 
-export function toServiceRequest<TParams = any, TResult extends Result = any>(
+export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
 	db: Database,
 	params: TParams,
 	account_id: undefined,
 	actor: undefined,
 	session: ISessionApi,
 ): NonAuthenticatedServiceRequest<TParams, TResult>;
-export function toServiceRequest<TParams = any, TResult extends Result = any>(
+export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
 	db: Database,
 	params: TParams,
 	account_id: number,
 	actor: undefined,
 	session: ISessionApi,
 ): NonAuthorizedServiceRequest<TParams, TResult>;
-export function toServiceRequest<TParams = any, TResult extends Result = any>(
+export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
 	db: Database,
 	params: TParams,
 	account_id: number,
 	actor: ActorPersona,
 	session: ISessionApi,
 ): AuthorizedServiceRequest<TParams, TResult>;
-export function toServiceRequest<TParams = any, TResult extends Result = any>(
+export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
 	db: Database,
 	params: TParams,
 	account_id: number | undefined,
@@ -107,11 +104,7 @@ export function toServiceRequest<TParams = any, TResult extends Result = any>(
 						})
 						.catch((err) => {
 							if (result === undefined) {
-								result = (
-									err instanceof ResultError
-										? {ok: false, status: (err.result as any).status || 500, message: err.message}
-										: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE}
-								) as any; // TODO try to remove typecast, see TODO above
+								result = toFailedApiResult(err) as any; // TODO how to avoid casting?
 							}
 							return result;
 						}),

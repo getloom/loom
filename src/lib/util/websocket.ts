@@ -1,11 +1,9 @@
-import type {Result} from '@feltcoop/util';
-
-import type {ErrorResponse} from '$lib/util/error';
+import type {ApiResult} from '$lib/server/api';
 
 export interface BroadcastMessage {
 	type: 'broadcast';
 	method: string;
-	result: WebsocketResult;
+	result: ApiResult;
 	params: any;
 }
 
@@ -14,8 +12,3 @@ export interface StatusMessage {
 	status: number;
 	message: string;
 }
-
-export type WebsocketResult<T = any> = Result<
-	{status: number; value: T},
-	{status: number} & ErrorResponse
->;

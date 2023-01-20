@@ -43,7 +43,7 @@ export const toHttpApiClient = <
 				log.error('fetch error', err);
 				return {
 					ok: false,
-					status: null,
+					status: 0, // network error
 					message: ERROR_MESSAGE_UNKNOWN,
 				};
 			}
@@ -54,7 +54,7 @@ export const toHttpApiClient = <
 				log.error('parse error', err, res);
 				return {
 					ok: false,
-					status: null, // discard `res.status` because something else went wrong
+					status: res.status, // forward the server's claimed status even if it's wrong
 					message: 'failed to parse server response',
 				};
 			}

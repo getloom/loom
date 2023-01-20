@@ -9,8 +9,9 @@ import type {ApiClient} from '$lib/ui/ApiClient';
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {JsonRpcId, JsonRpcRequest, JsonRpcResponse} from '$lib/util/jsonRpc';
 import {parseJsonRpcResponse} from '$lib/util/jsonRpc';
-import type {BroadcastMessage, StatusMessage, WebsocketResult} from '$lib/util/websocket';
+import type {BroadcastMessage, StatusMessage} from '$lib/util/websocket';
 import type {Deserialize} from '$lib/util/deserialize';
+import type {ApiResult} from '$lib/server/api';
 
 const log = new Logger('[ws]');
 
@@ -99,7 +100,7 @@ export const toWebsocketApiClient = <
 // TODO do we need to support another type of message, the non-response kind?
 const parseSocketMessage = (
 	rawMessage: any,
-): JsonRpcResponse<WebsocketResult> | StatusMessage | BroadcastMessage | null => {
+): JsonRpcResponse<ApiResult> | StatusMessage | BroadcastMessage | null => {
 	if (typeof rawMessage !== 'string') {
 		log.error(
 			'[parseSocketMessage] cannot parse websocket message; currently only supports strings',
