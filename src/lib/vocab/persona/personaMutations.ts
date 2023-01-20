@@ -30,8 +30,6 @@ export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({i
 	return result;
 };
 
-// TODO implement Mutations['ReadPersona']
-
 export const DeletePersona: Mutations['DeletePersona'] = async ({params, invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;

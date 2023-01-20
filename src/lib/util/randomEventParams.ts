@@ -111,10 +111,6 @@ export const randomEventParams: RandomEventParams = {
 	CreateAccountPersona: async () => {
 		return randomPersonaParams();
 	},
-	ReadPersona: async (random, {persona} = {}) => {
-		if (!persona) ({persona} = await random.persona());
-		return {actor: persona.persona_id, persona_id: persona.persona_id};
-	},
 	DeletePersona: async (random, {account, persona} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		return {actor: persona.persona_id, persona_id: persona.persona_id};

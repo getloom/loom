@@ -49,35 +49,6 @@ export const CreateAccountPersona: ServiceEventInfo = {
 	},
 };
 
-export const ReadPersona: ServiceEventInfo = {
-	type: 'ServiceEvent',
-	name: 'ReadPersona',
-	params: {
-		$id: '/schemas/ReadPersonaParams.json',
-		type: 'object',
-		properties: {
-			actor: {type: 'number'},
-			persona_id: {type: 'number'},
-		},
-		required: ['actor', 'persona_id'],
-		additionalProperties: false,
-	},
-	response: {
-		$id: '/schemas/ReadPersonaResponse.json',
-		type: 'object',
-		properties: {
-			persona: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
-		},
-		required: ['persona'],
-		additionalProperties: false,
-	},
-	returns: 'Promise<ReadPersonaResponseResult>',
-	route: {
-		path: '/api/v1/personas/:persona_id',
-		method: 'GET',
-	},
-};
-
 export const DeletePersona: ServiceEventInfo = {
 	type: 'ServiceEvent',
 	name: 'DeletePersona',

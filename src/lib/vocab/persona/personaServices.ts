@@ -3,7 +3,7 @@ import {unwrap} from '@feltcoop/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
-import {CreateAccountPersona, ReadPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
+import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
 import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
@@ -124,19 +124,6 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				value: {personas, communities, roles, policies, spaces, directories, assignments},
 			};
 		}),
-};
-
-//Returns a single persona object
-export const ReadPersonaService: ServiceByName['ReadPersona'] = {
-	event: ReadPersona,
-	perform: async ({repos, params}) => {
-		log.trace('[ReadPersona] persona', params.persona_id);
-		const persona = unwrap(await repos.persona.findById(params.persona_id));
-		if (!persona) {
-			return {ok: false, status: 404, message: 'no persona found'};
-		}
-		return {ok: true, status: 200, value: {persona}};
-	},
 };
 
 export const DeletePersonaService: ServiceByName['DeletePersona'] = {

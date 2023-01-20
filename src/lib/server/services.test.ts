@@ -146,7 +146,6 @@ for (const service of services.values()) {
 				[
 					// TODO when this list is empty, we're fully authorized!
 					'Ephemera',
-					'ReadPersona',
 					'DeletePersona',
 					'ReadCommunities',
 					'CreateCommunity',

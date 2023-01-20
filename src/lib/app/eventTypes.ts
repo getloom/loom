@@ -39,7 +39,6 @@ export type ServiceEventName =
 	| 'InviteToCommunity'
 	| 'LeaveCommunity'
 	| 'CreateAccountPersona'
-	| 'ReadPersona'
 	| 'DeletePersona'
 	| 'CreateAssignment'
 	| 'DeleteAssignment'
@@ -92,7 +91,6 @@ export interface EventParamsByName {
 	InviteToCommunity: InviteToCommunityParams;
 	LeaveCommunity: LeaveCommunityParams;
 	CreateAccountPersona: CreateAccountPersonaParams;
-	ReadPersona: ReadPersonaParams;
 	DeletePersona: DeletePersonaParams;
 	CreateAssignment: CreateAssignmentParams;
 	DeleteAssignment: DeleteAssignmentParams;
@@ -143,7 +141,6 @@ export interface EventResponseByName {
 	InviteToCommunity: InviteToCommunityResponse;
 	LeaveCommunity: LeaveCommunityResponse;
 	CreateAccountPersona: CreateAccountPersonaResponse;
-	ReadPersona: ReadPersonaResponse;
 	DeletePersona: DeletePersonaResponse;
 	CreateAssignment: CreateAssignmentResponse;
 	DeleteAssignment: DeleteAssignmentResponse;
@@ -190,7 +187,6 @@ export interface ServiceByName {
 		CreateAccountPersonaParams,
 		CreateAccountPersonaResponseResult
 	>;
-	ReadPersona: AuthorizedService<ReadPersonaParams, ReadPersonaResponseResult>;
 	DeletePersona: AuthorizedService<DeletePersonaParams, DeletePersonaResponseResult>;
 	ReadCommunity: AuthorizedService<ReadCommunityParams, ReadCommunityResponseResult>;
 	ReadCommunities: AuthorizedService<ReadCommunitiesParams, ReadCommunitiesResponseResult>;
@@ -432,20 +428,6 @@ export interface CreateAccountPersonaResponse {
 	assignments: Assignment[];
 }
 export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaResponse>;
-
-export interface ReadPersonaParams {
-	actor: number;
-	persona_id: number;
-}
-export interface ReadPersonaResponse {
-	/**
-	 *
-	 * 		A subset of a Persona available to all clients in a community.
-	 *
-	 */
-	persona: PublicPersona;
-}
-export type ReadPersonaResponseResult = ApiResult<ReadPersonaResponse>;
 
 export interface DeletePersonaParams {
 	actor: number;
@@ -766,7 +748,6 @@ export interface Dispatch {
 	CreateAccountPersona: (
 		params: CreateAccountPersonaParams,
 	) => Promise<CreateAccountPersonaResponseResult>;
-	ReadPersona: (params: ReadPersonaParams) => Promise<ReadPersonaResponseResult>;
 	DeletePersona: (params: DeletePersonaParams) => Promise<DeletePersonaResponseResult>;
 	CreateAssignment: (params: CreateAssignmentParams) => Promise<CreateAssignmentResponseResult>;
 	DeleteAssignment: (params: DeleteAssignmentParams) => Promise<DeleteAssignmentResponseResult>;
@@ -849,9 +830,6 @@ export interface Mutations {
 	CreateAccountPersona: (
 		ctx: DispatchContext<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>,
 	) => Promise<CreateAccountPersonaResponseResult>;
-	ReadPersona: (
-		ctx: DispatchContext<ReadPersonaParams, ReadPersonaResponseResult>,
-	) => Promise<ReadPersonaResponseResult>;
 	DeletePersona: (
 		ctx: DispatchContext<DeletePersonaParams, DeletePersonaResponseResult>,
 	) => Promise<DeletePersonaResponseResult>;
