@@ -75,10 +75,12 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<slot name="header">
-		<h2>Create a new {entityName}</h2>
-		<ContextInfo {persona} {community} {space} />
-	</slot>
+	{#if $$slots.header}
+		<slot name="header">
+			<h2>Create a new {entityName}</h2>
+			<ContextInfo {persona} {community} {space} />
+		</slot>
+	{/if}
 	<fieldset>
 		{#if fields.name}
 			<label>

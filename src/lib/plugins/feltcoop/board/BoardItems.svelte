@@ -18,3 +18,9 @@
 		<BoardItemDetail {persona} {entity} {space} />
 	{/each}
 </ol>
+
+<style>
+	ol {
+		padding: var(--spacing_xs);
+	}
+</style>

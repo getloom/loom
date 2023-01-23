@@ -91,15 +91,14 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 				title="reply to @{$authorPersona.name}"
 				aria-label="reply to @{$authorPersona.name}"
 				on:click={() => (replying = !replying)}>↩</button
-			>
-			<PersonaAvatar persona={authorPersona} inline={true} />
+			><PersonaAvatar persona={authorPersona} inline={true} />
 			<span class="content formatted">
 				<EntityContent {entity} />
 			</span>
 		</div>
 		{#if replying}
 			<!-- TODO wrapping with a div looks a little less janky to me, but still not great -->
-			<div in:slide class="reply-input">
+			<div in:slide class="reply-input panel">
 				<PersonaAvatar {persona} />
 				<textarea
 					placeholder="> replying to @{$authorPersona.name}"
@@ -126,35 +125,37 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		padding-left: var(--icon_size);
 	}
 	li {
-		align-items: flex-start;
 		flex-direction: column;
 		margin-bottom: var(--spacing_xl3);
 	}
 	li:last-child {
 		margin-bottom: 0;
 	}
+	button {
+		margin: 0;
+		margin-right: var(--spacing_xs2);
+		--icon_size: var(--icon_size_sm);
+	}
 	ol {
-		padding: var(--spacing_md);
-		padding-right: var(--spacing_xs);
-		padding-bottom: var(--spacing_xs);
+		padding: var(--spacing_xs);
 	}
 	.item {
-		width: 100%;
 		--icon_size: var(--icon_size_xs);
 		/* TODO this shouldn't be needed after upgrading Felt for .markup -> .flow  */
 		display: block;
 	}
 	.items {
-		width: 100%;
 		padding: var(--spacing_xs);
 		padding-left: var(--spacing_xl3);
 		padding-right: 0;
 		padding-bottom: 0;
 	}
 	.reply-input {
-		width: 100%;
-		padding-left: calc(2 * var(--icon_size_md));
 		--icon_size: var(--icon_size_xs);
+		/* TODO refactor these into Board-specific CSS vars on the top-level `Board` */
+		margin-left: var(--spacing_xl3);
+		padding: var(--spacing_xs);
+		padding-left: calc(var(--icon_size_sm) + var(--spacing_xs2) + var(--spacing_xs));
 		display: flex;
 	}
 	.reply-input textarea {

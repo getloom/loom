@@ -25,6 +25,7 @@
 	}
 	button {
 		height: var(--navbar_size);
+		min-height: var(--navbar_size);
 		border-radius: 0;
 	}
 	button:active span {

@@ -39,11 +39,6 @@
 				{community}
 				{space}
 			>
-				<svelte:fragment slot="header"
-					><!-- TODO Svelte requires non-comment markup or it uses the slot fallback --><span
-						style:display="none"
-					/></svelte:fragment
-				>
 				<svelte:fragment slot="content_title">post</svelte:fragment>
 				<svelte:fragment slot="error"><span style:display="none" /></svelte:fragment>
 			</CreateEntityForm>
