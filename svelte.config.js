@@ -6,7 +6,7 @@ export default {
 	preprocess: typescript(),
 	compilerOptions: {immutable: true},
 	kit: {
-		adapter: node(),
+		adapter: node({precompress: true}),
 		files: {assets: 'src/static'},
 	},
 };
