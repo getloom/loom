@@ -54,10 +54,7 @@ export const task: Task = {
 			mv ${artifactFilename} ${deployDirname}/;
 			cd ${deployDirname};
 			tar -xvf ${artifactFilename};
-			echo 'moving node_modules';
-			mv ~/${currentDeploy}/node_modules ./ && echo 'reusing node_modules' || echo 'no node_modules to reuse';
-			echo 'npm i';
-			npm i;
+			echo 'npm ci' && npm ci;
 			cd ~;
 			ln -sfn ${deployDirname}/ ${currentDeploy};`,
 		]);
