@@ -35,3 +35,21 @@ const adminPersona = {
 ```
 
 > learn more about [community types](./community-types.md) and [persona types](./persona-types.md)
+
+## Control and ownership diagram
+
+```mermaid
+flowchart
+	subgraph Infrastructure
+		O[Operators] -- delegate control --> A
+		subgraph Instance
+			U[Users] -- access --> C
+			S[Stewards] -- steward --> C[Communities]
+			A[Admins] -- administer --> C
+			A -- delegate control --> S
+		end
+	end
+	Infrastructure -- host --> Instance
+	O -- manages infrastructure --> O
+	A -- manages instance --> A
+```
