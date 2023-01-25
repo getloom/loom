@@ -9,7 +9,8 @@ import {
 } from '$lib/vocab/persona/personaServices';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
+import {ADMIN_COMMUNITY_ID, GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
+import type {AccountPersona} from './persona';
 
 /* test__personaService */
 const test__personaService = suite<TestDbContext>('personaService');
@@ -119,6 +120,38 @@ test__personaService('delete a persona and properly clean up', async ({db, rando
 	assert.is(otherEntityUpdated.data.content, otherContent);
 	assert.is(otherEntityUpdated.persona_id, GHOST_PERSONA_ID);
 });
+
+test__personaService('actors cannot delete other personas', async ({db, random}) => {
+	const account = await random.account();
+	const {persona: persona1} = await random.persona(account);
+	const {persona: persona2} = await random.persona(account);
+
+	unwrapError(
+		await DeletePersonaService.perform({
+			...toServiceRequestMock(db, persona1),
+			params: {actor: persona1.persona_id, persona_id: persona2.persona_id},
+		}),
+	);
+});
+
+test__personaService(
+	'actors can delete other personas if in the admin community',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+
+		const result = unwrap(await db.repos.assignment.filterByCommunity(ADMIN_COMMUNITY_ID));
+		const actor = unwrap(await db.repos.persona.findById(result[0].persona_id))!;
+
+		assert.ok(actor.persona_id !== persona.persona_id);
+
+		unwrap(
+			await DeletePersonaService.perform({
+				...toServiceRequestMock(db, actor as AccountPersona),
+				params: {actor: actor.persona_id, persona_id: persona.persona_id},
+			}),
+		);
+	},
+);
 
 test__personaService.run();
 /* test__personaService */

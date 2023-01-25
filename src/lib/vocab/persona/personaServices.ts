@@ -15,7 +15,7 @@ import type {Community} from '$lib/vocab/community/community';
 import type {ActorPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
-import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
+import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
 import {ADMIN_PERSONA_ID, GHOST_PERSONA_ID} from '$lib/app/constants';
 import {defaultPersonalCommunityRoles} from '$lib/app/templates';
 
@@ -129,9 +129,10 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 	event: DeletePersona,
 	perform: async ({repos, params}) => {
-		const {persona_id} = params;
+		const {actor, persona_id} = params;
 
 		// first check if deleting the persona is allowed
+		//TODO extract to it's own policy helper?
 		if (persona_id === ADMIN_PERSONA_ID || persona_id === GHOST_PERSONA_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
@@ -147,7 +148,9 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		if (persona.type === 'community') {
 			return {ok: false, status: 400, message: 'cannot delete community personas'};
 		}
-
+		if (actor !== persona_id && !(await isPersonaAdmin(actor, repos))) {
+			return {ok: false, status: 403, message: 'actor does not have permission'};
+		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
 		const communities = unwrap(await repos.community.filterByPersona(persona_id));
 

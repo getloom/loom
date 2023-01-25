@@ -1,5 +1,8 @@
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {Ping, Ephemera} from '$lib/ui/uiEvents';
+import {permissions} from '$lib/vocab/policy/permissions';
+import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {unwrap} from '@feltcoop/util';
 
 export const PingService: ServiceByName['Ping'] = {
 	event: Ping,
@@ -8,5 +11,14 @@ export const PingService: ServiceByName['Ping'] = {
 
 export const EphemeraService: ServiceByName['Ephemera'] = {
 	event: Ephemera,
-	perform: async ({params}) => ({ok: true, status: 200, value: params}),
+	perform: ({transact, params}) =>
+		transact(async (repos) => {
+			const {actor, space_id} = params;
+			const space = unwrap(await repos.space.findById(space_id));
+			if (!space) {
+				return {ok: false, status: 404, message: 'no space found'};
+			}
+			unwrap(await checkPolicy(permissions.Ephemera, actor, space.community_id, repos));
+			return {ok: true, status: 200, value: params};
+		}),
 };

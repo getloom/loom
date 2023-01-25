@@ -119,15 +119,17 @@ for (const service of services.values()) {
 		if (event.authorize !== false) {
 			const {persona: unauthorizedPersona} = await random.persona(account);
 
-			const community = await random.community(undefined, account);
+			// create a new community without the persona, otherwise they might have permissions
+			const communityData = await random.community(undefined, account);
 			const failedParams = await randomEventParams[event.name](random, {
-				...community,
-				space: community.spaces[1],
+				...communityData,
+				space: communityData.spaces[1],
 				account,
-				persona: unauthorizedPersona,
-				role: community.roles[0],
-				// create a new community without the persona, otherwise they might have permissions
+				role: communityData.roles[0],
 			});
+			if (failedParams && 'actor' in failedParams) {
+				failedParams.actor = unauthorizedPersona.persona_id;
+			}
 
 			let failedResult;
 			try {
@@ -142,22 +144,25 @@ for (const service of services.values()) {
 			if (
 				[
 					// TODO when this list is empty, we're fully authorized!
-					'Ephemera',
-					'DeletePersona',
-					'CreateCommunity',
-					'LeaveCommunity',
-					'ReadEntities',
-					'ReadEntitiesPaginated',
-					'CreateEntity',
-					'UpdateEntity',
-					'EraseEntities',
-					'DeleteEntities',
-					'CreateTie',
-					'ReadTies',
-					'DeleteTie',
-					'CreatePolicy',
-					'DeletePolicy',
-					'UpdatePolicy',
+					'CreateCommunity', //TODO out of policy scope; add instance setting or actor.isAdmin()
+					'LeaveCommunity', //TODO add checkCommunityAccess & actor===persona_id
+					'KickFromCommunity', //TODO add event and policy
+
+					'ReadEntities', //TODO add checkCommunityAccess
+					'ReadEntitiesPaginated', //TODO add checkCommunityAccess
+					'CreateEntity', //TODO add policy
+
+					'UpdateEntity', //TODO add checkEntityOwnership (actor===persona_id || view type === <> || admin)
+					'EraseEntities', //note about this check, should also add a Space setting to disable check
+					'DeleteEntities', //i.e. set a Space as "common", but make it a one way toggle
+
+					'CreateTie', //TODO do we directly call any Tie events?
+					'ReadTies', //we may jus want to
+					'DeleteTie', //scrap these or add admin check
+
+					'CreatePolicy', //TODO add Policies
+					'DeletePolicy', //and checks
+					'UpdatePolicy', //For these
 				].includes(event.name)
 			) {
 				unwrap(failedResult);

@@ -1,5 +1,6 @@
 export type PermissionName = keyof typeof permissions;
 export const permissions = {
+	Ephemera: 'Ephemera',
 	UpdateCommunitySettings: 'UpdateCommunitySettings',
 	DeleteCommunity: 'DeleteCommunity',
 	InviteToCommunity: 'InviteToCommunity',

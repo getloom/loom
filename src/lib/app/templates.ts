@@ -86,6 +86,7 @@ export const defaultStandardCommunityRoles: RoleTemplate[] = [
 		name: 'Member',
 		default: true,
 		policies: [
+			{permission: permissions.Ephemera},
 			{permission: permissions.InviteToCommunity},
 			{permission: permissions.CreateSpace},
 			{permission: permissions.UpdateSpace},
