@@ -30,6 +30,7 @@ export interface CommunitySettings {
 	defaultRoleId: number;
 	instance?: {
 		allowedAccountNames?: string[];
+		disableCreateCommunity?: boolean;
 	};
 }
 /**

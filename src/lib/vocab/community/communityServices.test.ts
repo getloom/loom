@@ -204,5 +204,48 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
 });
 
+test_communityServices(
+	'when new communities are disabled, only admins should be able to create new ones',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+
+		const serviceRequest = toServiceRequestMock(db, persona);
+
+		const {settings} = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
+		const settingValue = settings.instance?.disableCreateCommunity;
+		unwrap(
+			await db.repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
+				...settings,
+				instance: {...settings.instance, disableCreateCommunity: true},
+			}),
+		);
+
+		unwrapError(
+			await CreateCommunityService.perform({
+				...serviceRequest,
+				params: randomCommunityParams(persona.persona_id),
+			}),
+		);
+
+		const result = unwrap(await db.repos.assignment.filterByCommunity(ADMIN_COMMUNITY_ID));
+		const actor = unwrap(await db.repos.persona.findById(result[0].persona_id))!;
+
+		unwrap(
+			await CreateCommunityService.perform({
+				...serviceRequest,
+				params: randomCommunityParams(actor.persona_id),
+			}),
+		);
+
+		//cleanup from test; do not delete
+		unwrap(
+			await db.repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
+				...settings,
+				instance: {...settings.instance, disableCreateCommunity: settingValue},
+			}),
+		);
+	},
+);
+
 test_communityServices.run();
 /* test_communityServices */

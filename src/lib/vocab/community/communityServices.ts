@@ -18,13 +18,17 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
-import {isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
+import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
 import {
 	cleanOrphanCommunities,
 	initTemplateGovernanceForCommunity,
 } from '$lib/vocab/community/communityHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
-import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {
+	checkCommunityAccess,
+	isCreateCommunityDisabled,
+	checkPolicy,
+} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {spaceTemplateToCreateSpaceParams, defaultStandardCommunityRoles} from '$lib/app/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
@@ -101,6 +105,11 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			const existingCommunity = unwrap(await repos.community.findByName(name), 'custom');
 			if (existingCommunity) {
 				return {ok: false, status: 409, message: 'a community with that name already exists'};
+			}
+
+			// Check for instance settings OR admin actor
+			if ((await isCreateCommunityDisabled(repos)) && !(await isPersonaAdmin(actor, repos))) {
+				return {ok: false, status: 403, message: 'actor does not have permission'};
 			}
 
 			const settings = toDefaultCommunitySettings(name);
@@ -234,6 +243,12 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 			// 	repos.persona.findById(persona_id),
 			// 	repos.community.findById(community_id),
 			// ]);
+
+			unwrap(await checkCommunityAccess(persona_id, community_id, repos));
+			if (actor !== persona_id) {
+				return {ok: false, status: 403, message: 'actor does not have permission'};
+			}
+
 			const persona = unwrap(
 				await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(persona_id, [
 					'type',

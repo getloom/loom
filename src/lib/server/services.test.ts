@@ -116,7 +116,7 @@ for (const service of services.values()) {
 		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
 
 		// Test failure of authorized services with an unauthorized actor.
-		if (event.authorize !== false) {
+		if (event.authorize !== false && event.name !== 'CreateCommunity') {
 			const {persona: unauthorizedPersona} = await random.persona(account);
 
 			// create a new community without the persona, otherwise they might have permissions
@@ -144,8 +144,6 @@ for (const service of services.values()) {
 			if (
 				[
 					// TODO when this list is empty, we're fully authorized!
-					'CreateCommunity', //TODO out of policy scope; add instance setting or actor.isAdmin()
-					'LeaveCommunity', //TODO add checkCommunityAccess & actor===persona_id
 					'KickFromCommunity', //TODO add event and policy
 
 					'ReadEntities', //TODO add checkCommunityAccess

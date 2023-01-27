@@ -34,6 +34,7 @@ export const CommunitySettingsSchema = {
 			type: 'object',
 			properties: {
 				allowedAccountNames: {type: 'array', items: {type: 'string'}},
+				disableCreateCommunity: {type: 'boolean'},
 			},
 			additionalProperties: false,
 		},

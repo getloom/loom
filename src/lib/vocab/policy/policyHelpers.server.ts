@@ -4,6 +4,7 @@ import {Logger} from '@feltcoop/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 import type {ApiResult} from '$lib/server/api';
+import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
@@ -46,4 +47,14 @@ export const checkCommunityAccess = async (
 	} else {
 		return {ok: false, status: 403, message: 'actor does not have permission'};
 	}
+};
+
+export const isCreateCommunityDisabled = async (repos: Repos): Promise<boolean> => {
+	const result = unwrap(await repos.community.findById(ADMIN_COMMUNITY_ID));
+
+	if (!result) {
+		throw Error('unable to locate admin community');
+	}
+
+	return !!result.settings.instance?.disableCreateCommunity;
 };
