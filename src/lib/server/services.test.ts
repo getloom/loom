@@ -144,8 +144,6 @@ for (const service of services.values()) {
 			if (
 				[
 					// TODO when this list is empty, we're fully authorized!
-					'KickFromCommunity', //TODO add event and policy
-
 					'ReadEntities', //TODO add checkCommunityAccess
 					'ReadEntitiesPaginated', //TODO add checkCommunityAccess
 					'CreateEntity', //TODO add policy

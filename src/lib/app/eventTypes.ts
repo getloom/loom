@@ -42,6 +42,7 @@ export type ServiceEventName =
 	| 'DeleteCommunity'
 	| 'InviteToCommunity'
 	| 'LeaveCommunity'
+	| 'KickFromCommunity'
 	| 'CreateAccountPersona'
 	| 'DeletePersona'
 	| 'CreateAssignment'
@@ -93,6 +94,7 @@ export interface EventParamsByName {
 	DeleteCommunity: DeleteCommunityParams;
 	InviteToCommunity: InviteToCommunityParams;
 	LeaveCommunity: LeaveCommunityParams;
+	KickFromCommunity: KickFromCommunityParams;
 	CreateAccountPersona: CreateAccountPersonaParams;
 	DeletePersona: DeletePersonaParams;
 	CreateAssignment: CreateAssignmentParams;
@@ -142,6 +144,7 @@ export interface EventResponseByName {
 	DeleteCommunity: DeleteCommunityResponse;
 	InviteToCommunity: InviteToCommunityResponse;
 	LeaveCommunity: LeaveCommunityResponse;
+	KickFromCommunity: KickFromCommunityResponse;
 	CreateAccountPersona: CreateAccountPersonaResponse;
 	DeletePersona: DeletePersonaResponse;
 	CreateAssignment: CreateAssignmentResponse;
@@ -199,6 +202,7 @@ export interface ServiceByName {
 	DeleteCommunity: AuthorizedService<DeleteCommunityParams, DeleteCommunityResponseResult>;
 	InviteToCommunity: AuthorizedService<InviteToCommunityParams, InviteToCommunityResponseResult>;
 	LeaveCommunity: AuthorizedService<LeaveCommunityParams, LeaveCommunityResponseResult>;
+	KickFromCommunity: AuthorizedService<KickFromCommunityParams, KickFromCommunityResponseResult>;
 	CreateAssignment: AuthorizedService<CreateAssignmentParams, CreateAssignmentResponseResult>;
 	DeleteAssignment: AuthorizedService<DeleteAssignmentParams, DeleteAssignmentResponseResult>;
 	ReadSpaces: AuthorizedService<ReadSpacesParams, ReadSpacesResponseResult>;
@@ -380,6 +384,14 @@ export interface LeaveCommunityParams {
 }
 export type LeaveCommunityResponse = null;
 export type LeaveCommunityResponseResult = ApiResult<LeaveCommunityResponse>;
+
+export interface KickFromCommunityParams {
+	actor: number;
+	persona_id: number;
+	community_id: number;
+}
+export type KickFromCommunityResponse = null;
+export type KickFromCommunityResponseResult = ApiResult<KickFromCommunityResponse>;
 
 export interface CreateAccountPersonaParams {
 	name: string;
@@ -791,6 +803,7 @@ export interface Dispatch {
 	DeleteCommunity: (params: DeleteCommunityParams) => Promise<DeleteCommunityResponseResult>;
 	InviteToCommunity: (params: InviteToCommunityParams) => Promise<InviteToCommunityResponseResult>;
 	LeaveCommunity: (params: LeaveCommunityParams) => Promise<LeaveCommunityResponseResult>;
+	KickFromCommunity: (params: KickFromCommunityParams) => Promise<KickFromCommunityResponseResult>;
 	CreateAccountPersona: (
 		params: CreateAccountPersonaParams,
 	) => Promise<CreateAccountPersonaResponseResult>;
@@ -870,6 +883,9 @@ export interface Mutations {
 	LeaveCommunity: (
 		ctx: DispatchContext<LeaveCommunityParams, LeaveCommunityResponseResult>,
 	) => Promise<LeaveCommunityResponseResult>;
+	KickFromCommunity: (
+		ctx: DispatchContext<KickFromCommunityParams, KickFromCommunityResponseResult>,
+	) => Promise<KickFromCommunityResponseResult>;
 	CreateAccountPersona: (
 		ctx: DispatchContext<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>,
 	) => Promise<CreateAccountPersonaResponseResult>;

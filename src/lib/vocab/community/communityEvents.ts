@@ -196,3 +196,29 @@ export const LeaveCommunity: ServiceEventInfo = {
 		method: 'POST',
 	},
 };
+
+export const KickFromCommunity: ServiceEventInfo = {
+	type: 'ServiceEvent',
+	name: 'KickFromCommunity',
+	broadcast: true,
+	params: {
+		$id: '/schemas/KickFromCommunityParams.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number'},
+			persona_id: {type: 'number'},
+			community_id: {type: 'number'},
+		},
+		required: ['actor', 'persona_id', 'community_id'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/KickFromCommunityResponse.json',
+		type: 'null',
+	},
+	returns: 'Promise<KickFromCommunityResponseResult>',
+	route: {
+		path: '/api/v1/community/kick',
+		method: 'POST',
+	},
+};

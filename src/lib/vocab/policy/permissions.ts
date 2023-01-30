@@ -4,6 +4,7 @@ export const permissions = {
 	UpdateCommunitySettings: 'UpdateCommunitySettings',
 	DeleteCommunity: 'DeleteCommunity',
 	InviteToCommunity: 'InviteToCommunity',
+	KickFromCommunity: 'KickFromCommunity',
 	CreateRole: 'CreateRole',
 	UpdateRole: 'UpdateRole',
 	DeleteRole: 'DeleteRole',
