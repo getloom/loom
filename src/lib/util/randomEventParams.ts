@@ -211,38 +211,6 @@ export const randomEventParams: RandomEventParams = {
 			entityIds: [entity1.entity.entity_id, entity2.entity.entity_id],
 		};
 	},
-	CreateTie: async (random, {account, persona, community, space} = {}) => {
-		if (!persona) ({persona} = await random.persona(account));
-		return {
-			actor: persona.persona_id,
-			source_id: (await random.entity(persona, account, community, space, space?.directory_id))
-				.entity.entity_id,
-			dest_id: (await random.entity(persona, account, community, space, space?.directory_id)).entity
-				.entity_id,
-			type: 'HasReply',
-		};
-	},
-	ReadTies: async (random, {account, persona, community, space} = {}) => {
-		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
-		return {actor: persona.persona_id, source_id: space.directory_id};
-	},
-	DeleteTie: async (random, {account, persona, community, space} = {}) => {
-		if (!persona) ({persona} = await random.persona(account));
-		const {tie} = await random.tie(
-			undefined,
-			undefined,
-			persona,
-			account,
-			community,
-			space,
-			space?.directory_id,
-		);
-		return {
-			actor: persona.persona_id,
-			tie_id: tie.tie_id,
-		};
-	},
 	CreateRole: async (random, {account, persona, community} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		if (!community) ({community} = await random.community(persona, account));

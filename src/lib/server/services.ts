@@ -31,7 +31,6 @@ import {
 	UpdateSpaceService,
 	DeleteSpaceService,
 } from '$lib/vocab/space/spaceServices';
-import {CreateTieService, ReadTiesService, DeleteTieService} from '$lib/vocab/tie/tieServices';
 import {
 	CreateRoleService,
 	DeleteRoleService,
@@ -89,10 +88,6 @@ export const services: Map<string, Service> = new Map(
 		UpdateEntityService,
 		EraseEntitiesService,
 		DeleteEntitiesService,
-		// tieServices
-		CreateTieService,
-		ReadTiesService,
-		DeleteTieService,
 		// roleServices
 		CreateRoleService,
 		ReadRolesService,

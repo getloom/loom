@@ -10,7 +10,6 @@ import type {
 	CreateEntityParams,
 	CreateSpaceParams,
 	CreateAssignmentParams,
-	CreateTieParams,
 	CreateRoleParams,
 	SignInParams,
 	CreatePolicyParams,
@@ -24,7 +23,6 @@ import {CreateCommunityService} from '$lib/vocab/community/communityServices';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
-import {CreateTieService} from '$lib/vocab/tie/tieServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import type {Role} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
@@ -90,16 +88,6 @@ export const randomEntityParams = (
 	space_id,
 	data: randomEntityData(),
 	ties: [{source_id}],
-});
-export const randomTieParams = (
-	actor: number,
-	source_id: number,
-	dest_id: number,
-): CreateTieParams => ({
-	actor,
-	source_id,
-	dest_id,
-	type: randomTieType(),
 });
 
 export const randomRoleParams = (actor: number, community_id: number): CreateRoleParams => ({
@@ -314,17 +302,13 @@ export class RandomVocabContext {
 				parentSourceId,
 			));
 		}
-		const params = randomTieParams(
-			persona.persona_id,
-			sourceEntity.entity_id,
-			destEntity.entity_id,
-		);
-		if (type) params.type = type;
-		const {tie} = unwrap(
-			await CreateTieService.perform({
-				...toServiceRequestMock(this.db, persona),
-				params,
-			}),
+
+		const tie = unwrap(
+			await this.db.repos.tie.create(
+				sourceEntity.entity_id,
+				sourceEntity.entity_id,
+				type || randomTieType(),
+			),
 		);
 		return {tie, sourceEntity, destEntity, persona, account, community, parentSourceId};
 	}

@@ -27,7 +27,6 @@ import {
 	DeleteEntities,
 	ReadEntitiesPaginated,
 } from '$lib/vocab/entity/entityEvents';
-import {CreateTie, ReadTies, DeleteTie} from '$lib/vocab/tie/tieEvents';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleEvents';
 import {
 	CreatePolicy,
@@ -82,10 +81,6 @@ export const eventInfos: EventInfo[] = [
 	QueryEntities,
 	EraseEntities,
 	DeleteEntities,
-	// tieEvents
-	CreateTie,
-	ReadTies,
-	DeleteTie,
 	// roleEvents
 	CreateRole,
 	ReadRoles,

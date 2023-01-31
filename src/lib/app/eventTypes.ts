@@ -57,9 +57,6 @@ export type ServiceEventName =
 	| 'ReadEntitiesPaginated'
 	| 'EraseEntities'
 	| 'DeleteEntities'
-	| 'CreateTie'
-	| 'ReadTies'
-	| 'DeleteTie'
 	| 'CreateRole'
 	| 'ReadRoles'
 	| 'UpdateRole'
@@ -110,9 +107,6 @@ export interface EventParamsByName {
 	QueryEntities: QueryEntitiesParams;
 	EraseEntities: EraseEntitiesParams;
 	DeleteEntities: DeleteEntitiesParams;
-	CreateTie: CreateTieParams;
-	ReadTies: ReadTiesParams;
-	DeleteTie: DeleteTieParams;
 	CreateRole: CreateRoleParams;
 	ReadRoles: ReadRolesParams;
 	UpdateRole: UpdateRoleParams;
@@ -159,9 +153,6 @@ export interface EventResponseByName {
 	ReadEntitiesPaginated: ReadEntitiesPaginatedResponse;
 	EraseEntities: EraseEntitiesResponse;
 	DeleteEntities: DeleteEntitiesResponse;
-	CreateTie: CreateTieResponse;
-	ReadTies: ReadTiesResponse;
-	DeleteTie: DeleteTieResponse;
 	CreateRole: CreateRoleResponse;
 	ReadRoles: ReadRolesResponse;
 	UpdateRole: UpdateRoleResponse;
@@ -218,9 +209,6 @@ export interface ServiceByName {
 	UpdateEntity: AuthorizedService<UpdateEntityParams, UpdateEntityResponseResult>;
 	EraseEntities: AuthorizedService<EraseEntitiesParams, EraseEntitiesResponseResult>;
 	DeleteEntities: AuthorizedService<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
-	CreateTie: AuthorizedService<CreateTieParams, CreateTieResponseResult>;
-	ReadTies: AuthorizedService<ReadTiesParams, ReadTiesResponseResult>;
-	DeleteTie: AuthorizedService<DeleteTieParams, DeleteTieResponseResult>;
 	CreateRole: AuthorizedService<CreateRoleParams, CreateRoleResponseResult>;
 	ReadRoles: AuthorizedService<ReadRolesParams, ReadRolesResponseResult>;
 	UpdateRole: AuthorizedService<UpdateRoleParams, UpdateRoleResponseResult>;
@@ -591,40 +579,6 @@ export interface DeleteEntitiesParams {
 export type DeleteEntitiesResponse = null;
 export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
-export interface CreateTieParams {
-	actor: number;
-	source_id: number;
-	dest_id: number;
-	type: string;
-}
-export interface CreateTieResponse {
-	/**
-	 *
-	 * 		Ties are part of the Entity/Tie graph data system.
-	 * 		Each represents a named, directional relationship between two entities.
-	 * 		A Tie specifies "the [source] has relationship of [type] with [dest]."
-	 *
-	 */
-	tie: Tie;
-}
-export type CreateTieResponseResult = ApiResult<CreateTieResponse>;
-
-export interface ReadTiesParams {
-	actor: number;
-	source_id: number;
-}
-export interface ReadTiesResponse {
-	ties: Tie[];
-}
-export type ReadTiesResponseResult = ApiResult<ReadTiesResponse>;
-
-export interface DeleteTieParams {
-	actor: number;
-	tie_id: number;
-}
-export type DeleteTieResponse = null;
-export type DeleteTieResponseResult = ApiResult<DeleteTieResponse>;
-
 export interface CreateRoleParams {
 	actor: number;
 	community_id: number;
@@ -826,9 +780,6 @@ export interface Dispatch {
 	};
 	EraseEntities: (params: EraseEntitiesParams) => Promise<EraseEntitiesResponseResult>;
 	DeleteEntities: (params: DeleteEntitiesParams) => Promise<DeleteEntitiesResponseResult>;
-	CreateTie: (params: CreateTieParams) => Promise<CreateTieResponseResult>;
-	ReadTies: (params: ReadTiesParams) => Promise<ReadTiesResponseResult>;
-	DeleteTie: (params: DeleteTieParams) => Promise<DeleteTieResponseResult>;
 	CreateRole: (params: CreateRoleParams) => Promise<CreateRoleResponseResult>;
 	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
 	UpdateRole: (params: UpdateRoleParams) => Promise<UpdateRoleResponseResult>;
@@ -932,15 +883,6 @@ export interface Mutations {
 	DeleteEntities: (
 		ctx: DispatchContext<DeleteEntitiesParams, DeleteEntitiesResponseResult>,
 	) => Promise<DeleteEntitiesResponseResult>;
-	CreateTie: (
-		ctx: DispatchContext<CreateTieParams, CreateTieResponseResult>,
-	) => Promise<CreateTieResponseResult>;
-	ReadTies: (
-		ctx: DispatchContext<ReadTiesParams, ReadTiesResponseResult>,
-	) => Promise<ReadTiesResponseResult>;
-	DeleteTie: (
-		ctx: DispatchContext<DeleteTieParams, DeleteTieResponseResult>,
-	) => Promise<DeleteTieResponseResult>;
 	CreateRole: (
 		ctx: DispatchContext<CreateRoleParams, CreateRoleResponseResult>,
 	) => Promise<CreateRoleResponseResult>;

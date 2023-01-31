@@ -29,9 +29,6 @@ import type {
 	QueryEntitiesParams,
 	EraseEntitiesParams,
 	DeleteEntitiesParams,
-	CreateTieParams,
-	ReadTiesParams,
-	DeleteTieParams,
 	CreateRoleParams,
 	ReadRolesParams,
 	UpdateRoleParams,
@@ -149,9 +146,6 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<DeleteEntitiesParams>;
-	CreateTie: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateTieParams>;
-	ReadTies: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadTiesParams>;
-	DeleteTie: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteTieParams>;
 	CreateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateRoleParams>;
 	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
 	UpdateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateRoleParams>;

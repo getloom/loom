@@ -26,7 +26,6 @@ import {
 	ReadEntitiesPaginated,
 	QueryEntities,
 } from '$lib/vocab/entity/entityMutations';
-import {CreateTie, ReadTies, DeleteTie} from '$lib/vocab/tie/tieMutations';
 import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/roleMutations';
 import {CreatePolicy, DeletePolicy} from '$lib/vocab/policy/policyMutations';
 import {
@@ -74,10 +73,6 @@ export const mutations: Record<string, Mutation> = {
 	ReadEntities,
 	ReadEntitiesPaginated,
 	QueryEntities,
-	// tieMutations
-	CreateTie,
-	ReadTies,
-	DeleteTie,
 	// roleMutations
 	CreateRole,
 	UpdateRole,

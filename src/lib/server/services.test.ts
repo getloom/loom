@@ -152,10 +152,6 @@ for (const service of services.values()) {
 					'EraseEntities', //note about this check, should also add a Space setting to disable check
 					'DeleteEntities', //i.e. set a Space as "common", but make it a one way toggle
 
-					'CreateTie', //TODO do we directly call any Tie events?
-					'ReadTies', //we may jus want to
-					'DeleteTie', //scrap these or add admin check
-
 					'CreatePolicy', //TODO add Policies
 					'DeletePolicy', //and checks
 					'UpdatePolicy', //For these
