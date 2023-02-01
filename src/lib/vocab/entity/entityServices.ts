@@ -11,16 +11,22 @@ import {
 } from '$lib/vocab/entity/entityEvents';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {cleanOrphanedEntities} from './entityHelpers.server';
+import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
+import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {permissions} from '$lib/vocab/policy/permissions';
 
 // TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	event: ReadEntities,
 	perform: async ({repos, params}) => {
-		const ties = unwrap(await repos.tie.filterBySourceId(params.source_id));
+		const {actor, source_id} = params;
+		const {community_id} = unwrap(await repos.space.findByEntity(source_id));
+		unwrap(await checkCommunityAccess(actor, community_id, repos));
+
+		const ties = unwrap(await repos.tie.filterBySourceId(source_id));
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
-		entityIds.delete(params.source_id);
+		entityIds.delete(source_id);
 		const {entities} = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
@@ -29,12 +35,14 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'] = {
 	event: ReadEntitiesPaginated,
 	perform: async ({repos, params}) => {
-		const ties = unwrap(
-			await repos.tie.filterBySourceIdPaginated(params.source_id, params.pageSize, params.pageKey),
-		);
+		const {actor, source_id, pageSize, pageKey} = params;
+		const {community_id} = unwrap(await repos.space.findByEntity(source_id));
+		unwrap(await checkCommunityAccess(actor, community_id, repos));
+
+		const ties = unwrap(await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey));
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
-		entityIds.delete(params.source_id);
+		entityIds.delete(source_id);
 		const {entities} = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
@@ -44,7 +52,12 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	event: CreateEntity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const entity = unwrap(await repos.entity.create(params.actor, params.data, params.space_id));
+			const {actor, data, space_id} = params;
+
+			const {community_id} = unwrap(await repos.space.findById(space_id))!;
+			unwrap(await checkPolicy(permissions.CreateEntity, actor, community_id, repos));
+
+			const entity = unwrap(await repos.entity.create(actor, data, space_id));
 
 			const entities = [entity];
 

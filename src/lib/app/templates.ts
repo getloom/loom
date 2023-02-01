@@ -90,6 +90,7 @@ export const defaultStandardCommunityRoles: RoleTemplate[] = [
 			{permission: permissions.InviteToCommunity},
 			{permission: permissions.CreateSpace},
 			{permission: permissions.UpdateSpace},
+			{permission: permissions.CreateEntity},
 		],
 	},
 ];

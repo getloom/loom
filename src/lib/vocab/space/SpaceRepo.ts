@@ -92,4 +92,16 @@ export class SpaceRepo extends PostgresRepo {
 		if (!data.count) return NOT_OK;
 		return OK;
 	}
+
+	async findByEntity(entity_id: number): Promise<Result<{value: Space}>> {
+		log.trace(`[findByEntity] ${entity_id}`);
+		const data = await this.sql<Space[]>`
+				SELECT s.space_id, s.name, s.path, s.icon, s.view, s.updated, s.created, s.community_id, s.directory_id 
+				FROM spaces s
+				JOIN entities e
+				ON s.space_id = e.space_id AND e.entity_id = ${entity_id}			
+		`;
+		if (!data.length) return NOT_OK;
+		return {ok: true, value: data[0]};
+	}
 }

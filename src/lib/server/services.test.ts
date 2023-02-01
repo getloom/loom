@@ -144,9 +144,6 @@ for (const service of services.values()) {
 			if (
 				[
 					// TODO when this list is empty, we're fully authorized!
-					'ReadEntities', //TODO add checkCommunityAccess
-					'ReadEntitiesPaginated', //TODO add checkCommunityAccess
-					'CreateEntity', //TODO add policy
 
 					'UpdateEntity', //TODO add checkEntityOwnership (actor===persona_id || view type === <> || admin)
 					'EraseEntities', //note about this check, should also add a Space setting to disable check

@@ -10,7 +10,8 @@ import {
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_COMMUNITY_ID, GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
-import type {AccountPersona} from './persona';
+import type {AccountPersona} from '$lib/vocab/persona/persona';
+import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 
 /* test__personaService */
 const test__personaService = suite<TestDbContext>('personaService');
@@ -89,13 +90,28 @@ test__personaService('delete a persona and properly clean up', async ({db, rando
 	};
 
 	// create a second community and join it, and make entities that will be turned into ghosts
-	const otherCommunity = await random.community();
-	const otherSpace = otherCommunity.spaces[0];
+	const {
+		community: otherCommunity,
+		persona: otherPersona,
+		spaces: [otherSpace],
+	} = await random.community();
+	// TODO could be simplified with `random.assignment()`
+	unwrap(
+		await CreateAssignmentService.perform({
+			...toServiceRequestMock(db, otherPersona),
+			params: {
+				actor: otherPersona.persona_id,
+				community_id: otherCommunity.community_id,
+				persona_id: persona.persona_id,
+				role_id: otherCommunity.settings.defaultRoleId,
+			},
+		}),
+	);
 	const otherContent = '123';
 	const {entity: otherEntity} = await random.entity(
 		persona,
 		account,
-		otherCommunity.community,
+		otherCommunity,
 		otherSpace,
 		undefined,
 		{data: {type: 'Note', content: otherContent}},
