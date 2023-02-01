@@ -56,7 +56,7 @@
     "zod": "^3.19.1"
   },
   "dependencies": {
-    "@feltcoop/felt": "^0.45.0",
+    "@feltcoop/felt": "^0.45.1",
     "@feltcoop/svelte-gettable-stores": "^0.2.0",
     "@feltcoop/util": "^0.4.1",
     "@polka/send-type": "^0.5.2",
