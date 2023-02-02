@@ -71,10 +71,14 @@ export const randomCommunityParams = (actor: number): CreateCommunityParams => {
 	const name = randomCommunnityName();
 	return {actor, template: {name, settings: {hue: randomHue(name)}}};
 };
-export const randomSpaceParams = (actor: number, community_id: number): CreateSpaceParams => ({
+export const randomSpaceParams = (
+	actor: number,
+	community_id: number,
+	view?: string,
+): CreateSpaceParams => ({
 	actor,
 	community_id,
-	view: randomView(),
+	view: view ?? randomView(),
 	name: randomSpaceName(),
 	path: randomSpacePath(),
 	icon: randomSpaceIcon(),
@@ -200,6 +204,7 @@ export class RandomVocabContext {
 		persona?: AccountPersona,
 		account?: Account,
 		community?: Community,
+		view?: string,
 	): Promise<{
 		space: Space;
 		directory: Entity & {data: DirectoryEntityData};
@@ -210,7 +215,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!community) ({community} = await this.community(persona, account));
-		const params = randomSpaceParams(persona.persona_id, community.community_id);
+		const params = randomSpaceParams(persona.persona_id, community.community_id, view);
 		const {space, directory} = unwrap(
 			await CreateSpaceService.perform({
 				...toServiceRequestMock(this.db, persona),

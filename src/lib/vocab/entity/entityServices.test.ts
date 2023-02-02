@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltcoop/util';
+import {unwrap, unwrapError} from '@feltcoop/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {NoteEntityData} from '$lib/vocab/entity/entityData';
@@ -9,9 +9,11 @@ import {
 	ReadEntitiesPaginatedService,
 	DeleteEntitiesService,
 	CreateEntityService,
+	UpdateEntityService,
 } from '$lib/vocab/entity/entityServices';
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
+import {InviteToCommunityService} from '$lib/vocab/community/communityServices';
 
 /* test_entityServices */
 const test_entityServices = suite<TestDbContext>('communityRepo');
@@ -231,6 +233,96 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 	const {missing} = unwrap(await db.repos.entity.filterByIds(entityIds));
 	assert.equal(missing, entityIds);
 });
+
+test_entityServices(
+	'can only delete, erase, or update other personas entities in "common" views',
+	async ({db, random}) => {
+		const {space, persona, account, community} = await random.space();
+		const {space: commonSpace} = await random.space(persona, account, community, '<Todo />');
+		const {persona: persona2} = await random.persona();
+
+		unwrap(
+			await InviteToCommunityService.perform({
+				...toServiceRequestMock(db, persona),
+				params: {
+					actor: persona.persona_id,
+					community_id: community.community_id,
+					name: persona2.name,
+				},
+			}),
+		);
+
+		//case 1, actor === persona in regular space | allowed
+		const note1 = unwrap(
+			await CreateEntityService.perform({
+				...toServiceRequestMock(db, persona),
+				params: {
+					actor: persona.persona_id,
+					data: {type: 'Note', content: 'note1'},
+					space_id: space.space_id,
+				},
+			}),
+		).entities[0];
+
+		unwrap(
+			await UpdateEntityService.perform({
+				...toServiceRequestMock(db, persona),
+				params: {
+					actor: persona.persona_id,
+					entity_id: note1.entity_id,
+					data: {type: 'Note', content: 'Note1'},
+				},
+			}),
+		);
+
+		//case 2, actor === persona in common space | allowed
+		const note2 = unwrap(
+			await CreateEntityService.perform({
+				...toServiceRequestMock(db, persona),
+				params: {
+					actor: persona.persona_id,
+					data: {type: 'Note', content: 'note2'},
+					space_id: commonSpace.space_id,
+				},
+			}),
+		).entities[0];
+
+		unwrap(
+			await UpdateEntityService.perform({
+				...toServiceRequestMock(db, persona),
+				params: {
+					actor: persona.persona_id,
+					entity_id: note2.entity_id,
+					data: {type: 'Note', content: 'Note2'},
+				},
+			}),
+		);
+
+		//case 3, actor !== persona in common space | allowed
+		unwrap(
+			await UpdateEntityService.perform({
+				...toServiceRequestMock(db, persona2),
+				params: {
+					actor: persona2.persona_id,
+					entity_id: note2.entity_id,
+					data: {type: 'Note', content: 'lol'},
+				},
+			}),
+		);
+
+		//case 4, actor !== persona in regular space | block
+		unwrapError(
+			await UpdateEntityService.perform({
+				...toServiceRequestMock(db, persona2),
+				params: {
+					actor: persona2.persona_id,
+					entity_id: note1.entity_id,
+					data: {type: 'Note', content: 'lol'},
+				},
+			}),
+		);
+	},
+);
 
 test_entityServices.run();
 /* test_entityServices */

@@ -144,11 +144,6 @@ for (const service of services.values()) {
 			if (
 				[
 					// TODO when this list is empty, we're fully authorized!
-
-					'UpdateEntity', //TODO add checkEntityOwnership (actor===persona_id || view type === <> || admin)
-					'EraseEntities', //note about this check, should also add a Space setting to disable check
-					'DeleteEntities', //i.e. set a Space as "common", but make it a one way toggle
-
 					'CreatePolicy', //TODO add Policies
 					'DeletePolicy', //and checks
 					'UpdatePolicy', //For these

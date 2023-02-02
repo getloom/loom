@@ -12,7 +12,11 @@ import {
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
-import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {
+	checkCommunityAccess,
+	checkEntityOwnership,
+	checkPolicy,
+} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 
 // TODO rename to `getEntities`? `loadEntities`?
@@ -91,7 +95,10 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 	event: UpdateEntity,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const entity = unwrap(await repos.entity.update(params.entity_id, params.data));
+			const {actor, entity_id, data} = params;
+			unwrap(await checkEntityOwnership(actor, [entity_id], repos));
+
+			const entity = unwrap(await repos.entity.update(entity_id, data));
 			return {ok: true, status: 200, value: {entity}};
 		}),
 };
@@ -101,7 +108,10 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 	event: EraseEntities,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const entities = unwrap(await repos.entity.eraseByIds(params.entityIds));
+			const {actor, entityIds} = params;
+			unwrap(await checkEntityOwnership(actor, entityIds, repos));
+
+			const entities = unwrap(await repos.entity.eraseByIds(entityIds));
 			return {ok: true, status: 200, value: {entities}};
 		}),
 };
@@ -111,7 +121,10 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 	event: DeleteEntities,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			unwrap(await repos.entity.deleteByIds(params.entityIds));
+			const {actor, entityIds} = params;
+			unwrap(await checkEntityOwnership(actor, entityIds, repos));
+
+			unwrap(await repos.entity.deleteByIds(entityIds));
 
 			unwrap(await cleanOrphanedEntities(repos));
 
