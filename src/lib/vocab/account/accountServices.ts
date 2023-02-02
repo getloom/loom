@@ -23,10 +23,8 @@ const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
 export const SignUpService: ServiceByName['SignUp'] = {
 	event: SignUp,
-	perform: (serviceRequest) =>
-		serviceRequest.transact(async (repos) => {
-			const {params, session} = serviceRequest;
-
+	perform: ({transact, params, session}) =>
+		transact(async (repos) => {
 			const username = scrubAccountName(params.username);
 			const usernameErrorMessage = checkAccountName(username);
 			if (usernameErrorMessage) {
@@ -65,10 +63,8 @@ export const SignUpService: ServiceByName['SignUp'] = {
 
 export const SignInService: ServiceByName['SignIn'] = {
 	event: SignIn,
-	perform: (serviceRequest) =>
-		serviceRequest.transact(async (repos) => {
-			const {params, session} = serviceRequest;
-
+	perform: ({transact, params, session}) =>
+		transact(async (repos) => {
 			const username = scrubAccountName(params.username);
 			const usernameErrorMessage = checkAccountName(username);
 			if (usernameErrorMessage) {

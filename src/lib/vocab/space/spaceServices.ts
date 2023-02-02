@@ -109,9 +109,8 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 //deletes a single space
 export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 	event: DeleteSpace,
-	perform: (serviceRequest) =>
-		serviceRequest.transact(async (repos) => {
-			const {params} = serviceRequest;
+	perform: ({transact, params}) =>
+		transact(async (repos) => {
 			log.trace('[DeleteSpace] deleting space with id:', params.space_id);
 
 			// Check that the space can be deleted.

@@ -199,10 +199,8 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 
 export const InviteToCommunityService: ServiceByName['InviteToCommunity'] = {
 	event: InviteToCommunity,
-	perform: (serviceRequest) =>
-		serviceRequest.transact(async (repos) => {
-			const {params} = serviceRequest;
-
+	perform: ({transact, params}) =>
+		transact(async (repos) => {
 			const {actor, community_id, name} = params;
 			unwrap(await checkPolicy(permissions.InviteToCommunity, actor, community_id, repos));
 
