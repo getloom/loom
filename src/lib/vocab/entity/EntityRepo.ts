@@ -92,7 +92,7 @@ export class EntityRepo extends PostgresRepo {
 		log.trace('[eraseById]', entityIds);
 		const data = await this.sql<any[]>`
 			UPDATE entities
-			SET data = jsonb_build_object('type','Tombstone','formerType',data->>'type','deleted',NOW())
+			SET updated=NOW(), data = jsonb_build_object('type','Tombstone','formerType',data->>'type','deleted',NOW())
 			WHERE entity_id IN ${this.sql(entityIds)} AND NOT (data @> '{"type":"Tombstone"}'::jsonb)
 			RETURNING *;
 		`;
@@ -121,7 +121,7 @@ export class EntityRepo extends PostgresRepo {
 		log.trace('[ghost]', persona_id);
 		const data = await this.sql<any[]>`
 			UPDATE entities
-			SET persona_id=${GHOST_PERSONA_ID}
+			SET updated=NOW(), persona_id=${GHOST_PERSONA_ID}
 			WHERE persona_id=${persona_id};
 		`;
 		return {ok: true, value: data.count};

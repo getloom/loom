@@ -50,7 +50,7 @@ export class RoleRepo extends PostgresRepo {
 
 	async update(role_id: number, name: string): Promise<Result<{value: Role}>> {
 		const result = await this.sql<Role[]>`
-			UPDATE roles SET name=${name} WHERE role_id=${role_id}
+			UPDATE roles SET updated=NOW(), name=${name} WHERE role_id=${role_id}
 			RETURNING *
 		`;
 		if (!result.count) return NOT_OK;

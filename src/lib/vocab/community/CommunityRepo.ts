@@ -70,7 +70,9 @@ export class CommunityRepo extends PostgresRepo {
 
 	async updateSettings(community_id: number, settings: Community['settings']): Promise<Result> {
 		const data = await this.sql<any[]>`
-			UPDATE communities SET settings=${this.sql.json(settings as any)} WHERE community_id=${community_id}
+			UPDATE communities SET updated=NOW(), settings=${this.sql.json(
+				settings as any,
+			)} WHERE community_id=${community_id}
 		`;
 		if (!data.count) return NOT_OK;
 		return OK;

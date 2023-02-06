@@ -53,7 +53,7 @@ export class PolicyRepo extends PostgresRepo {
 		data: object | null | undefined,
 	): Promise<Result<{value: Policy}>> {
 		const result = await this.sql<Policy[]>`
-			UPDATE policies SET data=${this.sql.json(data as any)} WHERE policy_id=${policy_id}
+			UPDATE policies SET updated=NOW(), data=${this.sql.json(data as any)} WHERE policy_id=${policy_id}
 			RETURNING *
 		`;
 		if (!result.count) return NOT_OK;
