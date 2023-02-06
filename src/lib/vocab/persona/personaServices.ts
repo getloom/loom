@@ -148,6 +148,9 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		if (persona.type === 'community') {
 			return {ok: false, status: 400, message: 'cannot delete community personas'};
 		}
+		if (await isPersonaAdmin(persona_id, repos)) {
+			return {ok: false, status: 400, message: 'cannot delete admin personas'};
+		}
 		if (actor !== persona_id && !(await isPersonaAdmin(actor, repos))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}

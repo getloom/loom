@@ -169,5 +169,26 @@ test__personaService(
 	},
 );
 
+test__personaService(
+	'actors cannot delete personas in the admin community',
+	async ({db, random}) => {
+		const {persona: actor} = await random.persona();
+
+		const result = unwrap(await db.repos.assignment.filterByCommunity(ADMIN_COMMUNITY_ID));
+		const adminsAssignments = result.filter((p) => p.persona_id !== ADMIN_COMMUNITY_ID);
+		const persona = unwrap(await db.repos.persona.findById(adminsAssignments[0].persona_id))!;
+
+		assert.is(
+			unwrapError(
+				await DeletePersonaService.perform({
+					...toServiceRequestMock(db, actor as AccountPersona),
+					params: {actor: actor.persona_id, persona_id: persona.persona_id},
+				}),
+			).status,
+			400,
+		);
+	},
+);
+
 test__personaService.run();
 /* test__personaService */
