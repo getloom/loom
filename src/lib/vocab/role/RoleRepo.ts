@@ -8,6 +8,26 @@ import type {Role} from '$lib/vocab/role/role';
 const log = new Logger(gray('[') + blue('RoleRepo') + gray(']'));
 
 export class RoleRepo extends PostgresRepo {
+	async findById(role_id: number): Promise<Result<{value: Role}>> {
+		log.trace('[findById]', role_id);
+		const result = await this.sql<Role[]>`
+			SELECT role_id, community_id, name, created, updated 
+			FROM roles WHERE role_id=${role_id}
+		`;
+		return {ok: true, value: result[0]};
+	}
+
+	async findByPolicy(policy_id: number): Promise<Result<{value: Role}>> {
+		log.trace('[findByPolicy]', policy_id);
+		const result = await this.sql<Role[]>`
+			SELECT r.role_id, r.community_id, r.name, r.created, r.updated 
+			FROM roles r JOIN
+			policies p
+			ON p.role_id=r.role_id AND p.policy_id=${policy_id};
+		`;
+		return {ok: true, value: result[0]};
+	}
+
 	async filterByCommunity(community_id: number): Promise<Result<{value: Role[]}>> {
 		log.trace('[filterByCommunity]', community_id);
 		const result = await this.sql<Role[]>`

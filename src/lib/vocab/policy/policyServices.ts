@@ -9,7 +9,8 @@ import {
 	UpdatePolicy,
 	DeletePolicy,
 } from '$lib/vocab/policy/policyEvents';
-import {checkCommunityAccess} from './policyHelpers.server';
+import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
+import {permissions} from '$lib/vocab/policy/permissions';
 
 const log = new Logger(gray('[') + blue('policyServices') + gray(']'));
 
@@ -17,7 +18,11 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 	event: CreatePolicy,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {role_id, permission} = params;
+			const {actor, role_id, permission} = params;
+
+			const {community_id} = unwrap(await repos.role.findById(role_id));
+			unwrap(await checkPolicy(permissions.CreatePolicy, actor, community_id, repos));
+
 			log.trace('creating policy', role_id, permission);
 			const policy = unwrap(await repos.policy.create(role_id, permission));
 			return {ok: true, status: 200, value: {policy}};
@@ -41,7 +46,11 @@ export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
 	event: UpdatePolicy,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {policy_id, data} = params;
+			const {actor, policy_id, data} = params;
+
+			const {community_id} = unwrap(await repos.role.findByPolicy(policy_id));
+			unwrap(await checkPolicy(permissions.UpdatePolicy, actor, community_id, repos));
+
 			log.trace('updating role', policy_id, data);
 			const policy = unwrap(await repos.policy.update(policy_id, data));
 			return {ok: true, status: 200, value: {policy}};
@@ -52,9 +61,12 @@ export const DeletePolicyService: ServiceByName['DeletePolicy'] = {
 	event: DeletePolicy,
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			const {policy_id} = params;
-			log.trace('deleting policy', policy_id);
+			const {actor, policy_id} = params;
 
+			const {community_id} = unwrap(await repos.role.findByPolicy(policy_id));
+			unwrap(await checkPolicy(permissions.DeletePolicy, actor, community_id, repos));
+
+			log.trace('deleting policy', policy_id);
 			unwrap(await repos.policy.deleteById(policy_id));
 
 			return {ok: true, status: 200, value: null};

@@ -8,7 +8,6 @@ import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {services} from '$lib/server/services';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {SessionApiMock} from '$lib/session/SessionApiMock';
-import {unwrap} from '@feltcoop/util';
 import {toFailedApiResult} from '$lib/server/api';
 
 /* test__serviceDefinitions */
@@ -141,26 +140,15 @@ for (const service of services.values()) {
 				failedResult = toFailedApiResult(err);
 			}
 
-			if (
-				[
-					// TODO when this list is empty, we're fully authorized!
-					'CreatePolicy', //TODO add Policies
-					'DeletePolicy', //and checks
-					'UpdatePolicy', //For these
-				].includes(event.name)
-			) {
-				unwrap(failedResult);
-			} else {
-				assert.ok(
-					!failedResult.ok,
-					`Expected service ${event.name} to fail with invalid actor - are the policies checked?`,
-				);
-				assert.is(
-					failedResult.status,
-					403,
-					`Expected service ${event.name} to fail with status code 403`,
-				);
-			}
+			assert.ok(
+				!failedResult.ok,
+				`Expected service ${event.name} to fail with invalid actor - are the policies checked?`,
+			);
+			assert.is(
+				failedResult.status,
+				403,
+				`Expected service ${event.name} to fail with status code 403`,
+			);
 		}
 	});
 }
