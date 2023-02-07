@@ -51,7 +51,7 @@ const files = [
 	'lib/infra/deploy.task.ts',
 	'lib/infra/restartProd.task.ts',
 	'lib/infra/setup.task.ts',
-	'lib/infra/updateEnv.task.ts',
+	'lib/infra/syncEnvGitHash.task.ts',
 ];
 
 const config: GroConfigCreator = async ({config, fs, dev}) => {

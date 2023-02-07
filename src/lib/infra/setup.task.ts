@@ -22,7 +22,7 @@ export const task: Task<Args> = {
 	production: true,
 	Args,
 	run: async ({log, args: {dry}, invokeTask}) => {
-		await invokeTask('lib/infra/updateEnv');
+		await invokeTask('lib/infra/syncEnvGitHash');
 
 		// TODO env vars are currently messy with 3 strategies:
 		// 1 - calling `fromEnv('VAR')`

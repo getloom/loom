@@ -9,13 +9,9 @@ import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
 export const task: Task = {
 	summary: 'deploy felt-server to production',
 	production: true,
-	run: async ({invokeTask, log}) => {
-		await invokeTask('lib/infra/updateEnv');
-
-		//build the actual tar deployment artifact,
-		//using `spawn` instead of `invokeTask` to ensure the environment modified above is updated
-		const buildResult = await spawn('npx', ['gro', 'build']);
-		if (!buildResult.ok) throw Error('gro build failed');
+	run: async ({log, invokeTask}) => {
+		//build the actual tar deployment artifact
+		await invokeTask('build');
 
 		const DEPLOY_IP = fromEnv('DEPLOY_IP');
 		const DEPLOY_USER = fromEnv('DEPLOY_USER');

@@ -7,13 +7,9 @@
 
 const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
-export const PUBLIC_DEPLOY_SERVER_HOST = import.meta.env
+const PUBLIC_DEPLOY_SERVER_HOST = import.meta.env
 	? import.meta.env.PUBLIC_DEPLOY_SERVER_HOST
 	: process.env.PUBLIC_DEPLOY_SERVER_HOST;
-
-export const PUBLIC_GIT_HASH = import.meta.env
-	? import.meta.env.PUBLIC_GIT_HASH
-	: process.env.PUBLIC_GIT_HASH;
 
 export const API_SERVER_PORT = 3000; // same as in vite.config.js
 export const API_SERVER_HOST = `localhost:${API_SERVER_PORT}`;

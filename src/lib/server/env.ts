@@ -25,6 +25,13 @@ interface Env {
 	DEPLOY_IP: string;
 	DEPLOY_USER: string;
 	CERTBOT_EMAIL_ADDRESS: string;
+	PGHOST: string;
+	PGPORT: string;
+	PGDATABASE: string;
+	PGUSER: string;
+	PGPASSWORD: string;
+	PGIDLE_TIMEOUT: string;
+	PGCONNECT_TIMEOUT: string;
 }
 
 export const fromEnv = (key: keyof Env): string => {
@@ -49,8 +56,14 @@ export const initEnv = (): void => {
 	}
 };
 
+export const reloadEnv = (): void => {
+	for (const env of envs) {
+		if (env.load) dotenv.config({path: env.file, override: true});
+	}
+};
+
 // Adds or updates an env var `value` for `key`.
-export const updateEnv = (contents: string, key: string, value: string): string => {
+export const syncEnvGitHash = (contents: string, key: string, value: string): string => {
 	const matcher = new RegExp(`^${key}=(.*)$`, 'mu');
 	const matched = contents.match(matcher);
 	if (matched) {
