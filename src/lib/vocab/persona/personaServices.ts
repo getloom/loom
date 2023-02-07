@@ -77,10 +77,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 
 			// Create the default spaces.
 			const {spaces, directories} = unwrap(
-				await createSpaces(
-					{...serviceRequest, actor: persona},
-					toDefaultSpaces(persona.persona_id, community),
-				),
+				await createSpaces(toDefaultSpaces(persona.persona_id, community), repos),
 			);
 
 			// If the admin community was created, create the admin spaces and the persona's assignment.
@@ -109,10 +106,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 
 				// Create the admin community's default spaces.
 				const defaultAdminSpaces = unwrap(
-					await createSpaces(
-						{...serviceRequest, actor: persona},
-						toDefaultAdminSpaces(persona.persona_id, adminCommunity),
-					),
+					await createSpaces(toDefaultAdminSpaces(persona.persona_id, adminCommunity), repos),
 				);
 				spaces.push(...defaultAdminSpaces.spaces);
 				directories.push(...defaultAdminSpaces.directories);

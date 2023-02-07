@@ -144,7 +144,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			const createSpacesParams = template.spaces?.length
 				? template.spaces.map((s) => spaceTemplateToCreateSpaceParams(s, actor, community_id))
 				: toDefaultSpaces(actor, community);
-			const {spaces, directories} = unwrap(await createSpaces(serviceRequest, createSpacesParams));
+			const {spaces, directories} = unwrap(await createSpaces(createSpacesParams, repos));
 
 			return {
 				ok: true,

@@ -10,6 +10,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
 import {checkCommunityAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
+import {createSpace} from './spaceHelpers.server';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 
@@ -39,52 +40,11 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	// TODO verify `params.persona_id` is  one of the `account_id`'s personas
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
-			log.trace('[CreateSpace] validating space path uniqueness');
 			const {actor, community_id} = params;
 
 			unwrap(await checkPolicy(permissions.CreateSpace, actor, community_id, repos));
 
-			// TODO run this same logic when a space path is updated
-			const existingSpaceWithUrl = unwrap(
-				await repos.space.findByCommunityPath(community_id, params.path),
-			);
-			if (existingSpaceWithUrl) {
-				return {ok: false, status: 409, message: 'a space with that path already exists'};
-			}
-
-			const communityPersona = unwrap(await repos.persona.findByCommunity(community_id));
-			if (!communityPersona) {
-				return {ok: false, status: 409, message: 'failed to find the community persona'};
-			}
-
-			log.trace('[CreateSpace] initializing directory for space');
-			const uninitializedDirectory = unwrap(
-				await repos.entity.create(
-					communityPersona.persona_id,
-					{
-						type: 'Collection',
-						directory: true,
-					},
-					null,
-				),
-			) as Entity & {data: DirectoryEntityData};
-
-			log.trace('[CreateSpace] creating space for community', community_id);
-			const space = unwrap(
-				await repos.space.create(
-					params.name,
-					params.view,
-					params.path,
-					params.icon,
-					community_id,
-					uninitializedDirectory.entity_id,
-				),
-			);
-
-			// set `uninitializedDirectory.space_id` now that the space has been created
-			const directory = unwrap(
-				await repos.entity.update(uninitializedDirectory.entity_id, null, space.space_id),
-			) as Entity & {data: DirectoryEntityData};
+			const {space, directory} = unwrap(await createSpace(params, repos));
 
 			return {ok: true, status: 200, value: {space, directory}};
 		}),
