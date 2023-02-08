@@ -27,7 +27,7 @@
 	const save = async () => {
 		errorMessage = null;
 		if (!changed) return;
-		let updatedData: typeof $entity['data'];
+		let updatedData: (typeof $entity)['data'];
 		try {
 			updatedData = JSON.parse(updated!);
 		} catch (err) {

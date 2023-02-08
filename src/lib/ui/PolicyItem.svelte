@@ -17,7 +17,7 @@
 
 	$: checked = hasPolicy;
 
-	$: checked !== undefined && togglePolicy();
+	$: if (checked !== undefined) void togglePolicy();
 
 	const togglePolicy = async () => {
 		if (hasPolicy === checked) return;

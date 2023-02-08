@@ -1,9 +1,14 @@
-declare namespace App {
-	interface Locals {
-		account_id?: number;
+// See https://kit.svelte.dev/docs/types#app
+// for information about these interfaces
+declare global {
+	namespace App {
+		// interface Error {}
+		interface Locals {
+			account_id?: number;
+		}
+		// interface PageData {}
+		// interface Platform {}
 	}
-
-	// interface Platform {}
-
-	// interface Stuff {}
 }
+
+export {};

@@ -43,7 +43,7 @@
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);
 
-	$: checked !== undefined && updateEntity(checked);
+	$: if (checked !== undefined) void updateEntity(checked);
 
 	$: hasItems = items !== undefined || $entity.data.type === 'Collection';
 	$: hasChecked = checked !== undefined || $entity.data.type === 'Note';

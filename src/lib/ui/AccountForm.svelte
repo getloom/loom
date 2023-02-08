@@ -11,6 +11,8 @@
 	let username = dev ? 'a@a.a' : ''; // share the username between the SignIn and SignUp forms for better UX
 
 	let view: 'sign_in' | 'sign_up' = 'sign_in'; // TODO likely add "forgot_password"
+
+	$: restProps = $$restProps as any; // TODO type hack, ideally this line doesn't exist
 </script>
 
 {#if guest}
@@ -30,5 +32,5 @@
 		</SignUpForm>
 	{/if}
 {:else}
-	<SignOutForm {...$$restProps} />
+	<SignOutForm {...restProps} />
 {/if}

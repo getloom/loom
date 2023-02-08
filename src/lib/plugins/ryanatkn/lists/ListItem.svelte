@@ -44,7 +44,7 @@
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);
 
-	$: checked !== undefined && updateEntity(checked); // TODO change to a fn?
+	$: if (checked !== undefined) void updateEntity(checked); // TODO change to a fn?
 
 	const updateEntity = async (checked: boolean) => {
 		if ($entity.data.checked === checked) return;
