@@ -25,6 +25,7 @@ test('checkPersonaName', () => {
 	assert.ok(checkPersonaName('4b-'));
 	assert.ok(checkPersonaName('4_b'), 'hypens not underscores');
 	assert.ok(checkPersonaName('4bc4bc4bc4bc4bc4bc4bc4bc4bc4bc4bc4bc4bc4'), '40 length denied');
+	assert.ok(checkPersonaName('4@b'), 'no @ allowed');
 });
 
 test.run();
