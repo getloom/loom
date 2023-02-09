@@ -94,33 +94,37 @@ test_communityServices(
 
 test_communityServices('disallow duplicate community names', async ({db, random}) => {
 	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(db, persona);
 
 	const params = randomCommunityParams(persona.persona_id);
 	params.template.name += 'Aa';
-	unwrap(await CreateCommunityService.perform({...serviceRequest, params}));
+	unwrap(await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}));
 
 	params.template.name = params.template.name.toLowerCase();
 	assert.is(
-		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
+		unwrapError(
+			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
+		).status,
 		409,
 	);
 
 	params.template.name = params.template.name.toUpperCase();
 	assert.is(
-		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
+		unwrapError(
+			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
+		).status,
 		409,
 	);
 });
 
 test_communityServices('disallow reserved community names', async ({db, random}) => {
 	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(db, persona);
 
 	const params = randomCommunityParams(persona.persona_id);
 	params.template.name = 'docs';
 	assert.is(
-		unwrapError(await CreateCommunityService.perform({...serviceRequest, params})).status,
+		unwrapError(
+			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
+		).status,
 		409,
 	);
 });
@@ -129,16 +133,15 @@ test_communityServices(
 	'new communities have default template roles & policies',
 	async ({db, random}) => {
 		const {persona} = await random.persona();
-		const serviceRequest = toServiceRequestMock(db, persona);
 
 		const params = randomCommunityParams(persona.persona_id);
 		const communityResult = unwrap(
-			await CreateCommunityService.perform({...serviceRequest, params}),
+			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
 		);
 
 		const roleResult = unwrap(
 			await ReadRolesService.perform({
-				...serviceRequest,
+				...toServiceRequestMock(db, persona),
 				params: {actor: persona.persona_id, community_id: communityResult.community.community_id},
 			}),
 		);
@@ -150,7 +153,7 @@ test_communityServices(
 
 		const stewardPolicyResults = unwrap(
 			await ReadPoliciesService.perform({
-				...serviceRequest,
+				...toServiceRequestMock(db, persona),
 				params: {actor: persona.persona_id, role_id: communityResult.roles[0].role_id},
 			}),
 		);
@@ -158,7 +161,7 @@ test_communityServices(
 
 		const memberPolicyResults = unwrap(
 			await ReadPoliciesService.perform({
-				...serviceRequest,
+				...toServiceRequestMock(db, persona),
 				params: {actor: persona.persona_id, role_id: communityResult.roles[1].role_id},
 			}),
 		);
@@ -174,11 +177,10 @@ test_communityServices('deleted communities cleanup after themselves', async ({d
 	unwrap(
 		await db.repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity),
 	);
-	const serviceRequest = toServiceRequestMock(db, persona);
 
 	unwrap(
 		await DeleteCommunityService.perform({
-			...serviceRequest,
+			...toServiceRequestMock(db, persona),
 			params: {actor: persona.persona_id, community_id: community.community_id},
 		}),
 	);
@@ -209,8 +211,6 @@ test_communityServices(
 	async ({db, random}) => {
 		const {persona} = await random.persona();
 
-		const serviceRequest = toServiceRequestMock(db, persona);
-
 		const {settings} = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
 		const settingValue = settings.instance?.disableCreateCommunity;
 		unwrap(
@@ -222,7 +222,7 @@ test_communityServices(
 
 		unwrapError(
 			await CreateCommunityService.perform({
-				...serviceRequest,
+				...toServiceRequestMock(db, persona),
 				params: randomCommunityParams(persona.persona_id),
 			}),
 		);
@@ -232,7 +232,7 @@ test_communityServices(
 
 		unwrap(
 			await CreateCommunityService.perform({
-				...serviceRequest,
+				...toServiceRequestMock(db, persona),
 				params: randomCommunityParams(actor.persona_id),
 			}),
 		);

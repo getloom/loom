@@ -15,11 +15,10 @@ test__service.after(teardownDb);
 
 test__service(`roll back the database after a failed transaction`, async ({db, random}) => {
 	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(db, persona);
 	const communityName = 'a';
 	let community: Community | undefined;
 	let failedResult: Result | undefined;
-	const returnedResult = await serviceRequest.transact(async (repos) => {
+	const returnedResult = await toServiceRequestMock(db, persona).transact(async (repos) => {
 		community = unwrap(
 			await repos.community.create(
 				'standard',
@@ -72,10 +71,9 @@ test__service(`compose multiple calls into one transaction`, async ({db, random}
 
 test__service(`transact cb returns a 500 when it throws an unknown error`, async ({db, random}) => {
 	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(db, persona);
 	const communityName = 'a';
 	let community: Community | undefined;
-	const result = await serviceRequest.transact(async (repos) => {
+	const result = await toServiceRequestMock(db, persona).transact(async (repos) => {
 		community = unwrap(
 			await repos.community.create(
 				'standard',
@@ -92,11 +90,10 @@ test__service(`transact cb returns a 500 when it throws an unknown error`, async
 
 test__service(`transact cb passes through the status of a ResultError`, async ({db, random}) => {
 	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(db, persona);
 	const communityName = 'a';
 	const thrownResult = {ok: false, status: 409, message: 'test failure'};
 	let community: Community | undefined;
-	const result = await serviceRequest.transact(async (repos) => {
+	const result = await toServiceRequestMock(db, persona).transact(async (repos) => {
 		community = unwrap(
 			await repos.community.create(
 				'standard',
