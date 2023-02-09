@@ -1,4 +1,4 @@
-import {unwrap} from '@feltcoop/util';
+import {unwrap} from '@feltjs/util';
 
 import type {Space} from '$lib/vocab/space/space';
 import type {Community} from '$lib/vocab/community/community';
@@ -30,7 +30,7 @@ import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server
 import {randomHue} from '$lib/ui/color';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
-import {randomItem} from '@feltcoop/util/random.js';
+import {randomItem} from '@feltjs/util/random.js';
 import {permissionNames} from '$lib/vocab/policy/permissions';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
@@ -370,7 +370,7 @@ export class RandomVocabContext {
 	}
 }
 
-// TODO better way to do this? and where does this belong? maybe @feltcoop/util/string.js?
+// TODO better way to do this? and where does this belong? maybe @feltjs/util/string.js?
 export const ALPHABET = [
 	'a',
 	'b',

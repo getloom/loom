@@ -1,6 +1,6 @@
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
-import {unwrap} from '@feltcoop/util';
+import {unwrap} from '@feltjs/util';
 
 export const RESERVED_PERSONA_NAMES = new Set(['admin', 'ghost', 'docs', 'schemas', 'about']);
 

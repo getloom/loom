@@ -1,4 +1,4 @@
-import {plural} from '@feltcoop/util/string.js';
+import {plural} from '@feltjs/util/string.js';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import type {

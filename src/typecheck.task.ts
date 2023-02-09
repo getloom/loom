@@ -1,4 +1,4 @@
-import {task as baseTask} from '@feltcoop/gro/dist/typecheck.task.js';
+import {task as baseTask} from '@feltjs/gro/dist/typecheck.task.js';
 
 import {initEnv} from '$lib/server/env';
 

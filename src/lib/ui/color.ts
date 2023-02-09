@@ -1,4 +1,4 @@
-import {toRandomAlea} from '@feltcoop/util/random-alea.js';
+import {toRandomAlea} from '@feltjs/util/random-alea.js';
 
 // TODO design a color scheme instead of calculating a number of evenly spaced buckets
 export const HUE_BUCKETS = 7;

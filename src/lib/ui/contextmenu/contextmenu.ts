@@ -1,6 +1,6 @@
 import {writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {getContext, onDestroy, setContext, type SvelteComponent} from 'svelte';
-import type {Result} from '@feltcoop/util';
+import type {Result} from '@feltjs/util';
 
 // Items with `undefined` props are ignored.
 export type ContextmenuItems = Array<[typeof SvelteComponent, object | null | undefined]>;

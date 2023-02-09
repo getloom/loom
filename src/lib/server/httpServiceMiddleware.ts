@@ -1,6 +1,6 @@
 import send from '@polka/send-type';
-import {Logger} from '@feltcoop/util/log.js';
-import {ResultError} from '@feltcoop/util';
+import {Logger} from '@feltjs/util/log.js';
+import {ResultError} from '@feltjs/util';
 
 import {red, blue, gray} from '$lib/server/colors';
 import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';

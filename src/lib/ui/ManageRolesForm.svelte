@@ -6,7 +6,7 @@
 	import type {Community} from '$lib/vocab/community/community.js';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
+	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 
 	import type {Role} from '$lib/vocab/role/role';
 	import RoleDetails from '$lib/ui/RoleDetails.svelte';

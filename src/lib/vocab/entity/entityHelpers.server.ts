@@ -1,5 +1,5 @@
-import {OK, unwrap, type Result} from '@feltcoop/util';
-import {Logger} from '@feltcoop/util/log.js';
+import {OK, unwrap, type Result} from '@feltjs/util';
+import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';

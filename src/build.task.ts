@@ -1,4 +1,4 @@
-import {task as baseTask} from '@feltcoop/gro/dist/build.task.js';
+import {task as baseTask} from '@feltjs/gro/dist/build.task.js';
 
 export const task: typeof baseTask = {
 	summary: baseTask.summary,

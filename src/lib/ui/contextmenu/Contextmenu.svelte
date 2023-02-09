@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {isEditable, swallow} from '@feltcoop/util/dom.js';
+	import {isEditable, swallow} from '@feltjs/util/dom.js';
 	import type {SvelteComponent} from 'svelte';
 
 	import {

@@ -1,4 +1,4 @@
-import {toObtainable} from '@feltcoop/util/obtainable.js';
+import {toObtainable} from '@feltjs/util/obtainable.js';
 import postgres from 'postgres';
 
 import {defaultPostgresOptions} from '$lib/db/postgres.js';

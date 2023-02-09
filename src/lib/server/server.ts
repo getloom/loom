@@ -1,6 +1,6 @@
 import polka from 'polka';
 import {createServer} from 'http';
-import {configureLogLevel, Logger, LogLevel} from '@feltcoop/util/log.js';
+import {configureLogLevel, Logger, LogLevel} from '@feltjs/util/log.js';
 import {format} from 'date-fns';
 
 import {ApiServer} from '$lib/server/ApiServer.js';

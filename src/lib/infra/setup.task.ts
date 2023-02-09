@@ -1,5 +1,5 @@
-import type {Task} from '@feltcoop/gro';
-import {spawn} from '@feltcoop/util/process.js';
+import type {Task} from '@feltjs/gro';
+import {spawn} from '@feltjs/util/process.js';
 import {z} from 'zod';
 
 import {green, red} from '$lib/server/colors';
@@ -104,7 +104,7 @@ export const task: Task<Args> = {
 				echo "export NODE_ENV=production" >> ~/.profile;
 				echo "export NODE_ENV=production
 				  $(cat ~/.bashrc)" > ~/.bashrc;
-				npm i -g pm2 @feltcoop/gro;`,
+				npm i -g pm2 @feltjs/gro;`,
 			//
 			//
 			// Install nginx:

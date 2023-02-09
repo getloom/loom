@@ -1,11 +1,11 @@
-import {unwrap, type Result} from '@feltcoop/util';
+import {unwrap, type Result} from '@feltjs/util';
 
 import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/app/eventTypes';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
 import type {ApiResult} from '$lib/server/api';
-import {Logger} from '@feltcoop/util/log.js';
+import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 

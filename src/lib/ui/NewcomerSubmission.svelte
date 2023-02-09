@@ -1,9 +1,9 @@
 <script lang="ts">
 	import {getViewContext} from '$lib/vocab/view/view';
 	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
-	import type {AsyncStatus} from '@feltcoop/util/async.js';
-	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
-	import Message from '@feltcoop/felt/Message.svelte';
+	import type {AsyncStatus} from '@feltjs/util/async.js';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import Message from '@feltjs/felt-ui/Message.svelte';
 
 	import {autofocus} from '$lib/ui/actions';
 

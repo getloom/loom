@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import {configureLogLevel, LogLevel, Logger} from '@feltcoop/util/log.js';
+	import {configureLogLevel, LogLevel, Logger} from '@feltjs/util/log.js';
 
 	if (!dev) {
 		configureLogLevel(LogLevel.Info);
@@ -10,14 +10,14 @@
 </script>
 
 <script lang="ts">
-	import '@feltcoop/felt/style.css';
+	import '@feltjs/felt-ui/style.css';
 	import '$lib/ui/style.css';
-	import {setDevmode} from '@feltcoop/felt/devmode.js';
-	import DevmodeControls from '@feltcoop/felt/DevmodeControls.svelte';
+	import {setDevmode} from '@feltjs/felt-ui/devmode.js';
+	import DevmodeControls from '@feltjs/felt-ui/DevmodeControls.svelte';
 	import {page} from '$app/stores';
 	import {browser, dev} from '$app/environment';
-	import Dialogs from '@feltcoop/felt/Dialogs.svelte';
-	import {isEditable, swallow} from '@feltcoop/util/dom.js';
+	import Dialogs from '@feltjs/felt-ui/Dialogs.svelte';
+	import {isEditable, swallow} from '@feltjs/util/dom.js';
 	import {format} from 'date-fns';
 
 	import {toSocketStore} from '$lib/ui/socket';

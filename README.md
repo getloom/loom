@@ -1,13 +1,13 @@
 [<img src="src/static/felt.png" align="right" width="192" height="178">](https://felt.dev)
 
-# `@feltcoop/felt-server`
+# `@feltjs/felt-server`
 
-> server for [Felt](https://github.com/feltcoop/felt),
+> server for [Felt](https://github.com/feltjs/felt),
 > a tool for building and maintaining communities 💚
 
 > **work in progress**: pre-alpha
 
-[`@feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
+[`@feltjs/felt-server`](https://www.npmjs.com/package/@feltjs/felt-server)
 is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
 
 - as an <strong>end user</strong> on an instance deployed to the web,
@@ -15,8 +15,8 @@ is a [Node.js](https://nodejs.org/) server that you can use in many different wa
 - as an <strong>operator user</strong> deploying an instance to the web via servers IRL,
   doing admin and maintenance
 - as a <strong>dev user</strong> making a custom server using
-  [the library on npm](https://www.npmjs.com/package/@feltcoop/felt-server)
-  via `npm i -D @feltcoop/felt-server`
+  [the library on npm](https://www.npmjs.com/package/@feltjs/felt-server)
+  via `npm i -D @feltjs/felt-server`
 - as a <strong>dev user</strong> downloading or forking this repo with git,
   adding or changing anything you wish
 
@@ -27,18 +27,18 @@ For more, see [Getting started](/src/docs/getting-started.md) and
 
 For build & deployment docs, see the [Infra README](/src/lib/infra/README.md)
 
-## using `@feltcoop/felt-server` as a library
+## using `@feltjs/felt-server` as a library
 
-[`@feltcoop/felt-server`](https://www.npmjs.com/package/@feltcoop/felt-server)
+[`@feltjs/felt-server`](https://www.npmjs.com/package/@feltjs/felt-server)
 can be installed as a library on npm to make custom servers:
 
 ```bash
-npm i -D @feltcoop/felt-server # see the available modules at `/src/gro.config.ts`
+npm i -D @feltjs/felt-server # see the available modules at `/src/gro.config.ts`
 ```
 
-Learn more about [using `@feltcoop/felt-server` as a library](/src/docs/library-usage.md).
+Learn more about [using `@feltjs/felt-server` as a library](/src/docs/library-usage.md).
 
-## using `@feltcoop/felt-server` as a git repo
+## using `@feltjs/felt-server` as a git repo
 
 To work directly on the codebase,
 first set up [a local dev environment](/src/docs/getting-started.md), then:
@@ -52,7 +52,7 @@ npm run dev
 
 # browse to localhost:5173 or whatever it says
 
-# you can also run `gro dev` with Gro installed globally: npm i -g @feltcoop/gro
+# you can also run `gro dev` with Gro installed globally: npm i -g @feltjs/gro
 gro dev # args are forwarded to `svelte-kit` like `npm run dev`
 gro # print available tasks
 
@@ -61,8 +61,8 @@ npm test
 gro test
 ```
 
-> learn more [about Gro](https://github.com/feltcoop/gro),
-> [getting started with `@feltcoop/felt-server`](/src/docs/getting-started.md),
+> learn more [about Gro](https://github.com/feltjs/gro),
+> [getting started with `@feltjs/felt-server`](/src/docs/getting-started.md),
 > and [contributing](/contributing.md)
 
 ## credits 🐢<sub>🐢</sub><sub><sub>🐢</sub></sub>
@@ -80,8 +80,8 @@ Open source software including
 [Postgres.js](https://github.com/porsager/postgres) ∙
 [Ley](https://github.com/lukeed/ley) ∙
 [tsm](https://github.com/lukeed/tsm) ∙
-[Gro](https://github.com/feltcoop/gro) ∙
-[Felt](https://github.com/feltcoop/felt) ∙
+[Gro](https://github.com/feltjs/gro) ∙
+[felt-ui](https://github.com/feltjs/felt-ui) ∙
 [ESLint](https://github.com/eslint/eslint) ∙
 [Prettier](https://github.com/prettier/prettier)
 & [more](package.json)

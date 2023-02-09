@@ -1,9 +1,9 @@
 [<img src="/src/static/felt.png" align="right" width="192" height="178">](https://felt.dev)
 
-# Getting started with `@feltcoop/felt-server`
+# Getting started with `@feltjs/felt-server`
 
 > docs for devs and operators of
-> [`@feltcoop/felt-server`](https://github.com/feltcoop/felt-server),
+> [`@feltjs/felt-server`](https://github.com/feltjs/felt-server),
 > a tool for building and maintaining communities 💚
 
 Looking for instructions for how to use this project as a library?
@@ -11,7 +11,7 @@ See [library-usage](./library-usage.md).
 
 ## Overview
 
-`@feltcoop/felt-server` depends on the following core technologies:
+`@feltjs/felt-server` depends on the following core technologies:
 
 - [Node](https://nodejs.org)
 - [PostgreSQL](https://www.postgresql.org) aka Postgres
@@ -24,11 +24,11 @@ Set up [a local dev environment](/src/docs/setup-dev-environment.md).
 
 ## Developing
 
-In most cases [`gro dev`](https://github.com/feltcoop/gro/blob/main/src/docs/dev.md)
+In most cases [`gro dev`](https://github.com/feltjs/gro/blob/main/src/docs/dev.md)
 is the only command you'll need to run during development.
 It starts both SvelteKit and an API server,
 and when files change the system should automatically update or restart as needed.
-See [Gro's docs](https://github.com/feltcoop/gro) for more.
+See [Gro's docs](https://github.com/feltjs/gro) for more.
 
 ## Manual dev processes
 
@@ -46,12 +46,12 @@ should take care of formatting automatically.
 
 ### `gro gen`
 
-Gro provides the [`gro gen`](https://github.com/feltcoop/gro/blob/main/src/docs/gen.md)
+Gro provides the [`gro gen`](https://github.com/feltjs/gro/blob/main/src/docs/gen.md)
 task to make it easier to derive data and other files from single sources of truth.
 It currently has a limitation where it does not run automatically;
 the developer is expected to run `gro gen` when things change.
 Making this process automatic is next on
-[`gro gen`'s TODO list](https://github.com/feltcoop/gro/blob/main/src/docs/gen.md#todo),
+[`gro gen`'s TODO list](https://github.com/feltjs/gro/blob/main/src/docs/gen.md#todo),
 but it's a tricky system to design without surprising performance implications.
 
 [This project's CI](/.github/workflows/check.yml)
@@ -63,13 +63,13 @@ to help ensure that the committed files remain in sync.
 
 ## Building
 
-The [`gro build`](https://github.com/feltcoop/gro/blob/main/src/docs/build.md) command
+The [`gro build`](https://github.com/feltjs/gro/blob/main/src/docs/build.md) command
 outputs artifacts to the gitignored `/dist` directory,
 which can then deployed to production and published to a package registry like npm.
 For SvelteKit projects, `gro build` wraps `svelte-kit build`,
 and it also produces directories for each of
-[Gro's configured production builds](https://github.com/feltcoop/gro/blob/main/src/docs/config.md).
-See [Gro's build docs](https://github.com/feltcoop/gro/blob/main/src/docs/build.md) for more.
+[Gro's configured production builds](https://github.com/feltjs/gro/blob/main/src/docs/config.md).
+See [Gro's build docs](https://github.com/feltjs/gro/blob/main/src/docs/build.md) for more.
 
 ## Deploying
 

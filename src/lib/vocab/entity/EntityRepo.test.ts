@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltcoop/util';
+import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';

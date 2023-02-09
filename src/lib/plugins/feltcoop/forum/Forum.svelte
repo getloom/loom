@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
+	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import {type Readable, readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ForumItems from '$lib/plugins/feltcoop/forum/ForumItems.svelte';
@@ -60,7 +60,7 @@
 						})}>Submit a new post</button
 				>
 			{/if}
-			<!-- TODO handle query failures and add retry button, see https://github.com/feltcoop/felt-server/pull/514#discussion_r998626893 -->
+			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt-server/pull/514#discussion_r998626893 -->
 			<!-- {:else if $queryStatus === 'failure'}
 				<Message status="error">{$queryError.message}</Message> -->
 		{:else}

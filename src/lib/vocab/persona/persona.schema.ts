@@ -83,7 +83,7 @@ export const GhostPersonaSchema = {
 
 // TODO this will need to be split into a type union to support community "group" personas,
 // and it's related to `community_id` being overloaded for account/community persona types.
-// see: https://github.com/feltcoop/felt-server/pull/545#discussion_r1013465948
+// see: https://github.com/feltjs/felt-server/pull/545#discussion_r1013465948
 export const PublicPersonaSchema = {
 	$id: '/schemas/PublicPersona.json',
 	type: 'object',

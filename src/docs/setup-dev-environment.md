@@ -4,7 +4,7 @@ This walks through setting up a development environment for Felt.coop projects.
 
 **1. Git**
 
-`@feltcoop/felt-server`'s git repo is on GitHub: <https://github.com/feltcoop/felt-server.git>
+`@feltjs/felt-server`'s git repo is on GitHub: <https://github.com/feltjs/felt-server.git>
 
 Configure git:
 
@@ -21,7 +21,7 @@ git config --global core.pager 'less -x1,5'
 
 **2. NodeJS**
 
-`@feltcoop/felt-server` requires [NodeJS](https://nodejs.org) ^18.6.
+`@feltjs/felt-server` requires [NodeJS](https://nodejs.org) ^18.6.
 Our recommended Node version manager is [`fnm`](https://github.com/Schniz/fnm),
 which is roughly equivalent to [`nvm`](https://github.com/nvm-sh/nvm) with improved performance.
 
@@ -32,23 +32,23 @@ fnm install 18  # installs and sets to default
 ```
 
 Now that we have git and Node installed,
-clone the `@feltcoop/felt-server` repo and install with `npm`:
+clone the `@feltjs/felt-server` repo and install with `npm`:
 
 ```bash
-git clone https://github.com/feltcoop/felt-server
+git clone https://github.com/feltjs/felt-server
 cd felt-server
 npm i # install dependencies
 ```
 
 **3. Postgres**
 
-`@feltcoop/felt-server` requires [Postgres](https://nodejs.org) >= 13.2.
+`@feltjs/felt-server` requires [Postgres](https://nodejs.org) >= 13.2.
 For more details see
-[the database docs](https://github.com/feltcoop/felt-server/tree/main/src/db).
+[the database docs](https://github.com/feltjs/felt-server/tree/main/src/db).
 
 TODO defaults are in code, not the env vars, is a better UX to include them
 
-`@feltcoop/felt-server` defaults to user `postgres` with password `password` and database `felt`.
+`@feltjs/felt-server` defaults to user `postgres` with password `password` and database `felt`.
 To set up its database with the expected defaults:
 
 ```bash
@@ -85,7 +85,7 @@ We use [VSCode](https://code.visualstudio.com/) for its Svelte and extension sup
     [`dbaeumer.vscode-eslint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
     - to enable Svelte for the VSCode ESLint plugin, add the following line to `settings.json`:
       `"eslint.validate": ["javascript", "svelte"],`
-    - for more, see [`@feltcoop/eslint-config`](https://github.com/feltcoop/eslint-config)
+    - for more, see [`@feltjs/eslint-config`](https://github.com/feltjs/eslint-config)
 - other nice extensions
   - depending on your OS, [Subword navigation](https://github.com/ow--/vscode-subword-navigation) -
     [`ow.vscode-subword-navigation`](https://marketplace.visualstudio.com/items?itemName=ow.vscode-subword-navigation)

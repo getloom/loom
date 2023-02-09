@@ -1,4 +1,4 @@
-import {randomBool} from '@feltcoop/util/random.js';
+import {randomBool} from '@feltjs/util/random.js';
 
 import {
 	randomEntityData,

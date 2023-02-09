@@ -1,12 +1,12 @@
-import type {GroConfigCreator} from '@feltcoop/gro';
+import type {GroConfigCreator} from '@feltjs/gro';
 import {
 	API_SERVER_BUILD_NAME,
 	NODE_LIBRARY_BUILD_NAME,
-} from '@feltcoop/gro/dist/build/buildConfigDefaults.js';
+} from '@feltjs/gro/dist/build/buildConfigDefaults.js';
 
 import {MIGRATIONS_DIR, MIGRATIONS_PATH} from '$lib/db/migration';
 import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
-import {SystemLogger} from '@feltcoop/util/log.js';
+import {SystemLogger} from '@feltjs/util/log.js';
 
 const files = [
 	'lib/index.ts', // same as 'lib/server/server.ts'

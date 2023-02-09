@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {EMPTY_OBJECT} from '@feltcoop/util/object.js';
+	import {EMPTY_OBJECT} from '@feltjs/util/object.js';
 
 	import {getApp} from '$lib/ui/app';
 	import {type ViewNode, toViewProps} from '$lib/vocab/view/view';

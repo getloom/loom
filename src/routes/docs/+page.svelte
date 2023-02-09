@@ -20,8 +20,8 @@
 
 <div class="wrapper">
 	<!-- TODO extract an accessible menu component, see PRS
-	https://github.com/feltcoop/felt-server/pull/362
-	and https://github.com/feltcoop/felt/pull/197 -->
+	https://github.com/feltjs/felt-server/pull/362
+	and https://github.com/feltjs/felt-ui/pull/197 -->
 	<div class="menu-wrapper markup padded-xl column-sm">
 		<menu class="menu">
 			<li><h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3></li>
@@ -55,8 +55,8 @@
 			<li>
 				<h4>
 					💚 <a href="https://www.felt.dev">felt.dev</a> ∙
-					<a href="https://github.com/feltcoop/felt-server">GitHub</a> ∙
-					<a href="https://npmjs.com/@feltcoop/felt-server">npm</a>
+					<a href="https://github.com/feltjs/felt-server">GitHub</a> ∙
+					<a href="https://npmjs.com/@feltjs/felt-server">npm</a>
 				</h4>
 			</li>
 		</menu>

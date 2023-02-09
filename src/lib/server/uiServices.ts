@@ -2,7 +2,7 @@ import type {ServiceByName} from '$lib/app/eventTypes';
 import {Ping, Ephemera} from '$lib/ui/uiEvents';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
-import {unwrap} from '@feltcoop/util';
+import {unwrap} from '@feltjs/util';
 
 export const PingService: ServiceByName['Ping'] = {
 	event: Ping,

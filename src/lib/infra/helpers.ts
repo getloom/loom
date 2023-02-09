@@ -1,4 +1,4 @@
-import {toCounter} from '@feltcoop/util/counter.js';
+import {toCounter} from '@feltjs/util/counter.js';
 
 import {cyan} from '$lib/server/colors';
 

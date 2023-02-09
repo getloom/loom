@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';

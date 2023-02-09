@@ -1,5 +1,5 @@
-import type {Task} from '@feltcoop/gro';
-import {spawn} from '@feltcoop/util/process.js';
+import type {Task} from '@feltjs/gro';
+import {spawn} from '@feltjs/util/process.js';
 import {fromEnv} from '$lib/server/env';
 
 export const task: Task = {

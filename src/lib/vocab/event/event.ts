@@ -1,4 +1,4 @@
-import type {VocabSchema} from '@feltcoop/gro/dist/utils/schema.js';
+import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
 
 import type {ServiceMethod} from '$lib/server/service';
 import type {ClientEventName, ServiceEventName} from '$lib/app/eventTypes';

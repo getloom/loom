@@ -1,7 +1,7 @@
-import type {Task} from '@feltcoop/gro';
-import {spawn} from '@feltcoop/util/process.js';
-import {DIST_DIRNAME} from '@feltcoop/gro/dist/paths.js';
-import {unwrap} from '@feltcoop/util';
+import type {Task} from '@feltjs/gro';
+import {spawn} from '@feltjs/util/process.js';
+import {DIST_DIRNAME} from '@feltjs/gro/dist/paths.js';
+import {unwrap} from '@feltjs/util';
 
 import {ENV_FILE_BASE, ENV_FILE_PROD, fromEnv} from '$lib/server/env';
 import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
@@ -71,7 +71,7 @@ export const task: Task = {
 		TODO start the server:
 
 		```bash
-		git clone https://github.com/feltcoop/felt-server
+		git clone https://github.com/feltjs/felt-server
 		cd felt-server
 		NODE_ENV=development npm i
 		gro lib/db/migrate

@@ -1,6 +1,6 @@
 import type {SchemaObject} from 'ajv';
 import {compile, type Options} from '@ryanatkn/json-schema-to-typescript';
-import type {VocabSchema} from '@feltcoop/gro/dist/utils/schema.js';
+import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
 
 export const jsonSchemaToTypescript = (
 	schema: VocabSchema | SchemaObject | null,

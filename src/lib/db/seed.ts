@@ -1,9 +1,9 @@
-import {unwrap} from '@feltcoop/util';
-import {Logger} from '@feltcoop/util/log.js';
-import {traverse} from '@feltcoop/util/object.js';
-import {randomItem} from '@feltcoop/util/random.js';
+import {unwrap} from '@feltjs/util';
+import {Logger} from '@feltjs/util/log.js';
+import {traverse} from '@feltjs/util/object.js';
+import {randomItem} from '@feltjs/util/random.js';
 import {magenta} from 'kleur/colors';
-import {toNext} from '@feltcoop/util/array.js';
+import {toNext} from '@feltjs/util/array.js';
 
 import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';

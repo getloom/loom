@@ -1,4 +1,4 @@
-import {Logger} from '@feltcoop/util/log.js';
+import {Logger} from '@feltjs/util/log.js';
 
 import {migrate} from '$lib/db/migrate';
 import {db} from '$lib/db/db';

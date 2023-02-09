@@ -2,9 +2,9 @@
 
 This document describes how to set up a production environment
 for deploying an instance of
-[`@feltcoop/felt-server`](https://github.com/feltcoop/felt-server).
+[`@feltjs/felt-server`](https://github.com/feltjs/felt-server).
 
-To learn more about `@feltcoop/felt-server`,
+To learn more about `@feltjs/felt-server`,
 see [src/docs/getting-started.md](/src/docs/getting-started.md).
 
 To deploy a self-hosted instance to production,

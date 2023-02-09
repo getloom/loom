@@ -59,7 +59,7 @@ sudo -u postgres pg_dump felt > backup.sql
 
 ## Database tasks
 
-Felt has a number of [Gro](https://github.com/feltcoop/gro) tasks for managing the database.
+Felt has a number of [Gro](https://github.com/feltjs/gro) tasks for managing the database.
 To view all of them, run `gro lib/db`.
 
 ### lib/db/create

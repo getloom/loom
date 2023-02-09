@@ -1,5 +1,5 @@
-import {NOT_OK, OK, type Assignable, type Result} from '@feltcoop/util';
-import {Logger} from '@feltcoop/util/log.js';
+import {NOT_OK, OK, type Assignable, type Result} from '@feltjs/util';
+import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';

@@ -1,11 +1,11 @@
-import type {Task} from '@feltcoop/gro';
+import type {Task} from '@feltjs/gro';
 import {z} from 'zod';
 
 import {MIGRATIONS_DIR, toMigrationIndex} from '$lib/db/migration';
 
 const Args = z
 	.object({
-		// base args -- TODO do this automatically, `import {task as baseTask} from '@feltcoop/gro/dist/check.task.js';`
+		// base args -- TODO do this automatically, `import {task as baseTask} from '@feltjs/gro/dist/check.task.js';`
 		typecheck: z.boolean({description: ''}).optional().default(true),
 		'no-typecheck': z.boolean({description: 'opt out of typechecking'}).optional().default(false),
 		test: z.boolean({description: ''}).optional().default(true),

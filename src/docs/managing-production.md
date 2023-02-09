@@ -1,7 +1,7 @@
 # Managing a production deployment
 
 This document describes how to manage a deployed instance of
-[`@feltcoop/felt-server`](https://github.com/feltcoop/felt-server).
+[`@feltjs/felt-server`](https://github.com/feltjs/felt-server).
 
 To deploy a self-hosted instance to production,
 see the instructions at

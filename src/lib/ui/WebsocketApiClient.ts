@@ -2,8 +2,8 @@
 // It implements a request/response pattern over websockets instead of fire-and-forget
 // using JSON-RPC 2.0: https://www.jsonrpc.org/specification
 
-import {toCounter} from '@feltcoop/util/counter.js';
-import {Logger} from '@feltcoop/util/log.js';
+import {toCounter} from '@feltjs/util/counter.js';
+import {Logger} from '@feltjs/util/log.js';
 
 import type {ApiClient} from '$lib/ui/ApiClient';
 import type {ServiceEventInfo} from '$lib/vocab/event/event';

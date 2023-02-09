@@ -7,9 +7,9 @@ import {
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent} from 'svelte';
-import type {DialogData} from '@feltcoop/felt/dialog.js';
+import type {DialogData} from '@feltjs/felt-ui/dialog.js';
 import {browser} from '$app/environment';
-import type {AsyncStatus} from '@feltcoop/util/async.js';
+import type {AsyncStatus} from '@feltjs/util/async.js';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';

@@ -1,25 +1,25 @@
-# Deploying `@feltcoop/felt-server` to production
+# Deploying `@feltjs/felt-server` to production
 
 This document describes how to deploy a new instance of
-[`@feltcoop/felt-server`](https://github.com/feltcoop/felt-server) to the internet.
+[`@feltjs/felt-server`](https://github.com/feltjs/felt-server) to the internet.
 
-To learn more about `@feltcoop/felt-server`,
+To learn more about `@feltjs/felt-server`,
 see [src/docs/getting-started.md](/src/docs/getting-started.md).
 
 To manage a production instance,
 see [`src/docs/managing-production.md`](/src/docs/managing-production.md).
 
-To deploy an instance of `@feltcoop/felt-server`,
+To deploy an instance of `@feltjs/felt-server`,
 these docs assume a <a href="https://en.wikipedia.org/wiki/Virtual_private_server">VPS</a>,
 which you can obtain through a cloud provider.
 They can also be adapted for local use and alternative deployments, but some details will differ.
 
 To start, clone the repo locally and make sure
-[Gro](https://github.com/feltcoop/gro) is installed globally:
+[Gro](https://github.com/feltjs/gro) is installed globally:
 
 ```bash
-git clone https://github.com/feltcoop/felt-server
-npm i -g @feltcoop/gro
+git clone https://github.com/feltjs/felt-server
+npm i -g @feltjs/gro
 ```
 
 ## Deploy
@@ -61,7 +61,7 @@ and tests your DB restoration process all in one.
 1. Use [`pg_dump`](https://www.postgresql.org/docs/current/backup-dump.html)
    to get a copy of the DB from your old server instance
 1. Copy that dump from old to new server & restore it
-1. Deploy the latest `@feltcoop/felt-server` code to your new server
+1. Deploy the latest `@feltjs/felt-server` code to your new server
 1. Restart
 
 ## Managing production

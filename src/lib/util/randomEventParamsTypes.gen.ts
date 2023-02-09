@@ -1,5 +1,5 @@
-import type {Gen} from '@feltcoop/gro';
-import {toRootPath} from '@feltcoop/gro/dist/paths.js';
+import type {Gen} from '@feltjs/gro';
+import {toRootPath} from '@feltjs/gro/dist/paths.js';
 
 import {eventInfos} from '$lib/app/events';
 

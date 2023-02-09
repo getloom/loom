@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Message from '@feltcoop/felt/Message.svelte';
-	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
+	import Message from '@feltjs/felt-ui/Message.svelte';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';

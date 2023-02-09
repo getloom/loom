@@ -1,6 +1,6 @@
-import type {Gen} from '@feltcoop/gro';
-import {toRootPath} from '@feltcoop/gro/dist/paths.js';
-import {toVocabSchemaResolver} from '@feltcoop/gro/dist/utils/schema.js';
+import type {Gen} from '@feltjs/gro';
+import {toRootPath} from '@feltjs/gro/dist/paths.js';
+import {toVocabSchemaResolver} from '@feltjs/gro/dist/utils/schema.js';
 
 import {eventInfos} from '$lib/app/events';
 import {
@@ -31,7 +31,7 @@ export const gen: Gen = async ({originId}) => {
   
 import type {SvelteComponent} from 'svelte';
 import type {Readable, Mutable} from '@feltcoop/svelte-gettable-stores';
-import type {AsyncStatus} from '@feltcoop/util/async.js';
+import type {AsyncStatus} from '@feltjs/util/async.js';
 
 import type {ApiResult} from '$lib/server/api';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';

@@ -1,7 +1,7 @@
 import ley from 'ley';
 import {defaultPostgresOptions} from '$lib/db/postgres.js';
-import type {Logger} from '@feltcoop/util/log.js';
-import {spawn} from '@feltcoop/util/process.js';
+import type {Logger} from '@feltjs/util/log.js';
+import {spawn} from '@feltjs/util/process.js';
 
 import {MIGRATIONS_DIR, MIGRATIONS_DIR_PROD} from '$lib/db/migration';
 

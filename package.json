@@ -1,5 +1,5 @@
 {
-  "name": "@feltcoop/felt-server",
+  "name": "@feltjs/felt-server",
   "version": "0.1.0",
   "license": "MIT",
   "description": "server for Felt, a tool for building and maintaining communities",
@@ -8,13 +8,13 @@
     "email": "team@felt.social",
     "url": "https://felt.social"
   },
-  "homepage": "https://github.com/feltcoop/felt-server",
+  "homepage": "https://github.com/feltjs/felt-server",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/feltcoop/felt-server.git"
+    "url": "git+https://github.com/feltjs/felt-server.git"
   },
   "bugs": {
-    "url": "https://github.com/feltcoop/felt-server/issues"
+    "url": "https://github.com/feltjs/felt-server/issues"
   },
   "scripts": {
     "dev": "gro dev",
@@ -28,37 +28,37 @@
     "node": ">=18.6.0"
   },
   "devDependencies": {
-    "@feltcoop/eslint-config": "^0.2.1",
-    "@feltcoop/gro": "^0.69.0",
+    "@feltjs/eslint-config": "^0.2.1",
+    "@feltjs/gro": "^0.70.5",
     "@ryanatkn/json-schema-to-typescript": "^11.1.2",
-    "@sveltejs/adapter-node": "^1.1.4",
-    "@sveltejs/kit": "^1.2.2",
+    "@sveltejs/adapter-node": "^1.1.7",
+    "@sveltejs/kit": "^1.5.0",
     "@types/body-parser": "^1.19.2",
     "@types/cookie": "^0.5.1",
     "@types/cookie-signature": "^1.1.0",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.13.0",
     "@types/throttle-debounce": "^5.0.0",
     "@types/ws": "^8.5.4",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
-    "eslint": "^8.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "eslint": "^8.33.0",
     "eslint-plugin-svelte3": "^4.0.0",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.4",
     "prettier-plugin-svelte": "^2.9.0",
     "strict-event-emitter-types": "^2.0.0",
     "svast": "^0.2.0",
-    "svelte-check": "^3.0.2",
+    "svelte-check": "^3.0.3",
     "svelte-preprocess-esbuild": "^3.0.1",
-    "tslib": "^2.4.1",
+    "tslib": "^2.5.0",
     "tsm": "^2.3.0",
-    "typescript": "^4.9.4",
+    "typescript": "^4.9.5",
     "uvu": "^0.5.6",
-    "zod": "^3.20.2"
+    "zod": "^3.20.3"
   },
   "dependencies": {
-    "@feltcoop/felt": "^0.45.1",
     "@feltcoop/svelte-gettable-stores": "^0.2.0",
-    "@feltcoop/util": "^0.5.0",
+    "@feltjs/felt-ui": "^0.47.1",
+    "@feltjs/util": "^0.5.3",
     "@polka/send-type": "^0.5.2",
     "ajv": "^8.12.0",
     "ajv-keywords": "^5.1.0",
@@ -67,7 +67,7 @@
     "cookie-signature": "^1.2.0",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
-    "estree-walker": "^3.0.1",
+    "estree-walker": "3.0.1",
     "kleur": "^4.1.5",
     "ley": "^0.8.1",
     "polka": "^1.0.0-next.22",
@@ -85,7 +85,7 @@
   },
   "eslintConfig": {
     "root": true,
-    "extends": "@feltcoop",
+    "extends": "@feltjs",
     "rules": {
       "no-console": 1
     }

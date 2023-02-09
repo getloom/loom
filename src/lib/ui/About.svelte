@@ -8,12 +8,10 @@
 	</p>
 	<p class="title">
 		{import.meta.env.PUBLIC_ADMIN_ICON}
-		<a href="https://github.com/feltcoop/felt-server" target="_blank" rel="noreferrer"
-			>felt-server</a
-		>
+		<a href="https://github.com/feltjs/felt-server" target="_blank" rel="noreferrer">felt-server</a>
 		version
 		<a
-			href="https://github.com/feltcoop/felt-server/commit/{import.meta.env.PUBLIC_GIT_HASH}"
+			href="https://github.com/feltjs/felt-server/commit/{import.meta.env.PUBLIC_GIT_HASH}"
 			target="_blank"
 			rel="noreferrer"
 		>

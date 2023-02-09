@@ -1,4 +1,4 @@
-import type {Task} from '@feltcoop/gro';
+import type {Task} from '@feltjs/gro';
 
 import {obtainDb} from '$lib/db/obtainDb.js';
 import {defaultPostgresOptions} from '$lib/db/postgres.js';

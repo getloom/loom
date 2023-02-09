@@ -1,6 +1,6 @@
 import {blue, gray} from 'kleur/colors';
-import {Logger} from '@feltcoop/util/log.js';
-import {unwrap} from '@feltcoop/util';
+import {Logger} from '@feltjs/util/log.js';
+import {unwrap} from '@feltjs/util';
 
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {
@@ -19,7 +19,7 @@ import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
 // TODO security considerations, mainly that signup leaks account name existence
-// https://github.com/feltcoop/felt-server/pull/525#discussion_r1002323512
+// https://github.com/feltjs/felt-server/pull/525#discussion_r1002323512
 
 export const SignUpService: ServiceByName['SignUp'] = {
 	event: SignUp,

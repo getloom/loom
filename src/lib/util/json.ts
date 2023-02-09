@@ -1,4 +1,4 @@
-import type {Result} from '@feltcoop/util';
+import type {Result} from '@feltjs/util';
 
 export const parseJson = (value: string): Result<{value: object}, {message: string}> => {
 	try {

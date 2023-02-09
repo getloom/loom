@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Message from '@feltcoop/felt/Message.svelte';
+	import Message from '@feltjs/felt-ui/Message.svelte';
 
 	import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error';
 

@@ -1,4 +1,4 @@
-import {Logger} from '@feltcoop/util/log.js';
+import {Logger} from '@feltjs/util/log.js';
 import type {WritableUi} from '$lib/ui/ui';
 import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Mutated} from '$lib/util/Mutated';

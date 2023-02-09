@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@feltcoop/felt/PendingAnimation.svelte';
+	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import {readable} from '@feltcoop/svelte-gettable-stores';
 
 	import BoardItems from '$lib/plugins/feltcoop/board/BoardItems.svelte';
@@ -43,7 +43,7 @@
 				<svelte:fragment slot="error"><span style:display="none" /></svelte:fragment>
 			</CreateEntityForm>
 			<BoardItems {entities} {space} {persona} />
-			<!-- TODO handle query failures and add retry button, see https://github.com/feltcoop/felt-server/pull/514#discussion_r998626893 -->
+			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt-server/pull/514#discussion_r998626893 -->
 			<!-- {:else if $queryStatus === 'failure'}
 				<Message status="error">{$queryError.message}</Message> -->
 		{:else}

@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {NOT_OK, ResultError, unwrap, type Result} from '@feltcoop/util';
+import {NOT_OK, ResultError, unwrap, type Result} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Community} from '$lib/vocab/community/community';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {tick} from 'svelte';
-	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
-	import {swallow} from '@feltcoop/util/dom.js';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import {swallow} from '@feltjs/util/dom.js';
 	import {dev} from '$app/environment';
 
 	import {autofocus} from '$lib/ui/actions';

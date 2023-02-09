@@ -1,8 +1,8 @@
 <script lang="ts">
-	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
-	import Message from '@feltcoop/felt/Message.svelte';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import Message from '@feltjs/felt-ui/Message.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import HueInput from '@feltcoop/felt/HueInput.svelte';
+	import HueInput from '@feltjs/felt-ui/HueInput.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 

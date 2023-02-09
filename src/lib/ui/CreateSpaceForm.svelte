@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@feltcoop/felt/PendingButton.svelte';
-	import Message from '@feltcoop/felt/Message.svelte';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import Message from '@feltjs/felt-ui/Message.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 

@@ -1,5 +1,5 @@
-import type {Result} from '@feltcoop/util';
-import {toGraphemeCount} from '@feltcoop/util/string.js';
+import type {Result} from '@feltjs/util';
+import {toGraphemeCount} from '@feltjs/util/string.js';
 
 import type {Space} from '$lib/vocab/space/space';
 

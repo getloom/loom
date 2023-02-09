@@ -1,4 +1,4 @@
-import {stripAfter} from '@feltcoop/util/string.js';
+import {stripAfter} from '@feltjs/util/string.js';
 
 export const MIGRATIONS_PATH = 'lib/db/migrations';
 export const MIGRATIONS_DIR = 'src/' + MIGRATIONS_PATH;
