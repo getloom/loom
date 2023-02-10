@@ -1,6 +1,3 @@
-import {randomHue} from '$lib/ui/color';
-import type {CommunitySettings} from '$lib/vocab/community/community';
-
 export const CommunitySchema = {
 	$id: '/schemas/Community.json',
 	type: 'object',
@@ -55,9 +52,3 @@ export const InitialCommunitySettingsSchema = {
 	required: ['hue'],
 	additionalProperties: false,
 };
-
-export const toDefaultCommunitySettings = (name: string): CommunitySettings => ({
-	hue: randomHue(name),
-	//this is a hack to allow for creation of the community before it's default role is created
-	defaultRoleId: -1,
-});

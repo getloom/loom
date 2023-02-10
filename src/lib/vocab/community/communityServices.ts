@@ -12,7 +12,6 @@ import {
 	LeaveCommunity,
 	KickFromCommunity,
 } from '$lib/vocab/community/communityEvents';
-import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
@@ -23,6 +22,7 @@ import {
 	checkRemovePersona,
 	cleanOrphanCommunities,
 	initTemplateGovernanceForCommunity,
+	toDefaultCommunitySettings,
 } from '$lib/vocab/community/communityHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {

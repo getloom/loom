@@ -5,7 +5,7 @@ import {NOT_OK, ResultError, unwrap, type Result} from '@feltjs/util';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Community} from '$lib/vocab/community/community';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
+import {toDefaultCommunitySettings} from '$lib/vocab/community/communityHelpers.server';
 
 /* test__service */
 const test__service = suite<TestDbContext>('services');

@@ -3,15 +3,15 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {ADMIN_COMMUNITY_ID, ADMIN_COMMUNITY_NAME} from '$lib/app/constants';
-import type {Community} from '$lib/vocab/community/community';
+import type {Community, CommunitySettings} from '$lib/vocab/community/community';
 import type {ActorPersona, PublicPersona} from '$lib/vocab/persona/persona';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {defaultAdminCommunityRoles, type RoleTemplate} from '$lib/app/templates';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {ApiResult} from '$lib/server/api';
+import {randomHue} from '$lib/ui/color';
 
 const log = new Logger(gray('[') + blue('communityHelpers.server') + gray(']'));
 
@@ -175,3 +175,9 @@ export const checkRemovePersona = async (
 	}
 	return {ok: true, status: 200, value: undefined};
 };
+
+export const toDefaultCommunitySettings = (name: string): CommunitySettings => ({
+	hue: randomHue(name),
+	//this is a hack to allow for creation of the community before it's default role is created
+	defaultRoleId: -1,
+});

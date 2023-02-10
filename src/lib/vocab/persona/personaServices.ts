@@ -4,12 +4,12 @@ import {unwrap} from '@feltjs/util';
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
-import {toDefaultCommunitySettings} from '$lib/vocab/community/community.schema';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	cleanOrphanCommunities,
 	initAdminCommunity,
 	initTemplateGovernanceForCommunity,
+	toDefaultCommunitySettings,
 } from '$lib/vocab/community/communityHelpers.server';
 import type {Community} from '$lib/vocab/community/community';
 import type {ActorPersona, ClientPersona} from '$lib/vocab/persona/persona';
