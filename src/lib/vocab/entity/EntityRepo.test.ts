@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltjs/util';
+import {unwrap, unwrapError} from '@feltjs/util';
 
 import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';
@@ -107,15 +107,10 @@ test__EntityRepo('disallow mutating tombstones', async ({db, random}) => {
 	const erased = eraseResult1.value[0];
 
 	// Disallow further `eraseByIds`
-	const eraseResult2 = await db.repos.entity.eraseByIds([entity.entity_id]);
-	assert.ok(!eraseResult2.ok);
+	unwrapError(await db.repos.entity.eraseByIds([entity.entity_id]));
 
 	// Disallow `update`
-	const updateResult = await db.repos.entity.update(entity.entity_id, {
-		type: 'Note',
-		content: '2',
-	});
-	assert.ok(!updateResult.ok);
+	unwrapError(await db.repos.entity.update(entity.entity_id, {type: 'Note', content: '2'}));
 
 	// Ensure the entity is a Tombstone and didn't get mutated.
 	const found = unwrap(await db.repos.entity.findById(entity.entity_id));
