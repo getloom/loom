@@ -77,8 +77,8 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 {#if shouldRender}
 	<li
 		style="--hue: {hue}"
-		in:slide
-		out:scale
+		in:slide|local
+		out:scale|local
 		use:contextmenu.action={[
 			[EntityContextmenu, {persona, entity}],
 			[PersonaContextmenu, {persona: authorPersona}],
@@ -98,7 +98,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		</div>
 		{#if replying}
 			<!-- TODO wrapping with a div looks a little less janky to me, but still not great -->
-			<div in:slide class="reply-input panel">
+			<div in:slide|local class="reply-input panel">
 				<PersonaAvatar {persona} />
 				<textarea
 					placeholder="> replying to @{$authorPersona.name}"
