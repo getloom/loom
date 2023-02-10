@@ -241,8 +241,6 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 				community_id,
 			);
 
-			unwrap(await checkCommunityAccess(persona_id, community_id, repos));
-
 			if (actor !== persona_id) {
 				return {ok: false, status: 403, message: 'actor does not have permission'};
 			}

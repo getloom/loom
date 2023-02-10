@@ -7,6 +7,8 @@ import {randomCommunityParams} from '$lib/util/randomVocab';
 import {
 	DeleteCommunityService,
 	CreateCommunityService,
+	KickFromCommunityService,
+	LeaveCommunityService,
 	InviteToCommunityService,
 } from '$lib/vocab/community/communityServices';
 import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
@@ -284,6 +286,106 @@ test_communityServices(
 					actor: communityPersona.persona_id,
 					community_id: community.community_id,
 					name: persona.name,
+				},
+			}),
+		);
+	},
+);
+
+test_communityServices(
+	'LeaveCommunity removes all assignments for the persona',
+	async ({db, random}) => {
+		const {community, persona} = await random.community();
+		assert.ok(
+			unwrap(
+				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+			),
+		);
+		unwrap(
+			await LeaveCommunityService.perform({
+				...toServiceRequestMock(db, persona),
+				params: {
+					actor: persona.persona_id,
+					community_id: community.community_id,
+					persona_id: persona.persona_id,
+				},
+			}),
+		);
+		assert.ok(
+			!unwrap(
+				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+			),
+		);
+	},
+);
+
+test_communityServices(
+	'fail LeaveCommunity when the persona has no assignments',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+		const {community} = await random.community();
+
+		unwrapError(
+			await LeaveCommunityService.perform({
+				...toServiceRequestMock(db, persona),
+				params: {
+					actor: persona.persona_id,
+					community_id: community.community_id,
+					persona_id: persona.persona_id,
+				},
+			}),
+		);
+	},
+);
+
+test_communityServices(
+	'KickFromCommunity removes all assignments for the persona',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+		const {community, persona: communityPersona} = await random.community();
+		unwrap(
+			await db.repos.assignment.create(
+				persona.persona_id,
+				community.community_id,
+				community.settings.defaultRoleId,
+			),
+		);
+		assert.ok(
+			unwrap(
+				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+			),
+		);
+		unwrap(
+			await KickFromCommunityService.perform({
+				...toServiceRequestMock(db, communityPersona),
+				params: {
+					actor: communityPersona.persona_id,
+					community_id: community.community_id,
+					persona_id: persona.persona_id,
+				},
+			}),
+		);
+		assert.ok(
+			!unwrap(
+				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+			),
+		);
+	},
+);
+
+test_communityServices(
+	'fail KickFromCommunity when the persona has no assignments',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+		const {community, persona: communityPersona} = await random.community();
+
+		unwrapError(
+			await KickFromCommunityService.perform({
+				...toServiceRequestMock(db, communityPersona),
+				params: {
+					actor: communityPersona.persona_id,
+					community_id: community.community_id,
+					persona_id: persona.persona_id,
 				},
 			}),
 		);

@@ -142,21 +142,19 @@ export const checkRemovePersona = async (
 	community_id: number,
 	repos: Repos,
 ): Promise<ApiResult<undefined>> => {
-	// TODO why can't this be parallelized? bug in our code? or the driver? failed to reproduce in the driver.
-	// const [personaResult, communityResult] = await Promise.all([
-	// 	repos.persona.findById(persona_id),
-	// 	repos.community.findById(community_id),
-	// ]);
+	if (!unwrap(await repos.assignment.isPersonaInCommunity(persona_id, community_id))) {
+		return {ok: false, status: 400, message: 'persona is not in the community'};
+	}
 	const persona = unwrap(
 		await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(persona_id, [
 			'type',
 			'community_id',
 		]),
 	);
-	const community = unwrap(await repos.community.findById(community_id));
 	if (!persona) {
 		return {ok: false, status: 404, message: 'no persona found'};
 	}
+	const community = unwrap(await repos.community.findById(community_id));
 	if (!community) {
 		return {ok: false, status: 404, message: 'no community found'};
 	}
@@ -167,6 +165,7 @@ export const checkRemovePersona = async (
 		const adminAssignmentsCount = unwrap(
 			await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community_id),
 		);
+		// TODO this fails if the persona has multiple roles
 		if (adminAssignmentsCount === 1) {
 			return {ok: false, status: 405, message: 'cannot orphan the admin community'};
 		}

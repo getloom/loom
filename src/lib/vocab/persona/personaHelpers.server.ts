@@ -2,7 +2,15 @@ import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
 import {unwrap} from '@feltjs/util';
 
-export const RESERVED_PERSONA_NAMES = new Set(['admin', 'ghost', 'docs', 'schemas', 'about']);
+export const RESERVED_PERSONA_NAMES = new Set([
+	'about',
+	'admin',
+	'api',
+	'docs',
+	'ghost',
+	'schemas',
+	'vocab',
+]);
 
 export const isPersonaNameReserved = (name: string): boolean =>
 	RESERVED_PERSONA_NAMES.has(name.toLowerCase());
