@@ -8,9 +8,8 @@ import {
 	DeletePersonaService,
 } from '$lib/vocab/persona/personaServices';
 import {randomEventParams} from '$lib/util/randomEventParams';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {ADMIN_COMMUNITY_ID, GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
-import type {AccountPersona} from '$lib/vocab/persona/persona';
+import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
+import {GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 
 /* test__personaService */
@@ -155,14 +154,13 @@ test__personaService(
 	async ({db, random}) => {
 		const {persona} = await random.persona();
 
-		const result = unwrap(await db.repos.assignment.filterByCommunity(ADMIN_COMMUNITY_ID));
-		const actor = unwrap(await db.repos.persona.findById(result[0].persona_id))!;
+		const actor = await loadAdminPersona(db.repos);
 
 		assert.ok(actor.persona_id !== persona.persona_id);
 
 		unwrap(
 			await DeletePersonaService.perform({
-				...toServiceRequestMock(db, actor as AccountPersona),
+				...toServiceRequestMock(db, actor),
 				params: {actor: actor.persona_id, persona_id: persona.persona_id},
 			}),
 		);
@@ -174,14 +172,12 @@ test__personaService(
 	async ({db, random}) => {
 		const {persona: actor} = await random.persona();
 
-		const result = unwrap(await db.repos.assignment.filterByCommunity(ADMIN_COMMUNITY_ID));
-		const adminsAssignments = result.filter((p) => p.persona_id !== ADMIN_COMMUNITY_ID);
-		const persona = unwrap(await db.repos.persona.findById(adminsAssignments[0].persona_id))!;
+		const persona = await loadAdminPersona(db.repos);
 
 		assert.is(
 			unwrapError(
 				await DeletePersonaService.perform({
-					...toServiceRequestMock(db, actor as AccountPersona),
+					...toServiceRequestMock(db, actor),
 					params: {actor: actor.persona_id, persona_id: persona.persona_id},
 				}),
 			).status,

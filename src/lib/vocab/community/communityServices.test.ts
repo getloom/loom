@@ -8,7 +8,7 @@ import {
 	DeleteCommunityService,
 	CreateCommunityService,
 } from '$lib/vocab/community/communityServices';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
@@ -227,8 +227,7 @@ test_communityServices(
 			}),
 		);
 
-		const result = unwrap(await db.repos.assignment.filterByCommunity(ADMIN_COMMUNITY_ID));
-		const actor = unwrap(await db.repos.persona.findById(result[0].persona_id))!;
+		const actor = await loadAdminPersona(db.repos);
 
 		unwrap(
 			await CreateCommunityService.perform({

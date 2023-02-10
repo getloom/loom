@@ -1,6 +1,6 @@
 import sourcemapSupport from 'source-map-support';
 import {configureLogLevel, Logger, LogLevel} from '@feltjs/util/log.js';
-import type {OmitStrict} from '@feltjs/util';
+import {type OmitStrict, unwrap} from '@feltjs/util';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';
 import type {Database} from '$lib/db/Database';
@@ -11,7 +11,9 @@ import {
 	type NonAuthenticatedServiceRequest,
 	type NonAuthorizedServiceRequest,
 } from '$lib/server/service';
-import type {ActorPersona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ActorPersona} from '$lib/vocab/persona/persona';
+import {ADMIN_COMMUNITY_ID, ADMIN_PERSONA_ID} from '$lib/app/constants';
+import type {Repos} from '$lib/db/Repos';
 
 configureLogLevel(LogLevel.Info);
 
@@ -54,3 +56,9 @@ export function toServiceRequestMock(
 	const {params: _, ...rest} = toServiceRequest(db, undefined, account_id!, actor!, session);
 	return rest;
 }
+
+export const loadAdminPersona = async (repos: Repos): Promise<AccountPersona> => {
+	const assignments = unwrap(await repos.assignment.filterByCommunity(ADMIN_COMMUNITY_ID));
+	const nonAdminAssignments = assignments.filter((p) => p.persona_id !== ADMIN_PERSONA_ID);
+	return unwrap(await repos.persona.findById(nonAdminAssignments[0].persona_id)) as AccountPersona;
+};
