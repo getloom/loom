@@ -22,23 +22,31 @@ test__personaService('create a persona & test name collisions', async ({db, rand
 	const params = await randomEventParams.CreateAccountPersona(random);
 	params.name = params.name.toLowerCase();
 
-	const serviceRequest = {
-		...toServiceRequestMock(db, undefined, undefined, (await random.account()).account_id),
+	const account = await random.account();
+
+	const toServiceRequest = () => ({
+		...toServiceRequestMock(db, undefined, undefined, account.account_id),
 		params,
-	};
+	});
 
-	unwrap(await CreateAccountPersonaService.perform(serviceRequest));
+	unwrap(await CreateAccountPersonaService.perform(toServiceRequest()));
 
-	unwrapError(await CreateAccountPersonaService.perform(serviceRequest), 'fails with same name');
+	unwrapError(
+		await CreateAccountPersonaService.perform(toServiceRequest()),
+		'fails with same name',
+	);
 
 	params.name = params.name.toUpperCase();
 	unwrapError(
-		await CreateAccountPersonaService.perform(serviceRequest),
+		await CreateAccountPersonaService.perform(toServiceRequest()),
 		'fails with different case',
 	);
 
 	params.name += '2';
-	unwrap(await CreateAccountPersonaService.perform(serviceRequest), 'succeeds with different name');
+	unwrap(
+		await CreateAccountPersonaService.perform(toServiceRequest()),
+		'succeeds with different name',
+	);
 });
 
 test__personaService('ghost persona has the expected name and id', async ({db, random}) => {

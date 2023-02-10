@@ -1,3 +1,5 @@
+import {NOT_OK} from '@feltjs/util';
+
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
@@ -88,26 +90,27 @@ export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiR
 	actor: ActorPersona | undefined,
 	session: ISessionApi,
 ): ServiceRequest {
-	let repos: Repos | undefined; // cache for service composition
-	let result: TResult; // cache to pass through if the inner transaction promise rejects
+	let called = false; // disallow multiple calls
 	const req: NonAuthenticatedServiceRequest = {
 		repos: db.repos,
 		// TODO support savepoints -- https://github.com/porsager/postgres#transactions
-		transact: (cb) =>
-			repos
-				? cb(repos)
-				: db.sql
-						.begin(async (sql) => {
-							result = await cb((repos = new Repos(sql)));
-							if (!result.ok) throw Error(); // cancel the transaction; the error is caught and swallowed ahead
-							return result;
-						})
-						.catch((err) => {
-							if (result === undefined) {
-								result = toFailedApiResult(err) as any; // TODO how to avoid casting?
-							}
-							return result;
-						}),
+		transact: async (cb) => {
+			if (called) return NOT_OK;
+			called = true;
+			let result: TResult; // cache to pass through if the inner transaction promise rejects
+			return db.sql
+				.begin(async (sql) => {
+					result = await cb(new Repos(sql));
+					if (!result.ok) throw Error(); // cancel the transaction; the error is caught and swallowed ahead
+					return result;
+				})
+				.catch((err) => {
+					if (result === undefined) {
+						result = toFailedApiResult(err) as TResult; // TODO how to avoid casting?
+					}
+					return result;
+				});
+		},
 		params,
 		session,
 	};

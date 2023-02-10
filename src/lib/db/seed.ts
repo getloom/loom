@@ -71,16 +71,12 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		);
 		log.trace('created account', account);
 		accounts.push(account);
-		const accountServiceRequest = toServiceRequestMock(
-			db,
-			undefined,
-			undefined,
-			account.account_id,
-		);
+		const toAccountServiceRequest = () =>
+			toServiceRequestMock(db, undefined, undefined, account.account_id);
 		for (const personaName of personasParams[account.name]) {
 			const created = unwrap(
 				await CreateAccountPersonaService.perform({
-					...accountServiceRequest,
+					...toAccountServiceRequest(),
 					params: {name: personaName},
 				}),
 			);
@@ -88,7 +84,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			log.trace('created persona', persona);
 			personas.push(persona);
 			await createDefaultEntities(
-				{...accountServiceRequest, actor: persona},
+				() => ({...toAccountServiceRequest(), actor: persona}),
 				created.spaces,
 				() => persona,
 			);
@@ -96,7 +92,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	}
 
 	const mainPersonaCreator = personas[0] as AccountPersona;
-	const mainAccountServiceRequest = toServiceRequestMock(db, mainPersonaCreator);
+	const toMainAccountServiceRequest = () => toServiceRequestMock(db, mainPersonaCreator);
 	const otherPersonas = personas.slice(1);
 	const nextPersona = toNext(personas);
 
@@ -105,7 +101,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	for (const communityTemplate of communityTemplates) {
 		const {community, spaces} = unwrap(
 			await CreateCommunityService.perform({
-				...mainAccountServiceRequest,
+				...toMainAccountServiceRequest(),
 				params: {
 					actor: mainPersonaCreator.persona_id,
 					template: communityTemplate,
@@ -116,7 +112,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		for (const persona of otherPersonas) {
 			unwrap(
 				await CreateAssignmentService.perform({
-					...mainAccountServiceRequest,
+					...toMainAccountServiceRequest(),
 					params: {
 						actor: mainPersonaCreator.persona_id,
 						persona_id: persona.persona_id,
@@ -130,18 +126,18 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			const spaceTemplate = communityTemplate.spaces?.find((s) => s.name === space.name);
 			if (spaceTemplate?.entities) {
 				await generateEntities(
-					{serviceRequest: mainAccountServiceRequest, nextPersona, space},
+					{toServiceRequest: toMainAccountServiceRequest, nextPersona, space},
 					spaceTemplate.entities,
 				);
 			}
 		}
-		if (much) await createMuchSpaces(mainAccountServiceRequest, community, nextPersona);
-		await createDefaultEntities(mainAccountServiceRequest, spaces, nextPersona);
+		if (much) await createMuchSpaces(toMainAccountServiceRequest, community, nextPersona);
+		await createDefaultEntities(toMainAccountServiceRequest, spaces, nextPersona);
 	}
 };
 
 const createDefaultEntities = async (
-	serviceRequest: ReturnType<typeof toServiceRequestMock>,
+	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
 	spaces: Space[],
 	nextPersona: () => AccountPersona,
 ) => {
@@ -153,7 +149,7 @@ const createDefaultEntities = async (
 			log.warn(`skipping entity seeding for view ${magenta(viewName)}`);
 			continue;
 		}
-		await generateEntities({serviceRequest, nextPersona, space});
+		await generateEntities({toServiceRequest, nextPersona, space});
 	}
 };
 
@@ -165,7 +161,7 @@ const generateEntity = async (
 	const actor = ctx.nextPersona();
 	return unwrap(
 		await CreateEntityService.perform({
-			...ctx.serviceRequest,
+			...ctx.toServiceRequest(),
 			actor,
 			params: {
 				actor: actor.persona_id,
@@ -213,7 +209,7 @@ const communityTemplates: CommunityTemplate[] = [
 ];
 
 interface SeedContext {
-	serviceRequest: ReturnType<typeof toServiceRequestMock>;
+	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>;
 	nextPersona: () => AccountPersona;
 	space: Space;
 }
@@ -281,7 +277,7 @@ const findFirstComponentName = (view: ViewData): string | undefined => {
 const MUCH_SPACE_COUNT = 100;
 
 const createMuchSpaces = async (
-	serviceRequest: ReturnType<typeof toServiceRequestMock>,
+	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
 	community: Community,
 	nextPersona: () => AccountPersona,
 ) => {
@@ -293,7 +289,7 @@ const createMuchSpaces = async (
 		const name = view.name.toLowerCase() + i;
 		unwrap(
 			await CreateSpaceService.perform({
-				...serviceRequest,
+				...toServiceRequest(),
 				actor,
 				params: {
 					actor: actor.persona_id,

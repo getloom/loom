@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {NOT_OK, ResultError, unwrap, type Result} from '@feltjs/util';
+import {NOT_OK, ResultError, unwrap, unwrapError, type Result} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Community} from '$lib/vocab/community/community';
@@ -39,34 +39,22 @@ test__service(`roll back the database after a failed transaction`, async ({db, r
 	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
 });
 
-test__service(`compose multiple calls into one transaction`, async ({db, random}) => {
+test__service(`cannot call transact more than once`, async ({db, random}) => {
 	const {persona} = await random.persona();
 	const serviceRequest = toServiceRequestMock(db, persona);
-	const communityName = 'a';
-	let community: Community | undefined;
-	let failedResult: Result | undefined;
-	await serviceRequest.transact(async (reposA) =>
-		serviceRequest.transact(async (reposB) =>
-			serviceRequest.transact(async (repos) => {
-				assert.is(reposA, repos);
-				assert.is(reposB, repos);
-				community = unwrap(
-					await repos.community.create(
-						'standard',
-						communityName,
-						toDefaultCommunitySettings(communityName),
-					),
-				);
-				const found = unwrap(await repos.community.findByName(communityName));
-				assert.is(found?.name, communityName);
-				return (failedResult = NOT_OK);
-			}),
-		),
+	let ranTransact1 = false;
+	let ranTransact2 = false;
+	unwrapError(
+		await serviceRequest.transact(async (reposA) => {
+			ranTransact1 = true;
+			assert.ok(reposA);
+			await serviceRequest.transact(async () => {
+				ranTransact2 = true;
+			});
+		}),
 	);
-	assert.ok(community);
-	assert.ok(failedResult);
-	assert.ok(!failedResult.ok);
-	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
+	assert.ok(ranTransact1);
+	assert.ok(!ranTransact2);
 });
 
 test__service(`transact cb returns a 500 when it throws an unknown error`, async ({db, random}) => {

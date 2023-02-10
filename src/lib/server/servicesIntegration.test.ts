@@ -37,16 +37,13 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	// create a second persona
 	const {persona: persona2} = await random.persona(account);
 
-	const serviceRequest1 = toServiceRequestMock(db, persona1);
-	const serviceRequest2 = toServiceRequestMock(db, persona2);
-
 	// create community
 	const {community} = await random.community(persona1);
 
 	// join the community with the second persona
 	const {assignment} = unwrap(
 		await CreateAssignmentService.perform({
-			...serviceRequest1, // add `persona2` with `persona1`
+			...toServiceRequestMock(db, persona1), // add `persona2` with `persona1`
 			params: {
 				actor: persona1.persona_id,
 				community_id: community.community_id,
@@ -87,7 +84,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {entities: filteredEntities} = unwrap(
 		await ReadEntitiesService.perform({
-			...serviceRequest2,
+			...toServiceRequestMock(db, persona2),
 			params: {actor: persona2.persona_id, source_id: space.directory_id},
 		}),
 	);
@@ -95,7 +92,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
-			...serviceRequest2,
+			...toServiceRequestMock(db, persona2),
 			params: {actor: persona2.persona_id, community_id: community.community_id},
 		}),
 	);
@@ -103,7 +100,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {community: foundCommunity} = unwrap(
 		await ReadCommunityService.perform({
-			...serviceRequest2,
+			...toServiceRequestMock(db, persona2),
 			params: {actor: persona2.persona_id, community_id: community.community_id},
 		}),
 	);
@@ -140,7 +137,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
-					...serviceRequest2,
+					...toServiceRequestMock(db, persona2),
 					params: {actor: persona1.persona_id, space_id: space.space_id},
 				}),
 			);
@@ -152,7 +149,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	assert.is(unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...serviceRequest2,
+			...toServiceRequestMock(db, persona2),
 			params: {
 				actor: persona1.persona_id,
 				assignment_id: assignment.assignment_id,
@@ -174,12 +171,12 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	);
 	unwrap(
 		await DeleteCommunityService.perform({
-			...serviceRequest1,
+			...toServiceRequestMock(db, persona1),
 			params: {actor: persona1.persona_id, community_id: community.community_id},
 		}),
 	);
 	const readCommunityResult = await ReadCommunityService.perform({
-		...serviceRequest1,
+		...toServiceRequestMock(db, persona1),
 		params: {actor: persona1.persona_id, community_id: community.community_id},
 	});
 	assert.is(readCommunityResult.status, 404);
