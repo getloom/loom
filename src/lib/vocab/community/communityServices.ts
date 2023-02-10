@@ -213,6 +213,9 @@ export const InviteToCommunityService: ServiceByName['InviteToCommunity'] = {
 			if (!persona) {
 				return {ok: false, status: 404, message: `cannot find a persona named ${name}`};
 			}
+			if (unwrap(await repos.assignment.isPersonaInCommunity(persona.persona_id, community_id))) {
+				return {ok: false, status: 409, message: 'persona is already in the community'};
+			}
 
 			const assignment = unwrap(
 				await createAssignment(

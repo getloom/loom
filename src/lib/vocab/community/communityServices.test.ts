@@ -7,6 +7,7 @@ import {randomCommunityParams} from '$lib/util/randomVocab';
 import {
 	DeleteCommunityService,
 	CreateCommunityService,
+	InviteToCommunityService,
 } from '$lib/vocab/community/communityServices';
 import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
@@ -241,6 +242,49 @@ test_communityServices(
 			await db.repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
 				...settings,
 				instance: {...settings.instance, disableCreateCommunity: settingValue},
+			}),
+		);
+	},
+);
+
+test_communityServices(
+	'InviteToCommunity assigns the default community role to the persona',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+		const {community, persona: communityPersona} = await random.community();
+		unwrap(
+			await InviteToCommunityService.perform({
+				...toServiceRequestMock(db, communityPersona),
+				params: {
+					actor: communityPersona.persona_id,
+					community_id: community.community_id,
+					name: persona.name,
+				},
+			}),
+		);
+	},
+);
+
+test_communityServices(
+	'fail InviteToCommunity when the persona already has an assignment',
+	async ({db, random}) => {
+		const {persona} = await random.persona();
+		const {community, persona: communityPersona} = await random.community();
+		unwrap(
+			await db.repos.assignment.create(
+				persona.persona_id,
+				community.community_id,
+				community.settings.defaultRoleId,
+			),
+		);
+		unwrapError(
+			await InviteToCommunityService.perform({
+				...toServiceRequestMock(db, communityPersona),
+				params: {
+					actor: communityPersona.persona_id,
+					community_id: community.community_id,
+					name: persona.name,
+				},
 			}),
 		);
 	},
