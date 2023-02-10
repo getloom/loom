@@ -10,12 +10,12 @@ export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 	const {communityById} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {assignment: $assignment} = result.value;
-	const {community_id} = $assignment;
+	const {assignment} = result.value;
+	const {community_id} = assignment;
 
 	// If there's no community locally, we were just added to it, so query its data in full.
 	if (communityById.has(community_id)) {
-		stashAssignments(ui, [$assignment]);
+		stashAssignments(ui, [assignment]);
 	} else {
 		const readCommunityResult = await dispatch.ReadCommunity({actor: params.actor, community_id});
 		if (!readCommunityResult.ok) return readCommunityResult;

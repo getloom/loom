@@ -10,22 +10,14 @@ import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {
-		personas: $personas,
-		communities: $communities,
-		roles: $roles,
-		policies: $policies,
-		spaces: $spaces,
-		directories: $directories,
-		assignments: $assignments,
-	} = result.value;
+	const {personas, communities, roles, policies, spaces, directories, assignments} = result.value;
 	const mutated = new Mutated('CreateAccountPersona');
-	stashPersonas(ui, $personas, mutated);
-	stashCommunities(ui, $communities, mutated);
-	stashSpaces(ui, $spaces, $directories, mutated);
-	stashAssignments(ui, $assignments, mutated);
-	stashRoles(ui, $roles, mutated);
-	stashPolicies(ui, $policies, mutated);
+	stashPersonas(ui, personas, mutated);
+	stashCommunities(ui, communities, mutated);
+	stashSpaces(ui, spaces, directories, mutated);
+	stashAssignments(ui, assignments, mutated);
+	stashRoles(ui, roles, mutated);
+	stashPolicies(ui, policies, mutated);
 	mutated.end('CreateAccountPersona');
 	return result;
 };

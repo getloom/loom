@@ -4,8 +4,8 @@ import {evictPolicies, stashPolicies} from '$lib/vocab/policy/policyMutationHelp
 export const CreatePolicy: Mutations['CreatePolicy'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {policy: $policy} = result.value;
-	stashPolicies(ui, [$policy]);
+	const {policy} = result.value;
+	stashPolicies(ui, [policy]);
 	return result;
 };
 

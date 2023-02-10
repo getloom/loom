@@ -27,15 +27,13 @@ export const SignOut: Mutations['SignOut'] = async ({invoke, dispatch}) => {
 export const UpdateAccountSettings: Mutations['UpdateAccountSettings'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const $account = result.value;
-	setIfUpdated(ui.account, $account);
+	setIfUpdated(ui.account, result.value);
 	return result;
 };
 
 export const UpdateAccountPassword: Mutations['UpdateAccountPassword'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const $account = result.value;
-	setIfUpdated(ui.account, $account);
+	setIfUpdated(ui.account, result.value);
 	return result;
 };

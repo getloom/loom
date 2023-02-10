@@ -11,20 +11,13 @@ import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {
-		community: $community,
-		spaces: $spaces,
-		directories: $directories,
-		roles: $roles,
-		assignments: $assignments,
-		personas: $personas,
-	} = result.value;
+	const {community, spaces, directories, roles, assignments, personas} = result.value;
 	const mutated = new Mutated('ReadCommunity');
-	stashPersonas(ui, $personas, mutated);
-	stashCommunity(ui, $community, mutated);
-	stashSpaces(ui, $spaces, $directories, mutated);
-	stashRoles(ui, $roles, mutated);
-	stashAssignments(ui, $assignments, mutated);
+	stashPersonas(ui, personas, mutated);
+	stashCommunity(ui, community, mutated);
+	stashSpaces(ui, spaces, directories, mutated);
+	stashRoles(ui, roles, mutated);
+	stashAssignments(ui, assignments, mutated);
 	mutated.end('ReadCommunity');
 	return result;
 };
@@ -32,22 +25,14 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {
-		community: $community,
-		roles: $roles,
-		policies: $policies,
-		spaces: $spaces,
-		directories: $directories,
-		assignments: $assignments,
-		personas: $personas,
-	} = result.value;
+	const {community, roles, policies, spaces, directories, assignments, personas} = result.value;
 	const mutated = new Mutated('CreateCommunity');
-	stashPersonas(ui, $personas, mutated);
-	stashCommunity(ui, $community, mutated);
-	stashSpaces(ui, $spaces, $directories, mutated);
-	stashAssignments(ui, $assignments, mutated);
-	stashRoles(ui, $roles, mutated);
-	stashPolicies(ui, $policies, mutated);
+	stashPersonas(ui, personas, mutated);
+	stashCommunity(ui, community, mutated);
+	stashSpaces(ui, spaces, directories, mutated);
+	stashAssignments(ui, assignments, mutated);
+	stashRoles(ui, roles, mutated);
+	stashPolicies(ui, policies, mutated);
 	mutated.end('CreateCommunity');
 	return result;
 };

@@ -4,16 +4,16 @@ import {evictRoles, stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {role: $role} = result.value;
-	stashRoles(ui, [$role]);
+	const {role} = result.value;
+	stashRoles(ui, [role]);
 	return result;
 };
 
 export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {role: $role} = result.value;
-	stashRoles(ui, [$role]);
+	const {role} = result.value;
+	stashRoles(ui, [role]);
 	return result;
 };
 
@@ -27,7 +27,7 @@ export const DeleteRole: Mutations['DeleteRole'] = async ({invoke, params, ui}) 
 export const ReadRoles: Mutations['ReadRoles'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {roles: $roles} = result.value;
-	stashRoles(ui, $roles);
+	const {roles} = result.value;
+	stashRoles(ui, roles);
 	return result;
 };

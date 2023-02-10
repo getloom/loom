@@ -4,8 +4,8 @@ import {evictSpaces, stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 export const CreateSpace: Mutations['CreateSpace'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {space: $space, directory: $directory} = result.value;
-	stashSpaces(ui, [$space], [$directory]);
+	const {space, directory} = result.value;
+	stashSpaces(ui, [space], [directory]);
 	return result;
 };
 
@@ -21,15 +21,15 @@ export const DeleteSpace: Mutations['DeleteSpace'] = async ({params, invoke, ui}
 export const UpdateSpace: Mutations['UpdateSpace'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {space: $space} = result.value;
-	stashSpaces(ui, [$space]);
+	const {space} = result.value;
+	stashSpaces(ui, [space]);
 	return result;
 };
 
 export const ReadSpaces: Mutations['ReadSpaces'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {spaces: $spaces, directories: $directories} = result.value;
-	stashSpaces(ui, $spaces, $directories);
+	const {spaces, directories} = result.value;
+	stashSpaces(ui, spaces, directories);
 	return result;
 };
