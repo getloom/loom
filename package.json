@@ -86,6 +86,10 @@
   "eslintConfig": {
     "root": true,
     "extends": "@feltjs",
+    "ignorePatterns": [
+      "svelte.config.js",
+      "vite.config.js"
+    ],
     "rules": {
       "no-console": 1
     }
