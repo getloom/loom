@@ -21,8 +21,6 @@
 	import {format} from 'date-fns';
 
 	import {toSocketStore} from '$lib/ui/socket';
-	import Luggage from '$lib/ui/Luggage.svelte';
-	import MainNav from '$lib/ui/MainNav.svelte';
 	import Onboard from '$lib/ui/Onboard.svelte';
 	import {setUi, toUi} from '$lib/ui/ui';
 	import {syncUiToUrl} from '$lib/ui/syncUiToUrl';
@@ -156,23 +154,21 @@
 <SocketConnection {socket} url={WEBSOCKET_URL} />
 
 <div class="layout" class:mobile={$mobile} bind:clientHeight bind:clientWidth>
-	{#if !guest && !onboarding}
-		<Luggage />
-		<MainNav />
-	{/if}
-	<main>
-		{#if guest}
+	{#if guest}
+		<main>
 			<div class="main-content account column markup">
 				<AccountForm {guest} />
 			</div>
-		{:else if onboarding}
+		</main>
+	{:else if onboarding}
+		<main>
 			<div class="main-content column">
 				<Onboard />
 			</div>
-		{:else}
-			<slot />
-		{/if}
-	</main>
+		</main>
+	{:else}
+		<slot />
+	{/if}
 	<DevmodeControls {devmode} />
 	<Dialogs {dialogs} on:close={() => dispatch.CloseDialog()} />
 	<Contextmenu {contextmenu} {LinkContextmenu} />

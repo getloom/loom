@@ -32,7 +32,6 @@ const files = [
 	'lib/ui/SchemaInfo.svelte',
 	'lib/ui/SocketConnection.svelte',
 	'lib/ui/WebsocketApiClient.ts',
-	'lib/ui/Workspace.svelte',
 	'lib/ui/app.ts',
 	'lib/ui/contextmenu/Contextmenu.svelte',
 	'lib/ui/services.ts',

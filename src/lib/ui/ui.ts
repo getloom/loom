@@ -80,6 +80,7 @@ export interface Ui {
 	// view state
 	mobile: Readable<boolean>;
 	layout: Writable<{width: number; height: number}>; // TODO maybe make `Readable` and update with an event? `resizeLayout`?
+	mainLayoutView: Writable<string>;
 	expandMainNav: Readable<boolean>;
 	expandMarquee: Readable<boolean>;
 	contextmenu: ContextmenuStore;
@@ -313,6 +314,7 @@ export const toUi = (
 
 	const mobile = writable(initialMobile);
 	const layout = writable({width: 0, height: 0});
+	const mainLayoutView = writable('<Workspace />'); // TODO source this from the community/space context (so routes can customize the UI)
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
 	const contextmenu = createContextmenuStore({layout, onError});
@@ -355,6 +357,7 @@ export const toUi = (
 		// view state
 		mobile,
 		layout,
+		mainLayoutView,
 		expandMainNav,
 		expandMarquee,
 		contextmenu,

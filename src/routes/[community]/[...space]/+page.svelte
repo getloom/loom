@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Workspace from '$lib/ui/Workspace.svelte';
+	import MainLayout from '$lib/ui/MainLayout.svelte';
 </script>
 
-<Workspace />
+<MainLayout />

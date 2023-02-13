@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Luggage from '$lib/ui/Luggage.svelte';
+	import MainNav from '$lib/ui/MainNav.svelte';
 	import SpaceView from '$lib/ui/SpaceView.svelte';
 	import Marquee from '$lib/ui/Marquee.svelte';
 	import WorkspaceHeader from '$lib/ui/WorkspaceHeader.svelte';
@@ -8,33 +10,25 @@
 	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
 	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
 	import CreateCommunityForm from '$lib/ui/CreateCommunityForm.svelte';
+	import {getViewContext} from '$lib/vocab/view/view';
 	import EmptyPath from '$lib/ui/EmptyPath.svelte';
 
 	const {
 		dispatch,
-		ui: {contextmenu, expandMarquee, spaceSelection, personaSelection, communitySelection},
+		ui: {contextmenu, expandMarquee},
 	} = getApp();
 
-	$: selectedPersona = $personaSelection;
-	$: selectedCommunity = $communitySelection;
-	$: selectedSpace = $spaceSelection;
+	const viewContext = getViewContext();
+	$: ({persona, community, space} = $viewContext);
 </script>
 
-<div
+<Luggage />
+<MainNav />
+<main
 	class="workspace"
 	use:contextmenu.action={[
-		[
-			SpaceContextmenu,
-			selectedSpace
-				? {persona: selectedPersona, community: selectedCommunity, space: selectedSpace}
-				: undefined,
-		],
-		[
-			CommunityContextmenu,
-			selectedCommunity && selectedPersona
-				? {community: selectedCommunity, persona: selectedPersona}
-				: undefined,
-		],
+		[SpaceContextmenu, space ? {persona, community, space} : undefined],
+		[CommunityContextmenu, community && persona ? {community, persona} : undefined],
 	]}
 >
 	{#if $expandMarquee}
@@ -45,21 +39,17 @@
 		/>
 	{/if}
 	<div class="space column">
-		<WorkspaceHeader space={selectedSpace} community={selectedCommunity} />
+		<WorkspaceHeader {space} {community} />
 		<div class="content">
-			{#if selectedPersona}
-				{#if selectedCommunity}
-					{#if selectedSpace}
-						<SpaceView
-							persona={selectedPersona}
-							community={selectedCommunity}
-							space={selectedSpace}
-						/>
+			{#if persona}
+				{#if community}
+					{#if space}
+						<SpaceView {persona} {community} {space} />
 					{:else}
-						<EmptyPath persona={selectedPersona} community={selectedCommunity} />
+						<EmptyPath {persona} {community} />
 					{/if}
 				{:else}
-					<CreateCommunityForm persona={selectedPersona} />
+					<CreateCommunityForm {persona} />
 				{/if}
 			{:else}
 				<CreateAccountPersonaForm />
@@ -68,12 +58,12 @@
 		<MarqueeButton />
 	</div>
 	<!-- TODO extract to some shared abstractions with the `Luggage` probably -->
-	{#if $expandMarquee && selectedCommunity && selectedSpace}
+	{#if $expandMarquee && community && space}
 		<div class="marquee">
-			<Marquee community={selectedCommunity} space={selectedSpace} />
+			<Marquee {community} {space} />
 		</div>
 	{/if}
-</div>
+</main>
 
 <style>
 	.workspace {

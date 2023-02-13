@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Workspace from '$lib/ui/Workspace.svelte';
+	import MainLayout from '$lib/ui/MainLayout.svelte';
 
 	const title = 'felt-server';
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
 
-<Workspace />
+<MainLayout />

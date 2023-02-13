@@ -1,12 +1,12 @@
 <script lang="ts">
-	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Community} from '$lib/vocab/community/community';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
-	import {setViewContext} from '$lib/vocab/view/view';
 	import SvastText from '$lib/ui/SvastText.svelte';
+	import ViewContext from '$lib/ui/ViewContext.svelte';
 
 	const {
 		dispatch,
@@ -21,17 +21,9 @@
 	//TODO we might want to just roll the logic from this event into the SelectSpace mutation
 	$: dispatch.ClearFreshness({directory_id});
 
-	const viewContext = writable({persona, community, space});
-	setViewContext(viewContext);
-
-	let ready = false; // avoids a wasteful `viewContext` change on mount
-	$: if (ready) {
-		viewContext.set({persona, community, space});
-	} else {
-		ready = true;
-	}
-
 	$: viewText = $viewBySpace.value.get(space) || $space.view;
 </script>
 
-<SvastText text={viewText} />
+<ViewContext {persona} {community} {space}>
+	<SvastText text={viewText} />
+</ViewContext>
