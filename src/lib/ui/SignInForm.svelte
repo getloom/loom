@@ -3,6 +3,7 @@
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {swallow} from '@feltjs/util/dom.js';
 	import {dev} from '$app/environment';
+	import {PUBLIC_ADMIN_ICON} from '$env/static/public';
 
 	import {autofocus} from '$lib/ui/actions';
 	import HeroIcon from '$lib/ui/HeroIcon.svelte';
@@ -91,7 +92,7 @@
 			<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signIn}
 				>sign in</PendingButton
 			>
-			<p class:error-text={!!errorMessage}>{errorMessage || import.meta.env.PUBLIC_ADMIN_ICON}</p>
+			<p class:error-text={!!errorMessage}>{errorMessage || PUBLIC_ADMIN_ICON}</p>
 			<slot />
 		</div>
 	</fieldset>

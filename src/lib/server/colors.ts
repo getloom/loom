@@ -7,7 +7,7 @@ import {
 } from 'kleur/colors';
 import {identity} from '@feltjs/util/function.js';
 
-const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
+const dev = process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
 export const gray = dev ? grayKleur : identity;
 export const blue = dev ? blueKleur : identity;

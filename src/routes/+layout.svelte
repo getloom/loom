@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
 	import {configureLogLevel, LogLevel, Logger} from '@feltjs/util/log.js';
 
 	if (!dev) {
@@ -27,7 +28,6 @@
 	import {toDispatch, toDispatchBroadcastMessage} from '$lib/app/dispatch';
 	import {setApp} from '$lib/ui/app';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
-	import {WEBSOCKET_URL} from '$lib/config';
 	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient';
 	import {toHttpApiClient} from '$lib/ui/HttpApiClient';
 	import {findHttpService, findWebsocketService} from '$lib/ui/services';
@@ -151,7 +151,7 @@
 
 <svelte:window on:keydown|capture={onWindowKeydown} />
 
-<SocketConnection {socket} url={WEBSOCKET_URL} />
+<SocketConnection {socket} url={PUBLIC_WEBSOCKET_URL} />
 
 <div class="layout" class:mobile={$mobile} bind:clientHeight bind:clientWidth>
 	{#if guest}

@@ -24,27 +24,24 @@ export const task: Task<Args> = {
 	run: async ({log, args: {dry}, invokeTask}) => {
 		await invokeTask('lib/infra/syncEnvGitHash');
 
-		// TODO env vars are currently messy with 3 strategies:
-		// 1 - calling `fromEnv('VAR')`
-		// 2 - defaults setup by `$lib/config.js`
-		// 3 - defaults setup by `$lib/db/postgres`
-
 		const DEPLOY_IP = fromEnv('DEPLOY_IP');
 		const DEPLOY_USER = fromEnv('DEPLOY_USER');
 		const PUBLIC_DEPLOY_SERVER_HOST = fromEnv('PUBLIC_DEPLOY_SERVER_HOST');
+		const PUBLIC_API_SERVER_HOSTNAME = fromEnv('PUBLIC_API_SERVER_HOSTNAME');
+		const PUBLIC_API_SERVER_PORT = fromEnv('PUBLIC_API_SERVER_PORT');
+		const apiServerHost = PUBLIC_API_SERVER_PORT
+			? PUBLIC_API_SERVER_HOSTNAME + ':' + PUBLIC_API_SERVER_PORT
+			: PUBLIC_API_SERVER_HOSTNAME;
 		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
-		// TODO this is hacky because of `import.meta` env handling
-		const {API_SERVER_HOST} = await import('../config.js');
 		const NODE_VERSION = '18';
-		// TODO hacky -- see notes above
-		const {defaultPostgresOptions} = await import('../db/postgres.js');
-		const PGDATABASE = defaultPostgresOptions.database;
-		const PGUSERNAME = defaultPostgresOptions.username;
-		const PGPASSWORD = defaultPostgresOptions.password;
+		const PGDATABASE = fromEnv('PGDATABASE');
+		const PGUSER = fromEnv('PGUSER');
+		const PGPASSWORD = fromEnv('PGPASSWORD');
 
 		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt-server.conf';
 		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt-server.conf';
-		const nginxConfig = toNginxConfig(fromEnv('PUBLIC_DEPLOY_SERVER_HOST'), API_SERVER_HOST);
+
+		const nginxConfig = toNginxConfig(PUBLIC_DEPLOY_SERVER_HOST, apiServerHost);
 
 		// This file is used to detect if the setup script has already run.
 		const FELT_SETUP_STATE_FILE_PATH = '~/felt_state_setup';
@@ -137,7 +134,7 @@ export const task: Task<Args> = {
 			// Create the Postgres database for Felt:
 			logSequence('Creating Postgres database...') +
 				`sudo -i -u postgres psql -c "CREATE DATABASE ${PGDATABASE};";` +
-				`sudo -i -u postgres psql -c "ALTER USER ${PGUSERNAME} WITH PASSWORD '${PGPASSWORD}';";` +
+				`sudo -i -u postgres psql -c "ALTER USER ${PGUSER} WITH PASSWORD '${PGPASSWORD}';";` +
 				// All done!
 				logSequence(`Success! Server is now setup for deployment.`),
 		];

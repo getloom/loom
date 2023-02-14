@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import {copyFileSync, existsSync} from 'fs';
 
-const dev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
+const dev = process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
 // TODO how to configure this stuff in user projects? felt/gro config?
 
@@ -20,6 +20,8 @@ interface Env {
 	COOKIE_KEYS: string;
 	PUBLIC_GIT_HASH: string;
 	PUBLIC_DEPLOY_SERVER_HOST: string;
+	PUBLIC_API_SERVER_HOSTNAME: string;
+	PUBLIC_API_SERVER_PORT: string;
 	PUBLIC_ADMIN_EMAIL_ADDRESS: string;
 	PUBLIC_ADMIN_ICON: string;
 	DEPLOY_IP: string;

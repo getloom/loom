@@ -20,7 +20,6 @@ const files = [
 	'lib/app/events.ts',
 	'lib/app/mutations.ts',
 	'lib/app/schemas.ts',
-	'lib/config.ts',
 	'lib/db/db.ts',
 	'lib/server/server.ts',
 	'lib/ui/AccountForm.svelte',

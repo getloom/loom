@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {tick} from 'svelte';
+	import {PUBLIC_ADMIN_ICON} from '$env/static/public';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {swallow} from '@feltjs/util/dom.js';
 
@@ -111,7 +112,7 @@
 		<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signUp}
 			>sign up</PendingButton
 		>
-		<p class:error-text={!!errorMessage}>{errorMessage || import.meta.env.PUBLIC_ADMIN_ICON}</p>
+		<p class:error-text={!!errorMessage}>{errorMessage || PUBLIC_ADMIN_ICON}</p>
 		<slot />
 	</fieldset>
 </form>
