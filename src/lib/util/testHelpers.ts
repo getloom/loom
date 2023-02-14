@@ -3,7 +3,6 @@ import {configureLogLevel, Logger, LogLevel} from '@feltjs/util/log.js';
 import {type OmitStrict, unwrap} from '@feltjs/util';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';
-import type {Database} from '$lib/db/Database';
 import {
 	toServiceRequest,
 	type AuthorizedServiceRequest,
@@ -30,30 +29,30 @@ export const installSourceMaps = (): void => {
 };
 
 export function toServiceRequestMock(
-	db: Database,
+	repos: Repos,
 	actor?: undefined,
 	session?: SessionApiMock,
 	account_id?: undefined,
 ): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
 export function toServiceRequestMock(
-	db: Database,
+	repos: Repos,
 	actor?: undefined,
 	session?: SessionApiMock,
 	account_id?: number,
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
-	db: Database,
+	repos: Repos,
 	actor: ActorPersona,
 	session?: SessionApiMock,
 	account_id?: number,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
-	db: Database,
+	repos: Repos,
 	actor?: ActorPersona,
 	session = new SessionApiMock(), // some tests need to reuse the same mock session
 	account_id = actor?.account_id || undefined,
 ): OmitStrict<ServiceRequest, 'params'> {
-	const {params: _, ...rest} = toServiceRequest(db, undefined, account_id!, actor!, session);
+	const {params: _, ...rest} = toServiceRequest(repos, undefined, account_id!, actor!, session);
 	return rest;
 }
 

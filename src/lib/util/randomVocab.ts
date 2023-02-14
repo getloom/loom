@@ -14,7 +14,6 @@ import type {
 	SignInParams,
 	CreatePolicyParams,
 } from '$lib/app/eventTypes';
-import type {Database} from '$lib/db/Database';
 import type {DirectoryEntityData, EntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
@@ -32,6 +31,7 @@ import type {Policy} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
 import {randomItem} from '@feltjs/util/random.js';
 import {permissionNames} from '$lib/vocab/policy/permissions';
+import type {Repos} from '$lib/db/Repos';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 
@@ -128,15 +128,11 @@ export interface RandomVocab {
 // TODO generate from schema
 // TODO replace db.repos calls w/ service calls (see persona/community creation)
 export class RandomVocabContext {
-	constructor(private readonly db: Database) {}
+	constructor(public readonly repos: Repos) {}
 
 	async account(params = randomAccountParams()): Promise<RandomTestAccount> {
 		const account = unwrap(
-			await this.db.repos.account.create(
-				params.username,
-				params.password,
-				toDefaultAccountSettings(),
-			),
+			await this.repos.account.create(params.username, params.password, toDefaultAccountSettings()),
 		) as RandomTestAccount;
 		// This makes the unencrypted password available for tests,
 		// so things like `SignIn` can be tested with existing accounts.
@@ -159,7 +155,7 @@ export class RandomVocabContext {
 			spaces,
 		} = unwrap(
 			await CreateAccountPersonaService.perform({
-				...toServiceRequestMock(this.db, undefined, undefined, account.account_id),
+				...toServiceRequestMock(this.repos, undefined, undefined, account.account_id),
 				params: {name: randomPersonaParams().name},
 			}),
 		);
@@ -184,7 +180,7 @@ export class RandomVocabContext {
 		const params = randomCommunityParams(persona.persona_id);
 		const {community, roles, policies, personas, assignments, spaces} = unwrap(
 			await CreateCommunityService.perform({
-				...toServiceRequestMock(this.db, persona),
+				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
@@ -218,7 +214,7 @@ export class RandomVocabContext {
 		const params = randomSpaceParams(persona.persona_id, community.community_id, view);
 		const {space, directory} = unwrap(
 			await CreateSpaceService.perform({
-				...toServiceRequestMock(this.db, persona),
+				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
@@ -254,7 +250,7 @@ export class RandomVocabContext {
 			ties,
 		} = unwrap(
 			await CreateEntityService.perform({
-				...toServiceRequestMock(this.db, persona),
+				...toServiceRequestMock(this.repos, persona),
 				params: {
 					...randomEntityParams(persona.persona_id, space.space_id, source_id),
 					...paramsPartial,
@@ -309,7 +305,7 @@ export class RandomVocabContext {
 		}
 
 		const tie = unwrap(
-			await this.db.repos.tie.create(
+			await this.repos.tie.create(
 				sourceEntity.entity_id,
 				sourceEntity.entity_id,
 				type || randomTieType(),
@@ -334,7 +330,7 @@ export class RandomVocabContext {
 		const params = randomRoleParams(persona.persona_id, community.community_id);
 		const {role} = unwrap(
 			await CreateRoleService.perform({
-				...toServiceRequestMock(this.db, persona),
+				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
@@ -362,7 +358,7 @@ export class RandomVocabContext {
 		);
 		const {policy} = unwrap(
 			await CreatePolicyService.perform({
-				...toServiceRequestMock(this.db, persona),
+				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);

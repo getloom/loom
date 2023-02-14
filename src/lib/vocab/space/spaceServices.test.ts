@@ -21,17 +21,17 @@ test__spaceServices(
 	},
 );
 
-test__spaceServices('delete a space in multiple communities', async ({db, random}) => {
+test__spaceServices('delete a space in multiple communities', async ({repos, random}) => {
 	const {space, persona} = await random.space();
 
 	unwrap(
 		await DeleteSpaceService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, space_id: space.space_id},
 		}),
 	);
 
-	assert.ok(!unwrap(await db.repos.space.findById(space.space_id)));
+	assert.ok(!unwrap(await repos.space.findById(space.space_id)));
 });
 
 test__spaceServices.run();

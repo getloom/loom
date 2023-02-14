@@ -29,11 +29,11 @@ const test_communityServices = suite<TestDbContext>('communityRepo');
 test_communityServices.before(setupDb);
 test_communityServices.after(teardownDb);
 
-test_communityServices('disallow deleting personal community', async ({db, random}) => {
+test_communityServices('disallow deleting personal community', async ({repos, random}) => {
 	const {persona, personalCommunity} = await random.persona();
 	//TODO hack to allow for authorization; remove on init default impl
 	unwrap(
-		await db.repos.policy.create(
+		await repos.policy.create(
 			personalCommunity.settings.defaultRoleId,
 			permissions.DeleteCommunity,
 		),
@@ -41,7 +41,7 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {actor: persona.persona_id, community_id: persona.community_id},
 			}),
 		).status,
@@ -49,12 +49,12 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 	);
 });
 
-test_communityServices('disallow deleting admin community', async ({db}) => {
-	const adminPersona = await loadAdminPersona(db.repos);
+test_communityServices('disallow deleting admin community', async ({repos}) => {
+	const adminPersona = await loadAdminPersona(repos);
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
-				...toServiceRequestMock(db, adminPersona),
+				...toServiceRequestMock(repos, adminPersona),
 				params: {actor: adminPersona.persona_id, community_id: ADMIN_COMMUNITY_ID},
 			}),
 		).status,
@@ -62,10 +62,10 @@ test_communityServices('disallow deleting admin community', async ({db}) => {
 	);
 });
 
-test_communityServices('default admin community role has all permissions', async ({db}) => {
-	const adminCommunity = await db.repos.community.loadAdminCommunity();
+test_communityServices('default admin community role has all permissions', async ({repos}) => {
+	const adminCommunity = await repos.community.loadAdminCommunity();
 	const adminDefaultPolicies = unwrap(
-		await db.repos.policy.filterByRole(adminCommunity.settings.defaultRoleId),
+		await repos.policy.filterByRole(adminCommunity.settings.defaultRoleId),
 	);
 
 	assert.equal(toSortedPermissionNames(adminDefaultPolicies), sortedPermissionNames);
@@ -73,29 +73,29 @@ test_communityServices('default admin community role has all permissions', async
 
 test_communityServices(
 	'default personal community role has all permissions',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 
-		const personalCommunity = unwrap(await db.repos.community.findById(persona.community_id))!;
+		const personalCommunity = unwrap(await repos.community.findById(persona.community_id))!;
 		const personalDefaultPolicies = unwrap(
-			await db.repos.policy.filterByRole(personalCommunity.settings.defaultRoleId),
+			await repos.policy.filterByRole(personalCommunity.settings.defaultRoleId),
 		);
 
 		assert.equal(toSortedPermissionNames(personalDefaultPolicies), sortedPermissionNames);
 	},
 );
 
-test_communityServices('disallow duplicate community names', async ({db, random}) => {
+test_communityServices('disallow duplicate community names', async ({repos, random}) => {
 	const {persona} = await random.persona();
 
 	const params = randomCommunityParams(persona.persona_id);
 	params.template.name += 'Aa';
-	unwrap(await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}));
+	unwrap(await CreateCommunityService.perform({...toServiceRequestMock(repos, persona), params}));
 
 	params.template.name = params.template.name.toLowerCase();
 	assert.is(
 		unwrapError(
-			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
+			await CreateCommunityService.perform({...toServiceRequestMock(repos, persona), params}),
 		).status,
 		409,
 	);
@@ -103,20 +103,20 @@ test_communityServices('disallow duplicate community names', async ({db, random}
 	params.template.name = params.template.name.toUpperCase();
 	assert.is(
 		unwrapError(
-			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
+			await CreateCommunityService.perform({...toServiceRequestMock(repos, persona), params}),
 		).status,
 		409,
 	);
 });
 
-test_communityServices('disallow reserved community names', async ({db, random}) => {
+test_communityServices('disallow reserved community names', async ({repos, random}) => {
 	const {persona} = await random.persona();
 
 	const params = randomCommunityParams(persona.persona_id);
 	params.template.name = 'docs';
 	assert.is(
 		unwrapError(
-			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
+			await CreateCommunityService.perform({...toServiceRequestMock(repos, persona), params}),
 		).status,
 		409,
 	);
@@ -124,17 +124,17 @@ test_communityServices('disallow reserved community names', async ({db, random})
 
 test_communityServices(
 	'new communities have default template roles & policies',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 
 		const params = randomCommunityParams(persona.persona_id);
 		const communityResult = unwrap(
-			await CreateCommunityService.perform({...toServiceRequestMock(db, persona), params}),
+			await CreateCommunityService.perform({...toServiceRequestMock(repos, persona), params}),
 		);
 
 		const roleResult = unwrap(
 			await ReadRolesService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {actor: persona.persona_id, community_id: communityResult.community.community_id},
 			}),
 		);
@@ -146,7 +146,7 @@ test_communityServices(
 
 		const stewardPolicyResults = unwrap(
 			await ReadPoliciesService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {actor: persona.persona_id, role_id: communityResult.roles[0].role_id},
 			}),
 		);
@@ -154,7 +154,7 @@ test_communityServices(
 
 		const memberPolicyResults = unwrap(
 			await ReadPoliciesService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {actor: persona.persona_id, role_id: communityResult.roles[1].role_id},
 			}),
 		);
@@ -162,52 +162,48 @@ test_communityServices(
 	},
 );
 
-test_communityServices('deleted communities cleanup after themselves', async ({db, random}) => {
+test_communityServices('deleted communities cleanup after themselves', async ({repos, random}) => {
 	const {persona} = await random.persona();
 	const {community} = await random.community(persona);
 
 	//TODO hack to allow for authorization; remove on init default impl
-	unwrap(
-		await db.repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity),
-	);
+	unwrap(await repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity));
 
 	unwrap(
 		await DeleteCommunityService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, community_id: community.community_id},
 		}),
 	);
 
 	//check community personas are gone
-	assert.ok(!unwrap(await db.repos.persona.findByCommunity(community.community_id)));
+	assert.ok(!unwrap(await repos.persona.findByCommunity(community.community_id)));
 
 	//check community spaces are gone
-	const spaceResult = unwrap(await db.repos.space.filterByCommunity(community.community_id));
+	const spaceResult = unwrap(await repos.space.filterByCommunity(community.community_id));
 	assert.is(spaceResult.length, 0);
 
 	//check community assignments are gone
-	const assignmentResult = unwrap(
-		await db.repos.assignment.filterByCommunity(community.community_id),
-	);
+	const assignmentResult = unwrap(await repos.assignment.filterByCommunity(community.community_id));
 	assert.is(assignmentResult.length, 0);
 
 	//check roles are gone
-	const roleResult = unwrap(await db.repos.role.filterByCommunity(community.community_id));
+	const roleResult = unwrap(await repos.role.filterByCommunity(community.community_id));
 	assert.is(roleResult.length, 0);
 
 	//check community is gone
-	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
+	assert.ok(!unwrap(await repos.community.findById(community.community_id)));
 });
 
 test_communityServices(
 	'when new communities are disabled, only admins should be able to create new ones',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 
-		const {settings} = await db.repos.community.loadAdminCommunity();
+		const {settings} = await repos.community.loadAdminCommunity();
 		const settingValue = settings.instance?.disableCreateCommunity;
 		unwrap(
-			await db.repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
+			await repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
 				...settings,
 				instance: {...settings.instance, disableCreateCommunity: true},
 			}),
@@ -215,23 +211,23 @@ test_communityServices(
 
 		unwrapError(
 			await CreateCommunityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: randomCommunityParams(persona.persona_id),
 			}),
 		);
 
-		const actor = await loadAdminPersona(db.repos);
+		const actor = await loadAdminPersona(repos);
 
 		unwrap(
 			await CreateCommunityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: randomCommunityParams(actor.persona_id),
 			}),
 		);
 
 		//cleanup from test; do not delete
 		unwrap(
-			await db.repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
+			await repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
 				...settings,
 				instance: {...settings.instance, disableCreateCommunity: settingValue},
 			}),
@@ -241,12 +237,12 @@ test_communityServices(
 
 test_communityServices(
 	'InviteToCommunity assigns the default community role to the persona',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 		const {community, persona: communityPersona} = await random.community();
 		unwrap(
 			await InviteToCommunityService.perform({
-				...toServiceRequestMock(db, communityPersona),
+				...toServiceRequestMock(repos, communityPersona),
 				params: {
 					actor: communityPersona.persona_id,
 					community_id: community.community_id,
@@ -259,11 +255,11 @@ test_communityServices(
 
 test_communityServices(
 	'fail InviteToCommunity when the persona already has an assignment',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 		const {community, persona: communityPersona} = await random.community();
 		unwrap(
-			await db.repos.assignment.create(
+			await repos.assignment.create(
 				persona.persona_id,
 				community.community_id,
 				community.settings.defaultRoleId,
@@ -271,7 +267,7 @@ test_communityServices(
 		);
 		unwrapError(
 			await InviteToCommunityService.perform({
-				...toServiceRequestMock(db, communityPersona),
+				...toServiceRequestMock(repos, communityPersona),
 				params: {
 					actor: communityPersona.persona_id,
 					community_id: community.community_id,
@@ -284,16 +280,16 @@ test_communityServices(
 
 test_communityServices(
 	'LeaveCommunity removes all assignments for the persona',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {community, persona} = await random.community();
 		assert.ok(
 			unwrap(
-				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+				await repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
 			),
 		);
 		unwrap(
 			await LeaveCommunityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
 					community_id: community.community_id,
@@ -303,7 +299,7 @@ test_communityServices(
 		);
 		assert.ok(
 			!unwrap(
-				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+				await repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
 			),
 		);
 	},
@@ -311,13 +307,13 @@ test_communityServices(
 
 test_communityServices(
 	'fail LeaveCommunity when the persona has no assignments',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 		const {community} = await random.community();
 
 		unwrapError(
 			await LeaveCommunityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
 					community_id: community.community_id,
@@ -330,11 +326,11 @@ test_communityServices(
 
 test_communityServices(
 	'KickFromCommunity removes all assignments for the persona',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 		const {community, persona: communityPersona} = await random.community();
 		unwrap(
-			await db.repos.assignment.create(
+			await repos.assignment.create(
 				persona.persona_id,
 				community.community_id,
 				community.settings.defaultRoleId,
@@ -342,12 +338,12 @@ test_communityServices(
 		);
 		assert.ok(
 			unwrap(
-				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+				await repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
 			),
 		);
 		unwrap(
 			await KickFromCommunityService.perform({
-				...toServiceRequestMock(db, communityPersona),
+				...toServiceRequestMock(repos, communityPersona),
 				params: {
 					actor: communityPersona.persona_id,
 					community_id: community.community_id,
@@ -357,7 +353,7 @@ test_communityServices(
 		);
 		assert.ok(
 			!unwrap(
-				await db.repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
+				await repos.assignment.isPersonaInCommunity(persona.persona_id, community.community_id),
 			),
 		);
 	},
@@ -365,13 +361,13 @@ test_communityServices(
 
 test_communityServices(
 	'fail KickFromCommunity when the persona has no assignments',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {persona} = await random.persona();
 		const {community, persona: communityPersona} = await random.community();
 
 		unwrapError(
 			await KickFromCommunityService.perform({
-				...toServiceRequestMock(db, communityPersona),
+				...toServiceRequestMock(repos, communityPersona),
 				params: {
 					actor: communityPersona.persona_id,
 					community_id: community.community_id,

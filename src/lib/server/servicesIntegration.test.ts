@@ -21,9 +21,9 @@ const test_servicesIntegration = suite<TestDbContext>('repos');
 test_servicesIntegration.before(setupDb);
 test_servicesIntegration.after(teardownDb);
 
-test_servicesIntegration('services integration test', async ({db, random}) => {
+test_servicesIntegration('services integration test', async ({repos, random}) => {
 	// TODO test cleanup with this:
-	// const assertDbCounts = await testDbCounts(db);
+	// const assertDbCounts = await testDbCounts(repos);
 
 	// create everything
 	//
@@ -43,7 +43,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	// join the community with the second persona
 	const {assignment} = unwrap(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(db, persona1), // add `persona2` with `persona1`
+			...toServiceRequestMock(repos, persona1), // add `persona2` with `persona1`
 			params: {
 				actor: persona1.persona_id,
 				community_id: community.community_id,
@@ -84,7 +84,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {entities: filteredEntities} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(db, persona2),
+			...toServiceRequestMock(repos, persona2),
 			params: {actor: persona2.persona_id, source_id: space.directory_id},
 		}),
 	);
@@ -92,7 +92,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
-			...toServiceRequestMock(db, persona2),
+			...toServiceRequestMock(repos, persona2),
 			params: {actor: persona2.persona_id, community_id: community.community_id},
 		}),
 	);
@@ -100,28 +100,28 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 
 	const {community: foundCommunity} = unwrap(
 		await ReadCommunityService.perform({
-			...toServiceRequestMock(db, persona2),
+			...toServiceRequestMock(repos, persona2),
 			params: {actor: persona2.persona_id, community_id: community.community_id},
 		}),
 	);
 	assert.is(foundCommunity.name, community.name);
 
-	assert.is(unwrap(await db.repos.community.filterByAccount(persona2.account_id)).length, 3);
-	assert.is(unwrap(await db.repos.community.filterByPersona(persona2.persona_id)).length, 2);
+	assert.is(unwrap(await repos.community.filterByAccount(persona2.account_id)).length, 3);
+	assert.is(unwrap(await repos.community.filterByPersona(persona2.persona_id)).length, 2);
 
 	// TODO add a service event?
 	assert.equal(
-		unwrap(await db.repos.persona.filterByAccount(account.account_id))
+		unwrap(await repos.persona.filterByAccount(account.account_id))
 			.sort((a, b) => (a.created < b.created ? -1 : 1))
 			.slice(), // `slice` because `RowList` is not deep equal to arrays
 		[persona1, persona2],
 	);
 
 	// TODO add a service event?
-	assert.is(unwrap(await db.repos.account.findById(account.account_id))?.name, account.name);
+	assert.is(unwrap(await repos.account.findById(account.account_id))?.name, account.name);
 
 	// TODO add a service event?
-	assert.is(unwrap(await db.repos.account.findByName(account.name))?.name, account.name);
+	assert.is(unwrap(await repos.account.findByName(account.name))?.name, account.name);
 
 	// do changes
 	//
@@ -129,7 +129,7 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 	//
 
 	// Delete one of the two entities, to test that cascading works as expected.
-	unwrap(await db.repos.entity.deleteByIds([entity1.entity_id]));
+	unwrap(await repos.entity.deleteByIds([entity1.entity_id]));
 
 	// delete spaces except the home space
 	for (const space of filteredSpaces) {
@@ -137,50 +137,48 @@ test_servicesIntegration('services integration test', async ({db, random}) => {
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
-					...toServiceRequestMock(db, persona2),
+					...toServiceRequestMock(repos, persona2),
 					params: {actor: persona1.persona_id, space_id: space.space_id},
 				}),
 			);
 		}
 	}
-	assert.is(unwrap(await db.repos.space.filterByCommunity(community.community_id)).length, 1);
+	assert.is(unwrap(await repos.space.filterByCommunity(community.community_id)).length, 1);
 
 	// delete assignment
-	assert.is(unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length, 3);
+	assert.is(unwrap(await repos.assignment.filterByCommunity(community.community_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(db, persona2),
+			...toServiceRequestMock(repos, persona2),
 			params: {
 				actor: persona1.persona_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
 	);
-	assert.is(unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length, 2);
+	assert.is(unwrap(await repos.assignment.filterByCommunity(community.community_id)).length, 2);
 	assert.is(
 		unwrap(
-			await db.repos.assignment.countAccountPersonaAssignmentsByCommunityId(community.community_id),
+			await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community.community_id),
 		),
 		1,
 	);
 
 	// delete community
 	//TODO hack to allow for authorization; remove on init default impl
-	unwrap(
-		await db.repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity),
-	);
+	unwrap(await repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity));
 	unwrap(
 		await DeleteCommunityService.perform({
-			...toServiceRequestMock(db, persona1),
+			...toServiceRequestMock(repos, persona1),
 			params: {actor: persona1.persona_id, community_id: community.community_id},
 		}),
 	);
 	const readCommunityResult = await ReadCommunityService.perform({
-		...toServiceRequestMock(db, persona1),
+		...toServiceRequestMock(repos, persona1),
 		params: {actor: persona1.persona_id, community_id: community.community_id},
 	});
 	assert.is(readCommunityResult.status, 404);
-	assert.is(unwrap(await db.repos.assignment.filterByCommunity(community.community_id)).length, 0);
+	assert.is(unwrap(await repos.assignment.filterByCommunity(community.community_id)).length, 0);
 
 	// TODO delete personas here
 

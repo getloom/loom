@@ -32,7 +32,7 @@ import {
 const log = new Logger([cyan('[seed]')]);
 
 export const seed = async (db: Database, much = false): Promise<void> => {
-	const {sql} = db;
+	const {sql, repos} = db;
 
 	log.trace('adding initial dataset to database');
 
@@ -63,7 +63,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const personas: AccountPersona[] = [];
 	for (const accountParams of accountsParams) {
 		const account = unwrap(
-			await db.repos.account.create(
+			await repos.account.create(
 				accountParams.username,
 				accountParams.password,
 				toDefaultAccountSettings(),
@@ -72,7 +72,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		log.trace('created account', account);
 		accounts.push(account);
 		const toAccountServiceRequest = () =>
-			toServiceRequestMock(db, undefined, undefined, account.account_id);
+			toServiceRequestMock(repos, undefined, undefined, account.account_id);
 		for (const personaName of personasParams[account.name]) {
 			const created = unwrap(
 				await CreateAccountPersonaService.perform({
@@ -92,7 +92,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	}
 
 	const mainPersonaCreator = personas[0] as AccountPersona;
-	const toMainAccountServiceRequest = () => toServiceRequestMock(db, mainPersonaCreator);
+	const toMainAccountServiceRequest = () => toServiceRequestMock(repos, mainPersonaCreator);
 	const otherPersonas = personas.slice(1);
 	const nextPersona = toNext(personas);
 

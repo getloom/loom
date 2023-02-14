@@ -11,14 +11,14 @@ const test_roleServices = suite<TestDbContext>('communityRepo');
 test_roleServices.before(setupDb);
 test_roleServices.after(teardownDb);
 
-test_roleServices('unable to delete default roles in communites', async ({db, random}) => {
+test_roleServices('unable to delete default roles in communites', async ({repos, random}) => {
 	const {persona} = await random.persona();
 	const {community} = await random.community(persona);
 	const {role: secondRole} = await random.role(community, persona);
 
 	unwrapError(
 		await DeleteRoleService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, role_id: community.settings.defaultRoleId},
 		}),
 		'deleting the default role is not allowed',
@@ -26,7 +26,7 @@ test_roleServices('unable to delete default roles in communites', async ({db, ra
 
 	unwrap(
 		await DeleteRoleService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, role_id: secondRole.role_id},
 		}),
 		'delete a non-default role',

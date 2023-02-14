@@ -75,7 +75,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 				const actor = authorizeResult.value?.actor;
 				try {
 					result = await service.perform(
-						toServiceRequest(server.db, params, account_id!, actor!, session), // TODO try to avoid the non-null assertions, looks tricky
+						toServiceRequest(server.db.repos, params, account_id!, actor!, session), // TODO try to avoid the non-null assertions, looks tricky
 					);
 					if (!result.ok) {
 						log.error('service.perform failed with a message', service.event.name, result.message);

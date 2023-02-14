@@ -16,17 +16,17 @@ const test__constants = suite<TestDbContext>('constants');
 test__constants.before(setupDb);
 test__constants.after(teardownDb);
 
-test__constants('check admin constants', async ({db, random}) => {
+test__constants('check admin constants', async ({repos, random}) => {
 	await random.persona(); // ensure the admin has been created -- there's probably a better way
-	const adminPersona = unwrap(await db.repos.persona.findById(ADMIN_PERSONA_ID));
+	const adminPersona = unwrap(await repos.persona.findById(ADMIN_PERSONA_ID));
 	assert.is(adminPersona?.name, ADMIN_COMMUNITY_NAME);
-	const adminCommunity = await db.repos.community.loadAdminCommunity();
+	const adminCommunity = await repos.community.loadAdminCommunity();
 	assert.is(adminCommunity?.name, ADMIN_COMMUNITY_NAME);
 });
 
-test__constants('check ghost constants', async ({db, random}) => {
+test__constants('check ghost constants', async ({repos, random}) => {
 	await random.persona(); // ensure the ghost has been created -- there's probably a better way
-	const ghostPersona = unwrap(await db.repos.persona.findById(GHOST_PERSONA_ID));
+	const ghostPersona = unwrap(await repos.persona.findById(GHOST_PERSONA_ID));
 	assert.is(ghostPersona?.name, GHOST_PERSONA_NAME);
 });
 

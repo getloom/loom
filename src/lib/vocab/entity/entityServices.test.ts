@@ -54,7 +54,7 @@ test_entityServices('create entities with data', async ({random}) => {
 	assert.is(ties2[0].dest_id, entity2.entity_id);
 });
 
-test_entityServices('create entity and return it and directories', async ({db, random}) => {
+test_entityServices('create entity and return it and directories', async ({repos, random}) => {
 	const {space, persona, account, community} = await random.space();
 	const {space: space2} = await random.space(persona, account, community);
 
@@ -63,7 +63,7 @@ test_entityServices('create entity and return it and directories', async ({db, r
 
 	const {entities} = unwrap(
 		await CreateEntityService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {
 				actor: persona.persona_id,
 				space_id: space.space_id,
@@ -84,13 +84,13 @@ test_entityServices('create entity and return it and directories', async ({db, r
 	);
 });
 
-test_entityServices('read paginated entities by source_id', async ({db, random}) => {
+test_entityServices('read paginated entities by source_id', async ({repos, random}) => {
 	const {space, persona, account, community} = await random.space();
 
 	//first query on the space dir and expect an empty set
 	const {entities: filtered} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, source_id: space.directory_id},
 		}),
 	);
@@ -112,7 +112,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	//test the default param returns properly
 	const {entities: filtered2} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, source_id: space.directory_id},
 		}),
 	);
@@ -125,7 +125,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 	//then do 3 queries on smaller pages
 	const {entities: filtered3} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, source_id: space.directory_id, pageSize: FIRST_PAGE_SIZE},
 		}),
 	);
@@ -134,7 +134,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 
 	const {entities: filtered4} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {
 				actor: persona.persona_id,
 				source_id: space.directory_id,
@@ -149,7 +149,7 @@ test_entityServices('read paginated entities by source_id', async ({db, random})
 
 	const {entities: filtered5} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {
 				actor: persona.persona_id,
 				source_id: space.directory_id,
@@ -171,7 +171,7 @@ test_entityServices('assert default as max pageSize', async ({random}) => {
 	assert.ok(!validateParams({source_id: space.directory_id, pageSize: DEFAULT_PAGE_SIZE + 1}));
 });
 
-test_entityServices('deleting entities and cleaning orphans', async ({random, db}) => {
+test_entityServices('deleting entities and cleaning orphans', async ({random, repos}) => {
 	const {space, persona, account, community} = await random.space();
 	//generate a collection with 3 notes
 	const {entity: list} = await random.entity(
@@ -216,30 +216,30 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, db
 		},
 	);
 	const entityIds = [todo1.entity_id, todo2.entity_id, todo3.entity_id];
-	const filterResult = unwrap(await db.repos.entity.filterByIds(entityIds));
+	const filterResult = unwrap(await repos.entity.filterByIds(entityIds));
 	assert.is(filterResult.entities.length, 3);
 	assert.is(filterResult.missing, null);
 	//delete the collection
 	unwrap(
 		await DeleteEntitiesService.perform({
-			...toServiceRequestMock(db, persona),
+			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
 		}),
 	);
-	const {missing} = unwrap(await db.repos.entity.filterByIds(entityIds));
+	const {missing} = unwrap(await repos.entity.filterByIds(entityIds));
 	assert.equal(missing, entityIds);
 });
 
 test_entityServices(
 	'can only delete, erase, or update other personas entities in "common" views',
-	async ({db, random}) => {
+	async ({repos, random}) => {
 		const {space, persona, account, community} = await random.space();
 		const {space: commonSpace} = await random.space(persona, account, community, '<Todo />');
 		const {persona: persona2} = await random.persona();
 
 		unwrap(
 			await InviteToCommunityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
 					community_id: community.community_id,
@@ -251,7 +251,7 @@ test_entityServices(
 		//case 1, actor === persona in regular space | allowed
 		const note1 = unwrap(
 			await CreateEntityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
 					data: {type: 'Note', content: 'note1'},
@@ -262,7 +262,7 @@ test_entityServices(
 
 		unwrap(
 			await UpdateEntityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
 					entity_id: note1.entity_id,
@@ -274,7 +274,7 @@ test_entityServices(
 		//case 2, actor === persona in common space | allowed
 		const note2 = unwrap(
 			await CreateEntityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
 					data: {type: 'Note', content: 'note2'},
@@ -285,7 +285,7 @@ test_entityServices(
 
 		unwrap(
 			await UpdateEntityService.perform({
-				...toServiceRequestMock(db, persona),
+				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
 					entity_id: note2.entity_id,
@@ -297,7 +297,7 @@ test_entityServices(
 		//case 3, actor !== persona in common space | allowed
 		unwrap(
 			await UpdateEntityService.perform({
-				...toServiceRequestMock(db, persona2),
+				...toServiceRequestMock(repos, persona2),
 				params: {
 					actor: persona2.persona_id,
 					entity_id: note2.entity_id,
@@ -309,7 +309,7 @@ test_entityServices(
 		//case 4, actor !== persona in regular space | block
 		unwrapError(
 			await UpdateEntityService.perform({
-				...toServiceRequestMock(db, persona2),
+				...toServiceRequestMock(repos, persona2),
 				params: {
 					actor: persona2.persona_id,
 					entity_id: note1.entity_id,

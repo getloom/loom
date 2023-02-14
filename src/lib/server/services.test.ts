@@ -80,7 +80,7 @@ const session = new SessionApiMock(); // reuse the session so it tests SignIn se
 
 for (const service of services.values()) {
 	const {event} = service;
-	test__services(`perform service ${event.name}`, async ({db, random}) => {
+	test__services(`perform service ${event.name}`, async ({repos, random}) => {
 		const account = await random.account();
 		const {persona} = await random.persona(account);
 		const params = await randomEventParams[event.name](random, {account, persona});
@@ -92,7 +92,7 @@ for (const service of services.values()) {
 			);
 		}
 		const serviceRequest = toServiceRequestMock(
-			db,
+			repos,
 			event.authorize === false ? undefined! : persona,
 			session,
 			event.authenticate === false ? undefined : account.account_id,
@@ -133,7 +133,7 @@ for (const service of services.values()) {
 			let failedResult;
 			try {
 				failedResult = await service.perform({
-					...toServiceRequestMock(db, unauthorizedPersona, session, account.account_id),
+					...toServiceRequestMock(repos, unauthorizedPersona, session, account.account_id),
 					params: failedParams,
 				});
 			} catch (err) {

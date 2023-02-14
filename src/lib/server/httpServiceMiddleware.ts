@@ -66,7 +66,13 @@ export const toHttpServiceMiddleware =
 		let result: ApiResult<any>;
 		try {
 			result = await service.perform(
-				toServiceRequest(server.db, params, req.account_id!, actor!, new SessionApi(req, res)), // TODO try to avoid the non-null assertions, looks tricky
+				toServiceRequest(
+					server.db.repos,
+					params,
+					req.account_id!,
+					actor!,
+					new SessionApi(req, res),
+				), // TODO try to avoid the non-null assertions, looks tricky
 			);
 			if (!result.ok) {
 				log.error('service.perform failed with a message', service.event.name, result.message);

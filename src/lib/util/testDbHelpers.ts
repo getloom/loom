@@ -4,6 +4,7 @@ import {Database} from '$lib/db/Database';
 import {defaultPostgresOptions} from '$lib/db/postgres';
 import {installSourceMaps, log} from '$lib/util/testHelpers';
 import {RandomVocabContext} from '$lib/util/randomVocab';
+import type {Repos} from '$lib/db/Repos';
 
 installSourceMaps();
 
@@ -13,12 +14,14 @@ installSourceMaps();
 
 export interface TestDbContext {
 	db: Database;
+	repos: Repos;
 	random: RandomVocabContext;
 }
 
 export const setupDb = async (context: TestDbContext): Promise<void> => {
 	context.db = new Database({sql: postgres(defaultPostgresOptions)});
-	context.random = new RandomVocabContext(context.db);
+	context.repos = context.db.repos;
+	context.random = new RandomVocabContext(context.repos);
 };
 
 export const teardownDb = async (context: TestDbContext): Promise<void> => {
@@ -31,10 +34,10 @@ export const teardownDb = async (context: TestDbContext): Promise<void> => {
 	}
 };
 
-export const testDbCounts = async (db: Database): Promise<() => Promise<void>> => {
-	const countsBefore = await toDbCounts(db);
+export const testDbCounts = async (repos: Repos): Promise<() => Promise<void>> => {
+	const countsBefore = await toDbCounts(repos);
 	return async () => {
-		const countsAfter = await toDbCounts(db);
+		const countsAfter = await toDbCounts(repos);
 		let errorMessage = '';
 		for (const tableName in countsAfter) {
 			const before = countsBefore[tableName];
@@ -50,19 +53,19 @@ export const testDbCounts = async (db: Database): Promise<() => Promise<void>> =
 	};
 };
 
-export const toDbCounts = async (db: Database): Promise<Record<string, number>> => {
-	const tableNames = await loadTableNames(db);
+export const toDbCounts = async (repos: Repos): Promise<Record<string, number>> => {
+	const tableNames = await loadTableNames(repos);
 	const query = 'SELECT ' + tableNames.map((n) => `(SELECT count(*) FROM ${n}) AS ${n}`).join(', ');
-	const result = await db.sql.unsafe(query);
+	const result = await repos.sql.unsafe(query);
 	return result[0];
 };
 
 // Loads and caches the application's table names in the database.
 let _tableNames: string[] | undefined;
-const loadTableNames = async (db: Database): Promise<string[]> =>
+const loadTableNames = async (repos: Repos): Promise<string[]> =>
 	_tableNames ||
 	(_tableNames = (
-		await db.sql.unsafe(
+		await repos.sql.unsafe(
 			`SELECT * from pg_catalog.pg_tables
 			WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'`,
 		)

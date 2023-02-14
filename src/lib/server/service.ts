@@ -3,7 +3,6 @@ import {NOT_OK} from '@feltjs/util';
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
-import type {Database} from '$lib/db/Database';
 import type {ActorPersona} from '$lib/vocab/persona/persona';
 import {type ApiResult, toFailedApiResult} from '$lib/server/api';
 
@@ -63,28 +62,28 @@ export interface AuthorizedServiceRequest<TParams = any, TResult = any>
 }
 
 export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
-	db: Database,
+	repos: Repos,
 	params: TParams,
 	account_id: undefined,
 	actor: undefined,
 	session: ISessionApi,
 ): NonAuthenticatedServiceRequest<TParams, TResult>;
 export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
-	db: Database,
+	repos: Repos,
 	params: TParams,
 	account_id: number,
 	actor: undefined,
 	session: ISessionApi,
 ): NonAuthorizedServiceRequest<TParams, TResult>;
 export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
-	db: Database,
+	repos: Repos,
 	params: TParams,
 	account_id: number,
 	actor: ActorPersona,
 	session: ISessionApi,
 ): AuthorizedServiceRequest<TParams, TResult>;
 export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
-	db: Database,
+	repos: Repos,
 	params: TParams,
 	account_id: number | undefined,
 	actor: ActorPersona | undefined,
@@ -92,13 +91,13 @@ export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiR
 ): ServiceRequest {
 	let called = false; // disallow multiple calls
 	const req: NonAuthenticatedServiceRequest = {
-		repos: db.repos,
+		repos,
 		// TODO support savepoints -- https://github.com/porsager/postgres#transactions
 		transact: async (cb) => {
 			if (called) return NOT_OK;
 			called = true;
 			let result: TResult; // cache to pass through if the inner transaction promise rejects
-			return db.sql
+			return repos.sql
 				.begin(async (sql) => {
 					result = await cb(new Repos(sql));
 					if (!result.ok) throw Error(); // cancel the transaction; the error is caught and swallowed ahead

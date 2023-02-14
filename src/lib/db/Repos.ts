@@ -24,7 +24,7 @@ export class Repos {
 	readonly role: RoleRepo;
 	readonly policy: PolicyRepo;
 
-	constructor(sql: PostgresSql) {
+	constructor(public readonly sql: PostgresSql) {
 		this.account = new AccountRepo(this, sql);
 		this.persona = new PersonaRepo(this, sql);
 		this.assignment = new AssignmentRepo(this, sql);

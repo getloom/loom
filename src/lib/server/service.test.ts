@@ -13,12 +13,12 @@ const test__service = suite<TestDbContext>('services');
 test__service.before(setupDb);
 test__service.after(teardownDb);
 
-test__service(`roll back the database after a failed transaction`, async ({db, random}) => {
+test__service(`roll back the database after a failed transaction`, async ({repos, random}) => {
 	const {persona} = await random.persona();
 	const communityName = 'a';
 	let community: Community | undefined;
 	let failedResult: Result | undefined;
-	const returnedResult = await toServiceRequestMock(db, persona).transact(async (repos) => {
+	const returnedResult = await toServiceRequestMock(repos, persona).transact(async (repos) => {
 		community = unwrap(
 			await repos.community.create(
 				'standard',
@@ -34,14 +34,14 @@ test__service(`roll back the database after a failed transaction`, async ({db, r
 	assert.ok(failedResult);
 	assert.ok(!failedResult.ok);
 	assert.is(returnedResult, failedResult);
-	// Ensure the community created in the transaction no longer exists in the db.
-	assert.ok(!unwrap(await db.repos.community.findByName(communityName)));
-	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
+	// Ensure the community created in the transaction no longer exists in the repos.
+	assert.ok(!unwrap(await repos.community.findByName(communityName)));
+	assert.ok(!unwrap(await repos.community.findById(community.community_id)));
 });
 
-test__service(`cannot call transact more than once`, async ({db, random}) => {
+test__service(`cannot call transact more than once`, async ({repos, random}) => {
 	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(db, persona);
+	const serviceRequest = toServiceRequestMock(repos, persona);
 	let ranTransact1 = false;
 	let ranTransact2 = false;
 	unwrapError(
@@ -57,31 +57,34 @@ test__service(`cannot call transact more than once`, async ({db, random}) => {
 	assert.ok(!ranTransact2);
 });
 
-test__service(`transact cb returns a 500 when it throws an unknown error`, async ({db, random}) => {
-	const {persona} = await random.persona();
-	const communityName = 'a';
-	let community: Community | undefined;
-	const result = await toServiceRequestMock(db, persona).transact(async (repos) => {
-		community = unwrap(
-			await repos.community.create(
-				'standard',
-				communityName,
-				toDefaultCommunitySettings(communityName),
-			),
-		);
-		throw Error('test failure');
-	});
-	assert.equal(result, {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE});
-	assert.ok(community);
-	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
-});
+test__service(
+	`transact cb returns a 500 when it throws an unknown error`,
+	async ({repos, random}) => {
+		const {persona} = await random.persona();
+		const communityName = 'a';
+		let community: Community | undefined;
+		const result = await toServiceRequestMock(repos, persona).transact(async (repos) => {
+			community = unwrap(
+				await repos.community.create(
+					'standard',
+					communityName,
+					toDefaultCommunitySettings(communityName),
+				),
+			);
+			throw Error('test failure');
+		});
+		assert.equal(result, {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE});
+		assert.ok(community);
+		assert.ok(!unwrap(await repos.community.findById(community.community_id)));
+	},
+);
 
-test__service(`transact cb passes through the status of a ResultError`, async ({db, random}) => {
+test__service(`transact cb passes through the status of a ResultError`, async ({repos, random}) => {
 	const {persona} = await random.persona();
 	const communityName = 'a';
 	const thrownResult = {ok: false, status: 409, message: 'test failure'};
 	let community: Community | undefined;
-	const result = await toServiceRequestMock(db, persona).transact(async (repos) => {
+	const result = await toServiceRequestMock(repos, persona).transact(async (repos) => {
 		community = unwrap(
 			await repos.community.create(
 				'standard',
@@ -93,7 +96,7 @@ test__service(`transact cb passes through the status of a ResultError`, async ({
 	});
 	assert.equal(result, thrownResult);
 	assert.ok(community);
-	assert.ok(!unwrap(await db.repos.community.findById(community.community_id)));
+	assert.ok(!unwrap(await repos.community.findById(community.community_id)));
 });
 
 test__service.run();
