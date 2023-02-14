@@ -1,4 +1,4 @@
-import {NOT_OK, OK, type Assignable, type Result} from '@feltjs/util';
+import {NOT_OK, OK, unwrap, type Assignable, type Result} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -101,6 +101,12 @@ export class CommunityRepo extends PostgresRepo {
 				true;
 		}
 		return exists;
+	}
+
+	async loadAdminCommunity(): Promise<Community> {
+		const community = unwrap(await this.findById(ADMIN_COMMUNITY_ID));
+		if (!community) throw Error('unable to load admin community');
+		return community;
 	}
 
 	async findByRole(role_id: number): Promise<Result<{value: Community}>> {

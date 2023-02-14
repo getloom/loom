@@ -14,7 +14,6 @@ import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 import {verifyPassword} from '$lib/util/password';
 import type {Account} from '$lib/vocab/account/account';
-import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
@@ -40,8 +39,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			// TODO does this belong in `checkAccountName` above?
 			// TODO consider `const settings = repos.entity.filterByUrl('/instance');` (but scoped to admin?)
 			// should entities be scoped?  or /e/ to reference any path or id?
-			const adminCommunity = unwrap(await repos.community.findById(ADMIN_COMMUNITY_ID));
-			if (!adminCommunity) throw Error();
+			const adminCommunity = await repos.community.loadAdminCommunity();
 			const allowedAccountNames = adminCommunity.settings.instance?.allowedAccountNames;
 			if (allowedAccountNames) {
 				if (!allowedAccountNames.includes(username.toLowerCase())) {

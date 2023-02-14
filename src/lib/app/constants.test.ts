@@ -4,7 +4,6 @@ import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {
-	ADMIN_COMMUNITY_ID,
 	ADMIN_COMMUNITY_NAME,
 	ADMIN_PERSONA_ID,
 	GHOST_PERSONA_ID,
@@ -21,7 +20,7 @@ test__constants('check admin constants', async ({db, random}) => {
 	await random.persona(); // ensure the admin has been created -- there's probably a better way
 	const adminPersona = unwrap(await db.repos.persona.findById(ADMIN_PERSONA_ID));
 	assert.is(adminPersona?.name, ADMIN_COMMUNITY_NAME);
-	const adminCommunity = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID));
+	const adminCommunity = await db.repos.community.loadAdminCommunity();
 	assert.is(adminCommunity?.name, ADMIN_COMMUNITY_NAME);
 });
 

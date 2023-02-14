@@ -49,23 +49,13 @@ test_communityServices('disallow deleting personal community', async ({db, rando
 	);
 });
 
-test_communityServices('disallow deleting admin community', async ({db, random}) => {
-	const {persona} = await random.persona();
-
-	const adminCommunity = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
-	unwrap(
-		await db.repos.assignment.create(
-			persona.persona_id,
-			ADMIN_COMMUNITY_ID,
-			adminCommunity.settings.defaultRoleId,
-		),
-	);
-
+test_communityServices('disallow deleting admin community', async ({db}) => {
+	const adminPersona = await loadAdminPersona(db.repos);
 	assert.is(
 		unwrapError(
 			await DeleteCommunityService.perform({
-				...toServiceRequestMock(db, persona),
-				params: {actor: persona.persona_id, community_id: ADMIN_COMMUNITY_ID},
+				...toServiceRequestMock(db, adminPersona),
+				params: {actor: adminPersona.persona_id, community_id: ADMIN_COMMUNITY_ID},
 			}),
 		).status,
 		405,
@@ -73,7 +63,7 @@ test_communityServices('disallow deleting admin community', async ({db, random})
 });
 
 test_communityServices('default admin community role has all permissions', async ({db}) => {
-	const adminCommunity = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
+	const adminCommunity = await db.repos.community.loadAdminCommunity();
 	const adminDefaultPolicies = unwrap(
 		await db.repos.policy.filterByRole(adminCommunity.settings.defaultRoleId),
 	);
@@ -214,7 +204,7 @@ test_communityServices(
 	async ({db, random}) => {
 		const {persona} = await random.persona();
 
-		const {settings} = unwrap(await db.repos.community.findById(ADMIN_COMMUNITY_ID))!;
+		const {settings} = await db.repos.community.loadAdminCommunity();
 		const settingValue = settings.instance?.disableCreateCommunity;
 		unwrap(
 			await db.repos.community.updateSettings(ADMIN_COMMUNITY_ID, {
