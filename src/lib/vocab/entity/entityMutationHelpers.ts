@@ -1,4 +1,4 @@
-import {writable, mutable} from '@feltcoop/svelte-gettable-stores';
+import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltjs/util/log.js';
 
 import type {WritableUi} from '$lib/ui/ui';
@@ -45,7 +45,14 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 
 // TODO possibly merge with `stashEntities` to prevent update churn
 export const stashTies = (
-	{sourceTiesByDestEntityId, destTiesBySourceEntityId, queryByKey, entityById, tieById}: WritableUi,
+	{
+		sourceTiesByDestEntityId,
+		destTiesBySourceEntityId,
+		queryByKey,
+		paginatedQueryByKey,
+		entityById,
+		tieById,
+	}: WritableUi,
 	$ties: Tie[],
 	mutated = new Mutated('stashTies'),
 ): void => {
@@ -74,6 +81,9 @@ export const stashTies = (
 		// Update the queries.
 		const entity = entityById.get(dest_id);
 		if (entity) {
+			// TODO this lookup is wrong, but what's the best design here?
+			// extract from mutation helpers into the query store?
+			// (currently there's no query store for non-paginated queries, that's a todo)
 			const query = queryByKey.get(source_id);
 			if (query) {
 				const $query = query.data.get().value;
@@ -81,11 +91,18 @@ export const stashTies = (
 					$query.add(entity);
 					mutated.add(query.data);
 				}
-			} else {
-				queryByKey.set(source_id, {
-					data: mutable(new Set([entity])),
-					status: writable('initial'),
-				});
+			}
+
+			// TODO this doesn't handle queries across different actors --
+			// if the user has two actors in the same space but different permissions,
+			// they may need to see a different subset of entities.
+			// We'll need to rethink how this data gets updated in the queries
+			// after implementing entity-level permissions.
+			// See the "query key todo" in multiple places.
+			const paginatedQuery = paginatedQueryByKey.get(source_id);
+			if (paginatedQuery) {
+				paginatedQuery.addEntity(paginatedQuery.entities.get().value, entity);
+				paginatedQuery.entities.mutate(); // hacky, will be resolved with the above todo
 			}
 		} else {
 			// TODO what should we do here? may not be a problem depending on query patterns

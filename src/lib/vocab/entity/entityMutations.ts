@@ -46,7 +46,6 @@ export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, ui}) => {
 	return result;
 };
 
-// TODO implement this along with `ReadEntities` to use the same query and caching structures
 export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
@@ -61,11 +60,27 @@ export const QueryEntities: Mutations['QueryEntities'] = ({ui: {queryByKey}, dis
 	if (!query) {
 		queryByKey.set(
 			params.source_id,
-			(query = {data: mutable(new Set()), status: writable('pending')}),
+			(query = {
+				data: mutable(new Set()),
+				status: writable('pending'),
+				error: writable(null),
+			}),
 		);
 		void dispatch.ReadEntities(params).then(
-			() => query!.status.set('success'),
-			() => query!.status.set('failure'), // TODO set something like `query.error` from this
+			(result) => {
+				if (!query) return;
+				if (result.ok) {
+					query.status.set('success');
+				} else {
+					query.status.set('failure');
+					query.error.set(result.message);
+				}
+			},
+			() => {
+				if (!query) return;
+				query.status.set('failure');
+				query.error.set('unknown error');
+			},
 		);
 	}
 	return query;

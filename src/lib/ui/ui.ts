@@ -9,7 +9,6 @@ import {
 import {setContext, getContext, type SvelteComponent} from 'svelte';
 import type {DialogData} from '@feltjs/felt-ui/dialog.js';
 import {browser} from '$app/environment';
-import type {AsyncStatus} from '@feltjs/util/async.js';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
@@ -26,6 +25,7 @@ import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
 import type {EphemeraResponse} from '$lib/app/eventTypes';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
+import type {PaginatedQueryStore, Query} from '$lib/util/query';
 
 if (browser) initBrowser();
 
@@ -72,7 +72,8 @@ export interface Ui {
 	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
 	policiesByRoleId: Readable<Map<number, Map<string, Readable<Policy>>>>;
-	queryByKey: Map<number, {data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}>;
+	queryByKey: Map<number, Query>;
+	paginatedQueryByKey: Map<number, PaginatedQueryStore>;
 	sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>>;
 	destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>>;
 	communitiesBySessionPersona: Readable<Map<Readable<AccountPersona>, Array<Readable<Community>>>>;
@@ -294,10 +295,8 @@ export const toUi = (
 
 	const entityById: Map<number, Writable<Entity>> = new Map();
 	const tieById: Map<number, Tie> = new Map();
-	const queryByKey: Map<
-		number,
-		{data: Mutable<Set<Writable<Entity>>>; status: Writable<AsyncStatus>}
-	> = new Map();
+	const queryByKey: Map<number, Query> = new Map();
+	const paginatedQueryByKey: Map<number, PaginatedQueryStore> = new Map();
 	const sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>> = new Map();
 	const destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>> = new Map();
 
@@ -350,6 +349,7 @@ export const toUi = (
 		assignmentsByRoleId,
 		policiesByRoleId,
 		queryByKey,
+		paginatedQueryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
 		communitiesBySessionPersona,

@@ -1,32 +1,31 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {readable} from '@feltcoop/svelte-gettable-stores';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	import ChatItems from '$lib/plugins/feltcoop/chat/ChatItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import TextInput from '$lib/ui/TextInput.svelte';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
+	import {createPaginatedQuery} from '$lib/util/query';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
 
-	const {dispatch, socket} = getApp();
+	const {ui, dispatch, socket} = getApp();
 
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? dispatch.QueryEntities({
+		? createPaginatedQuery(ui, dispatch, {
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+	$: status = $query?.status;
+	$: more = $query?.more;
+	$: entities = query?.entities;
 
 	const createEntity = async () => {
 		const content = text.trim(); // TODO parse to trim? regularize step?
@@ -48,8 +47,13 @@
 
 <div class="chat">
 	<div class="entities">
-		{#if entities && $queryStatus === 'success'}
+		{#if query && entities}
 			<ChatItems {persona} {entities} />
+			{#if more}
+				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
+					>load more</PendingButton
+				>
+			{/if}
 		{:else}
 			<PendingAnimation />
 		{/if}

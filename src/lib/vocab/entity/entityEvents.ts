@@ -132,7 +132,7 @@ export const QueryEntities: ClientEventInfo = {
 		required: ['actor', 'source_id'],
 		additionalProperties: false,
 	},
-	returns: '{data: Mutable<Set<Readable<Entity>>>; status: Readable<AsyncStatus>}',
+	returns: 'Query',
 };
 
 export const ReadEntitiesPaginated: ServiceEventInfo = {
