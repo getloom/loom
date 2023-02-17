@@ -26,9 +26,20 @@
 	};
 </script>
 
-<div class="assignment-item">
-	<button on:click={() => deleteAssignment()}>❌</button><PersonaAvatar
-		persona={assignmentPersona}
-		showIcon={false}
-	/>
-</div>
+<li class="assignment-item">
+	<PersonaAvatar persona={assignmentPersona} showIcon={false} />
+	<button class="icon-button plain-button" on:click={() => deleteAssignment()}> ✕ </button>
+</li>
+
+<style>
+	.assignment-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: var(--spacing_xl);
+		background-color: var(--tint_dark_0);
+	}
+	.assignment-item:hover {
+		background-color: var(--tint_dark_1);
+	}
+</style>

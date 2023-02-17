@@ -29,18 +29,20 @@
 	);
 </script>
 
-<div class="markup padded-xl">
-	<h1>Assign Role: {$role.name} to</h1>
+<div class="padded-xl">
+	<h1>Assign the role "{$role.name}" to:</h1>
 	{#if selectedPersona}
-		{#each assignablePersonas as persona (persona)}
-			<AssignmentInputItem
-				persona={selectedPersona}
-				assignmentPersona={persona}
-				{community}
-				{role}
-			/>
-		{:else}
-			<p>There's no one new to assign this role to</p>
-		{/each}
+		<menu>
+			{#each assignablePersonas as persona (persona)}
+				<AssignmentInputItem
+					persona={selectedPersona}
+					assignmentPersona={persona}
+					{community}
+					{role}
+				/>
+			{:else}
+				<p>There's no one new to assign this role to</p>
+			{/each}
+		</menu>
 	{/if}
 </div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -10,6 +11,7 @@
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
 	import type {Community} from '$lib/vocab/community/community';
 	import {permissionNames} from '$lib/vocab/policy/permissions';
+	import type {DeleteRoleResponseResult} from '$lib/app/eventTypes';
 
 	const {
 		dispatch,
@@ -19,6 +21,8 @@
 	export let persona: Readable<AccountPersona>;
 	export let role: Readable<Role>;
 	export let community: Readable<Community>;
+	export let deleteRole: (role: Readable<Role>) => Promise<DeleteRoleResponseResult>;
+
 	$: assignments = $assignmentsByRoleId.get($role.role_id);
 	$: policies = $policiesByRoleId.get($role.role_id);
 
@@ -47,57 +51,84 @@
 </script>
 
 <div class="details">
-	<div class="actions">
-		<button
-			title="delete role"
-			on:click={() =>
-				dispatch.OpenDialog({
-					Component: ConfirmDialog,
-					props: {
-						action: () =>
-							dispatch.DeleteRole({
-								actor: $persona.persona_id,
-								role_id: $role.role_id,
-							}),
-						promptText: 'Are you sure you want to delete this role?',
-					},
-				})}>🗑️</button
-		>
-		<input placeholder={$role.name} on:keydown={onKeydown} bind:value={newName} />
-	</div>
-	<h2>Manage Role Assignments</h2>
-	<button
-		on:click={() =>
-			dispatch.OpenDialog({
-				Component: AssignmentManager,
-				dialogProps: {layout: 'page'},
-				props: {
-					role,
-					community,
-				},
-			})}>Assign Role</button
-	>
-	<div class="assignments">
+	<section>
+		<form>
+			<label>
+				<div class="title">role name</div>
+				<input placeholder={$role.name} on:keydown={onKeydown} bind:value={newName} />
+			</label>
+			<button
+				type="button"
+				on:click={() =>
+					dispatch.OpenDialog({
+						Component: ConfirmDialog,
+						props: {
+							action: () => deleteRole(role), // TODO handle displaying any error somehow, this receives the `result`
+							promptText: `Delete the role "${$role.name}"?`,
+						},
+					})}
+			>
+				delete this role
+			</button>
+		</form>
+	</section>
+	<section>
+		<h2>Assignments</h2>
+		<form>
+			<button
+				type="button"
+				on:click={() =>
+					dispatch.OpenDialog({
+						Component: AssignmentManager,
+						dialogProps: {layout: 'page'},
+						props: {
+							role,
+							community,
+						},
+					})}
+			>
+				assign this role to a persona
+			</button>
+		</form>
 		{#if assignments}
-			{#each assignments as assignment (assignment)}
-				<AssignmentItem actor={persona} {assignment} />
-			{/each}
+			{#if assignments.length}
+				<ul class="assignments">
+					{#each assignments as assignment (assignment)}
+						<AssignmentItem actor={persona} {assignment} />
+					{/each}
+				</ul>
+			{:else}
+				<p>there are no assignments for this role</p>
+			{/if}
+		{:else}
+			<PendingAnimation />
 		{/if}
-	</div>
-	<h2>Permissions</h2>
-	<div class="policies">
+	</section>
+	<section>
+		<h2>Permissions</h2>
 		{#if policies}
-			{#each permissionNames as permission (permission)}
-				<PolicyItem actor={persona} {role} {permission} policy={policies.get(permission)} />
-			{/each}
+			<ul class="policies">
+				{#each permissionNames as permission (permission)}
+					<PolicyItem actor={persona} {role} {permission} policy={policies.get(permission)} />
+				{/each}
+			</ul>
+		{:else}
+			<PendingAnimation />
 		{/if}
-	</div>
+	</section>
 </div>
 
 <style>
 	.details {
 		padding: var(--spacing_md);
-		flex: 2;
-		background-color: rgba(0, 0, 0, 0.45);
+	}
+
+	section {
+		margin-bottom: var(--spacing_xl3);
+	}
+
+	/* TODO figure this out semantically */
+	button {
+		margin: var(--spacing_lg) 0;
 	}
 </style>

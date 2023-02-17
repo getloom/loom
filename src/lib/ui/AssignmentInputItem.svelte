@@ -24,8 +24,15 @@
 	};
 </script>
 
-<p>
-	<button type="button" class="button-join" on:click={() => createAssignment()}>
+<li>
+	<button type="button" on:click={() => createAssignment()}>
 		<PersonaAvatar persona={assignmentPersona} />
 	</button>
-</p>
+</li>
+
+<style>
+	button {
+		width: 100%;
+		justify-content: flex-start;
+	}
+</style>

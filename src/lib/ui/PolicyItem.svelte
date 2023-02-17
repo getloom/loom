@@ -38,7 +38,9 @@
 	};
 </script>
 
-<div>
-	<input type="checkbox" disabled={pending} bind:checked />
-	<span>{permission}</span>
-</div>
+<li>
+	<label class="row">
+		<input type="checkbox" disabled={pending} bind:checked />
+		{permission}
+	</label>
+</li>
