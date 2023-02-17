@@ -6,7 +6,6 @@ import {
 
 import {MIGRATIONS_DIR, MIGRATIONS_PATH} from '$lib/db/migration';
 import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
-import {SystemLogger} from '@feltjs/util/log.js';
 
 const files = [
 	'lib/index.ts', // same as 'lib/server/server.ts'
@@ -78,7 +77,6 @@ const config: GroConfigCreator = async ({config, fs, dev}) => {
 			libraryBuildConfig.input.push(migrationFilePath);
 		}
 	}
-	SystemLogger.level = 3;
 
 	return config;
 };

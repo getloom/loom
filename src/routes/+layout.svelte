@@ -1,9 +1,8 @@
 <script lang="ts" context="module">
 	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
-	import {configureLogLevel, LogLevel, Logger} from '@feltjs/util/log.js';
+	import {Logger} from '@feltjs/util/log.js';
 
 	if (!dev) {
-		configureLogLevel(LogLevel.Info);
 		if (!browser) {
 			Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
 		}

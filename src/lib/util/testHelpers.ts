@@ -1,5 +1,5 @@
 import sourcemapSupport from 'source-map-support';
-import {configureLogLevel, Logger, LogLevel} from '@feltjs/util/log.js';
+import {Logger} from '@feltjs/util/log.js';
 import {type OmitStrict, unwrap} from '@feltjs/util';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';
@@ -13,8 +13,6 @@ import {
 import type {AccountPersona, ActorPersona} from '$lib/vocab/persona/persona';
 import {ADMIN_COMMUNITY_ID, ADMIN_PERSONA_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
-
-configureLogLevel(LogLevel.Info);
 
 export const log = new Logger('[test]');
 

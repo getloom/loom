@@ -1,6 +1,6 @@
 import polka from 'polka';
 import {createServer} from 'http';
-import {configureLogLevel, Logger, LogLevel} from '@feltjs/util/log.js';
+import {Logger} from '@feltjs/util/log.js';
 import {format} from 'date-fns';
 
 import {ApiServer} from '$lib/server/ApiServer.js';
@@ -11,7 +11,6 @@ import {fromEnv} from '$lib/server/env';
 
 // Global logging setup
 if (process.env.NODE_ENV === 'production') {
-	configureLogLevel(LogLevel.Info);
 	Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
 }
 

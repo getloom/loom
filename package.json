@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@feltjs/eslint-config": "^0.2.1",
-    "@feltjs/gro": "^0.70.5",
+    "@feltjs/gro": "^0.71.0",
     "@ryanatkn/json-schema-to-typescript": "^11.1.2",
     "@sveltejs/adapter-node": "^1.1.7",
     "@sveltejs/kit": "^1.5.0",
@@ -58,7 +58,7 @@
   "dependencies": {
     "@feltcoop/svelte-gettable-stores": "^0.2.0",
     "@feltjs/felt-ui": "^0.47.1",
-    "@feltjs/util": "^0.5.3",
+    "@feltjs/util": "^0.6.0",
     "@polka/send-type": "^0.5.2",
     "ajv": "^8.12.0",
     "ajv-keywords": "^5.1.0",
