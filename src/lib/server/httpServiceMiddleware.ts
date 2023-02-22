@@ -1,6 +1,5 @@
 import send from '@polka/send-type';
 import {Logger} from '@feltjs/util/log.js';
-import {ResultError} from '@feltjs/util';
 
 import {red, blue, gray} from '$lib/server/colors';
 import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';
@@ -8,7 +7,7 @@ import {type Service, toServiceRequest} from '$lib/server/service';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
-import type {ApiResult} from '$lib/server/api';
+import {toFailedApiResult, type ApiResult} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('httpServiceMiddleware') + gray(']'));
 
@@ -79,7 +78,7 @@ export const toHttpServiceMiddleware =
 			}
 		} catch (err) {
 			log.error('service.perform failed with an unexpected error', service.event.name, err);
-			result = {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE};
+			result = toFailedApiResult(err);
 		}
 
 		if (!result.ok) {

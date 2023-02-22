@@ -1,6 +1,5 @@
 import type ws from 'ws';
 import {Logger} from '@feltjs/util/log.js';
-import {ResultError} from '@feltjs/util';
 
 import {red, blue, gray} from '$lib/server/colors';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc';
@@ -10,7 +9,7 @@ import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
 import type {BroadcastMessage} from '$lib/util/websocket';
 import {toServiceRequest} from '$lib/server/service';
-import type {ApiResult} from '$lib/server/api';
+import {toFailedApiResult, type ApiResult} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 
@@ -82,7 +81,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 					}
 				} catch (err) {
 					log.error('service.perform failed with an unexpected error', service.event.name, err);
-					result = {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE};
+					result = toFailedApiResult(err);
 				}
 			}
 		}

@@ -217,13 +217,11 @@ export const InviteToCommunityService: ServiceByName['InviteToCommunity'] = {
 				return {ok: false, status: 409, message: 'persona is already in the community'};
 			}
 
-			const assignment = unwrap(
-				await createAssignment(
-					persona.persona_id,
-					community,
-					community.settings.defaultRoleId,
-					repos,
-				),
+			const assignment = await createAssignment(
+				persona.persona_id,
+				community,
+				community.settings.defaultRoleId,
+				repos,
 			);
 			return {ok: true, status: 200, value: {persona, assignment}};
 		}),
