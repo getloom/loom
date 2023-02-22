@@ -26,9 +26,8 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 	event: CreateAccountPersona,
 	// TODO verify the `account_id` has permission to modify this persona
 	// TODO add `persona_id` and verify it's one of the `account_id`'s personas
-	perform: (serviceRequest) =>
-		serviceRequest.transact(async (repos) => {
-			const {params, account_id} = serviceRequest;
+	perform: ({transact, params, account_id}) =>
+		transact(async (repos) => {
 			log.trace('[CreateAccountPersona] creating persona', params.name);
 			const name = scrubPersonaName(params.name);
 			const nameErrorMessage = checkPersonaName(name);

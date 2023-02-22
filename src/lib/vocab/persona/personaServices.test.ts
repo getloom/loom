@@ -51,11 +51,12 @@ test__personaService('create a persona & test name collisions', async ({repos, r
 
 test__personaService('ghost persona has the expected name and id', async ({repos, random}) => {
 	// First create an account persona, which ensures the ghost persona has been initialized.
-	const serviceRequest = {
-		...toServiceRequestMock(repos, undefined, undefined, (await random.account()).account_id),
-		params: await randomEventParams.CreateAccountPersona(random),
-	};
-	unwrap(await CreateAccountPersonaService.perform(serviceRequest));
+	unwrap(
+		await CreateAccountPersonaService.perform({
+			...toServiceRequestMock(repos, undefined, undefined, (await random.account()).account_id),
+			params: await randomEventParams.CreateAccountPersona(random),
+		}),
+	);
 
 	const ghostPersona = unwrap(await repos.persona.findById(GHOST_PERSONA_ID));
 	assert.ok(ghostPersona);

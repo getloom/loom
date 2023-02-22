@@ -91,13 +91,15 @@ for (const service of services.values()) {
 				)}`,
 			);
 		}
-		const serviceRequest = toServiceRequestMock(
-			repos,
-			event.authorize === false ? undefined! : persona,
-			session,
-			event.authenticate === false ? undefined : account.account_id,
-		);
-		const result = await service.perform({...serviceRequest, params});
+		const result = await service.perform({
+			...toServiceRequestMock(
+				repos,
+				event.authorize === false ? undefined! : persona,
+				session,
+				event.authenticate === false ? undefined : account.account_id,
+			),
+			params,
+		});
 		if (!result.ok) {
 			log.error(red(`failed service call: ${event.name}`), params, result);
 			throw new Error(`Failed service call: ${event.name}`);

@@ -85,12 +85,8 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 // that imports a generated type and declares only `perform`
 export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 	event: CreateCommunity,
-	perform: (serviceRequest) =>
-		serviceRequest.transact(async (repos) => {
-			const {
-				params: {actor, template},
-				account_id,
-			} = serviceRequest;
+	perform: ({transact, params: {actor, template}, account_id}) =>
+		transact(async (repos) => {
 			log.trace('creating community account_id', account_id);
 			const name = scrubPersonaName(template.name);
 			const nameErrorMessage = checkPersonaName(name);

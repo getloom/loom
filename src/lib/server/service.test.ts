@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {NOT_OK, ResultError, unwrap, unwrapError, type Result} from '@feltjs/util';
+import {NOT_OK, OK, ResultError, unwrap, unwrapError, type Result} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Community} from '$lib/vocab/community/community';
@@ -48,14 +48,42 @@ test__service(`cannot call transact more than once`, async ({repos, random}) => 
 		await serviceRequest.transact(async (reposA) => {
 			ranTransact1 = true;
 			assert.ok(reposA);
-			await serviceRequest.transact(async () => {
-				ranTransact2 = true;
-			});
+			unwrap(
+				await serviceRequest.transact(async () => {
+					ranTransact2 = true;
+					return OK;
+				}),
+			);
+			return OK;
 		}),
 	);
 	assert.ok(ranTransact1);
 	assert.ok(!ranTransact2);
 });
+
+test__service(
+	`cannot call transact more than once even after the first ends`,
+	async ({repos, random}) => {
+		const {persona} = await random.persona();
+		const serviceRequest = toServiceRequestMock(repos, persona);
+		let ranTransact1 = false;
+		let ranTransact2 = false;
+		unwrap(
+			await serviceRequest.transact(async (reposA) => {
+				ranTransact1 = true;
+				assert.ok(reposA);
+				return OK;
+			}),
+		);
+		assert.ok(ranTransact1);
+		unwrapError(
+			await serviceRequest.transact(async () => {
+				ranTransact2 = true;
+			}),
+		);
+		assert.ok(!ranTransact2);
+	},
+);
 
 test__service(
 	`transact cb returns a 500 when it throws an unknown error`,
