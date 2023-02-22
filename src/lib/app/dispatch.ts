@@ -26,8 +26,8 @@ export interface DispatchContext<
 > {
 	eventName: string;
 	params: TParams;
-	dispatch: Dispatch;
 	ui: WritableUi;
+	dispatch: Dispatch;
 	invoke: TResult extends void ? null : (params?: TParams) => Promise<TResult>;
 }
 

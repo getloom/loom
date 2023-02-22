@@ -1,6 +1,6 @@
 import {writable} from '@feltcoop/svelte-gettable-stores';
 
-import type {AppStores} from '$lib/ui/app';
+import type {App} from '$lib/ui/app';
 import {toUi} from '$lib/ui/ui';
 import {toHttpApiClient} from '$lib/ui/HttpApiClient';
 import type {EventParamsByName, EventResponseByName} from '$lib/app/eventTypes';
@@ -13,7 +13,7 @@ import {deserialize, deserializers} from '$lib/util/deserialize';
 installSourceMaps();
 
 export interface TestAppContext {
-	app: AppStores;
+	app: App;
 }
 
 export const setupApp = async (context: TestAppContext): Promise<void> => {

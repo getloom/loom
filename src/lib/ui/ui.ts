@@ -9,6 +9,7 @@ import {
 import {setContext, getContext, type SvelteComponent} from 'svelte';
 import type {DialogData} from '@feltjs/felt-ui/dialog.js';
 import {browser} from '$app/environment';
+import {EventEmitter} from 'eventemitter3';
 
 import type {Community} from '$lib/vocab/community/community';
 import type {Space} from '$lib/vocab/space/space';
@@ -38,7 +39,11 @@ export const setUi = (store: Ui): Ui => {
 	return store;
 };
 
+export type UiEvents = EventEmitter<{stashed_entities: [Array<Readable<Entity>>]}>;
+
 export interface Ui {
+	events: UiEvents;
+
 	// TODO instead of eagerly loading these components,
 	// this should be an interface to lazy-load UI components
 	components: {[key: string]: typeof SvelteComponent};
@@ -109,6 +114,8 @@ export const toUi = (
 	components: {[key: string]: typeof SvelteComponent},
 	onError: (message: string | undefined) => void,
 ) => {
+	const events: UiEvents = new EventEmitter();
+
 	const account = writable<ClientAccount | null>(null);
 	const session = writable<ClientSession>($session);
 	// Importantly, these collections only change when items are added or removed,
@@ -322,8 +329,9 @@ export const toUi = (
 	const ephemera = writable<EphemeraResponse | null>(null);
 
 	return {
-		// db data
+		events,
 		components,
+		// db data
 		account,
 		personas,
 		roles,

@@ -5,11 +5,9 @@ import type {Ui} from '$lib/ui/ui';
 import type {Dispatch} from '$lib/app/eventTypes';
 import type {SocketStore} from '$lib/ui/socket';
 
-// TODO refactor/rethink
-
-export interface AppStores {
-	dispatch: Dispatch;
+export interface App {
 	ui: Ui;
+	dispatch: Dispatch;
 	socket: SocketStore;
 	devmode: SvelteWritable<boolean>;
 }
@@ -18,9 +16,6 @@ export const LAST_SEEN_KEY = 'lastseen:';
 
 const KEY = Symbol();
 
-export const getApp = (): AppStores => getContext(KEY);
+export const getApp = (): App => getContext(KEY);
 
-export const setApp = (stores: AppStores): AppStores => {
-	setContext(KEY, stores);
-	return stores;
-};
+export const setApp = (stores: App): App => setContext(KEY, stores);

@@ -45,14 +45,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 
 // TODO possibly merge with `stashEntities` to prevent update churn
 export const stashTies = (
-	{
-		sourceTiesByDestEntityId,
-		destTiesBySourceEntityId,
-		queryByKey,
-		paginatedQueryByKey,
-		entityById,
-		tieById,
-	}: WritableUi,
+	{sourceTiesByDestEntityId, destTiesBySourceEntityId, queryByKey, entityById, tieById}: WritableUi,
 	$ties: Tie[],
 	mutated = new Mutated('stashTies'),
 ): void => {
@@ -91,18 +84,6 @@ export const stashTies = (
 					$query.add(entity);
 					mutated.add(query.data);
 				}
-			}
-
-			// TODO this doesn't handle queries across different actors --
-			// if the user has two actors in the same space but different permissions,
-			// they may need to see a different subset of entities.
-			// We'll need to rethink how this data gets updated in the queries
-			// after implementing entity-level permissions.
-			// See the "query key todo" in multiple places.
-			const paginatedQuery = paginatedQueryByKey.get(source_id);
-			if (paginatedQuery) {
-				paginatedQuery.addEntity(paginatedQuery.entities.get().value, entity);
-				paginatedQuery.entities.mutate(); // hacky, will be resolved with the above todo
 			}
 		} else {
 			// TODO what should we do here? may not be a problem depending on query patterns

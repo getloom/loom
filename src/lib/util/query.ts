@@ -30,31 +30,32 @@ export interface PaginatedQueryState {
 
 export interface PaginatedQueryStore extends Readable<PaginatedQueryState> {
 	loadMore: () => Promise<void>;
-	//TODO probably delete this
-	addEntity: AddQueryResultItem;
 	dispose: () => void;
 	entities: Mutable<Array<Readable<Entity>>>;
 	// ties: Mutable<Tie[]>; // TODO probably include these
 }
 
-export interface AddQueryResultItem {
-	(entities: Array<Readable<Entity>>, entity: Readable<Entity>): void;
+export interface QueryAddEntity {
+	(entity: Readable<Entity>, entities: Array<Readable<Entity>>): void;
+}
+export interface QueryMatchEntity {
+	(entity: Readable<Entity>, params: QueryParams, ui: Ui): boolean;
 }
 
 export const createPaginatedQuery = (
 	ui: Ui,
 	dispatch: Dispatch,
 	params: QueryParams,
-	addEntity: AddQueryResultItem = addEntitySortedByCreated,
+	addEntity: QueryAddEntity = addEntitySortedByCreated,
+	matchEntity: QueryMatchEntity = matchEntityBySourceId,
 ): PaginatedQueryStore => {
 	// TODO the key should be something like `params.actor + '__ ' + params.source_id`
 	// but we currently don't handle queries per persona in the mutation layer.
-	// See the "query key todo" in multiple places.
 	const key = params.source_id;
 	const {paginatedQueryByKey} = ui;
 	let query = paginatedQueryByKey.get(key);
 	if (query) return query;
-	query = toPaginatedQuery(ui, dispatch, params, key, addEntity);
+	query = toPaginatedQuery(ui, dispatch, params, key, addEntity, matchEntity);
 	paginatedQueryByKey.set(key, query);
 	return query;
 };
@@ -64,7 +65,8 @@ const toPaginatedQuery = (
 	dispatch: Dispatch,
 	params: QueryParams,
 	key: number,
-	addEntity: AddQueryResultItem,
+	addEntity: QueryAddEntity,
+	matchEntity: QueryMatchEntity,
 ): PaginatedQueryStore => {
 	const {subscribe, update, get} = writable<PaginatedQueryState>({
 		status: 'initial',
@@ -84,12 +86,6 @@ const toPaginatedQuery = (
 					const updated = {...$v};
 					if (result.ok) {
 						updated.status = 'success';
-						entities.mutate(($entities) => {
-							const {entityById} = ui;
-							for (const entity of result.value.entities) {
-								addEntity($entities, entityById.get(entity.entity_id)!);
-							}
-						});
 						// TODO Should we infer less than `pageSize` means no more?
 						// Or is that a faulty assumption in rare corner cases?
 						// Doing so would prevent the rare empty load, but it seems more prone to errors.
@@ -117,25 +113,37 @@ const toPaginatedQuery = (
 		return load(oldestEntity?.get().entity_id);
 	};
 
+	// Listen to app events to add entities.
+	const onEntitiesAdded = (addedEntities: Array<Readable<Entity>>) => {
+		let mutated = false;
+		for (const entity of addedEntities) {
+			if (matchEntity(entity, params, ui)) {
+				addEntity(entity, entities.get().value);
+				mutated = true;
+			}
+		}
+		if (mutated) entities.mutate();
+	};
+	ui.events.on('stashed_entities', onEntitiesAdded);
+
+	// TODO add `entities_evicted`
+
 	// We don't want automatic disposal on unsubscribe,
 	// because we want to keep queries alive independent of the current UI.
 	const dispose = () => {
 		ui.paginatedQueryByKey.delete(key);
-		entities.mutate(($v) => ($v.length = 0));
+		ui.events.off('stashed_entities', onEntitiesAdded);
+		entities.mutate(($v) => ($v.length = 0)); // this is probably unnecessary
 	};
 
 	// TODO add an option to create the query without loading it immediately
 	void load();
 
-	return {subscribe, get, loadMore, dispose, addEntity, entities};
+	return {subscribe, get, loadMore, dispose, entities};
 };
 
-// TODO extract the logic so it can be used with other comparisons
-const addEntitySortedByCreated: AddQueryResultItem = (entities, entity) => {
-	// TODO this early return is a hack
-	// See the "query key todo" in multiple places.
-	if (entities.includes(entity)) return;
-
+// TODO extract the logic so it can be used with other comparisons than `created` with the latest at the end
+const addEntitySortedByCreated: QueryAddEntity = (entity, entities) => {
 	const {created} = entity.get();
 	const maxIndex = entities.length - 1;
 	let index = maxIndex;
@@ -153,4 +161,15 @@ const addEntitySortedByCreated: AddQueryResultItem = (entities, entity) => {
 	} else {
 		entities.splice(index + 1, 0, entity);
 	}
+};
+
+const matchEntityBySourceId: QueryMatchEntity = (entity, params, ui) => {
+	const ties = ui.sourceTiesByDestEntityId.get(entity.get().entity_id)?.get().value;
+	if (!ties) return false;
+	for (const tie of ties) {
+		if (tie.source_id === params.source_id) {
+			return true;
+		}
+	}
+	return false;
 };

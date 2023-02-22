@@ -12,6 +12,12 @@ export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, ui}) => {
 	const {entities, ties} = result.value;
 	stashEntities(ui, entities);
 	stashTies(ui, ties);
+	// TODO construct this array during `stash`
+	const {entityById} = ui;
+	ui.events.emit(
+		'stashed_entities',
+		entities.map((e) => entityById.get(e.entity_id)!),
+	);
 	return result;
 };
 
@@ -34,6 +40,7 @@ export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui, p
 	const result = await invoke();
 	if (!result.ok) return result;
 	evictEntities(ui, params.entityIds);
+	// ui.events.dispatchEvent('entities_evicted')
 	return result;
 };
 
@@ -43,6 +50,12 @@ export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, ui}) => {
 	const {ties, entities} = result.value;
 	stashEntities(ui, entities);
 	stashTies(ui, ties);
+	// TODO construct this array during `stash`
+	const {entityById} = ui;
+	ui.events.emit(
+		'stashed_entities',
+		entities.map((e) => entityById.get(e.entity_id)!),
+	);
 	return result;
 };
 
@@ -52,6 +65,12 @@ export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async (
 	const {ties, entities} = result.value;
 	stashEntities(ui, entities);
 	stashTies(ui, ties);
+	// TODO construct this array during `stash`
+	const {entityById} = ui;
+	ui.events.emit(
+		'stashed_entities',
+		entities.map((e) => entityById.get(e.entity_id)!),
+	);
 	return result;
 };
 
