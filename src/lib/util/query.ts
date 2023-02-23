@@ -126,7 +126,7 @@ const toPaginatedQuery = (
 	};
 	ui.events.on('stashed_entities', onEntitiesAdded);
 
-	// TODO add `entities_evicted`
+	// TODO add `evicted_entities`
 
 	// We don't want automatic disposal on unsubscribe,
 	// because we want to keep queries alive independent of the current UI.

@@ -10,14 +10,10 @@ export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {entities, ties} = result.value;
-	stashEntities(ui, entities);
-	stashTies(ui, ties);
-	// TODO construct this array during `stash`
-	const {entityById} = ui;
-	ui.events.emit(
-		'stashed_entities',
-		entities.map((e) => entityById.get(e.entity_id)!),
-	);
+	ui.mutate(() => {
+		stashEntities(ui, entities);
+		stashTies(ui, ties);
+	});
 	return result;
 };
 
@@ -25,22 +21,22 @@ export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, ui}) => {
 export const UpdateEntity: Mutations['UpdateEntity'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	stashEntities(ui, [result.value.entity]);
+	ui.mutate(() => stashEntities(ui, [result.value.entity]));
 	return result;
 };
 
 export const EraseEntities: Mutations['EraseEntities'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	stashEntities(ui, result.value.entities);
+	ui.mutate(() => stashEntities(ui, result.value.entities));
 	return result;
 };
 
 export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui, params}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	evictEntities(ui, params.entityIds);
-	// ui.events.dispatchEvent('entities_evicted')
+	ui.mutate(() => evictEntities(ui, params.entityIds));
+	// TODO add `ui.events.dispatchEvent('evicted_entities')`
 	return result;
 };
 
@@ -48,14 +44,10 @@ export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {ties, entities} = result.value;
-	stashEntities(ui, entities);
-	stashTies(ui, ties);
-	// TODO construct this array during `stash`
-	const {entityById} = ui;
-	ui.events.emit(
-		'stashed_entities',
-		entities.map((e) => entityById.get(e.entity_id)!),
-	);
+	ui.mutate(() => {
+		stashEntities(ui, entities);
+		stashTies(ui, ties);
+	});
 	return result;
 };
 
@@ -63,14 +55,10 @@ export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async (
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {ties, entities} = result.value;
-	stashEntities(ui, entities);
-	stashTies(ui, ties);
-	// TODO construct this array during `stash`
-	const {entityById} = ui;
-	ui.events.emit(
-		'stashed_entities',
-		entities.map((e) => entityById.get(e.entity_id)!),
-	);
+	ui.mutate(() => {
+		stashEntities(ui, entities);
+		stashTies(ui, ties);
+	});
 	return result;
 };
 

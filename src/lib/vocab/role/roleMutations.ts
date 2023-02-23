@@ -5,7 +5,7 @@ export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {role} = result.value;
-	stashRoles(ui, [role]);
+	ui.mutate(() => stashRoles(ui, [role]));
 	return result;
 };
 
@@ -13,14 +13,14 @@ export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {role} = result.value;
-	stashRoles(ui, [role]);
+	ui.mutate(() => stashRoles(ui, [role]));
 	return result;
 };
 
 export const DeleteRole: Mutations['DeleteRole'] = async ({invoke, params, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	evictRoles(ui, [params.role_id]);
+	ui.mutate(() => evictRoles(ui, [params.role_id]));
 	return result;
 };
 
@@ -28,6 +28,6 @@ export const ReadRoles: Mutations['ReadRoles'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {roles} = result.value;
-	stashRoles(ui, roles);
+	ui.mutate(() => stashRoles(ui, roles));
 	return result;
 };

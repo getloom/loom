@@ -2,41 +2,34 @@ import type {WritableUi} from '$lib/ui/ui';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {evictPersona} from '$lib/vocab/persona/personaMutationHelpers';
 import {evictCommunity} from '$lib/vocab/community/communityMutationHelpers';
-import {Mutated} from '$lib/util/Mutated';
 
 export const stashAssignments = (
 	ui: WritableUi,
 	$assignmentsToStash: Assignment[],
-	mutated = new Mutated('stashAssignments'),
 	replace = false,
 ): void => {
 	const {assignments, assignmentById} = ui;
-	const $assignments = assignments.get().value;
 
 	if (replace) {
 		// TODO do we need to evict the current assignments? or should upstream usage handle that?
 		assignmentById.clear();
-		$assignments.clear();
-		mutated.add(assignments);
+		assignments.mutate((a) => a.clear());
 	}
 
+	const $assignments = assignments.get().value;
+	let mutated = false;
 	for (const assignment of $assignmentsToStash) {
 		if (assignmentById.has(assignment.assignment_id)) {
 			continue; // assignments are immutable, so no need to update them
 		}
 		assignmentById.set(assignment.assignment_id, assignment);
 		$assignments.add(assignment);
-		mutated.add(assignments);
+		mutated = true;
 	}
-
-	mutated.end('stashAssignments');
+	if (mutated) assignments.mutate();
 };
 
-export const evictAssignments = async (
-	ui: WritableUi,
-	assignmentsToEvict: Assignment[],
-	mutated = new Mutated('evictAssignments'),
-): Promise<void> => {
+export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[]): void => {
 	if (!assignmentsToEvict.length) return;
 	const {assignments, assignmentById, personaById, sessionPersonaIndexById} = ui;
 	const $assignments = assignments.get().value;
@@ -74,7 +67,7 @@ export const evictAssignments = async (
 					}
 				}
 				if (!doesCommunityHaveOtherSessionAssignment) {
-					await evictCommunity(ui, community_id); // eslint-disable-line no-await-in-loop
+					evictCommunity(ui, community_id);
 				}
 			} else {
 				let doesPersonaHaveOtherAssignment = false;
@@ -88,13 +81,11 @@ export const evictAssignments = async (
 				if (!doesPersonaHaveOtherAssignment) {
 					const persona = personaById.get(persona_id);
 					if (persona) {
-						await evictPersona(ui, persona, mutated); // eslint-disable-line no-await-in-loop
+						evictPersona(ui, persona);
 					}
 				}
 			}
 		}
 	}
-	mutated.add(assignments);
-
-	mutated.end('evictAssignments');
+	assignments.mutate();
 };

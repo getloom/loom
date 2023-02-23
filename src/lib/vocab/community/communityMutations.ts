@@ -1,5 +1,4 @@
 import type {Mutations} from '$lib/app/eventTypes';
-import {Mutated} from '$lib/util/Mutated';
 import {evictCommunity, stashCommunity} from '$lib/vocab/community/communityMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
@@ -12,13 +11,13 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {community, spaces, directories, roles, assignments, personas} = result.value;
-	const mutated = new Mutated('ReadCommunity');
-	stashPersonas(ui, personas, mutated);
-	stashCommunity(ui, community, mutated);
-	stashSpaces(ui, spaces, directories, mutated);
-	stashRoles(ui, roles, mutated);
-	stashAssignments(ui, assignments, mutated);
-	mutated.end('ReadCommunity');
+	ui.mutate(() => {
+		stashPersonas(ui, personas);
+		stashCommunity(ui, community);
+		stashSpaces(ui, spaces, directories);
+		stashRoles(ui, roles);
+		stashAssignments(ui, assignments);
+	});
 	return result;
 };
 
@@ -26,14 +25,14 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {community, roles, policies, spaces, directories, assignments, personas} = result.value;
-	const mutated = new Mutated('CreateCommunity');
-	stashPersonas(ui, personas, mutated);
-	stashCommunity(ui, community, mutated);
-	stashSpaces(ui, spaces, directories, mutated);
-	stashAssignments(ui, assignments, mutated);
-	stashRoles(ui, roles, mutated);
-	stashPolicies(ui, policies, mutated);
-	mutated.end('CreateCommunity');
+	ui.mutate(() => {
+		stashPersonas(ui, personas);
+		stashCommunity(ui, community);
+		stashSpaces(ui, spaces, directories);
+		stashAssignments(ui, assignments);
+		stashRoles(ui, roles);
+		stashPolicies(ui, policies);
+	});
 	return result;
 };
 
@@ -60,7 +59,7 @@ export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, inv
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {community_id} = params;
-	await evictCommunity(ui, community_id);
+	ui.mutate(() => evictCommunity(ui, community_id));
 	return result;
 };
 
@@ -69,10 +68,10 @@ export const InviteToCommunity: Mutations['InviteToCommunity'] = async ({invoke,
 	if (!result.ok) return result;
 
 	const {assignment, persona} = result.value;
-	const mutated = new Mutated('InviteToCommunity');
-	stashPersonas(ui, [persona], mutated);
-	stashAssignments(ui, [assignment], mutated);
-	mutated.end('InviteToCommunity');
+	ui.mutate(() => {
+		stashPersonas(ui, [persona]);
+		stashAssignments(ui, [assignment]);
+	});
 
 	return result;
 };
@@ -90,7 +89,7 @@ export const LeaveCommunity: Mutations['LeaveCommunity'] = async ({params, invok
 			assignmentsToEvict.push(assignment);
 		}
 	}
-	await evictAssignments(ui, assignmentsToEvict);
+	ui.mutate(() => evictAssignments(ui, assignmentsToEvict));
 
 	return result;
 };

@@ -1,4 +1,4 @@
-import {writable} from '@feltcoop/svelte-gettable-stores';
+import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltjs/util/log.js';
 
 import type {WritableUi} from '$lib/ui/ui';
@@ -10,7 +10,6 @@ import {
 	upsertFreshnessByCommunityId,
 	setFreshnessByDirectoryId,
 } from '$lib/ui/uiMutationHelpers';
-import {Mutated} from '$lib/util/Mutated';
 import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 import {setIfUpdated} from '$lib/util/store';
 
@@ -19,6 +18,8 @@ const log = new Logger('[entityMutationHelpers]');
 export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 	const {entityById, spaceSelection, spaceById, freshnessByDirectoryId} = ui;
 
+	let added: Array<Writable<Entity>> | null = null;
+
 	for (const $entity of $entities) {
 		const {entity_id} = $entity;
 		let entity = entityById.get(entity_id);
@@ -26,6 +27,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 			setIfUpdated(entity, $entity);
 		} else {
 			entityById.set(entity_id, (entity = writable($entity)));
+			(added || (added = [])).push(entity);
 		}
 
 		// Handle directories.
@@ -41,13 +43,16 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 			}
 		}
 	}
+
+	if (added) {
+		ui.addMutationEffect(() => ui.events.emit('stashed_entities', added!));
+	}
 };
 
 // TODO possibly merge with `stashEntities` to prevent update churn
 export const stashTies = (
 	{sourceTiesByDestEntityId, destTiesBySourceEntityId, queryByKey, entityById, tieById}: WritableUi,
 	$ties: Tie[],
-	mutated = new Mutated('stashTies'),
 ): void => {
 	for (const $tie of $ties) {
 		// Ties are immutable, so if they're already in the system,
@@ -58,17 +63,13 @@ export const stashTies = (
 
 		const {source_id, dest_id} = $tie;
 		const sourceTies = lookupTies(sourceTiesByDestEntityId, dest_id);
-		const $sourceTies = sourceTies.get().value;
-		if (!$sourceTies.has($tie)) {
-			$sourceTies.add($tie);
-			mutated.add(sourceTies);
+		if (!sourceTies.get().value.has($tie)) {
+			sourceTies.mutate((s) => s.add($tie));
 		}
 
 		const destTies = lookupTies(destTiesBySourceEntityId, source_id);
-		const $destTies = destTies.get().value;
-		if (!$destTies.has($tie)) {
-			$destTies.add($tie);
-			mutated.add(destTies);
+		if (!destTies.get().value.has($tie)) {
+			destTies.mutate((d) => d.add($tie));
 		}
 
 		// Update the queries.
@@ -79,10 +80,8 @@ export const stashTies = (
 			// (currently there's no query store for non-paginated queries, that's a todo)
 			const query = queryByKey.get(source_id);
 			if (query) {
-				const $query = query.data.get().value;
-				if (!$query.has(entity)) {
-					$query.add(entity);
-					mutated.add(query.data);
+				if (!query.data.get().value.has(entity)) {
+					query.data.mutate((q) => q.add(entity));
 				}
 			}
 		} else {
@@ -90,14 +89,11 @@ export const stashTies = (
 			log.warn('stashing tie with unknown dest entity', dest_id);
 		}
 	}
-
-	mutated.end('stashTies');
 };
 
 export const evictTie = (
 	{sourceTiesByDestEntityId, destTiesBySourceEntityId, tieById}: WritableUi,
 	tie_id: number,
-	mutated = new Mutated('evictTie'),
 ): void => {
 	const $tie = tieById.get(tie_id);
 	if (!$tie) return;
@@ -107,31 +103,27 @@ export const evictTie = (
 
 	const sourceTies = sourceTiesByDestEntityId.get(dest_id);
 	if (sourceTies) {
-		sourceTies.get().value.delete($tie);
-		mutated.add(sourceTies);
-		if (sourceTies.get().value.size === 0) {
-			sourceTiesByDestEntityId.delete(dest_id);
-		}
+		sourceTies.mutate((s) => {
+			s.delete($tie);
+			if (s.size === 0) {
+				sourceTiesByDestEntityId.delete(dest_id);
+			}
+		});
 	}
 
 	const destTies = destTiesBySourceEntityId.get(source_id);
 	if (destTies) {
-		destTies.get().value.delete($tie);
-		mutated.add(destTies);
-		if (destTies.get().value.size === 0) {
-			destTiesBySourceEntityId.delete(source_id);
-		}
+		destTies.mutate((d) => {
+			d.delete($tie);
+			if (d.size === 0) {
+				destTiesBySourceEntityId.delete(source_id);
+			}
+		});
 	}
-
-	mutated.end('evictTie');
 };
 
 // TODO delete orphaned entities
-export const evictEntities = (
-	ui: WritableUi,
-	entityIds: number[],
-	mutated = new Mutated('evictEntities'),
-): void => {
+export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
 	const {
 		entityById,
 		tieById,
@@ -156,13 +148,15 @@ export const evictEntities = (
 				const ties = destTiesBySourceEntityId.get($sourceTie.source_id);
 				if (ties) {
 					const $ties = ties.get().value;
+					let mutated = false;
 					for (const $tie of $ties) {
 						if ($tie.dest_id === entity_id) {
 							$ties.delete($tie);
-							mutated.add(ties);
+							mutated = true;
 							tieById.delete($tie.tie_id);
 						}
 					}
+					if (mutated) ties.mutate();
 				}
 				tieById.delete($sourceTie.tie_id);
 			}
@@ -175,13 +169,15 @@ export const evictEntities = (
 				const ties = sourceTiesByDestEntityId.get($destTie.dest_id);
 				if (ties) {
 					const $ties = ties.get().value;
+					let mutated = false;
 					for (const $tie of $ties) {
 						if ($tie.source_id === entity_id) {
 							$ties.delete($tie);
-							mutated.add(ties);
+							mutated = true;
 							tieById.delete($tie.tie_id);
 						}
 					}
+					if (mutated) ties.mutate();
 				}
 				tieById.delete($destTie.tie_id);
 			}
@@ -196,14 +192,10 @@ export const evictEntities = (
 
 		// Update the queries.
 		for (const query of queryByKey.values()) {
-			const $query = query.data.get().value;
-			if ($query.has(entity)) {
-				$query.delete(entity);
-				mutated.add(query.data);
+			if (query.data.get().value.has(entity)) {
+				query.data.mutate((q) => q.delete(entity));
 			}
 		}
 		queryByKey.delete(entity_id);
 	}
-
-	mutated.end('evictEntities');
 };

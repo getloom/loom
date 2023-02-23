@@ -9,24 +9,20 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
-import {Mutated} from '$lib/util/Mutated';
 import {setIfUpdated} from '$lib/util/store';
 
 export const stashSpaces = (
 	ui: WritableUi,
 	$spacesToStash: Space[],
 	$directoriesToStash?: Entity[],
-	mutated = new Mutated('stashSpaces'),
 	replace = false,
 ): void => {
 	const {spaceById, spaces, spaceIdSelectionByCommunityId, spaceSelection, communityById} = ui;
 	const selectedSpace = spaceSelection.get();
-	const $spaceIdSelectionByCommunityId = spaceIdSelectionByCommunityId.get().value;
 
 	if (replace) {
 		spaceById.clear();
-		spaces.get().value.clear();
-		mutated.add(spaces);
+		spaces.mutate((s) => s.clear());
 	}
 
 	for (const $space of $spacesToStash) {
@@ -50,13 +46,11 @@ export const stashSpaces = (
 			// Insert the space. We don't need to handle navigation in this case.
 			space = writable($space);
 			spaceById.set($space.space_id, space);
-			spaces.get().value.add(space);
-			mutated.add(spaces);
+			spaces.mutate((s) => s.add(space!));
 
 			// Set the community's space selection if needed.
-			if (!$spaceIdSelectionByCommunityId.get($space.community_id)) {
-				$spaceIdSelectionByCommunityId.set($space.community_id, $space.space_id);
-				mutated.add(spaceIdSelectionByCommunityId);
+			if (!spaceIdSelectionByCommunityId.get().value.get($space.community_id)) {
+				spaceIdSelectionByCommunityId.mutate((s) => s.set($space.community_id, $space.space_id));
 			}
 		}
 	}
@@ -64,15 +58,9 @@ export const stashSpaces = (
 	if ($directoriesToStash) {
 		stashEntities(ui, $directoriesToStash);
 	}
-
-	mutated.end('stashSpaces');
 };
 
-export const evictSpaces = async (
-	ui: WritableUi,
-	spacesToEvict: Array<Writable<Space>>,
-	mutated = new Mutated('evictSpaces'),
-): Promise<void> => {
+export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>>): void => {
 	const {
 		communityById,
 		spaceIdSelectionByCommunityId,
@@ -88,34 +76,32 @@ export const evictSpaces = async (
 		if (space_id === spaceIdSelectionByCommunityId.get().value.get(community_id)) {
 			const community = communityById.get(community_id)!;
 			if (community === communitySelection.get()) {
-				// eslint-disable-next-line no-await-in-loop
-				await goto(toCommunityUrl(community.get().name, null, get(page).url.search), {
-					replaceState: true,
-				});
+				ui.addMutationEffect(() =>
+					goto(toCommunityUrl(community.get().name, null, get(page).url.search), {
+						replaceState: true,
+					}),
+				);
 			} else {
 				//TODO lookup space by community_id+path (see this comment in multiple places)
 				const homeSpace = spacesByCommunityId
 					.get()
 					.get(community_id)!
 					.find((s) => isHomeSpace(s.get()))!;
-				spaceIdSelectionByCommunityId.get().value.set(community_id, homeSpace.get().space_id);
-				mutated.add(spaceIdSelectionByCommunityId);
+				spaceIdSelectionByCommunityId.mutate((s) => s.set(community_id, homeSpace.get().space_id));
 			}
 		}
 
 		spaceById.delete(space_id);
 	}
 
-	for (const space of spacesToEvict) {
-		spaces.get().value.delete(space);
-	}
-	mutated.add(spaces);
+	spaces.mutate((s) => {
+		for (const space of spacesToEvict) {
+			s.delete(space);
+		}
+	});
 
 	evictEntities(
 		ui,
 		spacesToEvict.map((s) => s.get().directory_id),
-		mutated,
 	);
-
-	mutated.end('evictSpaces');
 };

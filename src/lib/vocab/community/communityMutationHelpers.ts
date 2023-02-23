@@ -8,7 +8,6 @@ import type {Community} from '$lib/vocab/community/community';
 import {evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {toCommunityUrl} from '$lib/ui/url';
-import {Mutated} from '$lib/util/Mutated';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {setIfUpdated} from '$lib/util/store';
@@ -17,26 +16,19 @@ import {isAccountPersona} from '../persona/personaHelpers';
 export const stashCommunities = (
 	ui: WritableUi,
 	$communities: Community[],
-	mutated = new Mutated('stashCommunities'),
 	replace = false,
 ): void => {
 	const {communityById, communities} = ui;
 	if (replace) {
 		communityById.clear();
-		communities.get().value.clear();
-		mutated.add(communities);
+		communities.mutate((c) => c.clear());
 	}
 	for (const $community of $communities) {
-		stashCommunity(ui, $community, mutated);
+		stashCommunity(ui, $community);
 	}
-	mutated.end('stashCommunities');
 };
 
-export const stashCommunity = (
-	ui: WritableUi,
-	$community: Community,
-	mutated = new Mutated('stashCommunity'),
-): Writable<Community> => {
+export const stashCommunity = (ui: WritableUi, $community: Community): Writable<Community> => {
 	const {communityById, communities} = ui;
 
 	let community = communityById.get($community.community_id);
@@ -45,19 +37,13 @@ export const stashCommunity = (
 	} else {
 		community = writable($community);
 		communityById.set($community.community_id, community);
-		communities.get().value.add(community);
-		mutated.add(communities);
+		communities.mutate((c) => c.add(community!));
 	}
 
-	mutated.end('stashCommunity');
 	return community;
 };
 
-export const evictCommunity = async (
-	ui: WritableUi,
-	community_id: number,
-	mutated = new Mutated('evictCommunity'),
-): Promise<void> => {
+export const evictCommunity = (ui: WritableUi, community_id: number): void => {
 	const {
 		communityById,
 		communitySelection,
@@ -78,33 +64,35 @@ export const evictCommunity = async (
 		evictRoles(
 			ui,
 			communityRoleIds.map((r) => r.get().role_id),
-			mutated,
 		);
 	}
 
 	if (communitySelection.get() === community) {
 		const persona = personaSelection.get()!;
-		await goto(toCommunityUrl(persona.get().name, null, get(page).url.search), {
-			replaceState: true,
-		});
+		ui.addMutationEffect(() =>
+			goto(toCommunityUrl(persona.get().name, null, get(page).url.search), {
+				replaceState: true,
+			}),
+		);
 	}
 
-	await evictSpaces(ui, spacesByCommunityId.get().get(community_id)!, mutated);
+	evictSpaces(ui, spacesByCommunityId.get().get(community_id)!);
 
 	communityById.delete(community_id);
 
-	communities.get().value.delete(community);
-	mutated.add(communities);
+	communities.mutate((c) => c.delete(community));
 
 	const $communityIdSelectionByPersonaId = communityIdSelectionByPersonaId.get().value;
+	let mutated = false;
 	for (const [persona_id, communityIdSelection] of $communityIdSelectionByPersonaId) {
 		if (communityIdSelection !== community_id) continue;
 		const persona = personaById.get(persona_id);
 		const $persona = persona?.get();
 		if (!isAccountPersona($persona)) continue; // TODO this check could be refactored, shouldn't be necessary here
 		$communityIdSelectionByPersonaId.set(persona_id, $persona.community_id);
-		mutated.add(communityIdSelectionByPersonaId);
+		mutated = true;
 	}
+	if (mutated) communityIdSelectionByPersonaId.mutate();
 
 	// TODO could speed this up a cache of assignments by community, see in multiple places
 	const assignmentsToEvict: Assignment[] = [];
@@ -113,7 +101,5 @@ export const evictCommunity = async (
 			assignmentsToEvict.push(a);
 		}
 	}
-	await evictAssignments(ui, assignmentsToEvict, mutated);
-
-	mutated.end('evictCommunity');
+	evictAssignments(ui, assignmentsToEvict);
 };

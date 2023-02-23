@@ -15,7 +15,7 @@ export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 
 	// If there's no community locally, we were just added to it, so query its data in full.
 	if (communityById.has(community_id)) {
-		stashAssignments(ui, [assignment]);
+		ui.mutate(() => stashAssignments(ui, [assignment]));
 	} else {
 		const readCommunityResult = await dispatch.ReadCommunity({actor: params.actor, community_id});
 		if (!readCommunityResult.ok) return readCommunityResult;
@@ -29,7 +29,7 @@ export const DeleteAssignment: Mutations['DeleteAssignment'] = async ({params, i
 	if (!result.ok) return result;
 	const assignment = ui.assignmentById.get(params.assignment_id);
 	if (assignment) {
-		await evictAssignments(ui, [assignment]);
+		ui.mutate(() => evictAssignments(ui, [assignment]));
 	}
 	return result;
 };

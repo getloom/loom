@@ -12,7 +12,6 @@ import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {ClientPersona} from '$lib/vocab/persona/persona';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/vocab/account/account';
-import {Mutated} from '$lib/util/Mutated';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashCommunities} from '$lib/vocab/community/communityMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
@@ -62,14 +61,14 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	account.set(guest ? null : $session.account);
 
-	const mutated = new Mutated('SetSession');
-	stashPersonas(ui, guest ? [] : toInitialPersonas($session), mutated, true);
-	stashCommunities(ui, guest ? [] : $session.communities, mutated, true);
-	stashRoles(ui, guest ? [] : $session.roles, mutated, true);
-	stashAssignments(ui, guest ? [] : $session.assignments, mutated, true);
-	stashPolicies(ui, guest ? [] : $session.policies, mutated, true);
-	stashSpaces(ui, guest ? [] : $session.spaces, undefined, mutated, true);
-	mutated.end('SetSession');
+	ui.mutate(() => {
+		stashPersonas(ui, guest ? [] : toInitialPersonas($session), true);
+		stashCommunities(ui, guest ? [] : $session.communities, true);
+		stashRoles(ui, guest ? [] : $session.roles, true);
+		stashAssignments(ui, guest ? [] : $session.assignments, true);
+		stashPolicies(ui, guest ? [] : $session.policies, true);
+		stashSpaces(ui, guest ? [] : $session.spaces, undefined, true);
+	});
 
 	personaIdSelection.set(guest ? null : $session.sessionPersonas[0]?.persona_id ?? null);
 

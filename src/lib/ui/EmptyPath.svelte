@@ -22,12 +22,12 @@
 	export let community: Readable<Community>;
 
 	let selectedView: 'space' | 'entity' =
-		toPathType($page.params.space) === 'EntityPath' ? 'entity' : 'space';
+		toPathType($page.params.space || '') === 'EntityPath' ? 'entity' : 'space';
 
 	$: spaces = $spacesByCommunityId.get($community.community_id);
 	$: homeSpace = spaces?.find((s) => isHomeSpace(s.get()));
 
-	$: spaceParam = $page.params.space;
+	$: spaceParam = $page.params.space || '';
 	$: pathType = toPathType(spaceParam);
 	$: initialSpaceName = pathType === 'SpacePath' ? spaceParam : undefined;
 </script>
