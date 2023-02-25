@@ -25,7 +25,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	perform: async ({repos, params}) => {
 		const {actor, source_id} = params;
 		const {community_id} = unwrap(await repos.space.findByEntity(source_id));
-		unwrap(await checkCommunityAccess(actor, community_id, repos));
+		await checkCommunityAccess(actor, community_id, repos);
 
 		const ties = unwrap(await repos.tie.filterBySourceId(source_id));
 		//TODO stop filtering directory until we fix entity indexing by space_id
@@ -41,7 +41,7 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 	perform: async ({repos, params}) => {
 		const {actor, source_id, pageSize, pageKey} = params;
 		const {community_id} = unwrap(await repos.space.findByEntity(source_id));
-		unwrap(await checkCommunityAccess(actor, community_id, repos));
+		await checkCommunityAccess(actor, community_id, repos);
 
 		const ties = unwrap(await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey));
 		//TODO stop filtering directory until we fix entity indexing by space_id
@@ -59,7 +59,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			const {actor, data, space_id} = params;
 
 			const {community_id} = unwrap(await repos.space.findById(space_id))!;
-			unwrap(await checkPolicy(permissions.CreateEntity, actor, community_id, repos));
+			await checkPolicy(permissions.CreateEntity, actor, community_id, repos);
 
 			const entity = unwrap(await repos.entity.create(actor, data, space_id));
 
@@ -96,7 +96,7 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {actor, entity_id, data} = params;
-			unwrap(await checkEntityOwnership(actor, [entity_id], repos));
+			await checkEntityOwnership(actor, [entity_id], repos);
 
 			const entity = unwrap(await repos.entity.update(entity_id, data));
 			return {ok: true, status: 200, value: {entity}};
@@ -109,7 +109,7 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {actor, entityIds} = params;
-			unwrap(await checkEntityOwnership(actor, entityIds, repos));
+			await checkEntityOwnership(actor, entityIds, repos);
 
 			const entities = unwrap(await repos.entity.eraseByIds(entityIds));
 			return {ok: true, status: 200, value: {entities}};
@@ -122,11 +122,11 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {actor, entityIds} = params;
-			unwrap(await checkEntityOwnership(actor, entityIds, repos));
+			await checkEntityOwnership(actor, entityIds, repos);
 
 			unwrap(await repos.entity.deleteByIds(entityIds));
 
-			unwrap(await cleanOrphanedEntities(repos));
+			await cleanOrphanedEntities(repos);
 
 			return {ok: true, status: 200, value: null};
 		}),

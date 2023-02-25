@@ -1,4 +1,4 @@
-import {OK, unwrap, type Result} from '@feltjs/util';
+import {unwrap} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -10,7 +10,7 @@ import type {Role} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {defaultAdminCommunityRoles, type RoleTemplate} from '$lib/app/templates';
 import type {Policy} from '$lib/vocab/policy/policy';
-import type {ApiResult} from '$lib/server/api';
+import {ApiError} from '$lib/server/api';
 import {randomHue} from '$lib/ui/color';
 
 const log = new Logger(gray('[') + blue('communityHelpers.server') + gray(']'));
@@ -18,7 +18,7 @@ const log = new Logger(gray('[') + blue('communityHelpers.server') + gray(']'));
 export const cleanOrphanCommunities = async (
 	communityIds: number[],
 	repos: Repos,
-): Promise<Result> => {
+): Promise<void> => {
 	for (const community_id of communityIds) {
 		const accountPersonaAssignmentsCount = unwrap(
 			await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community_id), // eslint-disable-line no-await-in-loop
@@ -28,24 +28,22 @@ export const cleanOrphanCommunities = async (
 			unwrap(await repos.community.deleteById(community_id)); // eslint-disable-line no-await-in-loop
 		}
 	}
-	return OK;
 };
 
 export const initAdminCommunity = async (
 	repos: Repos,
 ): Promise<
-	Result<{
-		value?: {
+	| undefined
+	| {
 			community: Community;
 			persona: PublicPersona;
 			ghost: PublicPersona;
 			roles: Role[];
 			policies: Policy[];
 			assignments: Assignment[];
-		};
-	}>
+	  }
 > => {
-	if (await repos.community.hasAdminCommunity()) return OK;
+	if (await repos.community.hasAdminCommunity()) return;
 
 	// The admin community doesn't exist, so this is a freshly installed instance!
 	// We need to set up the admin community and its persona.
@@ -66,19 +64,17 @@ export const initAdminCommunity = async (
 	);
 
 	// Init
-	const {roles, policies, assignments} = unwrap(
-		await initTemplateGovernanceForCommunity(
-			repos,
-			defaultAdminCommunityRoles,
-			community,
-			persona.persona_id,
-		),
+	const {roles, policies, assignments} = await initTemplateGovernanceForCommunity(
+		repos,
+		defaultAdminCommunityRoles,
+		community,
+		persona.persona_id,
 	);
 
 	// Create the ghost persona.
 	const ghost = unwrap(await repos.persona.createGhostPersona());
 
-	return {ok: true, value: {community, persona, ghost, roles, policies, assignments}};
+	return {community, persona, ghost, roles, policies, assignments};
 };
 
 /**
@@ -95,7 +91,7 @@ export const initTemplateGovernanceForCommunity = async (
 	roleTemplates: RoleTemplate[],
 	community: Community,
 	actor: number,
-): Promise<Result<{value: {roles: Role[]; policies: Policy[]; assignments: Assignment[]}}>> => {
+): Promise<{roles: Role[]; policies: Policy[]; assignments: Assignment[]}> => {
 	if (!roleTemplates.length) throw Error('Expected at least one role template');
 
 	const roles: Role[] = [];
@@ -134,16 +130,16 @@ export const initTemplateGovernanceForCommunity = async (
 		await repos.assignment.create(actor, community.community_id, creatorAssignmentRoleId),
 	);
 
-	return {ok: true, value: {roles, policies, assignments: [creatorAssignment]}};
+	return {roles, policies, assignments: [creatorAssignment]};
 };
 
 export const checkRemovePersona = async (
 	persona_id: number,
 	community_id: number,
 	repos: Repos,
-): Promise<ApiResult<undefined>> => {
+): Promise<void> => {
 	if (!unwrap(await repos.assignment.isPersonaInCommunity(persona_id, community_id))) {
-		return {ok: false, status: 400, message: 'persona is not in the community'};
+		throw new ApiError(400, 'persona is not in the community');
 	}
 	const persona = unwrap(
 		await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(persona_id, [
@@ -152,14 +148,14 @@ export const checkRemovePersona = async (
 		]),
 	);
 	if (!persona) {
-		return {ok: false, status: 404, message: 'no persona found'};
+		throw new ApiError(404, 'no persona found');
 	}
 	const community = unwrap(await repos.community.findById(community_id));
 	if (!community) {
-		return {ok: false, status: 404, message: 'no community found'};
+		throw new ApiError(404, 'no community found');
 	}
 	if (community.type === 'personal') {
-		return {ok: false, status: 405, message: 'cannot leave a personal community'};
+		throw new ApiError(405, 'cannot leave a personal community');
 	}
 	if (community_id === ADMIN_COMMUNITY_ID) {
 		const adminAssignmentsCount = unwrap(
@@ -167,13 +163,12 @@ export const checkRemovePersona = async (
 		);
 		// TODO this fails if the persona has multiple roles
 		if (adminAssignmentsCount === 1) {
-			return {ok: false, status: 405, message: 'cannot orphan the admin community'};
+			throw new ApiError(405, 'cannot orphan the admin community');
 		}
 	}
 	if (persona.type === 'community' && persona.community_id === community_id) {
-		return {ok: false, status: 405, message: 'community persona cannot leave its community'};
+		throw new ApiError(405, 'community persona cannot leave its community');
 	}
-	return {ok: true, status: 200, value: undefined};
 };
 
 export const toDefaultCommunitySettings = (name: string): CommunitySettings => ({

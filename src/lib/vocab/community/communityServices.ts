@@ -50,7 +50,7 @@ export const ReadCommunityService: ServiceByName['ReadCommunity'] = {
 			return {ok: false, status: 404, message: 'no community found'};
 		}
 
-		unwrap(await checkCommunityAccess(actor, community_id, repos));
+		await checkCommunityAccess(actor, community_id, repos);
 
 		const [spacesResult, rolesResult, assignmentsResult] = await Promise.all([
 			repos.space.filterByCommunity(community_id),
@@ -119,8 +119,11 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			const {community_id} = community;
 
 			const roleTemplates = template.roles?.length ? template.roles : defaultStandardCommunityRoles;
-			const {roles, assignments, policies} = unwrap(
-				await initTemplateGovernanceForCommunity(repos, roleTemplates, community, actor),
+			const {roles, assignments, policies} = await initTemplateGovernanceForCommunity(
+				repos,
+				roleTemplates,
+				community,
+				actor,
 			);
 
 			// Create the community persona and its assignment
@@ -140,7 +143,7 @@ export const CreateCommunityService: ServiceByName['CreateCommunity'] = {
 			const createSpacesParams = template.spaces?.length
 				? template.spaces.map((s) => spaceTemplateToCreateSpaceParams(s, actor, community_id))
 				: toDefaultSpaces(actor, community);
-			const {spaces, directories} = unwrap(await createSpaces(createSpacesParams, repos));
+			const {spaces, directories} = await createSpaces(createSpacesParams, repos);
 
 			return {
 				ok: true,
@@ -163,7 +166,7 @@ export const UpdateCommunitySettingsService: ServiceByName['UpdateCommunitySetti
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {actor, community_id, settings} = params;
-			unwrap(await checkPolicy(permissions.UpdateCommunitySettings, actor, community_id, repos));
+			await checkPolicy(permissions.UpdateCommunitySettings, actor, community_id, repos);
 			unwrap(await repos.community.updateSettings(community_id, settings));
 			return {ok: true, status: 200, value: null};
 		}),
@@ -174,7 +177,7 @@ export const DeleteCommunityService: ServiceByName['DeleteCommunity'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {actor, community_id} = params;
-			unwrap(await checkPolicy(permissions.DeleteCommunity, actor, community_id, repos));
+			await checkPolicy(permissions.DeleteCommunity, actor, community_id, repos);
 
 			const community = unwrap(await repos.community.findById(community_id));
 			if (!community) {
@@ -198,7 +201,7 @@ export const InviteToCommunityService: ServiceByName['InviteToCommunity'] = {
 	perform: ({transact, params}) =>
 		transact(async (repos) => {
 			const {actor, community_id, name} = params;
-			unwrap(await checkPolicy(permissions.InviteToCommunity, actor, community_id, repos));
+			await checkPolicy(permissions.InviteToCommunity, actor, community_id, repos);
 
 			const community = unwrap(await repos.community.findById(community_id));
 			if (!community) {
@@ -239,11 +242,11 @@ export const LeaveCommunityService: ServiceByName['LeaveCommunity'] = {
 				return {ok: false, status: 403, message: 'actor does not have permission'};
 			}
 
-			unwrap(await checkRemovePersona(persona_id, community_id, repos));
+			await checkRemovePersona(persona_id, community_id, repos);
 
 			unwrap(await repos.assignment.deleteByPersonaAndCommunity(persona_id, community_id));
 
-			unwrap(await cleanOrphanCommunities([community_id], repos));
+			await cleanOrphanCommunities([community_id], repos);
 
 			return {ok: true, status: 200, value: null};
 		}),
@@ -260,13 +263,13 @@ export const KickFromCommunityService: ServiceByName['KickFromCommunity'] = {
 				persona_id,
 				community_id,
 			);
-			unwrap(await checkPolicy(permissions.KickFromCommunity, actor, community_id, repos));
+			await checkPolicy(permissions.KickFromCommunity, actor, community_id, repos);
 
-			unwrap(await checkRemovePersona(persona_id, community_id, repos));
+			await checkRemovePersona(persona_id, community_id, repos);
 
 			unwrap(await repos.assignment.deleteByPersonaAndCommunity(persona_id, community_id));
 
-			unwrap(await cleanOrphanCommunities([community_id], repos));
+			await cleanOrphanCommunities([community_id], repos);
 
 			return {ok: true, status: 200, value: null};
 		}),

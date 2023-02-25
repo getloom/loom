@@ -21,7 +21,7 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 		const {actor, community_id} = params;
 		log.trace('[ReadSpaces] retrieving spaces for community', community_id);
 
-		unwrap(await checkCommunityAccess(actor, community_id, repos));
+		await checkCommunityAccess(actor, community_id, repos);
 
 		const spaces = unwrap(await repos.space.filterByCommunity(community_id));
 
@@ -42,9 +42,9 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 		transact(async (repos) => {
 			const {actor, community_id} = params;
 
-			unwrap(await checkPolicy(permissions.CreateSpace, actor, community_id, repos));
+			await checkPolicy(permissions.CreateSpace, actor, community_id, repos);
 
-			const {space, directory} = unwrap(await createSpace(params, repos));
+			const {space, directory} = await createSpace(params, repos);
 
 			return {ok: true, status: 200, value: {space, directory}};
 		}),
@@ -60,7 +60,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 				return {ok: false, status: 404, message: 'no space found'};
 			}
 
-			unwrap(await checkPolicy(permissions.UpdateSpace, actor, space.community_id, repos));
+			await checkPolicy(permissions.UpdateSpace, actor, space.community_id, repos);
 			const updatedSpace = unwrap(await repos.space.update(space_id, partial));
 			return {ok: true, status: 200, value: {space: updatedSpace}};
 		}),
@@ -82,11 +82,11 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 				return {ok: false, status: 405, message: 'cannot delete home space'};
 			}
 
-			unwrap(await checkPolicy(permissions.DeleteSpace, params.actor, space.community_id, repos));
+			await checkPolicy(permissions.DeleteSpace, params.actor, space.community_id, repos);
 
 			unwrap(await repos.space.deleteById(params.space_id));
 
-			unwrap(await cleanOrphanedEntities(repos));
+			await cleanOrphanedEntities(repos);
 
 			return {ok: true, status: 200, value: null};
 		}),

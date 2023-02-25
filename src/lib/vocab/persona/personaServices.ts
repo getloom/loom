@@ -49,7 +49,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			const communities: Community[] = [];
 
 			// First create the admin community if it doesn't exist yet.
-			const initAdminCommunityValue = unwrap(await initAdminCommunity(repos));
+			const initAdminCommunityValue = await initAdminCommunity(repos);
 
 			// Create the persona's personal community.
 			const community = unwrap(
@@ -65,18 +65,17 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			personas.push(persona);
 
 			// Create the roles, policies, and persona assignment.
-			const {roles, policies, assignments} = unwrap(
-				await initTemplateGovernanceForCommunity(
-					repos,
-					defaultPersonalCommunityRoles,
-					community,
-					persona.persona_id,
-				),
+			const {roles, policies, assignments} = await initTemplateGovernanceForCommunity(
+				repos,
+				defaultPersonalCommunityRoles,
+				community,
+				persona.persona_id,
 			);
 
 			// Create the default spaces.
-			const {spaces, directories} = unwrap(
-				await createSpaces(toDefaultSpaces(persona.persona_id, community), repos),
+			const {spaces, directories} = await createSpaces(
+				toDefaultSpaces(persona.persona_id, community),
+				repos,
 			);
 
 			// If the admin community was created, create the admin spaces and the persona's assignment.
@@ -104,8 +103,9 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 				);
 
 				// Create the admin community's default spaces.
-				const defaultAdminSpaces = unwrap(
-					await createSpaces(toDefaultAdminSpaces(persona.persona_id, adminCommunity), repos),
+				const defaultAdminSpaces = await createSpaces(
+					toDefaultAdminSpaces(persona.persona_id, adminCommunity),
+					repos,
 				);
 				spaces.push(...defaultAdminSpaces.spaces);
 				directories.push(...defaultAdminSpaces.directories);
@@ -157,11 +157,9 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		unwrap(await repos.assignment.deleteByPersona(persona_id));
 		unwrap(await repos.persona.deleteById(persona_id));
 		unwrap(await repos.community.deleteById(persona.community_id)); // must follow `persona.deleteById` it seems
-		unwrap(
-			await cleanOrphanCommunities(
-				communities.map((c) => c.community_id).filter((c) => c !== persona.community_id),
-				repos,
-			),
+		await cleanOrphanCommunities(
+			communities.map((c) => c.community_id).filter((c) => c !== persona.community_id),
+			repos,
 		);
 
 		return {ok: true, status: 200, value: null};

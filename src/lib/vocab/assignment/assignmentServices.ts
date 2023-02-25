@@ -25,7 +25,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 			if (!community) {
 				return {ok: false, status: 404, message: 'no community found'};
 			}
-			unwrap(await checkPolicy(permissions.CreateAssignment, actor, community_id, repos));
+			await checkPolicy(permissions.CreateAssignment, actor, community_id, repos);
 			const assignment = await createAssignment(persona_id, community, role_id, repos);
 			log.trace('[CreateAssignment] new assignment created', assignment.assignment_id);
 			return {ok: true, status: 200, value: {assignment}};
@@ -46,7 +46,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 				return {ok: false, status: 404, message: 'no assignment found'};
 			}
 			const {persona_id, community_id} = assignment;
-			unwrap(await checkPolicy(permissions.DeleteAssignment, actor, community_id, repos));
+			await checkPolicy(permissions.DeleteAssignment, actor, community_id, repos);
 			// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
 			// const [personaResult, communityResult] = await Promise.all([
 			// 	repos.persona.findById(persona_id),
@@ -82,7 +82,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 
 			unwrap(await repos.assignment.deleteById(assignment_id));
 
-			unwrap(await cleanOrphanCommunities([community_id], repos));
+			await cleanOrphanCommunities([community_id], repos);
 
 			return {ok: true, status: 200, value: null};
 		}),
