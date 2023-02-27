@@ -44,15 +44,16 @@ export type UiEvents = EventEmitter<{stashed_entities: [Array<Readable<Entity>>]
 export interface UiBatch {
 	(cb: () => void): void;
 }
-export type MutationEffect = () => any;
-export interface AddMutationEffect {
-	(effect: MutationEffect): void;
+
+export type AfterMutationCallback = () => void;
+export interface AfterMutation {
+	(cb: AfterMutationCallback): void;
 }
 
 export interface Ui {
 	events: UiEvents;
 	mutate: UiBatch;
-	addMutationEffect: AddMutationEffect;
+	afterMutation: AfterMutation;
 
 	// TODO instead of eagerly loading these components,
 	// this should be an interface to lazy-load UI components
@@ -126,23 +127,23 @@ export const toUi = (
 ) => {
 	const events: UiEvents = new EventEmitter();
 
-	const mutationEffects: MutationEffect[] = [];
-	// Wraps mutations into a single batch, flushing `mutationEffects` at the end.
-	// Mutations can do `ui.addMutationEffect(cb)` to add an effect.
+	const afterMutationCallbacks: AfterMutationCallback[] = [];
+	// Wraps mutations into a single batch, flushing `afterMutationCallbacks` at the end.
+	// Mutations can do `ui.afterMutation(cb)` to add an cb.
 	const mutate = (cb: () => void): void => {
 		// TODO call into a store batch function so we get atomic updates (see `@preactjs/signals` as an example)
 		cb();
-		if (mutationEffects.length) {
-			for (const effect of mutationEffects) {
-				effect(); // don't await promises
+		if (afterMutationCallbacks.length) {
+			for (const cb of afterMutationCallbacks) {
+				cb(); // don't await promises
 			}
-			mutationEffects.length = 0;
+			afterMutationCallbacks.length = 0;
 		}
 	};
-	// TODO we probably want to add a way to let effects register a key
+	// TODO we probably want to add a way to let cbs register a key
 	// so they can override each other (e.g. so there's only ever a single navigation)
-	const addMutationEffect = (effect: MutationEffect) => {
-		mutationEffects.push(effect);
+	const afterMutation = (cb: AfterMutationCallback) => {
+		afterMutationCallbacks.push(cb);
 	};
 
 	const account = writable<ClientAccount | null>(null);
@@ -360,7 +361,7 @@ export const toUi = (
 	return {
 		events,
 		mutate,
-		addMutationEffect,
+		afterMutation,
 		components,
 		// db data
 		account,

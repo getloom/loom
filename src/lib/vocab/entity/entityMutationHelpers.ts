@@ -45,7 +45,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 	}
 
 	if (added) {
-		ui.addMutationEffect(() => ui.events.emit('stashed_entities', added!));
+		ui.afterMutation(() => ui.events.emit('stashed_entities', added!));
 	}
 };
 

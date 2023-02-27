@@ -76,7 +76,7 @@ export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>
 		if (space_id === spaceIdSelectionByCommunityId.get().value.get(community_id)) {
 			const community = communityById.get(community_id)!;
 			if (community === communitySelection.get()) {
-				ui.addMutationEffect(() =>
+				ui.afterMutation(() =>
 					goto(toCommunityUrl(community.get().name, null, get(page).url.search), {
 						replaceState: true,
 					}),

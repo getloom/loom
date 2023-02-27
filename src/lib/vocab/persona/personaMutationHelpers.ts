@@ -80,7 +80,7 @@ export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientPers
 			const nextSelectedPersonaIndex = sessionPersonaIndexById
 				.get()
 				.get(nextSelectedPersona.get().persona_id);
-			ui.addMutationEffect(() =>
+			ui.afterMutation(() =>
 				goto(
 					toCommunityUrl(
 						nextSelectedPersona.get().name || '',

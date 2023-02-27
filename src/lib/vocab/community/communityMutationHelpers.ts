@@ -69,7 +69,7 @@ export const evictCommunity = (ui: WritableUi, community_id: number): void => {
 
 	if (communitySelection.get() === community) {
 		const persona = personaSelection.get()!;
-		ui.addMutationEffect(() =>
+		ui.afterMutation(() =>
 			goto(toCommunityUrl(persona.get().name, null, get(page).url.search), {
 				replaceState: true,
 			}),
