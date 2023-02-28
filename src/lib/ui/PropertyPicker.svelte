@@ -7,16 +7,16 @@
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import CommunityPicker from '$lib/ui/CommunityPicker.svelte';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import HubPicker from '$lib/ui/HubPicker.svelte';
+	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 
 	// TODO have an API to click-to-pick for even string values (with a button for more) for things like strings (like persona names, space names, etc, from templates or random)
-	// TODO pick community and the others
+	// TODO pick hub and the others
 	// TODO optional properties
 
 	const {
 		dispatch,
-		ui: {communityById},
+		ui: {hubById},
 	} = getApp();
 
 	type TValue = $$Generic;
@@ -93,22 +93,22 @@
 	// picker dialog
 	// optional
 
-	const doneWithCommunityPicker = async (community_id: number) => {
-		fieldValue = community_id;
+	const doneWithHubPicker = async (hub_id: number) => {
+		fieldValue = hub_id;
 		await save();
 		dispatch.CloseDialog();
 	};
 
-	// TODO everything referencing `community_id` is a hack, this component should be generic
+	// TODO everything referencing `hub_id` is a hack, this component should be generic
 
-	$: community = field === 'community_id' ? communityById.get(value as any) : null;
+	$: hub = field === 'hub_id' ? hubById.get(value as any) : null;
 </script>
 
 <div class="field">{field}</div>
-{#if field !== 'community_id' || community}
+{#if field !== 'hub_id' || hub}
 	<div class="preview markup panel" style:--icon_size="var(--icon_size_sm)">
-		{#if field === 'community_id' && community}
-			<CommunityAvatar {community} />
+		{#if field === 'hub_id' && hub}
+			<HubAvatar {hub} />
 		{:else if value === undefined}
 			<em>undefined</em>
 			<!-- TODO add a button to add/instantiate the field with some value -->
@@ -117,16 +117,16 @@
 		{/if}
 	</div>
 {/if}
-{#if field === 'community_id'}
+{#if field === 'hub_id'}
 	<button
 		type="button"
 		on:click={() =>
 			dispatch.OpenDialog({
-				Component: CommunityPicker,
-				props: {done: doneWithCommunityPicker},
+				Component: HubPicker,
+				props: {done: doneWithHubPicker},
 			})}
 	>
-		pick community
+		pick hub
 	</button>
 {:else}
 	<textarea

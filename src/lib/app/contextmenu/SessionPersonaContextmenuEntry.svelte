@@ -6,26 +6,25 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
+	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	const {
 		ui: {
 			personaSelection,
-			spaceIdSelectionByCommunityId,
+			spaceIdSelectionByHubId,
 			spaceById,
-			communityIdSelectionByPersonaId,
-			communityById,
+			hubIdSelectionByPersonaId,
+			hubById,
 			sessionPersonaIndexById,
 		},
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 
-	$: communityId =
-		$communityIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.community_id;
-	$: community = communityById.get(communityId)!;
-	$: spaceIdSelection = $spaceIdSelectionByCommunityId.value.get($community.community_id);
+	$: hubId = $hubIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.hub_id;
+	$: hub = hubById.get(hubId)!;
+	$: spaceIdSelection = $spaceIdSelectionByHubId.value.get($hub.hub_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
 	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
 </script>
@@ -42,8 +41,8 @@
 	<ContextmenuEntry
 		action={() =>
 			goto(
-				toCommunityUrl(
-					$community.name,
+				toHubUrl(
+					$hub.name,
 					$selectedSpace?.path,
 					toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 				),

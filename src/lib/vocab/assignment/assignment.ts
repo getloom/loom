@@ -2,15 +2,15 @@
 
 /**
  *
- * 	 Describes the relationship between a Persona and Role within a given Community.
- * 	 A Persona must have at least 1 assignment to be in a Community and see it in the nav.
- * 	 When initially joining a Community, Personas are given an Assignment to the default Role.
+ * 	 Describes the relationship between a Persona and Role within a given Hub.
+ * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
+ * 	 When initially joining a Hub, Personas are given an Assignment to the default Role.
  *
  */
 export interface Assignment {
 	assignment_id: number;
 	persona_id: number;
-	community_id: number;
+	hub_id: number;
 	role_id: number;
 	created: Date;
 }

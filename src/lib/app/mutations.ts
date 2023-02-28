@@ -8,13 +8,13 @@ import {
 } from '$lib/vocab/account/accountMutations';
 import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaMutations';
 import {
-	ReadCommunity,
-	CreateCommunity,
-	UpdateCommunitySettings,
-	DeleteCommunity,
-	InviteToCommunity,
-	LeaveCommunity,
-} from '$lib/vocab/community/communityMutations';
+	ReadHub,
+	CreateHub,
+	UpdateHubSettings,
+	DeleteHub,
+	InviteToHub,
+	LeaveHub,
+} from '$lib/vocab/hub/hubMutations';
 import {CreateSpace, DeleteSpace, UpdateSpace} from '$lib/vocab/space/spaceMutations';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentMutations';
 import {
@@ -51,13 +51,13 @@ export const mutations: Record<string, Mutation> = {
 	// personaMutations
 	CreateAccountPersona,
 	DeletePersona,
-	// communityMutations
-	ReadCommunity,
-	CreateCommunity,
-	UpdateCommunitySettings,
-	DeleteCommunity,
-	InviteToCommunity,
-	LeaveCommunity,
+	// hubMutations
+	ReadHub,
+	CreateHub,
+	UpdateHubSettings,
+	DeleteHub,
+	InviteToHub,
+	LeaveHub,
 	// spaceMutations
 	CreateSpace,
 	DeleteSpace,

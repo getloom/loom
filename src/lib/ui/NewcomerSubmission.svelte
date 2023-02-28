@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {getViewContext} from '$lib/vocab/view/view';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {AsyncStatus} from '@feltjs/util/async.js';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import Message from '@feltjs/felt-ui/Message.svelte';
@@ -8,7 +8,7 @@
 	import {autofocus} from '$lib/ui/actions';
 
 	const viewContext = getViewContext();
-	$: ({community} = $viewContext);
+	$: ({hub} = $viewContext);
 
 	let status: AsyncStatus = 'initial'; // TODO refactor
 	let submitted = false;
@@ -61,16 +61,16 @@
 </script>
 
 <div class="markup panel padded-xl">
-	<!-- TODO fix CommunityAvatar on newline-->
+	<!-- TODO fix HubAvatar on newline-->
 	<h1 class="row">
-		Submit application to <CommunityAvatar {community} showName={true} contextmenuAction={null} />
+		Submit application to <HubAvatar {hub} showName={true} contextmenuAction={null} />
 	</h1>
 	{#if !submitted}
 		<form>
 			<fieldset>
 				<label>
 					<div class="title">
-						How did you find this community? If you were invited to join, who invited you?
+						How did you find this hub? If you were invited to join, who invited you?
 					</div>
 					<input
 						placeholder=">"
@@ -84,7 +84,7 @@
 			</fieldset>
 			<fieldset>
 				<label>
-					<div class="title">Why would you like to join this community?</div>
+					<div class="title">Why would you like to join this hub?</div>
 					<input
 						placeholder=">"
 						bind:this={q2El}
@@ -98,7 +98,7 @@
 			<fieldset>
 				<label>
 					<div class="title">
-						These are the norms of our community, how do you think you can contribute?
+						These are the norms of our hub, how do you think you can contribute?
 					</div>
 					<!--TODO discuss a good way to reference the "rules" entity in another space-->
 					<input
@@ -122,7 +122,7 @@
 		<section class="panel padded-xl">
 			<p>
 				Thank you for submitting! We will review your application and get back to you within a week.
-				This process takes time because we want to ensure you and our community are a good fit.
+				This process takes time because we want to ensure you and our hub are a good fit.
 			</p>
 		</section>
 	{/if}

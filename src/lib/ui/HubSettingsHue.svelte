@@ -4,23 +4,23 @@
 	import HueInput from '@feltjs/felt-ui/HueInput.svelte';
 
 	import {getApp} from '$lib/ui/app';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	const {dispatch} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 
 	const UPDATE_INTERVAL = 500; // TODO extract this to config
 	const updateHue = throttle(UPDATE_INTERVAL, async (hue: number): Promise<void> => {
-		await dispatch.UpdateCommunitySettings({
+		await dispatch.UpdateHubSettings({
 			actor: $persona.persona_id,
-			community_id: $community.community_id,
-			settings: {...$community.settings, hue},
+			hub_id: $hub.hub_id,
+			settings: {...$hub.settings, hue},
 		});
 	});
 </script>
 
-<!-- TODO maybe add a title or tooltip explaining `community.settings.hue` -->
-<HueInput hue={$community.settings.hue} on:input={(e) => updateHue(e.detail)} />
+<!-- TODO maybe add a title or tooltip explaining `hub.settings.hue` -->
+<HueInput hue={$hub.settings.hue} on:input={(e) => updateHue(e.detail)} />

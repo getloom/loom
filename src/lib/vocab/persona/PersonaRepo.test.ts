@@ -18,8 +18,8 @@ test__PersonaRepo(
 		const query1 = unwrap(await repos.persona.filterAssociatesByAccount(account.account_id));
 		assert.equal(query1.length, 3);
 
-		//create a community, it should have 4 associates return
-		const {community} = await random.community(persona, account);
+		//create a hub, it should have 4 associates return
+		const {hub} = await random.hub(persona, account);
 		const query2 = unwrap(await repos.persona.filterAssociatesByAccount(account.account_id));
 		assert.equal(query2.length, 4);
 
@@ -28,12 +28,8 @@ test__PersonaRepo(
 		const query3 = unwrap(await repos.persona.filterAssociatesByAccount(account.account_id));
 		assert.equal(query3.length, 4);
 
-		//add new persona to community, now 5 associates return (including new persona)
-		await repos.assignment.create(
-			persona2.persona_id,
-			community.community_id,
-			community.settings.defaultRoleId,
-		);
+		//add new persona to hub, now 5 associates return (including new persona)
+		await repos.assignment.create(persona2.persona_id, hub.hub_id, hub.settings.defaultRoleId);
 
 		const query4 = unwrap(await repos.persona.filterAssociatesByAccount(account.account_id));
 		assert.equal(query4.length, 5);

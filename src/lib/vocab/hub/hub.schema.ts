@@ -1,28 +1,28 @@
-export const CommunitySchema = {
-	$id: '/schemas/Community.json',
+export const HubSchema = {
+	$id: '/schemas/Hub.json',
 	type: 'object',
 	description: `
-		Communities represent the membrane around the places Personas can interact with each other or with system level data.
+		Hubs represent the membrane around the places Personas can interact with each other or with system level data.
 		They have self contained governance and ownership of Spaces within them.
 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
 	`,
 	properties: {
-		community_id: {type: 'number'},
-		type: {type: 'string', enum: ['standard', 'personal']},
+		hub_id: {type: 'number'},
+		type: {type: 'string', enum: ['community', 'personal']},
 		name: {type: 'string'},
-		settings: {$ref: '/schemas/CommunitySettings.json', tsType: 'CommunitySettings'},
+		settings: {$ref: '/schemas/HubSettings.json', tsType: 'HubSettings'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
-	required: ['community_id', 'type', 'name', 'settings', 'created', 'updated'],
+	required: ['hub_id', 'type', 'name', 'settings', 'created', 'updated'],
 	additionalProperties: false,
 };
 
-export const CommunitySettingsSchema = {
-	$id: '/schemas/CommunitySettings.json',
+export const HubSettingsSchema = {
+	$id: '/schemas/HubSettings.json',
 	type: 'object',
 	description: `
-		A nested set of attributes on Community. Holds all community level settings.
+		A nested set of attributes on Hub. Holds all hub level settings.
 	`,
 	properties: {
 		hue: {type: 'number'},
@@ -31,7 +31,7 @@ export const CommunitySettingsSchema = {
 			type: 'object',
 			properties: {
 				allowedAccountNames: {type: 'array', items: {type: 'string'}},
-				disableCreateCommunity: {type: 'boolean'},
+				disableCreateHub: {type: 'boolean'},
 			},
 			additionalProperties: false,
 		},
@@ -40,11 +40,11 @@ export const CommunitySettingsSchema = {
 	additionalProperties: false,
 };
 
-export const InitialCommunitySettingsSchema = {
-	$id: '/schemas/InitialCommunitySettings.json',
+export const InitialHubSettingsSchema = {
+	$id: '/schemas/InitialHubSettings.json',
 	type: 'object',
 	description: `
-		A subset of CommunitySettings needed for defaults at the time of Community creation.
+		A subset of HubSettings needed for defaults at the time of Hub creation.
 	`,
 	properties: {
 		hue: {type: 'number'},

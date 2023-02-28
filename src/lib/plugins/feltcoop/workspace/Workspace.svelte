@@ -7,9 +7,9 @@
 	import MarqueeButton from '$lib/ui/MarqueeButton.svelte';
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
-	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
+	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
-	import CreateCommunityForm from '$lib/ui/CreateCommunityForm.svelte';
+	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import EmptyPath from '$lib/ui/EmptyPath.svelte';
 
@@ -19,7 +19,7 @@
 	} = getApp();
 
 	const viewContext = getViewContext();
-	$: ({persona, community, space} = $viewContext);
+	$: ({persona, hub, space} = $viewContext);
 </script>
 
 <Luggage />
@@ -27,8 +27,8 @@
 <main
 	class="workspace"
 	use:contextmenu.action={[
-		[SpaceContextmenu, space ? {persona, community, space} : undefined],
-		[CommunityContextmenu, community && persona ? {community, persona} : undefined],
+		[SpaceContextmenu, space ? {persona, hub, space} : undefined],
+		[HubContextmenu, hub && persona ? {hub, persona} : undefined],
 	]}
 >
 	{#if $expandMarquee}
@@ -39,17 +39,17 @@
 		/>
 	{/if}
 	<div class="space column">
-		<WorkspaceHeader {space} {community} />
+		<WorkspaceHeader {space} {hub} />
 		<div class="content">
 			{#if persona}
-				{#if community}
+				{#if hub}
 					{#if space}
-						<SpaceView {persona} {community} {space} />
+						<SpaceView {persona} {hub} {space} />
 					{:else}
-						<EmptyPath {persona} {community} />
+						<EmptyPath {persona} {hub} />
 					{/if}
 				{:else}
-					<CreateCommunityForm {persona} />
+					<CreateHubForm {persona} />
 				{/if}
 			{:else}
 				<CreateAccountPersonaForm />
@@ -58,9 +58,9 @@
 		<MarqueeButton />
 	</div>
 	<!-- TODO extract to some shared abstractions with the `Luggage` probably -->
-	{#if $expandMarquee && community && space}
+	{#if $expandMarquee && hub && space}
 		<div class="marquee">
-			<Marquee {community} {space} />
+			<Marquee {hub} {space} />
 		</div>
 	{/if}
 </main>

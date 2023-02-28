@@ -12,7 +12,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, community} = $viewContext);
+	$: ({persona, space, hub} = $viewContext);
 
 	const {
 		dispatch,
@@ -97,7 +97,7 @@
 							done: () => dispatch.CloseDialog(),
 							entityName: 'todo',
 							persona,
-							community,
+							hub,
 							space,
 							fields: {content: true},
 						},

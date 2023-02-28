@@ -68,9 +68,9 @@ export const ClientAccountSessionSchema = {
 			type: 'array',
 			items: {$ref: '/schemas/AccountPersona.json', tsType: 'AccountPersona'},
 		},
-		communities: {
+		hubs: {
 			type: 'array',
-			items: {$ref: '/schemas/Community.json', tsType: 'Community'},
+			items: {$ref: '/schemas/Hub.json', tsType: 'Hub'},
 		},
 		roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
 		spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
@@ -90,7 +90,7 @@ export const ClientAccountSessionSchema = {
 	required: [
 		'account',
 		'sessionPersonas',
-		'communities',
+		'hubs',
 		'roles',
 		'spaces',
 		'directories',
@@ -103,7 +103,7 @@ export const ClientAccountSessionSchema = {
 	// TODO ideally this is generated from the above schema, need mapping between `/schemas/...` and `$lib/vocab/...`, could connect `tsType` and `$ref`
 	tsImport: [
 		"import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona'",
-		"import type {Community} from '$lib/vocab/community/community'",
+		"import type {Hub} from '$lib/vocab/hub/hub'",
 		"import type {Entity} from '$lib/vocab/entity/entity'",
 		"import type {Role} from '$lib/vocab/role/role'",
 		"import type {Space} from '$lib/vocab/space/space'",

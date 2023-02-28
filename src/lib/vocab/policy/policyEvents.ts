@@ -26,7 +26,7 @@ export const CreatePolicy: ServiceEventInfo = {
 	},
 	returns: 'Promise<CreatePolicyResponseResult>',
 	route: {
-		path: '/api/v1/community/policies',
+		path: '/api/v1/hub/policies',
 		method: 'POST',
 	},
 };
@@ -55,7 +55,7 @@ export const ReadPolicies: ServiceEventInfo = {
 	},
 	returns: 'Promise<ReadPoliciesResponseResult>',
 	route: {
-		path: '/api/v1/community/policies',
+		path: '/api/v1/hub/policies',
 		method: 'GET',
 	},
 };
@@ -86,7 +86,7 @@ export const UpdatePolicy: ServiceEventInfo = {
 	},
 	returns: 'Promise<UpdatePolicyResponseResult>',
 	route: {
-		path: '/api/v1/community/policies/:policy_id',
+		path: '/api/v1/hub/policies/:policy_id',
 		method: 'POST',
 	},
 };
@@ -111,7 +111,7 @@ export const DeletePolicy: ServiceEventInfo = {
 	},
 	returns: 'Promise<DeletePolicyResponseResult>',
 	route: {
-		path: '/api/v1/community/policies',
+		path: '/api/v1/hub/policies',
 		method: 'DELETE',
 	},
 };

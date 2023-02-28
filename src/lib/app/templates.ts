@@ -2,13 +2,13 @@ import type {EntityData} from '$lib/vocab/entity/entityData';
 import type {CreatePolicyParams, CreateRoleParams, CreateSpaceParams} from '$lib/app/eventTypes';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {permissions, permissionNames, type PermissionName} from '$lib/vocab/policy/permissions';
-import type {InitialCommunitySettings} from '$lib/vocab/community/community';
+import type {InitialHubSettings} from '$lib/vocab/hub/hub';
 
 // TODO where does this belong? vocab?
 
-export interface CommunityTemplate {
+export interface HubTemplate {
 	name: string;
-	settings?: InitialCommunitySettings;
+	settings?: InitialHubSettings;
 	spaces?: SpaceTemplate[];
 	roles?: RoleTemplate[];
 }
@@ -34,10 +34,10 @@ export type EntityTemplate = EntityData | string; // strings are inferred as `{t
 export const spaceTemplateToCreateSpaceParams = (
 	template: SpaceTemplate,
 	actor: number,
-	community_id: number,
+	hub_id: number,
 ): CreateSpaceParams => ({
 	actor,
-	community_id,
+	hub_id,
 	name: template.name,
 	path: template.path ?? '/' + template.name,
 	icon: template.icon ?? '?',
@@ -47,10 +47,10 @@ export const spaceTemplateToCreateSpaceParams = (
 export const roleTemplateToCreateRoleParams = (
 	template: RoleTemplate,
 	actor: number,
-	community_id: number,
+	hub_id: number,
 ): CreateRoleParams => ({
 	actor,
-	community_id,
+	hub_id,
 	name: template.name,
 });
 
@@ -67,7 +67,7 @@ export const policyTemplateToCreatePolicyParams = (
 // TODO integrate with default space data, `$lib/vocab/space/defaultSpaces.ts`
 const allPolicies: PolicyTemplate[] = permissionNames.map((permission) => ({permission}));
 
-export const defaultAdminCommunityRoles: RoleTemplate[] = [
+export const defaultAdminHubRoles: RoleTemplate[] = [
 	{
 		name: 'Admin',
 		creator: true,
@@ -76,7 +76,7 @@ export const defaultAdminCommunityRoles: RoleTemplate[] = [
 	},
 ];
 
-export const defaultStandardCommunityRoles: RoleTemplate[] = [
+export const defaultCommunityHubRoles: RoleTemplate[] = [
 	{
 		name: 'Steward',
 		creator: true,
@@ -87,7 +87,7 @@ export const defaultStandardCommunityRoles: RoleTemplate[] = [
 		default: true,
 		policies: [
 			{permission: permissions.Ephemera},
-			{permission: permissions.InviteToCommunity},
+			{permission: permissions.InviteToHub},
 			{permission: permissions.CreateSpace},
 			{permission: permissions.UpdateSpace},
 			{permission: permissions.CreateEntity},
@@ -95,7 +95,7 @@ export const defaultStandardCommunityRoles: RoleTemplate[] = [
 	},
 ];
 
-export const defaultPersonalCommunityRoles: RoleTemplate[] = [
+export const defaultPersonalHubRoles: RoleTemplate[] = [
 	{
 		name: 'Owner',
 		creator: true,

@@ -21,7 +21,7 @@ test__spaceServices(
 	},
 );
 
-test__spaceServices('delete a space in multiple communities', async ({repos, random}) => {
+test__spaceServices('delete a space in multiple hubs', async ({repos, random}) => {
 	const {space, persona} = await random.space();
 
 	unwrap(

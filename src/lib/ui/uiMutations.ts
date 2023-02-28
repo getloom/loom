@@ -6,14 +6,14 @@ import {browser} from '$app/environment';
 
 import type {Mutations} from '$lib/app/eventTypes';
 import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
-import {toCommunityUrl, gotoUnlessActive} from '$lib/ui/url';
+import {toHubUrl, gotoUnlessActive} from '$lib/ui/url';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {ClientPersona} from '$lib/vocab/persona/persona';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/vocab/account/account';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
-import {stashCommunities} from '$lib/vocab/community/communityMutationHelpers';
+import {stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
@@ -41,15 +41,15 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		session,
 		account,
 		personaIdSelection,
-		communityIdSelectionByPersonaId,
-		spaceIdSelectionByCommunityId,
+		hubIdSelectionByPersonaId,
+		spaceIdSelectionByHubId,
 		entityById,
 		queryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
 		lastSeenByDirectoryId,
 		freshnessByDirectoryId,
-		freshnessByCommunityId,
+		freshnessByHubId,
 	} = ui;
 
 	const $session = params.session;
@@ -63,7 +63,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	ui.mutate(() => {
 		stashPersonas(ui, guest ? [] : toInitialPersonas($session), true);
-		stashCommunities(ui, guest ? [] : $session.communities, true);
+		stashHubs(ui, guest ? [] : $session.hubs, true);
 		stashRoles(ui, guest ? [] : $session.roles, true);
 		stashAssignments(ui, guest ? [] : $session.assignments, true);
 		stashPolicies(ui, guest ? [] : $session.policies, true);
@@ -74,24 +74,20 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	// TODO these two selections are hacky because using the derived stores
 	// was causing various confusing issues, so they find stuff directly on the session objects
-	// instead of using derived stores like `sessionPersonas` and `spacesByCommunityId`.
-	communityIdSelectionByPersonaId.swap(
+	// instead of using derived stores like `sessionPersonas` and `spacesByHubId`.
+	hubIdSelectionByPersonaId.swap(
 		// TODO first try to load this from localStorage
-		new Map(guest ? null : $session.sessionPersonas.map(($p) => [$p.persona_id, $p.community_id!])),
+		new Map(guest ? null : $session.sessionPersonas.map(($p) => [$p.persona_id, $p.hub_id!])),
 	);
-	spaceIdSelectionByCommunityId.swap(
-		//TODO lookup space by community_id+path (see this comment in multiple places)
+	spaceIdSelectionByHubId.swap(
+		//TODO lookup space by hub_id+path (see this comment in multiple places)
 		new Map(
 			guest
 				? null
-				: $session.communities.map(($community) => [
-						$community.community_id,
-						spaceIdSelectionByCommunityId
-							.getJson()
-							?.find((v) => v[0] === $community.community_id)?.[1] ||
-							$session.spaces.find(
-								(s) => s.community_id === $community.community_id && isHomeSpace(s),
-							)?.space_id ||
+				: $session.hubs.map(($hub) => [
+						$hub.hub_id,
+						spaceIdSelectionByHubId.getJson()?.find((v) => v[0] === $hub.hub_id)?.[1] ||
+							$session.spaces.find((s) => s.hub_id === $hub.hub_id && isHomeSpace(s))?.space_id ||
 							null,
 				  ]),
 		),
@@ -104,7 +100,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	lastSeenByDirectoryId.clear();
 	freshnessByDirectoryId.clear();
-	freshnessByCommunityId.clear();
+	freshnessByHubId.clear();
 
 	// Add entities after the other stores are ready.
 	if (!guest) stashEntities(ui, $session.directories);
@@ -149,7 +145,7 @@ export const CloseDialog: Mutations['CloseDialog'] = ({ui: {dialogs}}) => {
 
 export const ViewSpace: Mutations['ViewSpace'] = async ({
 	params: {space_id, view},
-	ui: {spaceById, viewBySpace, communityById},
+	ui: {spaceById, viewBySpace, hubById},
 }) => {
 	const space = spaceById.get(space_id)!;
 	viewBySpace.mutate(($viewBySpace) => {
@@ -164,11 +160,7 @@ export const ViewSpace: Mutations['ViewSpace'] = async ({
 	// we could either move this logic to the views or add a `navigate` boolean param.
 	const $space = space.get();
 	await gotoUnlessActive(
-		toCommunityUrl(
-			communityById.get($space.community_id)!.get().name,
-			$space.path,
-			get(page).url.search,
-		),
+		toHubUrl(hubById.get($space.hub_id)!.get().name, $space.path, get(page).url.search),
 	);
 };
 

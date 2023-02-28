@@ -11,44 +11,39 @@ const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 export const checkPolicy = async (
 	permission: string,
 	actor_id: number,
-	community_id: number,
+	hub_id: number,
 	repos: Repos,
 ): Promise<void> => {
-	log.trace(
-		'checking for policies with permission for actor in community',
-		permission,
-		actor_id,
-		community_id,
-	);
+	log.trace('checking for policies with permission for actor in hub', permission, actor_id, hub_id);
 
 	const policy = unwrap(
-		await repos.policy.filterByActorCommunityPermission(actor_id, community_id, permission),
+		await repos.policy.filterByActorHubPermission(actor_id, hub_id, permission),
 	);
 
 	if (policy.length === 0) {
-		log.trace('no policy present for actor in community', actor_id, community_id);
+		log.trace('no policy present for actor in hub', actor_id, hub_id);
 		throw new ApiError(403, 'actor does not have permission');
 	}
 };
 
 //TODO should we be bypassing policy system like this?
-export const checkCommunityAccess = async (
+export const checkHubAccess = async (
 	actor_id: number,
-	community_id: number,
+	hub_id: number,
 	repos: Repos,
 ): Promise<void> => {
-	log.trace('checking for community access for actor in community', actor_id, community_id);
+	log.trace('checking for hub access for actor in hub', actor_id, hub_id);
 
-	const inCommunity = unwrap(await repos.assignment.isPersonaInCommunity(actor_id, community_id));
+	const inHub = unwrap(await repos.assignment.isPersonaInHub(actor_id, hub_id));
 
-	if (!inCommunity) {
+	if (!inHub) {
 		throw new ApiError(403, 'actor does not have permission');
 	}
 };
 
-export const isCreateCommunityDisabled = async (repos: Repos): Promise<boolean> => {
-	const community = await repos.community.loadAdminCommunity();
-	return !!community.settings.instance?.disableCreateCommunity;
+export const isCreateHubDisabled = async (repos: Repos): Promise<boolean> => {
+	const hub = await repos.hub.loadAdminHub();
+	return !!hub.settings.instance?.disableCreateHub;
 };
 
 export const checkEntityOwnership = async (

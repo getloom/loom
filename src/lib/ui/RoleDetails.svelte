@@ -9,7 +9,7 @@
 	import AssignmentItem from '$lib/ui/AssignmentItem.svelte';
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import {permissionNames} from '$lib/vocab/policy/permissions';
 	import type {DeleteRoleResponseResult} from '$lib/app/eventTypes';
 
@@ -20,7 +20,7 @@
 
 	export let persona: Readable<AccountPersona>;
 	export let role: Readable<Role>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let deleteRole: (role: Readable<Role>) => Promise<DeleteRoleResponseResult>;
 
 	$: assignments = $assignmentsByRoleId.get($role.role_id);
@@ -81,10 +81,7 @@
 					dispatch.OpenDialog({
 						Component: AssignmentManager,
 						dialogProps: {layout: 'page'},
-						props: {
-							role,
-							community,
-						},
+						props: {role, hub},
 					})}
 			>
 				assign this role to a persona

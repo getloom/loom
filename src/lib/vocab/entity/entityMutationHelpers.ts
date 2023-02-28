@@ -7,7 +7,7 @@ import type {Tie} from '$lib/vocab/tie/tie';
 import {
 	setLastSeen,
 	updateLastSeen,
-	upsertFreshnessByCommunityId,
+	upsertFreshnessByHubId,
 	setFreshnessByDirectoryId,
 } from '$lib/ui/uiMutationHelpers';
 import {lookupTies} from '$lib/vocab/tie/tieHelpers';
@@ -36,7 +36,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 				setLastSeen(ui, entity_id, ($entity.updated || $entity.created).getTime());
 				setFreshnessByDirectoryId(ui, entity);
 			}
-			upsertFreshnessByCommunityId(ui, spaceById.get($entity.space_id)!.get().community_id);
+			upsertFreshnessByHubId(ui, spaceById.get($entity.space_id)!.get().hub_id);
 			// Is the directory's space selected? If so we don't want a notification.
 			if (entity_id === spaceSelection.get()?.get().directory_id) {
 				updateLastSeen(ui, entity_id);

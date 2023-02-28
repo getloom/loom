@@ -11,19 +11,15 @@ const log = new Logger('[syncUiToUrl]');
 
 // TODO instead of dispatching `select` events on startup, initialize with correct values
 
-export const syncUiToUrl = (
-	ui: Ui,
-	params: {community?: string; space?: string},
-	url: URL,
-): void => {
-	if (!params.community) return;
+export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url: URL): void => {
+	if (!params.hub) return;
 
 	const {
-		communities,
+		hubs,
 		personaIndexSelection,
-		communitySelection,
-		spacesByCommunityId,
-		spaceIdSelectionByCommunityId,
+		hubSelection,
+		spacesByHubId,
+		spaceIdSelectionByHubId,
 		sessionPersonas,
 	} = ui;
 
@@ -48,35 +44,33 @@ export const syncUiToUrl = (
 		selectPersona(ui, persona.get().persona_id);
 	} // else already selected
 
-	// TODO speed this up with a map of communityByName
-	const community = Array.from(communities.get().value).find(
-		(c) => c.get().name === params.community,
-	);
-	if (!community) {
-		// occurs when routing to an inaccessible or nonexistent community
-		selectCommunity(ui, null);
+	// TODO speed this up with a map of hubByName
+	const hub = Array.from(hubs.get().value).find((c) => c.get().name === params.hub);
+	if (!hub) {
+		// occurs when routing to an inaccessible or nonexistent hub
+		selectHub(ui, null);
 		return;
 	}
-	const {community_id} = community.get();
-	if (community !== communitySelection.get()) {
-		selectCommunity(ui, community_id);
+	const {hub_id} = hub.get();
+	if (hub !== hubSelection.get()) {
+		selectHub(ui, hub_id);
 	}
 
 	const spacePath = '/' + (params.space || '');
-	//TODO lookup space by community_id+path (see this comment in multiple places)
-	const space = spacesByCommunityId
+	//TODO lookup space by hub_id+path (see this comment in multiple places)
+	const space = spacesByHubId
 		.get()
-		.get(community_id)!
+		.get(hub_id)!
 		.find((s) => s.get().path === spacePath);
 	if (!space) {
 		// occurs when routing to an inaccessible or nonexistent space
-		selectSpace(ui, community_id, null);
+		selectSpace(ui, hub_id, null);
 		return;
 	}
-	const selectedSpaceId = spaceIdSelectionByCommunityId.get().value.get(community_id);
+	const selectedSpaceId = spaceIdSelectionByHubId.get().value.get(hub_id);
 	const {space_id} = space.get();
 	if (space_id !== selectedSpaceId) {
-		selectSpace(ui, community_id, space_id);
+		selectSpace(ui, hub_id, space_id);
 	}
 };
 
@@ -85,24 +79,24 @@ const selectPersona = ({personaIdSelection}: Ui, persona_id: number): void => {
 	(personaIdSelection as Writable<number | null>).set(persona_id);
 };
 
-const selectCommunity = (
-	{personaIdSelection, communityIdSelectionByPersonaId}: Ui,
-	community_id: number | null,
+const selectHub = (
+	{personaIdSelection, hubIdSelectionByPersonaId}: Ui,
+	hub_id: number | null,
 ): void => {
 	const $personaIdSelection = personaIdSelection.get();
 	if ($personaIdSelection) {
-		communityIdSelectionByPersonaId.mutate(($c) => {
-			$c.set($personaIdSelection, community_id);
+		hubIdSelectionByPersonaId.mutate(($c) => {
+			$c.set($personaIdSelection, hub_id);
 		});
 	}
 };
 
 const selectSpace = (
-	{spaceIdSelectionByCommunityId}: Ui,
-	community_id: number,
+	{spaceIdSelectionByHubId}: Ui,
+	hub_id: number,
 	space_id: number | null,
 ): void => {
-	spaceIdSelectionByCommunityId.mutate(($s) => {
-		$s.set(community_id, space_id);
+	spaceIdSelectionByHubId.mutate(($s) => {
+		$s.set(hub_id, space_id);
 	});
 };

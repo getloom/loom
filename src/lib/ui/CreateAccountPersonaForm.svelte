@@ -7,7 +7,7 @@
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
+	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 
 	const {
@@ -44,8 +44,8 @@
 			errorMessage = null;
 			name = '';
 			await goto(
-				toCommunityUrl(
-					result.value.communities[0].name,
+				toHubUrl(
+					result.value.hubs[0].name,
 					null,
 					toSearchParams($page.url.searchParams, {
 						persona: $sessionPersonaIndexById.get(result.value.personas[0].persona_id) + '',
@@ -88,6 +88,6 @@ maybe `form.centered` should be interpreted a particular way in Felt? -->
 			{/if}
 			<PendingButton on:click={create} pending={status === 'pending'}>create persona</PendingButton>
 		</fieldset>
-		<Message icon="‼">your persona names are visible to people in the communities you join</Message>
+		<Message icon="‼">your persona names are visible to people in the hubs you join</Message>
 	</form>
 </div>

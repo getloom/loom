@@ -13,20 +13,14 @@ test__EntityRepo.after(teardownDb);
 
 test__EntityRepo('create and delete entities', async ({repos, random}) => {
 	const {
-		community,
+		hub,
 		account,
 		persona,
 		spaces: [space],
-	} = await random.community();
+	} = await random.hub();
 	const assertDbCounts = await testDbCounts(repos);
 	// Create one entity and test that `assertDbCounts` works as expected.
-	const {entity: entity1} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
+	const {entity: entity1} = await random.entity(persona, account, hub, space, space.directory_id);
 	let failed = false;
 	try {
 		await assertDbCounts();
@@ -35,13 +29,7 @@ test__EntityRepo('create and delete entities', async ({repos, random}) => {
 	}
 	if (!failed) throw Error('Expected assertDbCounts to fail');
 	// Create a second entity.
-	const {entity: entity2} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
+	const {entity: entity2} = await random.entity(persona, account, hub, space, space.directory_id);
 	// Delete the created entities, and test that everything is cleaned up.
 	unwrap(await repos.entity.deleteByIds([entity1.entity_id, entity2.entity_id]));
 	await assertDbCounts();
@@ -61,28 +49,10 @@ test__EntityRepo('find entity by id', async ({repos, random}) => {
 });
 
 test__EntityRepo('entites return sorted by descending id', async ({repos, random}) => {
-	const {space, community, persona, account} = await random.space();
-	const {entity: entity0} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
-	const {entity: entity1} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
-	const {entity: entity2} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
+	const {space, hub, persona, account} = await random.space();
+	const {entity: entity0} = await random.entity(persona, account, hub, space, space.directory_id);
+	const {entity: entity1} = await random.entity(persona, account, hub, space, space.directory_id);
+	const {entity: entity2} = await random.entity(persona, account, hub, space, space.directory_id);
 
 	// Ensure repos sort order is shuffled from the insertion order.
 	unwrap(await repos.entity.update(entity1.entity_id, entity1.data));
@@ -130,33 +100,33 @@ test__EntityRepo('disallow mutating tombstones', async ({repos, random}) => {
 test__EntityRepo('check filtering for directories by entity id', async ({repos, random}) => {
 	//Gen space
 	//Gen index entity -> thread entity -> post -> reply
-	const {persona, account, community, space} = await random.space();
+	const {persona, account, hub, space} = await random.space();
 	const {space: space2} = await random.space();
 	const {entity: entityIndex} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityThread} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityPost} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityReply} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);

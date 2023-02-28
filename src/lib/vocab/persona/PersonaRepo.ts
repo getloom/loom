@@ -16,11 +16,11 @@ export class PersonaRepo extends PostgresRepo {
 	async createAccountPersona(
 		name: string,
 		account_id: number,
-		community_id: number,
+		hub_id: number,
 	): Promise<Result<{value: AccountPersona}>> {
 		const data = await this.sql<AccountPersona[]>`
-			INSERT INTO personas (type, name, account_id, community_id) VALUES (
-				'account', ${name}, ${account_id}, ${community_id}
+			INSERT INTO personas (type, name, account_id, hub_id) VALUES (
+				'account', ${name}, ${account_id}, ${hub_id}
 			) RETURNING ${this.sql(PERSONA_COLUMNS.Persona)}
 		`;
 		const persona = data[0];
@@ -30,11 +30,11 @@ export class PersonaRepo extends PostgresRepo {
 
 	async createCommunityPersona(
 		name: string,
-		community_id: number,
+		hub_id: number,
 	): Promise<Result<{value: PublicPersona}>> {
 		const data = await this.sql<PublicPersona[]>`
-			INSERT INTO personas (type, name, community_id) VALUES (
-				'community', ${name}, ${community_id}
+			INSERT INTO personas (type, name, hub_id) VALUES (
+				'community', ${name}, ${hub_id}
 			) RETURNING ${this.sql(PERSONA_COLUMNS.PublicPersona)}
 		`;
 		const persona = data[0];
@@ -75,10 +75,10 @@ export class PersonaRepo extends PostgresRepo {
 			SELECT ${this.sql(PERSONA_COLUMNS.PublicPersona.map((c) => 'p3.' + c))}
 			FROM personas p3
 			JOIN (SELECT DISTINCT persona_id FROM assignments a2
-				JOIN (SELECT DISTINCT a.community_id FROM assignments a
+				JOIN (SELECT DISTINCT a.hub_id FROM assignments a
 					JOIN (SELECT * FROM personas WHERE account_id=${account_id}) p
 					ON p.persona_id=a.persona_id) c
-				ON a2.community_id=c.community_id) p2
+				ON a2.hub_id=c.hub_id) p2
 			ON p3.persona_id=p2.persona_id
 			UNION
 			SELECT ${this.sql(
@@ -117,14 +117,14 @@ export class PersonaRepo extends PostgresRepo {
 		return {ok: true, value: {personas, missing}};
 	}
 
-	async findByCommunity<T extends Partial<Persona> = PublicPersona>(
-		community_id: number,
+	async findByHub<T extends Partial<Persona> = PublicPersona>(
+		hub_id: number,
 		columns = PERSONA_COLUMNS.PublicPersona,
 	): Promise<Result<{value: T | undefined}>> {
-		log.trace('[findByCommunity]', community_id);
+		log.trace('[findByHub]', hub_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
-			FROM personas WHERE community_id=${community_id}
+			FROM personas WHERE hub_id=${hub_id}
 		`;
 		return {ok: true, value: data[0]};
 	}

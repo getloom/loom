@@ -60,9 +60,9 @@ export class EntityRepo extends PostgresRepo {
 			FROM entities e JOIN (
 				SELECT DISTINCT s.directory_id FROM spaces s
 				JOIN (
-					SELECT DISTINCT a.community_id FROM personas p
+					SELECT DISTINCT a.hub_id FROM personas p
 					JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
-				) c ON s.community_id=c.community_id
+				) c ON s.hub_id=c.hub_id
 			) es
 			ON e.entity_id=es.directory_id
 		`;

@@ -7,13 +7,13 @@ import type {
 	SignOutParams,
 	UpdateAccountSettingsParams,
 	UpdateAccountPasswordParams,
-	CreateCommunityParams,
-	ReadCommunityParams,
-	UpdateCommunitySettingsParams,
-	DeleteCommunityParams,
-	InviteToCommunityParams,
-	LeaveCommunityParams,
-	KickFromCommunityParams,
+	CreateHubParams,
+	ReadHubParams,
+	UpdateHubSettingsParams,
+	DeleteHubParams,
+	InviteToHubParams,
+	LeaveHubParams,
+	KickFromHubParams,
 	CreateAccountPersonaParams,
 	DeletePersonaParams,
 	CreateAssignmentParams,
@@ -61,34 +61,22 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<UpdateAccountPasswordParams>;
-	CreateCommunity: (
+	CreateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateHubParams>;
+	ReadHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadHubParams>;
+	UpdateHubSettings: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<CreateCommunityParams>;
-	ReadCommunity: (
+	) => Promise<UpdateHubSettingsParams>;
+	DeleteHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteHubParams>;
+	InviteToHub: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<ReadCommunityParams>;
-	UpdateCommunitySettings: (
+	) => Promise<InviteToHubParams>;
+	LeaveHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<LeaveHubParams>;
+	KickFromHub: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<UpdateCommunitySettingsParams>;
-	DeleteCommunity: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<DeleteCommunityParams>;
-	InviteToCommunity: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<InviteToCommunityParams>;
-	LeaveCommunity: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<LeaveCommunityParams>;
-	KickFromCommunity: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<KickFromCommunityParams>;
+	) => Promise<KickFromHubParams>;
 	CreateAccountPersona: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

@@ -1,45 +1,45 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
-	import InviteToCommunityForm from '$lib/ui/InviteToCommunityForm.svelte';
-	import CommunityEditor from '$lib/ui/CommunityEditor.svelte';
-	import LeaveCommunityForm from '$lib/ui/LeaveCommunityForm.svelte';
-	import DeleteCommunityForm from '$lib/ui/DeleteCommunityForm.svelte';
+	import InviteToHubForm from '$lib/ui/InviteToHubForm.svelte';
+	import HubEditor from '$lib/ui/HubEditor.svelte';
+	import LeaveHubForm from '$lib/ui/LeaveHubForm.svelte';
+	import DeleteHubForm from '$lib/ui/DeleteHubForm.svelte';
 	import ManageRolesForm from '$lib/ui/ManageRolesForm.svelte';
 
 	const {dispatch} = getApp();
 
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let persona: Readable<AccountPersona>;
 </script>
 
 <ContextmenuSubmenu>
 	<svelte:fragment slot="icon">
-		<CommunityAvatar {community} showName={false} />
+		<HubAvatar {hub} showName={false} />
 	</svelte:fragment>
-	<CommunityAvatar {community} showIcon={false} />
+	<HubAvatar {hub} showIcon={false} />
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			action={() =>
 				dispatch.OpenDialog({
-					Component: CommunityEditor,
-					props: {persona, community, done: () => dispatch.CloseDialog()},
+					Component: HubEditor,
+					props: {persona, hub, done: () => dispatch.CloseDialog()},
 				})}
 		>
-			Edit Community
+			Edit Hub
 		</ContextmenuEntry>
 		<ContextmenuEntry
 			action={() =>
 				dispatch.OpenDialog({
 					Component: CreateSpaceForm,
-					props: {persona, community, done: () => dispatch.CloseDialog()},
+					props: {persona, hub, done: () => dispatch.CloseDialog()},
 				})}
 		>
 			Create Space
@@ -49,17 +49,17 @@
 				dispatch.OpenDialog({
 					Component: ManageRolesForm,
 					dialogProps: {layout: 'page'},
-					props: {persona, community},
+					props: {persona, hub},
 				})}
 		>
 			Manage Roles
 		</ContextmenuEntry>
-		{#if $community.type !== 'personal'}
+		{#if $hub.type !== 'personal'}
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({
-						Component: InviteToCommunityForm,
-						props: {persona, community, done: () => dispatch.CloseDialog()},
+						Component: InviteToHubForm,
+						props: {persona, hub, done: () => dispatch.CloseDialog()},
 					})}
 			>
 				Invite People
@@ -67,20 +67,20 @@
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({
-						Component: LeaveCommunityForm,
-						props: {persona, community, done: () => dispatch.CloseDialog()},
+						Component: LeaveHubForm,
+						props: {persona, hub, done: () => dispatch.CloseDialog()},
 					})}
 			>
-				Leave Community
+				Leave Hub
 			</ContextmenuEntry>
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({
-						Component: DeleteCommunityForm,
-						props: {persona, community, done: () => dispatch.CloseDialog()},
+						Component: DeleteHubForm,
+						props: {persona, hub, done: () => dispatch.CloseDialog()},
 					})}
 			>
-				Delete Community
+				Delete Hub
 			</ContextmenuEntry>
 		{/if}
 	</svelte:fragment>

@@ -1,23 +1,23 @@
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 
-export const CreateCommunity: ServiceEventInfo = {
+export const CreateHub: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'CreateCommunity',
+	name: 'CreateHub',
 	params: {
-		$id: '/schemas/CreateCommunityParams.json',
+		$id: '/schemas/CreateHubParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			template: {type: 'object', tsType: 'CommunityTemplate'}, // TODO add template schemas and use $ref
+			template: {type: 'object', tsType: 'HubTemplate'}, // TODO add template schemas and use $ref
 		},
 		required: ['actor', 'template'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/CreateCommunityResponse.json',
+		$id: '/schemas/CreateHubResponse.json',
 		type: 'object',
 		properties: {
-			community: {$ref: '/schemas/Community.json', tsType: 'Community'},
+			hub: {$ref: '/schemas/Hub.json', tsType: 'Hub'},
 			roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
 			directories: {
@@ -31,42 +31,34 @@ export const CreateCommunity: ServiceEventInfo = {
 				items: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
 			},
 		},
-		required: [
-			'community',
-			'roles',
-			'policies',
-			'spaces',
-			'directories',
-			'assignments',
-			'personas',
-		],
+		required: ['hub', 'roles', 'policies', 'spaces', 'directories', 'assignments', 'personas'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<CreateCommunityResponseResult>',
+	returns: 'Promise<CreateHubResponseResult>',
 	route: {
-		path: '/api/v1/communities',
+		path: '/api/v1/hubs',
 		method: 'POST',
 	},
 };
 
-export const ReadCommunity: ServiceEventInfo = {
+export const ReadHub: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'ReadCommunity',
+	name: 'ReadHub',
 	params: {
-		$id: '/schemas/ReadCommunityParams.json',
+		$id: '/schemas/ReadHubParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 		},
-		required: ['actor', 'community_id'],
+		required: ['actor', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/ReadCommunityResponse.json',
+		$id: '/schemas/ReadHubResponse.json',
 		type: 'object',
 		properties: {
-			community: {$ref: '/schemas/Community.json', tsType: 'Community'},
+			hub: {$ref: '/schemas/Hub.json', tsType: 'Hub'},
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
 			directories: {
 				type: 'array',
@@ -79,83 +71,83 @@ export const ReadCommunity: ServiceEventInfo = {
 				items: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
 			},
 		},
-		required: ['community', 'spaces', 'directories', 'roles', 'assignments', 'personas'],
+		required: ['hub', 'spaces', 'directories', 'roles', 'assignments', 'personas'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<ReadCommunityResponseResult>',
+	returns: 'Promise<ReadHubResponseResult>',
 	route: {
-		path: '/api/v1/communities/:community_id',
+		path: '/api/v1/hubs/:hub_id',
 		method: 'GET',
 	},
 };
 
-export const UpdateCommunitySettings: ServiceEventInfo = {
+export const UpdateHubSettings: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'UpdateCommunitySettings',
+	name: 'UpdateHubSettings',
 	broadcast: true,
 	params: {
-		$id: '/schemas/UpdateCommunitySettingsParams.json',
+		$id: '/schemas/UpdateHubSettingsParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
-			settings: {$ref: '/schemas/CommunitySettings.json', tsType: 'CommunitySettings'},
+			hub_id: {type: 'number'},
+			settings: {$ref: '/schemas/HubSettings.json', tsType: 'HubSettings'},
 		},
-		required: ['actor', 'community_id', 'settings'],
+		required: ['actor', 'hub_id', 'settings'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/UpdateCommunitySettingsResponse.json',
+		$id: '/schemas/UpdateHubSettingsResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<UpdateCommunitySettingsResponseResult>',
+	returns: 'Promise<UpdateHubSettingsResponseResult>',
 	route: {
-		path: '/api/v1/communities/:community_id/settings',
+		path: '/api/v1/hubs/:hub_id/settings',
 		method: 'POST',
 	},
 };
 
-export const DeleteCommunity: ServiceEventInfo = {
+export const DeleteHub: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'DeleteCommunity',
+	name: 'DeleteHub',
 	params: {
-		$id: '/schemas/DeleteCommunityParams.json',
+		$id: '/schemas/DeleteHubParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 		},
-		required: ['actor', 'community_id'],
+		required: ['actor', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/DeleteCommunityResponse.json',
+		$id: '/schemas/DeleteHubResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<DeleteCommunityResponseResult>',
+	returns: 'Promise<DeleteHubResponseResult>',
 	route: {
-		path: '/api/v1/communities/:community_id',
+		path: '/api/v1/hubs/:hub_id',
 		method: 'DELETE',
 	},
 };
 
-export const InviteToCommunity: ServiceEventInfo = {
+export const InviteToHub: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'InviteToCommunity',
+	name: 'InviteToHub',
 	broadcast: true,
 	params: {
-		$id: '/schemas/InviteToCommunityParams.json',
+		$id: '/schemas/InviteToHubParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 			name: {type: 'string'},
 		},
-		required: ['actor', 'community_id', 'name'],
+		required: ['actor', 'hub_id', 'name'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/InviteToCommunityResponse.json',
+		$id: '/schemas/InviteToHubResponse.json',
 		type: 'object',
 		properties: {
 			persona: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
@@ -164,61 +156,61 @@ export const InviteToCommunity: ServiceEventInfo = {
 		required: ['persona', 'assignment'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<InviteToCommunityResponseResult>',
+	returns: 'Promise<InviteToHubResponseResult>',
 	route: {
-		path: '/api/v1/community/invite',
+		path: '/api/v1/hub/invite',
 		method: 'POST',
 	},
 };
 
-export const LeaveCommunity: ServiceEventInfo = {
+export const LeaveHub: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'LeaveCommunity',
+	name: 'LeaveHub',
 	broadcast: true,
 	params: {
-		$id: '/schemas/LeaveCommunityParams.json',
+		$id: '/schemas/LeaveHubParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
 			persona_id: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 		},
-		required: ['actor', 'persona_id', 'community_id'],
+		required: ['actor', 'persona_id', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/LeaveCommunityResponse.json',
+		$id: '/schemas/LeaveHubResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<LeaveCommunityResponseResult>',
+	returns: 'Promise<LeaveHubResponseResult>',
 	route: {
-		path: '/api/v1/community/leave',
+		path: '/api/v1/hub/leave',
 		method: 'POST',
 	},
 };
 
-export const KickFromCommunity: ServiceEventInfo = {
+export const KickFromHub: ServiceEventInfo = {
 	type: 'ServiceEvent',
-	name: 'KickFromCommunity',
+	name: 'KickFromHub',
 	broadcast: true,
 	params: {
-		$id: '/schemas/KickFromCommunityParams.json',
+		$id: '/schemas/KickFromHubParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
 			persona_id: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 		},
-		required: ['actor', 'persona_id', 'community_id'],
+		required: ['actor', 'persona_id', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/KickFromCommunityResponse.json',
+		$id: '/schemas/KickFromHubResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<KickFromCommunityResponseResult>',
+	returns: 'Promise<KickFromHubResponseResult>',
 	route: {
-		path: '/api/v1/community/kick',
+		path: '/api/v1/hub/kick',
 		method: 'POST',
 	},
 };

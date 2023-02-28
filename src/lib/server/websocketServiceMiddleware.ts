@@ -113,7 +113,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		}
 
 		// TODO this is very hacky -- what should the API for returning/broadcasting responses be?
-		// A quick improvement would be to scope to the community.
+		// A quick improvement would be to scope to the hub.
 		// We probably also want 2 types of messages, `JsonRpcResponse` for this specific client
 		// and some generic broadcast message type for everyone else.
 		socket.send(serializedResponse);
@@ -128,7 +128,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			};
 			const serializedBroadcastMessage = JSON.stringify(broadcastMessage);
 
-			// TODO scope to community and/or account
+			// TODO scope to hub and/or account
 			for (const client of server.websocketServer.wss.clients) {
 				if (client !== socket) {
 					client.send(serializedBroadcastMessage);

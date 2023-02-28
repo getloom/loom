@@ -5,14 +5,14 @@ import {
 	DeletePersonaService,
 } from '$lib/vocab/persona/personaServices';
 import {
-	ReadCommunityService,
-	CreateCommunityService,
-	UpdateCommunitySettingsService,
-	DeleteCommunityService,
-	InviteToCommunityService,
-	LeaveCommunityService,
-	KickFromCommunityService,
-} from '$lib/vocab/community/communityServices';
+	ReadHubService,
+	CreateHubService,
+	UpdateHubSettingsService,
+	DeleteHubService,
+	InviteToHubService,
+	LeaveHubService,
+	KickFromHubService,
+} from '$lib/vocab/hub/hubServices';
 import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
@@ -65,14 +65,14 @@ export const services: Map<string, Service> = new Map(
 		// personaServices
 		CreateAccountPersonaService,
 		DeletePersonaService,
-		// communityServices
-		ReadCommunityService,
-		CreateCommunityService,
-		UpdateCommunitySettingsService,
-		DeleteCommunityService,
-		InviteToCommunityService,
-		LeaveCommunityService,
-		KickFromCommunityService,
+		// hubServices
+		ReadHubService,
+		CreateHubService,
+		UpdateHubSettingsService,
+		DeleteHubService,
+		InviteToHubService,
+		LeaveHubService,
+		KickFromHubService,
 		// assignmentServices
 		CreateAssignmentService,
 		DeleteAssignmentService,

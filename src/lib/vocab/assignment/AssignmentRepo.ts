@@ -10,12 +10,12 @@ const log = new Logger(gray('[') + blue('AssignmentRepo') + gray(']'));
 export class AssignmentRepo extends PostgresRepo {
 	async create(
 		persona_id: number,
-		community_id: number,
+		hub_id: number,
 		role_id: number,
 	): Promise<Result<{value: Assignment}>> {
 		const data = await this.sql<Assignment[]>`
-			INSERT INTO assignments (persona_id, community_id, role_id) VALUES (
-				${persona_id},${community_id},${role_id}
+			INSERT INTO assignments (persona_id, hub_id, role_id) VALUES (
+				${persona_id},${hub_id},${role_id}
 			) RETURNING *
 		`;
 		log.trace('created assignment', data[0]);
@@ -24,7 +24,7 @@ export class AssignmentRepo extends PostgresRepo {
 
 	async findById(assignment_id: number): Promise<Result<{value: Assignment | undefined}>> {
 		const data = await this.sql<Assignment[]>`
-			SELECT assignment_id, persona_id, community_id, role_id, created
+			SELECT assignment_id, persona_id, hub_id, role_id, created
 			FROM assignments
 			WHERE assignment_id=${assignment_id}
 		`;
@@ -33,13 +33,13 @@ export class AssignmentRepo extends PostgresRepo {
 
 	async findByUniqueIds(
 		persona_id: number,
-		community_id: number,
+		hub_id: number,
 		role_id: number,
 	): Promise<Result<{value: Assignment | undefined}>> {
 		const data = await this.sql<Assignment[]>`
-			SELECT assignment_id, persona_id, community_id, role_id, created
+			SELECT assignment_id, persona_id, hub_id, role_id, created
 			FROM assignments
-			WHERE ${persona_id}=persona_id AND ${community_id}=community_id AND ${role_id}=role_id
+			WHERE ${persona_id}=persona_id AND ${hub_id}=hub_id AND ${role_id}=role_id
 		`;
 		return {ok: true, value: data[0]};
 	}
@@ -47,60 +47,55 @@ export class AssignmentRepo extends PostgresRepo {
 	async filterByAccount(account_id: number): Promise<Result<{value: Assignment[]}>> {
 		log.trace(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Assignment[]>`
-			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
+			SELECT a.assignment_id, a.persona_id, a.hub_id, a.role_id, a.created
 			FROM assignments a JOIN (
-				SELECT DISTINCT a.community_id FROM personas p 
+				SELECT DISTINCT a.hub_id FROM personas p 
 				JOIN assignments a 
 				ON p.persona_id=a.persona_id AND p.account_id=${account_id}
 			) apc
-			ON a.community_id=apc.community_id;
+			ON a.hub_id=apc.hub_id;
 		`;
 		return {ok: true, value: data};
 	}
 
 	async filterByPersona(persona_id: number): Promise<Result<{value: Assignment[]}>> {
 		const data = await this.sql<Assignment[]>`
-			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
+			SELECT a.assignment_id, a.persona_id, a.hub_id, a.role_id, a.created
 			FROM assignments a JOIN (
-				SELECT DISTINCT community_id FROM assignments
+				SELECT DISTINCT hub_id FROM assignments
 				WHERE persona_id=${persona_id}
 			) ac
-			ON a.community_id=ac.community_id;
+			ON a.hub_id=ac.hub_id;
 		`;
 		return {ok: true, value: data};
 	}
 
-	async filterByCommunity(community_id: number): Promise<Result<{value: Assignment[]}>> {
-		log.trace(`[filterByCommunity] ${community_id}`);
+	async filterByHub(hub_id: number): Promise<Result<{value: Assignment[]}>> {
+		log.trace(`[filterByHub] ${hub_id}`);
 		const data = await this.sql<Assignment[]>`
-			SELECT a.assignment_id, a.persona_id, a.community_id, a.role_id, a.created
+			SELECT a.assignment_id, a.persona_id, a.hub_id, a.role_id, a.created
 			FROM assignments a 
-			WHERE a.community_id=${community_id};
+			WHERE a.hub_id=${hub_id};
 		`;
 		return {ok: true, value: data};
 	}
 
-	async countAccountPersonaAssignmentsByCommunityId(
-		community_id: number,
-	): Promise<Result<{value: number}>> {
-		log.trace(`[filterByCommunity] ${community_id}`);
+	async countAccountPersonaAssignmentsByHubId(hub_id: number): Promise<Result<{value: number}>> {
+		log.trace(`[filterByHub] ${hub_id}`);
 		const data = await this.sql<Array<{count: string}>>`
 			SELECT count(*)
 			FROM personas p JOIN (
 				SELECT persona_id
 				FROM assignments 
-				WHERE community_id=${community_id}
+				WHERE hub_id=${hub_id}
 			) as a ON a.persona_id = p.persona_id WHERE p.type = 'account';
 		`;
 		return {ok: true, value: Number(data[0].count)};
 	}
 
-	async isPersonaInCommunity(
-		persona_id: number,
-		community_id: number,
-	): Promise<Result<{value: boolean}>> {
+	async isPersonaInHub(persona_id: number, hub_id: number): Promise<Result<{value: boolean}>> {
 		const [{exists}] = await this.sql`
-			SELECT EXISTS(SELECT 1 FROM assignments WHERE community_id=${community_id} AND persona_id=${persona_id});
+			SELECT EXISTS(SELECT 1 FROM assignments WHERE hub_id=${hub_id} AND persona_id=${persona_id});
 		`;
 		return {ok: true, value: exists};
 	}
@@ -122,13 +117,13 @@ export class AssignmentRepo extends PostgresRepo {
 		return {ok: true, value: data.count};
 	}
 
-	async deleteByPersonaAndCommunity(
+	async deleteByPersonaAndHub(
 		persona_id: number,
-		community_id: number,
+		hub_id: number,
 	): Promise<Result<{value: number}>> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments 
-			WHERE ${persona_id}=persona_id AND ${community_id}=community_id
+			WHERE ${persona_id}=persona_id AND ${hub_id}=hub_id
 		`;
 		return {ok: true, value: data.count};
 	}

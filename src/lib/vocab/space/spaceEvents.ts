@@ -9,13 +9,13 @@ export const CreateSpace: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 			name: {type: 'string'},
 			path: {type: 'string'},
 			icon: {type: 'string'},
 			view: {type: 'string'},
 		},
-		required: ['actor', 'community_id', 'name', 'path', 'icon', 'view'],
+		required: ['actor', 'hub_id', 'name', 'path', 'icon', 'view'],
 		additionalProperties: false,
 	},
 	response: {
@@ -30,7 +30,7 @@ export const CreateSpace: ServiceEventInfo = {
 	},
 	returns: 'Promise<CreateSpaceResponseResult>',
 	route: {
-		path: '/api/v1/communities/:community_id/spaces',
+		path: '/api/v1/hubs/:hub_id/spaces',
 		method: 'POST',
 	},
 };
@@ -43,9 +43,9 @@ export const ReadSpaces: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 		},
-		required: ['actor', 'community_id'],
+		required: ['actor', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -63,7 +63,7 @@ export const ReadSpaces: ServiceEventInfo = {
 	},
 	returns: 'Promise<ReadSpacesResponseResult>',
 	route: {
-		path: '/api/v1/communities/:community_id/spaces',
+		path: '/api/v1/hubs/:hub_id/spaces',
 		method: 'GET',
 	},
 };

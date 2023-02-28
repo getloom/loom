@@ -1,7 +1,7 @@
 import type {WritableUi} from '$lib/ui/ui';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {evictPersona} from '$lib/vocab/persona/personaMutationHelpers';
-import {evictCommunity} from '$lib/vocab/community/communityMutationHelpers';
+import {evictHub} from '$lib/vocab/hub/hubMutationHelpers';
 
 export const stashAssignments = (
 	ui: WritableUi,
@@ -39,35 +39,35 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 		assignmentById.delete(assignment.assignment_id);
 		$assignments.delete(assignment);
 
-		// Did the persona leave the community?
+		// Did the persona leave the hub?
 		// Check if we need to evict any personas.
-		let didPersonaLeaveCommunity = true;
-		const {persona_id, community_id} = assignment;
-		// TODO could speed this up a cache of assignments by community, see in multiple places
+		let didPersonaLeaveHub = true;
+		const {persona_id, hub_id} = assignment;
+		// TODO could speed this up a cache of assignments by hub, see in multiple places
 		for (const a of $assignments) {
-			if (a.persona_id === persona_id && a.community_id === community_id) {
-				didPersonaLeaveCommunity = false;
+			if (a.persona_id === persona_id && a.hub_id === hub_id) {
+				didPersonaLeaveHub = false;
 				break;
 			}
 		}
-		if (didPersonaLeaveCommunity) {
-			// When a session persona leaves a community,
+		if (didPersonaLeaveHub) {
+			// When a session persona leaves a hub,
 			// the persona is never evicted.
-			// and we evict the community unless another session persona has an assignment in it.
-			// When a non-session persona leaves a community,
-			// the community is never evicted,
-			// and the persona is evicted unless it has an assignment in another community.
+			// and we evict the hub unless another session persona has an assignment in it.
+			// When a non-session persona leaves a hub,
+			// the hub is never evicted,
+			// and the persona is evicted unless it has an assignment in another hub.
 			if ($sessionPersonaIndexById.has(persona_id)) {
-				let doesCommunityHaveOtherSessionAssignment = false;
+				let doesHubHaveOtherSessionAssignment = false;
 				for (const a of $assignments) {
-					// TODO could speed this up a cache of assignments by community, see in multiple places
-					if (a.community_id === community_id && $sessionPersonaIndexById.has(a.persona_id)) {
-						doesCommunityHaveOtherSessionAssignment = true;
+					// TODO could speed this up a cache of assignments by hub, see in multiple places
+					if (a.hub_id === hub_id && $sessionPersonaIndexById.has(a.persona_id)) {
+						doesHubHaveOtherSessionAssignment = true;
 						break;
 					}
 				}
-				if (!doesCommunityHaveOtherSessionAssignment) {
-					evictCommunity(ui, community_id);
+				if (!doesHubHaveOtherSessionAssignment) {
+					evictHub(ui, hub_id);
 				}
 			} else {
 				let doesPersonaHaveOtherAssignment = false;

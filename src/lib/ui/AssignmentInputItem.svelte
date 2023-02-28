@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Community} from '$lib/vocab/community/community.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
@@ -11,13 +11,13 @@
 
 	export let persona: Readable<AccountPersona>;
 	export let assignmentPersona: Readable<ClientPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let role: Readable<Role>;
 
 	const createAssignment = async () => {
 		await dispatch.CreateAssignment({
 			actor: $persona.persona_id,
-			community_id: $community.community_id,
+			hub_id: $hub.hub_id,
 			persona_id: $assignmentPersona.persona_id,
 			role_id: $role.role_id,
 		});

@@ -7,7 +7,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
@@ -17,7 +17,7 @@
 	export let done: (() => void) | undefined = undefined;
 	export let entityName = 'Entity';
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 	export let type = 'Collection';
 	export let fields: {name?: boolean; content?: boolean} = {content: true}; // TODO add customization like display names for each field
@@ -78,7 +78,7 @@
 	{#if $$slots.header}
 		<slot name="header">
 			<h2>Create a new {entityName}</h2>
-			<ContextInfo {persona} {community} {space} />
+			<ContextInfo {persona} {hub} {space} />
 		</slot>
 	{/if}
 	<fieldset>

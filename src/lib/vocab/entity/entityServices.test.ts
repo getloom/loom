@@ -13,23 +13,23 @@ import {
 } from '$lib/vocab/entity/entityServices';
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
-import {InviteToCommunityService} from '$lib/vocab/community/communityServices';
+import {InviteToHubService} from '$lib/vocab/hub/hubServices';
 
 /* test_entityServices */
-const test_entityServices = suite<TestDbContext>('communityRepo');
+const test_entityServices = suite<TestDbContext>('hubRepo');
 
 test_entityServices.before(setupDb);
 test_entityServices.after(teardownDb);
 
 test_entityServices('create entities with data', async ({random}) => {
-	const {space, persona, account, community} = await random.space();
+	const {space, persona, account, hub} = await random.space();
 
 	const entityData1: NoteEntityData = {type: 'Note', content: 'this is entity 1'};
 	const entityData2: NoteEntityData = {type: 'Note', content: 'entity: 2'};
 	const {entity: entity1, ties: ties1} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 		{data: entityData1},
@@ -37,7 +37,7 @@ test_entityServices('create entities with data', async ({random}) => {
 	const {entity: entity2, ties: ties2} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 		{data: entityData2},
@@ -55,8 +55,8 @@ test_entityServices('create entities with data', async ({random}) => {
 });
 
 test_entityServices('create entity and return it and directories', async ({repos, random}) => {
-	const {space, persona, account, community} = await random.space();
-	const {space: space2} = await random.space(persona, account, community);
+	const {space, persona, account, hub} = await random.space();
+	const {space: space2} = await random.space(persona, account, hub);
 
 	const entityData = {type: 'Note', content: 'test'} as const;
 	const sourceIds = [space.directory_id, space2.directory_id].sort((a, b) => a - b);
@@ -85,7 +85,7 @@ test_entityServices('create entity and return it and directories', async ({repos
 });
 
 test_entityServices('read paginated entities by source_id', async ({repos, random}) => {
-	const {space, persona, account, community} = await random.space();
+	const {space, persona, account, hub} = await random.space();
 
 	//first query on the space dir and expect an empty set
 	const {entities: filtered} = unwrap(
@@ -100,7 +100,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	const entities = (
 		await Promise.all(
 			Array.from({length: DEFAULT_PAGE_SIZE + 1}, (_, i) =>
-				random.entity(persona, account, community, space, space.directory_id, {
+				random.entity(persona, account, hub, space, space.directory_id, {
 					data: {type: 'Note', content: `This is note ${i}`},
 				}),
 			),
@@ -172,49 +172,23 @@ test_entityServices('assert default as max pageSize', async ({random}) => {
 });
 
 test_entityServices('deleting entities and cleaning orphans', async ({random, repos}) => {
-	const {space, persona, account, community} = await random.space();
+	const {space, persona, account, hub} = await random.space();
 	//generate a collection with 3 notes
-	const {entity: list} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-		{data: {type: 'Collection', content: `grocery list`}},
-	);
-	const {entity: todo1} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-		{
-			data: {type: 'Note', content: `eggs`},
-			ties: [{source_id: list.entity_id}],
-		},
-	);
-	const {entity: todo2} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-		{
-			data: {type: 'Note', content: `bread`},
-			ties: [{source_id: list.entity_id}],
-		},
-	);
-	const {entity: todo3} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-		{
-			data: {type: 'Note', content: `milk`},
-			ties: [{source_id: list.entity_id}],
-		},
-	);
+	const {entity: list} = await random.entity(persona, account, hub, space, space.directory_id, {
+		data: {type: 'Collection', content: `grocery list`},
+	});
+	const {entity: todo1} = await random.entity(persona, account, hub, space, space.directory_id, {
+		data: {type: 'Note', content: `eggs`},
+		ties: [{source_id: list.entity_id}],
+	});
+	const {entity: todo2} = await random.entity(persona, account, hub, space, space.directory_id, {
+		data: {type: 'Note', content: `bread`},
+		ties: [{source_id: list.entity_id}],
+	});
+	const {entity: todo3} = await random.entity(persona, account, hub, space, space.directory_id, {
+		data: {type: 'Note', content: `milk`},
+		ties: [{source_id: list.entity_id}],
+	});
 	const entityIds = [todo1.entity_id, todo2.entity_id, todo3.entity_id];
 	const filterResult = unwrap(await repos.entity.filterByIds(entityIds));
 	assert.is(filterResult.entities.length, 3);
@@ -233,16 +207,16 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, re
 test_entityServices(
 	'can only delete, erase, or update other personas entities in "common" views',
 	async ({repos, random}) => {
-		const {space, persona, account, community} = await random.space();
-		const {space: commonSpace} = await random.space(persona, account, community, '<Todo />');
+		const {space, persona, account, hub} = await random.space();
+		const {space: commonSpace} = await random.space(persona, account, hub, '<Todo />');
 		const {persona: persona2} = await random.persona();
 
 		unwrap(
-			await InviteToCommunityService.perform({
+			await InviteToHubService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
-					community_id: community.community_id,
+					hub_id: hub.hub_id,
 					name: persona2.name,
 				},
 			}),

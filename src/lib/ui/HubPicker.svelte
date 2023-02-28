@@ -1,22 +1,22 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 
 	const {
-		ui: {communities},
+		ui: {hubs},
 	} = getApp();
 
-	$: items = Array.from($communities.value);
+	$: items = Array.from($hubs.value);
 
-	export let done: (community_id: number) => void;
+	export let done: (hub_id: number) => void;
 </script>
 
 <!-- TODO maybe don't resolve the store values and have sub-components read them? -->
-<h2>Pick a Community</h2>
+<h2>Pick a Hub</h2>
 <div>
-	{#each items as community (community)}
-		<button on:click={() => done(community.get().community_id)} class="menu-item">
-			<CommunityAvatar {community} />
+	{#each items as hub (hub)}
+		<button on:click={() => done(hub.get().hub_id)} class="menu-item">
+			<HubAvatar {hub} />
 		</button>
 	{/each}
 </div>

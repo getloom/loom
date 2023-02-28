@@ -26,4 +26,4 @@ export const EntitySchema = {
 };
 
 // TODO expand to the entire vocabulary? generate if so
-export type EntityType = 'Persona' | 'Community';
+export type EntityType = 'Persona' | 'Hub';

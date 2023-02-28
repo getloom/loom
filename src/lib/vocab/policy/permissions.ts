@@ -1,10 +1,10 @@
 export type PermissionName = keyof typeof permissions;
 export const permissions = {
 	Ephemera: 'Ephemera',
-	UpdateCommunitySettings: 'UpdateCommunitySettings',
-	DeleteCommunity: 'DeleteCommunity',
-	InviteToCommunity: 'InviteToCommunity',
-	KickFromCommunity: 'KickFromCommunity',
+	UpdateHubSettings: 'UpdateHubSettings',
+	DeleteHub: 'DeleteHub',
+	InviteToHub: 'InviteToHub',
+	KickFromHub: 'KickFromHub',
 	CreateRole: 'CreateRole',
 	UpdateRole: 'UpdateRole',
 	DeleteRole: 'DeleteRole',

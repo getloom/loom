@@ -2,7 +2,7 @@
 
 /**
  *
- * 	 Spaces are subdivisions within a Community that hold a View and reference to an Entity directory.
+ * 	 Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
  * 	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
  * 	 Each is a Svelte component that conforms to the View interface.
  *
@@ -15,7 +15,7 @@ export interface Space {
 	view: string;
 	created: Date;
 	updated: Date | null;
-	community_id: number;
+	hub_id: number;
 	directory_id: number;
 }
 

@@ -3,7 +3,7 @@
 	import type {AsyncStatus} from '@feltjs/util/async.js';
 	import {tick} from 'svelte';
 
-	import type {Community} from '$lib/vocab/community/community.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
@@ -14,7 +14,7 @@
 	const {dispatch} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
 
 	let name = '';
@@ -29,9 +29,9 @@
 			return;
 		}
 		status = 'pending';
-		const result = await dispatch.InviteToCommunity({
+		const result = await dispatch.InviteToHub({
 			actor: $persona.persona_id,
-			community_id: $community.community_id,
+			hub_id: $hub.hub_id,
 			name,
 		});
 		status = 'success'; // TODO handle failure (also refactor to be generic)
@@ -55,8 +55,8 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<h2>Invite to Community</h2>
-	<ContextInfo {persona} {community} />
+	<h2>Invite to Hub</h2>
+	<ContextInfo {persona} {hub} />
 	<fieldset>
 		<label>
 			<div class="title">persona name to invite</div>

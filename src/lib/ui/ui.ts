@@ -11,7 +11,7 @@ import type {DialogData} from '@feltjs/felt-ui/dialog.js';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
 
-import type {Community} from '$lib/vocab/community/community';
+import type {Hub} from '$lib/vocab/hub/hub';
 import type {Space} from '$lib/vocab/space/space';
 import type {ClientPersona, AccountPersona} from '$lib/vocab/persona/persona';
 import type {ClientAccount, ClientSession} from '$lib/vocab/account/account';
@@ -22,7 +22,7 @@ import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {EphemeraResponse} from '$lib/app/eventTypes';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
@@ -68,13 +68,13 @@ export interface Ui {
 	session: Readable<ClientSession>;
 	sessionPersonas: Mutable<Array<Readable<AccountPersona>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
 	sessionPersonaIndexById: Readable<Map<number, number>>;
-	communities: Mutable<Set<Readable<Community>>>;
+	hubs: Mutable<Set<Readable<Hub>>>;
 	roles: Mutable<Set<Readable<Role>>>;
 	spaces: Mutable<Set<Readable<Space>>>;
 	assignments: Mutable<Set<Assignment>>;
 	policies: Mutable<Set<Readable<Policy>>>;
 	personaById: Map<number, Readable<ClientPersona>>;
-	communityById: Map<number, Readable<Community>>;
+	hubById: Map<number, Readable<Hub>>;
 	roleById: Map<number, Readable<Role>>;
 	assignmentById: Map<number, Assignment>;
 	policyById: Map<number, Readable<Policy>>;
@@ -83,16 +83,16 @@ export interface Ui {
 	tieById: Map<number, Tie>;
 	// derived state
 	//TODO maybe refactor to remove store around map? Like personaById
-	spacesByCommunityId: Readable<Map<number, Array<Readable<Space>>>>;
-	personasByCommunityId: Readable<Map<number, Array<Readable<ClientPersona>>>>;
-	rolesByCommunityId: Readable<Map<number, Array<Readable<Role>>>>;
+	spacesByHubId: Readable<Map<number, Array<Readable<Space>>>>;
+	personasByHubId: Readable<Map<number, Array<Readable<ClientPersona>>>>;
+	rolesByHubId: Readable<Map<number, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
 	policiesByRoleId: Readable<Map<number, Map<string, Readable<Policy>>>>;
 	queryByKey: Map<number, Query>;
 	paginatedQueryByKey: Map<number, PaginatedQueryStore>;
 	sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>>;
 	destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>>;
-	communitiesBySessionPersona: Readable<Map<Readable<AccountPersona>, Array<Readable<Community>>>>;
+	hubsBySessionPersona: Readable<Map<Readable<AccountPersona>, Array<Readable<Hub>>>>;
 	adminPersonas: Readable<Set<Readable<ClientPersona>>>;
 	// view state
 	mobile: Readable<boolean>;
@@ -102,18 +102,18 @@ export interface Ui {
 	expandMarquee: Readable<boolean>;
 	contextmenu: ContextmenuStore;
 	dialogs: Readable<DialogData[]>;
-	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the community
+	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the hub
 	ephemera: Readable<EphemeraResponse | null>;
 	personaIdSelection: Readable<number | null>;
 	personaSelection: Readable<Readable<AccountPersona> | null>;
 	personaIndexSelection: Readable<number | null>;
-	communityIdSelectionByPersonaId: Mutable<Map<number, number | null>>;
-	communitySelection: Readable<Readable<Community> | null>;
-	spaceIdSelectionByCommunityId: Mutable<Map<number, number | null>>;
+	hubIdSelectionByPersonaId: Mutable<Map<number, number | null>>;
+	hubSelection: Readable<Readable<Hub> | null>;
+	spaceIdSelectionByHubId: Mutable<Map<number, number | null>>;
 	spaceSelection: Readable<Readable<Space> | null>;
 	lastSeenByDirectoryId: Map<number, Writable<number> | null>;
 	freshnessByDirectoryId: Map<number, Readable<boolean>>;
-	freshnessByCommunityId: Map<number, Writable<boolean>>;
+	freshnessByHubId: Map<number, Writable<boolean>>;
 }
 
 export type WritableUi = ReturnType<typeof toUi>;
@@ -153,75 +153,75 @@ export const toUi = (
 	// TODO these `Persona`s need additional data compared to every other `Persona`
 	const sessionPersonas = mutable<Array<Writable<AccountPersona>>>([]);
 	const personas = mutable<Set<Writable<ClientPersona>>>(new Set());
-	const communities = mutable<Set<Writable<Community>>>(new Set());
+	const hubs = mutable<Set<Writable<Hub>>>(new Set());
 	const roles = mutable<Set<Writable<Role>>>(new Set());
 	const spaces = mutable<Set<Writable<Space>>>(new Set());
 	const assignments = mutable<Set<Assignment>>(new Set());
 	const policies = mutable<Set<Writable<Policy>>>(new Set());
 	const personaById: Map<number, Writable<ClientPersona>> = new Map();
-	const communityById: Map<number, Writable<Community>> = new Map();
+	const hubById: Map<number, Writable<Hub>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();
 	const assignmentById: Map<number, Assignment> = new Map();
 	const policyById: Map<number, Writable<Policy>> = new Map();
 	const spaceById: Map<number, Writable<Space>> = new Map();
 	// TODO do these maps more efficiently
-	const spacesByCommunityId: Readable<Map<number, Array<Writable<Space>>>> = derived(
-		[communities, spaces],
-		([$communities, $spaces]) => {
+	const spacesByHubId: Readable<Map<number, Array<Writable<Space>>>> = derived(
+		[hubs, spaces],
+		([$hubs, $spaces]) => {
 			const map: Map<number, Array<Writable<Space>>> = new Map();
-			for (const community of $communities.value) {
-				const communitySpaces: Array<Writable<Space>> = [];
-				const {community_id} = community.get();
+			for (const hub of $hubs.value) {
+				const hubSpaces: Array<Writable<Space>> = [];
+				const {hub_id} = hub.get();
 				for (const space of $spaces.value) {
-					if (space.get().community_id === community_id) {
-						communitySpaces.push(space);
+					if (space.get().hub_id === hub_id) {
+						hubSpaces.push(space);
 					}
 				}
-				communitySpaces.sort((_a, _b) => {
+				hubSpaces.sort((_a, _b) => {
 					const a = _a.get();
 					const b = _b.get();
 					return isHomeSpace(a) ? -1 : isHomeSpace(b) ? 1 : a.name < b.name ? -1 : 1;
 				});
-				map.set(community_id, communitySpaces);
+				map.set(hub_id, hubSpaces);
 			}
 			return map;
 		},
 	);
 
-	const personasByCommunityId: Readable<Map<number, Array<Writable<ClientPersona>>>> = derived(
-		[communities, assignments],
-		([$communities, $assignments]) => {
+	const personasByHubId: Readable<Map<number, Array<Writable<ClientPersona>>>> = derived(
+		[hubs, assignments],
+		([$hubs, $assignments]) => {
 			const map: Map<number, Array<Writable<ClientPersona>>> = new Map();
-			for (const community of $communities.value) {
+			for (const hub of $hubs.value) {
 				const communityPersonas: Set<Writable<ClientPersona>> = new Set();
-				const {community_id} = community.get();
+				const {hub_id} = hub.get();
 				for (const assignment of $assignments.value) {
-					if (assignment.community_id === community_id) {
+					if (assignment.hub_id === hub_id) {
 						const persona = personaById.get(assignment.persona_id);
 						if (!persona) continue;
 						if (persona.get().type !== 'account') continue;
 						communityPersonas.add(persona);
 					}
 				}
-				map.set(community_id, Array.from(communityPersonas));
+				map.set(hub_id, Array.from(communityPersonas));
 			}
 			return map;
 		},
 	);
 
-	const rolesByCommunityId: Readable<Map<number, Array<Writable<Role>>>> = derived(
-		[communities, roles],
-		([$communities, $roles]) => {
+	const rolesByHubId: Readable<Map<number, Array<Writable<Role>>>> = derived(
+		[hubs, roles],
+		([$hubs, $roles]) => {
 			const map: Map<number, Array<Writable<Role>>> = new Map();
-			for (const community of $communities.value) {
-				const communityRoles: Array<Writable<Role>> = [];
-				const {community_id} = community.get();
+			for (const hub of $hubs.value) {
+				const hubRoles: Array<Writable<Role>> = [];
+				const {hub_id} = hub.get();
 				for (const role of $roles.value) {
-					if (role.get().community_id === community_id) {
-						communityRoles.push(role);
+					if (role.get().hub_id === hub_id) {
+						hubRoles.push(role);
 					}
 				}
-				map.set(community_id, communityRoles);
+				map.set(hub_id, hubRoles);
 			}
 			return map;
 		},
@@ -280,53 +280,47 @@ export const toUi = (
 		[sessionPersonas],
 		([$sessionPersonas]) => new Map($sessionPersonas.value.map((p, i) => [p.get().persona_id, i])),
 	);
-	const communitiesBySessionPersona: Readable<
-		Map<Writable<AccountPersona>, Array<Writable<Community>>>
-	> = derived(
-		[sessionPersonas, assignments, communities],
-		([$sessionPersonas, $assignments, $communities]) => {
-			const map: Map<Writable<AccountPersona>, Array<Writable<Community>>> = new Map();
+	const hubsBySessionPersona: Readable<Map<Writable<AccountPersona>, Array<Writable<Hub>>>> =
+		derived([sessionPersonas, assignments, hubs], ([$sessionPersonas, $assignments, $hubs]) => {
+			const map: Map<Writable<AccountPersona>, Array<Writable<Hub>>> = new Map();
 			for (const sessionPersona of $sessionPersonas.value) {
 				const $sessionPersona = sessionPersona.get();
-				const sessionPersonaCommunities: Array<Writable<Community>> = [];
-				for (const community of $communities.value) {
-					const $community = community.get();
+				const sessionPersonaHubs: Array<Writable<Hub>> = [];
+				for (const hub of $hubs.value) {
+					const $hub = hub.get();
 					for (const assignment of $assignments.value) {
 						if (
-							assignment.community_id === $community.community_id &&
+							assignment.hub_id === $hub.hub_id &&
 							assignment.persona_id === $sessionPersona.persona_id
 						) {
-							sessionPersonaCommunities.push(community);
+							sessionPersonaHubs.push(hub);
 							break;
 						}
 					}
 				}
-				map.set(sessionPersona, sessionPersonaCommunities);
+				map.set(sessionPersona, sessionPersonaHubs);
 			}
 			return map;
-		},
-	);
+		});
 	// TODO should these be store references instead of ids?
-	const communityIdSelectionByPersonaId = mutable<Map<number, number | null>>(new Map());
-	const communitySelection = derived(
-		[personaIdSelection, communityIdSelectionByPersonaId],
-		([$personaIdSelection, $communityIdSelectionByPersonaId]) =>
+	const hubIdSelectionByPersonaId = mutable<Map<number, number | null>>(new Map());
+	const hubSelection = derived(
+		[personaIdSelection, hubIdSelectionByPersonaId],
+		([$personaIdSelection, $hubIdSelectionByPersonaId]) =>
 			$personaIdSelection
-				? communityById.get($communityIdSelectionByPersonaId.value.get($personaIdSelection)!)!
+				? hubById.get($hubIdSelectionByPersonaId.value.get($personaIdSelection)!)!
 				: null,
 	);
 	// TODO consider making this the space store so we don't have to chase id references
-	const spaceIdSelectionByCommunityId = locallyStoredMap(
+	const spaceIdSelectionByHubId = locallyStoredMap(
 		mutable(new Map<number, number | null>()),
-		'spaceIdSelectionByCommunityId',
+		'spaceIdSelectionByHubId',
 	);
 	const spaceSelection = derived(
-		[communitySelection, spaceIdSelectionByCommunityId],
-		([$communitySelection, $spaceIdSelectionByCommunityId]) =>
-			($communitySelection &&
-				spaceById.get(
-					$spaceIdSelectionByCommunityId.value.get($communitySelection.get()!.community_id)!,
-				)) ||
+		[hubSelection, spaceIdSelectionByHubId],
+		([$hubSelection, $spaceIdSelectionByHubId]) =>
+			($hubSelection &&
+				spaceById.get($spaceIdSelectionByHubId.value.get($hubSelection.get()!.hub_id)!)) ||
 			null,
 	);
 
@@ -339,18 +333,18 @@ export const toUi = (
 
 	const lastSeenByDirectoryId: Map<number, Writable<number> | null> = new Map();
 	const freshnessByDirectoryId: Map<number, Readable<boolean>> = new Map();
-	const freshnessByCommunityId: Map<number, Writable<boolean>> = new Map();
+	const freshnessByHubId: Map<number, Writable<boolean>> = new Map();
 
-	// TODO optimization: ideally this would recalculate only when the admin community's personas change, not when any assignment changes
-	// TODO consider making the value of `personasByCommunityId` a set instead of array, then this could be simplified
+	// TODO optimization: ideally this would recalculate only when the admin hub's personas change, not when any assignment changes
+	// TODO consider making the value of `personasByHubId` a set instead of array, then this could be simplified
 	const adminPersonas = derived(
-		[personasByCommunityId],
-		([$personasByCommunityId]) => new Set($personasByCommunityId.get(ADMIN_COMMUNITY_ID)),
+		[personasByHubId],
+		([$personasByHubId]) => new Set($personasByHubId.get(ADMIN_HUB_ID)),
 	);
 
 	const mobile = writable(initialMobile);
 	const layout = writable({width: 0, height: 0});
-	const mainLayoutView = writable('<Workspace />'); // TODO source this from the community/space context (so routes can customize the UI)
+	const mainLayoutView = writable('<Workspace />'); // TODO source this from the hub/space context (so routes can customize the UI)
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
 	const contextmenu = createContextmenuStore({layout, onError});
@@ -371,11 +365,11 @@ export const toUi = (
 		sessionPersonas,
 		sessionPersonaIndexById,
 		spaces,
-		communities,
+		hubs,
 		assignments,
 		policies,
 		personaById,
-		communityById,
+		hubById,
 		roleById,
 		assignmentById,
 		policyById,
@@ -383,16 +377,16 @@ export const toUi = (
 		entityById,
 		tieById,
 		// derived state
-		spacesByCommunityId,
-		personasByCommunityId,
-		rolesByCommunityId,
+		spacesByHubId,
+		personasByHubId,
+		rolesByHubId,
 		assignmentsByRoleId,
 		policiesByRoleId,
 		queryByKey,
 		paginatedQueryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
-		communitiesBySessionPersona,
+		hubsBySessionPersona,
 		adminPersonas,
 		// view state
 		mobile,
@@ -407,13 +401,13 @@ export const toUi = (
 		personaIdSelection,
 		personaSelection,
 		personaIndexSelection,
-		communityIdSelectionByPersonaId,
-		communitySelection,
-		spaceIdSelectionByCommunityId,
+		hubIdSelectionByPersonaId,
+		hubSelection,
+		spaceIdSelectionByHubId,
 		spaceSelection,
 		lastSeenByDirectoryId,
 		freshnessByDirectoryId,
-		freshnessByCommunityId,
+		freshnessByHubId,
 	};
 };
 

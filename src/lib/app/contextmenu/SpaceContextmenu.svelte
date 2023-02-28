@@ -6,7 +6,7 @@
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
 	import SpaceEditor from '$lib/ui/SpaceEditor.svelte';
@@ -15,7 +15,7 @@
 	const {dispatch} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 </script>
 
@@ -29,7 +29,7 @@
 			action={() =>
 				dispatch.OpenDialog({
 					Component: SpaceEditor,
-					props: {persona, space, community},
+					props: {persona, space, hub},
 					dialogProps: {layout: 'page'},
 				})}
 		>
@@ -40,7 +40,7 @@
 				action={() =>
 					dispatch.OpenDialog({
 						Component: DeleteSpaceForm,
-						props: {persona, community, space, done: () => dispatch.CloseDialog()},
+						props: {persona, hub, space, done: () => dispatch.CloseDialog()},
 					})}
 			>
 				Delete Space

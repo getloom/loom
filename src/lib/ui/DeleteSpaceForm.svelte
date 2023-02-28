@@ -5,14 +5,14 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {dispatch} = getApp();
 
 	export let space: Readable<Space>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let persona: Readable<AccountPersona>;
 	export let done: (() => void) | undefined = undefined;
 	export let pending = false;
@@ -49,7 +49,7 @@
 <div class="markup padded-xl">
 	<form {...$$restProps}>
 		<h2>Delete Space?</h2>
-		<ContextInfo {persona} {community} {space} />
+		<ContextInfo {persona} {hub} {space} />
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{/if}

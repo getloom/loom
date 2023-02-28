@@ -6,7 +6,7 @@
 	export let type: EntityType = 'Persona';
 	export let inline = false;
 
-	$: squared = type === 'Community';
+	$: squared = type === 'Hub';
 </script>
 
 {#if icon}

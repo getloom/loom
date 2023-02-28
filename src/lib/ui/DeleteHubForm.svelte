@@ -4,28 +4,27 @@
 
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	const {dispatch} = getApp();
 
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let persona: Readable<AccountPersona>;
 	export let done: (() => void) | undefined = undefined;
 
 	let errorMessage: string | undefined;
 	let pending = false;
 	let lockText = '';
-	$: locked = lockText.toLowerCase().trim() !== $community.name.toLowerCase();
+	$: locked = lockText.toLowerCase().trim() !== $hub.name.toLowerCase();
 
-	const leaveCommunity = async () => {
+	const deleteHub = async () => {
 		pending = true;
 		errorMessage = '';
-		const result = await dispatch.LeaveCommunity({
+		const result = await dispatch.DeleteHub({
 			actor: $persona.persona_id,
-			persona_id: $persona.persona_id,
-			community_id: $community.community_id,
+			hub_id: $hub.hub_id,
 		});
 		if (result.ok) {
 			done?.();
@@ -39,22 +38,22 @@
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			if (!locked) {
-				await leaveCommunity();
+				await deleteHub();
 			}
 		}
 	};
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<h2>Leave Community?</h2>
-	<ContextInfo {persona} {community} />
+	<h2>Delete Hub?</h2>
+	<ContextInfo {persona} {hub} />
 	<label>
-		<div class="title">community name</div>
+		<div class="title">hub name</div>
 		<input type="text" name="name" placeholder=">" bind:value={lockText} on:keydown={onKeydown} />
-		<p>enter the community name to unlock the leave button</p>
+		<p>enter the hub name to unlock the delete button</p>
 	</label>
-	<PendingButton {pending} disabled={locked || pending} on:click={leaveCommunity}>
-		leave community
+	<PendingButton {pending} disabled={locked || pending} on:click={deleteHub}>
+		delete hub
 	</PendingButton>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>

@@ -2,7 +2,7 @@
 
 import type {EntityData} from '$lib/vocab/entity/entityData';
 import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
-import type {Community} from '$lib/vocab/community/community';
+import type {Hub} from '$lib/vocab/hub/hub';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Role} from '$lib/vocab/role/role';
 import type {Space} from '$lib/vocab/space/space';
@@ -66,7 +66,7 @@ export interface ClientAccountSession {
 	 */
 	account: ClientAccount;
 	sessionPersonas: AccountPersona[];
-	communities: Community[];
+	hubs: Hub[];
 	roles: Role[];
 	spaces: Space[];
 	directories: Array<Entity & {data: EntityData}>;

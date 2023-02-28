@@ -2,7 +2,7 @@
 	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {setViewContext} from '$lib/vocab/view/view';
 
@@ -13,18 +13,18 @@
 	 */
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 
-	const viewContext = writable({persona, community, space});
+	const viewContext = writable({persona, hub, space});
 	setViewContext(viewContext);
 	// check to make sure we don't set twice on init
 	$: if (
 		$viewContext.persona !== persona ||
-		$viewContext.community !== community ||
+		$viewContext.hub !== hub ||
 		$viewContext.space !== space
 	) {
-		$viewContext = {persona, community, space};
+		$viewContext = {persona, hub, space};
 	}
 </script>
 

@@ -1,17 +1,17 @@
 import {viewTemplatesByName} from '$lib/vocab/view/view';
 import type {CreateSpaceParams} from '$lib/app/eventTypes';
-import type {Community} from '$lib/vocab/community/community';
-import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
+import type {Hub} from '$lib/vocab/hub/hub';
+import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {spaceTemplateToCreateSpaceParams} from '$lib/app/templates';
 
 // TODO these should probably be templates not params and integrated with the default template data,
 // and then callers can call `spaceTemplateToCreateSpaceParams` directly
 // or we can have a separate composed helper, maybe adding the suffix `Params` to these existing functions
 
-export const toDefaultSpaces = (actor: number, community: Community): CreateSpaceParams[] => {
-	const {community_id, name, type} = community;
-	return community_id === ADMIN_COMMUNITY_ID
-		? toDefaultAdminSpaces(actor, community)
+export const toDefaultSpaces = (actor: number, hub: Hub): CreateSpaceParams[] => {
+	const {hub_id, name, type} = hub;
+	return hub_id === ADMIN_HUB_ID
+		? toDefaultAdminSpaces(actor, hub)
 		: [
 				type === 'personal'
 					? {...toTemplatePartial('PersonalHome'), name, path: '/'}
@@ -24,18 +24,15 @@ export const toDefaultSpaces = (actor: number, community: Community): CreateSpac
 				{...toTemplatePartial('Todo'), name: 'todo', path: '/todo'},
 				{...toTemplatePartial('List'), name: 'list', path: '/list'},
 				{...toTemplatePartial('Lists'), name: 'lists', path: '/lists'},
-		  ].map((t) => spaceTemplateToCreateSpaceParams(t, actor, community_id));
+		  ].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
 };
 
-export const toDefaultAdminSpaces = (
-	actor: number,
-	{community_id, name}: Community,
-): CreateSpaceParams[] =>
+export const toDefaultAdminSpaces = (actor: number, {hub_id, name}: Hub): CreateSpaceParams[] =>
 	[
 		{...toTemplatePartial('AdminHome'), name, path: '/'},
 		{...toTemplatePartial('InstanceAdmin'), name: 'instance', path: '/instance'},
 		{...toTemplatePartial('Chat'), name: 'chat', path: '/chat'},
-	].map((t) => spaceTemplateToCreateSpaceParams(t, actor, community_id));
+	].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
 
 const toTemplatePartial = (name: string): {view: string; icon: string} => {
 	const viewTemplate = viewTemplatesByName.get(name);

@@ -9,10 +9,10 @@ export const CreateRole: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 			name: {type: 'string'},
 		},
-		required: ['actor', 'community_id', 'name'],
+		required: ['actor', 'hub_id', 'name'],
 		additionalProperties: false,
 	},
 	response: {
@@ -26,7 +26,7 @@ export const CreateRole: ServiceEventInfo = {
 	},
 	returns: 'Promise<CreateRoleResponseResult>',
 	route: {
-		path: '/api/v1/community/roles',
+		path: '/api/v1/hub/roles',
 		method: 'POST',
 	},
 };
@@ -39,9 +39,9 @@ export const ReadRoles: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 		},
-		required: ['actor', 'community_id'],
+		required: ['actor', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -55,7 +55,7 @@ export const ReadRoles: ServiceEventInfo = {
 	},
 	returns: 'Promise<ReadRolesResponseResult>',
 	route: {
-		path: '/api/v1/community/roles',
+		path: '/api/v1/hub/roles',
 		method: 'GET',
 	},
 };
@@ -86,7 +86,7 @@ export const UpdateRole: ServiceEventInfo = {
 	},
 	returns: 'Promise<UpdateRoleResponseResult>',
 	route: {
-		path: '/api/v1/community/roles/:role_id',
+		path: '/api/v1/hub/roles/:role_id',
 		method: 'POST',
 	},
 };
@@ -111,7 +111,7 @@ export const DeleteRole: ServiceEventInfo = {
 	},
 	returns: 'Promise<DeleteRoleResponseResult>',
 	route: {
-		path: '/api/v1/community/roles',
+		path: '/api/v1/hub/roles',
 		method: 'DELETE',
 	},
 };

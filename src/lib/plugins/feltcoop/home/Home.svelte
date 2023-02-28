@@ -55,7 +55,7 @@
 	$: if (entities) {
 		const result = entities.filter((e) => e.data.name === 'rules' || e.data.name === 'norms');
 		if (result.length === 0) {
-			//TODO initialize these with community, not user persona
+			//TODO initialize these with hub, not user persona
 			void createEntity(DEFAULT_RULES, 'rules');
 			void createEntity(DEFAULT_NORMS, 'norms');
 		}
@@ -76,15 +76,15 @@
 		<section class="markup padded-xl">
 			<p>
 				<strong>
-					Check out our community rules and norms!<br />
+					Check out our hub rules and norms!<br />
 					Please feel free to voice your thoughts about them. Deliberation is always helpful for maintaining
-					a healthy community.
+					a healthy hub.
 				</strong>
 			</p>
 
 			<p>
-				You can also check out other communities’ governance structures here (limited to those that
-				are public). You can fork other types of governance here.
+				You can also check out other hubs’ governance structures here (limited to those that are
+				public). You can fork other types of governance here.
 			</p>
 		</section>
 		<section class="rules-and-norms">

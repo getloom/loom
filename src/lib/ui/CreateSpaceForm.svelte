@@ -5,14 +5,14 @@
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 
-	import type {Community} from '$lib/vocab/community/community.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
-	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
-	import {ADMIN_COMMUNITY_ID} from '$lib/app/constants';
+	import {toSearchParams, toHubUrl} from '$lib/ui/url';
+	import {ADMIN_HUB_ID} from '$lib/app/constants';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {
@@ -21,11 +21,11 @@
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let initialName = ''; // TODO consider exporting `name` instead and delete this
 	export let done: (() => void) | undefined = undefined;
 
-	$: admin = $community.community_id === ADMIN_COMMUNITY_ID && $adminPersonas.has(persona);
+	$: admin = $hub.hub_id === ADMIN_HUB_ID && $adminPersonas.has(persona);
 	$: creatableViewTemplates = toCreatableViewTemplates(admin);
 
 	let name = initialName;
@@ -57,7 +57,7 @@
 		errorMessage = null;
 		const result = await dispatch.CreateSpace({
 			actor: $persona.persona_id,
-			community_id: $community.community_id,
+			hub_id: $hub.hub_id,
 			name,
 			path: `/${name}`,
 			icon: iconResult.value,
@@ -68,8 +68,8 @@
 			errorMessage = null;
 			name = '';
 			await goto(
-				toCommunityUrl(
-					$community.name,
+				toHubUrl(
+					$hub.name,
 					result.value.space.path,
 					toSearchParams($page.url.searchParams, {
 						persona: $sessionPersonaIndexById.get($persona.persona_id) + '',
@@ -92,7 +92,7 @@
 
 <form class="markup padded-xl" {...$$restProps}>
 	<h2>Create a new Space</h2>
-	<ContextInfo {persona} {community} />
+	<ContextInfo {persona} {hub} />
 	<fieldset>
 		<label>
 			<div class="title">name</div>

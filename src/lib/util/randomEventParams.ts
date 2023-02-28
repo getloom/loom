@@ -8,7 +8,7 @@ import {
 	randomPersonaParams,
 	randomSpaceParams,
 	randomSpaceName,
-	randomCommunityParams,
+	randomHubParams,
 	randomRoleName,
 	randomPermissionName,
 	randomAccountName,
@@ -23,9 +23,9 @@ export const randomEventParams: RandomEventParams = {
 	Ping: async () => {
 		return null;
 	},
-	Ephemera: async (random, {space, persona, account, community} = {}) => {
+	Ephemera: async (random, {space, persona, account, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
+		if (!space) ({space} = await random.space(persona, account, hub));
 		return {
 			actor: persona.persona_id,
 			space_id: space.space_id,
@@ -63,54 +63,54 @@ export const randomEventParams: RandomEventParams = {
 			newPassword: randomPassword(),
 		};
 	},
-	CreateCommunity: async (random, {account, persona} = {}) => {
+	CreateHub: async (random, {account, persona} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		return randomCommunityParams(persona.persona_id);
+		return randomHubParams(persona.persona_id);
 	},
-	UpdateCommunitySettings: async (random, {account, persona, community} = {}) => {
+	UpdateHubSettings: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
+		if (!hub) ({hub} = await random.hub(persona, account));
 		return {
 			actor: persona.persona_id,
-			community_id: community.community_id,
-			settings: {...community.settings, hue: randomHue()},
+			hub_id: hub.hub_id,
+			settings: {...hub.settings, hue: randomHue()},
 		};
 	},
-	ReadCommunity: async (random, {account, persona, community} = {}) => {
+	ReadHub: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
-		return {actor: persona.persona_id, community_id: community.community_id};
+		if (!hub) ({hub} = await random.hub(persona, account));
+		return {actor: persona.persona_id, hub_id: hub.hub_id};
 	},
-	DeleteCommunity: async (random, {account, persona, community} = {}) => {
+	DeleteHub: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
-		return {actor: persona.persona_id, community_id: community.community_id};
+		if (!hub) ({hub} = await random.hub(persona, account));
+		return {actor: persona.persona_id, hub_id: hub.hub_id};
 	},
-	InviteToCommunity: async (random, {account, persona, community} = {}) => {
+	InviteToHub: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
+		if (!hub) ({hub} = await random.hub(persona, account));
 		return {
 			actor: persona.persona_id,
-			community_id: community.community_id,
+			hub_id: hub.hub_id,
 			name: (await random.persona(account)).persona.name,
 		};
 	},
-	LeaveCommunity: async (random, {account, persona, community} = {}) => {
+	LeaveHub: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
+		if (!hub) ({hub} = await random.hub(persona, account));
 		return {
 			actor: persona.persona_id,
 			persona_id: persona.persona_id,
-			community_id: community.community_id,
+			hub_id: hub.hub_id,
 		};
 	},
-	KickFromCommunity: async (random, {account, persona, community} = {}) => {
+	KickFromHub: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
+		if (!hub) ({hub} = await random.hub(persona, account));
 		return {
 			actor: persona.persona_id,
 			persona_id: persona.persona_id,
-			community_id: community.community_id,
+			hub_id: hub.hub_id,
 		};
 	},
 	CreateAccountPersona: async () => {
@@ -120,20 +120,20 @@ export const randomEventParams: RandomEventParams = {
 		if (!persona) ({persona} = await random.persona(account));
 		return {actor: persona.persona_id, persona_id: persona.persona_id};
 	},
-	CreateAssignment: async (random, {account, actor, persona, community} = {}) => {
+	CreateAssignment: async (random, {account, actor, persona, hub} = {}) => {
 		if (!actor) ({persona: actor} = await random.persona(account));
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(actor)); // don't forward `persona`/`account` bc then it'll already have an assignment in community
+		if (!hub) ({hub} = await random.hub(actor)); // don't forward `persona`/`account` bc then it'll already have an assignment in hub
 		return randomAssignmentParams(
 			actor.persona_id,
 			persona.persona_id,
-			community.community_id,
-			community.settings.defaultRoleId,
+			hub.hub_id,
+			hub.settings.defaultRoleId,
 		);
 	},
-	DeleteAssignment: async (random, {account, persona, community, assignments} = {}) => {
+	DeleteAssignment: async (random, {account, persona, hub, assignments} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community, assignments} = await random.community(persona));
+		if (!hub) ({hub, assignments} = await random.hub(persona));
 		//TODO create random assignment, sorry future me
 		const assignment =
 			assignments!.find((a) => a.persona_id === persona!.persona_id) || assignments![0];
@@ -142,121 +142,121 @@ export const randomEventParams: RandomEventParams = {
 			assignment_id: assignment.assignment_id,
 		};
 	},
-	CreateSpace: async (random, {account, persona, community} = {}) => {
+	CreateSpace: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
-		return randomSpaceParams(persona.persona_id, community.community_id);
+		if (!hub) ({hub} = await random.hub(persona, account));
+		return randomSpaceParams(persona.persona_id, hub.hub_id);
 	},
-	UpdateSpace: async (random, {account, persona, community, space} = {}) => {
+	UpdateSpace: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
+		if (!space) ({space} = await random.space(persona, account, hub));
 		return {actor: persona.persona_id, space_id: space.space_id, name: randomSpaceName()};
 	},
-	DeleteSpace: async (random, {account, persona, community, space} = {}) => {
+	DeleteSpace: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
+		if (!space) ({space} = await random.space(persona, account, hub));
 		return {actor: persona.persona_id, space_id: space.space_id};
 	},
-	ReadSpaces: async (random, {account, persona, community} = {}) => {
+	ReadSpaces: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
-		return {actor: persona.persona_id, community_id: community.community_id};
+		if (!hub) ({hub} = await random.hub(persona, account));
+		return {actor: persona.persona_id, hub_id: hub.hub_id};
 	},
-	CreateEntity: async (random, {account, persona, community, space} = {}) => {
+	CreateEntity: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
+		if (!space) ({space} = await random.space(persona, account, hub));
 		return randomEntityParams(persona.persona_id, space.space_id, space.directory_id);
 	},
-	ReadEntities: async (random, {account, persona, community, space} = {}) => {
+	ReadEntities: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
+		if (!space) ({space} = await random.space(persona, account, hub));
 		return {actor: persona.persona_id, source_id: space.directory_id};
 	},
-	ReadEntitiesPaginated: async (random, {account, persona, community, space} = {}) => {
+	ReadEntitiesPaginated: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!space) ({space} = await random.space(persona, account, community));
+		if (!space) ({space} = await random.space(persona, account, hub));
 		return {actor: persona.persona_id, source_id: space.directory_id};
 	},
-	QueryEntities: async (random, {account, persona, community} = {}) => {
+	QueryEntities: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		return {
 			actor: persona.persona_id,
-			source_id: (await random.space(persona, account, community)).space.directory_id,
+			source_id: (await random.space(persona, account, hub)).space.directory_id,
 		};
 	},
-	UpdateEntity: async (random, {account, persona, community, space} = {}) => {
+	UpdateEntity: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		return {
 			actor: persona.persona_id,
-			entity_id: (await random.entity(persona, account, community, space, space?.directory_id))
-				.entity.entity_id,
+			entity_id: (await random.entity(persona, account, hub, space, space?.directory_id)).entity
+				.entity_id,
 			data: randomEntityData(),
 		};
 	},
-	EraseEntities: async (random, {account, persona, community, space} = {}) => {
+	EraseEntities: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		const entity1 = await random.entity(persona, account, community, space, space?.directory_id);
-		const entity2 = await random.entity(persona, account, community, space, space?.directory_id);
+		const entity1 = await random.entity(persona, account, hub, space, space?.directory_id);
+		const entity2 = await random.entity(persona, account, hub, space, space?.directory_id);
 		return {
 			actor: persona.persona_id,
 			entityIds: [entity1.entity.entity_id, entity2.entity.entity_id],
 		};
 	},
-	DeleteEntities: async (random, {account, persona, community, space} = {}) => {
+	DeleteEntities: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		const entity1 = await random.entity(persona, account, community, space, space?.directory_id);
-		const entity2 = await random.entity(persona, account, community, space, space?.directory_id);
+		const entity1 = await random.entity(persona, account, hub, space, space?.directory_id);
+		const entity2 = await random.entity(persona, account, hub, space, space?.directory_id);
 		return {
 			actor: persona.persona_id,
 			entityIds: [entity1.entity.entity_id, entity2.entity.entity_id],
 		};
 	},
-	CreateRole: async (random, {account, persona, community} = {}) => {
+	CreateRole: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
+		if (!hub) ({hub} = await random.hub(persona, account));
 		return {
 			actor: persona.persona_id,
-			community_id: community.community_id,
+			hub_id: hub.hub_id,
 			name: randomRoleName(),
 		};
 	},
-	ReadRoles: async (random, {account, persona, community} = {}) => {
+	ReadRoles: async (random, {account, persona, hub} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!community) ({community} = await random.community(persona, account));
-		return {actor: persona.persona_id, community_id: community.community_id};
+		if (!hub) ({hub} = await random.hub(persona, account));
+		return {actor: persona.persona_id, hub_id: hub.hub_id};
 	},
-	UpdateRole: async (random, {account, persona, community, role} = {}) => {
+	UpdateRole: async (random, {account, persona, hub, role} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!role) ({role} = await random.role(community, persona, account));
+		if (!role) ({role} = await random.role(hub, persona, account));
 		return {actor: persona.persona_id, role_id: role.role_id, name: randomRoleName()};
 	},
-	DeleteRole: async (random, {account, persona, community, role} = {}) => {
+	DeleteRole: async (random, {account, persona, hub, role} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!role) ({role} = await random.role(community, persona, account));
+		if (!role) ({role} = await random.role(hub, persona, account));
 		return {actor: persona.persona_id, role_id: role.role_id};
 	},
-	CreatePolicy: async (random, {account, persona, community, role} = {}) => {
+	CreatePolicy: async (random, {account, persona, hub, role} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!role) ({role} = await random.role(community, persona, account));
+		if (!role) ({role} = await random.role(hub, persona, account));
 		return {actor: persona.persona_id, role_id: role.role_id, permission: randomPermissionName()};
 	},
-	ReadPolicies: async (random, {account, persona, community, role} = {}) => {
+	ReadPolicies: async (random, {account, persona, hub, role} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!role) ({role} = await random.role(community, persona, account));
+		if (!role) ({role} = await random.role(hub, persona, account));
 		return {actor: persona.persona_id, role_id: role.role_id};
 	},
-	UpdatePolicy: async (random, {account, persona, community, policy} = {}) => {
+	UpdatePolicy: async (random, {account, persona, hub, policy} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!policy) ({policy} = await random.policy(community, persona, account));
+		if (!policy) ({policy} = await random.policy(hub, persona, account));
 		return {
 			actor: persona.persona_id,
 			policy_id: policy.policy_id,
 			data: {},
 		};
 	},
-	DeletePolicy: async (random, {account, persona, community, policy} = {}) => {
+	DeletePolicy: async (random, {account, persona, hub, policy} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		if (!policy) ({policy} = await random.policy(community, persona, account));
+		if (!policy) ({policy} = await random.policy(hub, persona, account));
 		return {
 			actor: persona.persona_id,
 			policy_id: policy.policy_id,
@@ -284,15 +284,15 @@ export const randomEventParams: RandomEventParams = {
 	CloseDialog: async () => {
 		return undefined;
 	},
-	ViewSpace: async (random, {account, persona, community} = {}) => {
+	ViewSpace: async (random, {account, persona, hub} = {}) => {
 		return {
-			space_id: (await random.space(persona, account, community)).space.space_id,
+			space_id: (await random.space(persona, account, hub)).space.space_id,
 			view: '<EntityExplorer />',
 		};
 	},
-	ClearFreshness: async (random, {account, persona, community} = {}) => {
+	ClearFreshness: async (random, {account, persona, hub} = {}) => {
 		return {
-			directory_id: (await random.space(persona, account, community)).space.directory_id,
+			directory_id: (await random.space(persona, account, hub)).space.directory_id,
 		};
 	},
 };

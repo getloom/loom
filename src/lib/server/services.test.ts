@@ -117,16 +117,16 @@ for (const service of services.values()) {
 		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
 
 		// Test failure of authorized services with an unauthorized actor.
-		if (event.authorize !== false && event.name !== 'CreateCommunity') {
+		if (event.authorize !== false && event.name !== 'CreateHub') {
 			const {persona: unauthorizedPersona} = await random.persona(account);
 
-			// create a new community without the persona, otherwise they might have permissions
-			const communityData = await random.community(undefined, account);
+			// create a new hub without the persona, otherwise they might have permissions
+			const hubData = await random.hub(undefined, account);
 			const failedParams = await randomEventParams[event.name](random, {
-				...communityData,
-				space: communityData.spaces[1],
+				...hubData,
+				space: hubData.spaces[1],
 				account,
-				role: communityData.roles[0],
+				role: hubData.roles[0],
 			});
 			if (failedParams && 'actor' in failedParams) {
 				failedParams.actor = unauthorizedPersona.persona_id;

@@ -1,20 +1,20 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app';
-	import CommunityNavGroup from '$lib/ui/CommunityNavGroup.svelte';
+	import HubNavGroup from '$lib/ui/HubNavGroup.svelte';
 
 	const {
 		ui: {sessionPersonas},
 	} = getApp();
 </script>
 
-<nav class="community-nav">
+<nav class="hub-nav">
 	{#each $sessionPersonas.value as persona (persona)}
-		<CommunityNavGroup {persona} />
+		<HubNavGroup {persona} />
 	{/each}
 </nav>
 
 <style>
-	.community-nav {
+	.hub-nav {
 		width: auto;
 		background-color: var(--tint_dark_1);
 		display: flex;

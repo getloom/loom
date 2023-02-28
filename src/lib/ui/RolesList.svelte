@@ -4,13 +4,13 @@
 	import RoleItem from '$lib/ui/RoleItem.svelte';
 
 	const viewContext = getViewContext();
-	$: ({community} = $viewContext);
+	$: ({hub} = $viewContext);
 
 	const {
-		ui: {rolesByCommunityId, assignmentsByRoleId},
+		ui: {rolesByHubId, assignmentsByRoleId},
 	} = getApp();
 
-	$: roles = $rolesByCommunityId.get($community.community_id)!;
+	$: roles = $rolesByHubId.get($hub.hub_id)!;
 </script>
 
 <ul>

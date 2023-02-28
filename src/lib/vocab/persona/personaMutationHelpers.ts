@@ -5,10 +5,10 @@ import {get} from 'svelte/store';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
-import {toCommunityUrl, toSearchParams} from '$lib/ui/url';
+import {toHubUrl, toSearchParams} from '$lib/ui/url';
 
 export const stashPersonas = (
-	{personaById, personas, sessionPersonas, communityIdSelectionByPersonaId}: WritableUi,
+	{personaById, personas, sessionPersonas, hubIdSelectionByPersonaId}: WritableUi,
 	$personasToStash: ClientPersona[],
 	replace = false,
 ): void => {
@@ -33,7 +33,7 @@ export const stashPersonas = (
 			if ('account_id' in $persona) {
 				// Adding a session persona.
 				sessionPersonas.get().value.push(persona as Writable<AccountPersona>);
-				communityIdSelectionByPersonaId.get().value.set($persona.persona_id, $persona.community_id);
+				hubIdSelectionByPersonaId.get().value.set($persona.persona_id, $persona.hub_id);
 				mutatedSessionPersonas = true;
 			}
 		}
@@ -41,7 +41,7 @@ export const stashPersonas = (
 	if (mutated) personas.mutate();
 	if (mutatedSessionPersonas) {
 		sessionPersonas.mutate();
-		communityIdSelectionByPersonaId.mutate();
+		hubIdSelectionByPersonaId.mutate();
 	}
 };
 
@@ -61,7 +61,7 @@ export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientPers
 		personaIdSelection,
 		sessionPersonas,
 		sessionPersonaIndexById,
-		communityIdSelectionByPersonaId,
+		hubIdSelectionByPersonaId,
 	} = ui;
 	const $personaToEvict = personaToEvict.get();
 
@@ -73,7 +73,7 @@ export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientPers
 		const $sessionPersonas = sessionPersonas.get().value;
 
 		sessionPersonas.mutate((s) => s.splice($sessionPersonas.indexOf(personaToEvict as any), 1));
-		communityIdSelectionByPersonaId.mutate((c) => c.delete($personaToEvict.persona_id));
+		hubIdSelectionByPersonaId.mutate((c) => c.delete($personaToEvict.persona_id));
 
 		if ($personaToEvict.persona_id === personaIdSelection.get()) {
 			const nextSelectedPersona = $sessionPersonas[$sessionPersonas[0] === personaToEvict ? 1 : 0];
@@ -82,7 +82,7 @@ export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientPers
 				.get(nextSelectedPersona.get().persona_id);
 			ui.afterMutation(() =>
 				goto(
-					toCommunityUrl(
+					toHubUrl(
 						nextSelectedPersona.get().name || '',
 						null,
 						toSearchParams(get(page).url.searchParams, {

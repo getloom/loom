@@ -1,25 +1,25 @@
 <script lang="ts">
 	import type {Space} from '$lib/vocab/space/space.js';
-	import type {Community} from '$lib/vocab/community/community.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import SpaceNavItem from '$lib/ui/SpaceNavItem.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
 	import {getApp} from '$lib/ui/app';
-	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
+	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 
 	const {
 		ui: {contextmenu},
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let spaces: Array<Readable<Space>>;
 	export let selectedSpace: Readable<Space> | null;
 </script>
 
-<nav class="space-nav" use:contextmenu.action={[[CommunityContextmenu, {community, persona}]]}>
+<nav class="space-nav" use:contextmenu.action={[[HubContextmenu, {hub, persona}]]}>
 	{#each spaces as space (space)}
-		<SpaceNavItem {persona} {community} {space} selected={space === selectedSpace} />
+		<SpaceNavItem {persona} {hub} {space} selected={space === selectedSpace} />
 	{/each}
 </nav>
 

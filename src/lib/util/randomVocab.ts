@@ -1,11 +1,11 @@
 import {unwrap} from '@feltjs/util';
 
 import type {Space} from '$lib/vocab/space/space';
-import type {Community} from '$lib/vocab/community/community';
+import type {Hub} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
 import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {
-	CreateCommunityParams,
+	CreateHubParams,
 	CreateAccountPersonaParams,
 	CreateEntityParams,
 	CreateSpaceParams,
@@ -18,7 +18,7 @@ import type {DirectoryEntityData, EntityData} from '$lib/vocab/entity/entityData
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
-import {CreateCommunityService} from '$lib/vocab/community/communityServices';
+import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
@@ -59,25 +59,25 @@ export const randomPersonaParams = (): CreateAccountPersonaParams => ({
 export const randomAssignmentParams = (
 	actor: number,
 	persona_id: number,
-	community_id: number,
+	hub_id: number,
 	role_id: number,
 ): CreateAssignmentParams => ({
 	actor,
 	persona_id,
-	community_id,
+	hub_id,
 	role_id,
 });
-export const randomCommunityParams = (actor: number): CreateCommunityParams => {
+export const randomHubParams = (actor: number): CreateHubParams => {
 	const name = randomCommunnityName();
 	return {actor, template: {name, settings: {hue: randomHue(name)}}};
 };
 export const randomSpaceParams = (
 	actor: number,
-	community_id: number,
+	hub_id: number,
 	view?: string,
 ): CreateSpaceParams => ({
 	actor,
-	community_id,
+	hub_id,
 	view: view ?? randomView(),
 	name: randomSpaceName(),
 	path: randomSpacePath(),
@@ -94,9 +94,9 @@ export const randomEntityParams = (
 	ties: [{source_id}],
 });
 
-export const randomRoleParams = (actor: number, community_id: number): CreateRoleParams => ({
+export const randomRoleParams = (actor: number, hub_id: number): CreateRoleParams => ({
 	actor,
-	community_id,
+	hub_id,
 	name: randomRoleName(),
 });
 
@@ -115,7 +115,7 @@ export interface RandomVocab {
 	account?: RandomTestAccount;
 	actor?: AccountPersona;
 	persona?: AccountPersona;
-	community?: Community;
+	hub?: Hub;
 	space?: Space;
 	entity?: Entity;
 	role?: Role;
@@ -126,7 +126,7 @@ export interface RandomVocab {
 /* eslint-disable no-param-reassign */
 
 // TODO generate from schema
-// TODO replace db.repos calls w/ service calls (see persona/community creation)
+// TODO replace db.repos calls w/ service calls (see persona/hub creation)
 export class RandomVocabContext {
 	constructor(public readonly repos: Repos) {}
 
@@ -142,7 +142,7 @@ export class RandomVocabContext {
 
 	async persona(account?: Account): Promise<{
 		persona: AccountPersona;
-		personalCommunity: Community;
+		personalHub: Hub;
 		assignment: Assignment;
 		spaces: Space[];
 		account: Account;
@@ -150,7 +150,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		const {
 			personas: [persona],
-			communities: [personalCommunity],
+			hubs: [personalHub],
 			assignments: [assignment],
 			spaces,
 		} = unwrap(
@@ -159,14 +159,14 @@ export class RandomVocabContext {
 				params: {name: randomPersonaParams().name},
 			}),
 		);
-		return {persona: persona as AccountPersona, personalCommunity, assignment, spaces, account};
+		return {persona: persona as AccountPersona, personalHub, assignment, spaces, account};
 	}
 
-	async community(
+	async hub(
 		persona?: AccountPersona,
 		account?: Account,
 	): Promise<{
-		community: Community;
+		hub: Hub;
 		roles: Role[];
 		policies: Policy[];
 		assignments: Assignment[];
@@ -177,15 +177,15 @@ export class RandomVocabContext {
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona, account} = await this.persona(account));
-		const params = randomCommunityParams(persona.persona_id);
-		const {community, roles, policies, personas, assignments, spaces} = unwrap(
-			await CreateCommunityService.perform({
+		const params = randomHubParams(persona.persona_id);
+		const {hub, roles, policies, personas, assignments, spaces} = unwrap(
+			await CreateHubService.perform({
 				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
 		return {
-			community,
+			hub,
 			roles,
 			policies,
 			assignments,
@@ -199,32 +199,32 @@ export class RandomVocabContext {
 	async space(
 		persona?: AccountPersona,
 		account?: Account,
-		community?: Community,
+		hub?: Hub,
 		view?: string,
 	): Promise<{
 		space: Space;
 		directory: Entity & {data: DirectoryEntityData};
 		persona: AccountPersona;
 		account: Account;
-		community: Community;
+		hub: Hub;
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
-		if (!community) ({community} = await this.community(persona, account));
-		const params = randomSpaceParams(persona.persona_id, community.community_id, view);
+		if (!hub) ({hub} = await this.hub(persona, account));
+		const params = randomSpaceParams(persona.persona_id, hub.hub_id, view);
 		const {space, directory} = unwrap(
 			await CreateSpaceService.perform({
 				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
-		return {space, directory, persona, account, community};
+		return {space, directory, persona, account, hub};
 	}
 
 	async entity(
 		persona?: AccountPersona,
 		account?: Account,
-		community?: Community,
+		hub?: Hub,
 		space?: Space,
 		source_id?: number,
 		paramsPartial?: Partial<CreateEntityParams>,
@@ -233,15 +233,15 @@ export class RandomVocabContext {
 		directories: Entity[];
 		persona: AccountPersona;
 		account: Account;
-		community: Community;
+		hub: Hub;
 		space: Space;
 		ties: Tie[];
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
-		if (!community) ({community} = await this.community(persona, account));
-		// TODO create assignment on the fly here (`this.assignment`?) if needed to `community.settings.defaultRoleId`, and return it
-		if (!space) ({space} = await this.space(persona, account, community));
+		if (!hub) ({hub} = await this.hub(persona, account));
+		// TODO create assignment on the fly here (`this.assignment`?) if needed to `hub.settings.defaultRoleId`, and return it
+		if (!space) ({space} = await this.space(persona, account, hub));
 		if (!source_id) {
 			source_id = space.directory_id;
 		}
@@ -257,7 +257,7 @@ export class RandomVocabContext {
 				},
 			}),
 		);
-		return {entity, persona, account, community, space, directories, ties};
+		return {entity, persona, account, hub, space, directories, ties};
 	}
 
 	async tie(
@@ -265,7 +265,7 @@ export class RandomVocabContext {
 		destEntity?: Entity,
 		persona?: AccountPersona,
 		account?: Account,
-		community?: Community,
+		hub?: Hub,
 		space?: Space,
 		parentSourceId?: number, // optional directory or other source id for the source and dest entities (not the tie)
 		type?: Tie['type'],
@@ -275,33 +275,21 @@ export class RandomVocabContext {
 		destEntity: Entity;
 		persona: AccountPersona;
 		account: Account;
-		community: Community;
+		hub: Hub;
 		parentSourceId: number;
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
-		if (!community) ({community} = await this.community(persona, account));
-		if (!space) ({space} = await this.space(persona, account, community));
+		if (!hub) ({hub} = await this.hub(persona, account));
+		if (!space) ({space} = await this.space(persona, account, hub));
 		if (!parentSourceId) {
 			parentSourceId = space.directory_id;
 		}
 		if (!sourceEntity) {
-			({entity: sourceEntity} = await this.entity(
-				persona,
-				account,
-				community,
-				space,
-				parentSourceId,
-			));
+			({entity: sourceEntity} = await this.entity(persona, account, hub, space, parentSourceId));
 		}
 		if (!destEntity) {
-			({entity: destEntity} = await this.entity(
-				persona,
-				account,
-				community,
-				space,
-				parentSourceId,
-			));
+			({entity: destEntity} = await this.entity(persona, account, hub, space, parentSourceId));
 		}
 
 		const tie = unwrap(
@@ -311,34 +299,34 @@ export class RandomVocabContext {
 				type || randomTieType(),
 			),
 		);
-		return {tie, sourceEntity, destEntity, persona, account, community, parentSourceId};
+		return {tie, sourceEntity, destEntity, persona, account, hub, parentSourceId};
 	}
 
 	async role(
-		community?: Community,
+		hub?: Hub,
 		persona?: AccountPersona,
 		account?: Account,
 	): Promise<{
 		role: Role;
 		persona: AccountPersona;
 		account: Account;
-		community: Community;
+		hub: Hub;
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
-		if (!community) ({community} = await this.community(persona, account));
-		const params = randomRoleParams(persona.persona_id, community.community_id);
+		if (!hub) ({hub} = await this.hub(persona, account));
+		const params = randomRoleParams(persona.persona_id, hub.hub_id);
 		const {role} = unwrap(
 			await CreateRoleService.perform({
 				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
-		return {role, persona, account, community};
+		return {role, persona, account, hub};
 	}
 
 	async policy(
-		community?: Community,
+		hub?: Hub,
 		persona?: AccountPersona,
 		account?: Account,
 		permission?: string,
@@ -346,23 +334,19 @@ export class RandomVocabContext {
 		policy: Policy;
 		persona: AccountPersona;
 		account: Account;
-		community: Community;
+		hub: Hub;
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
-		if (!community) ({community} = await this.community(persona, account));
-		const params = randomPolicyParams(
-			persona.persona_id,
-			community.settings.defaultRoleId,
-			permission,
-		);
+		if (!hub) ({hub} = await this.hub(persona, account));
+		const params = randomPolicyParams(persona.persona_id, hub.settings.defaultRoleId, permission);
 		const {policy} = unwrap(
 			await CreatePolicyService.perform({
 				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
-		return {policy, persona, account, community};
+		return {policy, persona, account, hub};
 	}
 }
 

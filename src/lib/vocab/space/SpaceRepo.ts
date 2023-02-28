@@ -11,7 +11,7 @@ export class SpaceRepo extends PostgresRepo {
 	async findById(space_id: number): Promise<Result<{value: Space | undefined}>> {
 		log.trace(`[findById] ${space_id}`);
 		const data = await this.sql<Space[]>`
-			SELECT space_id, name, path, icon, view, updated, created, community_id, directory_id
+			SELECT space_id, name, path, icon, view, updated, created, hub_id, directory_id
 			FROM spaces WHERE space_id=${space_id}
 		`;
 		log.trace('[findById] result', data);
@@ -21,35 +21,32 @@ export class SpaceRepo extends PostgresRepo {
 	async filterByAccount(account_id: number): Promise<Result<{value: Space[]}>> {
 		log.trace('[filterByAccount]', account_id);
 		const data = await this.sql<Space[]>`
-			SELECT s.space_id, s.name, s.path, icon, s.view, s.updated, s.created, s.community_id, s.directory_id
+			SELECT s.space_id, s.name, s.path, icon, s.view, s.updated, s.created, s.hub_id, s.directory_id
 			FROM spaces s JOIN (
-				SELECT DISTINCT a.community_id FROM personas p
+				SELECT DISTINCT a.hub_id FROM personas p
 				JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
 			) apc
-			ON s.community_id=apc.community_id;
+			ON s.hub_id=apc.hub_id;
 		`;
 		return {ok: true, value: data};
 	}
 
-	async filterByCommunity(community_id: number): Promise<Result<{value: Space[]}>> {
-		log.trace('[filterByCommunity]', community_id);
+	async filterByHub(hub_id: number): Promise<Result<{value: Space[]}>> {
+		log.trace('[filterByHub]', hub_id);
 		const data = await this.sql<Space[]>`
-			SELECT space_id, name, path, icon, view, updated, created, community_id, directory_id
-			FROM spaces WHERE community_id=${community_id}
+			SELECT space_id, name, path, icon, view, updated, created, hub_id, directory_id
+			FROM spaces WHERE hub_id=${hub_id}
 		`;
 		return {ok: true, value: data};
 	}
 
-	async findByCommunityPath(
-		community_id: number,
-		path: string,
-	): Promise<Result<{value: Space | undefined}>> {
-		log.trace('[findByCommunityPath]', community_id, path);
+	async findByHubPath(hub_id: number, path: string): Promise<Result<{value: Space | undefined}>> {
+		log.trace('[findByHubPath]', hub_id, path);
 		const data = await this.sql<Space[]>`
-			SELECT space_id, name, path, icon, view, updated, created, community_id, directory_id
-			FROM spaces WHERE community_id=${community_id} AND path=${path}
+			SELECT space_id, name, path, icon, view, updated, created, hub_id, directory_id
+			FROM spaces WHERE hub_id=${hub_id} AND path=${path}
 		`;
-		log.trace('[findByCommunityPath] result', data);
+		log.trace('[findByHubPath] result', data);
 		return {ok: true, value: data[0]};
 	}
 
@@ -58,12 +55,12 @@ export class SpaceRepo extends PostgresRepo {
 		view: string,
 		path: string,
 		icon: string,
-		community_id: number,
+		hub_id: number,
 		directory_id: number,
 	): Promise<Result<{value: Space}>> {
 		const data = await this.sql<Space[]>`
-			INSERT INTO spaces (name, path, icon, view, community_id, directory_id) VALUES (
-				${name},${path},${icon},${view},${community_id}, ${directory_id}
+			INSERT INTO spaces (name, path, icon, view, hub_id, directory_id) VALUES (
+				${name},${path},${icon},${view},${hub_id}, ${directory_id}
 			) RETURNING *
 		`;
 		return {ok: true, value: data[0]};
@@ -96,7 +93,7 @@ export class SpaceRepo extends PostgresRepo {
 	async findByEntity(entity_id: number): Promise<Result<{value: Space}>> {
 		log.trace(`[findByEntity] ${entity_id}`);
 		const data = await this.sql<Space[]>`
-				SELECT s.space_id, s.name, s.path, s.icon, s.view, s.updated, s.created, s.community_id, s.directory_id 
+				SELECT s.space_id, s.name, s.path, s.icon, s.view, s.updated, s.created, s.hub_id, s.directory_id 
 				FROM spaces s
 				JOIN entities e
 				ON s.space_id = e.space_id AND e.entity_id = ${entity_id}			

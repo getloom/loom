@@ -4,7 +4,7 @@ import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {ReadCommunityService, DeleteCommunityService} from '$lib/vocab/community/communityServices';
+import {ReadHubService, DeleteHubService} from '$lib/vocab/hub/hubServices';
 import {DeleteSpaceService, ReadSpacesService} from '$lib/vocab/space/spaceServices';
 import {ReadEntitiesService} from '$lib/vocab/entity/entityServices';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
@@ -37,43 +37,31 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	// create a second persona
 	const {persona: persona2} = await random.persona(account);
 
-	// create community
-	const {community} = await random.community(persona1);
+	// create hub
+	const {hub} = await random.hub(persona1);
 
-	// join the community with the second persona
+	// join the hub with the second persona
 	const {assignment} = unwrap(
 		await CreateAssignmentService.perform({
 			...toServiceRequestMock(repos, persona1), // add `persona2` with `persona1`
 			params: {
 				actor: persona1.persona_id,
-				community_id: community.community_id,
+				hub_id: hub.hub_id,
 				persona_id: persona2.persona_id,
-				role_id: community.settings.defaultRoleId,
+				role_id: hub.settings.defaultRoleId,
 			},
 		}),
 	);
 
 	// create a space
-	const {space} = await random.space(persona1, account, community);
+	const {space} = await random.space(persona1, account, hub);
 	const spaceCount = 1;
-	const defaultSpaces = toDefaultSpaces(persona1.persona_id, community);
+	const defaultSpaces = toDefaultSpaces(persona1.persona_id, hub);
 	const defaultSpaceCount = defaultSpaces.length;
 
 	// create some entities
-	const {entity: entity1} = await random.entity(
-		persona1,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
-	const {entity: entity2} = await random.entity(
-		persona1,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
+	const {entity: entity1} = await random.entity(persona1, account, hub, space, space.directory_id);
+	const {entity: entity2} = await random.entity(persona1, account, hub, space, space.directory_id);
 
 	// TODO create some ties
 
@@ -93,21 +81,21 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
 			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.persona_id, community_id: community.community_id},
+			params: {actor: persona2.persona_id, hub_id: hub.hub_id},
 		}),
 	);
 	assert.is(filteredSpaces.length, spaceCount + defaultSpaceCount);
 
-	const {community: foundCommunity} = unwrap(
-		await ReadCommunityService.perform({
+	const {hub: foundHub} = unwrap(
+		await ReadHubService.perform({
 			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.persona_id, community_id: community.community_id},
+			params: {actor: persona2.persona_id, hub_id: hub.hub_id},
 		}),
 	);
-	assert.is(foundCommunity.name, community.name);
+	assert.is(foundHub.name, hub.name);
 
-	assert.is(unwrap(await repos.community.filterByAccount(persona2.account_id)).length, 3);
-	assert.is(unwrap(await repos.community.filterByPersona(persona2.persona_id)).length, 2);
+	assert.is(unwrap(await repos.hub.filterByAccount(persona2.account_id)).length, 3);
+	assert.is(unwrap(await repos.hub.filterByPersona(persona2.persona_id)).length, 2);
 
 	// TODO add a service event?
 	assert.equal(
@@ -143,10 +131,10 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			);
 		}
 	}
-	assert.is(unwrap(await repos.space.filterByCommunity(community.community_id)).length, 1);
+	assert.is(unwrap(await repos.space.filterByHub(hub.hub_id)).length, 1);
 
 	// delete assignment
-	assert.is(unwrap(await repos.assignment.filterByCommunity(community.community_id)).length, 3);
+	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, persona2),
@@ -156,29 +144,24 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			},
 		}),
 	);
-	assert.is(unwrap(await repos.assignment.filterByCommunity(community.community_id)).length, 2);
-	assert.is(
-		unwrap(
-			await repos.assignment.countAccountPersonaAssignmentsByCommunityId(community.community_id),
-		),
-		1,
-	);
+	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 2);
+	assert.is(unwrap(await repos.assignment.countAccountPersonaAssignmentsByHubId(hub.hub_id)), 1);
 
-	// delete community
+	// delete hub
 	//TODO hack to allow for authorization; remove on init default impl
-	unwrap(await repos.policy.create(community.settings.defaultRoleId, permissions.DeleteCommunity));
+	unwrap(await repos.policy.create(hub.settings.defaultRoleId, permissions.DeleteHub));
 	unwrap(
-		await DeleteCommunityService.perform({
+		await DeleteHubService.perform({
 			...toServiceRequestMock(repos, persona1),
-			params: {actor: persona1.persona_id, community_id: community.community_id},
+			params: {actor: persona1.persona_id, hub_id: hub.hub_id},
 		}),
 	);
-	const readCommunityResult = await ReadCommunityService.perform({
+	const readHubResult = await ReadHubService.perform({
 		...toServiceRequestMock(repos, persona1),
-		params: {actor: persona1.persona_id, community_id: community.community_id},
+		params: {actor: persona1.persona_id, hub_id: hub.hub_id},
 	});
-	assert.is(readCommunityResult.status, 404);
-	assert.is(unwrap(await repos.assignment.filterByCommunity(community.community_id)).length, 0);
+	assert.is(readHubResult.status, 404);
+	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 0);
 
 	// TODO delete personas here
 

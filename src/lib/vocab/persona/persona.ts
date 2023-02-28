@@ -3,14 +3,14 @@
 /**
  *
  * 		Represents a human actor logged in via an Account. They are owned and managed from the account level.
- * 		When an AccountPersona is created, a personal Community is also created for it and associated via 'community_id'.
- * 		A reference to this personal Community is stored in 'community_id'.
+ * 		When an AccountPersona is created, a personal Hub is also created for it and associated via 'hub_id'.
+ * 		A reference to this personal Hub is stored in 'hub_id'.
  *
  */
 export interface AccountPersona {
 	persona_id: number;
 	account_id: number;
-	community_id: number;
+	hub_id: number;
 	type: 'account';
 	name: string;
 	icon?: string;
@@ -22,22 +22,22 @@ export type ActorPersona = AccountPersona | CommunityPersona;
 /**
  *
  * 		The union of Persona subsets a user sees on their client,
- * 		including the user's AccountPersonas and all other community actors as PublicPersonas.
+ * 		including the user's AccountPersonas and all other hub actors as PublicPersonas.
  *
  */
 export type ClientPersona = AccountPersona | PublicPersona;
 
 /**
  *
- * 		Represents a collective actor under the ownership of a Community.
- * 		Currently, these are only created when a new Community is made and have no extended functionality within the system.
- * 		The Community that owns it is represented by 'community_id'.
+ * 		Represents a collective actor under the ownership of a Hub.
+ * 		Currently, these are only created when a new Hub is made and have no extended functionality within the system.
+ * 		The Hub that owns it is represented by 'hub_id'.
  *
  */
 export interface CommunityPersona {
 	persona_id: number;
 	account_id?: null;
-	community_id: number;
+	hub_id: number;
 	type: 'community';
 	name: string;
 	icon?: string;
@@ -52,7 +52,7 @@ export interface CommunityPersona {
 export interface GhostPersona {
 	persona_id: number;
 	account_id?: null;
-	community_id?: null;
+	hub_id?: null;
 	type: 'ghost';
 	name: string;
 	icon?: string;
@@ -61,14 +61,14 @@ export interface GhostPersona {
 }
 /**
  *
- * 	 Personas represent actors in the system. They can be of type Account, Community, or Ghost.
+ * 	 Personas represent actors in the system. They can be of type Account, Hub, or Ghost.
  *
  */
 export type Persona = AccountPersona | CommunityPersona | GhostPersona;
 
 /**
  *
- * 		A subset of a Persona available to all clients in a community.
+ * 		A subset of a Persona available to all clients in a hub.
  *
  */
 export interface PublicPersona {

@@ -3,10 +3,10 @@
 	import {page} from '$app/stores';
 
 	import type {Space} from '$lib/vocab/space/space.js';
-	import type {Community} from '$lib/vocab/community/community.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
 	import {randomHue} from '$lib/ui/color';
-	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
+	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
@@ -17,7 +17,7 @@
 
 	export let persona: Readable<AccountPersona>;
 	export let space: Readable<Space>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let selected = false;
 
 	$: hue = randomHue($space.name); // TODO add custom setting on spaces
@@ -26,15 +26,15 @@
 </script>
 
 <a
-	href={toCommunityUrl(
-		$community.name,
+	href={toHubUrl(
+		$hub.name,
 		$space.path,
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class:selected
 	class="space-info"
 	style="--hue: {hue}"
-	use:contextmenu.action={[[SpaceContextmenu, {persona, community, space}]]}
+	use:contextmenu.action={[[SpaceContextmenu, {persona, hub, space}]]}
 >
 	<div class="name"><SpaceName {space} /></div>
 	<div>

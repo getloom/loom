@@ -4,31 +4,31 @@
 	import {getApp} from '$lib/ui/app';
 	import {parseJson, serializeJson} from '$lib/util/json';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	export let actor: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 
 	const {dispatch} = getApp();
 
-	const updateCommunitySettings = async (updated: any) =>
-		dispatch.UpdateCommunitySettings({
+	const updateHubSettings = async (updated: any) =>
+		dispatch.UpdateHubSettings({
 			actor: $actor.persona_id,
-			community_id: $community.community_id,
+			hub_id: $hub.hub_id,
 			settings: updated,
 		});
 </script>
 
 <fieldset>
 	<legend>properties</legend>
-	<PropertyEditor value={$community.community_id} field="community_id" />
-	<PropertyEditor value={$community.name} field="name" />
-	<PropertyEditor value={$community.type} field="type" />
+	<PropertyEditor value={$hub.hub_id} field="hub_id" />
+	<PropertyEditor value={$hub.name} field="name" />
+	<PropertyEditor value={$hub.type} field="type" />
 	<PropertyEditor
-		value={$community.settings}
+		value={$hub.settings}
 		field="settings"
-		update={updateCommunitySettings}
+		update={updateHubSettings}
 		parse={parseJson}
 		serialize={serializeJson}
 	/>

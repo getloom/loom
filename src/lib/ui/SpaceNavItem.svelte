@@ -4,8 +4,8 @@
 
 	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
 	import type {Space} from '$lib/vocab/space/space.js';
-	import type {Community} from '$lib/vocab/community/community.js';
-	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
@@ -17,7 +17,7 @@
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 	export let selected: boolean;
 
@@ -26,14 +26,14 @@
 </script>
 
 <a
-	href={toCommunityUrl(
-		$community.name,
+	href={toHubUrl(
+		$hub.name,
 		$space.path,
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class="selectable"
 	class:selected
-	use:contextmenu.action={[[SpaceContextmenu, {persona, community, space}]]}
+	use:contextmenu.action={[[SpaceContextmenu, {persona, hub, space}]]}
 	on:click={() => {
 		// TODO Should this be a click handler or react to UI system events/changes?
 		// Might make more UX sense to make it react to any state changes,

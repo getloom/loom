@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
 	import SvastText from '$lib/ui/SvastText.svelte';
@@ -14,7 +14,7 @@
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 
 	$: directory_id = $space.directory_id;
@@ -24,6 +24,6 @@
 	$: viewText = $viewBySpace.value.get(space) || $space.view;
 </script>
 
-<ViewContext {persona} {community} {space}>
+<ViewContext {persona} {hub} {space}>
 	<SvastText text={viewText} />
 </ViewContext>

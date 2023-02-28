@@ -10,10 +10,10 @@ export const CreateAssignment: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			persona_id: {type: 'number'},
-			community_id: {type: 'number'},
+			hub_id: {type: 'number'},
 			role_id: {type: 'number'},
 		},
-		required: ['actor', 'persona_id', 'community_id', 'role_id'],
+		required: ['actor', 'persona_id', 'hub_id', 'role_id'],
 		additionalProperties: false,
 	},
 	response: {

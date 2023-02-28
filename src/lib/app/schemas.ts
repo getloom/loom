@@ -19,11 +19,7 @@ import {
 	PublicPersonaSchema,
 	ClientPersonaSchema,
 } from '$lib/vocab/persona/persona.schema';
-import {
-	CommunitySchema,
-	CommunitySettingsSchema,
-	InitialCommunitySettingsSchema,
-} from '$lib/vocab/community/community.schema';
+import {HubSchema, HubSettingsSchema, InitialHubSettingsSchema} from '$lib/vocab/hub/hub.schema';
 import {AssignmentSchema} from '$lib/vocab/assignment/assignment.schema';
 import {SpaceSchema} from '$lib/vocab/space/space.schema';
 import {EntitySchema} from '$lib/vocab/entity/entity.schema';
@@ -60,9 +56,9 @@ export const vocabSchemas = [
 	GhostPersonaSchema,
 	PublicPersonaSchema,
 	ClientPersonaSchema,
-	CommunitySchema,
-	CommunitySettingsSchema,
-	InitialCommunitySettingsSchema,
+	HubSchema,
+	HubSettingsSchema,
+	InitialHubSettingsSchema,
 	AssignmentSchema,
 	SpaceSchema,
 	EntitySchema,

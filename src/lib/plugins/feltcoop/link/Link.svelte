@@ -3,8 +3,8 @@
 
 	import {getViewContext} from '$lib/vocab/view/view';
 	import {
-		isCommunityRelativePath,
-		isCommunityRelativePathValid,
+		isHubRelativePath,
+		isHubRelativePathValid,
 		isNetworkRelativePath,
 		isNetworkRelativePathValid,
 		isSpaceRelativePath,
@@ -12,28 +12,28 @@
 	} from '$lib/util/fuz';
 
 	const viewContext = getViewContext();
-	$: ({community, space} = $viewContext);
+	$: ({hub, space} = $viewContext);
 
 	export let href: string;
 
 	$: networkRelative = isNetworkRelativePath(href);
-	$: communityRelative = isCommunityRelativePath(href);
+	$: hubRelative = isHubRelativePath(href);
 	$: spaceRelative = isSpaceRelativePath(href);
 	$: valid = networkRelative
 		? isNetworkRelativePathValid(href)
-		: communityRelative
-		? isCommunityRelativePathValid(href)
+		: hubRelative
+		? isHubRelativePathValid(href)
 		: spaceRelative
 		? isSpaceRelativePathValid(href)
 		: true;
 	$: finalHref = networkRelative
 		? 'https:' + href
-		: communityRelative
-		? base + '/' + $community.name + href
+		: hubRelative
+		? base + '/' + $hub.name + href
 		: spaceRelative
-		? base + '/' + $community.name + $space.path + '/' + href.substring(2)
+		? base + '/' + $hub.name + $space.path + '/' + href.substring(2)
 		: href;
-	$: external = !(communityRelative || spaceRelative || href.startsWith('.'));
+	$: external = !(hubRelative || spaceRelative || href.startsWith('.'));
 	$: rel = external ? 'external noreferrer nofollow' : undefined;
 	$: target = external ? '_blank' : undefined;
 	// TODO this no longer works: `sveltekit:prefetch={prefetch}`, see https://github.com/sveltejs/kit/pull/7776

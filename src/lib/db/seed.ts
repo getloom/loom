@@ -9,23 +9,19 @@ import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database.js';
 import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';
-import type {Community} from '$lib/vocab/community/community';
+import type {Hub} from '$lib/vocab/hub/hub';
 import type {CreateEntityResponse, SignInParams} from '$lib/app/eventTypes';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
-import {CreateCommunityService} from '$lib/vocab/community/communityServices';
+import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
-import {
-	defaultStandardCommunityRoles,
-	type CommunityTemplate,
-	type EntityTemplate,
-} from '$lib/app/templates';
+import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$lib/app/templates';
 
 /* eslint-disable no-await-in-loop */
 
@@ -96,19 +92,19 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const otherPersonas = personas.slice(1);
 	const nextPersona = toNext(personas);
 
-	const communities: Community[] = [];
+	const hubs: Hub[] = [];
 
-	for (const communityTemplate of communityTemplates) {
-		const {community, spaces} = unwrap(
-			await CreateCommunityService.perform({
+	for (const hubTemplate of hubTemplates) {
+		const {hub, spaces} = unwrap(
+			await CreateHubService.perform({
 				...toMainAccountServiceRequest(),
 				params: {
 					actor: mainPersonaCreator.persona_id,
-					template: communityTemplate,
+					template: hubTemplate,
 				},
 			}),
 		);
-		communities.push(community);
+		hubs.push(hub);
 		for (const persona of otherPersonas) {
 			unwrap(
 				await CreateAssignmentService.perform({
@@ -116,14 +112,14 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 					params: {
 						actor: mainPersonaCreator.persona_id,
 						persona_id: persona.persona_id,
-						community_id: community.community_id,
-						role_id: community.settings.defaultRoleId,
+						hub_id: hub.hub_id,
+						role_id: hub.settings.defaultRoleId,
 					},
 				}),
 			);
 		}
 		for (const space of spaces) {
-			const spaceTemplate = communityTemplate.spaces?.find((s) => s.name === space.name);
+			const spaceTemplate = hubTemplate.spaces?.find((s) => s.name === space.name);
 			if (spaceTemplate?.entities) {
 				await generateEntities(
 					{toServiceRequest: toMainAccountServiceRequest, nextPersona, space},
@@ -131,7 +127,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				);
 			}
 		}
-		if (much) await createMuchSpaces(toMainAccountServiceRequest, community, nextPersona);
+		if (much) await createMuchSpaces(toMainAccountServiceRequest, hub, nextPersona);
 		await createDefaultEntities(toMainAccountServiceRequest, spaces, nextPersona);
 	}
 };
@@ -185,7 +181,7 @@ const generateEntities = async (
 	return results;
 };
 
-const communityTemplates: CommunityTemplate[] = [
+const hubTemplates: HubTemplate[] = [
 	{name: 'felt'},
 	{name: 'dev'},
 	{
@@ -204,7 +200,7 @@ const communityTemplates: CommunityTemplate[] = [
 				entities: ['1', '2', '3'],
 			},
 		],
-		roles: defaultStandardCommunityRoles,
+		roles: defaultCommunityHubRoles,
 	},
 ];
 
@@ -278,7 +274,7 @@ const MUCH_SPACE_COUNT = 100;
 
 const createMuchSpaces = async (
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
-	community: Community,
+	hub: Hub,
 	nextPersona: () => AccountPersona,
 ) => {
 	const viewTemplates = toCreatableViewTemplates(false);
@@ -293,7 +289,7 @@ const createMuchSpaces = async (
 				actor,
 				params: {
 					actor: actor.persona_id,
-					community_id: community.community_id,
+					hub_id: hub.hub_id,
 					name,
 					path: '/' + name,
 					view: view.view,

@@ -35,7 +35,7 @@ export class AccountRepo extends PostgresRepo {
 			spacesResult,
 			directoriesResult,
 			sessionPersonasResult,
-			communitiesResult,
+			hubsResult,
 			rolesResult,
 			assignmentsResult,
 			policiesResult,
@@ -44,7 +44,7 @@ export class AccountRepo extends PostgresRepo {
 			this.repos.space.filterByAccount(account.account_id),
 			this.repos.entity.filterDirectoriesByAccount(account.account_id),
 			this.repos.persona.filterByAccount(account.account_id),
-			this.repos.community.filterByAccount(account.account_id),
+			this.repos.hub.filterByAccount(account.account_id),
 			this.repos.role.filterByAccount(account.account_id),
 			this.repos.assignment.filterByAccount(account.account_id),
 			this.repos.policy.filterByAccount(account.account_id),
@@ -53,7 +53,7 @@ export class AccountRepo extends PostgresRepo {
 		if (!spacesResult.ok) return spacesResult;
 		if (!directoriesResult.ok) return directoriesResult;
 		if (!sessionPersonasResult.ok) return sessionPersonasResult;
-		if (!communitiesResult.ok) return communitiesResult;
+		if (!hubsResult.ok) return hubsResult;
 		if (!rolesResult.ok) return rolesResult;
 		if (!assignmentsResult.ok) return assignmentsResult;
 		if (!policiesResult.ok) return policiesResult;
@@ -64,7 +64,7 @@ export class AccountRepo extends PostgresRepo {
 			value: {
 				account,
 				sessionPersonas: sessionPersonasResult.value,
-				communities: communitiesResult.value,
+				hubs: hubsResult.value,
 				roles: rolesResult.value,
 				spaces: spacesResult.value,
 				directories: directoriesResult.value,

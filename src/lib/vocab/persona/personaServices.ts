@@ -6,18 +6,18 @@ import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
-	cleanOrphanCommunities,
-	initAdminCommunity,
-	initTemplateGovernanceForCommunity,
-	toDefaultCommunitySettings,
-} from '$lib/vocab/community/communityHelpers.server';
-import type {Community} from '$lib/vocab/community/community';
+	cleanOrphanHubs,
+	initAdminHub,
+	initTemplateGovernanceForHub,
+	toDefaultHubSettings,
+} from '$lib/vocab/hub/hubHelpers.server';
+import type {Hub} from '$lib/vocab/hub/hub';
 import type {ActorPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
 import {ADMIN_PERSONA_ID, GHOST_PERSONA_ID} from '$lib/app/constants';
-import {defaultPersonalCommunityRoles} from '$lib/app/templates';
+import {defaultPersonalHubRoles} from '$lib/app/templates';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
 
@@ -46,65 +46,63 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			}
 
 			const personas: ClientPersona[] = [];
-			const communities: Community[] = [];
+			const hubs: Hub[] = [];
 
-			// First create the admin community if it doesn't exist yet.
-			const initAdminCommunityValue = await initAdminCommunity(repos);
+			// First create the admin hub if it doesn't exist yet.
+			const initAdminHubValue = await initAdminHub(repos);
 
-			// Create the persona's personal community.
-			const community = unwrap(
-				await repos.community.create('personal', name, toDefaultCommunitySettings(name)),
-			);
-			communities.push(community);
+			// Create the persona's personal hub.
+			const hub = unwrap(await repos.hub.create('personal', name, toDefaultHubSettings(name)));
+			hubs.push(hub);
 
 			// Create the persona.
 			log.trace('[CreateAccountPersona] creating persona', name);
 			const persona = unwrap(
-				await repos.persona.createAccountPersona(name, account_id, community.community_id),
+				await repos.persona.createAccountPersona(name, account_id, hub.hub_id),
 			);
 			personas.push(persona);
 
 			// Create the roles, policies, and persona assignment.
-			const {roles, policies, assignments} = await initTemplateGovernanceForCommunity(
+			const {roles, policies, assignments} = await initTemplateGovernanceForHub(
 				repos,
-				defaultPersonalCommunityRoles,
-				community,
+				defaultPersonalHubRoles,
+				hub,
 				persona.persona_id,
 			);
 
 			// Create the default spaces.
 			const {spaces, directories} = await createSpaces(
-				toDefaultSpaces(persona.persona_id, community),
+				toDefaultSpaces(persona.persona_id, hub),
 				repos,
 			);
 
-			// If the admin community was created, create the admin spaces and the persona's assignment.
-			// This is a separate step because we need to create the admin community before any others
+			// If the admin hub was created, create the admin spaces and the persona's assignment.
+			// This is a separate step because we need to create the admin hub before any others
 			// and the dependencies flow like this:
-			// `adminCommunity => personalCommunity => persona => adminCommunitySpaces + adminCommunityAssignment`
-			if (initAdminCommunityValue) {
-				const adminCommunity = initAdminCommunityValue.community;
-				communities.push(adminCommunity);
-				personas.push(initAdminCommunityValue.persona);
-				personas.push(initAdminCommunityValue.ghost);
-				roles.push(...initAdminCommunityValue.roles);
-				policies.push(...initAdminCommunityValue.policies);
-				assignments.push(...initAdminCommunityValue.assignments);
+			// `adminHub => personalHub => persona => adminHubSpaces + adminHubAssignment`
+			if (initAdminHubValue) {
+				const adminHub = initAdminHubValue.hub;
+				hubs.push(adminHub);
+				personas.push(initAdminHubValue.persona);
+				personas.push(initAdminHubValue.ghost);
+				roles.push(...initAdminHubValue.roles);
+				policies.push(...initAdminHubValue.policies);
+				assignments.push(...initAdminHubValue.assignments);
 
-				// Create the persona's assignment to the admin community.
+				// Create the persona's assignment to the admin hub.
 				assignments.push(
 					unwrap(
 						await repos.assignment.create(
 							persona.persona_id,
-							adminCommunity.community_id,
-							adminCommunity.settings.defaultRoleId,
+							adminHub.hub_id,
+							adminHub.settings.defaultRoleId,
 						),
 					),
 				);
 
 				// Create the admin community's default spaces.
 				const defaultAdminSpaces = await createSpaces(
-					toDefaultAdminSpaces(persona.persona_id, adminCommunity),
+					toDefaultAdminSpaces(persona.persona_id, adminHub),
 					repos,
 				);
 				spaces.push(...defaultAdminSpaces.spaces);
@@ -114,7 +112,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			return {
 				ok: true,
 				status: 200,
-				value: {personas, communities, roles, policies, spaces, directories, assignments},
+				value: {personas, hubs, roles, policies, spaces, directories, assignments},
 			};
 		}),
 };
@@ -130,16 +128,16 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
 		const persona = unwrap(
-			await repos.persona.findById<Pick<ActorPersona, 'type' | 'community_id'>>(persona_id, [
+			await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(persona_id, [
 				'type',
-				'community_id',
+				'hub_id',
 			]),
 		);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
 		if (persona.type === 'community') {
-			return {ok: false, status: 400, message: 'cannot delete community personas'};
+			return {ok: false, status: 400, message: 'cannot delete hub personas'};
 		}
 		if (await isPersonaAdmin(persona_id, repos)) {
 			return {ok: false, status: 400, message: 'cannot delete admin personas'};
@@ -148,7 +146,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
-		const communities = unwrap(await repos.community.filterByPersona(persona_id));
+		const hubs = unwrap(await repos.hub.filterByPersona(persona_id));
 
 		// swap in the ghost persona id for this `persona_id` for those objects that we don't delete
 		unwrap(await repos.entity.attributeToGhostByPersona(persona_id));
@@ -156,9 +154,9 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		// delete the persona and its related objects
 		unwrap(await repos.assignment.deleteByPersona(persona_id));
 		unwrap(await repos.persona.deleteById(persona_id));
-		unwrap(await repos.community.deleteById(persona.community_id)); // must follow `persona.deleteById` it seems
-		await cleanOrphanCommunities(
-			communities.map((c) => c.community_id).filter((c) => c !== persona.community_id),
+		unwrap(await repos.hub.deleteById(persona.hub_id)); // must follow `persona.deleteById` it seems
+		await cleanOrphanHubs(
+			hubs.map((c) => c.hub_id).filter((c) => c !== persona.hub_id),
 			repos,
 		);
 

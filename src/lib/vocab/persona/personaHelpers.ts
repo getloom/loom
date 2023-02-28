@@ -11,7 +11,7 @@ import {GHOST_PERSONA_ID} from '$lib/app/constants';
 
 /**
  * Converts a persona name string to its regular form.
- * Used for both persona and community names.
+ * Used for both persona and hub names.
  * @param name - A persona name that may be invalid
  * @returns The scrubbed value.
  */
@@ -24,7 +24,7 @@ const PERSONA_NAME_MIN_LENGTH = 3;
 
 /**
  * Checks if a persona name is valid.
- * Used for both persona and community names.
+ * Used for both persona and hub names.
  * @param name - A persona name that may be invalid
  * @returns `null` if valid, otherwise an error message
  */
@@ -59,4 +59,4 @@ export const lookupPersona = (
 
 export const isAccountPersona = (
 	persona: Persona | ClientPersona | ActorPersona | undefined | null,
-): persona is AccountPersona => persona?.type === 'account' && 'community_id' in persona;
+): persona is AccountPersona => persona?.type === 'account' && 'hub_id' in persona;

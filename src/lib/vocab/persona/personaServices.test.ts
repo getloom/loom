@@ -67,11 +67,11 @@ test__personaService('ghost persona has the expected name and id', async ({repos
 
 test__personaService('delete a persona and properly clean up', async ({repos, random}) => {
 	const account = await random.account();
-	const {persona, personalCommunity, spaces} = await random.persona(account);
-	const {community, personas, spaces: communitySpaces} = await random.community(persona, account);
+	const {persona, personalHub, spaces} = await random.persona(account);
+	const {hub, personas, spaces: hubSpaces} = await random.hub(persona, account);
 	const {persona_id} = persona;
-	const allCommunities = [personalCommunity, community];
-	const allSpaces = spaces.concat(communitySpaces);
+	const allHubs = [personalHub, hub];
+	const allSpaces = spaces.concat(hubSpaces);
 
 	const check = async (invert: boolean) => {
 		const assertIs = invert ? assert.is.not : assert.is;
@@ -82,10 +82,10 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 			}),
 		);
 		await Promise.all(
-			allCommunities.map(async (c) => {
-				assertIs(unwrap(await repos.community.findById(c.community_id)), undefined);
-				assertIs(unwrap(await repos.role.filterByCommunity(c.community_id)).length, 0);
-				assertIs(unwrap(await repos.assignment.filterByCommunity(c.community_id)).length, 0);
+			allHubs.map(async (c) => {
+				assertIs(unwrap(await repos.hub.findById(c.hub_id)), undefined);
+				assertIs(unwrap(await repos.role.filterByHub(c.hub_id)).length, 0);
+				assertIs(unwrap(await repos.assignment.filterByHub(c.hub_id)).length, 0);
 			}),
 		);
 		await Promise.all(
@@ -97,21 +97,21 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 		);
 	};
 
-	// create a second community and join it, and make entities that will be turned into ghosts
+	// create a second hub and join it, and make entities that will be turned into ghosts
 	const {
-		community: otherCommunity,
+		hub: otherHub,
 		persona: otherPersona,
 		spaces: [otherSpace],
-	} = await random.community();
+	} = await random.hub();
 	// TODO could be simplified with `random.assignment()`
 	unwrap(
 		await CreateAssignmentService.perform({
 			...toServiceRequestMock(repos, otherPersona),
 			params: {
 				actor: otherPersona.persona_id,
-				community_id: otherCommunity.community_id,
+				hub_id: otherHub.hub_id,
 				persona_id: persona.persona_id,
-				role_id: otherCommunity.settings.defaultRoleId,
+				role_id: otherHub.settings.defaultRoleId,
 			},
 		}),
 	);
@@ -119,7 +119,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	const {entity: otherEntity} = await random.entity(
 		persona,
 		account,
-		otherCommunity,
+		otherHub,
 		otherSpace,
 		undefined,
 		{data: {type: 'Note', content: otherContent}},
@@ -138,7 +138,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	// all of the objects should be deleted
 	await check(false);
 
-	// entity in other community should be a ghost
+	// entity in other hub should be a ghost
 	const otherEntityUpdated = unwrap(await repos.entity.findById(otherEntity.entity_id));
 	assert.ok(otherEntityUpdated);
 	assert.is(otherEntityUpdated.data.content, otherContent);
@@ -159,7 +159,7 @@ test__personaService('actors cannot delete other personas', async ({repos, rando
 });
 
 test__personaService(
-	'actors can delete other personas if in the admin community',
+	'actors can delete other personas if in the admin hub',
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
 
@@ -176,24 +176,21 @@ test__personaService(
 	},
 );
 
-test__personaService(
-	'actors cannot delete personas in the admin community',
-	async ({repos, random}) => {
-		const {persona: actor} = await random.persona();
+test__personaService('actors cannot delete personas in the admin hub', async ({repos, random}) => {
+	const {persona: actor} = await random.persona();
 
-		const persona = await loadAdminPersona(repos);
+	const persona = await loadAdminPersona(repos);
 
-		assert.is(
-			unwrapError(
-				await DeletePersonaService.perform({
-					...toServiceRequestMock(repos, actor),
-					params: {actor: actor.persona_id, persona_id: persona.persona_id},
-				}),
-			).status,
-			400,
-		);
-	},
-);
+	assert.is(
+		unwrapError(
+			await DeletePersonaService.perform({
+				...toServiceRequestMock(repos, actor),
+				params: {actor: actor.persona_id, persona_id: persona.persona_id},
+			}),
+		).status,
+		400,
+	);
+});
 
 test__personaService.run();
 /* test__personaService */

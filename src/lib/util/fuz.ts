@@ -13,8 +13,8 @@ export const isPathValid = (p: string): boolean => {
 export const isNetworkRelativePath = (p: string): boolean => p.startsWith('//') && p[2] !== '/';
 export const isNetworkRelativePathValid = (_p: string): boolean => true; // TODO hmm - any chars? escaping?
 
-export const isCommunityRelativePath = (p: string): boolean => p.startsWith('/') && p[1] !== '/';
-export const isCommunityRelativePathValid = isPathValid;
+export const isHubRelativePath = (p: string): boolean => p.startsWith('/') && p[1] !== '/';
+export const isHubRelativePathValid = isPathValid;
 
 export const isSpaceRelativePath = (p: string): boolean => p.startsWith('./') && p[2] !== '/';
 export const isSpaceRelativePathValid = (p: string): boolean => isPathValid(p.substring(2));

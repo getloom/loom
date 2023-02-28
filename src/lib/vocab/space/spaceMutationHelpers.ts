@@ -8,7 +8,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import {toCommunityUrl} from '$lib/ui/url';
+import {toHubUrl} from '$lib/ui/url';
 import {setIfUpdated} from '$lib/util/store';
 
 export const stashSpaces = (
@@ -17,7 +17,7 @@ export const stashSpaces = (
 	$directoriesToStash?: Entity[],
 	replace = false,
 ): void => {
-	const {spaceById, spaces, spaceIdSelectionByCommunityId, spaceSelection, communityById} = ui;
+	const {spaceById, spaces, spaceIdSelectionByHubId, spaceSelection, hubById} = ui;
 	const selectedSpace = spaceSelection.get();
 
 	if (replace) {
@@ -34,11 +34,7 @@ export const stashSpaces = (
 			setIfUpdated(space, $space);
 			if (space === selectedSpace && $space.path !== prevUrl) {
 				void goto(
-					toCommunityUrl(
-						communityById.get($space.community_id)!.get().name,
-						$space.path,
-						get(page).url.search,
-					),
+					toHubUrl(hubById.get($space.hub_id)!.get().name, $space.path, get(page).url.search),
 					{replaceState: true},
 				);
 			}
@@ -48,9 +44,9 @@ export const stashSpaces = (
 			spaceById.set($space.space_id, space);
 			spaces.mutate((s) => s.add(space!));
 
-			// Set the community's space selection if needed.
-			if (!spaceIdSelectionByCommunityId.get().value.get($space.community_id)) {
-				spaceIdSelectionByCommunityId.mutate((s) => s.set($space.community_id, $space.space_id));
+			// Set the hub's space selection if needed.
+			if (!spaceIdSelectionByHubId.get().value.get($space.hub_id)) {
+				spaceIdSelectionByHubId.mutate((s) => s.set($space.hub_id, $space.space_id));
 			}
 		}
 	}
@@ -61,33 +57,26 @@ export const stashSpaces = (
 };
 
 export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>>): void => {
-	const {
-		communityById,
-		spaceIdSelectionByCommunityId,
-		spacesByCommunityId,
-		spaceById,
-		spaces,
-		communitySelection,
-	} = ui;
+	const {hubById, spaceIdSelectionByHubId, spacesByHubId, spaceById, spaces, hubSelection} = ui;
 
 	for (const space of spacesToEvict) {
-		const {space_id, community_id} = space.get();
+		const {space_id, hub_id} = space.get();
 		// If the deleted space is selected, select the home space as a fallback.
-		if (space_id === spaceIdSelectionByCommunityId.get().value.get(community_id)) {
-			const community = communityById.get(community_id)!;
-			if (community === communitySelection.get()) {
+		if (space_id === spaceIdSelectionByHubId.get().value.get(hub_id)) {
+			const hub = hubById.get(hub_id)!;
+			if (hub === hubSelection.get()) {
 				ui.afterMutation(() =>
-					goto(toCommunityUrl(community.get().name, null, get(page).url.search), {
+					goto(toHubUrl(hub.get().name, null, get(page).url.search), {
 						replaceState: true,
 					}),
 				);
 			} else {
-				//TODO lookup space by community_id+path (see this comment in multiple places)
-				const homeSpace = spacesByCommunityId
+				//TODO lookup space by hub_id+path (see this comment in multiple places)
+				const homeSpace = spacesByHubId
 					.get()
-					.get(community_id)!
+					.get(hub_id)!
 					.find((s) => isHomeSpace(s.get()))!;
-				spaceIdSelectionByCommunityId.mutate((s) => s.set(community_id, homeSpace.get().space_id));
+				spaceIdSelectionByHubId.mutate((s) => s.set(hub_id, homeSpace.get().space_id));
 			}
 		}
 

@@ -9,7 +9,7 @@ import type {
 	NonAuthorizedService,
 	AuthorizedService,
 } from '$lib/server/service';
-import type {Community, CommunitySettings} from '$lib/vocab/community/community';
+import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
 import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
@@ -25,7 +25,7 @@ import type {
 	AccountSettings,
 	ClientAccount,
 } from '$lib/vocab/account/account';
-import type {CommunityTemplate} from '$lib/app/templates';
+import type {HubTemplate} from '$lib/app/templates';
 
 /* eslint-disable @typescript-eslint/array-type */
 
@@ -35,13 +35,13 @@ export type ServiceEventName =
 	| 'SignOut'
 	| 'UpdateAccountSettings'
 	| 'UpdateAccountPassword'
-	| 'CreateCommunity'
-	| 'ReadCommunity'
-	| 'UpdateCommunitySettings'
-	| 'DeleteCommunity'
-	| 'InviteToCommunity'
-	| 'LeaveCommunity'
-	| 'KickFromCommunity'
+	| 'CreateHub'
+	| 'ReadHub'
+	| 'UpdateHubSettings'
+	| 'DeleteHub'
+	| 'InviteToHub'
+	| 'LeaveHub'
+	| 'KickFromHub'
 	| 'CreateAccountPersona'
 	| 'DeletePersona'
 	| 'CreateAssignment'
@@ -84,13 +84,13 @@ export interface EventParamsByName {
 	SignOut: SignOutParams;
 	UpdateAccountSettings: UpdateAccountSettingsParams;
 	UpdateAccountPassword: UpdateAccountPasswordParams;
-	CreateCommunity: CreateCommunityParams;
-	ReadCommunity: ReadCommunityParams;
-	UpdateCommunitySettings: UpdateCommunitySettingsParams;
-	DeleteCommunity: DeleteCommunityParams;
-	InviteToCommunity: InviteToCommunityParams;
-	LeaveCommunity: LeaveCommunityParams;
-	KickFromCommunity: KickFromCommunityParams;
+	CreateHub: CreateHubParams;
+	ReadHub: ReadHubParams;
+	UpdateHubSettings: UpdateHubSettingsParams;
+	DeleteHub: DeleteHubParams;
+	InviteToHub: InviteToHubParams;
+	LeaveHub: LeaveHubParams;
+	KickFromHub: KickFromHubParams;
 	CreateAccountPersona: CreateAccountPersonaParams;
 	DeletePersona: DeletePersonaParams;
 	CreateAssignment: CreateAssignmentParams;
@@ -131,13 +131,13 @@ export interface EventResponseByName {
 	SignOut: SignOutResponse;
 	UpdateAccountSettings: UpdateAccountSettingsResponse;
 	UpdateAccountPassword: UpdateAccountPasswordResponse;
-	CreateCommunity: CreateCommunityResponse;
-	ReadCommunity: ReadCommunityResponse;
-	UpdateCommunitySettings: UpdateCommunitySettingsResponse;
-	DeleteCommunity: DeleteCommunityResponse;
-	InviteToCommunity: InviteToCommunityResponse;
-	LeaveCommunity: LeaveCommunityResponse;
-	KickFromCommunity: KickFromCommunityResponse;
+	CreateHub: CreateHubResponse;
+	ReadHub: ReadHubResponse;
+	UpdateHubSettings: UpdateHubSettingsResponse;
+	DeleteHub: DeleteHubResponse;
+	InviteToHub: InviteToHubResponse;
+	LeaveHub: LeaveHubResponse;
+	KickFromHub: KickFromHubResponse;
 	CreateAccountPersona: CreateAccountPersonaResponse;
 	DeletePersona: DeletePersonaResponse;
 	CreateAssignment: CreateAssignmentResponse;
@@ -183,16 +183,13 @@ export interface ServiceByName {
 		CreateAccountPersonaResponseResult
 	>;
 	DeletePersona: AuthorizedService<DeletePersonaParams, DeletePersonaResponseResult>;
-	ReadCommunity: AuthorizedService<ReadCommunityParams, ReadCommunityResponseResult>;
-	CreateCommunity: AuthorizedService<CreateCommunityParams, CreateCommunityResponseResult>;
-	UpdateCommunitySettings: AuthorizedService<
-		UpdateCommunitySettingsParams,
-		UpdateCommunitySettingsResponseResult
-	>;
-	DeleteCommunity: AuthorizedService<DeleteCommunityParams, DeleteCommunityResponseResult>;
-	InviteToCommunity: AuthorizedService<InviteToCommunityParams, InviteToCommunityResponseResult>;
-	LeaveCommunity: AuthorizedService<LeaveCommunityParams, LeaveCommunityResponseResult>;
-	KickFromCommunity: AuthorizedService<KickFromCommunityParams, KickFromCommunityResponseResult>;
+	ReadHub: AuthorizedService<ReadHubParams, ReadHubResponseResult>;
+	CreateHub: AuthorizedService<CreateHubParams, CreateHubResponseResult>;
+	UpdateHubSettings: AuthorizedService<UpdateHubSettingsParams, UpdateHubSettingsResponseResult>;
+	DeleteHub: AuthorizedService<DeleteHubParams, DeleteHubResponseResult>;
+	InviteToHub: AuthorizedService<InviteToHubParams, InviteToHubResponseResult>;
+	LeaveHub: AuthorizedService<LeaveHubParams, LeaveHubResponseResult>;
+	KickFromHub: AuthorizedService<KickFromHubParams, KickFromHubResponseResult>;
 	CreateAssignment: AuthorizedService<CreateAssignmentParams, CreateAssignmentResponseResult>;
 	DeleteAssignment: AuthorizedService<DeleteAssignmentParams, DeleteAssignmentResponseResult>;
 	ReadSpaces: AuthorizedService<ReadSpacesParams, ReadSpacesResponseResult>;
@@ -278,19 +275,19 @@ export interface UpdateAccountPasswordParams {
 export type UpdateAccountPasswordResponse = ClientAccount;
 export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
 
-export interface CreateCommunityParams {
+export interface CreateHubParams {
 	actor: number;
-	template: CommunityTemplate;
+	template: HubTemplate;
 }
-export interface CreateCommunityResponse {
+export interface CreateHubResponse {
 	/**
 	 *
-	 * 		Communities represent the membrane around the places Personas can interact with each other or with system level data.
+	 * 		Hubs represent the membrane around the places Personas can interact with each other or with system level data.
 	 * 		They have self contained governance and ownership of Spaces within them.
 	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
 	 *
 	 */
-	community: Community;
+	hub: Hub;
 	roles: Role[];
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
@@ -298,94 +295,94 @@ export interface CreateCommunityResponse {
 	policies: Policy[];
 	personas: PublicPersona[];
 }
-export type CreateCommunityResponseResult = ApiResult<CreateCommunityResponse>;
+export type CreateHubResponseResult = ApiResult<CreateHubResponse>;
 
-export interface ReadCommunityParams {
+export interface ReadHubParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 }
-export interface ReadCommunityResponse {
+export interface ReadHubResponse {
 	/**
 	 *
-	 * 		Communities represent the membrane around the places Personas can interact with each other or with system level data.
+	 * 		Hubs represent the membrane around the places Personas can interact with each other or with system level data.
 	 * 		They have self contained governance and ownership of Spaces within them.
 	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
 	 *
 	 */
-	community: Community;
+	hub: Hub;
 	spaces: Space[];
 	directories: (Entity & {data: DirectoryEntityData})[];
 	roles: Role[];
 	assignments: Assignment[];
 	personas: PublicPersona[];
 }
-export type ReadCommunityResponseResult = ApiResult<ReadCommunityResponse>;
+export type ReadHubResponseResult = ApiResult<ReadHubResponse>;
 
-export interface UpdateCommunitySettingsParams {
+export interface UpdateHubSettingsParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 	/**
 	 *
-	 * 		A nested set of attributes on Community. Holds all community level settings.
+	 * 		A nested set of attributes on Hub. Holds all hub level settings.
 	 *
 	 */
-	settings: CommunitySettings;
+	settings: HubSettings;
 }
-export type UpdateCommunitySettingsResponse = null;
-export type UpdateCommunitySettingsResponseResult = ApiResult<UpdateCommunitySettingsResponse>;
+export type UpdateHubSettingsResponse = null;
+export type UpdateHubSettingsResponseResult = ApiResult<UpdateHubSettingsResponse>;
 
-export interface DeleteCommunityParams {
+export interface DeleteHubParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 }
-export type DeleteCommunityResponse = null;
-export type DeleteCommunityResponseResult = ApiResult<DeleteCommunityResponse>;
+export type DeleteHubResponse = null;
+export type DeleteHubResponseResult = ApiResult<DeleteHubResponse>;
 
-export interface InviteToCommunityParams {
+export interface InviteToHubParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 	name: string;
 }
-export interface InviteToCommunityResponse {
+export interface InviteToHubResponse {
 	/**
 	 *
-	 * 		A subset of a Persona available to all clients in a community.
+	 * 		A subset of a Persona available to all clients in a hub.
 	 *
 	 */
 	persona: PublicPersona;
 	/**
 	 *
-	 * 	 Describes the relationship between a Persona and Role within a given Community.
-	 * 	 A Persona must have at least 1 assignment to be in a Community and see it in the nav.
-	 * 	 When initially joining a Community, Personas are given an Assignment to the default Role.
+	 * 	 Describes the relationship between a Persona and Role within a given Hub.
+	 * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
+	 * 	 When initially joining a Hub, Personas are given an Assignment to the default Role.
 	 *
 	 */
 	assignment: Assignment;
 }
-export type InviteToCommunityResponseResult = ApiResult<InviteToCommunityResponse>;
+export type InviteToHubResponseResult = ApiResult<InviteToHubResponse>;
 
-export interface LeaveCommunityParams {
+export interface LeaveHubParams {
 	actor: number;
 	persona_id: number;
-	community_id: number;
+	hub_id: number;
 }
-export type LeaveCommunityResponse = null;
-export type LeaveCommunityResponseResult = ApiResult<LeaveCommunityResponse>;
+export type LeaveHubResponse = null;
+export type LeaveHubResponseResult = ApiResult<LeaveHubResponse>;
 
-export interface KickFromCommunityParams {
+export interface KickFromHubParams {
 	actor: number;
 	persona_id: number;
-	community_id: number;
+	hub_id: number;
 }
-export type KickFromCommunityResponse = null;
-export type KickFromCommunityResponseResult = ApiResult<KickFromCommunityResponse>;
+export type KickFromHubResponse = null;
+export type KickFromHubResponseResult = ApiResult<KickFromHubResponse>;
 
 export interface CreateAccountPersonaParams {
 	name: string;
 }
 export interface CreateAccountPersonaResponse {
 	personas: ClientPersona[];
-	communities: Community[];
+	hubs: Hub[];
 	roles: Role[];
 	policies: Policy[];
 	spaces: Space[];
@@ -404,15 +401,15 @@ export type DeletePersonaResponseResult = ApiResult<DeletePersonaResponse>;
 export interface CreateAssignmentParams {
 	actor: number;
 	persona_id: number;
-	community_id: number;
+	hub_id: number;
 	role_id: number;
 }
 export interface CreateAssignmentResponse {
 	/**
 	 *
-	 * 	 Describes the relationship between a Persona and Role within a given Community.
-	 * 	 A Persona must have at least 1 assignment to be in a Community and see it in the nav.
-	 * 	 When initially joining a Community, Personas are given an Assignment to the default Role.
+	 * 	 Describes the relationship between a Persona and Role within a given Hub.
+	 * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
+	 * 	 When initially joining a Hub, Personas are given an Assignment to the default Role.
 	 *
 	 */
 	assignment: Assignment;
@@ -428,7 +425,7 @@ export type DeleteAssignmentResponseResult = ApiResult<DeleteAssignmentResponse>
 
 export interface CreateSpaceParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 	name: string;
 	path: string;
 	icon: string;
@@ -437,7 +434,7 @@ export interface CreateSpaceParams {
 export interface CreateSpaceResponse {
 	/**
 	 *
-	 * 	 Spaces are subdivisions within a Community that hold a View and reference to an Entity directory.
+	 * 	 Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
 	 * 	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
 	 * 	 Each is a Svelte component that conforms to the View interface.
 	 *
@@ -459,7 +456,7 @@ export type CreateSpaceResponseResult = ApiResult<CreateSpaceResponse>;
 
 export interface ReadSpacesParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 }
 export interface ReadSpacesResponse {
 	spaces: Space[];
@@ -478,7 +475,7 @@ export interface UpdateSpaceParams {
 export interface UpdateSpaceResponse {
 	/**
 	 *
-	 * 	 Spaces are subdivisions within a Community that hold a View and reference to an Entity directory.
+	 * 	 Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
 	 * 	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
 	 * 	 Each is a Svelte component that conforms to the View interface.
 	 *
@@ -580,13 +577,13 @@ export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
 export interface CreateRoleParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 	name: string;
 }
 export interface CreateRoleResponse {
 	/**
 	 *
-	 * 		Roles are user-defined governance objects that exist within the context of a single Community.
+	 * 		Roles are user-defined governance objects that exist within the context of a single Hub.
 	 * 		They have Policies associated with them that allow for actions to be taken within the system.
 	 * 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	 *
@@ -597,7 +594,7 @@ export type CreateRoleResponseResult = ApiResult<CreateRoleResponse>;
 
 export interface ReadRolesParams {
 	actor: number;
-	community_id: number;
+	hub_id: number;
 }
 export interface ReadRolesResponse {
 	roles: Role[];
@@ -612,7 +609,7 @@ export interface UpdateRoleParams {
 export interface UpdateRoleResponse {
 	/**
 	 *
-	 * 		Roles are user-defined governance objects that exist within the context of a single Community.
+	 * 		Roles are user-defined governance objects that exist within the context of a single Hub.
 	 * 		They have Policies associated with them that allow for actions to be taken within the system.
 	 * 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	 *
@@ -748,15 +745,13 @@ export interface Dispatch {
 	UpdateAccountPassword: (
 		params: UpdateAccountPasswordParams,
 	) => Promise<UpdateAccountPasswordResponseResult>;
-	CreateCommunity: (params: CreateCommunityParams) => Promise<CreateCommunityResponseResult>;
-	ReadCommunity: (params: ReadCommunityParams) => Promise<ReadCommunityResponseResult>;
-	UpdateCommunitySettings: (
-		params: UpdateCommunitySettingsParams,
-	) => Promise<UpdateCommunitySettingsResponseResult>;
-	DeleteCommunity: (params: DeleteCommunityParams) => Promise<DeleteCommunityResponseResult>;
-	InviteToCommunity: (params: InviteToCommunityParams) => Promise<InviteToCommunityResponseResult>;
-	LeaveCommunity: (params: LeaveCommunityParams) => Promise<LeaveCommunityResponseResult>;
-	KickFromCommunity: (params: KickFromCommunityParams) => Promise<KickFromCommunityResponseResult>;
+	CreateHub: (params: CreateHubParams) => Promise<CreateHubResponseResult>;
+	ReadHub: (params: ReadHubParams) => Promise<ReadHubResponseResult>;
+	UpdateHubSettings: (params: UpdateHubSettingsParams) => Promise<UpdateHubSettingsResponseResult>;
+	DeleteHub: (params: DeleteHubParams) => Promise<DeleteHubResponseResult>;
+	InviteToHub: (params: InviteToHubParams) => Promise<InviteToHubResponseResult>;
+	LeaveHub: (params: LeaveHubParams) => Promise<LeaveHubResponseResult>;
+	KickFromHub: (params: KickFromHubParams) => Promise<KickFromHubResponseResult>;
 	CreateAccountPersona: (
 		params: CreateAccountPersonaParams,
 	) => Promise<CreateAccountPersonaResponseResult>;
@@ -812,27 +807,27 @@ export interface Mutations {
 	UpdateAccountPassword: (
 		ctx: DispatchContext<UpdateAccountPasswordParams, UpdateAccountPasswordResponseResult>,
 	) => Promise<UpdateAccountPasswordResponseResult>;
-	CreateCommunity: (
-		ctx: DispatchContext<CreateCommunityParams, CreateCommunityResponseResult>,
-	) => Promise<CreateCommunityResponseResult>;
-	ReadCommunity: (
-		ctx: DispatchContext<ReadCommunityParams, ReadCommunityResponseResult>,
-	) => Promise<ReadCommunityResponseResult>;
-	UpdateCommunitySettings: (
-		ctx: DispatchContext<UpdateCommunitySettingsParams, UpdateCommunitySettingsResponseResult>,
-	) => Promise<UpdateCommunitySettingsResponseResult>;
-	DeleteCommunity: (
-		ctx: DispatchContext<DeleteCommunityParams, DeleteCommunityResponseResult>,
-	) => Promise<DeleteCommunityResponseResult>;
-	InviteToCommunity: (
-		ctx: DispatchContext<InviteToCommunityParams, InviteToCommunityResponseResult>,
-	) => Promise<InviteToCommunityResponseResult>;
-	LeaveCommunity: (
-		ctx: DispatchContext<LeaveCommunityParams, LeaveCommunityResponseResult>,
-	) => Promise<LeaveCommunityResponseResult>;
-	KickFromCommunity: (
-		ctx: DispatchContext<KickFromCommunityParams, KickFromCommunityResponseResult>,
-	) => Promise<KickFromCommunityResponseResult>;
+	CreateHub: (
+		ctx: DispatchContext<CreateHubParams, CreateHubResponseResult>,
+	) => Promise<CreateHubResponseResult>;
+	ReadHub: (
+		ctx: DispatchContext<ReadHubParams, ReadHubResponseResult>,
+	) => Promise<ReadHubResponseResult>;
+	UpdateHubSettings: (
+		ctx: DispatchContext<UpdateHubSettingsParams, UpdateHubSettingsResponseResult>,
+	) => Promise<UpdateHubSettingsResponseResult>;
+	DeleteHub: (
+		ctx: DispatchContext<DeleteHubParams, DeleteHubResponseResult>,
+	) => Promise<DeleteHubResponseResult>;
+	InviteToHub: (
+		ctx: DispatchContext<InviteToHubParams, InviteToHubResponseResult>,
+	) => Promise<InviteToHubResponseResult>;
+	LeaveHub: (
+		ctx: DispatchContext<LeaveHubParams, LeaveHubResponseResult>,
+	) => Promise<LeaveHubResponseResult>;
+	KickFromHub: (
+		ctx: DispatchContext<KickFromHubParams, KickFromHubResponseResult>,
+	) => Promise<KickFromHubResponseResult>;
 	CreateAccountPersona: (
 		ctx: DispatchContext<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>,
 	) => Promise<CreateAccountPersonaResponseResult>;

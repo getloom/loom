@@ -3,9 +3,9 @@ import * as assert from 'uvu/assert';
 import {NOT_OK, OK, ResultError, unwrap, unwrapError, type Result} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {Community} from '$lib/vocab/community/community';
+import type {Hub} from '$lib/vocab/hub/hub';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {toDefaultCommunitySettings} from '$lib/vocab/community/communityHelpers.server';
+import {toDefaultHubSettings} from '$lib/vocab/hub/hubHelpers.server';
 
 /* test__service */
 const test__service = suite<TestDbContext>('services');
@@ -15,28 +15,22 @@ test__service.after(teardownDb);
 
 test__service(`roll back the database after a failed transaction`, async ({repos, random}) => {
 	const {persona} = await random.persona();
-	const communityName = 'a';
-	let community: Community | undefined;
+	const hubName = 'a';
+	let hub: Hub | undefined;
 	let failedResult: Result | undefined;
 	const returnedResult = await toServiceRequestMock(repos, persona).transact(async (repos) => {
-		community = unwrap(
-			await repos.community.create(
-				'standard',
-				communityName,
-				toDefaultCommunitySettings(communityName),
-			),
-		);
-		const found = unwrap(await repos.community.findByName(communityName));
-		assert.is(found?.name, communityName);
+		hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
+		const found = unwrap(await repos.hub.findByName(hubName));
+		assert.is(found?.name, hubName);
 		return (failedResult = NOT_OK);
 	});
-	assert.ok(community);
+	assert.ok(hub);
 	assert.ok(failedResult);
 	assert.ok(!failedResult.ok);
 	assert.is(returnedResult, failedResult);
-	// Ensure the community created in the transaction no longer exists in the repos.
-	assert.ok(!unwrap(await repos.community.findByName(communityName)));
-	assert.ok(!unwrap(await repos.community.findById(community.community_id)));
+	// Ensure the hub created in the transaction no longer exists in the repos.
+	assert.ok(!unwrap(await repos.hub.findByName(hubName)));
+	assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
 });
 
 test__service(`cannot call transact more than once`, async ({repos, random}) => {
@@ -89,42 +83,30 @@ test__service(
 	`transact cb returns a 500 when it throws an unknown error`,
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
-		const communityName = 'a';
-		let community: Community | undefined;
+		const hubName = 'a';
+		let hub: Hub | undefined;
 		const result = await toServiceRequestMock(repos, persona).transact(async (repos) => {
-			community = unwrap(
-				await repos.community.create(
-					'standard',
-					communityName,
-					toDefaultCommunitySettings(communityName),
-				),
-			);
+			hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
 			throw Error('test failure');
 		});
 		assert.equal(result, {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE});
-		assert.ok(community);
-		assert.ok(!unwrap(await repos.community.findById(community.community_id)));
+		assert.ok(hub);
+		assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
 	},
 );
 
 test__service(`transact cb passes through the status of a ResultError`, async ({repos, random}) => {
 	const {persona} = await random.persona();
-	const communityName = 'a';
+	const hubName = 'a';
 	const thrownResult = {ok: false, status: 409, message: 'test failure'};
-	let community: Community | undefined;
+	let hub: Hub | undefined;
 	const result = await toServiceRequestMock(repos, persona).transact(async (repos) => {
-		community = unwrap(
-			await repos.community.create(
-				'standard',
-				communityName,
-				toDefaultCommunitySettings(communityName),
-			),
-		);
+		hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
 		throw new ResultError(thrownResult as any); // TODO remove typecast after upgrading Felt
 	});
 	assert.equal(result, thrownResult);
-	assert.ok(community);
-	assert.ok(!unwrap(await repos.community.findById(community.community_id)));
+	assert.ok(hub);
+	assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
 });
 
 test__service.run();

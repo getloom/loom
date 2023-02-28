@@ -31,23 +31,23 @@ export const createSpace = async (
 	params: CreateSpaceParams,
 	repos: Repos,
 ): Promise<CreateSpaceResponse> => {
-	const {community_id, name, view, path, icon} = params;
+	const {hub_id, name, view, path, icon} = params;
 	// TODO run this same logic when a space path is updated
 	log.trace('[createSpace] validating space path uniqueness');
-	const existingSpaceWithUrl = unwrap(await repos.space.findByCommunityPath(community_id, path));
+	const existingSpaceWithUrl = unwrap(await repos.space.findByHubPath(hub_id, path));
 	if (existingSpaceWithUrl) {
 		throw new ApiError(409, 'a space with that path already exists');
 	}
 
-	const communityPersona = unwrap(await repos.persona.findByCommunity(community_id));
-	if (!communityPersona) {
-		throw new ApiError(409, 'failed to find the community persona');
+	const hubPersona = unwrap(await repos.persona.findByHub(hub_id));
+	if (!hubPersona) {
+		throw new ApiError(409, 'failed to find the hub persona');
 	}
 
 	log.trace('[CreateSpace] initializing directory for space');
 	const uninitializedDirectory = unwrap(
 		await repos.entity.create(
-			communityPersona.persona_id,
+			hubPersona.persona_id,
 			{
 				type: 'Collection',
 				directory: true,
@@ -56,16 +56,9 @@ export const createSpace = async (
 		),
 	) as Entity & {data: DirectoryEntityData};
 
-	log.trace('[CreateSpace] creating space for community', community_id);
+	log.trace('[CreateSpace] creating space for hub', hub_id);
 	const space = unwrap(
-		await repos.space.create(
-			name,
-			view,
-			path,
-			icon,
-			community_id,
-			uninitializedDirectory.entity_id,
-		),
+		await repos.space.create(name, view, path, icon, hub_id, uninitializedDirectory.entity_id),
 	);
 
 	// set `uninitializedDirectory.space_id` now that the space has been created

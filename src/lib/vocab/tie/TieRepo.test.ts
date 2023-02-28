@@ -14,32 +14,26 @@ test__TieRepo.after(teardownDb);
 test__TieRepo('check filtering down by source id', async ({repos, random}) => {
 	//Gen space
 	//Gen dir entity -> thread entity -> post -> reply
-	const {persona, account, community, space} = await random.space();
-	const {entity: entityDir} = await random.entity(
-		persona,
-		account,
-		community,
-		space,
-		space.directory_id,
-	);
+	const {persona, account, hub, space} = await random.space();
+	const {entity: entityDir} = await random.entity(persona, account, hub, space, space.directory_id);
 	const {entity: entityThread} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityPost} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityReply} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
@@ -68,32 +62,32 @@ test__TieRepo('check filtering down by source id', async ({repos, random}) => {
 test__TieRepo('check filtering up by dest id', async ({repos, random}) => {
 	//Gen space
 	//Gen index entity -> thread entity -> post -> reply
-	const {persona, account, community, space} = await random.space();
+	const {persona, account, hub, space} = await random.space();
 	const {entity: entityIndex} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityThread} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityPost} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);
 	const {entity: entityReply} = await random.entity(
 		persona,
 		account,
-		community,
+		hub,
 		space,
 		space.directory_id,
 	);

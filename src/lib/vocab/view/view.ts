@@ -4,7 +4,7 @@ import {setContext, getContext} from 'svelte';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import type {Space} from '$lib/vocab/space/space';
-import type {Community} from '$lib/vocab/community/community';
+import type {Hub} from '$lib/vocab/hub/hub';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {parseSvast} from '$lib/util/parseSvast';
 
@@ -21,7 +21,7 @@ export interface ViewTemplate {
 }
 
 /**
- * The views available for users to create in a community, in order of appearance.
+ * The views available for users to create in a hub, in order of appearance.
  */
 export const viewTemplates: ViewTemplate[] = [
 	{name: 'Home', view: '<Home />', icon: '🏠', creatable: false},
@@ -91,7 +91,7 @@ export const toViewProps = (
 
 export interface ViewContext {
 	persona: Readable<AccountPersona>;
-	community: Readable<Community>;
+	hub: Readable<Hub>;
 	space: Readable<Space>;
 }
 

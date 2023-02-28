@@ -13,7 +13,7 @@ import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
 import {
-	checkCommunityAccess,
+	checkHubAccess,
 	checkEntityOwnership,
 	checkPolicy,
 } from '$lib/vocab/policy/policyHelpers.server';
@@ -24,8 +24,8 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	event: ReadEntities,
 	perform: async ({repos, params}) => {
 		const {actor, source_id} = params;
-		const {community_id} = unwrap(await repos.space.findByEntity(source_id));
-		await checkCommunityAccess(actor, community_id, repos);
+		const {hub_id} = unwrap(await repos.space.findByEntity(source_id));
+		await checkHubAccess(actor, hub_id, repos);
 
 		const ties = unwrap(await repos.tie.filterBySourceId(source_id));
 		//TODO stop filtering directory until we fix entity indexing by space_id
@@ -40,8 +40,8 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 	event: ReadEntitiesPaginated,
 	perform: async ({repos, params}) => {
 		const {actor, source_id, pageSize, pageKey} = params;
-		const {community_id} = unwrap(await repos.space.findByEntity(source_id));
-		await checkCommunityAccess(actor, community_id, repos);
+		const {hub_id} = unwrap(await repos.space.findByEntity(source_id));
+		await checkHubAccess(actor, hub_id, repos);
 
 		const ties = unwrap(await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey));
 		//TODO stop filtering directory until we fix entity indexing by space_id
@@ -58,8 +58,8 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		transact(async (repos) => {
 			const {actor, data, space_id} = params;
 
-			const {community_id} = unwrap(await repos.space.findById(space_id))!;
-			await checkPolicy(permissions.CreateEntity, actor, community_id, repos);
+			const {hub_id} = unwrap(await repos.space.findById(space_id))!;
+			await checkPolicy(permissions.CreateEntity, actor, hub_id, repos);
 
 			const entity = unwrap(await repos.entity.create(actor, data, space_id));
 

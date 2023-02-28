@@ -3,8 +3,8 @@ import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
 import {checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {
-	isCommunityRelativePath,
-	isCommunityRelativePathValid,
+	isHubRelativePath,
+	isHubRelativePathValid,
 	isNetworkRelativePath,
 	isNetworkRelativePathValid,
 	isSpaceRelativePath,
@@ -73,14 +73,14 @@ const parseSvastText = (node: Text): SvelteChild => {
 		lastChar = word[lastCharIndex];
 		if (
 			(isNetworkRelativePath(word) && isNetworkRelativePathValid(word)) ||
-			(isCommunityRelativePath(word) && isCommunityRelativePathValid(word)) ||
+			(isHubRelativePath(word) && isHubRelativePathValid(word)) ||
 			(isSpaceRelativePath(word) && isSpaceRelativePathValid(word)) ||
 			word.startsWith('https://') ||
 			word.startsWith('http://')
 		) {
 			// linkify text:
-			// - /this becomes $HOST/$COMMUNITY/this
-			// - ./there becomes $HOST/$COMMUNITY/$SPACE/there
+			// - /this becomes $HOST/$HUB/this
+			// - ./there becomes $HOST/$HUB/$SPACE/there
 			// - //that.net become https://that.net
 			flushPlainText();
 			(children || (children = [])).push({

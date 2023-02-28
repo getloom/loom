@@ -3,7 +3,7 @@
 	import ManageRolesItem from '$lib/ui/ManageRolesItem.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Community} from '$lib/vocab/community/community.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
@@ -13,22 +13,22 @@
 	import type {DeleteRoleResponseResult} from '$lib/app/eventTypes';
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 
-	$: defaultRoleId = $community.settings.defaultRoleId;
+	$: defaultRoleId = $hub.settings.defaultRoleId;
 
 	const {
 		dispatch,
-		ui: {rolesByCommunityId, roleById},
+		ui: {rolesByHubId, roleById},
 	} = getApp();
 
-	$: roles = $rolesByCommunityId.get($community.community_id);
+	$: roles = $rolesByHubId.get($hub.hub_id);
 
 	const createRole = async () => {
 		//TODO better error handling
 		const result = await dispatch.CreateRole({
 			actor: $persona.persona_id,
-			community_id: $community.community_id,
+			hub_id: $hub.hub_id,
 			name: 'new role',
 		});
 		if (result.ok) {
@@ -52,7 +52,7 @@
 
 <div class="markup padded-xl">
 	<h1>Manage Roles</h1>
-	<ContextInfo {persona} {community} />
+	<ContextInfo {persona} {hub} />
 </div>
 <div class="content panel">
 	{#if roles && selectedRole}
@@ -67,7 +67,7 @@
 			<button type="button" class="plain-button" on:click={createRole}>create a new role</button>
 		</div>
 		<div class="details-wrapper">
-			<RoleDetails {persona} role={selectedRole} {community} {deleteRole} />
+			<RoleDetails {persona} role={selectedRole} {hub} {deleteRole} />
 		</div>
 	{:else}
 		<PendingAnimation />

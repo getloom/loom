@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CommunityNav from '$lib/ui/CommunityNav.svelte';
+	import HubNav from '$lib/ui/HubNav.svelte';
 	import SpaceNav from '$lib/ui/SpaceNav.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -8,16 +8,15 @@
 
 	const {
 		dispatch,
-		ui: {expandMainNav, spaceSelection, personaSelection, communitySelection, spacesByCommunityId},
+		ui: {expandMainNav, spaceSelection, personaSelection, hubSelection, spacesByHubId},
 	} = getApp();
 
 	$: selectedPersona = $personaSelection!;
-	$: selectedCommunity = $communitySelection;
+	$: selectedHub = $hubSelection;
 	$: selectedSpace = $spaceSelection;
 
-	// TODO refactor once community data is normalized
-	$: selectedCommunitySpaces =
-		selectedCommunity && $spacesByCommunityId.get($selectedCommunity!.community_id);
+	// TODO refactor once hub data is normalized
+	$: selectedHubSpaces = selectedHub && $spacesByHubId.get($selectedHub!.hub_id);
 
 	// TODO refactor to some client view-model for the account
 	$: hue = randomHue(toName($selectedPersona));
@@ -39,12 +38,12 @@
 			</div>
 		</div>
 		<div class="explorer">
-			<CommunityNav />
-			{#if selectedPersona && selectedCommunity && selectedCommunitySpaces}
+			<HubNav />
+			{#if selectedPersona && selectedHub && selectedHubSpaces}
 				<SpaceNav
 					persona={selectedPersona}
-					community={selectedCommunity}
-					spaces={selectedCommunitySpaces}
+					hub={selectedHub}
+					spaces={selectedHubSpaces}
 					{selectedSpace}
 				/>
 			{/if}

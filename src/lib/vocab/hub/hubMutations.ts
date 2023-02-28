@@ -1,5 +1,5 @@
 import type {Mutations} from '$lib/app/eventTypes';
-import {evictCommunity, stashCommunity} from '$lib/vocab/community/communityMutationHelpers';
+import {evictHub, stashHub} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
@@ -7,13 +7,13 @@ import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignme
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
-export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) => {
+export const ReadHub: Mutations['ReadHub'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {community, spaces, directories, roles, assignments, personas} = result.value;
+	const {hub, spaces, directories, roles, assignments, personas} = result.value;
 	ui.mutate(() => {
 		stashPersonas(ui, personas);
-		stashCommunity(ui, community);
+		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
 		stashRoles(ui, roles);
 		stashAssignments(ui, assignments);
@@ -21,13 +21,13 @@ export const ReadCommunity: Mutations['ReadCommunity'] = async ({invoke, ui}) =>
 	return result;
 };
 
-export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}) => {
+export const CreateHub: Mutations['CreateHub'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {community, roles, policies, spaces, directories, assignments, personas} = result.value;
+	const {hub, roles, policies, spaces, directories, assignments, personas} = result.value;
 	ui.mutate(() => {
 		stashPersonas(ui, personas);
-		stashCommunity(ui, community);
+		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
 		stashAssignments(ui, assignments);
 		stashRoles(ui, roles);
@@ -36,34 +36,34 @@ export const CreateCommunity: Mutations['CreateCommunity'] = async ({invoke, ui}
 	return result;
 };
 
-export const UpdateCommunitySettings: Mutations['UpdateCommunitySettings'] = async ({
+export const UpdateHubSettings: Mutations['UpdateHubSettings'] = async ({
 	params,
 	invoke,
-	ui: {communityById},
+	ui: {hubById},
 }) => {
 	// optimistic update
-	const community = communityById.get(params.community_id)!;
-	const originalSettings = community.get().settings;
-	community.update(($community) => ({
-		...$community,
-		settings: {...$community.settings, ...params.settings},
+	const hub = hubById.get(params.hub_id)!;
+	const originalSettings = hub.get().settings;
+	hub.update(($hub) => ({
+		...$hub,
+		settings: {...$hub.settings, ...params.settings},
 	}));
 	const result = await invoke();
 	if (!result.ok) {
-		community.update(($community) => ({...$community, settings: originalSettings}));
+		hub.update(($hub) => ({...$hub, settings: originalSettings}));
 	}
 	return result;
 };
 
-export const DeleteCommunity: Mutations['DeleteCommunity'] = async ({params, invoke, ui}) => {
+export const DeleteHub: Mutations['DeleteHub'] = async ({params, invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {community_id} = params;
-	ui.mutate(() => evictCommunity(ui, community_id));
+	const {hub_id} = params;
+	ui.mutate(() => evictHub(ui, hub_id));
 	return result;
 };
 
-export const InviteToCommunity: Mutations['InviteToCommunity'] = async ({invoke, ui}) => {
+export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 
@@ -76,16 +76,16 @@ export const InviteToCommunity: Mutations['InviteToCommunity'] = async ({invoke,
 	return result;
 };
 
-export const LeaveCommunity: Mutations['LeaveCommunity'] = async ({params, invoke, ui}) => {
+export const LeaveHub: Mutations['LeaveHub'] = async ({params, invoke, ui}) => {
 	const {assignments} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {persona_id, community_id} = params;
+	const {persona_id, hub_id} = params;
 
 	const assignmentsToEvict: Assignment[] = [];
-	// TODO could speed this up a cache of assignments by community, see in multiple places
+	// TODO could speed this up a cache of assignments by hub, see in multiple places
 	for (const assignment of assignments.get().value) {
-		if (assignment.persona_id === persona_id && assignment.community_id === community_id) {
+		if (assignment.persona_id === persona_id && assignment.hub_id === hub_id) {
 			assignmentsToEvict.push(assignment);
 		}
 	}

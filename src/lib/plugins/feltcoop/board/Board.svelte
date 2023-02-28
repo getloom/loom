@@ -10,7 +10,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, community} = $viewContext);
+	$: ({persona, space, hub} = $viewContext);
 
 	const {dispatch, socket} = getApp();
 
@@ -36,7 +36,7 @@
 				done={() => dispatch.CloseDialog()}
 				entityName="post"
 				{persona}
-				{community}
+				{hub}
 				{space}
 			>
 				<svelte:fragment slot="content_title">post</svelte:fragment>

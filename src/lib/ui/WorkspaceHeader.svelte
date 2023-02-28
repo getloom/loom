@@ -2,9 +2,9 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import {getApp} from '$lib/ui/app';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
 
 	const {
@@ -12,7 +12,7 @@
 	} = getApp();
 
 	export let space: Readable<Space> | null;
-	export let community: Readable<Community> | null;
+	export let hub: Readable<Hub> | null;
 </script>
 
 <ul
@@ -22,13 +22,9 @@
 >
 	<li class="luggage-placeholder" />
 	<li class="breadcrumbs">
-		{#if community && $community}<CommunityAvatar
-				{community}
-				showName={false}
-				contextmenuAction={null}
-			/><span class="title">{$community.name}</span>{/if}{#if space}<span
-				style:font-size="var(--font_size_lg)"><SpaceIcon {space} /></span
-			>
+		{#if hub && $hub}<HubAvatar {hub} showName={false} contextmenuAction={null} /><span
+				class="title">{$hub.name}</span
+			>{/if}{#if space}<span style:font-size="var(--font_size_lg)"><SpaceIcon {space} /></span>
 			<span class="title">{$space?.path.split('/').filter(Boolean).join(' / ') || ''}</span>{/if}
 	</li>
 	<li class="marquee-button-placeholder" />

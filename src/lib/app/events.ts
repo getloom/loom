@@ -7,14 +7,14 @@ import {
 	UpdateAccountPassword,
 } from '$lib/vocab/account/accountEvents';
 import {
-	CreateCommunity,
-	ReadCommunity,
-	UpdateCommunitySettings,
-	DeleteCommunity,
-	InviteToCommunity,
-	LeaveCommunity,
-	KickFromCommunity,
-} from '$lib/vocab/community/communityEvents';
+	CreateHub,
+	ReadHub,
+	UpdateHubSettings,
+	DeleteHub,
+	InviteToHub,
+	LeaveHub,
+	KickFromHub,
+} from '$lib/vocab/hub/hubEvents';
 import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceEvents';
@@ -54,14 +54,14 @@ export const eventInfos: EventInfo[] = [
 	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
-	// communityEvents
-	CreateCommunity,
-	ReadCommunity,
-	UpdateCommunitySettings,
-	DeleteCommunity,
-	InviteToCommunity,
-	LeaveCommunity,
-	KickFromCommunity,
+	// hubEvents
+	CreateHub,
+	ReadHub,
+	UpdateHubSettings,
+	DeleteHub,
+	InviteToHub,
+	LeaveHub,
+	KickFromHub,
 	// personaEvents
 	CreateAccountPersona,
 	DeletePersona,

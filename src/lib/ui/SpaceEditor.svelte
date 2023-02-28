@@ -4,7 +4,7 @@
 
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import {getApp} from '$lib/ui/app';
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
@@ -13,7 +13,7 @@
 
 	export let persona: Readable<AccountPersona>;
 	export let space: Readable<Space>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
 
 	const {dispatch, devmode} = getApp();
@@ -30,7 +30,7 @@
 	<form class="markup" {...$$restProps}>
 		<header>
 			<h2>Edit Space</h2>
-			<ContextInfo {persona} {community} {space} />
+			<ContextInfo {persona} {hub} {space} />
 			<section>
 				<p>created {format($space.created, 'PPPPp')}</p>
 				{#if $space.updated !== null}
@@ -59,7 +59,7 @@
 						Component: DeleteSpaceForm,
 						props: {
 							persona,
-							community,
+							hub,
 							space,
 							done: () => {
 								dispatch.CloseDialog();

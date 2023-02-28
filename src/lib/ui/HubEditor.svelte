@@ -2,80 +2,80 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
 
-	import type {Community} from '$lib/vocab/community/community';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
-	import CommunitySettingsHue from '$lib/ui/CommunitySettingsHue.svelte';
+	import type {Hub} from '$lib/vocab/hub/hub';
+	import HubAvatar from '$lib/ui/HubAvatar.svelte';
+	import HubSettingsHue from '$lib/ui/HubSettingsHue.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import EditCommunityAdvanced from '$lib/ui/EditCommunityAdvanced.svelte';
-	import DeleteCommunityForm from '$lib/ui/DeleteCommunityForm.svelte';
-	import LeaveCommunityForm from '$lib/ui/LeaveCommunityForm.svelte';
+	import EditHubAdvanced from '$lib/ui/EditHubAdvanced.svelte';
+	import DeleteHubForm from '$lib/ui/DeleteHubForm.svelte';
+	import LeaveHubForm from '$lib/ui/LeaveHubForm.svelte';
 	import {getApp} from '$lib/ui/app';
 
 	const {dispatch} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
 </script>
 
-<div class="community-editor column">
+<div class="hub-editor column">
 	<form class="markup" {...$$restProps}>
 		<header>
-			<h2>Edit Community</h2>
+			<h2>Edit Hub</h2>
 			<p style:font-size="var(--font_size_xl)">
-				<CommunityAvatar {community} />
+				<HubAvatar {hub} />
 			</p>
 			<section>
-				<p>created {format($community.created, 'PPPPp')}</p>
-				{#if $community.updated !== null}
-					<p>updated {format($community.updated, 'PPPPp')}</p>
+				<p>created {format($hub.created, 'PPPPp')}</p>
+				{#if $hub.updated !== null}
+					<p>updated {format($hub.updated, 'PPPPp')}</p>
 				{/if}
 			</section>
 		</header>
 		<fieldset>
 			<legend>settings</legend>
-			<CommunitySettingsHue {persona} {community} />
+			<HubSettingsHue {persona} {hub} />
 		</fieldset>
 		<fieldset>
 			<legend class="error-text">danger! zone</legend>
 			<button
-				title="leave community"
+				title="leave hub"
 				on:click={() =>
 					dispatch.OpenDialog({
-						Component: LeaveCommunityForm,
+						Component: LeaveHubForm,
 						props: {
 							persona,
-							community,
+							hub,
 							done: () => {
 								dispatch.CloseDialog();
 								done?.();
 							},
 						},
-					})}>leave community</button
+					})}>leave hub</button
 			>
 			<button
-				title="delete community"
+				title="delete hub"
 				on:click={() =>
 					dispatch.OpenDialog({
-						Component: DeleteCommunityForm,
+						Component: DeleteHubForm,
 						props: {
 							persona,
-							community,
+							hub,
 							done: () => {
 								dispatch.CloseDialog();
 								done?.();
 							},
 						},
-					})}>delete community</button
+					})}>delete hub</button
 			>
 		</fieldset>
-		<EditCommunityAdvanced actor={persona} {community} />
+		<EditHubAdvanced actor={persona} {hub} />
 	</form>
 </div>
 
 <style>
 	/* TODO maybe extract .dialog-content */
-	.community-editor {
+	.hub-editor {
 		display: flex;
 		flex-direction: column;
 		padding: var(--spacing_xl);

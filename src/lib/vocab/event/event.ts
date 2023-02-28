@@ -21,7 +21,7 @@ export interface ServiceEventInfo {
 	authenticate?: boolean; // `true` by default -- does this service require login?
 	authorize?: boolean; // `true` by default -- does this service require `params.actor`?
 	websockets?: boolean; // `true` by default -- can this service be called via websockets?
-	broadcast?: boolean; // `false` by default -- does this service event rebroadcast to other community clients
+	broadcast?: boolean; // `false` by default -- does this service event rebroadcast to other hub clients
 	params: VocabSchema;
 	response: VocabSchema;
 	returns: string;

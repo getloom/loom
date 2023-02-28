@@ -1,11 +1,11 @@
 <script lang="ts">
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import CommunityAvatar from '$lib/ui/CommunityAvatar.svelte';
+	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 	import {getApp} from '$lib/ui/app';
 
 	const {
-		ui: {personas, communities},
+		ui: {personas, hubs},
 	} = getApp();
 
 	export let name: string;
@@ -13,13 +13,13 @@
 	export let inline = true;
 
 	// TODO maybe add a cache of persona by name
-	$: community = Array.from($communities.value).find((c) => c.get().name === name);
+	$: hub = Array.from($hubs.value).find((c) => c.get().name === name);
 	$: persona = Array.from($personas.value).find((p) => p.get().name === name);
 </script>
 
 <span class="mention" class:inline>
-	{#if community && $persona?.type === 'community'}
-		<CommunityAvatar {community} {contextmenuAction} {inline}>@</CommunityAvatar>
+	{#if hub && $persona?.type === 'community'}
+		<HubAvatar {hub} {contextmenuAction} {inline}>@</HubAvatar>
 	{:else if persona}
 		<PersonaAvatar {persona} {contextmenuAction} {inline}>@</PersonaAvatar>
 	{:else}

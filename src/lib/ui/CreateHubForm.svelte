@@ -11,7 +11,7 @@
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {randomHue} from '$lib/ui/color';
-	import {toSearchParams, toCommunityUrl} from '$lib/ui/url';
+	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
@@ -40,7 +40,7 @@
 	const create = async (): Promise<void> => {
 		name = scrubPersonaName(name);
 		if (!name) {
-			errorMessage = 'please enter a name for your new community';
+			errorMessage = 'please enter a name for your new hub';
 			nameEl.focus();
 			return;
 		}
@@ -53,7 +53,7 @@
 		if (pending) return;
 		pending = true;
 		errorMessage = null;
-		const result = await dispatch.CreateCommunity({
+		const result = await dispatch.CreateHub({
 			actor: $persona.persona_id,
 			template: {name, settings: {hue}},
 		});
@@ -62,8 +62,8 @@
 			errorMessage = null;
 			name = '';
 			await goto(
-				toCommunityUrl(
-					result.value.community.name,
+				toHubUrl(
+					result.value.hub.name,
 					null,
 					toSearchParams($page.url.searchParams, {
 						persona: $sessionPersonaIndexById.get($persona.persona_id) + '',
@@ -85,7 +85,7 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<h2>Create a new Community</h2>
+	<h2>Create a new Hub</h2>
 	<ContextInfo {persona} />
 	<fieldset>
 		<label>
@@ -98,14 +98,14 @@
 				on:keydown={onKeydown}
 			/>
 		</label>
-		<PendingButton on:click={create} {pending}>create community</PendingButton>
+		<PendingButton on:click={create} {pending}>create hub</PendingButton>
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{/if}
 	</fieldset>
 	{#if name}
 		<section>
-			<Avatar {name} type="Community" {hue} />
+			<Avatar {name} type="Hub" {hue} />
 		</section>
 		<details>
 			<summary>Customize</summary>

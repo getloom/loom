@@ -17,16 +17,16 @@ export class PolicyRepo extends PostgresRepo {
 		return {ok: true, value: result};
 	}
 
-	async filterByActorCommunityPermission(
+	async filterByActorHubPermission(
 		actor_id: number,
-		community_id: number,
+		hub_id: number,
 		permission: string,
 	): Promise<Result<{value: Policy[]}>> {
-		log.trace('[findByActorCommunityPermission]', actor_id, community_id, permission);
+		log.trace('[findByActorHubPermission]', actor_id, hub_id, permission);
 		const result = await this.sql<Policy[]>`
 		SELECT * FROM policies JOIN
 			(SELECT roles.role_id FROM roles JOIN
-				(SELECT * FROM assignments WHERE persona_id=${actor_id} AND community_id=${community_id}) a
+				(SELECT * FROM assignments WHERE persona_id=${actor_id} AND hub_id=${hub_id}) a
 				ON a.role_id = roles.role_id) r
 		ON policies.role_id = r.role_id AND permission=${permission};
 		`;
@@ -75,10 +75,10 @@ export class PolicyRepo extends PostgresRepo {
 		SELECT pol.policy_id, pol.role_id, pol.permission, pol.data, pol.created, pol.updated
 		FROM policies pol JOIN (							
 				SELECT DISTINCT r.role_id FROM roles r JOIN (
-					SELECT DISTINCT a.community_id FROM personas p
+					SELECT DISTINCT a.hub_id FROM personas p
 					JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id = ${account_id}
 				) apc
-				ON r.community_id=apc.community_id
+				ON r.hub_id=apc.hub_id
 		) apcr
 		ON pol.role_id = apcr.role_id
 		`;

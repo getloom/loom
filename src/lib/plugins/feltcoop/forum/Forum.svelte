@@ -11,7 +11,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, community} = $viewContext);
+	$: ({persona, space, hub} = $viewContext);
 
 	const {dispatch, socket} = getApp();
 
@@ -54,7 +54,7 @@
 								entityName: 'post',
 								fields: {name: true, content: true},
 								persona,
-								community,
+								hub,
 								space,
 							},
 						})}>Submit a new post</button

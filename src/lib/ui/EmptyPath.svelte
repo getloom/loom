@@ -4,7 +4,7 @@
 
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
@@ -15,16 +15,16 @@
 		spaceParam.includes('/') ? 'EntityPath' : 'SpacePath';
 
 	const {
-		ui: {spacesByCommunityId},
+		ui: {spacesByHubId},
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 
 	let selectedView: 'space' | 'entity' =
 		toPathType($page.params.space || '') === 'EntityPath' ? 'entity' : 'space';
 
-	$: spaces = $spacesByCommunityId.get($community.community_id);
+	$: spaces = $spacesByHubId.get($hub.hub_id);
 	$: homeSpace = spaces?.find((s) => isHomeSpace(s.get()));
 
 	$: spaceParam = $page.params.space || '';
@@ -52,10 +52,10 @@
 		</button>
 	</div>
 	{#if selectedView === 'space'}
-		<CreateSpaceForm {persona} {community} initialName={initialSpaceName} />
+		<CreateSpaceForm {persona} {hub} initialName={initialSpaceName} />
 	{:else if selectedView === 'entity'}
 		{#if homeSpace}
-			<CreateEntityForm {persona} {community} space={homeSpace} />
+			<CreateEntityForm {persona} {hub} space={homeSpace} />
 		{:else}
 			<span class="error-text">[error: expected a space]</span>
 		{/if}

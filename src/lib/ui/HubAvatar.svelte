@@ -2,11 +2,11 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
-	import type {Community} from '$lib/vocab/community/community';
-	import CommunityContextmenu from '$lib/app/contextmenu/CommunityContextmenu.svelte';
+	import type {Hub} from '$lib/vocab/hub/hub';
+	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 	export let showName = true;
 	export let showIcon = true;
 	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
@@ -14,13 +14,13 @@
 </script>
 
 <Avatar
-	name={$community.name}
-	type="Community"
-	hue={$community.settings.hue}
+	name={$hub.name}
+	type="Hub"
+	hue={$hub.settings.hue}
 	{showName}
 	{showIcon}
 	contextmenuAction={contextmenuAction === undefined
-		? [[CommunityContextmenu, {community}]]
+		? [[HubContextmenu, {hub}]]
 		: contextmenuAction}
 	{inline}><slot /></Avatar
 >

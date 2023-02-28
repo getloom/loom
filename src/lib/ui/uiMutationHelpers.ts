@@ -21,15 +21,15 @@ export const setFreshnessByDirectoryId = (ui: WritableUi, directory: Writable<En
 	);
 };
 
-//TODO this could probably a derived store (see above) based on something like "directoriesByCommunityId"
-export const upsertFreshnessByCommunityId = (ui: WritableUi, community_id: number): void => {
-	const {spacesByCommunityId, freshnessByCommunityId, freshnessByDirectoryId} = ui;
-	const spaces = spacesByCommunityId.get().get(community_id) || [];
+//TODO this could probably a derived store (see above) based on something like "directoriesByHubId"
+export const upsertFreshnessByHubId = (ui: WritableUi, hub_id: number): void => {
+	const {spacesByHubId, freshnessByHubId, freshnessByDirectoryId} = ui;
+	const spaces = spacesByHubId.get().get(hub_id) || [];
 	const fresh = spaces.some((s) => freshnessByDirectoryId.get(s.get().directory_id)?.get());
-	if (freshnessByCommunityId.has(community_id)) {
-		freshnessByCommunityId.get(community_id)!.set(fresh);
+	if (freshnessByHubId.has(hub_id)) {
+		freshnessByHubId.get(hub_id)!.set(fresh);
 	} else {
-		freshnessByCommunityId.set(community_id, writable(fresh));
+		freshnessByHubId.set(hub_id, writable(fresh));
 	}
 };
 
@@ -60,10 +60,10 @@ export const updateLastSeen = (ui: WritableUi, directory_id: number, time = Date
 		| undefined;
 
 	if (directory) {
-		upsertFreshnessByCommunityId(
+		upsertFreshnessByHubId(
 			ui,
 			//TODO add directory field to space & vice versa to avoid this mess below
-			spaceById.get(directory.get().space_id)!.get().community_id,
+			spaceById.get(directory.get().space_id)!.get().hub_id,
 		);
 	}
 };

@@ -4,7 +4,7 @@
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, community} = $viewContext);
+	$: ({persona, space, hub} = $viewContext);
 
 	const {dispatch} = getApp();
 
@@ -19,7 +19,7 @@
 				done: () => dispatch.CloseDialog(),
 				entityName: 'list',
 				persona,
-				community,
+				hub,
 				space,
 				fields: {content: true},
 			},

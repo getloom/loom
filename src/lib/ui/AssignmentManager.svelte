@@ -5,27 +5,25 @@
 	import {getApp} from '$lib/ui/app';
 
 	import type {Role} from '$lib/vocab/role/role';
-	import type {Community} from '$lib/vocab/community/community';
+	import type {Hub} from '$lib/vocab/hub/hub';
 
 	const {
-		ui: {personaSelection, personasByCommunityId, assignmentsByRoleId},
+		ui: {personaSelection, personasByHubId, assignmentsByRoleId},
 	} = getApp();
 
 	export let role: Readable<Role>;
-	export let community: Readable<Community>;
+	export let hub: Readable<Hub>;
 
 	$: assignments = $assignmentsByRoleId.get($role.role_id)!;
 
 	$: selectedPersona = $personaSelection;
 
-	$: communityPersonas = $personasByCommunityId.get($role.community_id)!;
+	$: hubPersonas = $personasByHubId.get($role.hub_id)!;
 
 	// TODO speed this up with a better cached data structures
-	$: assignablePersonas = communityPersonas.filter(
+	$: assignablePersonas = hubPersonas.filter(
 		(p) =>
-			!assignments.some(
-				(a) => a.persona_id === p.get().persona_id && a.community_id === $community.community_id,
-			),
+			!assignments.some((a) => a.persona_id === p.get().persona_id && a.hub_id === $hub.hub_id),
 	);
 </script>
 
@@ -34,12 +32,7 @@
 	{#if selectedPersona}
 		<menu>
 			{#each assignablePersonas as persona (persona)}
-				<AssignmentInputItem
-					persona={selectedPersona}
-					assignmentPersona={persona}
-					{community}
-					{role}
-				/>
+				<AssignmentInputItem persona={selectedPersona} assignmentPersona={persona} {hub} {role} />
 			{:else}
 				<p>There's no one new to assign this role to</p>
 			{/each}

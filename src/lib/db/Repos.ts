@@ -2,7 +2,7 @@ import type {PostgresSql} from '$lib/db/postgres';
 import {AccountRepo} from '$lib/vocab/account/AccountRepo';
 import {PersonaRepo} from '$lib/vocab/persona/PersonaRepo';
 import {AssignmentRepo} from '$lib/vocab/assignment/AssignmentRepo';
-import {CommunityRepo} from '$lib/vocab/community/CommunityRepo';
+import {HubRepo} from '$lib/vocab/hub/HubRepo';
 import {SpaceRepo} from '$lib/vocab/space/SpaceRepo';
 import {EntityRepo} from '$lib/vocab/entity/EntityRepo';
 import {TieRepo} from '$lib/vocab/tie/TieRepo';
@@ -17,7 +17,7 @@ export class Repos {
 	readonly account: AccountRepo;
 	readonly persona: PersonaRepo;
 	readonly assignment: AssignmentRepo;
-	readonly community: CommunityRepo;
+	readonly hub: HubRepo;
 	readonly space: SpaceRepo;
 	readonly entity: EntityRepo;
 	readonly tie: TieRepo;
@@ -28,7 +28,7 @@ export class Repos {
 		this.account = new AccountRepo(this, sql);
 		this.persona = new PersonaRepo(this, sql);
 		this.assignment = new AssignmentRepo(this, sql);
-		this.community = new CommunityRepo(this, sql);
+		this.hub = new HubRepo(this, sql);
 		this.space = new SpaceRepo(this, sql);
 		this.entity = new EntityRepo(this, sql);
 		this.tie = new TieRepo(this, sql);

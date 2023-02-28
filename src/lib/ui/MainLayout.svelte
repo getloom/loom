@@ -4,15 +4,15 @@
 	import ViewContext from '$lib/ui/ViewContext.svelte';
 
 	const {
-		ui: {mainLayoutView, personaSelection, communitySelection, spaceSelection},
+		ui: {mainLayoutView, personaSelection, hubSelection, spaceSelection},
 	} = getApp();
 
 	// TODO what can we do about this type? making the `viewContext` values nullable causes a ton of type errors
 	$: persona = $personaSelection!;
-	$: community = $communitySelection!;
+	$: hub = $hubSelection!;
 	$: space = $spaceSelection!;
 </script>
 
-<ViewContext {persona} {community} {space}>
+<ViewContext {persona} {hub} {space}>
 	<SvastText text={$mainLayoutView} />
 </ViewContext>

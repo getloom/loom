@@ -6,7 +6,7 @@
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
-	import CreateCommunityForm from '$lib/ui/CreateCommunityForm.svelte';
+	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
 	import DeletePersonaForm from '$lib/ui/DeletePersonaForm.svelte';
 
 	const {dispatch} = getApp();
@@ -23,12 +23,12 @@
 		<ContextmenuEntry
 			action={() =>
 				dispatch.OpenDialog({
-					Component: CreateCommunityForm,
+					Component: CreateHubForm,
 					props: {persona, done: () => dispatch.CloseDialog()},
 					dialogProps: {layout: 'page'},
 				})}
 		>
-			Create Community
+			Create Hub
 		</ContextmenuEntry>
 		<ContextmenuEntry
 			action={() =>
