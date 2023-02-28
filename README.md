@@ -44,7 +44,7 @@ To work directly on the codebase,
 first set up [a local dev environment](/src/docs/getting-started.md), then:
 
 ```bash
-# node >=18.6
+# node >=18.14
 npm i
 
 # start SvelteKit/Vite and the Node server

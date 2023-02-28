@@ -21,7 +21,7 @@ git config --global core.pager 'less -x1,5'
 
 **2. NodeJS**
 
-`@feltjs/felt-server` requires [NodeJS](https://nodejs.org) ^18.6.
+`@feltjs/felt-server` requires [NodeJS](https://nodejs.org) ^18.14.
 Our recommended Node version manager is [`fnm`](https://github.com/Schniz/fnm),
 which is roughly equivalent to [`nvm`](https://github.com/nvm-sh/nvm) with improved performance.
 
