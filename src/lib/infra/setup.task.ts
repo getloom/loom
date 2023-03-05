@@ -34,6 +34,7 @@ export const task: Task<Args> = {
 			: PUBLIC_API_SERVER_HOSTNAME;
 		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
 		const NODE_VERSION = '18.14';
+		const POSTGRES_VERSION = '15';
 		const PGDATABASE = fromEnv('PGDATABASE');
 		const PGUSER = fromEnv('PGUSER');
 		const PGPASSWORD = fromEnv('PGPASSWORD');
@@ -128,7 +129,7 @@ export const task: Task<Args> = {
 				`sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list;';
 				curl -L https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -;
 				sudo apt update;
-				sudo apt install -y postgresql;`,
+				sudo apt install -y postgresql-${POSTGRES_VERSION};`,
 			//
 			//
 			// Create the Postgres database for Felt:

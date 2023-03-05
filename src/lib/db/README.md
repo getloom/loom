@@ -8,7 +8,7 @@
 
 ## Postgres setup
 
-The Felt server has a dependency on [PostgreSQL](https://www.postgresql.org) 13.2+.
+The Felt server has a dependency on [PostgreSQL](https://www.postgresql.org) 15+.
 You can find [setup instructions](https://www.postgresql.org/download/) on their website.
 
 Felt's database driver is [`postgres`](https://github.com/porsager/postgres).

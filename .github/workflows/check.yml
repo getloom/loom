@@ -20,7 +20,7 @@ jobs:
       # Postgres config taken from GitHub Actions help docs:
       # https://help.github.com/en/actions/configuring-and-managing-workflows/creating-postgresql-service-containers
       postgres:
-        image: postgres
+        image: postgres:15
         env:
           POSTGRES_DB: felt
           POSTGRES_PASSWORD: password

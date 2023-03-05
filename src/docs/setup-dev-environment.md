@@ -42,7 +42,7 @@ npm i # install dependencies
 
 **3. Postgres**
 
-`@feltjs/felt-server` requires [Postgres](https://nodejs.org) >= 13.2.
+`@feltjs/felt-server` requires [Postgres](https://www.postgresql.org/) >= 15.
 For more details see
 [the database docs](https://github.com/feltjs/felt-server/tree/main/src/db).
 
