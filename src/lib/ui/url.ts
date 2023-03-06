@@ -3,7 +3,7 @@ import {base} from '$app/paths';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
-export const PERSONA_QUERY_KEY = 'persona';
+export const ACTOR_QUERY_KEY = 'persona';
 
 export type SearchParams<TKey extends string = string> = Record<TKey, string | null | undefined>;
 

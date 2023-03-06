@@ -1,10 +1,10 @@
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-import {GUEST_PERSONA_NAME} from '$lib/vocab/persona/constants';
+import {GUEST_ACTOR_NAME} from '$lib/vocab/persona/constants';
 import type {Entity} from '$lib/vocab/entity/entity';
 
 export const toName = (entity: null | undefined | {name?: string}): string =>
-	entity?.name ?? GUEST_PERSONA_NAME;
+	entity?.name ?? GUEST_ACTOR_NAME;
 
 export const toIcon = (entity: null | undefined | {icon?: string}): string | null =>
 	entity?.icon ?? null;

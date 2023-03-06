@@ -1,12 +1,12 @@
 <script lang="ts">
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import {randomHue} from '$lib/ui/color';
-	import {GUEST_PERSONA_NAME} from '$lib/vocab/persona/constants';
+	import {GUEST_ACTOR_NAME} from '$lib/vocab/persona/constants';
 	import type {EntityType} from '$lib/vocab/entity/entity.schema';
 	import {getApp} from '$lib/ui/app';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 
-	export let name: string = GUEST_PERSONA_NAME; // TODO should this handle "default" or "empty" or "blank" avatars?
+	export let name: string = GUEST_ACTOR_NAME; // TODO should this handle "default" or "empty" or "blank" avatars?
 	export let icon: string | null = null;
 	export let hue: number | undefined = undefined;
 	export let showName = true;

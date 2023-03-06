@@ -1,16 +1,16 @@
 import type {Sql} from 'postgres';
 
-const GHOST_PERSONA_ID = 2;
+const GHOST_ACTOR_ID = 2;
 
 export const up = async (sql: Sql<any>): Promise<void> => {
-	const [ghostPersona] = await sql`SELECT * FROM personas WHERE persona_id=${GHOST_PERSONA_ID}`;
+	const [ghostPersona] = await sql`SELECT * FROM personas WHERE persona_id=${GHOST_ACTOR_ID}`;
 	if (!ghostPersona || ghostPersona.type === 'ghost') return;
 
 	// Move the existing persona -- all references to `personas.persona_id` cascade except one (see ahead).
 	const [{persona_id}] = await sql`
 		UPDATE personas
 		SET persona_id=(1 + (SELECT max(persona_id) from personas))
-		WHERE persona_id=${GHOST_PERSONA_ID}
+		WHERE persona_id=${GHOST_ACTOR_ID}
 		RETURNING persona_id;
 	`;
 	// Fix the serial `persona_id`.
@@ -20,11 +20,11 @@ export const up = async (sql: Sql<any>): Promise<void> => {
 	await sql`
 		UPDATE entities
 		SET persona_id=${persona_id}
-		WHERE persona_id=${GHOST_PERSONA_ID};
+		WHERE persona_id=${GHOST_ACTOR_ID};
 	`;
 	// Create the ghost persona record.
 	await sql`
 		INSERT INTO personas (persona_id, type, name)
-		VALUES (${GHOST_PERSONA_ID}, 'ghost', 'ghost')
+		VALUES (${GHOST_ACTOR_ID}, 'ghost', 'ghost')
 	`;
 };

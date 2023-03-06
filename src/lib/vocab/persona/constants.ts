@@ -1,1 +1,1 @@
-export const GUEST_PERSONA_NAME = 'guest';
+export const GUEST_ACTOR_NAME = 'guest';

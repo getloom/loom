@@ -9,7 +9,7 @@ import {
 } from '$lib/vocab/persona/personaServices';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
-import {GHOST_PERSONA_ID, GHOST_PERSONA_NAME} from '$lib/app/constants';
+import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 
 /* test__personaService */
@@ -58,11 +58,11 @@ test__personaService('ghost persona has the expected name and id', async ({repos
 		}),
 	);
 
-	const ghostPersona = unwrap(await repos.persona.findById(GHOST_PERSONA_ID));
+	const ghostPersona = unwrap(await repos.persona.findById(GHOST_ACTOR_ID));
 	assert.ok(ghostPersona);
 	assert.is(ghostPersona.type, 'ghost');
-	assert.is(ghostPersona.name, GHOST_PERSONA_NAME);
-	assert.is(ghostPersona.persona_id, GHOST_PERSONA_ID);
+	assert.is(ghostPersona.name, GHOST_ACTOR_NAME);
+	assert.is(ghostPersona.persona_id, GHOST_ACTOR_ID);
 });
 
 test__personaService('delete a persona and properly clean up', async ({repos, random}) => {
@@ -142,7 +142,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	const otherEntityUpdated = unwrap(await repos.entity.findById(otherEntity.entity_id));
 	assert.ok(otherEntityUpdated);
 	assert.is(otherEntityUpdated.data.content, otherContent);
-	assert.is(otherEntityUpdated.persona_id, GHOST_PERSONA_ID);
+	assert.is(otherEntityUpdated.persona_id, GHOST_ACTOR_ID);
 });
 
 test__personaService('actors cannot delete other personas', async ({repos, random}) => {

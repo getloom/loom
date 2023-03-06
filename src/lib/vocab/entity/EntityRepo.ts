@@ -5,7 +5,7 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {DirectoryEntityData, EntityData} from '$lib/vocab/entity/entityData';
-import {GHOST_PERSONA_ID} from '$lib/app/constants';
+import {GHOST_ACTOR_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
@@ -113,7 +113,7 @@ export class EntityRepo extends PostgresRepo {
 
 	// TODO needs to handle `data.attributedTo` and other data properties containing personas,
 	// if possible in the same SQL statement --
-	// if `data.attributedTo` exists, replace with `GHOST_PERSONA_ID`
+	// if `data.attributedTo` exists, replace with `GHOST_ACTOR_ID`
 	// how? see https://www.postgresql.org/docs/current/functions-json.html
 	// `WHERE data ? 'attributedTo'`
 	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
@@ -121,7 +121,7 @@ export class EntityRepo extends PostgresRepo {
 		log.trace('[ghost]', persona_id);
 		const data = await this.sql<any[]>`
 			UPDATE entities
-			SET updated=NOW(), persona_id=${GHOST_PERSONA_ID}
+			SET updated=NOW(), persona_id=${GHOST_ACTOR_ID}
 			WHERE persona_id=${persona_id};
 		`;
 		return {ok: true, value: data.count};

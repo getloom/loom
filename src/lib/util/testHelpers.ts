@@ -11,7 +11,7 @@ import {
 	type NonAuthorizedServiceRequest,
 } from '$lib/server/service';
 import type {AccountPersona, ActorPersona} from '$lib/vocab/persona/persona';
-import {ADMIN_HUB_ID, ADMIN_PERSONA_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
 
 export const log = new Logger('[test]');
@@ -56,6 +56,6 @@ export function toServiceRequestMock(
 
 export const loadAdminPersona = async (repos: Repos): Promise<AccountPersona> => {
 	const assignments = unwrap(await repos.assignment.filterByHub(ADMIN_HUB_ID));
-	const nonAdminAssignments = assignments.filter((p) => p.persona_id !== ADMIN_PERSONA_ID);
+	const nonAdminAssignments = assignments.filter((p) => p.persona_id !== ADMIN_ACTOR_ID);
 	return unwrap(await repos.persona.findById(nonAdminAssignments[0].persona_id)) as AccountPersona;
 };

@@ -4,7 +4,7 @@ import {goto} from '$app/navigation';
 import {Logger} from '@feltjs/util/log.js';
 
 import type {AccountPersona} from '$lib/vocab/persona/persona';
-import {PERSONA_QUERY_KEY, toSearchParams} from '$lib/ui/url';
+import {ACTOR_QUERY_KEY, toSearchParams} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
 
 const log = new Logger('[syncUiToUrl]');
@@ -23,7 +23,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 		sessionPersonas,
 	} = ui;
 
-	const rawPersonaIndex = url.searchParams.get(PERSONA_QUERY_KEY);
+	const rawPersonaIndex = url.searchParams.get(ACTOR_QUERY_KEY);
 	const personaIndex = rawPersonaIndex ? Number(rawPersonaIndex) : null;
 	const persona: Readable<AccountPersona> | null =
 		personaIndex === null ? null : sessionPersonas.get().value[personaIndex];

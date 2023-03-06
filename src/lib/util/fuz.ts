@@ -1,11 +1,11 @@
-import {PERSONA_NAME_CHARACTER_MATCHER} from '$lib/vocab/persona/personaHelpers';
+import {ACTOR_NAME_CHARACTER_MATCHER} from '$lib/vocab/persona/personaHelpers';
 
 // TODO misses a lot of cases, need a regexp or proper parsing
 export const isPathValid = (p: string): boolean => {
 	const parts = p.split('/').filter(Boolean);
 	if (!parts.length) return false;
 	for (const part of parts) {
-		if (!PERSONA_NAME_CHARACTER_MATCHER.test(part)) return false;
+		if (!ACTOR_NAME_CHARACTER_MATCHER.test(part)) return false;
 	}
 	return true;
 };

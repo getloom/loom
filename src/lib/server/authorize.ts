@@ -4,7 +4,7 @@ import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
 import type {ActorPersona, Persona} from '$lib/vocab/persona/persona';
-import {PERSONA_COLUMNS} from '$lib/vocab/persona/personaHelpers.server';
+import {ACTOR_COLUMNS} from '$lib/vocab/persona/personaHelpers.server';
 
 // This currently only checks for the existence of an `account_id` on the request.
 // We'll want to allow services to declare more complex rules.
@@ -35,9 +35,7 @@ export const authorize = async (
 	if (!params.actor) {
 		return {ok: false, status: 400, message: 'actor is required'};
 	}
-	const actor = unwrap(
-		await repos.persona.findById<Persona>(params.actor, PERSONA_COLUMNS.Persona),
-	);
+	const actor = unwrap(await repos.persona.findById<Persona>(params.actor, ACTOR_COLUMNS.Persona));
 	if (!actor) {
 		return {ok: false, status: 400, message: 'actor cannot be found'};
 	}

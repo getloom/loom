@@ -16,7 +16,7 @@ import type {ActorPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
-import {ADMIN_PERSONA_ID, GHOST_PERSONA_ID} from '$lib/app/constants';
+import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
 import {defaultPersonalHubRoles} from '$lib/app/templates';
 
 const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
@@ -124,7 +124,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 
 		// first check if deleting the persona is allowed
 		//TODO extract to it's own policy helper?
-		if (persona_id === ADMIN_PERSONA_ID || persona_id === GHOST_PERSONA_ID) {
+		if (persona_id === ADMIN_ACTOR_ID || persona_id === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
 		const persona = unwrap(

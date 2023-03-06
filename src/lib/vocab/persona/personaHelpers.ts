@@ -7,7 +7,7 @@ import type {
 	ClientPersona,
 	Persona,
 } from '$lib/vocab/persona/persona';
-import {GHOST_PERSONA_ID} from '$lib/app/constants';
+import {GHOST_ACTOR_ID} from '$lib/app/constants';
 
 /**
  * Converts a persona name string to its regular form.
@@ -17,10 +17,10 @@ import {GHOST_PERSONA_ID} from '$lib/app/constants';
  */
 export const scrubPersonaName = (name: string): string => name.trim();
 
-export const PERSONA_NAME_CHARACTER_MATCHER = /^[a-z\d-]+$/iu;
+export const ACTOR_NAME_CHARACTER_MATCHER = /^[a-z\d-]+$/iu;
 // TODO maybe add these to the schema? problem is ajv will return less friendly errors from service calls
-const PERSONA_NAME_MAX_LENGTH = 39; // same as github
-const PERSONA_NAME_MIN_LENGTH = 3;
+const ACTOR_NAME_MAX_LENGTH = 39; // same as github
+const ACTOR_NAME_MIN_LENGTH = 3;
 
 /**
  * Checks if a persona name is valid.
@@ -29,15 +29,15 @@ const PERSONA_NAME_MIN_LENGTH = 3;
  * @returns `null` if valid, otherwise an error message
  */
 export const checkPersonaName = (name: string): string | null => {
-	if (name.length > PERSONA_NAME_MAX_LENGTH) {
-		return `name must be no longer than ${PERSONA_NAME_MAX_LENGTH} characters`;
+	if (name.length > ACTOR_NAME_MAX_LENGTH) {
+		return `name must be no longer than ${ACTOR_NAME_MAX_LENGTH} characters`;
 	}
-	if (name.length < PERSONA_NAME_MIN_LENGTH) {
-		return `name must be at least ${PERSONA_NAME_MIN_LENGTH} character${plural(
-			PERSONA_NAME_MIN_LENGTH,
+	if (name.length < ACTOR_NAME_MIN_LENGTH) {
+		return `name must be at least ${ACTOR_NAME_MIN_LENGTH} character${plural(
+			ACTOR_NAME_MIN_LENGTH,
 		)}`;
 	}
-	if (!PERSONA_NAME_CHARACTER_MATCHER.test(name)) {
+	if (!ACTOR_NAME_CHARACTER_MATCHER.test(name)) {
 		return 'name must contain only letters, numbers, and hypens';
 	}
 	if (name.includes('--')) {
@@ -55,7 +55,7 @@ export const checkPersonaName = (name: string): string | null => {
 export const lookupPersona = (
 	personaById: Map<number, Readable<ClientPersona>>,
 	persona_id: number,
-): Readable<ClientPersona> => personaById.get(persona_id) || personaById.get(GHOST_PERSONA_ID)!;
+): Readable<ClientPersona> => personaById.get(persona_id) || personaById.get(GHOST_ACTOR_ID)!;
 
 export const isAccountPersona = (
 	persona: Persona | ClientPersona | ActorPersona | undefined | null,
