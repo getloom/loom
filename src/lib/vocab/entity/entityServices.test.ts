@@ -1,10 +1,10 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, unwrapError} from '@feltjs/util';
+import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {NoteEntityData} from '$lib/vocab/entity/entityData';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, toServiceRequestMock} from '$lib/util/testHelpers';
 import {
 	ReadEntitiesPaginatedService,
 	DeleteEntitiesService,
@@ -281,8 +281,8 @@ test_entityServices(
 		);
 
 		//case 4, actor !== persona in regular space | block
-		unwrapError(
-			await UpdateEntityService.perform({
+		await expectApiError(403, () =>
+			UpdateEntityService.perform({
 				...toServiceRequestMock(repos, persona2),
 				params: {
 					actor: persona2.persona_id,

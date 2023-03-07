@@ -1,6 +1,7 @@
 import sourcemapSupport from 'source-map-support';
 import {Logger} from '@feltjs/util/log.js';
 import {type OmitStrict, unwrap} from '@feltjs/util';
+import * as assert from 'uvu/assert';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';
 import {
@@ -13,6 +14,7 @@ import {
 import type {AccountPersona, ActorPersona} from '$lib/vocab/persona/persona';
 import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
+import type {ApiError} from '$lib/server/api';
 
 export const log = new Logger('[test]');
 
@@ -58,4 +60,15 @@ export const loadAdminPersona = async (repos: Repos): Promise<AccountPersona> =>
 	const assignments = unwrap(await repos.assignment.filterByHub(ADMIN_HUB_ID));
 	const nonAdminAssignments = assignments.filter((p) => p.persona_id !== ADMIN_ACTOR_ID);
 	return unwrap(await repos.persona.findById(nonAdminAssignments[0].persona_id)) as AccountPersona;
+};
+
+export const expectApiError = async (status: number, cb: () => Promise<any>): Promise<void> => {
+	let error: ApiError | undefined;
+	try {
+		await cb();
+	} catch (err) {
+		error = err;
+	}
+	assert.ok(error);
+	assert.is(error.status, status);
 };

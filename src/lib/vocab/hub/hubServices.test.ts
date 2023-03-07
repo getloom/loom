@@ -11,7 +11,7 @@ import {
 	LeaveHubService,
 	InviteToHubService,
 } from '$lib/vocab/hub/hubServices';
-import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
@@ -278,8 +278,8 @@ test_hubServices('fail LeaveHub when the persona has no assignments', async ({re
 	const {persona} = await random.persona();
 	const {hub} = await random.hub();
 
-	unwrapError(
-		await LeaveHubService.perform({
+	await expectApiError(400, () =>
+		LeaveHubService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
 				actor: persona.persona_id,
@@ -314,8 +314,8 @@ test_hubServices(
 		const {persona} = await random.persona();
 		const {hub, persona: communityPersona} = await random.hub();
 
-		unwrapError(
-			await KickFromHubService.perform({
+		await expectApiError(400, () =>
+			KickFromHubService.perform({
 				...toServiceRequestMock(repos, communityPersona),
 				params: {
 					actor: communityPersona.persona_id,

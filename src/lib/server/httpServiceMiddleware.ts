@@ -3,11 +3,10 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {red, blue, gray} from '$lib/server/colors';
 import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';
-import {type Service, toServiceRequest} from '$lib/server/service';
+import {type Service, toServiceRequest, performService} from '$lib/server/service';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
-import {toFailedApiResult, type ApiResult} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('httpServiceMiddleware') + gray(']'));
 
@@ -62,24 +61,11 @@ export const toHttpServiceMiddleware =
 		}
 		const actor = authorizeResult.value?.actor;
 
-		let result: ApiResult<any>;
-		try {
-			result = await service.perform(
-				toServiceRequest(
-					server.db.repos,
-					params,
-					req.account_id!,
-					actor!,
-					new SessionApi(req, res),
-				), // TODO try to avoid the non-null assertions, looks tricky
-			);
-			if (!result.ok) {
-				log.error('service.perform failed with a message', service.event.name, result.message);
-			}
-		} catch (err) {
-			log.error('service.perform failed with an unexpected error', service.event.name, err);
-			result = toFailedApiResult(err);
-		}
+		const result = await performService(
+			service,
+			log,
+			toServiceRequest(server.db.repos, params, req.account_id!, actor!, new SessionApi(req, res)),
+		); // TODO try to avoid the non-null assertions, looks tricky
 
 		if (!result.ok) {
 			send(res, result.status || 500, {message: result.message});

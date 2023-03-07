@@ -8,8 +8,8 @@ import {toValidationErrorMessage, validateSchema} from '$lib/util/ajv';
 import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
 import type {BroadcastMessage} from '$lib/util/websocket';
-import {toServiceRequest} from '$lib/server/service';
-import {toFailedApiResult, type ApiResult} from '$lib/server/api';
+import {performService, toServiceRequest} from '$lib/server/service';
+import type {ApiResult} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 
@@ -72,17 +72,11 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 				result = {ok: false, status: authorizeResult.status, message: authorizeResult.message};
 			} else {
 				const actor = authorizeResult.value?.actor;
-				try {
-					result = await service.perform(
-						toServiceRequest(server.db.repos, params, account_id!, actor!, session), // TODO try to avoid the non-null assertions, looks tricky
-					);
-					if (!result.ok) {
-						log.error('service.perform failed with a message', service.event.name, result.message);
-					}
-				} catch (err) {
-					log.error('service.perform failed with an unexpected error', service.event.name, err);
-					result = toFailedApiResult(err);
-				}
+				result = await performService(
+					service,
+					log,
+					toServiceRequest(server.db.repos, params, account_id!, actor!, session),
+				); // TODO try to avoid the non-null assertions, looks tricky
 			}
 		}
 

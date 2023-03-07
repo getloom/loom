@@ -7,7 +7,7 @@ import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, toServiceRequestMock} from '$lib/util/testHelpers';
 import type {CommunityPersona} from '$lib/vocab/persona/persona';
 
 /* test__assignmentServices */
@@ -18,8 +18,8 @@ test__assignmentServices.after(teardownDb);
 
 test__assignmentServices('disallow creating duplicate assignments', async ({repos, random}) => {
 	const {hub, persona, roles} = await random.hub();
-	unwrapError(
-		await CreateAssignmentService.perform({
+	await expectApiError(409, () =>
+		CreateAssignmentService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
 				actor: persona.persona_id,
@@ -35,8 +35,8 @@ test__assignmentServices(
 	'disallow creating assignments for personal hubs',
 	async ({repos, random}) => {
 		const {personalHub, persona} = await random.persona();
-		unwrapError(
-			await CreateAssignmentService.perform({
+		await expectApiError(403, async () =>
+			CreateAssignmentService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,

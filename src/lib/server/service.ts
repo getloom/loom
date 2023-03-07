@@ -1,10 +1,36 @@
-import {NOT_OK} from '@feltjs/util';
+import type {Logger} from '@feltjs/util/log.js';
 
 import type {ServiceEventInfo} from '$lib/vocab/event/event';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {ActorPersona} from '$lib/vocab/persona/persona';
 import {type ApiResult, toFailedApiResult} from '$lib/server/api';
+
+export const performService = async (
+	service: Service,
+	log: Logger,
+	serviceRequest: ServiceRequest,
+): Promise<ApiResult> => {
+	let result!: ApiResult;
+	try {
+		if (service.transaction) {
+			await serviceRequest.repos.sql.begin(async (sql) => {
+				serviceRequest.repos = new Repos(sql);
+				result = await service.perform(serviceRequest as any);
+				if (!result.ok) throw Error(); // cancel the transaction; the error is caught and swallowed ahead
+			});
+		} else {
+			result = await service.perform(serviceRequest as any);
+		}
+		if (!result.ok) {
+			log.error('service.perform failed with a message', service.event.name, result.message);
+		}
+		return result;
+	} catch (err) {
+		log.error('service.perform failed with an error', service.event.name, err);
+		return result || toFailedApiResult(err);
+	}
+};
 
 export type ServiceMethod =
 	| 'GET'
@@ -25,94 +51,73 @@ export interface NonAuthenticatedService<
 	TResult extends ApiResult = ApiResult,
 > {
 	event: ServiceEventInfo;
-	perform: (serviceRequest: NonAuthenticatedServiceRequest<TParams, TResult>) => Promise<TResult>;
+	transaction: boolean;
+	perform: (serviceRequest: NonAuthenticatedServiceRequest<TParams>) => Promise<TResult>;
 }
 export interface NonAuthorizedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
 	event: ServiceEventInfo;
-	perform: (serviceRequest: NonAuthorizedServiceRequest<TParams, TResult>) => Promise<TResult>;
+	transaction: boolean;
+	perform: (serviceRequest: NonAuthorizedServiceRequest<TParams>) => Promise<TResult>;
 }
 export interface AuthorizedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
 	event: ServiceEventInfo;
-	perform: (serviceRequest: AuthorizedServiceRequest<TParams, TResult>) => Promise<TResult>;
+	transaction: boolean;
+	perform: (serviceRequest: AuthorizedServiceRequest<TParams>) => Promise<TResult>;
 }
 
 export type ServiceRequest =
 	| NonAuthenticatedServiceRequest
 	| NonAuthenticatedServiceRequest
 	| AuthorizedServiceRequest;
-export interface NonAuthenticatedServiceRequest<TParams = any, TResult = any> {
+export interface NonAuthenticatedServiceRequest<TParams = any> {
 	repos: Repos;
-	transact: (cb: (repos: Repos) => Promise<TResult>) => Promise<TResult>;
 	params: TParams;
 	session: ISessionApi;
 }
-export interface NonAuthorizedServiceRequest<TParams = any, TResult = any>
-	extends NonAuthenticatedServiceRequest<TParams, TResult> {
+export interface NonAuthorizedServiceRequest<TParams = any>
+	extends NonAuthenticatedServiceRequest<TParams> {
 	account_id: number;
 }
-export interface AuthorizedServiceRequest<TParams = any, TResult = any>
-	extends NonAuthorizedServiceRequest<TParams, TResult> {
+export interface AuthorizedServiceRequest<TParams = any>
+	extends NonAuthorizedServiceRequest<TParams> {
 	actor: ActorPersona;
 }
 
-export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
+export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
 	account_id: undefined,
 	actor: undefined,
 	session: ISessionApi,
-): NonAuthenticatedServiceRequest<TParams, TResult>;
-export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
+): NonAuthenticatedServiceRequest<TParams>;
+export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
 	account_id: number,
 	actor: undefined,
 	session: ISessionApi,
-): NonAuthorizedServiceRequest<TParams, TResult>;
-export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
+): NonAuthorizedServiceRequest<TParams>;
+export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
 	account_id: number,
 	actor: ActorPersona,
 	session: ISessionApi,
-): AuthorizedServiceRequest<TParams, TResult>;
-export function toServiceRequest<TParams = any, TResult extends ApiResult = ApiResult>(
+): AuthorizedServiceRequest<TParams>;
+export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
 	account_id: number | undefined,
 	actor: ActorPersona | undefined,
 	session: ISessionApi,
 ): ServiceRequest {
-	let called = false; // disallow multiple calls
-	const req: NonAuthenticatedServiceRequest = {
-		repos,
-		// TODO support savepoints -- https://github.com/porsager/postgres#transactions
-		transact: async (cb) => {
-			if (called) return NOT_OK;
-			called = true;
-			let result: TResult; // cache to pass through if the inner transaction promise rejects
-			return repos.sql
-				.begin(async (sql) => {
-					result = await cb(new Repos(sql));
-					if (!result.ok) throw Error(); // cancel the transaction; the error is caught and swallowed ahead
-					return result;
-				})
-				.catch((err) => {
-					if (result === undefined) {
-						result = toFailedApiResult(err) as TResult; // TODO how to avoid casting?
-					}
-					return result;
-				});
-		},
-		params,
-		session,
-	};
+	const req: NonAuthenticatedServiceRequest = {repos, params, session};
 	// TODO this is a bit hacky -- it may be preferred to have 3 different versions of `toServiceRequest` instead
 	if (account_id) {
 		(req as NonAuthorizedServiceRequest).account_id = account_id;

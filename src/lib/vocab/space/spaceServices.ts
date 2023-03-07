@@ -17,6 +17,7 @@ const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 //Returns all spaces in a given hub
 export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 	event: ReadSpaces,
+	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
 		log.trace('[ReadSpaces] retrieving spaces for hub', hub_id);
@@ -36,58 +37,58 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 //Creates a new space for a given hub
 export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	event: CreateSpace,
+	transaction: true,
 	// TODO security: verify the `account_id` has permission to modify this space
 	// TODO verify `params.persona_id` is  one of the `account_id`'s personas
-	perform: ({transact, params}) =>
-		transact(async (repos) => {
-			const {actor, hub_id} = params;
+	perform: async ({repos, params}) => {
+		const {actor, hub_id} = params;
 
-			await checkPolicy(permissions.CreateSpace, actor, hub_id, repos);
+		await checkPolicy(permissions.CreateSpace, actor, hub_id, repos);
 
-			const {space, directory} = await createSpace(params, repos);
+		const {space, directory} = await createSpace(params, repos);
 
-			return {ok: true, status: 200, value: {space, directory}};
-		}),
+		return {ok: true, status: 200, value: {space, directory}};
+	},
 };
 
 export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 	event: UpdateSpace,
-	perform: ({transact, params}) =>
-		transact(async (repos) => {
-			const {space_id, actor, ...partial} = params;
-			const space = unwrap(await repos.space.findById(space_id));
-			if (!space) {
-				return {ok: false, status: 404, message: 'no space found'};
-			}
+	transaction: true,
+	perform: async ({repos, params}) => {
+		const {space_id, actor, ...partial} = params;
+		const space = unwrap(await repos.space.findById(space_id));
+		if (!space) {
+			return {ok: false, status: 404, message: 'no space found'};
+		}
 
-			await checkPolicy(permissions.UpdateSpace, actor, space.hub_id, repos);
-			const updatedSpace = unwrap(await repos.space.update(space_id, partial));
-			return {ok: true, status: 200, value: {space: updatedSpace}};
-		}),
+		await checkPolicy(permissions.UpdateSpace, actor, space.hub_id, repos);
+		const updatedSpace = unwrap(await repos.space.update(space_id, partial));
+		return {ok: true, status: 200, value: {space: updatedSpace}};
+	},
 };
 
 //deletes a single space
 export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 	event: DeleteSpace,
-	perform: ({transact, params}) =>
-		transact(async (repos) => {
-			log.trace('[DeleteSpace] deleting space with id:', params.space_id);
+	transaction: true,
+	perform: async ({repos, params}) => {
+		log.trace('[DeleteSpace] deleting space with id:', params.space_id);
 
-			// Check that the space can be deleted.
-			const space = unwrap(await repos.space.findById(params.space_id));
-			if (!space) {
-				return {ok: false, status: 404, message: 'no space found'};
-			}
-			if (!canDeleteSpace(space)) {
-				return {ok: false, status: 405, message: 'cannot delete home space'};
-			}
+		// Check that the space can be deleted.
+		const space = unwrap(await repos.space.findById(params.space_id));
+		if (!space) {
+			return {ok: false, status: 404, message: 'no space found'};
+		}
+		if (!canDeleteSpace(space)) {
+			return {ok: false, status: 405, message: 'cannot delete home space'};
+		}
 
-			await checkPolicy(permissions.DeleteSpace, params.actor, space.hub_id, repos);
+		await checkPolicy(permissions.DeleteSpace, params.actor, space.hub_id, repos);
 
-			unwrap(await repos.space.deleteById(params.space_id));
+		unwrap(await repos.space.deleteById(params.space_id));
 
-			await cleanOrphanedEntities(repos);
+		await cleanOrphanedEntities(repos);
 
-			return {ok: true, status: 200, value: null};
-		}),
+		return {ok: true, status: 200, value: null};
+	},
 };

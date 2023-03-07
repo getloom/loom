@@ -16,21 +16,22 @@ const log = new Logger(gray('[') + blue('policyServices') + gray(']'));
 
 export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 	event: CreatePolicy,
-	perform: ({transact, params}) =>
-		transact(async (repos) => {
-			const {actor, role_id, permission} = params;
+	transaction: true,
+	perform: async ({repos, params}) => {
+		const {actor, role_id, permission} = params;
 
-			const {hub_id} = unwrap(await repos.role.findById(role_id));
-			await checkPolicy(permissions.CreatePolicy, actor, hub_id, repos);
+		const {hub_id} = unwrap(await repos.role.findById(role_id));
+		await checkPolicy(permissions.CreatePolicy, actor, hub_id, repos);
 
-			log.trace('creating policy', role_id, permission);
-			const policy = unwrap(await repos.policy.create(role_id, permission));
-			return {ok: true, status: 200, value: {policy}};
-		}),
+		log.trace('creating policy', role_id, permission);
+		const policy = unwrap(await repos.policy.create(role_id, permission));
+		return {ok: true, status: 200, value: {policy}};
+	},
 };
 
 export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
 	event: ReadPolicies,
+	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, role_id} = params;
 		const hub = unwrap(await repos.hub.findByRole(role_id));
@@ -44,31 +45,31 @@ export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
 
 export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
 	event: UpdatePolicy,
-	perform: ({transact, params}) =>
-		transact(async (repos) => {
-			const {actor, policy_id, data} = params;
+	transaction: true,
+	perform: async ({repos, params}) => {
+		const {actor, policy_id, data} = params;
 
-			const {hub_id} = unwrap(await repos.role.findByPolicy(policy_id));
-			await checkPolicy(permissions.UpdatePolicy, actor, hub_id, repos);
+		const {hub_id} = unwrap(await repos.role.findByPolicy(policy_id));
+		await checkPolicy(permissions.UpdatePolicy, actor, hub_id, repos);
 
-			log.trace('updating role', policy_id, data);
-			const policy = unwrap(await repos.policy.update(policy_id, data));
-			return {ok: true, status: 200, value: {policy}};
-		}),
+		log.trace('updating role', policy_id, data);
+		const policy = unwrap(await repos.policy.update(policy_id, data));
+		return {ok: true, status: 200, value: {policy}};
+	},
 };
 
 export const DeletePolicyService: ServiceByName['DeletePolicy'] = {
 	event: DeletePolicy,
-	perform: ({transact, params}) =>
-		transact(async (repos) => {
-			const {actor, policy_id} = params;
+	transaction: true,
+	perform: async ({repos, params}) => {
+		const {actor, policy_id} = params;
 
-			const {hub_id} = unwrap(await repos.role.findByPolicy(policy_id));
-			await checkPolicy(permissions.DeletePolicy, actor, hub_id, repos);
+		const {hub_id} = unwrap(await repos.role.findByPolicy(policy_id));
+		await checkPolicy(permissions.DeletePolicy, actor, hub_id, repos);
 
-			log.trace('deleting policy', policy_id);
-			unwrap(await repos.policy.deleteById(policy_id));
+		log.trace('deleting policy', policy_id);
+		unwrap(await repos.policy.deleteById(policy_id));
 
-			return {ok: true, status: 200, value: null};
-		}),
+		return {ok: true, status: 200, value: null};
+	},
 };

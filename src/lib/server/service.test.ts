@@ -1,11 +1,18 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {NOT_OK, OK, ResultError, unwrap, unwrapError, type Result} from '@feltjs/util';
+import {unwrap} from '@feltjs/util';
+import {Logger} from '@feltjs/util/log.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Hub} from '$lib/vocab/hub/hub';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {toDefaultHubSettings} from '$lib/vocab/hub/hubHelpers.server';
+import {performService} from '$lib/server/service';
+import {CreateHubService} from '$lib/vocab/hub/hubServices';
+import {randomCommunnityName} from '$lib/util/randomVocab';
+import {ApiError, type ApiResult} from '$lib/server/api';
+import {randomEventParams} from '$lib/util/randomEventParams';
+import {PingService} from '$lib/server/uiServices';
 
 /* test__service */
 const test__service = suite<TestDbContext>('services');
@@ -13,99 +20,64 @@ const test__service = suite<TestDbContext>('services');
 test__service.before(setupDb);
 test__service.after(teardownDb);
 
+test__service('performService passes through failed results', async ({repos}) => {
+	let failedResult: ApiResult | undefined;
+	const s: typeof PingService = {
+		...PingService,
+		perform: async () => {
+			return (failedResult = {ok: false, status: 400, message: 'expected fail'});
+		},
+	};
+	const returnedResult = await performService(s, new Logger(), {
+		...toServiceRequestMock(repos),
+		params: null,
+	});
+	assert.ok(failedResult);
+	assert.ok(!failedResult.ok);
+	assert.ok(returnedResult === failedResult);
+});
+
+test__service('performService passes through a thrown ApiError', async ({repos}) => {
+	const s: typeof PingService = {
+		...PingService,
+		perform: async () => {
+			throw new ApiError(400, 'expected fail');
+		},
+	};
+	const result = await performService(s, new Logger(), {
+		...toServiceRequestMock(repos),
+		params: null,
+	});
+	assert.ok(!result.ok);
+	assert.is(result.status, 400);
+	assert.is(result.message, 'expected fail');
+});
+
 test__service(`roll back the database after a failed transaction`, async ({repos, random}) => {
 	const {persona} = await random.persona();
-	const hubName = 'a';
+	const hubName = randomCommunnityName();
 	let hub: Hub | undefined;
-	let failedResult: Result | undefined;
-	const returnedResult = await toServiceRequestMock(repos, persona).transact(async (repos) => {
-		hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
-		const found = unwrap(await repos.hub.findByName(hubName));
-		assert.is(found?.name, hubName);
-		return (failedResult = NOT_OK);
+	let failedResult: ApiResult | undefined;
+	assert.ok(CreateHubService.transaction);
+	const s: typeof CreateHubService = {
+		...CreateHubService,
+		perform: async ({repos}) => {
+			hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
+			const found = unwrap(await repos.hub.findByName(hubName));
+			assert.is(found?.name, hubName);
+			return (failedResult = {ok: false, status: 400, message: 'expected fail'});
+		},
+	};
+	const returnedResult = await performService(s, new Logger(), {
+		...toServiceRequestMock(repos, persona),
+		params: await randomEventParams.CreateHub(random),
 	});
 	assert.ok(hub);
 	assert.ok(failedResult);
 	assert.ok(!failedResult.ok);
-	assert.is(returnedResult, failedResult);
+	assert.ok(returnedResult === failedResult);
 	// Ensure the hub created in the transaction no longer exists in the repos.
 	assert.ok(!unwrap(await repos.hub.findByName(hubName)));
-	assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
-});
-
-test__service(`cannot call transact more than once`, async ({repos, random}) => {
-	const {persona} = await random.persona();
-	const serviceRequest = toServiceRequestMock(repos, persona);
-	let ranTransact1 = false;
-	let ranTransact2 = false;
-	unwrapError(
-		await serviceRequest.transact(async (reposA) => {
-			ranTransact1 = true;
-			assert.ok(reposA);
-			unwrap(
-				await serviceRequest.transact(async () => {
-					ranTransact2 = true;
-					return OK;
-				}),
-			);
-			return OK;
-		}),
-	);
-	assert.ok(ranTransact1);
-	assert.ok(!ranTransact2);
-});
-
-test__service(
-	`cannot call transact more than once even after the first ends`,
-	async ({repos, random}) => {
-		const {persona} = await random.persona();
-		const serviceRequest = toServiceRequestMock(repos, persona);
-		let ranTransact1 = false;
-		let ranTransact2 = false;
-		unwrap(
-			await serviceRequest.transact(async (reposA) => {
-				ranTransact1 = true;
-				assert.ok(reposA);
-				return OK;
-			}),
-		);
-		assert.ok(ranTransact1);
-		unwrapError(
-			await serviceRequest.transact(async () => {
-				ranTransact2 = true;
-			}),
-		);
-		assert.ok(!ranTransact2);
-	},
-);
-
-test__service(
-	`transact cb returns a 500 when it throws an unknown error`,
-	async ({repos, random}) => {
-		const {persona} = await random.persona();
-		const hubName = 'a';
-		let hub: Hub | undefined;
-		const result = await toServiceRequestMock(repos, persona).transact(async (repos) => {
-			hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
-			throw Error('test failure');
-		});
-		assert.equal(result, {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE});
-		assert.ok(hub);
-		assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
-	},
-);
-
-test__service(`transact cb passes through the status of a ResultError`, async ({repos, random}) => {
-	const {persona} = await random.persona();
-	const hubName = 'a';
-	const thrownResult = {ok: false, status: 409, message: 'test failure'};
-	let hub: Hub | undefined;
-	const result = await toServiceRequestMock(repos, persona).transact(async (repos) => {
-		hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
-		throw new ResultError(thrownResult as any); // TODO remove typecast after upgrading Felt
-	});
-	assert.equal(result, thrownResult);
-	assert.ok(hub);
 	assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
 });
 
