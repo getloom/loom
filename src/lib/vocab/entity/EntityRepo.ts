@@ -14,11 +14,12 @@ export class EntityRepo extends PostgresRepo {
 		persona_id: number,
 		data: EntityData,
 		space_id: number | null,
+		path: string | null = null,
 	): Promise<Result<{value: Entity}>> {
 		log.trace('[createEntity]', persona_id);
 		const entity = await this.sql<Entity[]>`
-			INSERT INTO entities (persona_id, space_id, data) VALUES (
-				${persona_id},${space_id},${this.sql.json(data as any)}
+			INSERT INTO entities (persona_id, space_id, path, data) VALUES (
+				${persona_id}, ${space_id}, ${path}, ${this.sql.json(data as any)}
 			) RETURNING *
 		`;
 		// log.trace('create entity', data);
@@ -27,7 +28,7 @@ export class EntityRepo extends PostgresRepo {
 
 	async findById(entity_id: number): Promise<Result<{value: Entity | undefined}>> {
 		const data = await this.sql<Entity[]>`
-			SELECT entity_id, space_id, data, persona_id, created, updated 
+			SELECT entity_id, space_id, path, data, persona_id, created, updated 
 			FROM entities WHERE entity_id=${entity_id}
 		`;
 		return {ok: true, value: data[0]};
@@ -41,7 +42,7 @@ export class EntityRepo extends PostgresRepo {
 		if (entityIds.length === 0) return {ok: true, value: {entities: [], missing: null}};
 		log.trace('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
-			SELECT entity_id, space_id, data, persona_id, created, updated 
+			SELECT entity_id, space_id, path, data, persona_id, created, updated 
 			FROM entities WHERE entity_id IN ${this.sql(entityIds)}
 			ORDER BY entity_id DESC
 		`;
@@ -56,7 +57,7 @@ export class EntityRepo extends PostgresRepo {
 		account_id: number,
 	): Promise<Result<{value: Array<Entity & {data: DirectoryEntityData}>}>> {
 		const data = await this.sql<Array<Entity & {data: DirectoryEntityData}>>`
-			SELECT entity_id, data, persona_id, created, updated, space_id
+			SELECT entity_id, data, persona_id, created, updated, space_id, path
 			FROM entities e JOIN (
 				SELECT DISTINCT s.directory_id FROM spaces s
 				JOIN (
@@ -71,14 +72,16 @@ export class EntityRepo extends PostgresRepo {
 
 	async update(
 		entity_id: number,
-		data: EntityData | null,
+		data?: EntityData,
+		path?: string | null | undefined, // value is nullable in the db
 		space_id?: number,
 	): Promise<Result<{value: Entity}>> {
 		log.trace('[update]', entity_id);
 		const _data = await this.sql<Entity[]>`
-			UPDATE entities SET 
-				${data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``} 
-				${space_id ? this.sql`space_id=${space_id},` : this.sql``} 
+			UPDATE entities SET
+				${data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``}
+				${path !== undefined ? this.sql`path=${path},` : this.sql``}
+				${space_id ? this.sql`space_id=${space_id},` : this.sql``}
 				updated=NOW()
 			WHERE entity_id=${entity_id} AND NOT (data @> '{"type":"Tombstone"}'::jsonb)
 			RETURNING *
@@ -141,7 +144,7 @@ export class EntityRepo extends PostgresRepo {
 	async filterDirectoriesByEntity(entity_id: number): Promise<Result<{value: Entity[]}>> {
 		log.trace(`looking for directories for entity: ${entity_id}`);
 		const directories = await this.sql<Entity[]>`
-			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated, e.space_id FROM entities e
+			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated, e.space_id, e.path FROM entities e
 			JOIN (
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
 				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]

@@ -30,15 +30,13 @@
 
 	let fieldValue: any; // initialized by `reset`
 	let serialized: string | undefined;
-	$: {
-		const parsed = parse(fieldValue);
-		if (parsed.ok) {
-			serialized = serialize(parsed.value, true);
-			errorMessage = null;
-		} else {
-			serialized = '';
-			errorMessage = parsed.message;
-		}
+	$: parsed = parse(fieldValue);
+	$: if (parsed.ok) {
+		serialized = serialize(parsed.value, true);
+		errorMessage = null;
+	} else {
+		serialized = '';
+		errorMessage = parsed.message;
 	}
 	let pending = false;
 	let fieldValueEl: HTMLTextAreaElement;
@@ -66,13 +64,8 @@
 	});
 
 	const save = async () => {
-		if (!update) return;
+		if (!update || !parsed.ok) return;
 		errorMessage = null;
-		const parsed = parse(fieldValue);
-		if (!parsed.ok) {
-			errorMessage = parsed.message;
-			return;
-		}
 		pending = true;
 		const result = await update(parsed.value, field);
 		pending = false;
@@ -81,6 +74,7 @@
 				stopEditing();
 			} else {
 				errorMessage = result.message;
+				shouldFocusEl = true;
 			}
 		}
 	};
@@ -112,8 +106,8 @@
 
 <div class="field">{field}</div>
 <div class="preview markup panel">
-	{#if value === undefined}
-		<em>undefined</em>
+	{#if currentSerialized == null}
+		<em>{currentSerialized}</em>
 		<!-- TODO add a button to add/instantiate the field with some value -->
 	{:else}
 		<pre>{currentSerialized}</pre>

@@ -38,7 +38,7 @@ export const checkPersonaName = (name: string): string | null => {
 		)}`;
 	}
 	if (!ACTOR_NAME_CHARACTER_MATCHER.test(name)) {
-		return 'name must contain only letters, numbers, and hypens';
+		return 'name must contain only letters, numbers, and hyphens';
 	}
 	if (name.includes('--')) {
 		return 'name must not contain consecutive hyphens';

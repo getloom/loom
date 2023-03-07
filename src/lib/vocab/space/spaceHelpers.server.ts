@@ -63,7 +63,12 @@ export const createSpace = async (
 
 	// set `uninitializedDirectory.space_id` now that the space has been created
 	const directory = unwrap(
-		await repos.entity.update(uninitializedDirectory.entity_id, null, space.space_id),
+		await repos.entity.update(
+			uninitializedDirectory.entity_id,
+			undefined,
+			undefined,
+			space.space_id,
+		),
 	) as Entity & {data: DirectoryEntityData};
 
 	return {space, directory};

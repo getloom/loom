@@ -11,6 +11,7 @@ import {
 } from '$lib/vocab/entity/entityEvents';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
+import {checkEntityPath, scrubEntityPath} from '$lib/vocab/entity/entityHelpers';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
 import {
 	checkHubAccess,
@@ -86,7 +87,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		const directories = unwrap(await repos.entity.filterDirectoriesByEntity(entity.entity_id));
 		// TODO optimize batch update
 		for (const directory of directories) {
-			entities.push(unwrap(await repos.entity.update(directory.entity_id, null))); // eslint-disable-line no-await-in-loop
+			entities.push(unwrap(await repos.entity.update(directory.entity_id))); // eslint-disable-line no-await-in-loop
 		}
 
 		return {ok: true, status: 200, value: {entities, ties}};
@@ -100,7 +101,15 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 		const {actor, entity_id, data} = params;
 		await checkEntityOwnership(actor, [entity_id], repos);
 
-		const entity = unwrap(await repos.entity.update(entity_id, data));
+		const path = scrubEntityPath(params.path);
+
+		if (typeof path === 'string') {
+			const errorMessage = checkEntityPath(path);
+			if (errorMessage) return {ok: false, status: 400, message: errorMessage};
+		}
+
+		const entity = unwrap(await repos.entity.update(entity_id, data, path));
+
 		return {ok: true, status: 200, value: {entity}};
 	},
 };

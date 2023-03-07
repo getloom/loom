@@ -41,6 +41,12 @@
 			entity_id: $entity.entity_id,
 			data: updated,
 		});
+	const updateEntityPath = async (updated: string | null) =>
+		dispatch.UpdateEntity({
+			actor: $persona.persona_id,
+			entity_id: $entity.entity_id,
+			path: updated === '' ? null : updated,
+		});
 
 	// TODO factor this out into a component or something, and handle failures
 	let deletePending = false;
@@ -66,14 +72,13 @@
 </script>
 
 <form
-	class="markup"
 	{...$$restProps}
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
 		[PersonaContextmenu, {persona: authorPersona}],
 	]}
 >
-	<header style:--icon_size="var(--icon_size_sm)">
+	<header class="markup" style:--icon_size="var(--icon_size_sm)">
 		<h2>Edit Entity</h2>
 		<section>
 			<!-- TODO resembles `ContextInfo` closely -->
@@ -149,6 +154,12 @@
 		<PropertyEditor value={$entity.entity_id} field="entity_id" />
 		<!-- TODO add contextmenu entries for this persona -->
 		<PropertyEditor value={$entity.persona_id} field="persona_id" />
+		<PropertyEditor
+			value={$entity.path}
+			field="path"
+			update={updateEntityPath}
+			parse={(v) => ({ok: true, value: v?.length && !v.startsWith('/') ? '/' + v : v})}
+		/>
 		<PropertyEditor
 			value={$entity.data}
 			field="data"

@@ -515,7 +515,8 @@ export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;
 export interface UpdateEntityParams {
 	actor: number;
 	entity_id: number;
-	data: EntityData | null;
+	data?: EntityData;
+	path?: string | null;
 }
 export interface UpdateEntityResponse {
 	/**

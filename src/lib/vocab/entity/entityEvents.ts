@@ -68,9 +68,10 @@ export const UpdateEntity: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			entity_id: {type: 'number'},
-			data: {anyOf: [{type: 'object', tsType: 'EntityData'}, {type: 'null'}]},
+			data: {type: 'object', tsType: 'EntityData'},
+			path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 		},
-		required: ['actor', 'entity_id', 'data'],
+		required: ['actor', 'entity_id'],
 		additionalProperties: false,
 	},
 	response: {

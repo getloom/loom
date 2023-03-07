@@ -16,6 +16,7 @@ export interface Entity {
 	entity_id: number;
 	persona_id: number;
 	space_id: number;
+	path: string | null;
 	data: EntityData;
 	created: Date;
 	updated: Date | null;

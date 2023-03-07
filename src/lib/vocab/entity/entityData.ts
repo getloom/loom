@@ -30,7 +30,6 @@ export interface ArticleEntityData extends BaseEntityData {
 
 export interface CollectionEntityData extends BaseEntityData {
 	type: 'Collection';
-	content: string;
 }
 
 export interface TombstoneEntityData extends BaseEntityData {
