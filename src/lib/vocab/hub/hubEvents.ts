@@ -22,7 +22,7 @@ export const CreateHub: ServiceEventInfo = {
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
 			directories: {
 				type: 'array',
-				items: {$ref: '/schemas/Entity.json', tsType: '(Entity & {data: DirectoryEntityData})'},
+				items: {$ref: '/schemas/Entity.json', tsType: '(Directory)'},
 			},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
 			policies: {type: 'array', items: {$ref: '/schemas/Policy.json', tsType: 'Policy'}},
@@ -62,7 +62,7 @@ export const ReadHub: ServiceEventInfo = {
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
 			directories: {
 				type: 'array',
-				items: {$ref: '/schemas/Entity.json', tsType: '(Entity & {data: DirectoryEntityData})'},
+				items: {$ref: '/schemas/Entity.json', tsType: '(Directory)'},
 			},
 			roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},

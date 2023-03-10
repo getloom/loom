@@ -2,7 +2,7 @@ import {derived, writable, type Readable, type Writable} from '@feltcoop/svelte-
 
 import {locallyStored} from '$lib/ui/locallyStored';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {Directory} from '$lib/vocab/entity/entityData';
 import {LAST_SEEN_KEY} from '$lib/ui/app';
 import type {WritableUi} from '$lib/ui/ui';
 
@@ -55,9 +55,7 @@ export const updateLastSeen = (ui: WritableUi, directory_id: number, time = Date
 		setLastSeen(ui, directory_id, time);
 	}
 
-	const directory = entityById.get(directory_id) as
-		| Readable<Entity & {data: DirectoryEntityData}>
-		| undefined;
+	const directory = entityById.get(directory_id) as Readable<Directory> | undefined;
 
 	if (directory) {
 		upsertFreshnessByHubId(

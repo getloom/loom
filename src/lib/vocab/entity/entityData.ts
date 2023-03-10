@@ -1,3 +1,5 @@
+import type {Entity} from '$lib/vocab/entity/entity';
+
 export type EntityData =
 	| DirectoryEntityData
 	| NoteEntityData
@@ -37,4 +39,9 @@ export interface TombstoneEntityData extends BaseEntityData {
 	formerType: string;
 	deleted: Date;
 	previousType: string;
+}
+
+export interface Directory extends Entity {
+	path: string; // directories always have a `path`, can't be `null`
+	data: DirectoryEntityData;
 }

@@ -14,7 +14,7 @@ import type {
 	SignInParams,
 	CreatePolicyParams,
 } from '$lib/app/eventTypes';
-import type {DirectoryEntityData, EntityData} from '$lib/vocab/entity/entityData';
+import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
@@ -203,7 +203,7 @@ export class RandomVocabContext {
 		view?: string,
 	): Promise<{
 		space: Space;
-		directory: Entity & {data: DirectoryEntityData};
+		directory: Directory;
 		persona: AccountPersona;
 		account: Account;
 		hub: Hub;

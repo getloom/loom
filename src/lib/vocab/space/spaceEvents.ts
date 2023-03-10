@@ -23,7 +23,7 @@ export const CreateSpace: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			space: {$ref: '/schemas/Space.json', tsType: 'Space'},
-			directory: {$ref: '/schemas/Entity.json', tsType: 'Entity & {data: DirectoryEntityData}'},
+			directory: {$ref: '/schemas/Entity.json', tsType: 'Directory'},
 		},
 		required: ['space', 'directory'],
 		additionalProperties: false,
@@ -55,7 +55,7 @@ export const ReadSpaces: ServiceEventInfo = {
 			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
 			directories: {
 				type: 'array',
-				items: {$ref: '/schemas/Entity.json', tsType: '(Entity & {data: DirectoryEntityData})'},
+				items: {$ref: '/schemas/Entity.json', tsType: '(Directory)'},
 			},
 		},
 		required: ['spaces', 'directories'],

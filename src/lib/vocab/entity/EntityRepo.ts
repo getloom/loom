@@ -4,7 +4,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {DirectoryEntityData, EntityData} from '$lib/vocab/entity/entityData';
+import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
@@ -66,10 +66,8 @@ export class EntityRepo extends PostgresRepo {
 		return {ok: true, value: {entities, missing}};
 	}
 
-	async filterDirectoriesByAccount(
-		account_id: number,
-	): Promise<Result<{value: Array<Entity & {data: DirectoryEntityData}>}>> {
-		const data = await this.sql<Array<Entity & {data: DirectoryEntityData}>>`
+	async filterDirectoriesByAccount(account_id: number): Promise<Result<{value: Directory[]}>> {
+		const data = await this.sql<Directory[]>`
 			SELECT entity_id, data, persona_id, created, updated, space_id, path
 			FROM entities e JOIN (
 				SELECT DISTINCT s.directory_id FROM spaces s

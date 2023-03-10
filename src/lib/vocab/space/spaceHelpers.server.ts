@@ -2,8 +2,7 @@ import {unwrap} from '@feltjs/util';
 
 import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/app/eventTypes';
 import type {Space} from '$lib/vocab/space/space';
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {Directory} from '$lib/vocab/entity/entityData';
 import {ApiError} from '$lib/server/api';
 import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
@@ -15,9 +14,9 @@ const log = new Logger(gray('[') + blue('spaceHelpers.server') + gray(']'));
 export const createSpaces = async (
 	serviceParams: CreateSpaceParams[],
 	repos: Repos,
-): Promise<{spaces: Space[]; directories: Array<Entity & {data: DirectoryEntityData}>}> => {
+): Promise<{spaces: Space[]; directories: Directory[]}> => {
 	const spaces: Space[] = [];
-	const directories: Array<Entity & {data: DirectoryEntityData}> = [];
+	const directories: Directory[] = [];
 	// TODO can this be safely batched? at what concurrency? or maybe make a batched repo method?
 	for (const params of serviceParams) {
 		const {space, directory} = await createSpace(params, repos); // eslint-disable-line no-await-in-loop
@@ -55,7 +54,7 @@ export const createSpace = async (
 			null,
 			path,
 		),
-	) as Entity & {data: DirectoryEntityData};
+	) as Directory;
 
 	log.trace('[CreateSpace] creating space for hub', hub_id);
 	const space = unwrap(
@@ -70,7 +69,7 @@ export const createSpace = async (
 			undefined,
 			space.space_id,
 		),
-	) as Entity & {data: DirectoryEntityData};
+	) as Directory;
 
 	return {space, directory};
 };

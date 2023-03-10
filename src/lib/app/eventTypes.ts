@@ -14,7 +14,7 @@ import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
@@ -290,7 +290,7 @@ export interface CreateHubResponse {
 	hub: Hub;
 	roles: Role[];
 	spaces: Space[];
-	directories: (Entity & {data: DirectoryEntityData})[];
+	directories: Directory[];
 	assignments: Assignment[];
 	policies: Policy[];
 	personas: PublicPersona[];
@@ -311,7 +311,7 @@ export interface ReadHubResponse {
 	 */
 	hub: Hub;
 	spaces: Space[];
-	directories: (Entity & {data: DirectoryEntityData})[];
+	directories: Directory[];
 	roles: Role[];
 	assignments: Assignment[];
 	personas: PublicPersona[];
@@ -386,7 +386,7 @@ export interface CreateAccountPersonaResponse {
 	roles: Role[];
 	policies: Policy[];
 	spaces: Space[];
-	directories: (Entity & {data: DirectoryEntityData})[];
+	directories: Directory[];
 	assignments: Assignment[];
 }
 export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaResponse>;
@@ -450,7 +450,7 @@ export interface CreateSpaceResponse {
 	 * 		A directory is an ActivityStreams Collection referenced by each Space.
 	 *
 	 */
-	directory: Entity & {data: DirectoryEntityData};
+	directory: Directory;
 }
 export type CreateSpaceResponseResult = ApiResult<CreateSpaceResponse>;
 
@@ -460,7 +460,7 @@ export interface ReadSpacesParams {
 }
 export interface ReadSpacesResponse {
 	spaces: Space[];
-	directories: (Entity & {data: DirectoryEntityData})[];
+	directories: Directory[];
 }
 export type ReadSpacesResponseResult = ApiResult<ReadSpacesResponse>;
 

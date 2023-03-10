@@ -13,8 +13,7 @@ import {
 	KickFromHub,
 } from '$lib/vocab/hub/hubEvents';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {Directory} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
@@ -70,7 +69,7 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 		]);
 		const {personas} = unwrap(personasResult);
 		const {entities: directories} = unwrap(directoriesResult) as {
-			entities: Array<Entity & {data: DirectoryEntityData}>;
+			entities: Directory[];
 		};
 
 		return {

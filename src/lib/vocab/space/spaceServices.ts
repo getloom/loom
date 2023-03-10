@@ -5,8 +5,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceEvents';
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
-import type {DirectoryEntityData} from '$lib/vocab/entity/entityData';
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Directory} from '$lib/vocab/entity/entityData';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
@@ -28,7 +27,7 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 
 		const {entities: directories} = unwrap(
 			await repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
-		) as {entities: Array<Entity & {data: DirectoryEntityData}>};
+		) as {entities: Directory[]};
 
 		return {ok: true, status: 200, value: {spaces, directories}};
 	},

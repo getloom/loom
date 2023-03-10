@@ -39,7 +39,7 @@ import type {PublicPersona, ClientPersona} from '$lib/vocab/persona/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {EntityData, DirectoryEntityData} from '$lib/vocab/entity/entityData';
+import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
