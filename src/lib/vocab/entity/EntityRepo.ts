@@ -34,6 +34,19 @@ export class EntityRepo extends PostgresRepo {
 		return {ok: true, value: data[0]};
 	}
 
+	async findByPath(hub_id: number, path: string): Promise<Result<{value: Entity | undefined}>> {
+		log.trace('[findByPath]', hub_id, path);
+		const data = await this.sql<Entity[]>`
+			SELECT e.entity_id, e.space_id, e.path, e.data, e.persona_id, e.created, e.updated
+			FROM spaces s
+			JOIN entities e
+			ON s.directory_id=e.entity_id AND e.path=${path}
+			WHERE s.hub_id=${hub_id}
+		`;
+		log.trace('[findByPath] result', data);
+		return {ok: true, value: data[0]};
+	}
+
 	// TODO maybe `EntityQuery`?
 	// TODO remove the `message`, handle count mismatch similar to `findById` calls, maybe returning an array of the missing ids with `ok: false`
 	async filterByIds(

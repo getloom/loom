@@ -15,7 +15,7 @@
 		spaceParam.includes('/') ? 'EntityPath' : 'SpacePath';
 
 	const {
-		ui: {spacesByHubId},
+		ui: {spacesByHubId, entityById},
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
@@ -25,7 +25,7 @@
 		toPathType($page.params.space || '') === 'EntityPath' ? 'entity' : 'space';
 
 	$: spaces = $spacesByHubId.get($hub.hub_id);
-	$: homeSpace = spaces?.find((s) => isHomeSpace(s.get()));
+	$: homeSpace = spaces?.find((s) => isHomeSpace(entityById.get(s.get().directory_id)!.get()));
 
 	$: spaceParam = $page.params.space || '';
 	$: pathType = toPathType(spaceParam);

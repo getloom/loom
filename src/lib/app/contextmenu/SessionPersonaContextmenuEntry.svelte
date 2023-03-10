@@ -8,6 +8,7 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {
 		ui: {
@@ -17,6 +18,7 @@
 			hubIdSelectionByPersonaId,
 			hubById,
 			sessionPersonaIndexById,
+			entityById,
 		},
 	} = getApp();
 
@@ -26,6 +28,7 @@
 	$: hub = hubById.get(hubId)!;
 	$: spaceIdSelection = $spaceIdSelectionByHubId.value.get($hub.hub_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
+	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
 	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
 </script>
 
@@ -43,7 +46,7 @@
 			goto(
 				toHubUrl(
 					$hub.name,
-					$selectedSpace?.path,
+					renderDirectoryPath($selectedDirectory?.path),
 					toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 				),
 			)}

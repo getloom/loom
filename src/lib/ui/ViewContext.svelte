@@ -5,6 +5,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {setViewContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app';
 
 	/**
 	 * `ViewContext` sets `viewContext` in the Svelte component context,
@@ -12,11 +13,20 @@
 	 * and makes `let:viewContext` available to the slot.
 	 */
 
+	const {
+		ui: {entityById},
+	} = getApp();
+
 	export let persona: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 
-	const viewContext = writable({persona, hub, space});
+	const viewContext = writable({
+		persona,
+		hub,
+		space,
+		directory: entityById.get($space.directory_id)!,
+	});
 	setViewContext(viewContext);
 	// check to make sure we don't set twice on init
 	$: if (
@@ -24,7 +34,7 @@
 		$viewContext.hub !== hub ||
 		$viewContext.space !== space
 	) {
-		$viewContext = {persona, hub, space};
+		$viewContext = {persona, hub, space, directory: entityById.get($space.directory_id)!};
 	}
 </script>
 

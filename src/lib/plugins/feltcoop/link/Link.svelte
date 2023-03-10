@@ -10,9 +10,10 @@
 		isSpaceRelativePath,
 		isSpaceRelativePathValid,
 	} from '$lib/util/fuz';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const viewContext = getViewContext();
-	$: ({hub, space} = $viewContext);
+	$: ({hub, directory} = $viewContext);
 
 	export let href: string;
 
@@ -31,7 +32,7 @@
 		: hubRelative
 		? base + '/' + $hub.name + href
 		: spaceRelative
-		? base + '/' + $hub.name + $space.path + '/' + href.substring(2)
+		? base + '/' + $hub.name + renderDirectoryPath($directory.path) + '/' + href.substring(2)
 		: href;
 	$: external = !(hubRelative || spaceRelative || href.startsWith('.'));
 	$: rel = external ? 'external noreferrer nofollow' : undefined;

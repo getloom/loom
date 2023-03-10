@@ -9,7 +9,6 @@ export const SpaceSchema = {
 	properties: {
 		space_id: {type: 'number'},
 		name: {type: 'string'},
-		path: {type: 'string'},
 		icon: {type: 'string'},
 		view: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
@@ -17,16 +16,6 @@ export const SpaceSchema = {
 		hub_id: {type: 'number'},
 		directory_id: {type: 'number'},
 	},
-	required: [
-		'space_id',
-		'name',
-		'path',
-		'icon',
-		'view',
-		'created',
-		'updated',
-		'hub_id',
-		'directory_id',
-	],
+	required: ['space_id', 'name', 'icon', 'view', 'created', 'updated', 'hub_id', 'directory_id'],
 	additionalProperties: false,
 };

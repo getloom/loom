@@ -3,6 +3,7 @@ import type {CreateSpaceParams} from '$lib/app/eventTypes';
 import type {Hub} from '$lib/vocab/hub/hub';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {spaceTemplateToCreateSpaceParams} from '$lib/app/templates';
+import {HOME_PATH} from '$lib/vocab/space/spaceHelpers';
 
 // TODO these should probably be templates not params and integrated with the default template data,
 // and then callers can call `spaceTemplateToCreateSpaceParams` directly
@@ -14,8 +15,8 @@ export const toDefaultSpaces = (actor: number, hub: Hub): CreateSpaceParams[] =>
 		? toDefaultAdminSpaces(actor, hub)
 		: [
 				type === 'personal'
-					? {...toTemplatePartial('PersonalHome'), name, path: '/'}
-					: {...toTemplatePartial('Home'), name, path: '/'},
+					? {...toTemplatePartial('PersonalHome'), name, path: HOME_PATH}
+					: {...toTemplatePartial('Home'), name, path: HOME_PATH},
 				{...toTemplatePartial('Chat'), name: 'chat', path: '/chat'},
 				{...toTemplatePartial('ReplyChat'), name: 'reply-chat', path: '/reply-chat'},
 				{...toTemplatePartial('Board'), name: 'board', path: '/board'},
@@ -29,7 +30,7 @@ export const toDefaultSpaces = (actor: number, hub: Hub): CreateSpaceParams[] =>
 
 export const toDefaultAdminSpaces = (actor: number, {hub_id, name}: Hub): CreateSpaceParams[] =>
 	[
-		{...toTemplatePartial('AdminHome'), name, path: '/'},
+		{...toTemplatePartial('AdminHome'), name, path: HOME_PATH},
 		{...toTemplatePartial('InstanceAdmin'), name: 'instance', path: '/instance'},
 		{...toTemplatePartial('Chat'), name: 'chat', path: '/chat'},
 	].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));

@@ -19,7 +19,7 @@ export const toUrl = (pathname: string, search: string | URLSearchParams): strin
 /**
  * Constructs a url string from a hub and nullable path.
  * @param name - The hub name to navigate to
- * @param path - Usually `space.path`, but can be null or any path with a leading slash
+ * @param path - Usually `directory.path`, but can be null or any path with a leading slash
  * @param search - A search string with a leading `?` or a URLSearchParams instance
  * @returns The base-prefixed url string
  */

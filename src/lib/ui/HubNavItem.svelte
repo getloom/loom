@@ -9,6 +9,7 @@
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {
 		ui: {
@@ -17,6 +18,7 @@
 			spaceById,
 			sessionPersonaIndexById,
 			freshnessByHubId,
+			entityById,
 		},
 	} = getApp();
 
@@ -29,6 +31,7 @@
 
 	$: spaceIdSelection = $spaceIdSelectionByHubId.value.get($hub.hub_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
+	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
 
 	$: isPersonaHomeHub = $hub.name === $persona.name;
 
@@ -42,7 +45,7 @@
 	class="hub selectable"
 	href={toHubUrl(
 		$hub.name,
-		$selectedSpace?.path,
+		renderDirectoryPath($selectedDirectory?.path),
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class:selected

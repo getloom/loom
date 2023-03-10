@@ -12,11 +12,16 @@
 	import SpaceEditor from '$lib/ui/SpaceEditor.svelte';
 	import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
 
-	const {dispatch} = getApp();
+	const {
+		dispatch,
+		ui: {entityById},
+	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
+
+	$: directory = entityById.get($space.directory_id)!;
 </script>
 
 <ContextmenuSubmenu>
@@ -35,7 +40,7 @@
 		>
 			Edit Space
 		</ContextmenuEntry>
-		{#if canDeleteSpace($space)}
+		{#if canDeleteSpace($directory)}
 			<ContextmenuEntry
 				action={() =>
 					dispatch.OpenDialog({

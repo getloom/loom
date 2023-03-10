@@ -79,7 +79,12 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 		if (!space) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
-		if (!canDeleteSpace(space)) {
+		const directory = unwrap(await repos.entity.findById(space.directory_id));
+		if (!directory) {
+			return {ok: false, status: 404, message: 'no directory found'};
+		}
+		if (!canDeleteSpace(directory)) {
+			// TODO source this error message correctly, `canDeleteSpace` should return it, see the `check` pattern
 			return {ok: false, status: 405, message: 'cannot delete home space'};
 		}
 

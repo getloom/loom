@@ -1,5 +1,8 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@feltjs/util/log.js';
+import {goto} from '$app/navigation';
+import {page} from '$app/stores';
+import {get} from 'svelte/store';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -12,11 +15,14 @@ import {
 } from '$lib/ui/uiMutationHelpers';
 import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 import {setIfUpdated} from '$lib/util/store';
+import {toHubUrl} from '$lib/ui/url';
 
 const log = new Logger('[entityMutationHelpers]');
 
 export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
-	const {entityById, spaceSelection, spaceById, freshnessByDirectoryId} = ui;
+	const {entityById, spaceSelection, spaceById, freshnessByDirectoryId, hubById} = ui;
+
+	const $selectedSpace = spaceSelection.get()?.get();
 
 	let added: Array<Writable<Entity>> | null = null;
 
@@ -24,7 +30,19 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 		const {entity_id} = $entity;
 		let entity = entityById.get(entity_id);
 		if (entity) {
+			// If `directory.path` changed and the space is selected, navigate to it.
+			const prevPath = entity.get().path;
 			setIfUpdated(entity, $entity);
+			if ($entity.entity_id === $selectedSpace?.directory_id && $entity.path !== prevPath) {
+				void goto(
+					toHubUrl(
+						hubById.get($selectedSpace!.hub_id)!.get().name,
+						$entity.path,
+						get(page).url.search,
+					),
+					{replaceState: true},
+				);
+			}
 		} else {
 			entityById.set(entity_id, (entity = writable($entity)));
 			(added || (added = [])).push(entity);
@@ -38,7 +56,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 			}
 			upsertFreshnessByHubId(ui, spaceById.get($entity.space_id)!.get().hub_id);
 			// Is the directory's space selected? If so we don't want a notification.
-			if (entity_id === spaceSelection.get()?.get().directory_id) {
+			if (entity_id === $selectedSpace?.directory_id) {
 				updateLastSeen(ui, entity_id);
 			}
 		}

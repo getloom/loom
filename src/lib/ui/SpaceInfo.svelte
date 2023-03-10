@@ -10,15 +10,18 @@
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {
-		ui: {contextmenu, sessionPersonaIndexById},
+		ui: {contextmenu, sessionPersonaIndexById, entityById},
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
 	export let selected = false;
+
+	$: directory = entityById.get($space.directory_id)!;
 
 	$: hue = randomHue($space.name); // TODO add custom setting on spaces
 
@@ -28,7 +31,7 @@
 <a
 	href={toHubUrl(
 		$hub.name,
-		$space.path,
+		renderDirectoryPath($directory.path),
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class:selected
@@ -38,7 +41,7 @@
 >
 	<div class="name"><SpaceName {space} /></div>
 	<div>
-		{$space.path}
+		{renderDirectoryPath($directory.path)}
 	</div>
 </a>
 

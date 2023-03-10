@@ -6,6 +6,7 @@ import {Logger} from '@feltjs/util/log.js';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {ACTOR_QUERY_KEY, toSearchParams} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
+import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 const log = new Logger('[syncUiToUrl]');
 
@@ -21,6 +22,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 		spacesByHubId,
 		spaceIdSelectionByHubId,
 		sessionPersonas,
+		entityById,
 	} = ui;
 
 	const rawPersonaIndex = url.searchParams.get(ACTOR_QUERY_KEY);
@@ -61,7 +63,9 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 	const space = spacesByHubId
 		.get()
 		.get(hub_id)!
-		.find((s) => s.get().path === spacePath);
+		.find(
+			(s) => entityById.get(s.get().directory_id)!.get().path === parseDirectoryPath(spacePath), // `/home` falls back to `/`
+		);
 	if (!space) {
 		// occurs when routing to an inaccessible or nonexistent space
 		selectSpace(ui, hub_id, null);

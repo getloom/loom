@@ -87,7 +87,10 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 				: $session.hubs.map(($hub) => [
 						$hub.hub_id,
 						spaceIdSelectionByHubId.getJson()?.find((v) => v[0] === $hub.hub_id)?.[1] ||
-							$session.spaces.find((s) => s.hub_id === $hub.hub_id && isHomeSpace(s))?.space_id ||
+							$session.spaces.find(
+								(s) =>
+									s.hub_id === $hub.hub_id && isHomeSpace(entityById.get(s.directory_id)!.get()),
+							)?.space_id ||
 							null,
 				  ]),
 		),
@@ -145,7 +148,7 @@ export const CloseDialog: Mutations['CloseDialog'] = ({ui: {dialogs}}) => {
 
 export const ViewSpace: Mutations['ViewSpace'] = async ({
 	params: {space_id, view},
-	ui: {spaceById, viewBySpace, hubById},
+	ui: {spaceById, viewBySpace, hubById, entityById},
 }) => {
 	const space = spaceById.get(space_id)!;
 	viewBySpace.mutate(($viewBySpace) => {
@@ -159,8 +162,9 @@ export const ViewSpace: Mutations['ViewSpace'] = async ({
 	// If we don't always want to do this,
 	// we could either move this logic to the views or add a `navigate` boolean param.
 	const $space = space.get();
+	const $directory = entityById.get($space.directory_id)!.get();
 	await gotoUnlessActive(
-		toHubUrl(hubById.get($space.hub_id)!.get().name, $space.path, get(page).url.search),
+		toHubUrl(hubById.get($space.hub_id)!.get().name, $directory.path, get(page).url.search),
 	);
 };
 

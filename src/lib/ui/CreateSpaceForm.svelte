@@ -10,7 +10,7 @@
 	import {getApp} from '$lib/ui/app';
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
+	import {parseSpaceIcon, renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {ADMIN_HUB_ID} from '$lib/app/constants';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
@@ -70,7 +70,7 @@
 			await goto(
 				toHubUrl(
 					$hub.name,
-					result.value.space.path,
+					renderDirectoryPath(result.value.directory.path),
 					toSearchParams($page.url.searchParams, {
 						persona: $sessionPersonaIndexById.get($persona.persona_id) + '',
 					}),

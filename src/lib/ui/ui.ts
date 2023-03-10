@@ -180,7 +180,13 @@ export const toUi = (
 				hubSpaces.sort((_a, _b) => {
 					const a = _a.get();
 					const b = _b.get();
-					return isHomeSpace(a) ? -1 : isHomeSpace(b) ? 1 : a.name < b.name ? -1 : 1;
+					return isHomeSpace(entityById.get(a.directory_id)!.get())
+						? -1
+						: isHomeSpace(entityById.get(b.directory_id)!.get())
+						? 1
+						: a.name < b.name
+						? -1
+						: 1;
 				});
 				map.set(hub_id, hubSpaces);
 			}

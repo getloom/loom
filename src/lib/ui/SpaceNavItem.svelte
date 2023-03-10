@@ -10,16 +10,26 @@
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {
 		dispatch,
-		ui: {contextmenu, mobile, expandMainNav, sessionPersonaIndexById, freshnessByDirectoryId},
+		ui: {
+			contextmenu,
+			mobile,
+			expandMainNav,
+			sessionPersonaIndexById,
+			freshnessByDirectoryId,
+			entityById,
+		},
 	} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 	export let selected: boolean;
+
+	$: directory = entityById.get($space.directory_id)!;
 
 	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
 	$: fresh = freshnessByDirectoryId.get($space.directory_id)!;
@@ -28,7 +38,7 @@
 <a
 	href={toHubUrl(
 		$hub.name,
-		$space.path,
+		renderDirectoryPath($directory.path),
 		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
 	)}
 	class="selectable"

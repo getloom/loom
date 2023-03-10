@@ -17,8 +17,7 @@ export const stashSpaces = (
 	$directoriesToStash?: Entity[],
 	replace = false,
 ): void => {
-	const {spaceById, spaces, spaceIdSelectionByHubId, spaceSelection, hubById} = ui;
-	const selectedSpace = spaceSelection.get();
+	const {spaceById, spaces, spaceIdSelectionByHubId} = ui;
 
 	if (replace) {
 		spaceById.clear();
@@ -29,15 +28,7 @@ export const stashSpaces = (
 		let space = spaceById.get($space.space_id);
 		if (space) {
 			// Update the existing space store.
-			// If `space.path` changed and the space is selected, navigate to it.
-			const prevUrl = space.get().path;
 			setIfUpdated(space, $space);
-			if (space === selectedSpace && $space.path !== prevUrl) {
-				void goto(
-					toHubUrl(hubById.get($space.hub_id)!.get().name, $space.path, get(page).url.search),
-					{replaceState: true},
-				);
-			}
 		} else {
 			// Insert the space. We don't need to handle navigation in this case.
 			space = writable($space);
@@ -57,7 +48,15 @@ export const stashSpaces = (
 };
 
 export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>>): void => {
-	const {hubById, spaceIdSelectionByHubId, spacesByHubId, spaceById, spaces, hubSelection} = ui;
+	const {
+		hubById,
+		spaceIdSelectionByHubId,
+		spacesByHubId,
+		spaceById,
+		spaces,
+		hubSelection,
+		entityById,
+	} = ui;
 
 	for (const space of spacesToEvict) {
 		const {space_id, hub_id} = space.get();
@@ -75,7 +74,7 @@ export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>
 				const homeSpace = spacesByHubId
 					.get()
 					.get(hub_id)!
-					.find((s) => isHomeSpace(s.get()))!;
+					.find((s) => isHomeSpace(entityById.get(s.get().directory_id)!.get()))!;
 				spaceIdSelectionByHubId.mutate((s) => s.set(hub_id, homeSpace.get().space_id));
 			}
 		}

@@ -7,6 +7,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {AccountPersona} from '$lib/vocab/persona/persona';
 import {parseSvast} from '$lib/util/parseSvast';
+import type {Entity} from '$lib/vocab/entity/entity';
 
 export type ViewData = Root;
 
@@ -93,6 +94,7 @@ export interface ViewContext {
 	persona: Readable<AccountPersona>;
 	hub: Readable<Hub>;
 	space: Readable<Space>;
+	directory: Readable<Entity>;
 }
 
 const KEY = Symbol();

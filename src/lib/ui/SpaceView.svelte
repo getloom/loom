@@ -17,7 +17,7 @@
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 
-	$: directory_id = $space.directory_id;
+	$: ({directory_id} = $space);
 	//TODO we might want to just roll the logic from this event into the SelectSpace mutation
 	$: dispatch.ClearFreshness({directory_id});
 

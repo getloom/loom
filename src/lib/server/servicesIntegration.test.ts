@@ -121,7 +121,8 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	// delete spaces except the home space
 	for (const space of filteredSpaces) {
-		if (!isHomeSpace(space)) {
+		const directory = unwrap(await repos.entity.findById(space.directory_id))!; // eslint-disable-line no-await-in-loop
+		if (!isHomeSpace(directory)) {
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({

@@ -11,6 +11,7 @@ export const CreateEntity: ServiceEventInfo = {
 		properties: {
 			actor: {type: 'number'},
 			space_id: {type: 'number'},
+			path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 			data: {type: 'object', tsType: 'EntityData'},
 			ties: {
 				type: 'array',

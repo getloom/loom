@@ -11,12 +11,18 @@
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
+	const {
+		dispatch,
+		devmode,
+		ui: {entityById},
+	} = getApp();
+
 	export let persona: Readable<AccountPersona>;
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
 
-	const {dispatch, devmode} = getApp();
+	$: directory = entityById.get($space.directory_id)!;
 
 	const updateSpace = async (updated: any, field: string) =>
 		dispatch.UpdateSpace({
@@ -41,7 +47,7 @@
 		<fieldset>
 			<legend>properties</legend>
 			<PropertyEditor value={$space.name} field="name" update={updateSpace} />
-			<PropertyEditor value={$space.path} field="path" update={updateSpace} />
+			<PropertyEditor value={$directory.path} field="path" update={updateSpace} />
 			<PropertyEditor
 				value={$space.icon}
 				field="icon"

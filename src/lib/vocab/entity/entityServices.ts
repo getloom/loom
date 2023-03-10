@@ -59,12 +59,12 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	event: CreateEntity,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, data, space_id} = params;
+		const {actor, data, space_id, path} = params;
 
 		const {hub_id} = unwrap(await repos.space.findById(space_id))!;
 		await checkPolicy(permissions.CreateEntity, actor, hub_id, repos);
 
-		const entity = unwrap(await repos.entity.create(actor, data, space_id));
+		const entity = unwrap(await repos.entity.create(actor, data, space_id, path));
 
 		const entities = [entity];
 
