@@ -60,7 +60,7 @@ export const toWebsocketApiClient = <
 			log.trace('invoke', name, params);
 			const request: JsonRpcRequest<typeof name, TParamsMap> = {
 				jsonrpc: '2.0',
-				id: toId(),
+				id: toId(), // TODO maybe prefix with `session_id` and ignore broadcasts with your prefix, also solves problems with localStorage broadcasting
 				method: name,
 				params,
 			};

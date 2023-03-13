@@ -17,6 +17,7 @@ import type {Repos} from '$lib/db/Repos';
 import type {ApiError} from '$lib/server/api';
 
 export const log = new Logger('[test]');
+export const logError = new Logger('[test]', undefined, {...Logger, level: 'off'});
 
 let installed = false;
 

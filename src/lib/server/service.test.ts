@@ -1,11 +1,10 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {unwrap} from '@feltjs/util';
-import {Logger} from '@feltjs/util/log.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Hub} from '$lib/vocab/hub/hub';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {logError, toServiceRequestMock} from '$lib/util/testHelpers';
 import {toDefaultHubSettings} from '$lib/vocab/hub/hubHelpers.server';
 import {performService} from '$lib/server/service';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
@@ -28,7 +27,7 @@ test__service('performService passes through failed results', async ({repos}) =>
 			return (failedResult = {ok: false, status: 400, message: 'expected fail'});
 		},
 	};
-	const returnedResult = await performService(s, new Logger(), {
+	const returnedResult = await performService(s, logError, {
 		...toServiceRequestMock(repos),
 		params: null,
 	});
@@ -44,7 +43,7 @@ test__service('performService passes through a thrown ApiError', async ({repos})
 			throw new ApiError(400, 'expected fail');
 		},
 	};
-	const result = await performService(s, new Logger(), {
+	const result = await performService(s, logError, {
 		...toServiceRequestMock(repos),
 		params: null,
 	});
@@ -68,7 +67,7 @@ test__service(`roll back the database after a failed transaction`, async ({repos
 			return (failedResult = {ok: false, status: 400, message: 'expected fail'});
 		},
 	};
-	const returnedResult = await performService(s, new Logger(), {
+	const returnedResult = await performService(s, logError, {
 		...toServiceRequestMock(repos, persona),
 		params: await randomEventParams.CreateHub(random),
 	});

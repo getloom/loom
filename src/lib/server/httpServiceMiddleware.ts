@@ -7,6 +7,7 @@ import {type Service, toServiceRequest, performService} from '$lib/server/servic
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
+import {broadcast} from '$lib/server/broadcast';
 
 const log = new Logger(gray('[') + blue('httpServiceMiddleware') + gray(']'));
 
@@ -71,6 +72,7 @@ export const toHttpServiceMiddleware =
 			send(res, result.status || 500, {message: result.message});
 			return;
 		}
+
 		// TODO maybe do this in production too
 		if (process.env.NODE_ENV !== 'production') {
 			const validateResponse = validateSchema(service.event.response);
@@ -86,4 +88,8 @@ export const toHttpServiceMiddleware =
 		}
 		log.trace('result.status', result.status);
 		send(res, result.status, result.value); // TODO consider returning the entire `result` for convenience (but it's less efficient)
+
+		if (service.event.broadcast) {
+			broadcast(server, service, result, params);
+		}
 	};

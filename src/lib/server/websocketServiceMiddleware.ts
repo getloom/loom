@@ -7,9 +7,9 @@ import type {ApiServer} from '$lib/server/ApiServer';
 import {toValidationErrorMessage, validateSchema} from '$lib/util/ajv';
 import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
-import type {BroadcastMessage} from '$lib/util/websocket';
 import {performService, toServiceRequest} from '$lib/server/service';
 import type {ApiResult} from '$lib/server/api';
+import {broadcast} from '$lib/server/broadcast';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 
@@ -21,6 +21,7 @@ export interface WebsocketMiddleware {
 
 export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddleware =
 	(server) => async (socket, messageData, account_id) => {
+		// This gets called every 'message' event in `WebsocketServer`.
 		if (typeof messageData !== 'string') {
 			log.error('cannot handle websocket message; currently only supports strings');
 			return;
@@ -113,20 +114,6 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		socket.send(serializedResponse);
 
 		if (service.event.broadcast) {
-			log.trace('broadcasting', responseMessage);
-			const broadcastMessage: BroadcastMessage = {
-				type: 'broadcast',
-				method,
-				result,
-				params,
-			};
-			const serializedBroadcastMessage = JSON.stringify(broadcastMessage);
-
-			// TODO scope to hub and/or account
-			for (const client of server.websocketServer.wss.clients) {
-				if (client !== socket) {
-					client.send(serializedBroadcastMessage);
-				}
-			}
+			broadcast(server, service, result, params, socket);
 		}
 	};
