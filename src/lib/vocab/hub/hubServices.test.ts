@@ -267,7 +267,7 @@ test_hubServices('LeaveHub removes all assignments for the persona', async ({rep
 			params: {
 				actor: persona.persona_id,
 				hub_id: hub.hub_id,
-				persona_id: persona.persona_id,
+				targetActor: persona.persona_id,
 			},
 		}),
 	);
@@ -284,7 +284,7 @@ test_hubServices('fail LeaveHub when the persona has no assignments', async ({re
 			params: {
 				actor: persona.persona_id,
 				hub_id: hub.hub_id,
-				persona_id: persona.persona_id,
+				targetActor: persona.persona_id,
 			},
 		}),
 	);
@@ -301,7 +301,7 @@ test_hubServices('KickFromHub removes all assignments for the persona', async ({
 			params: {
 				actor: communityPersona.persona_id,
 				hub_id: hub.hub_id,
-				persona_id: persona.persona_id,
+				targetActor: persona.persona_id,
 			},
 		}),
 	);
@@ -320,7 +320,7 @@ test_hubServices(
 				params: {
 					actor: communityPersona.persona_id,
 					hub_id: hub.hub_id,
-					persona_id: persona.persona_id,
+					targetActor: persona.persona_id,
 				},
 			}),
 		);

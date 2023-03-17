@@ -363,7 +363,7 @@ export type InviteToHubResponseResult = ApiResult<InviteToHubResponse>;
 
 export interface LeaveHubParams {
 	actor: number;
-	persona_id: number;
+	targetActor: number;
 	hub_id: number;
 }
 export type LeaveHubResponse = null;
@@ -371,7 +371,7 @@ export type LeaveHubResponseResult = ApiResult<LeaveHubResponse>;
 
 export interface KickFromHubParams {
 	actor: number;
-	persona_id: number;
+	targetActor: number;
 	hub_id: number;
 }
 export type KickFromHubResponse = null;
@@ -393,14 +393,14 @@ export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaR
 
 export interface DeletePersonaParams {
 	actor: number;
-	persona_id: number;
+	targetActor: number;
 }
 export type DeletePersonaResponse = null;
 export type DeletePersonaResponseResult = ApiResult<DeletePersonaResponse>;
 
 export interface CreateAssignmentParams {
 	actor: number;
-	persona_id: number;
+	targetActor: number;
 	hub_id: number;
 	role_id: number;
 }

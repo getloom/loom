@@ -9,11 +9,11 @@ export const CreateAssignment: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			persona_id: {type: 'number'},
+			targetActor: {type: 'number'},
 			hub_id: {type: 'number'},
 			role_id: {type: 'number'},
 		},
-		required: ['actor', 'persona_id', 'hub_id', 'role_id'],
+		required: ['actor', 'targetActor', 'hub_id', 'role_id'],
 		additionalProperties: false,
 	},
 	response: {

@@ -18,7 +18,7 @@
 		await actions.CreateAssignment({
 			actor: $persona.persona_id,
 			hub_id: $hub.hub_id,
-			persona_id: $assignmentPersona.persona_id,
+			targetActor: $assignmentPersona.persona_id,
 			role_id: $role.role_id,
 		});
 	};

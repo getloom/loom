@@ -49,9 +49,9 @@ export const DeletePersona: ServiceEventInfo = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			persona_id: {type: 'number'},
+			targetActor: {type: 'number'},
 		},
-		required: ['actor', 'persona_id'],
+		required: ['actor', 'targetActor'],
 		additionalProperties: false,
 	},
 	response: {
@@ -60,7 +60,7 @@ export const DeletePersona: ServiceEventInfo = {
 	},
 	returns: 'Promise<DeletePersonaResponseResult>',
 	route: {
-		path: '/api/v1/personas/:persona_id',
+		path: '/api/v1/personas/:targetActor',
 		method: 'DELETE',
 	},
 };

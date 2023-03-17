@@ -22,7 +22,7 @@
 		errorMessage = '';
 		const result = await actions.DeletePersona({
 			actor: $persona.persona_id,
-			persona_id: $persona.persona_id,
+			targetActor: $persona.persona_id,
 		});
 		if (result.ok) {
 			done?.();

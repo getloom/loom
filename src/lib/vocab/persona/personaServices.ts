@@ -119,15 +119,15 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 	event: DeletePersona,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, persona_id} = params;
+		const {actor, targetActor} = params;
 
 		// first check if deleting the persona is allowed
 		//TODO extract to it's own policy helper?
-		if (persona_id === ADMIN_ACTOR_ID || persona_id === GHOST_ACTOR_ID) {
+		if (targetActor === ADMIN_ACTOR_ID || targetActor === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
 		const persona = unwrap(
-			await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(persona_id, [
+			await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(targetActor, [
 				'type',
 				'hub_id',
 			]),
@@ -138,21 +138,21 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		if (persona.type === 'community') {
 			return {ok: false, status: 400, message: 'cannot delete hub personas'};
 		}
-		if (await isPersonaAdmin(persona_id, repos)) {
+		if (await isPersonaAdmin(targetActor, repos)) {
 			return {ok: false, status: 400, message: 'cannot delete admin personas'};
 		}
-		if (actor !== persona_id && !(await isPersonaAdmin(actor, repos))) {
+		if (actor !== targetActor && !(await isPersonaAdmin(actor, repos))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
-		const hubs = unwrap(await repos.hub.filterByPersona(persona_id));
+		const hubs = unwrap(await repos.hub.filterByPersona(targetActor));
 
-		// swap in the ghost persona id for this `persona_id` for those objects that we don't delete
-		unwrap(await repos.entity.attributeToGhostByPersona(persona_id));
+		// swap in the ghost persona id for this `targetActor` for those objects that we don't delete
+		unwrap(await repos.entity.attributeToGhostByPersona(targetActor));
 
 		// delete the persona and its related objects
-		unwrap(await repos.assignment.deleteByPersona(persona_id));
-		unwrap(await repos.persona.deleteById(persona_id));
+		unwrap(await repos.assignment.deleteByPersona(targetActor));
+		unwrap(await repos.persona.deleteById(targetActor));
 		unwrap(await repos.hub.deleteById(persona.hub_id)); // must follow `persona.deleteById` it seems
 		await cleanOrphanHubs(
 			hubs.map((c) => c.hub_id).filter((c) => c !== persona.hub_id),

@@ -111,7 +111,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 					...toMainAccountServiceRequest(),
 					params: {
 						actor: mainPersonaCreator.persona_id,
-						persona_id: persona.persona_id,
+						targetActor: persona.persona_id,
 						hub_id: hub.hub_id,
 						role_id: hub.settings.defaultRoleId,
 					},

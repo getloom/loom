@@ -100,7 +100,7 @@ export const randomEventParams: RandomEventParams = {
 		if (!hub) ({hub} = await random.hub(persona, account));
 		return {
 			actor: persona.persona_id,
-			persona_id: persona.persona_id,
+			targetActor: persona.persona_id,
 			hub_id: hub.hub_id,
 		};
 	},
@@ -109,7 +109,7 @@ export const randomEventParams: RandomEventParams = {
 		if (!hub) ({hub} = await random.hub(persona, account));
 		return {
 			actor: persona.persona_id,
-			persona_id: persona.persona_id,
+			targetActor: persona.persona_id,
 			hub_id: hub.hub_id,
 		};
 	},
@@ -118,7 +118,7 @@ export const randomEventParams: RandomEventParams = {
 	},
 	DeletePersona: async (random, {account, persona} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
-		return {actor: persona.persona_id, persona_id: persona.persona_id};
+		return {actor: persona.persona_id, targetActor: persona.persona_id};
 	},
 	CreateAssignment: async (random, {account, actor, persona, hub} = {}) => {
 		if (!actor) ({persona: actor} = await random.persona(account));

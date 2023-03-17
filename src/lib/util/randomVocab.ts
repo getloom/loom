@@ -58,12 +58,12 @@ export const randomPersonaParams = (): CreateAccountPersonaParams => ({
 });
 export const randomAssignmentParams = (
 	actor: number,
-	persona_id: number,
+	targetActor: number,
 	hub_id: number,
 	role_id: number,
 ): CreateAssignmentParams => ({
 	actor,
-	persona_id,
+	targetActor,
 	hub_id,
 	role_id,
 });

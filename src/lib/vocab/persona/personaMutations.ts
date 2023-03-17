@@ -24,8 +24,8 @@ export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({i
 export const DeletePersona: Mutations['DeletePersona'] = async ({params, invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {persona_id} = params;
-	const persona = ui.personaById.get(persona_id);
+	const {targetActor} = params;
+	const persona = ui.personaById.get(targetActor);
 	if (persona) {
 		ui.mutate(() => {
 			const $persona = persona.get();

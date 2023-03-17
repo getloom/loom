@@ -69,7 +69,6 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	const account = await random.account();
 	const {persona, personalHub, spaces} = await random.persona(account);
 	const {hub, personas, spaces: hubSpaces} = await random.hub(persona, account);
-	const {persona_id} = persona;
 	const allHubs = [personalHub, hub];
 	const allSpaces = spaces.concat(hubSpaces);
 
@@ -110,7 +109,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 			params: {
 				actor: otherPersona.persona_id,
 				hub_id: otherHub.hub_id,
-				persona_id: persona.persona_id,
+				targetActor: persona.persona_id,
 				role_id: otherHub.settings.defaultRoleId,
 			},
 		}),
@@ -131,7 +130,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	unwrap(
 		await DeletePersonaService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona_id, persona_id},
+			params: {actor: persona.persona_id, targetActor: persona.persona_id},
 		}),
 	);
 
@@ -153,7 +152,7 @@ test__personaService('actors cannot delete other personas', async ({repos, rando
 	unwrapError(
 		await DeletePersonaService.perform({
 			...toServiceRequestMock(repos, persona1),
-			params: {actor: persona1.persona_id, persona_id: persona2.persona_id},
+			params: {actor: persona1.persona_id, targetActor: persona2.persona_id},
 		}),
 	);
 });
@@ -170,7 +169,7 @@ test__personaService(
 		unwrap(
 			await DeletePersonaService.perform({
 				...toServiceRequestMock(repos, actor),
-				params: {actor: actor.persona_id, persona_id: persona.persona_id},
+				params: {actor: actor.persona_id, targetActor: persona.persona_id},
 			}),
 		);
 	},
@@ -185,7 +184,7 @@ test__personaService('actors cannot delete personas in the admin hub', async ({r
 		unwrapError(
 			await DeletePersonaService.perform({
 				...toServiceRequestMock(repos, actor),
-				params: {actor: actor.persona_id, persona_id: persona.persona_id},
+				params: {actor: actor.persona_id, targetActor: persona.persona_id},
 			}),
 		).status,
 		400,
