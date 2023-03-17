@@ -1,5 +1,10 @@
 # changelog
 
+## 0.2.0
+
+- **break**: rename `$lib/app/components.ts` from `$lib/app/views.ts`
+  ([#733](https://github.com/feltjs/felt-server/pull/733))
+
 ## 0.1.1
 
 - publish migration files

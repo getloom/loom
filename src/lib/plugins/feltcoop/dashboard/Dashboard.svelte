@@ -3,7 +3,7 @@
 	import MainNav from '$lib/ui/MainNav.svelte';
 	import SpaceView from '$lib/ui/SpaceView.svelte';
 	import Marquee from '$lib/ui/Marquee.svelte';
-	import WorkspaceHeader from '$lib/ui/WorkspaceHeader.svelte';
+	import DashboardHeader from '$lib/plugins/feltcoop/dashboard/DashboardHeader.svelte';
 	import MarqueeButton from '$lib/ui/MarqueeButton.svelte';
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
@@ -25,7 +25,7 @@
 <Luggage />
 <MainNav />
 <main
-	class="workspace"
+	class="dashboard"
 	use:contextmenu.action={[
 		[SpaceContextmenu, space ? {persona, hub, space} : undefined],
 		[HubContextmenu, hub && persona ? {hub, persona} : undefined],
@@ -39,7 +39,7 @@
 		/>
 	{/if}
 	<div class="space column">
-		<WorkspaceHeader {space} {hub} />
+		<DashboardHeader {space} {hub} />
 		<div class="content">
 			{#if persona}
 				{#if hub}
@@ -66,7 +66,7 @@
 </main>
 
 <style>
-	.workspace {
+	.dashboard {
 		height: 100%;
 		width: 100%;
 		display: flex;

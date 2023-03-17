@@ -13,9 +13,8 @@ but they may get their own type in the future.
 ## `'personal'` hubs
 
 Felt has a special kind of hub called a **personal hub**.
-It's a bit of a misnomer; it's more of a personal workspace, a world scoped to a persona,
-than a hub, but it inherits most of the qualities of `'community'` hubs,
-with some important differences:
+It's a private world scoped to one persona,
+similar to `'community'` hubs with some important differences:
 
 - a personal hub is created automatically for every [`'account'` persona](./persona-types.md);
   this is the only way they're created

@@ -350,7 +350,7 @@ export const toUi = (
 
 	const mobile = writable(initialMobile);
 	const layout = writable({width: 0, height: 0});
-	const mainLayoutView = writable('<Workspace />'); // TODO source this from the hub/space context (so routes can customize the UI)
+	const mainLayoutView = writable('<Dashboard />'); // TODO source this from the hub/space context (so routes can customize the UI)
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
 	const contextmenu = createContextmenuStore({layout, onError});

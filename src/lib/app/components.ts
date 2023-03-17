@@ -1,6 +1,6 @@
 import type {SvelteComponent} from 'svelte';
 
-import Workspace from '$lib/plugins/feltcoop/workspace/Workspace.svelte';
+import Dashboard from '$lib/plugins/feltcoop/dashboard/Dashboard.svelte';
 import Link from '$lib/plugins/feltcoop/link/Link.svelte';
 import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 import Home from '$lib/plugins/feltcoop/home/Home.svelte';
@@ -18,14 +18,15 @@ import Todo from '$lib/plugins/feltcoop/todo/Todo.svelte';
 import List from '$lib/plugins/ryanatkn/list/List.svelte';
 import Lists from '$lib/plugins/ryanatkn/lists/Lists.svelte';
 
-// TODO develop the idea of view types
-export const views: Record<string, typeof SvelteComponent> = {
-	// app views
-	Workspace,
-	// widget views
+// TODO import these dynamically instead of statically like this
+
+export const components: Record<string, typeof SvelteComponent> = {
+	// layout components
+	Dashboard,
+	// widget components
 	Link,
 	Mention,
-	// space views
+	// view components
 	Home,
 	PersonalHome,
 	AdminHome,

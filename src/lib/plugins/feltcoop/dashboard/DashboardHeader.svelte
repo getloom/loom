@@ -16,7 +16,7 @@
 </script>
 
 <ul
-	class="workspace-header"
+	class="dashboard-header"
 	class:expanded-nav={$expandMainNav}
 	class:expanded-marquee={$expandMarquee}
 >
@@ -31,7 +31,7 @@
 </ul>
 
 <style>
-	.workspace-header {
+	.dashboard-header {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -61,8 +61,8 @@
 	.expanded-marquee .marquee-button-placeholder {
 		display: none;
 	}
-	:global(.mobile) .workspace-header .luggage-placeholder,
-	:global(.mobile) .workspace-header .marquee-button-placeholder {
+	:global(.mobile) .dashboard-header .luggage-placeholder,
+	:global(.mobile) .dashboard-header .marquee-button-placeholder {
 		display: block;
 	}
 	.title {
