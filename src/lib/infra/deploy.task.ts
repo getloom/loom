@@ -66,20 +66,7 @@ export const task: Task = {
 			node dist/server/${DEPLOYED_SCRIPT_PATH}.js;`,
 		]);
 
-		/*
-
-		TODO start the server:
-
-		```bash
-		git clone https://github.com/feltjs/felt-server
-		cd felt-server
-		NODE_ENV=development npm i
-		gro lib/db/migrate
-		cd -
-		pm2 start npm -- run start --prefix ${currentDeploy}
-		# pm2 start npm -- run start --prefix current_felt_server_deploy
-		
-		```
-		*/
+		log.trace('starting new server deployment');
+		await spawn('ssh', [deployLogin, `pm2 start npm -- run start --prefix ~/${currentDeploy}`]);
 	},
 };

@@ -7,6 +7,5 @@ export const task: typeof baseTask = {
 	run: async ({invokeTask}) => {
 		await invokeTask('lib/infra/setup');
 		await invokeTask('lib/infra/deploy');
-		await invokeTask('lib/infra/restartProd');
 	},
 };

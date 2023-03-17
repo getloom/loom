@@ -46,7 +46,6 @@ const files = [
 	'lib/db/seed.task.ts',
 	'lib/db/testMigration.task.ts',
 	'lib/infra/deploy.task.ts',
-	'lib/infra/restartProd.task.ts',
 	'lib/infra/setup.task.ts',
 	'lib/infra/syncEnvGitHash.task.ts',
 ];

@@ -39,6 +39,21 @@ sudo -i -u postgres psql
 SELECT count(*) FROM accounts; # any SQL
 ```
 
+### dumping and restoring the felt database
+
+The following command makes a backup dump of the default `felt` table
+
+```bash
+sudo -i -u postgres pg_dump felt > backup.sql
+```
+
+And these commands can restore that dump to the default felt table.
+Note: you may have to drop and recreate the `felt` table first
+
+```bash
+sudo -i -u postgres psql -d felt < backup.sql
+```
+
 ## Nginx
 
 See this tutorial:

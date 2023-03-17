@@ -73,7 +73,8 @@ export const task: Task<Args> = {
 			//
 			// Update and upgrade apt
 			logSequence('Updating apt...') +
-				`apt update;
+				`export DEBIAN_FRONTEND=noninteractive;
+				apt update;
 				apt upgrade -y;`,
 			//
 			//
@@ -81,7 +82,7 @@ export const task: Task<Args> = {
 			logSequence('Installing fnm...') +
 				`apt install -y unzip;
 				curl -fsSL https://fnm.vercel.app/install | bash;
-				export PATH=/root/.fnm:$PATH;
+				export PATH="/root/.local/share/fnm:$PATH";
 				echo 'export PATH='$PATH'
 				  eval "\`fnm env\`"
 				  '$(cat ~/.bashrc) > ~/.bashrc;
