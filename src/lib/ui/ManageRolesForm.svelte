@@ -18,7 +18,7 @@
 	$: defaultRoleId = $hub.settings.defaultRoleId;
 
 	const {
-		dispatch,
+		actions,
 		ui: {rolesByHubId, roleById},
 	} = getApp();
 
@@ -26,7 +26,7 @@
 
 	const createRole = async () => {
 		//TODO better error handling
-		const result = await dispatch.CreateRole({
+		const result = await actions.CreateRole({
 			actor: $persona.persona_id,
 			hub_id: $hub.hub_id,
 			name: 'new role',
@@ -44,7 +44,7 @@
 	$: if (!selectedRole && roles?.length) selectRole(roles[0]);
 
 	const deleteRole = (role: Readable<Role>): Promise<DeleteRoleResponseResult> =>
-		dispatch.DeleteRole({
+		actions.DeleteRole({
 			actor: $persona.persona_id,
 			role_id: role.get().role_id,
 		});

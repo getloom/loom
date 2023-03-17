@@ -14,7 +14,7 @@
 	import DeleteHubForm from '$lib/ui/DeleteHubForm.svelte';
 	import ManageRolesForm from '$lib/ui/ManageRolesForm.svelte';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let hub: Readable<Hub>;
 	export let persona: Readable<AccountPersona>;
@@ -27,26 +27,26 @@
 	<HubAvatar {hub} showIcon={false} />
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: HubEditor,
-					props: {persona, hub, done: () => dispatch.CloseDialog()},
+					props: {persona, hub, done: () => actions.CloseDialog()},
 				})}
 		>
 			Edit Hub
 		</ContextmenuEntry>
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: CreateSpaceForm,
-					props: {persona, hub, done: () => dispatch.CloseDialog()},
+					props: {persona, hub, done: () => actions.CloseDialog()},
 				})}
 		>
 			Create Space
 		</ContextmenuEntry>
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: ManageRolesForm,
 					dialogProps: {layout: 'page'},
 					props: {persona, hub},
@@ -56,28 +56,28 @@
 		</ContextmenuEntry>
 		{#if $hub.type !== 'personal'}
 			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
+				run={() =>
+					actions.OpenDialog({
 						Component: InviteToHubForm,
-						props: {persona, hub, done: () => dispatch.CloseDialog()},
+						props: {persona, hub, done: () => actions.CloseDialog()},
 					})}
 			>
 				Invite People
 			</ContextmenuEntry>
 			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
+				run={() =>
+					actions.OpenDialog({
 						Component: LeaveHubForm,
-						props: {persona, hub, done: () => dispatch.CloseDialog()},
+						props: {persona, hub, done: () => actions.CloseDialog()},
 					})}
 			>
 				Leave Hub
 			</ContextmenuEntry>
 			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
+				run={() =>
+					actions.OpenDialog({
 						Component: DeleteHubForm,
-						props: {persona, hub, done: () => dispatch.CloseDialog()},
+						props: {persona, hub, done: () => actions.CloseDialog()},
 					})}
 			>
 				Delete Hub

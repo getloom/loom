@@ -12,13 +12,13 @@
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
 
-	const {dispatch, socket} = getApp();
+	const {actions, socket} = getApp();
 
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? dispatch.QueryEntities({
+		? actions.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
@@ -32,7 +32,7 @@
 		const content = text.trim(); // TODO parse to trim? regularize step?
 
 		if (!content) return;
-		await dispatch.CreateEntity({
+		await actions.CreateEntity({
 			actor: $persona.persona_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},

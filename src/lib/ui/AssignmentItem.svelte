@@ -8,7 +8,7 @@
 	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
 
 	const {
-		dispatch,
+		actions,
 		ui: {personaById},
 	} = getApp();
 
@@ -19,7 +19,7 @@
 
 	const deleteAssignment = async () => {
 		//TODO better error handling
-		await dispatch.DeleteAssignment({
+		await actions.DeleteAssignment({
 			actor: $actor.persona_id,
 			assignment_id: assignment.assignment_id,
 		});

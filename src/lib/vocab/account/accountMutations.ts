@@ -2,24 +2,24 @@ import type {Mutations} from '$lib/app/eventTypes';
 import {gotoUnlessActive, toUrl} from '$lib/ui/url';
 import {setIfUpdated} from '$lib/util/store';
 
-export const SignUp: Mutations['SignUp'] = async ({invoke, dispatch}) => {
+export const SignUp: Mutations['SignUp'] = async ({invoke, actions}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	dispatch.SetSession({session: result.value.session});
+	actions.SetSession({session: result.value.session});
 	return result;
 };
 
-export const SignIn: Mutations['SignIn'] = async ({invoke, dispatch}) => {
+export const SignIn: Mutations['SignIn'] = async ({invoke, actions}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	dispatch.SetSession({session: result.value.session});
+	actions.SetSession({session: result.value.session});
 	return result;
 };
 
-export const SignOut: Mutations['SignOut'] = async ({invoke, dispatch}) => {
+export const SignOut: Mutations['SignOut'] = async ({invoke, actions}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	dispatch.SetSession({session: {guest: true}});
+	actions.SetSession({session: {guest: true}});
 	await gotoUnlessActive(toUrl('/', ''));
 	return result;
 };

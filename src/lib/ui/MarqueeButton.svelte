@@ -2,7 +2,7 @@
 	import {getApp} from '$lib/ui/app';
 
 	const {
-		dispatch,
+		actions,
 		ui: {expandMarquee},
 	} = getApp();
 
@@ -16,7 +16,7 @@
 	style="transform: translate3d({right}px, 0, 0)"
 	title="toggle marquee"
 	aria-label="toggle marquee"
-	on:click={() => dispatch.ToggleSecondaryNav()}
+	on:click={() => actions.ToggleSecondaryNav()}
 >
 	<div class="content">⚆</div>
 </button>

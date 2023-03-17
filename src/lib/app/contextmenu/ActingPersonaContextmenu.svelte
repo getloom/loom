@@ -9,7 +9,7 @@
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
 	import DeletePersonaForm from '$lib/ui/DeletePersonaForm.svelte';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 </script>
@@ -21,20 +21,20 @@
 	<PersonaAvatar {persona} showIcon={false} />
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: CreateHubForm,
-					props: {persona, done: () => dispatch.CloseDialog()},
+					props: {persona, done: () => actions.CloseDialog()},
 					dialogProps: {layout: 'page'},
 				})}
 		>
 			Create Hub
 		</ContextmenuEntry>
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: DeletePersonaForm,
-					props: {persona, done: () => dispatch.CloseDialog()},
+					props: {persona, done: () => actions.CloseDialog()},
 				})}
 		>
 			Delete Persona

@@ -14,7 +14,7 @@
 	const viewContext = getViewContext();
 	$: ({space, persona} = $viewContext);
 
-	const {socket, dispatch} = getApp();
+	const {socket, actions} = getApp();
 
 	const DEFAULT_RULES = `<ol><li>No tolerance for any sort of hate and discrimination such as racism, sexism, ableism, transphobia, etc.</li><li>No spamming</li><li>If there is a conflict, please report issues to community leaders</li></ol>`;
 	const DEFAULT_NORMS = `<p>some thoughts about our community’s vibes that aren’t rules, but still worth thinking about</p><ol><li>We welcome nerdiness :)</li><li>We strive to learn from each other.</li><li>We encourage everyone to participate in moderation.</li></ol>`;
@@ -23,7 +23,7 @@
 
 	//TODO this is all done because the Query event always returns an empty array on initial call
 	$: entitiesResult = shouldLoadEntities
-		? dispatch.ReadEntities({
+		? actions.ReadEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
@@ -44,7 +44,7 @@
 		const content = text.trim(); // TODO parse to trim? regularize step?
 
 		if (!content) return;
-		await dispatch.CreateEntity({
+		await actions.CreateEntity({
 			actor: $persona.persona_id,
 			space_id: $space.space_id,
 			data: {type: 'Article', content, name},
@@ -94,7 +94,7 @@
 					<!--TODO how to trigger a directory freshen from result of this dialogue-->
 					<button
 						on:click={() =>
-							dispatch.OpenDialog({
+							actions.OpenDialog({
 								Component: EntityEditor,
 								props: {persona, entity: rules},
 								dialogProps: {layout: 'page'},
@@ -109,7 +109,7 @@
 					<h4>norms</h4>
 					<button
 						on:click={() =>
-							dispatch.OpenDialog({
+							actions.OpenDialog({
 								Component: EntityEditor,
 								props: {persona, entity: norms},
 								dialogProps: {layout: 'page'},

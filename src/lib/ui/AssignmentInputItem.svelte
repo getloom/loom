@@ -7,7 +7,7 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {Role} from '$lib/vocab/role/role';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let assignmentPersona: Readable<ClientPersona>;
@@ -15,7 +15,7 @@
 	export let role: Readable<Role>;
 
 	const createAssignment = async () => {
-		await dispatch.CreateAssignment({
+		await actions.CreateAssignment({
 			actor: $persona.persona_id,
 			hub_id: $hub.hub_id,
 			persona_id: $assignmentPersona.persona_id,

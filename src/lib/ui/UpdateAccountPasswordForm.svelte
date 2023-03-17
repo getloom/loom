@@ -5,7 +5,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	let oldPassword = '';
 	let newPassword = '';
@@ -51,7 +51,7 @@
 		}
 		buttonEl.focus();
 		submitting = true;
-		const result = await dispatch.UpdateAccountPassword({oldPassword, newPassword});
+		const result = await actions.UpdateAccountPassword({oldPassword, newPassword});
 		submitting = false;
 		if (!result.ok) {
 			errorMessage = result.message;

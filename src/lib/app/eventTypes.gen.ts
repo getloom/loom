@@ -43,7 +43,7 @@ import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
-import type {DispatchContext} from '$lib/app/dispatch';
+import type {MutationContext} from '$lib/ui/mutation';
 import type {ClientSession, ClientAccountSession, AccountSettings, ClientAccount} from '$lib/vocab/account/account';
 import type {HubTemplate} from '$lib/app/templates';
 
@@ -116,7 +116,7 @@ ${await jsonSchemaToTypescript(eventInfo.params, toParamsName(eventInfo.name), o
 	Promise.resolve(''),
 )}
 
-export interface Dispatch {
+export interface Actions {
 	${eventInfos.reduce(
 		(str, eventInfo) =>
 			str +
@@ -133,7 +133,7 @@ export interface Mutations {
 			str +
 			`
       ${eventInfo.name}: (
-        ctx: DispatchContext<${toParamsName(eventInfo.name)}, ${
+        ctx: MutationContext<${toParamsName(eventInfo.name)}, ${
 				eventInfo.type === 'ClientEvent' ? 'void' : toResponseResultName(eventInfo.name)
 			}>,
       ) => ${eventInfo.returns};

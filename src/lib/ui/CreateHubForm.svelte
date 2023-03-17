@@ -16,7 +16,7 @@
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {
-		dispatch,
+		actions,
 		ui: {sessionPersonaIndexById},
 	} = getApp();
 
@@ -53,7 +53,7 @@
 		if (pending) return;
 		pending = true;
 		errorMessage = null;
-		const result = await dispatch.CreateHub({
+		const result = await actions.CreateHub({
 			actor: $persona.persona_id,
 			template: {name, settings: {hue}},
 		});

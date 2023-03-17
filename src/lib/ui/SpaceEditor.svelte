@@ -12,7 +12,7 @@
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 	const {
-		dispatch,
+		actions,
 		devmode,
 		ui: {entityById},
 	} = getApp();
@@ -25,7 +25,7 @@
 	$: directory = entityById.get($space.directory_id)!;
 
 	const updateSpace = async (updated: any, field: string) =>
-		dispatch.UpdateSpace({
+		actions.UpdateSpace({
 			actor: $persona.persona_id,
 			space_id: $space.space_id,
 			[field]: updated,
@@ -61,14 +61,14 @@
 			<button
 				title="delete space"
 				on:click={() =>
-					dispatch.OpenDialog({
+					actions.OpenDialog({
 						Component: DeleteSpaceForm,
 						props: {
 							persona,
 							hub,
 							space,
 							done: () => {
-								dispatch.CloseDialog();
+								actions.CloseDialog();
 								done?.();
 							},
 						},

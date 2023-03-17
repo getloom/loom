@@ -6,17 +6,17 @@
 	const viewContext = getViewContext();
 	$: ({persona, space, hub} = $viewContext);
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	// TODO could be made more generic as a `CreateEntityButton` and take options for everything
 </script>
 
 <button
 	on:click={() =>
-		dispatch.OpenDialog({
+		actions.OpenDialog({
 			Component: CreateEntityForm,
 			props: {
-				done: () => dispatch.CloseDialog(),
+				done: () => actions.CloseDialog(),
 				entityName: 'list',
 				persona,
 				hub,

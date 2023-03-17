@@ -10,10 +10,10 @@
 	export let actor: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	const updateHubSettings = async (updated: any) =>
-		dispatch.UpdateHubSettings({
+		actions.UpdateHubSettings({
 			actor: $actor.persona_id,
 			hub_id: $hub.hub_id,
 			settings: updated,

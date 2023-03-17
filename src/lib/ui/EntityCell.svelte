@@ -11,7 +11,7 @@
 	export let entity: Readable<Entity>;
 	export let propertyName: string;
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	$: value = $entity[propertyName as keyof Entity];
 
@@ -34,7 +34,7 @@
 			errorMessage = 'invalid json';
 			return;
 		}
-		const result = await dispatch.UpdateEntity({
+		const result = await actions.UpdateEntity({
 			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: updatedData,

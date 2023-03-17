@@ -5,7 +5,7 @@
 	import {getApp} from '$lib/ui/app';
 	import type {Role} from '$lib/vocab/role/role';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let actor: Readable<AccountPersona>;
 	export let role: Readable<Role>;
@@ -23,12 +23,12 @@
 		if (hasPolicy === checked) return;
 		pending = true;
 		if (policy) {
-			await dispatch.DeletePolicy({
+			await actions.DeletePolicy({
 				actor: $actor.persona_id,
 				policy_id: $policy!.policy_id,
 			});
 		} else {
-			await dispatch.CreatePolicy({
+			await actions.CreatePolicy({
 				actor: $actor.persona_id,
 				role_id: $role.role_id,
 				permission,

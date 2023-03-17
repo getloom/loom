@@ -13,7 +13,7 @@
 	import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
 
 	const {
-		dispatch,
+		actions,
 		ui: {entityById},
 	} = getApp();
 
@@ -31,8 +31,8 @@
 	{$space.name}
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: SpaceEditor,
 					props: {persona, space, hub},
 					dialogProps: {layout: 'page'},
@@ -42,18 +42,18 @@
 		</ContextmenuEntry>
 		{#if canDeleteSpace($directory)}
 			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
+				run={() =>
+					actions.OpenDialog({
 						Component: DeleteSpaceForm,
-						props: {persona, hub, space, done: () => dispatch.CloseDialog()},
+						props: {persona, hub, space, done: () => actions.CloseDialog()},
 					})}
 			>
 				Delete Space
 			</ContextmenuEntry>
 		{/if}
 		<ContextmenuEntry
-			action={() =>
-				dispatch.ViewSpace({
+			run={() =>
+				actions.ViewSpace({
 					space_id: $space.space_id,
 					view: '<EntityExplorer />',
 				})}

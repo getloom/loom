@@ -13,12 +13,12 @@
 	const viewContext = getViewContext();
 	$: ({persona, space, hub} = $viewContext);
 
-	const {dispatch, socket} = getApp();
+	const {actions, socket} = getApp();
 
 	//TODO once QueryEntities interface is in place this should initialize a "posts" collection
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? dispatch.QueryEntities({
+		? actions.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
@@ -47,10 +47,10 @@
 			{#if !selectedPost}
 				<button
 					on:click={() =>
-						dispatch.OpenDialog({
+						actions.OpenDialog({
 							Component: CreateEntityForm,
 							props: {
-								done: () => dispatch.CloseDialog(),
+								done: () => actions.CloseDialog(),
 								entityName: 'post',
 								fields: {name: true, content: true},
 								persona,

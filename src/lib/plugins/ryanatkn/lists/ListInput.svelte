@@ -9,7 +9,7 @@
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let list: Readable<Entity>;
 	export let el: HTMLTextAreaElement | undefined = undefined;
@@ -24,7 +24,7 @@
 		}
 
 		//TODO better error handling
-		await dispatch.CreateEntity({
+		await actions.CreateEntity({
 			actor: $persona.persona_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content, checked: false},

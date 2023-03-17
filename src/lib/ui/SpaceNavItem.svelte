@@ -13,7 +13,7 @@
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {
-		dispatch,
+		actions,
 		ui: {
 			contextmenu,
 			mobile,
@@ -51,7 +51,7 @@
 		// That's probably what the user wants,
 		// but the problem is that we also want to close the main nav
 		// when the user clicks the already-selected space. For now this is fine.
-		if ($mobile && $expandMainNav) dispatch.ToggleMainNav();
+		if ($mobile && $expandMainNav) actions.ToggleMainNav();
 	}}
 >
 	{#if $fresh}

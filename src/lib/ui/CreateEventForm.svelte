@@ -9,7 +9,7 @@
 	import {eventInfos} from '$lib/app/events';
 	import type {EventInfo} from '$lib/vocab/event/event';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let done: (() => void) | undefined = undefined;
@@ -19,8 +19,8 @@
 
 	let formParams: any = null;
 
-	let dispatched: DispatchedEvent[] = [];
-	interface DispatchedEvent {
+	let actionHistory: ActionHistoryItem[] = [];
+	interface ActionHistoryItem {
 		name: string;
 		params: any; // TODO ?
 		eventInfo: EventInfo;
@@ -30,13 +30,13 @@
 		error: string | null;
 	}
 
-	const dispatchEvent = async (eventInfo: EventInfo, params: any): Promise<void> => {
+	const actionsEvent = async (eventInfo: EventInfo, params: any): Promise<void> => {
 		if (pending) return;
 		// TODO confirmation dialog!
-		formParams = params; // depending on where the event is dispatched, the form params may not match, but we want to load the form with whatever was just sent for UX purposes
+		formParams = params; // depending on where the event is actionHistory, the form params may not match, but we want to load the form with whatever was just sent for UX purposes
 		pending = true;
 		errorMessage = null;
-		const d: DispatchedEvent = {
+		const d: ActionHistoryItem = {
 			name: eventInfo.name,
 			params,
 			eventInfo,
@@ -45,7 +45,7 @@
 			elapsed: 0,
 			error: null,
 		};
-		const result = await (dispatch as any)[eventInfo.name](params);
+		const result = await (actions as any)[eventInfo.name](params);
 		pending = false;
 		if (result && 'ok' in result) {
 			if (result.ok) {
@@ -57,7 +57,7 @@
 		}
 		d.responded = performance.now();
 		d.elapsed = d.responded - d.created;
-		dispatched = [d].concat(dispatched); // TODO granularly update `responded`/`elapsed` updates so we see it immediately, maybe track `status` and `error` even
+		actionHistory = [d].concat(actionHistory); // TODO granularly update `responded`/`elapsed` updates so we see it immediately, maybe track `status` and `error` even
 	};
 
 	let selectedEventInfo: EventInfo | undefined;
@@ -103,12 +103,12 @@
 					{/if}
 					<!-- TODO `style="width: 100%"` is a hack -->
 					<PendingButton
-						on:click={() => selectedEventInfo && dispatchEvent(selectedEventInfo, formParams)}
+						on:click={() => selectedEventInfo && actionsEvent(selectedEventInfo, formParams)}
 						style="width: 100%"
 						{pending}
 						disabled={pending}
 					>
-						dispatch <code class={selectedEventInfo.type}>{selectedEventInfo.name}</code>
+						actions <code class={selectedEventInfo.type}>{selectedEventInfo.name}</code>
 					</PendingButton>
 					<!-- TODO implement saving events like any other data to a path/entity -->
 					<!-- <PendingButton on:click={save} pending={savePending} disabled={pending}
@@ -121,24 +121,23 @@
 					{/if}
 				</div>
 			{/if}
-			{#if dispatched.length}
+			{#if actionHistory.length}
 				<!-- TODO extract table component with sortable headings -->
 				<table class="panel">
 					<thead><th>event</th><th>time</th><th /><th>props</th><th>error</th></thead>
 					<tbody>
-						{#each dispatched as dispatchedEvent (dispatchedEvent)}
+						{#each actionHistory as item (item)}
 							<tr>
-								<td><code class={dispatchedEvent.eventInfo.type}>{dispatchedEvent.name}</code></td>
-								<td>{Math.round(dispatchedEvent.elapsed)}ms</td>
+								<td><code class={item.eventInfo.type}>{item.name}</code></td>
+								<td>{Math.round(item.elapsed)}ms</td>
 								<td>
 									<div class="buttons">
 										<button
 											class="plain-button icon-button"
 											style:--icon_size="var(--icon_size_sm)"
 											type="button"
-											title="dispatch {dispatchedEvent.eventInfo.name} again"
-											on:click={() =>
-												dispatchEvent(dispatchedEvent.eventInfo, dispatchedEvent.params)}
+											title="actions {item.eventInfo.name} again"
+											on:click={() => actionsEvent(item.eventInfo, item.params)}
 										>
 											↪
 										</button>
@@ -146,26 +145,24 @@
 											class="plain-button icon-button"
 											style:--icon_size="var(--icon_size_sm)"
 											type="button"
-											title="dispatch {dispatchedEvent.eventInfo.name} again"
-											on:click={() =>
-												(dispatched = dispatched.filter((d) => d !== dispatchedEvent))}
+											title="actions {item.eventInfo.name} again"
+											on:click={() => (actionHistory = actionHistory.filter((d) => d !== item))}
 										>
 											✕
 										</button>
 									</div>
 								</td>
-								<td><code class="ellipsis">{JSON.stringify(dispatchedEvent.params)}</code></td>
+								<td><code class="ellipsis">{JSON.stringify(item.params)}</code></td>
 								<td
-									>{#if dispatchedEvent.error}<small
-											class="error-text ellipsis"
-											title={dispatchedEvent.error}>{dispatchedEvent.error}</small
+									>{#if item.error}<small class="error-text ellipsis" title={item.error}
+											>{item.error}</small
 										>{/if}</td
 								>
 							</tr>
 						{/each}
 					</tbody>
 				</table>
-				<button type="button" on:click={() => (dispatched = [])}>clear history</button>
+				<button type="button" on:click={() => (actionHistory = [])}>clear history</button>
 			{/if}
 		</div>
 	</div>

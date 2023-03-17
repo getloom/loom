@@ -16,7 +16,7 @@
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {
-		dispatch,
+		actions,
 		ui: {sessionPersonaIndexById, adminPersonas},
 	} = getApp();
 
@@ -55,7 +55,7 @@
 		if (pending) return;
 		pending = true;
 		errorMessage = null;
-		const result = await dispatch.CreateSpace({
+		const result = await actions.CreateSpace({
 			actor: $persona.persona_id,
 			hub_id: $hub.hub_id,
 			name,

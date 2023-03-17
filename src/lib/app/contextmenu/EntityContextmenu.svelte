@@ -13,7 +13,7 @@
 	export let entity: Readable<Entity>;
 	export let persona: Readable<AccountPersona>;
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 </script>
 
 <ContextmenuSubmenu>
@@ -23,10 +23,10 @@
 	Entity {#if $entity.data.type}<code><small>{$entity.data.type}</small></code>{/if}
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: EntityEditor,
-					props: {persona, entity, done: () => dispatch.CloseDialog()},
+					props: {persona, entity, done: () => actions.CloseDialog()},
 					dialogProps: {layout: 'page'},
 				})}
 		>
@@ -35,12 +35,12 @@
 		<!-- TODO add confirmation dialogs to both delete and erase actions -->
 		{#if $entity.data.type !== 'Tombstone'}
 			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
+				run={() =>
+					actions.OpenDialog({
 						Component: ConfirmDialog,
 						props: {
-							action: () =>
-								dispatch.EraseEntities({
+							confirmed: () =>
+								actions.EraseEntities({
 									actor: $persona.persona_id,
 									entityIds: [$entity.entity_id],
 								}),
@@ -53,12 +53,12 @@
 			</ContextmenuEntry>
 		{/if}
 		<ContextmenuEntry
-			action={() =>
-				dispatch.OpenDialog({
+			run={() =>
+				actions.OpenDialog({
 					Component: ConfirmDialog,
 					props: {
-						action: () =>
-							dispatch.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]}),
+						confirmed: () =>
+							actions.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]}),
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',
 					},

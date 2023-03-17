@@ -10,7 +10,7 @@
 	import {getApp} from '$lib/ui/app';
 	import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let username = '';
 	let password = dev ? 'a' : '';
@@ -44,7 +44,7 @@
 		buttonEl.focus();
 		submitting = true;
 		errorMessage = '';
-		const result = await dispatch.SignIn({username, password});
+		const result = await actions.SignIn({username, password});
 		submitting = false;
 		if (!result.ok) {
 			errorMessage = result.message;

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 
-	import {getContextmenu, type ContextmenuAction} from '$lib/ui/contextmenu/contextmenu';
+	import {getContextmenu, type ContextmenuRun} from '$lib/ui/contextmenu/contextmenu';
 
-	export let action: ContextmenuAction;
+	export let run: ContextmenuRun; // is not reactive
 
 	const contextmenu = getContextmenu();
 
-	const entry = contextmenu.addEntry(action);
+	const entry = contextmenu.addEntry(run);
 
 	const onMousemove = (e: MouseEvent) => {
 		e.stopImmediatePropagation();
@@ -31,7 +31,7 @@ https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-links.
 	title={errorMessage ? `Error: ${errorMessage}` : undefined}
 	on:click={() => {
 		// This timeout lets event handlers react to the current DOM
-		// before the action's changes are applied.
+		// before the item's changes are applied.
 		setTimeout(() => contextmenu.activate(entry));
 	}}
 	on:mousemove={onMousemove}

@@ -11,7 +11,7 @@
 
 	// TODO make this work with other kinds of inputs, starting with numbers
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	type TValue = $$Generic;
 
@@ -87,10 +87,10 @@
 	};
 
 	const deleteField = () => {
-		dispatch.OpenDialog({
+		actions.OpenDialog({
 			Component: ConfirmDialog,
 			props: {
-				action: async () => {
+				confirmed: async () => {
 					fieldValue = undefined;
 					await save();
 				},

@@ -11,7 +11,7 @@
 	import Message from '@feltjs/felt-ui/Message.svelte';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;
@@ -29,7 +29,7 @@
 			return;
 		}
 		status = 'pending';
-		const result = await dispatch.InviteToHub({
+		const result = await actions.InviteToHub({
 			actor: $persona.persona_id,
 			hub_id: $hub.hub_id,
 			name,

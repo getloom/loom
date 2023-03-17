@@ -7,14 +7,14 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;
 
 	const UPDATE_INTERVAL = 500; // TODO extract this to config
 	const updateHue = throttle(UPDATE_INTERVAL, async (hue: number): Promise<void> => {
-		await dispatch.UpdateHubSettings({
+		await actions.UpdateHubSettings({
 			actor: $persona.persona_id,
 			hub_id: $hub.hub_id,
 			settings: {...$hub.settings, hue},

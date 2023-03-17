@@ -11,7 +11,7 @@
 	$: ({persona} = $viewContext);
 
 	const {
-		dispatch,
+		actions,
 		ui: {destTiesBySourceEntityId, entityById},
 	} = getApp();
 
@@ -43,7 +43,7 @@
 	const clearDone = async () => {
 		if (!checkedCount) return;
 		const entityIds = $checkedItems!.map((i) => i.get().entity_id);
-		await dispatch.DeleteEntities({
+		await actions.DeleteEntities({
 			actor: $persona.persona_id,
 			entityIds,
 		});

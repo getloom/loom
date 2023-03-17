@@ -15,7 +15,7 @@ const files = [
 	'lib/app/contextmenu/ActingPersonaContextmenu.svelte',
 	'lib/app/contextmenu/AppContextmenu.svelte',
 	'lib/app/contextmenu/LinkContextmenu.svelte',
-	'lib/app/dispatch.ts',
+	'lib/app/actions.ts',
 	'lib/app/events.ts',
 	'lib/app/mutations.ts',
 	'lib/app/schemas.ts',

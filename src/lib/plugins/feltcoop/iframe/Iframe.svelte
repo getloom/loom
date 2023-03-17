@@ -9,7 +9,7 @@
 	$: ({space, persona} = $viewContext);
 
 	const {
-		dispatch,
+		actions,
 		ui: {ephemera},
 	} = getApp();
 
@@ -54,7 +54,7 @@
 				// TODO validate automatically
 				const data = e.detail.params;
 				if (!data) return;
-				void dispatch.Ephemera({actor: $persona.persona_id, space_id: $space.space_id, data});
+				void actions.Ephemera({actor: $persona.persona_id, space_id: $space.space_id, data});
 			}
 		}}
 	/>

@@ -8,7 +8,7 @@ import {
 } from '@feltcoop/svelte-gettable-stores';
 
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {Dispatch} from '$lib/app/eventTypes';
+import type {Actions} from '$lib/app/eventTypes';
 import type {Ui} from '$lib/ui/ui';
 
 export interface Query {
@@ -44,7 +44,7 @@ export interface QueryMatchEntity {
 
 export const createPaginatedQuery = (
 	ui: Ui,
-	dispatch: Dispatch,
+	actions: Actions,
 	params: QueryParams,
 	addEntity: QueryAddEntity = addEntitySortedByCreated,
 	matchEntity: QueryMatchEntity = matchEntityBySourceId,
@@ -55,14 +55,14 @@ export const createPaginatedQuery = (
 	const {paginatedQueryByKey} = ui;
 	let query = paginatedQueryByKey.get(key);
 	if (query) return query;
-	query = toPaginatedQuery(ui, dispatch, params, key, addEntity, matchEntity);
+	query = toPaginatedQuery(ui, actions, params, key, addEntity, matchEntity);
 	paginatedQueryByKey.set(key, query);
 	return query;
 };
 
 const toPaginatedQuery = (
 	ui: Ui,
-	dispatch: Dispatch,
+	actions: Actions,
 	params: QueryParams,
 	key: number,
 	addEntity: QueryAddEntity,
@@ -80,7 +80,7 @@ const toPaginatedQuery = (
 
 	const load = async (pageKey?: number): Promise<void> => {
 		const finalParams = pageKey === undefined ? params : {...params, pageKey};
-		loading = dispatch.ReadEntitiesPaginated(finalParams).then(
+		loading = actions.ReadEntitiesPaginated(finalParams).then(
 			(result) => {
 				update(($v) => {
 					const updated = {...$v};

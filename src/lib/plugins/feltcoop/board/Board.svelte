@@ -12,12 +12,12 @@
 	const viewContext = getViewContext();
 	$: ({persona, space, hub} = $viewContext);
 
-	const {dispatch, socket} = getApp();
+	const {actions, socket} = getApp();
 
 	//TODO once QueryEntities interface is in place this should initialize a "posts" collection
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? dispatch.QueryEntities({
+		? actions.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
@@ -33,7 +33,7 @@
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
 			<CreateEntityForm
-				done={() => dispatch.CloseDialog()}
+				done={() => actions.CloseDialog()}
 				entityName="post"
 				{persona}
 				{hub}

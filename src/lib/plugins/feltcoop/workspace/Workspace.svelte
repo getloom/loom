@@ -14,7 +14,7 @@
 	import EmptyPath from '$lib/ui/EmptyPath.svelte';
 
 	const {
-		dispatch,
+		actions,
 		ui: {contextmenu, expandMarquee},
 	} = getApp();
 
@@ -35,7 +35,7 @@
 		<div
 			aria-hidden
 			class="marquee-bg"
-			on:click={() => ($expandMarquee ? dispatch.ToggleSecondaryNav() : null)}
+			on:click={() => ($expandMarquee ? actions.ToggleSecondaryNav() : null)}
 		/>
 	{/if}
 	<div class="space column">

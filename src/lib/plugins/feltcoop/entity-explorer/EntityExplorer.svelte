@@ -16,7 +16,7 @@
 	$: ({persona, space} = $viewContext);
 
 	const {
-		dispatch,
+		actions,
 		socket,
 		ui: {entityById},
 	} = getApp();
@@ -27,7 +27,7 @@
 
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
-		const result = await dispatch.ReadEntitiesPaginated({
+		const result = await actions.ReadEntitiesPaginated({
 			actor: $persona.persona_id,
 			source_id: $space.directory_id,
 		});
@@ -40,7 +40,7 @@
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? dispatch.QueryEntities({
+		? actions.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
@@ -52,10 +52,7 @@
 </script>
 
 <div class="entity-explorer">
-	<button
-		type="button"
-		on:click={() => dispatch.ViewSpace({space_id: $space.space_id, view: null})}
-	>
+	<button type="button" on:click={() => actions.ViewSpace({space_id: $space.space_id, view: null})}>
 		Close EntityExplorer
 	</button>
 	<div class="tree">

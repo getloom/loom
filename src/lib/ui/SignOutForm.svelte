@@ -7,7 +7,7 @@
 	import {getApp} from '$lib/ui/app';
 
 	const {
-		dispatch,
+		actions,
 		ui: {session},
 	} = getApp();
 
@@ -22,7 +22,7 @@
 	const signOut = async (): Promise<SignOutResponseResult> => {
 		submitting = true;
 		errorMessage = '';
-		const result = await dispatch.SignOut();
+		const result = await actions.SignOut();
 		if (!result.ok) {
 			errorMessage = result.message;
 		}

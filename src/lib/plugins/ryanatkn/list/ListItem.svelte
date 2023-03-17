@@ -17,7 +17,7 @@
 
 	const {
 		ui: {contextmenu, personaById},
-		dispatch,
+		actions,
 	} = getApp();
 
 	export let entity: Readable<Entity>;
@@ -50,7 +50,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 		<button
 			class="plain-button icon-button"
 			on:click={() =>
-				dispatch.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]})}
+				actions.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]})}
 			title="remove item">✕</button
 		>
 	</div>

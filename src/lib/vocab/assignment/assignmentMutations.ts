@@ -3,7 +3,7 @@ import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignme
 
 export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 	invoke,
-	dispatch,
+	actions,
 	ui,
 	params,
 }) => {
@@ -17,7 +17,7 @@ export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 	if (hubById.has(hub_id)) {
 		ui.mutate(() => stashAssignments(ui, [assignment]));
 	} else {
-		const readHubResult = await dispatch.ReadHub({actor: params.actor, hub_id});
+		const readHubResult = await actions.ReadHub({actor: params.actor, hub_id});
 		if (!readHubResult.ok) return readHubResult;
 	}
 

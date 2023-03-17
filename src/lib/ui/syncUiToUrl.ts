@@ -10,7 +10,7 @@ import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 const log = new Logger('[syncUiToUrl]');
 
-// TODO instead of dispatching `select` events on startup, initialize with correct values
+// TODO instead of actionsing `select` events on startup, initialize with correct values
 
 export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url: URL): void => {
 	if (!params.hub) return;

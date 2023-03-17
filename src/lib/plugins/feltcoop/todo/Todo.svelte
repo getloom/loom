@@ -15,14 +15,14 @@
 	$: ({persona, space, hub} = $viewContext);
 
 	const {
-		dispatch,
+		actions,
 		socket,
 		ui: {destTiesBySourceEntityId, entityById},
 	} = getApp();
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? dispatch.QueryEntities({
+		? actions.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
@@ -49,7 +49,7 @@
 		if (!content || !selectedList) return;
 
 		//TODO better error handling
-		await dispatch.CreateEntity({
+		await actions.CreateEntity({
 			space_id: $space.space_id,
 			actor: $persona.persona_id,
 			data: {type: 'Note', content, checked: false},
@@ -77,7 +77,7 @@
 			}, [] as Array<Readable<Entity>>);
 		if (!items?.length) return;
 		const entityIds = items.map((i) => i.get().entity_id);
-		await dispatch.DeleteEntities({
+		await actions.DeleteEntities({
 			actor: $persona.persona_id,
 			entityIds,
 		});
@@ -91,10 +91,10 @@
 			<TodoItems {persona} {entities} {space} {selectedList} {selectList} />
 			<button
 				on:click={() =>
-					dispatch.OpenDialog({
+					actions.OpenDialog({
 						Component: CreateEntityForm,
 						props: {
-							done: () => dispatch.CloseDialog(),
+							done: () => actions.CloseDialog(),
 							entityName: 'todo',
 							persona,
 							hub,

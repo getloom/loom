@@ -11,7 +11,7 @@
 	import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
 
 	const {
-		dispatch,
+		actions,
 		ui: {sessionPersonaIndexById},
 	} = getApp();
 
@@ -38,7 +38,7 @@
 			return;
 		}
 		status = 'pending';
-		const result = await dispatch.CreateAccountPersona({name});
+		const result = await actions.CreateAccountPersona({name});
 		status = 'success'; // TODO handle failure (also refactor to be generic)
 		if (result.ok) {
 			errorMessage = null;

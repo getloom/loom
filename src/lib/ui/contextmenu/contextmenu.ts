@@ -12,7 +12,7 @@ export interface EntryState {
 	isMenu: false;
 	menu: SubmenuState | RootMenuState;
 	selected: boolean;
-	action: ContextmenuAction;
+	run: ContextmenuRun;
 	pending: boolean;
 	errorMessage: string | null;
 	promise: Promise<any> | null;
@@ -28,7 +28,7 @@ export interface RootMenuState {
 	menu: null;
 	items: ItemState[];
 }
-export interface ContextmenuAction {
+export interface ContextmenuRun {
 	(): void | Promise<ActivateResult>;
 }
 
@@ -53,7 +53,7 @@ export interface ContextmenuStore extends Readable<Contextmenu> {
 	selectPrevious: () => void;
 	selectFirst: () => void;
 	selectLast: () => void;
-	addEntry: (action: ContextmenuAction) => EntryState;
+	addEntry: (run: ContextmenuRun) => EntryState;
 	addSubmenu: () => SubmenuState;
 	// These two properties are mutated internally.
 	// If you need reactivity, use `$contextmenu` in a reactive statement to react to all changes, and
@@ -72,7 +72,7 @@ const CONTEXTMENU_STATE_KEY = Symbol();
 
 /**
  * Creates a `contextmenu` store.
- * For external usage see `use:contextmenu.action` scattered throughout the app,
+ * For external usage see `use:contextmenu.run` scattered throughout the app,
  * and for internal usage see `Contextmenu.svelte`.
  * @returns
  */
@@ -120,7 +120,7 @@ export const createContextmenuStore = ({
 			if (item.isMenu) {
 				store.expandSelected();
 			} else {
-				const returned = item.action();
+				const returned = item.run();
 				if (returned?.then) {
 					item.pending = true;
 					item.errorMessage = null;
@@ -209,13 +209,13 @@ export const createContextmenuStore = ({
 		},
 		selectFirst: () => store.select((selections.at(-1)?.menu || rootMenu).items[0]),
 		selectLast: () => store.select((selections.at(-1)?.menu || rootMenu).items.at(-1)!),
-		addEntry: (action) => {
+		addEntry: (run) => {
 			const menu = getContext<SubmenuState | undefined>(CONTEXTMENU_STATE_KEY) || rootMenu;
 			const entry: EntryState = {
 				isMenu: false,
 				menu,
 				selected: false,
-				action,
+				run,
 				pending: false,
 				errorMessage: null,
 				promise: null,
@@ -282,7 +282,7 @@ export const openContextmenu = (
 ): void => {
 	const items = queryContextmenuItems(target, LinkContextmenu);
 	if (!items) return;
-	// TODO dispatch a UI event, like OpenContextmenu
+	// TODO emit a UI event, like OpenContextmenu
 	contextmenu.open(items, x, y);
 };
 

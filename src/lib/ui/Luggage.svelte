@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 </script>
 
 <div class="luggage">
@@ -9,7 +9,7 @@
 		class="icon-button plain-button"
 		title="toggle luggage"
 		aria-label="toggle luggage"
-		on:click={() => dispatch.ToggleMainNav()}
+		on:click={() => actions.ToggleMainNav()}
 	>
 		<span>☰</span>
 	</button>

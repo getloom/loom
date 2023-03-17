@@ -12,7 +12,7 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let done: (() => void) | undefined = undefined;
 	export let entityName = 'Entity';
@@ -49,7 +49,7 @@
 		const data: BaseEntityData = {type};
 		if (fields.name) data.name = name;
 		if (fields.content) data.content = content;
-		const result = await dispatch.CreateEntity({
+		const result = await actions.CreateEntity({
 			actor: $persona.persona_id,
 			space_id: $space.space_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?

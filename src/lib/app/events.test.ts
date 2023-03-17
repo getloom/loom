@@ -17,7 +17,7 @@ test__eventInfos.before(setupApp);
 test__eventInfos.after(teardownApp);
 
 for (const eventInfo of eventInfos.values()) {
-	test__eventInfos(`dispatch event ${eventInfo.name} in a client app`, async ({app, random}) => {
+	test__eventInfos(`do action ${eventInfo.name} in a client app`, async ({app, random}) => {
 		const account = await random.account();
 		const params = await randomEventParams[eventInfo.name](random, {account});
 
@@ -48,7 +48,7 @@ for (const eventInfo of eventInfos.values()) {
 		}
 
 		// TODO fix typecast with a union for `eventInfo`
-		const result = await (app.dispatch as any)[eventInfo.name](params);
+		const result = await (app.actions as any)[eventInfo.name](params);
 		if (eventInfo.type === 'ClientEvent') {
 			// TODO don't have schemas for `returns` yet, but eventually we'll want them and then validate here
 			if (eventInfo.returns !== 'void') {
@@ -57,7 +57,7 @@ for (const eventInfo of eventInfos.values()) {
 		} else {
 			// TODO can't make remote calls yet -- need to use either `node-fetch` or mock
 			// if (!result.ok) {
-			// 	log.error(`dispatch failed: ${eventInfo.name}`, result);
+			// 	log.error(`action failed: ${eventInfo.name}`, result);
 			// } else if (!validateSchema(eventInfo.response!)(result.value)) {
 			// 	log.error(`failed to validate service response: ${eventInfo.name}`, result);
 			// 	throw new Error(

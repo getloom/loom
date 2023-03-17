@@ -4,10 +4,10 @@
 
 	import {getApp} from '$lib/ui/app';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let done: (() => void) | undefined = undefined;
-	export let action: (() => any) | undefined = undefined;
+	export let confirmed: (() => any) | undefined = undefined;
 	export let promptText = 'Are you sure?';
 	export let confirmText = 'confirm';
 	export let cancelText = 'cancel';
@@ -16,12 +16,14 @@
 	let errorMessage: string | undefined;
 
 	const confirm = async () => {
-		let result = action?.();
-		if (result && 'then' in result) {
-			pending = true;
+		let result = confirmed?.();
+		if (result) {
 			errorMessage = undefined;
-			result = await result;
-			pending = false;
+			if ('then' in result) {
+				pending = true;
+				result = await result;
+				pending = false;
+			}
 			if (result && 'ok' in result && !result.ok) {
 				errorMessage = result.message || 'unknown error';
 				return;
@@ -34,7 +36,7 @@
 		if (done) {
 			done();
 		} else {
-			dispatch.CloseDialog();
+			actions.CloseDialog();
 		}
 	};
 </script>

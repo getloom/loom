@@ -7,7 +7,7 @@
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let done: (() => void) | undefined = undefined;
@@ -20,7 +20,7 @@
 	const deletePersona = async () => {
 		pending = true;
 		errorMessage = '';
-		const result = await dispatch.DeletePersona({
+		const result = await actions.DeletePersona({
 			actor: $persona.persona_id,
 			persona_id: $persona.persona_id,
 		});

@@ -2,13 +2,13 @@
 	import About from '$lib/ui/About.svelte';
 	import {getApp} from '$lib/ui/app';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 </script>
 
 <button
 	type="button"
 	class="plain-button icon-button"
-	on:click={() => dispatch.OpenDialog({Component: About})}
+	on:click={() => actions.OpenDialog({Component: About})}
 >
 	?
 </button>

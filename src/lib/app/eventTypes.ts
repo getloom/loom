@@ -18,7 +18,7 @@ import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
-import type {DispatchContext} from '$lib/app/dispatch';
+import type {MutationContext} from '$lib/ui/mutation';
 import type {
 	ClientSession,
 	ClientAccountSession,
@@ -737,7 +737,7 @@ export interface ClearFreshnessParams {
 	directory_id: number;
 }
 
-export interface Dispatch {
+export interface Actions {
 	SignUp: (params: SignUpParams) => Promise<SignUpResponseResult>;
 	SignIn: (params: SignInParams) => Promise<SignInResponseResult>;
 	SignOut: () => Promise<SignOutResponseResult>;
@@ -795,120 +795,120 @@ export interface Dispatch {
 
 export interface Mutations {
 	SignUp: (
-		ctx: DispatchContext<SignUpParams, SignUpResponseResult>,
+		ctx: MutationContext<SignUpParams, SignUpResponseResult>,
 	) => Promise<SignUpResponseResult>;
 	SignIn: (
-		ctx: DispatchContext<SignInParams, SignInResponseResult>,
+		ctx: MutationContext<SignInParams, SignInResponseResult>,
 	) => Promise<SignInResponseResult>;
 	SignOut: (
-		ctx: DispatchContext<SignOutParams, SignOutResponseResult>,
+		ctx: MutationContext<SignOutParams, SignOutResponseResult>,
 	) => Promise<SignOutResponseResult>;
 	UpdateAccountSettings: (
-		ctx: DispatchContext<UpdateAccountSettingsParams, UpdateAccountSettingsResponseResult>,
+		ctx: MutationContext<UpdateAccountSettingsParams, UpdateAccountSettingsResponseResult>,
 	) => Promise<UpdateAccountSettingsResponseResult>;
 	UpdateAccountPassword: (
-		ctx: DispatchContext<UpdateAccountPasswordParams, UpdateAccountPasswordResponseResult>,
+		ctx: MutationContext<UpdateAccountPasswordParams, UpdateAccountPasswordResponseResult>,
 	) => Promise<UpdateAccountPasswordResponseResult>;
 	CreateHub: (
-		ctx: DispatchContext<CreateHubParams, CreateHubResponseResult>,
+		ctx: MutationContext<CreateHubParams, CreateHubResponseResult>,
 	) => Promise<CreateHubResponseResult>;
 	ReadHub: (
-		ctx: DispatchContext<ReadHubParams, ReadHubResponseResult>,
+		ctx: MutationContext<ReadHubParams, ReadHubResponseResult>,
 	) => Promise<ReadHubResponseResult>;
 	UpdateHubSettings: (
-		ctx: DispatchContext<UpdateHubSettingsParams, UpdateHubSettingsResponseResult>,
+		ctx: MutationContext<UpdateHubSettingsParams, UpdateHubSettingsResponseResult>,
 	) => Promise<UpdateHubSettingsResponseResult>;
 	DeleteHub: (
-		ctx: DispatchContext<DeleteHubParams, DeleteHubResponseResult>,
+		ctx: MutationContext<DeleteHubParams, DeleteHubResponseResult>,
 	) => Promise<DeleteHubResponseResult>;
 	InviteToHub: (
-		ctx: DispatchContext<InviteToHubParams, InviteToHubResponseResult>,
+		ctx: MutationContext<InviteToHubParams, InviteToHubResponseResult>,
 	) => Promise<InviteToHubResponseResult>;
 	LeaveHub: (
-		ctx: DispatchContext<LeaveHubParams, LeaveHubResponseResult>,
+		ctx: MutationContext<LeaveHubParams, LeaveHubResponseResult>,
 	) => Promise<LeaveHubResponseResult>;
 	KickFromHub: (
-		ctx: DispatchContext<KickFromHubParams, KickFromHubResponseResult>,
+		ctx: MutationContext<KickFromHubParams, KickFromHubResponseResult>,
 	) => Promise<KickFromHubResponseResult>;
 	CreateAccountPersona: (
-		ctx: DispatchContext<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>,
+		ctx: MutationContext<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>,
 	) => Promise<CreateAccountPersonaResponseResult>;
 	DeletePersona: (
-		ctx: DispatchContext<DeletePersonaParams, DeletePersonaResponseResult>,
+		ctx: MutationContext<DeletePersonaParams, DeletePersonaResponseResult>,
 	) => Promise<DeletePersonaResponseResult>;
 	CreateAssignment: (
-		ctx: DispatchContext<CreateAssignmentParams, CreateAssignmentResponseResult>,
+		ctx: MutationContext<CreateAssignmentParams, CreateAssignmentResponseResult>,
 	) => Promise<CreateAssignmentResponseResult>;
 	DeleteAssignment: (
-		ctx: DispatchContext<DeleteAssignmentParams, DeleteAssignmentResponseResult>,
+		ctx: MutationContext<DeleteAssignmentParams, DeleteAssignmentResponseResult>,
 	) => Promise<DeleteAssignmentResponseResult>;
 	CreateSpace: (
-		ctx: DispatchContext<CreateSpaceParams, CreateSpaceResponseResult>,
+		ctx: MutationContext<CreateSpaceParams, CreateSpaceResponseResult>,
 	) => Promise<CreateSpaceResponseResult>;
 	ReadSpaces: (
-		ctx: DispatchContext<ReadSpacesParams, ReadSpacesResponseResult>,
+		ctx: MutationContext<ReadSpacesParams, ReadSpacesResponseResult>,
 	) => Promise<ReadSpacesResponseResult>;
 	UpdateSpace: (
-		ctx: DispatchContext<UpdateSpaceParams, UpdateSpaceResponseResult>,
+		ctx: MutationContext<UpdateSpaceParams, UpdateSpaceResponseResult>,
 	) => Promise<UpdateSpaceResponseResult>;
 	DeleteSpace: (
-		ctx: DispatchContext<DeleteSpaceParams, DeleteSpaceResponseResult>,
+		ctx: MutationContext<DeleteSpaceParams, DeleteSpaceResponseResult>,
 	) => Promise<DeleteSpaceResponseResult>;
 	CreateEntity: (
-		ctx: DispatchContext<CreateEntityParams, CreateEntityResponseResult>,
+		ctx: MutationContext<CreateEntityParams, CreateEntityResponseResult>,
 	) => Promise<CreateEntityResponseResult>;
 	UpdateEntity: (
-		ctx: DispatchContext<UpdateEntityParams, UpdateEntityResponseResult>,
+		ctx: MutationContext<UpdateEntityParams, UpdateEntityResponseResult>,
 	) => Promise<UpdateEntityResponseResult>;
 	ReadEntities: (
-		ctx: DispatchContext<ReadEntitiesParams, ReadEntitiesResponseResult>,
+		ctx: MutationContext<ReadEntitiesParams, ReadEntitiesResponseResult>,
 	) => Promise<ReadEntitiesResponseResult>;
 	ReadEntitiesPaginated: (
-		ctx: DispatchContext<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>,
+		ctx: MutationContext<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>,
 	) => Promise<ReadEntitiesPaginatedResponseResult>;
-	QueryEntities: (ctx: DispatchContext<QueryEntitiesParams, void>) => Query;
+	QueryEntities: (ctx: MutationContext<QueryEntitiesParams, void>) => Query;
 	EraseEntities: (
-		ctx: DispatchContext<EraseEntitiesParams, EraseEntitiesResponseResult>,
+		ctx: MutationContext<EraseEntitiesParams, EraseEntitiesResponseResult>,
 	) => Promise<EraseEntitiesResponseResult>;
 	DeleteEntities: (
-		ctx: DispatchContext<DeleteEntitiesParams, DeleteEntitiesResponseResult>,
+		ctx: MutationContext<DeleteEntitiesParams, DeleteEntitiesResponseResult>,
 	) => Promise<DeleteEntitiesResponseResult>;
 	CreateRole: (
-		ctx: DispatchContext<CreateRoleParams, CreateRoleResponseResult>,
+		ctx: MutationContext<CreateRoleParams, CreateRoleResponseResult>,
 	) => Promise<CreateRoleResponseResult>;
 	ReadRoles: (
-		ctx: DispatchContext<ReadRolesParams, ReadRolesResponseResult>,
+		ctx: MutationContext<ReadRolesParams, ReadRolesResponseResult>,
 	) => Promise<ReadRolesResponseResult>;
 	UpdateRole: (
-		ctx: DispatchContext<UpdateRoleParams, UpdateRoleResponseResult>,
+		ctx: MutationContext<UpdateRoleParams, UpdateRoleResponseResult>,
 	) => Promise<UpdateRoleResponseResult>;
 	DeleteRole: (
-		ctx: DispatchContext<DeleteRoleParams, DeleteRoleResponseResult>,
+		ctx: MutationContext<DeleteRoleParams, DeleteRoleResponseResult>,
 	) => Promise<DeleteRoleResponseResult>;
 	CreatePolicy: (
-		ctx: DispatchContext<CreatePolicyParams, CreatePolicyResponseResult>,
+		ctx: MutationContext<CreatePolicyParams, CreatePolicyResponseResult>,
 	) => Promise<CreatePolicyResponseResult>;
 	ReadPolicies: (
-		ctx: DispatchContext<ReadPoliciesParams, ReadPoliciesResponseResult>,
+		ctx: MutationContext<ReadPoliciesParams, ReadPoliciesResponseResult>,
 	) => Promise<ReadPoliciesResponseResult>;
 	UpdatePolicy: (
-		ctx: DispatchContext<UpdatePolicyParams, UpdatePolicyResponseResult>,
+		ctx: MutationContext<UpdatePolicyParams, UpdatePolicyResponseResult>,
 	) => Promise<UpdatePolicyResponseResult>;
 	DeletePolicy: (
-		ctx: DispatchContext<DeletePolicyParams, DeletePolicyResponseResult>,
+		ctx: MutationContext<DeletePolicyParams, DeletePolicyResponseResult>,
 	) => Promise<DeletePolicyResponseResult>;
-	Ping: (ctx: DispatchContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
+	Ping: (ctx: MutationContext<PingParams, PingResponseResult>) => Promise<ApiResult<null>>;
 	Ephemera: (
-		ctx: DispatchContext<EphemeraParams, EphemeraResponseResult>,
+		ctx: MutationContext<EphemeraParams, EphemeraResponseResult>,
 	) => Promise<EphemeraResponseResult>;
-	SetSession: (ctx: DispatchContext<SetSessionParams, void>) => void;
-	ToggleMainNav: (ctx: DispatchContext<ToggleMainNavParams, void>) => void;
-	ToggleSecondaryNav: (ctx: DispatchContext<ToggleSecondaryNavParams, void>) => void;
-	SetMobile: (ctx: DispatchContext<SetMobileParams, void>) => void;
-	OpenDialog: (ctx: DispatchContext<OpenDialogParams, void>) => void;
-	CloseDialog: (ctx: DispatchContext<CloseDialogParams, void>) => void;
-	ViewSpace: (ctx: DispatchContext<ViewSpaceParams, void>) => void;
-	ClearFreshness: (ctx: DispatchContext<ClearFreshnessParams, void>) => void;
+	SetSession: (ctx: MutationContext<SetSessionParams, void>) => void;
+	ToggleMainNav: (ctx: MutationContext<ToggleMainNavParams, void>) => void;
+	ToggleSecondaryNav: (ctx: MutationContext<ToggleSecondaryNavParams, void>) => void;
+	SetMobile: (ctx: MutationContext<SetMobileParams, void>) => void;
+	OpenDialog: (ctx: MutationContext<OpenDialogParams, void>) => void;
+	CloseDialog: (ctx: MutationContext<CloseDialogParams, void>) => void;
+	ViewSpace: (ctx: MutationContext<ViewSpaceParams, void>) => void;
+	ClearFreshness: (ctx: MutationContext<ClearFreshnessParams, void>) => void;
 }
 
 // generated by src/lib/app/eventTypes.gen.ts

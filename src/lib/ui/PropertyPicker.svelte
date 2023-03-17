@@ -15,7 +15,7 @@
 	// TODO optional properties
 
 	const {
-		dispatch,
+		actions,
 		ui: {hubById},
 	} = getApp();
 
@@ -96,7 +96,7 @@
 	const doneWithHubPicker = async (hub_id: number) => {
 		fieldValue = hub_id;
 		await save();
-		dispatch.CloseDialog();
+		actions.CloseDialog();
 	};
 
 	// TODO everything referencing `hub_id` is a hack, this component should be generic
@@ -121,7 +121,7 @@
 	<button
 		type="button"
 		on:click={() =>
-			dispatch.OpenDialog({
+			actions.OpenDialog({
 				Component: HubPicker,
 				props: {done: doneWithHubPicker},
 			})}

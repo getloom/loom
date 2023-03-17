@@ -5,7 +5,7 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 
-	const dispatcher = createEventDispatcher<{submit: string}>();
+	const dispatch = createEventDispatcher<{submit: string}>();
 
 	export let persona: Readable<AccountPersona>;
 	export let value = '';
@@ -13,7 +13,7 @@
 
 	const onKeydown = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
-			dispatcher('submit', value);
+			dispatch('submit', value);
 		}
 	};
 </script>

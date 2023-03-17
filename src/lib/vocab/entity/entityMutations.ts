@@ -36,7 +36,7 @@ export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui, p
 	const result = await invoke();
 	if (!result.ok) return result;
 	ui.mutate(() => evictEntities(ui, params.entityIds));
-	// TODO add `ui.events.dispatchEvent('evicted_entities')`
+	// TODO add `ui.events.actionsEvent('evicted_entities')`
 	return result;
 };
 
@@ -62,7 +62,7 @@ export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async (
 	return result;
 };
 
-export const QueryEntities: Mutations['QueryEntities'] = ({ui: {queryByKey}, dispatch, params}) => {
+export const QueryEntities: Mutations['QueryEntities'] = ({ui: {queryByKey}, actions, params}) => {
 	let query = queryByKey.get(params.source_id);
 	if (!query) {
 		queryByKey.set(
@@ -73,7 +73,7 @@ export const QueryEntities: Mutations['QueryEntities'] = ({ui: {queryByKey}, dis
 				error: writable(null),
 			}),
 		);
-		void dispatch.ReadEntities(params).then(
+		void actions.ReadEntities(params).then(
 			(result) => {
 				if (!query) return;
 				if (result.ok) {

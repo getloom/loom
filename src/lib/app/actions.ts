@@ -4,8 +4,7 @@ import {browser, dev} from '$app/environment';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {ApiClient} from '$lib/ui/ApiClient';
-import type {ApiResult} from '$lib/server/api';
-import type {Dispatch} from '$lib/app/eventTypes';
+import type {Actions} from '$lib/app/eventTypes';
 import type {BroadcastMessage} from '$lib/util/websocket';
 import type {Mutation} from '$lib/ui/mutation';
 
@@ -13,35 +12,21 @@ const log = new Logger();
 
 const KEY = Symbol();
 
-export const getDispatch = (): Dispatch => getContext(KEY);
+export const getActions = (): Actions => getContext(KEY);
 
-export const setDispatch = (store: Dispatch): Dispatch => {
-	setContext(KEY, store);
-	return store;
-};
+export const setActions = (value: Actions): Actions => setContext(KEY, value);
 
-export interface DispatchContext<
-	TParams = unknown,
-	TResult extends ApiResult<unknown> | void = any,
-> {
-	eventName: string;
-	params: TParams;
-	ui: WritableUi;
-	dispatch: Dispatch;
-	invoke: TResult extends void ? null : (params?: TParams) => Promise<TResult>;
-}
-
-export interface ToDispatchClient {
+export interface ToActionsClient {
 	(eventName: string): ApiClient | null;
 }
 
-export const toDispatch = (
+export const toActions = (
 	ui: WritableUi,
 	mutations: Record<string, Mutation>,
-	toClient: ToDispatchClient,
-): Dispatch => {
+	toClient: ToActionsClient,
+): Actions => {
 	// TODO validate the params here to improve UX, but for now we're safe letting the server validate
-	const dispatch: Dispatch = new Proxy({} as any, {
+	const actions: Actions = new Proxy({} as any, {
 		get: (_target, eventName: string) => (params: unknown) => {
 			log.trace(...toLoggedArgs(eventName, params));
 			const client = toClient(eventName);
@@ -54,24 +39,24 @@ export const toDispatch = (
 				eventName,
 				params,
 				ui,
-				dispatch,
+				actions,
 				invoke: client ? (p = params) => client.invoke(eventName, p) : null,
 			});
 		},
 	});
-	return dispatch;
+	return actions;
 };
 
-export interface DispatchBroadcastMessage {
+export interface ActionsBroadcastMessage {
 	(message: BroadcastMessage): any;
 }
 
-export const toDispatchBroadcastMessage =
+export const toActionsBroadcastMessage =
 	(
 		ui: WritableUi,
 		mutations: Record<string, Mutation>,
-		dispatch: Dispatch,
-	): DispatchBroadcastMessage =>
+		actions: Actions,
+	): ActionsBroadcastMessage =>
 	(message) => {
 		const {method: eventName, params} = message;
 		log.trace(
@@ -90,7 +75,7 @@ export const toDispatchBroadcastMessage =
 			eventName,
 			params,
 			ui,
-			dispatch,
+			actions,
 			invoke: () => Promise.resolve(message.result),
 		});
 	};
@@ -103,5 +88,5 @@ const toLoggedArgs = (eventName: string, params: unknown): any[] => {
 
 const toLoggedEventName = (eventName: string): any[] =>
 	browser && dev
-		? ['%c[dispatch.%c' + eventName + '%c]', 'color: gray', 'color: cornflowerblue', 'color: gray']
-		: ['[dispatch.' + eventName + ']'];
+		? ['%c[actions.%c' + eventName + '%c]', 'color: gray', 'color: cornflowerblue', 'color: gray']
+		: ['[actions.' + eventName + ']'];

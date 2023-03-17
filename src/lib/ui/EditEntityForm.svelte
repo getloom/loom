@@ -22,27 +22,27 @@
 	export let done: (() => void) | undefined = undefined;
 
 	const {
-		dispatch,
+		actions,
 		ui: {contextmenu, personaById},
 	} = getApp();
 
 	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
-		dispatch.UpdateEntity({
+		actions.UpdateEntity({
 			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: {...$entity.data, [field]: updated},
 		});
 
 	const updateEntityData = async (updated: any) =>
-		dispatch.UpdateEntity({
+		actions.UpdateEntity({
 			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: updated,
 		});
 	const updateEntityPath = async (updated: string | null) =>
-		dispatch.UpdateEntity({
+		actions.UpdateEntity({
 			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			path: updated === '' ? null : updated,
@@ -52,7 +52,7 @@
 	let deletePending = false;
 	const deleteEntity = async () => {
 		deletePending = true;
-		await dispatch.DeleteEntities({
+		await actions.DeleteEntities({
 			actor: $persona.persona_id,
 			entityIds: [$entity.entity_id],
 		});
@@ -63,7 +63,7 @@
 	let erasePending = false;
 	const eraseEntity = async () => {
 		erasePending = true;
-		await dispatch.EraseEntities({
+		await actions.EraseEntities({
 			actor: $persona.persona_id,
 			entityIds: [$entity.entity_id],
 		});
@@ -124,10 +124,10 @@
 			<PendingButton
 				title="erase entity"
 				on:click={() =>
-					dispatch.OpenDialog({
+					actions.OpenDialog({
 						Component: ConfirmDialog,
 						props: {
-							action: eraseEntity,
+							confirmed: eraseEntity,
 							promptText: 'Erase this entity? This cannot be reversed.',
 							confirmText: 'erase entity',
 						},
@@ -138,10 +138,10 @@
 		<PendingButton
 			title="delete entity"
 			on:click={() =>
-				dispatch.OpenDialog({
+				actions.OpenDialog({
 					Component: ConfirmDialog,
 					props: {
-						action: deleteEntity,
+						confirmed: deleteEntity,
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',
 					},

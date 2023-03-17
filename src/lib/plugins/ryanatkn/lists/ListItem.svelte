@@ -21,7 +21,7 @@
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
-		dispatch,
+		actions,
 	} = getApp();
 
 	export let entity: Readable<Entity>;
@@ -49,7 +49,7 @@
 	const updateEntity = async (checked: boolean) => {
 		if ($entity.data.checked === checked) return;
 		pending = true;
-		await dispatch.UpdateEntity({
+		await actions.UpdateEntity({
 			actor: $persona.persona_id,
 			entity_id: $entity.entity_id,
 			data: {...$entity.data, checked},

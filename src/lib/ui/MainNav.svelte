@@ -7,7 +7,7 @@
 	import {toName} from '$lib/vocab/entity/entityHelpers';
 
 	const {
-		dispatch,
+		actions,
 		ui: {expandMainNav, spaceSelection, personaSelection, hubSelection, spacesByHubId},
 	} = getApp();
 
@@ -26,7 +26,7 @@
 	<div
 		aria-hidden
 		class="main-nav-bg"
-		on:click={() => ($expandMainNav ? dispatch.ToggleMainNav() : null)}
+		on:click={() => ($expandMainNav ? actions.ToggleMainNav() : null)}
 	/>
 {/if}
 <div class="main-nav-panel" class:expanded={$expandMainNav} style="--hue: {hue}">

@@ -10,7 +10,7 @@
 	import CreateEventForm from '$lib/ui/CreateEventForm.svelte';
 
 	const {
-		dispatch,
+		actions,
 		ui: {account, session, sessionPersonas, personaSelection},
 	} = getApp();
 
@@ -28,10 +28,10 @@
 		{/each}
 		{#if !$session.guest}
 			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
+				run={() =>
+					actions.OpenDialog({
 						Component: CreateAccountPersonaForm,
-						props: {done: () => dispatch.CloseDialog()},
+						props: {done: () => actions.CloseDialog()},
 					})}
 			>
 				<svelte:fragment slot="icon">
@@ -42,8 +42,8 @@
 		{/if}
 		{#if !$session.guest}
 			<ContextmenuEntry
-				action={() =>
-					dispatch.OpenDialog({
+				run={() =>
+					actions.OpenDialog({
 						Component: AccountEditor,
 						props: {account},
 					})}
@@ -61,8 +61,8 @@
 			Advanced
 			<svelte:fragment slot="menu">
 				<ContextmenuEntry
-					action={() =>
-						dispatch.OpenDialog({
+					run={() =>
+						actions.OpenDialog({
 							Component: CreateEventForm,
 							props: {persona: selectedPersona},
 							dialogProps: {layout: 'page'},
@@ -72,14 +72,14 @@
 				</ContextmenuEntry>
 			</svelte:fragment>
 		</ContextmenuSubmenu>
-		<ContextmenuEntry action={() => dispatch.OpenDialog({Component: About})}>
+		<ContextmenuEntry run={() => actions.OpenDialog({Component: About})}>
 			<svelte:fragment slot="icon">
 				<UnicodeIcon icon="?" />
 			</svelte:fragment>
 			About
 		</ContextmenuEntry>
 		{#if !$session.guest}
-			<ContextmenuEntry action={() => dispatch.SignOut()}>
+			<ContextmenuEntry run={() => actions.SignOut()}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="<" />
 				</svelte:fragment>

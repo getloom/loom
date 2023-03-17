@@ -8,7 +8,7 @@
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let hub: Readable<Hub>;
 	export let persona: Readable<AccountPersona>;
@@ -22,7 +22,7 @@
 	const leaveHub = async () => {
 		pending = true;
 		errorMessage = '';
-		const result = await dispatch.LeaveHub({
+		const result = await actions.LeaveHub({
 			actor: $persona.persona_id,
 			persona_id: $persona.persona_id,
 			hub_id: $hub.hub_id,

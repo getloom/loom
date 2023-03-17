@@ -9,7 +9,7 @@
 	import ViewContext from '$lib/ui/ViewContext.svelte';
 
 	const {
-		dispatch,
+		actions,
 		ui: {viewBySpace},
 	} = getApp();
 
@@ -19,7 +19,7 @@
 
 	$: ({directory_id} = $space);
 	//TODO we might want to just roll the logic from this event into the SelectSpace mutation
-	$: dispatch.ClearFreshness({directory_id});
+	$: actions.ClearFreshness({directory_id});
 
 	$: viewText = $viewBySpace.value.get(space) || $space.view;
 </script>

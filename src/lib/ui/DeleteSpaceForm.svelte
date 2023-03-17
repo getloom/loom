@@ -9,7 +9,7 @@
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
@@ -24,7 +24,7 @@
 	const deleteSpace = async () => {
 		pending = true;
 		errorMessage = '';
-		const result = await dispatch.DeleteSpace({
+		const result = await actions.DeleteSpace({
 			actor: $persona.persona_id,
 			space_id: $space.space_id,
 		});

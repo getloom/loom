@@ -10,10 +10,10 @@
 
 	export let account: Readable<Account>;
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	const updateAccountSettings = async (updated: any) =>
-		dispatch.UpdateAccountSettings({
+		actions.UpdateAccountSettings({
 			settings: updated,
 		});
 </script>

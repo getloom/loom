@@ -16,7 +16,7 @@
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
-		dispatch,
+		actions,
 	} = getApp();
 
 	export let entity: Readable<Entity>;
@@ -53,7 +53,7 @@
 		if (!content) return;
 
 		//TODO better error handling
-		await dispatch.CreateEntity({
+		await actions.CreateEntity({
 			actor: $persona.persona_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},

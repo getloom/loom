@@ -11,7 +11,7 @@
 	import LeaveHubForm from '$lib/ui/LeaveHubForm.svelte';
 	import {getApp} from '$lib/ui/app';
 
-	const {dispatch} = getApp();
+	const {actions} = getApp();
 
 	export let persona: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;
@@ -41,13 +41,13 @@
 			<button
 				title="leave hub"
 				on:click={() =>
-					dispatch.OpenDialog({
+					actions.OpenDialog({
 						Component: LeaveHubForm,
 						props: {
 							persona,
 							hub,
 							done: () => {
-								dispatch.CloseDialog();
+								actions.CloseDialog();
 								done?.();
 							},
 						},
@@ -56,13 +56,13 @@
 			<button
 				title="delete hub"
 				on:click={() =>
-					dispatch.OpenDialog({
+					actions.OpenDialog({
 						Component: DeleteHubForm,
 						props: {
 							persona,
 							hub,
 							done: () => {
-								dispatch.CloseDialog();
+								actions.CloseDialog();
 								done?.();
 							},
 						},

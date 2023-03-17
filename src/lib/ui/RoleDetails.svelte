@@ -14,7 +14,7 @@
 	import type {DeleteRoleResponseResult} from '$lib/app/eventTypes';
 
 	const {
-		dispatch,
+		actions,
 		ui: {assignmentsByRoleId, policiesByRoleId},
 	} = getApp();
 
@@ -34,7 +34,7 @@
 		if (name === $role?.name) return;
 
 		//TODO better error handling
-		await dispatch.UpdateRole({
+		await actions.UpdateRole({
 			actor: $persona.persona_id,
 			role_id: $role.role_id,
 			name,
@@ -60,10 +60,10 @@
 			<button
 				type="button"
 				on:click={() =>
-					dispatch.OpenDialog({
+					actions.OpenDialog({
 						Component: ConfirmDialog,
 						props: {
-							action: () => deleteRole(role), // TODO handle displaying any error somehow, this receives the `result`
+							confirmed: () => deleteRole(role), // TODO handle displaying any error somehow, this receives the `result`
 							promptText: `Delete the role "${$role.name}"?`,
 						},
 					})}
@@ -78,7 +78,7 @@
 			<button
 				type="button"
 				on:click={() =>
-					dispatch.OpenDialog({
+					actions.OpenDialog({
 						Component: AssignmentManager,
 						dialogProps: {layout: 'page'},
 						props: {role, hub},

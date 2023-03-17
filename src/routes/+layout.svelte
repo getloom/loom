@@ -24,7 +24,7 @@
 	import Onboard from '$lib/ui/Onboard.svelte';
 	import {setUi, toUi} from '$lib/ui/ui';
 	import {syncUiToUrl} from '$lib/ui/syncUiToUrl';
-	import {toDispatch, toDispatchBroadcastMessage} from '$lib/app/dispatch';
+	import {toActions, toActionsBroadcastMessage} from '$lib/app/actions';
 	import {setApp} from '$lib/ui/app';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
 	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient';
@@ -55,20 +55,20 @@
 		// that only reads this default value when the user has no override.
 		const mediaQuery = window.matchMedia(`(max-width: ${MOBILE_WIDTH})`);
 		initialMobileValue = mediaQuery.matches;
-		mediaQuery.onchange = (e) => dispatch.SetMobile(e.matches);
+		mediaQuery.onchange = (e) => actions.SetMobile(e.matches);
 	}
 
 	const devmode = setDevmode();
 	const socket = toSocketStore(
 		(message) => websocketClient.handle(message.data),
-		() => dispatch.Ping(),
+		() => actions.Ping(),
 	);
 	const ui = toUi(data, initialMobileValue, views, (errorMessage) => {
-		dispatch.OpenDialog({Component: ErrorMessage, props: {text: errorMessage}});
+		actions.OpenDialog({Component: ErrorMessage, props: {text: errorMessage}});
 	});
 	setUi(ui);
 
-	const dispatch = toDispatch(ui, mutations, (e) =>
+	const actions = toActions(ui, mutations, (e) =>
 		websocketClient.find(e) ? websocketClient : httpClient.find(e) ? httpClient : null,
 	);
 
@@ -78,15 +78,15 @@
 	const websocketClient = toWebsocketApiClient(
 		findWebsocketService,
 		socket.send,
-		toDispatchBroadcastMessage(ui, mutations, dispatch),
+		toActionsBroadcastMessage(ui, mutations, actions),
 		async (message) => {
 			if (message.status === 401) {
 				// this condition occurs when the server fails to parse and validate session cookies
 				// TODO maybe display an error on the sign in screen
 				if ($session.guest) {
-					await dispatch.SignOut();
+					await actions.SignOut();
 				} else {
-					dispatch.SetSession({session: {guest: true}});
+					actions.SetSession({session: {guest: true}});
 				}
 			} else {
 				log.error('unhandled status message', message);
@@ -97,7 +97,7 @@
 	// The http client is needed for cookie-related calls like `SignIn` and `SignOut`.
 	const httpClient = toHttpApiClient(findHttpService, deserialize(deserializers));
 
-	const app = setApp({ui, dispatch, devmode, socket});
+	const app = setApp({ui, actions, devmode, socket});
 	if (browser) {
 		(window as any).app = app;
 		Object.assign(window, app);
@@ -105,7 +105,7 @@
 	}
 
 	const {session} = ui;
-	dispatch.SetSession({session: $session});
+	actions.SetSession({session: $session});
 	$: syncUiToUrl(ui, $page.params, $page.url);
 
 	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection, hubSelection} =
@@ -124,7 +124,7 @@
 	const onWindowKeydown = async (e: KeyboardEvent) => {
 		if (e.key === '`' && !e.ctrlKey && !isEditable(e.target)) {
 			swallow(e);
-			dispatch.ToggleMainNav();
+			actions.ToggleMainNav();
 		}
 	};
 </script>
@@ -162,7 +162,7 @@
 		<slot />
 	{/if}
 	<DevmodeControls {devmode} />
-	<Dialogs {dialogs} on:close={() => dispatch.CloseDialog()} />
+	<Dialogs {dialogs} on:close={() => actions.CloseDialog()} />
 	<Contextmenu {contextmenu} {LinkContextmenu} />
 </div>
 

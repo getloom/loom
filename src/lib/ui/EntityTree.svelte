@@ -10,7 +10,7 @@
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
 
 	const {
-		dispatch,
+		actions,
 		socket,
 		ui: {contextmenu, entityById},
 	} = getApp();
@@ -30,7 +30,7 @@
 	// let destTies: Readable<Array<Readable<Tie>>>;
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
-		const result = await dispatch.ReadEntitiesPaginated({
+		const result = await actions.ReadEntitiesPaginated({
 			actor: $persona.persona_id,
 			source_id: $entity.entity_id,
 		});

@@ -42,7 +42,7 @@
 {:else}
 	<!-- TODO change to a link once the contextmenu supports them -->
 	<ContextmenuEntry
-		action={() =>
+		run={() =>
 			goto(
 				toHubUrl(
 					$hub.name,

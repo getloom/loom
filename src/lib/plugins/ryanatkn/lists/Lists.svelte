@@ -14,11 +14,11 @@
 
 	// TODO expand/collapse all buttons
 
-	const {dispatch, socket} = getApp();
+	const {actions, socket} = getApp();
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? dispatch.QueryEntities({
+		? actions.QueryEntities({
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
