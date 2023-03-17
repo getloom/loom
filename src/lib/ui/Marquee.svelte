@@ -15,7 +15,7 @@
 	} = getApp();
 
 	export let hub: Readable<Hub>;
-	export let space: Readable<Space | null>;
+	export let space: Readable<Space> | null;
 
 	$: communityPersonas = $personasByHubId.get($hub.hub_id);
 </script>

@@ -10,7 +10,7 @@
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getLayoutContext} from '$lib/ui/layout';
 	import EmptyPath from '$lib/ui/EmptyPath.svelte';
 
 	const {
@@ -18,8 +18,8 @@
 		ui: {contextmenu, expandMarquee},
 	} = getApp();
 
-	const viewContext = getViewContext();
-	$: ({persona, hub, space} = $viewContext);
+	const layoutContext = getLayoutContext();
+	$: ({persona, hub, space} = $layoutContext);
 </script>
 
 <Luggage />

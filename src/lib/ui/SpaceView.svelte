@@ -6,7 +6,7 @@
 	import type {AccountPersona} from '$lib/vocab/persona/persona';
 	import {getApp} from '$lib/ui/app';
 	import SvastText from '$lib/ui/SvastText.svelte';
-	import ViewContext from '$lib/ui/ViewContext.svelte';
+	import ViewContextProvider from '$lib/ui/ViewContextProvider.svelte';
 
 	const {
 		actions,
@@ -24,6 +24,6 @@
 	$: viewText = $viewBySpace.value.get(space) || $space.view;
 </script>
 
-<ViewContext {persona} {hub} {space}>
+<ViewContextProvider {persona} {hub} {space}>
 	<SvastText text={viewText} />
-</ViewContext>
+</ViewContextProvider>

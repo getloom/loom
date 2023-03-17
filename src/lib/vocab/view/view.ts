@@ -97,7 +97,7 @@ export interface ViewContext {
 	directory: Readable<Entity>;
 }
 
-const KEY = Symbol();
+const KEY = Symbol('ViewContext');
 export const getViewContext = (): Readable<ViewContext> => getContext(KEY);
 export const setViewContext = (ctx: Readable<ViewContext>): Readable<ViewContext> =>
 	setContext(KEY, ctx);

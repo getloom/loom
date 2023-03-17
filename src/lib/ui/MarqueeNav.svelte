@@ -4,7 +4,7 @@
 	import type {ClientPersona} from '$lib/vocab/persona/persona';
 	import type {Space} from '$lib/vocab/space/space';
 
-	export let space: Readable<Space | null>;
+	export let space: Readable<Space> | null;
 	export let communityPersonas: Array<Readable<ClientPersona>>;
 </script>
 
