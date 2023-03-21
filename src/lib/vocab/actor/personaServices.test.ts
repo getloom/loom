@@ -3,10 +3,7 @@ import {unwrap, unwrapError} from '@feltjs/util';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {
-	CreateAccountPersonaService,
-	DeletePersonaService,
-} from '$lib/vocab/persona/personaServices';
+import {CreateAccountPersonaService, DeletePersonaService} from '$lib/vocab/actor/personaServices';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';

@@ -3,7 +3,7 @@
 
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';

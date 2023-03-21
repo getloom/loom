@@ -3,9 +3,9 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {AccountPersona, Persona, PublicPersona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, Persona, PublicPersona} from '$lib/vocab/actor/persona';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
-import {ACTOR_COLUMNS} from '$lib/vocab/persona/personaHelpers.server';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/personaHelpers.server';
 
 const log = new Logger(gray('[') + blue('PersonaRepo') + gray(']'));
 

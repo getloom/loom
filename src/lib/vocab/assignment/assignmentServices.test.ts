@@ -8,7 +8,7 @@ import {
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
 import {expectApiError, toServiceRequestMock} from '$lib/util/testHelpers';
-import type {CommunityPersona} from '$lib/vocab/persona/persona';
+import type {CommunityPersona} from '$lib/vocab/actor/persona';
 
 /* test__assignmentServices */
 const test__assignmentServices = suite<TestDbContext>('assignmentServices');

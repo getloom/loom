@@ -5,7 +5,7 @@
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';

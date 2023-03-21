@@ -3,7 +3,7 @@
 
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import {toName, toIcon} from '$lib/vocab/entity/entityHelpers';
-	import type {ClientPersona} from '$lib/vocab/persona/persona';
+	import type {ClientPersona} from '$lib/vocab/actor/persona';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 

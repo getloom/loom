@@ -6,7 +6,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {autofocus} from '$lib/ui/actions';
 	import Message from '@feltjs/felt-ui/Message.svelte';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';

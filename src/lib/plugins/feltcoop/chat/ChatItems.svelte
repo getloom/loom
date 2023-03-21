@@ -2,7 +2,7 @@
 	import type {Mutable, Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import ChatItem from '$lib/plugins/feltcoop/chat/ChatItem.svelte';
 
 	export let persona: Readable<AccountPersona>;

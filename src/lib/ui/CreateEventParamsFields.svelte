@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import PropertyPicker from '$lib/ui/PropertyPicker.svelte';
 	import type {EventInfo} from '$lib/vocab/event/event';

@@ -3,7 +3,7 @@ import {unwrap} from '@feltjs/util';
 import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
-import type {AccountPersona, ClientPersona, PublicPersona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ClientPersona, PublicPersona} from '$lib/vocab/actor/persona';
 import type {
 	CreateHubParams,
 	CreateAccountPersonaParams,
@@ -17,7 +17,7 @@ import type {
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {CreateAccountPersonaService} from '$lib/vocab/persona/personaServices';
+import {CreateAccountPersonaService} from '$lib/vocab/actor/personaServices';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Assignment} from '$lib/vocab/assignment/assignment';

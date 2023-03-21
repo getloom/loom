@@ -1,4 +1,4 @@
-import {ACTOR_NAME_CHARACTER_MATCHER} from '$lib/vocab/persona/personaHelpers';
+import {ACTOR_NAME_CHARACTER_MATCHER} from '$lib/vocab/actor/personaHelpers';
 
 // TODO misses a lot of cases, need a regexp or proper parsing
 export const isPathValid = (p: string): boolean => {

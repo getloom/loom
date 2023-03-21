@@ -9,13 +9,13 @@ import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
 import {toHubUrl, gotoUnlessActive} from '$lib/ui/url';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import type {ClientPersona} from '$lib/vocab/persona/persona';
+import type {ClientPersona} from '$lib/vocab/actor/persona';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/vocab/account/account';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
+import {stashPersonas} from '$lib/vocab/actor/personaMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 

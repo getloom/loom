@@ -9,10 +9,10 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import Avatar from '$lib/ui/Avatar.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
-	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
+	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/personaHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {

@@ -3,7 +3,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import SpaceNavItem from '$lib/ui/SpaceNavItem.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
+	import type {AccountPersona} from '$lib/vocab/actor/persona.js';
 	import {getApp} from '$lib/ui/app';
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 

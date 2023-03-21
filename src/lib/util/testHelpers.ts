@@ -11,7 +11,7 @@ import {
 	type NonAuthenticatedServiceRequest,
 	type NonAuthorizedServiceRequest,
 } from '$lib/server/service';
-import type {AccountPersona, ActorPersona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ActorPersona} from '$lib/vocab/actor/persona';
 import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
 import type {ApiError} from '$lib/server/api';

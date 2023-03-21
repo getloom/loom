@@ -7,7 +7,7 @@
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {

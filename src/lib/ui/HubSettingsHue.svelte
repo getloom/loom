@@ -5,7 +5,7 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 
 	const {actions} = getApp();
 

@@ -1,6 +1,6 @@
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-import {GUEST_ACTOR_NAME} from '$lib/vocab/persona/constants';
+import {GUEST_ACTOR_NAME} from '$lib/vocab/actor/constants';
 import type {Entity} from '$lib/vocab/entity/entity';
 
 export const toName = (entity: null | undefined | {name?: string}): string =>

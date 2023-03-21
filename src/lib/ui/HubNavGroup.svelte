@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import HubNavItem from '$lib/ui/HubNavItem.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {getApp} from '$lib/ui/app';
 	import ActingPersonaContextmenu from '$lib/app/contextmenu/ActingPersonaContextmenu.svelte';
 

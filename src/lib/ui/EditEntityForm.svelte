@@ -9,13 +9,13 @@
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import SourceEntities from '$lib/ui/SourceEntities.svelte';
 	import DestEntities from '$lib/ui/DestEntities.svelte';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
-	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
 
 	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;

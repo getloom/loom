@@ -3,7 +3,7 @@
 
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {getApp} from '$lib/ui/app';
 	import SvastText from '$lib/ui/SvastText.svelte';
 	import ViewContextProvider from '$lib/ui/ViewContextProvider.svelte';

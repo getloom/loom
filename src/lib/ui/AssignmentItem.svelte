@@ -4,8 +4,8 @@
 	import {getApp} from '$lib/ui/app';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
 
 	const {
 		actions,

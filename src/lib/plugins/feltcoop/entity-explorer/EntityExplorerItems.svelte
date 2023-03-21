@@ -3,7 +3,7 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityExplorerItem from '$lib/plugins/feltcoop/entity-explorer/EntityExplorerItem.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 
 	export let persona: Readable<AccountPersona>;
 	export let entities: Readable<Array<Readable<Entity>>>;

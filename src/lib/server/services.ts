@@ -1,9 +1,6 @@
 import type {Service} from '$lib/server/service';
 import {PingService, EphemeraService} from '$lib/server/uiServices';
-import {
-	CreateAccountPersonaService,
-	DeletePersonaService,
-} from '$lib/vocab/persona/personaServices';
+import {CreateAccountPersonaService, DeletePersonaService} from '$lib/vocab/actor/personaServices';
 import {
 	ReadHubService,
 	CreateHubService,

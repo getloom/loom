@@ -15,7 +15,7 @@ import {
 	LeaveHub,
 	KickFromHub,
 } from '$lib/vocab/hub/hubEvents';
-import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
+import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaEvents';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceEvents';
 import {

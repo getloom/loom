@@ -4,7 +4,7 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import TodoItem from '$lib/plugins/feltcoop/todo/TodoItem.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 
 	export let persona: Readable<AccountPersona>;
 	export let entities: Readable<Array<Readable<Entity>>>;

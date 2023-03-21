@@ -5,8 +5,8 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
-	import {lookupPersona} from '$lib/vocab/persona/personaHelpers';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
 
 	const {
 		ui: {contextmenu, personaById},

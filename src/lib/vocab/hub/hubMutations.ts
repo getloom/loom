@@ -1,6 +1,6 @@
 import type {Mutations} from '$lib/app/eventTypes';
 import {evictHub, stashHub} from '$lib/vocab/hub/hubMutationHelpers';
-import {stashPersonas} from '$lib/vocab/persona/personaMutationHelpers';
+import {stashPersonas} from '$lib/vocab/actor/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';

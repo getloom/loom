@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import type {Policy} from '$lib/vocab/policy/policy';
 	import {getApp} from '$lib/ui/app';
 	import type {Role} from '$lib/vocab/role/role';

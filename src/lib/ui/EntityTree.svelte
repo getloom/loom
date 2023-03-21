@@ -6,7 +6,7 @@
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import {getApp} from '$lib/ui/app';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
 
 	const {

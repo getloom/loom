@@ -4,7 +4,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 import {ApiError} from '$lib/server/api';
-import {isPersonaAdmin} from '$lib/vocab/persona/personaHelpers.server';
+import {isPersonaAdmin} from '$lib/vocab/actor/personaHelpers.server';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 

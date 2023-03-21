@@ -3,7 +3,7 @@ import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
-import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaEvents';
+import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaEvents';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	cleanOrphanHubs,
@@ -12,10 +12,10 @@ import {
 	toDefaultHubSettings,
 } from '$lib/vocab/hub/hubHelpers.server';
 import type {Hub} from '$lib/vocab/hub/hub';
-import type {ActorPersona, ClientPersona} from '$lib/vocab/persona/persona';
+import type {ActorPersona, ClientPersona} from '$lib/vocab/actor/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
-import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/persona/personaHelpers.server';
+import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/personaHelpers';
+import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/personaHelpers.server';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
 import {defaultPersonalHubRoles} from '$lib/app/templates';
 

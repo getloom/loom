@@ -5,7 +5,7 @@
 	import {parseJson, serializeJson} from '$lib/util/json';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 
 	export let actor: Readable<AccountPersona>;
 	export let hub: Readable<Hub>;

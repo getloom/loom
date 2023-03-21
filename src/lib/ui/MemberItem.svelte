@@ -3,7 +3,7 @@
 
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {ClientPersona} from '$lib/vocab/persona/persona';
+	import type {ClientPersona} from '$lib/vocab/actor/persona';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 
 	const {

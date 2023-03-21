@@ -5,7 +5,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/eventTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import type {ActorPersona} from '$lib/vocab/persona/persona';
+import type {ActorPersona} from '$lib/vocab/actor/persona';
 import {cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';

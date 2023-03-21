@@ -1,12 +1,7 @@
 import {plural} from '@feltjs/util/string.js';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-import type {
-	AccountPersona,
-	ActorPersona,
-	ClientPersona,
-	Persona,
-} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ActorPersona, ClientPersona, Persona} from '$lib/vocab/actor/persona';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 
 /**

@@ -4,7 +4,7 @@
 
 	import type {Space} from '$lib/vocab/space/space.js';
 	import type {Hub} from '$lib/vocab/hub/hub.js';
-	import type {AccountPersona} from '$lib/vocab/persona/persona.js';
+	import type {AccountPersona} from '$lib/vocab/actor/persona.js';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {getApp} from '$lib/ui/app';

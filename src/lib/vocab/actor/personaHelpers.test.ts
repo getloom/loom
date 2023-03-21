@@ -1,7 +1,7 @@
 import {test} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {checkPersonaName, scrubPersonaName} from '$lib/vocab/persona/personaHelpers';
+import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/personaHelpers';
 
 test('scrubPersonaName', () => {
 	assert.is(scrubPersonaName('4bc'), '4bc');

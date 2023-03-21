@@ -1,6 +1,6 @@
 import type {PostgresSql} from '$lib/db/postgres';
 import {AccountRepo} from '$lib/vocab/account/AccountRepo';
-import {PersonaRepo} from '$lib/vocab/persona/PersonaRepo';
+import {PersonaRepo} from '$lib/vocab/actor/PersonaRepo';
 import {AssignmentRepo} from '$lib/vocab/assignment/AssignmentRepo';
 import {HubRepo} from '$lib/vocab/hub/HubRepo';
 import {SpaceRepo} from '$lib/vocab/space/SpaceRepo';

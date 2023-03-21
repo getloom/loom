@@ -4,7 +4,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import CreateEventParamsFields from '$lib/ui/CreateEventParamsFields.svelte';
 	import {eventInfos} from '$lib/app/events';
 	import type {EventInfo} from '$lib/vocab/event/event';

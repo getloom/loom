@@ -8,7 +8,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
-	import {scrubPersonaName, checkPersonaName} from '$lib/vocab/persona/personaHelpers';
+	import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/personaHelpers';
 
 	const {
 		actions,

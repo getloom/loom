@@ -6,7 +6,7 @@ import {
 	UpdateAccountSettings,
 	UpdateAccountPassword,
 } from '$lib/vocab/account/accountMutations';
-import {CreateAccountPersona, DeletePersona} from '$lib/vocab/persona/personaMutations';
+import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaMutations';
 import {
 	ReadHub,
 	CreateHub,

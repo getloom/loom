@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
-	import type {ClientPersona} from '$lib/vocab/persona/persona';
+	import type {ClientPersona} from '$lib/vocab/actor/persona';
 
 	export let persona: Readable<ClientPersona>;
 </script>

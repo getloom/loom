@@ -9,7 +9,7 @@ import type {Directory} from '$lib/vocab/entity/entityData';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
-import {createSpace} from './spaceHelpers.server';
+import {createSpace} from '$lib/vocab/space/spaceHelpers.server';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 

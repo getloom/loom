@@ -4,7 +4,7 @@
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntitiesAndTie from '$lib/ui/EntitiesAndTie.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 
 	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;

@@ -4,7 +4,7 @@ import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
 import type {WritableUi} from '$lib/ui/ui';
-import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ClientPersona} from '$lib/vocab/actor/persona';
 import {toHubUrl, toSearchParams} from '$lib/ui/url';
 
 export const stashPersonas = (

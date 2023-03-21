@@ -3,8 +3,8 @@ import {OK, unwrap, type Result} from '@feltjs/util';
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
-import type {ActorPersona, Persona} from '$lib/vocab/persona/persona';
-import {ACTOR_COLUMNS} from '$lib/vocab/persona/personaHelpers.server';
+import type {ActorPersona, Persona} from '$lib/vocab/actor/persona';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/personaHelpers.server';
 
 // This currently only checks for the existence of an `account_id` on the request.
 // We'll want to allow services to declare more complex rules.

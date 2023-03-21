@@ -3,7 +3,7 @@
 	import {page} from '$app/stores';
 
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
-	import type {AccountPersona} from '$lib/vocab/persona/persona';
+	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import {getApp} from '$lib/ui/app';

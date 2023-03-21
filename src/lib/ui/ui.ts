@@ -13,7 +13,7 @@ import {EventEmitter} from 'eventemitter3';
 
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {Space} from '$lib/vocab/space/space';
-import type {ClientPersona, AccountPersona} from '$lib/vocab/persona/persona';
+import type {ClientPersona, AccountPersona} from '$lib/vocab/actor/persona';
 import type {ClientAccount, ClientSession} from '$lib/vocab/account/account';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
