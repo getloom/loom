@@ -59,6 +59,7 @@ test_hubServices('disallow deleting admin hub', async ({repos}) => {
 
 test_hubServices('default admin hub role has all permissions', async ({repos}) => {
 	const adminHub = await repos.hub.loadAdminHub();
+	assert.ok(adminHub);
 	const adminDefaultPolicies = unwrap(
 		await repos.policy.filterByRole(adminHub.settings.defaultRoleId),
 	);
@@ -184,7 +185,9 @@ test_hubServices(
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
 
-		const {settings} = await repos.hub.loadAdminHub();
+		const adminHub = await repos.hub.loadAdminHub();
+		assert.ok(adminHub);
+		const {settings} = adminHub;
 		const settingValue = settings.instance?.disableCreateHub;
 		unwrap(
 			await repos.hub.updateSettings(ADMIN_HUB_ID, {

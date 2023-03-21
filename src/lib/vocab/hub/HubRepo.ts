@@ -100,9 +100,9 @@ export class HubRepo extends PostgresRepo {
 		return exists;
 	}
 
-	async loadAdminHub(): Promise<Hub> {
+	async loadAdminHub(): Promise<Hub | undefined> {
 		const hub = unwrap(await this.findById(ADMIN_HUB_ID));
-		if (!hub) throw Error('unable to load admin hub');
+		if (!hub) return undefined;
 		return hub;
 	}
 

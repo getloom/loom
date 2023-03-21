@@ -43,7 +43,12 @@ export const checkHubAccess = async (
 
 export const isCreateHubDisabled = async (repos: Repos): Promise<boolean> => {
 	const hub = await repos.hub.loadAdminHub();
-	return !!hub.settings.instance?.disableCreateHub;
+	if (hub) {
+		return !!hub.settings.instance?.disableCreateHub;
+	} else {
+		//if we can't load the adminHub, we won't allow for new hubs to be created
+		return true;
+	}
 };
 
 export const checkEntityOwnership = async (
