@@ -1,4 +1,3 @@
-import {NOT_OK, OK, type Result} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
@@ -8,17 +7,17 @@ import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 const log = new Logger('[TieRepo]');
 
 export class TieRepo extends PostgresRepo {
-	async create(source_id: number, dest_id: number, type: string): Promise<Result<{value: Tie}>> {
+	async create(source_id: number, dest_id: number, type: string): Promise<Tie> {
 		const tie = await this.sql<Tie[]>`
 			INSERT INTO ties (source_id, dest_id, type) VALUES (
 				${source_id},${dest_id},${type}
 			) RETURNING *
 		`;
 		// log.trace('create entity', data);
-		return {ok: true, value: tie[0]};
+		return tie[0];
 	}
 
-	async filterBySourceId(source_id: number): Promise<Result<{value: Tie[]}>> {
+	async filterBySourceId(source_id: number): Promise<Tie[]> {
 		log.trace(`preparing to walk graph starting with source: ${source_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
@@ -33,10 +32,10 @@ export class TieRepo extends PostgresRepo {
 			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths;
 		`;
 		log.trace('ties under source', ties);
-		return {ok: true, value: ties};
+		return ties;
 	}
 
-	async filterByDestId(dest_id: number): Promise<Result<{value: Tie[]}>> {
+	async filterByDestId(dest_id: number): Promise<Tie[]> {
 		log.trace(`preparing to walk graph starting with dest: ${dest_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
@@ -51,7 +50,7 @@ export class TieRepo extends PostgresRepo {
 			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths;
 		`;
 		log.trace('all ties pointing at dest', ties);
-		return {ok: true, value: ties};
+		return ties;
 	}
 
 	//This query returns a set of ties (size == pageSize) in a way
@@ -62,7 +61,7 @@ export class TieRepo extends PostgresRepo {
 		source_id: number,
 		pageSize = DEFAULT_PAGE_SIZE,
 		pageKey?: number,
-	): Promise<Result<{value: Tie[]}>> {
+	): Promise<Tie[]> {
 		log.trace(`paginated query of tie dests`, source_id, pageKey, pageSize);
 		const ties = await this.sql<Tie[]>`
 			SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created
@@ -72,15 +71,14 @@ export class TieRepo extends PostgresRepo {
 			ORDER BY dest_id DESC LIMIT ${pageSize};
 		`;
 		log.trace('directory ties', ties);
-		return {ok: true, value: ties};
+		return ties;
 	}
 
-	async deleteById(tie_id: number): Promise<Result> {
+	async deleteById(tie_id: number): Promise<void> {
 		log.trace('[deleteById]', tie_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM ties WHERE tie_id=${tie_id}
 		`;
-		if (!data.count) return NOT_OK;
-		return OK;
+		if (!data.count) throw Error('no tie was deleted');
 	}
 }

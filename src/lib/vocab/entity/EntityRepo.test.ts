@@ -131,13 +131,13 @@ test__EntityRepo('check filtering for directories by entity id', async ({repos, 
 		space.directory_id,
 	);
 
-	unwrap(await repos.tie.create(entityIndex.entity_id, entityThread.entity_id, 'HasThread'));
+	await repos.tie.create(entityIndex.entity_id, entityThread.entity_id, 'HasThread');
 
-	unwrap(await repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost'));
+	await repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost');
 
-	unwrap(await repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply'));
+	await repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply');
 
-	unwrap(await repos.tie.create(space2.directory_id, entityPost.entity_id, 'HasPost'));
+	await repos.tie.create(space2.directory_id, entityPost.entity_id, 'HasPost');
 	const query1 = unwrap(await repos.entity.filterDirectoriesByEntity(entityIndex.entity_id));
 	assert.equal(query1.length, 1);
 

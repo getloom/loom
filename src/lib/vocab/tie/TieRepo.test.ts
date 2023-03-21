@@ -1,6 +1,5 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltjs/util';
 import {isDeepStrictEqual} from 'util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
@@ -38,21 +37,15 @@ test__TieRepo('check filtering down by source id', async ({repos, random}) => {
 		space.directory_id,
 	);
 
-	const tie1 = unwrap(
-		await repos.tie.create(entityDir.entity_id, entityThread.entity_id, 'HasThread'),
-	);
+	const tie1 = await repos.tie.create(entityDir.entity_id, entityThread.entity_id, 'HasThread');
 
-	const tie2 = unwrap(
-		await repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost'),
-	);
+	const tie2 = await repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost');
 
-	const tie3 = unwrap(
-		await repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply'),
-	);
-	const query1 = unwrap(await repos.tie.filterBySourceId(entityDir.entity_id));
+	const tie3 = await repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply');
+	const query1 = await repos.tie.filterBySourceId(entityDir.entity_id);
 	assert.equal(query1.length, 3);
 
-	const query2 = unwrap(await repos.tie.filterBySourceId(space.directory_id));
+	const query2 = await repos.tie.filterBySourceId(space.directory_id);
 	assert.equal(query2.length, 7);
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie1)));
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie2)));
@@ -92,27 +85,21 @@ test__TieRepo('check filtering up by dest id', async ({repos, random}) => {
 		space.directory_id,
 	);
 
-	const tie1 = unwrap(
-		await repos.tie.create(entityIndex.entity_id, entityThread.entity_id, 'HasThread'),
-	);
+	const tie1 = await repos.tie.create(entityIndex.entity_id, entityThread.entity_id, 'HasThread');
 
-	const tie2 = unwrap(
-		await repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost'),
-	);
+	const tie2 = await repos.tie.create(entityThread.entity_id, entityPost.entity_id, 'HasPost');
 
-	const tie3 = unwrap(
-		await repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply'),
-	);
-	const query1 = unwrap(await repos.tie.filterByDestId(entityIndex.entity_id));
+	const tie3 = await repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply');
+	const query1 = await repos.tie.filterByDestId(entityIndex.entity_id);
 	assert.equal(query1.length, 1);
 
-	const query2 = unwrap(await repos.tie.filterByDestId(entityReply.entity_id));
+	const query2 = await repos.tie.filterByDestId(entityReply.entity_id);
 	assert.equal(query2.length, 7);
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie1)));
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie2)));
 	assert.ok(query2.find((t) => isDeepStrictEqual(t, tie3)));
 
-	const query3 = unwrap(await repos.tie.filterByDestId(space.directory_id));
+	const query3 = await repos.tie.filterByDestId(space.directory_id);
 	assert.equal(query3.length, 0);
 });
 

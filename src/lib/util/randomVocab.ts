@@ -295,12 +295,10 @@ export class RandomVocabContext {
 			({entity: destEntity} = await this.entity(persona, account, hub, space, parentSourceId));
 		}
 
-		const tie = unwrap(
-			await this.repos.tie.create(
-				sourceEntity.entity_id,
-				sourceEntity.entity_id,
-				type || randomTieType(),
-			),
+		const tie = await this.repos.tie.create(
+			sourceEntity.entity_id,
+			sourceEntity.entity_id,
+			type || randomTieType(),
 		);
 		return {tie, sourceEntity, destEntity, persona, account, hub, parentSourceId};
 	}

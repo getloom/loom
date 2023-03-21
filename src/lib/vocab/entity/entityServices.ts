@@ -29,7 +29,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 		const {hub_id} = unwrap(await repos.space.findByEntity(source_id));
 		await checkHubAccess(actor, hub_id, repos);
 
-		const ties = unwrap(await repos.tie.filterBySourceId(source_id));
+		const ties = await repos.tie.filterBySourceId(source_id);
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(source_id);
@@ -46,7 +46,7 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 		const {hub_id} = unwrap(await repos.space.findByEntity(source_id));
 		await checkHubAccess(actor, hub_id, repos);
 
-		const ties = unwrap(await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey));
+		const ties = await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey);
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(source_id);
@@ -75,11 +75,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 					'source_id' in tieParams
 						? {source_id: tieParams.source_id, dest_id: entity.entity_id}
 						: {source_id: entity.entity_id, dest_id: tieParams.dest_id};
-				ties.push(
-					unwrap(
-						await repos.tie.create(source_id, dest_id, tieParams.type || 'HasItem'), // eslint-disable-line no-await-in-loop
-					),
-				);
+				ties.push(await repos.tie.create(source_id, dest_id, tieParams.type || 'HasItem')); // eslint-disable-line no-await-in-loop
 			}
 		}
 
