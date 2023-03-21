@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltjs/util';
+import {unwrap, unwrapError} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {NoteEntityData} from '$lib/vocab/entity/entityData';
@@ -10,10 +10,13 @@ import {
 	DeleteEntitiesService,
 	CreateEntityService,
 	UpdateEntityService,
+	EraseEntitiesService,
 } from '$lib/vocab/entity/entityServices';
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
 import {InviteToHubService} from '$lib/vocab/hub/hubServices';
+import {performService} from '$lib/server/service';
+import type {AccountPersona} from '$lib/vocab/persona/persona';
 
 /* test_entityServices */
 const test_entityServices = suite<TestDbContext>('hubRepo');
@@ -293,6 +296,82 @@ test_entityServices(
 		);
 	},
 );
+
+test_entityServices.only('disallow mutating directory', async ({repos, random}) => {
+	const {persona, hubPersona} = await random.hub();
+	const {directory} = await random.space(persona);
+
+	assert.is(directory.data.type, 'Collection');
+	assert.ok(directory.data.directory);
+
+	const mutateDirectory = async (actor: AccountPersona) => {
+		// Disallow changing the directory's type
+		unwrapError(
+			await performService(UpdateEntityService, {
+				...toServiceRequestMock(repos, actor),
+				params: {
+					actor: actor.persona_id,
+					entity_id: directory.entity_id,
+					data: {type: 'Note', content: 'test'},
+				},
+			}),
+		);
+
+		// Disallow removing `data.directory`
+		unwrapError(
+			await performService(UpdateEntityService, {
+				...toServiceRequestMock(repos, actor),
+				params: {
+					actor: actor.persona_id,
+					entity_id: directory.entity_id,
+					data: {type: 'Collection'},
+				},
+			}),
+		);
+
+		// Disallow changing `data.directory`
+		unwrapError(
+			await performService(UpdateEntityService, {
+				...toServiceRequestMock(repos, actor),
+				params: {
+					actor: actor.persona_id,
+					entity_id: directory.entity_id,
+					data: {type: 'Collection', directory: false as any},
+				},
+			}),
+		);
+
+		// Disallow deleting the directory
+		unwrapError(
+			await performService(DeleteEntitiesService, {
+				...toServiceRequestMock(repos, actor),
+				params: {
+					actor: actor.persona_id,
+					entityIds: [directory.entity_id],
+				},
+			}),
+		);
+
+		// Disallow erasing the directory
+		unwrapError(
+			await performService(EraseEntitiesService, {
+				...toServiceRequestMock(repos, actor),
+				params: {
+					actor: actor.persona_id,
+					entityIds: [directory.entity_id],
+				},
+			}),
+		);
+
+		// Ensure nothing in the database changed.
+		const found = unwrap(await repos.entity.findById(directory.entity_id));
+		assert.ok(found);
+		assert.equal(found.data, directory.data);
+	};
+
+	await mutateDirectory(persona);
+	await mutateDirectory(hubPersona as AccountPersona); // TODO this casting is a problem, the API expects an `AccountPersona` but we're sending a `PublicPersona` in this case
+});
 
 test_entityServices.run();
 /* test_entityServices */

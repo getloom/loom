@@ -3,7 +3,7 @@ import {unwrap} from '@feltjs/util';
 import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
-import type {AccountPersona, ClientPersona} from '$lib/vocab/persona/persona';
+import type {AccountPersona, ClientPersona, PublicPersona} from '$lib/vocab/persona/persona';
 import type {
 	CreateHubParams,
 	CreateAccountPersonaParams,
@@ -172,6 +172,7 @@ export class RandomVocabContext {
 		assignments: Assignment[];
 		spaces: Space[];
 		persona: AccountPersona;
+		hubPersona: PublicPersona;
 		personas: ClientPersona[];
 		account: Account;
 	}> {
@@ -184,6 +185,7 @@ export class RandomVocabContext {
 				params,
 			}),
 		);
+		const hubPersona = personas.find((p) => p.name === hub.name)!;
 		return {
 			hub,
 			roles,
@@ -191,6 +193,7 @@ export class RandomVocabContext {
 			assignments,
 			spaces,
 			persona,
+			hubPersona,
 			personas: personas.concat(persona),
 			account,
 		};

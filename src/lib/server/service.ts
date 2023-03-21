@@ -8,8 +8,8 @@ import {type ApiResult, toFailedApiResult} from '$lib/server/api';
 
 export const performService = async (
 	service: Service,
-	log: Logger,
 	serviceRequest: ServiceRequest,
+	log?: Logger,
 ): Promise<ApiResult> => {
 	let result!: ApiResult;
 	try {
@@ -23,11 +23,11 @@ export const performService = async (
 			result = await service.perform(serviceRequest as any);
 		}
 		if (!result.ok) {
-			log.error('service.perform failed with a message', service.event.name, result.message);
+			log?.error('service.perform failed with a message', service.event.name, result.message);
 		}
 		return result;
 	} catch (err) {
-		log.error('service.perform failed with an error', service.event.name, err);
+		log?.error('service.perform failed with an error', service.event.name, err);
 		return result || toFailedApiResult(err);
 	}
 };

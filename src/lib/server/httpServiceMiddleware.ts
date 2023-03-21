@@ -64,8 +64,8 @@ export const toHttpServiceMiddleware =
 
 		const result = await performService(
 			service,
-			log,
 			toServiceRequest(server.db.repos, params, req.account_id!, actor!, new SessionApi(req, res)),
+			log,
 		); // TODO try to avoid the non-null assertions, looks tricky
 
 		if (!result.ok) {

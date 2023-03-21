@@ -75,8 +75,8 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 				const actor = authorizeResult.value?.actor;
 				result = await performService(
 					service,
-					log,
 					toServiceRequest(server.db.repos, params, account_id!, actor!, session),
+					log,
 				); // TODO try to avoid the non-null assertions, looks tricky
 			}
 		}
