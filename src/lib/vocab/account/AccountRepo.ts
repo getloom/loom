@@ -38,7 +38,7 @@ export class AccountRepo extends PostgresRepo {
 			hubsResult,
 			roles,
 			assignmentsResult,
-			policiesResult,
+			policies,
 			personasResult,
 		] = await Promise.all([
 			this.repos.space.filterByAccount(account.account_id),
@@ -54,7 +54,6 @@ export class AccountRepo extends PostgresRepo {
 		if (!sessionPersonasResult.ok) return sessionPersonasResult;
 		if (!hubsResult.ok) return hubsResult;
 		if (!assignmentsResult.ok) return assignmentsResult;
-		if (!policiesResult.ok) return policiesResult;
 		if (!personasResult.ok) return personasResult;
 
 		return {
@@ -67,7 +66,7 @@ export class AccountRepo extends PostgresRepo {
 				spaces,
 				directories: directoriesResult.value,
 				assignments: assignmentsResult.value,
-				policies: policiesResult.value,
+				policies,
 				personas: personasResult.value,
 			},
 		};

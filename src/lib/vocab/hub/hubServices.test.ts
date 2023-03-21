@@ -32,7 +32,7 @@ test_hubServices.after(teardownDb);
 test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 	const {persona, personalHub} = await random.persona();
 	//TODO hack to allow for authorization; remove on init default impl
-	unwrap(await repos.policy.create(personalHub.settings.defaultRoleId, permissions.DeleteHub));
+	await repos.policy.create(personalHub.settings.defaultRoleId, permissions.DeleteHub);
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
@@ -60,9 +60,7 @@ test_hubServices('disallow deleting admin hub', async ({repos}) => {
 test_hubServices('default admin hub role has all permissions', async ({repos}) => {
 	const adminHub = await repos.hub.loadAdminHub();
 	assert.ok(adminHub);
-	const adminDefaultPolicies = unwrap(
-		await repos.policy.filterByRole(adminHub.settings.defaultRoleId),
-	);
+	const adminDefaultPolicies = await repos.policy.filterByRole(adminHub.settings.defaultRoleId);
 
 	assert.equal(toSortedPermissionNames(adminDefaultPolicies), sortedPermissionNames);
 });
@@ -71,8 +69,8 @@ test_hubServices('default personal hub role has all permissions', async ({repos,
 	const {persona} = await random.persona();
 
 	const personalHub = unwrap(await repos.hub.findById(persona.hub_id))!;
-	const personalDefaultPolicies = unwrap(
-		await repos.policy.filterByRole(personalHub.settings.defaultRoleId),
+	const personalDefaultPolicies = await repos.policy.filterByRole(
+		personalHub.settings.defaultRoleId,
 	);
 
 	assert.equal(toSortedPermissionNames(personalDefaultPolicies), sortedPermissionNames);
@@ -152,7 +150,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	const {hub} = await random.hub(persona);
 
 	//TODO hack to allow for authorization; remove on init default impl
-	unwrap(await repos.policy.create(hub.settings.defaultRoleId, permissions.DeleteHub));
+	await repos.policy.create(hub.settings.defaultRoleId, permissions.DeleteHub);
 
 	unwrap(
 		await DeleteHubService.perform({

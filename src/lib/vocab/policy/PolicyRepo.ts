@@ -1,4 +1,3 @@
-import {NOT_OK, OK, type Result} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -8,20 +7,20 @@ import type {Policy} from '$lib/vocab/policy/policy';
 const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
 
 export class PolicyRepo extends PostgresRepo {
-	async filterByRole(role_id: number): Promise<Result<{value: Policy[]}>> {
+	async filterByRole(role_id: number): Promise<Policy[]> {
 		log.trace('[filterByRole]', role_id);
 		const result = await this.sql<Policy[]>`
 			SELECT policy_id, role_id, permission, data, created, updated 
 			FROM policies WHERE role_id=${role_id}
 		`;
-		return {ok: true, value: result};
+		return result;
 	}
 
 	async filterByActorHubPermission(
 		actor_id: number,
 		hub_id: number,
 		permission: string,
-	): Promise<Result<{value: Policy[]}>> {
+	): Promise<Policy[]> {
 		log.trace('[findByActorHubPermission]', actor_id, hub_id, permission);
 		const result = await this.sql<Policy[]>`
 		SELECT * FROM policies JOIN
@@ -30,46 +29,41 @@ export class PolicyRepo extends PostgresRepo {
 				ON a.role_id = roles.role_id) r
 		ON policies.role_id = r.role_id AND permission=${permission};
 		`;
-		return {ok: true, value: result};
+		return result;
 	}
 
 	async create(
 		role_id: number,
 		permission: string,
 		data?: object | null | undefined,
-	): Promise<Result<{value: Policy}>> {
+	): Promise<Policy> {
 		log.trace('[createPolicy]', role_id, permission);
 		const result = await this.sql<Policy[]>`
     INSERT INTO policies (role_id, permission, data) VALUES (
       ${role_id}, ${permission}, ${data ? this.sql.json(data as any) : null}
     ) RETURNING *
   `;
-		if (!result.length) return NOT_OK;
-		return {ok: true, value: result[0]};
+		return result[0];
 	}
 
-	async update(
-		policy_id: number,
-		data: object | null | undefined,
-	): Promise<Result<{value: Policy}>> {
+	async update(policy_id: number, data: object | null | undefined): Promise<Policy> {
 		const result = await this.sql<Policy[]>`
 			UPDATE policies SET updated=NOW(), data=${this.sql.json(data as any)} WHERE policy_id=${policy_id}
 			RETURNING *
 		`;
-		if (!result.count) return NOT_OK;
-		return {ok: true, value: result[0]};
+		if (!result.count) throw Error('no policy found');
+		return result[0];
 	}
 
-	async deleteById(policy_id: number): Promise<Result> {
+	async deleteById(policy_id: number): Promise<void> {
 		log.trace('[deleteById]', policy_id);
 		const result = await this.sql<any[]>`
 			DELETE FROM policies WHERE policy_id=${policy_id}
 		`;
-		if (!result.count) return NOT_OK;
-		return OK;
+		if (!result.count) throw Error('no policy found');
 	}
 
-	async filterByAccount(account_id: number): Promise<Result<{value: Policy[]}>> {
+	async filterByAccount(account_id: number): Promise<Policy[]> {
 		log.trace('[filterByAccountId]', account_id);
 		const result = await this.sql<Policy[]>`
 		SELECT pol.policy_id, pol.role_id, pol.permission, pol.data, pol.created, pol.updated
@@ -83,6 +77,6 @@ export class PolicyRepo extends PostgresRepo {
 		ON pol.role_id = apcr.role_id
 		`;
 		log.trace('[filterByAccount]', result.length);
-		return {ok: true, value: result};
+		return result;
 	}
 }

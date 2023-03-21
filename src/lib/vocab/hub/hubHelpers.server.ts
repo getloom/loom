@@ -108,7 +108,7 @@ export const initTemplateGovernanceForHub = async (
 		if (roleTemplate.policies) {
 			// TODO batch with a repo method
 			for (const policyTemplate of roleTemplate.policies) {
-				policies.push(unwrap(await repos.policy.create(role.role_id, policyTemplate.permission))); // eslint-disable-line no-await-in-loop
+				policies.push(await repos.policy.create(role.role_id, policyTemplate.permission)); // eslint-disable-line no-await-in-loop
 			}
 		}
 	}

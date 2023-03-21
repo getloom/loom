@@ -16,9 +16,7 @@ export const checkPolicy = async (
 ): Promise<void> => {
 	log.trace('checking for policies with permission for actor in hub', permission, actor_id, hub_id);
 
-	const policy = unwrap(
-		await repos.policy.filterByActorHubPermission(actor_id, hub_id, permission),
-	);
+	const policy = await repos.policy.filterByActorHubPermission(actor_id, hub_id, permission);
 
 	if (policy.length === 0) {
 		log.trace('no policy present for actor in hub', actor_id, hub_id);
