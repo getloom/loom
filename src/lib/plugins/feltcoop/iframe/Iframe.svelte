@@ -1,5 +1,6 @@
 <script lang="ts">
 	import FeltWindowHost from '@feltjs/felt-ui/FeltWindowHost.svelte';
+	import {onDestroy} from 'svelte';
 
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
@@ -15,16 +16,21 @@
 
 	let postMessage: ((message: any) => void) | undefined;
 
-	// Forward ephemera to the iframe:
-	$: if (
-		postMessage && // wait for init
-		$ephemera && // there may be no ephemera
-		$ephemera.space_id === $space.space_id && // scope to this space
-		$ephemera.actor !== $persona.persona_id // don't forward ephemera created by the user
-	) {
-		// TODO forward `actor: $ephemera.actor` if user allows it
-		postMessage({type: 'Ephemera', data: $ephemera.data}); // don't forward the space_id
-	}
+	// Forward ephemera to the iframe, subscribing manually to avoid the component-level batching.
+	// Demo of the problem: https://svelte.dev/repl/69e1c9327ce847b0af642ed3163201da?version=3.57.0
+	onDestroy(
+		ephemera.subscribe((v) => {
+			if (
+				postMessage && // wait for init
+				v && // there may be no ephemera
+				v.space_id === $space.space_id && // scope to this space
+				v.actor !== $persona.persona_id // don't forward ephemera created by the user
+			) {
+				// TODO forward `actor: v.actor` if user allows it
+				postMessage({type: 'Ephemera', data: v.data}); // don't forward the space_id
+			}
+		}),
+	);
 
 	export let src: string;
 

@@ -13,6 +13,7 @@ import Board from '$lib/plugins/feltcoop/board/Board.svelte';
 import Forum from '$lib/plugins/feltcoop/forum/Forum.svelte';
 import Notes from '$lib/plugins/feltcoop/notes/Notes.svelte';
 import Iframe from '$lib/plugins/feltcoop/iframe/Iframe.svelte';
+import Whiteboard from '$lib/plugins/feltcoop/whiteboard/Whiteboard.svelte';
 import EntityExplorer from '$lib/plugins/feltcoop/entity-explorer/EntityExplorer.svelte';
 import Todo from '$lib/plugins/feltcoop/todo/Todo.svelte';
 import List from '$lib/plugins/ryanatkn/list/List.svelte';
@@ -37,6 +38,7 @@ export const components: Record<string, typeof SvelteComponent> = {
 	Forum,
 	Notes,
 	Iframe,
+	Whiteboard,
 	EntityExplorer,
 	Todo,
 	List,

@@ -24,6 +24,10 @@ export const stashSpaces = (
 		spaces.mutate((s) => s.clear());
 	}
 
+	if ($directoriesToStash) {
+		stashEntities(ui, $directoriesToStash);
+	}
+
 	for (const $space of $spacesToStash) {
 		let space = spaceById.get($space.space_id);
 		if (space) {
@@ -40,10 +44,6 @@ export const stashSpaces = (
 				spaceIdSelectionByHubId.mutate((s) => s.set($space.hub_id, $space.space_id));
 			}
 		}
-	}
-
-	if ($directoriesToStash) {
-		stashEntities(ui, $directoriesToStash);
 	}
 };
 

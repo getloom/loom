@@ -25,6 +25,7 @@ export const toDefaultSpaces = (actor: number, hub: Hub): CreateSpaceParams[] =>
 				{...toTemplatePartial('Todo'), name: 'todo', path: '/todo'},
 				{...toTemplatePartial('List'), name: 'list', path: '/list'},
 				{...toTemplatePartial('Lists'), name: 'lists', path: '/lists'},
+				{...toTemplatePartial('Whiteboard'), name: 'whiteboard', path: '/whiteboard'},
 		  ].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
 };
 
@@ -33,6 +34,7 @@ export const toDefaultAdminSpaces = (actor: number, {hub_id, name}: Hub): Create
 		{...toTemplatePartial('AdminHome'), name, path: HOME_PATH},
 		{...toTemplatePartial('InstanceAdmin'), name: 'instance', path: '/instance'},
 		{...toTemplatePartial('Chat'), name: 'chat', path: '/chat'},
+		{...toTemplatePartial('Whiteboard'), name: 'whiteboard', path: '/whiteboard'},
 	].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
 
 const toTemplatePartial = (name: string): {view: string; icon: string} => {
