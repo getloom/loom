@@ -86,7 +86,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 		);
 		await Promise.all(
 			allSpaces.map(async (s) => {
-				assertIs(unwrap(await repos.space.findById(s.space_id)), undefined);
+				assertIs(await repos.space.findById(s.space_id), undefined);
 				assertIs(unwrap(await repos.entity.findById(s.directory_id)), undefined);
 				// TODO assertIs(unwrap(await repos.entity.filterBySpace(s.space_id)).length, 0);
 			}),

@@ -52,12 +52,11 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 
 		await checkHubAccess(actor, hub_id, repos);
 
-		const [spacesResult, rolesResult, assignmentsResult] = await Promise.all([
+		const [spaces, rolesResult, assignmentsResult] = await Promise.all([
 			repos.space.filterByHub(hub_id),
 			repos.role.filterByHub(hub_id),
 			repos.assignment.filterByHub(hub_id),
 		]);
-		const spaces = unwrap(spacesResult);
 		const roles = unwrap(rolesResult);
 		const assignments = unwrap(assignmentsResult);
 

@@ -31,7 +31,7 @@ test__spaceServices('delete a space in multiple hubs', async ({repos, random}) =
 		}),
 	);
 
-	assert.ok(!unwrap(await repos.space.findById(space.space_id)));
+	assert.ok(!(await repos.space.findById(space.space_id)));
 });
 
 test__spaceServices.run();

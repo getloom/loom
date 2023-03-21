@@ -23,7 +23,7 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 
 		await checkHubAccess(actor, hub_id, repos);
 
-		const spaces = unwrap(await repos.space.filterByHub(hub_id));
+		const spaces = await repos.space.filterByHub(hub_id);
 
 		const {entities: directories} = unwrap(
 			await repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
@@ -55,13 +55,13 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {space_id, actor, ...partial} = params;
-		const space = unwrap(await repos.space.findById(space_id));
+		const space = await repos.space.findById(space_id);
 		if (!space) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
 
 		await checkPolicy(permissions.UpdateSpace, actor, space.hub_id, repos);
-		const updatedSpace = unwrap(await repos.space.update(space_id, partial));
+		const updatedSpace = await repos.space.update(space_id, partial);
 		return {ok: true, status: 200, value: {space: updatedSpace}};
 	},
 };
@@ -74,7 +74,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 		log.trace('[DeleteSpace] deleting space with id:', params.space_id);
 
 		// Check that the space can be deleted.
-		const space = unwrap(await repos.space.findById(params.space_id));
+		const space = await repos.space.findById(params.space_id);
 		if (!space) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
@@ -89,7 +89,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 
 		await checkPolicy(permissions.DeleteSpace, params.actor, space.hub_id, repos);
 
-		unwrap(await repos.space.deleteById(params.space_id));
+		await repos.space.deleteById(params.space_id);
 
 		await cleanOrphanedEntities(repos);
 

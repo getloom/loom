@@ -132,7 +132,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			);
 		}
 	}
-	assert.is(unwrap(await repos.space.filterByHub(hub.hub_id)).length, 1);
+	assert.is((await repos.space.filterByHub(hub.hub_id)).length, 1);
 
 	// delete assignment
 	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 3);

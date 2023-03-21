@@ -2,7 +2,6 @@ import type {ServiceByName} from '$lib/app/actionTypes';
 import {Ping, Ephemera} from '$lib/ui/uiEvents';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
-import {unwrap} from '@feltjs/util';
 
 export const PingService: ServiceByName['Ping'] = {
 	event: Ping,
@@ -15,7 +14,7 @@ export const EphemeraService: ServiceByName['Ephemera'] = {
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, space_id} = params;
-		const space = unwrap(await repos.space.findById(space_id));
+		const space = await repos.space.findById(space_id);
 		if (!space) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}

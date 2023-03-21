@@ -71,7 +71,7 @@ export const checkEntityOwnership = async (
 
 	for (const space_id of spaceIds) {
 		// eslint-disable-next-line no-await-in-loop
-		const space = unwrap(await repos.space.findById(space_id))!;
+		const space = (await repos.space.findById(space_id))!;
 		//TODO hack in advance of space/entity policy checks
 		const common_aka_skipAuthorshipCheck =
 			space.view.includes('<Todo') || space.view.includes('<List');

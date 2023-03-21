@@ -57,8 +57,12 @@ export const createSpace = async (
 	) as Directory;
 
 	log.trace('[CreateSpace] creating space for hub', hub_id);
-	const space = unwrap(
-		await repos.space.create(name, view, icon, hub_id, uninitializedDirectory.entity_id),
+	const space = await repos.space.create(
+		name,
+		view,
+		icon,
+		hub_id,
+		uninitializedDirectory.entity_id,
 	);
 
 	// set `uninitializedDirectory.space_id` now that the space has been created

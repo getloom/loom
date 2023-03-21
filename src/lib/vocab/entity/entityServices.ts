@@ -26,7 +26,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, source_id} = params;
-		const {hub_id} = unwrap(await repos.space.findByEntity(source_id));
+		const {hub_id} = await repos.space.findByEntity(source_id);
 		await checkHubAccess(actor, hub_id, repos);
 
 		const ties = await repos.tie.filterBySourceId(source_id);
@@ -43,7 +43,7 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, source_id, pageSize, pageKey} = params;
-		const {hub_id} = unwrap(await repos.space.findByEntity(source_id));
+		const {hub_id} = await repos.space.findByEntity(source_id);
 		await checkHubAccess(actor, hub_id, repos);
 
 		const ties = await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey);
@@ -61,7 +61,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	perform: async ({repos, params}) => {
 		const {actor, data, space_id, path} = params;
 
-		const {hub_id} = unwrap(await repos.space.findById(space_id))!;
+		const {hub_id} = (await repos.space.findById(space_id))!;
 		await checkPolicy(permissions.CreateEntity, actor, hub_id, repos);
 
 		const entity = unwrap(await repos.entity.create(actor, data, space_id, path));
