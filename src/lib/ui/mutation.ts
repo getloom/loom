@@ -1,6 +1,6 @@
 import type {WritableUi} from '$lib/ui/ui';
 import type {ApiResult} from '$lib/server/api';
-import type {Actions} from '$lib/app/eventTypes';
+import type {Actions} from '$lib/app/actionTypes';
 
 export interface Mutation {
 	(ctx: MutationContext<any>): any;

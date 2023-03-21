@@ -13,7 +13,7 @@ import type {
 	CreateRoleParams,
 	SignInParams,
 	CreatePolicyParams,
-} from '$lib/app/eventTypes';
+} from '$lib/app/actionTypes';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';

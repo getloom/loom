@@ -4,14 +4,14 @@
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import PropertyPicker from '$lib/ui/PropertyPicker.svelte';
-	import type {EventInfo} from '$lib/vocab/event/event';
+	import type {ActionData} from '$lib/vocab/action/action';
 
 	// TODO  what should be the interface here?
 	// bind:params? on:create or on:input ?
 
 	export let params: null | Record<string, any> = null; // TODO type?
 	export let persona: Readable<AccountPersona>;
-	export let eventInfo: EventInfo;
+	export let eventInfo: ActionData;
 
 	$: paramsProperties = eventInfo.params?.properties;
 	$: paramsPropertiesKeys = paramsProperties && Object.keys(paramsProperties);
@@ -22,7 +22,7 @@
 		params = {...params, [key]: value};
 	};
 
-	const computeParams = (eventInfo: EventInfo) => {
+	const computeParams = (eventInfo: ActionData) => {
 		if (!eventInfo.params || eventInfo.params.type === 'null') {
 			return null;
 		}

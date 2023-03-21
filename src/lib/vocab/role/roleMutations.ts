@@ -1,4 +1,4 @@
-import type {Mutations} from '$lib/app/eventTypes';
+import type {Mutations} from '$lib/app/actionTypes';
 import {evictRoles, stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 
 export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {

@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/actionTypes';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleEvents';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';

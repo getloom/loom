@@ -3,7 +3,7 @@ import {writable} from '@feltcoop/svelte-gettable-stores';
 import type {App} from '$lib/ui/app';
 import {toUi} from '$lib/ui/ui';
 import {toHttpApiClient} from '$lib/ui/HttpApiClient';
-import type {EventParamsByName, EventResponseByName} from '$lib/app/eventTypes';
+import type {EventParamsByName, EventResponseByName} from '$lib/app/actionTypes';
 import {toActions} from '$lib/app/actions';
 import {findHttpService} from '$lib/ui/services';
 import {installSourceMaps} from '$lib/util/testHelpers';

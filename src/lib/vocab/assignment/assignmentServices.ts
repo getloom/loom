@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {ActorPersona} from '$lib/vocab/actor/persona';

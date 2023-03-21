@@ -2,7 +2,7 @@
 	import {page} from '$app/stores';
 
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
-	import {eventInfos} from '$lib/app/events';
+	import {actionData} from '$lib/app/actionData';
 	import {vocabSchemas} from '$lib/app/schemas';
 	import {viewTemplates} from '$lib/vocab/view/view';
 
@@ -45,7 +45,7 @@
 			</menu>
 			<li><h4><a href="#events" class:selected={hash === 'events'}>events</a></h4></li>
 			<menu>
-				{#each eventInfos as eventInfo (eventInfo.name)}
+				{#each actionData as eventInfo (eventInfo.name)}
 					<li>
 						<a href="#{eventInfo.name}" class:selected={hash === eventInfo.name}>{eventInfo.name}</a
 						>
@@ -106,7 +106,7 @@
 			<h2 id="events">events</h2>
 		</div>
 		<ul>
-			{#each eventInfos as eventInfo (eventInfo.name)}
+			{#each actionData as eventInfo (eventInfo.name)}
 				<li id={eventInfo.name}>
 					<div class="title">
 						<code class="name">{eventInfo.name}</code>
@@ -118,7 +118,7 @@
 						probably by generating a sibling file to `events.ts` like `eventTypeStrings.ts` -->
 						<pre>{JSON.stringify(eventInfo.params, null, 2)}</pre>
 					</div>
-					{#if eventInfo.type !== 'ClientEvent'}
+					{#if eventInfo.type !== 'ClientAction'}
 						<div class="property">
 							<span>response</span>
 							<!-- TODO display the generated type string instead of the schema,

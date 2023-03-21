@@ -3,21 +3,21 @@ import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
-import {eventInfos} from '$lib/app/events';
+import {actionData} from '$lib/app/actionData';
 import {randomEventParams} from '$lib/util/randomEventParams';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {setupApp, teardownApp} from '$lib/util/testAppHelpers';
 
-/* test__eventInfos */
-const test__eventInfos = suite<TestDbContext & TestAppContext>('eventInfos');
+/* test__actionData */
+const test__actionData = suite<TestDbContext & TestAppContext>('actionData');
 
-test__eventInfos.before(setupDb);
-test__eventInfos.after(teardownDb);
-test__eventInfos.before(setupApp);
-test__eventInfos.after(teardownApp);
+test__actionData.before(setupDb);
+test__actionData.after(teardownDb);
+test__actionData.before(setupApp);
+test__actionData.after(teardownApp);
 
-for (const eventInfo of eventInfos.values()) {
-	test__eventInfos(`do action ${eventInfo.name} in a client app`, async ({app, random}) => {
+for (const eventInfo of actionData.values()) {
+	test__actionData(`do action ${eventInfo.name} in a client app`, async ({app, random}) => {
 		const account = await random.account();
 		const params = await randomEventParams[eventInfo.name](random, {account});
 
@@ -30,14 +30,14 @@ for (const eventInfo of eventInfos.values()) {
 				);
 			}
 		} else if (
-			eventInfo.type === 'ServiceEvent' &&
+			eventInfo.type === 'ServiceAction' &&
 			eventInfo.params !== null // allow void params
 		) {
 			throw Error(`Expected eventInfo to have a schema: ${eventInfo.name}`);
 		}
 
 		// TODO can't make remote calls yet -- either use `node-fetch` or mock
-		if (eventInfo.type !== 'ClientEvent' || eventInfo.name === 'QueryEntities') {
+		if (eventInfo.type !== 'ClientAction' || eventInfo.name === 'QueryEntities') {
 			return;
 		}
 
@@ -49,7 +49,7 @@ for (const eventInfo of eventInfos.values()) {
 
 		// TODO fix typecast with a union for `eventInfo`
 		const result = await (app.actions as any)[eventInfo.name](params);
-		if (eventInfo.type === 'ClientEvent') {
+		if (eventInfo.type === 'ClientAction') {
 			// TODO don't have schemas for `returns` yet, but eventually we'll want them and then validate here
 			if (eventInfo.returns !== 'void') {
 				assert.ok(result !== undefined);
@@ -71,5 +71,5 @@ for (const eventInfo of eventInfos.values()) {
 	});
 }
 
-test__eventInfos.run();
-/* test__eventInfos */
+test__actionData.run();
+/* test__actionData */

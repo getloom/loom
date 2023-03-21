@@ -1,7 +1,7 @@
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreateRole: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const CreateRole: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'CreateRole',
 	broadcast: true,
 	params: {
@@ -31,8 +31,8 @@ export const CreateRole: ServiceEventInfo = {
 	},
 };
 
-export const ReadRoles: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const ReadRoles: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'ReadRoles',
 	params: {
 		$id: '/schemas/ReadRolesParams.json',
@@ -60,8 +60,8 @@ export const ReadRoles: ServiceEventInfo = {
 	},
 };
 
-export const UpdateRole: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const UpdateRole: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'UpdateRole',
 	broadcast: true,
 	params: {
@@ -91,8 +91,8 @@ export const UpdateRole: ServiceEventInfo = {
 	},
 };
 
-export const DeleteRole: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const DeleteRole: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'DeleteRole',
 	broadcast: true,
 	params: {

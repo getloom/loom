@@ -1,7 +1,7 @@
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreateAssignment: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const CreateAssignment: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'CreateAssignment',
 	broadcast: true,
 	params: {
@@ -32,8 +32,8 @@ export const CreateAssignment: ServiceEventInfo = {
 	},
 };
 
-export const DeleteAssignment: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const DeleteAssignment: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'DeleteAssignment',
 	broadcast: true,
 	params: {

@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/actionTypes';
 import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceEvents';
 import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
 import type {Directory} from '$lib/vocab/entity/entityData';

@@ -1,7 +1,7 @@
 import {DialogDataSchema} from '@feltjs/felt-ui/dialog.schema.js';
 import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
 
-import {eventInfos} from '$lib/app/events';
+import {actionData} from '$lib/app/actionData';
 import {toSchemaName} from '$lib/util/schema';
 import {
 	AccountSchema,
@@ -68,7 +68,7 @@ export const vocabSchemas = [
 ].map((s) => toFeltVocabSchema(s as VocabSchema));
 
 export const schemas = vocabSchemas.concat(
-	eventInfos
+	actionData
 		.flatMap((eventInfo) => [
 			eventInfo.params,
 			'response' in eventInfo ? eventInfo.response : (null as any),

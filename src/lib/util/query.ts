@@ -8,7 +8,7 @@ import {
 } from '@feltcoop/svelte-gettable-stores';
 
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {Actions} from '$lib/app/eventTypes';
+import type {Actions} from '$lib/app/actionTypes';
 import type {Ui} from '$lib/ui/ui';
 
 export interface Query {

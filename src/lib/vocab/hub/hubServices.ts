@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/actionTypes';
 import {
 	CreateHub,
 	ReadHub,

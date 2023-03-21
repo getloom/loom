@@ -1,4 +1,4 @@
-import type {Mutations} from '$lib/app/eventTypes';
+import type {Mutations} from '$lib/app/actionTypes';
 import {gotoUnlessActive, toUrl} from '$lib/ui/url';
 import {setIfUpdated} from '$lib/util/store';
 

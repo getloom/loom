@@ -1,7 +1,7 @@
-import type {ServiceEventInfo, ClientEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData, ClientActionData} from '$lib/vocab/action/action';
 
-export const Ping: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const Ping: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'Ping',
 	authorize: false,
 	params: {
@@ -19,8 +19,8 @@ export const Ping: ServiceEventInfo = {
 	},
 };
 
-export const Ephemera: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const Ephemera: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'Ephemera',
 	broadcast: true,
 	params: {
@@ -52,8 +52,8 @@ export const Ephemera: ServiceEventInfo = {
 	},
 };
 
-export const SetSession: ClientEventInfo = {
-	type: 'ClientEvent',
+export const SetSession: ClientActionData = {
+	type: 'ClientAction',
 	name: 'SetSession',
 	params: {
 		$id: '/schemas/SetSessionParams.json',
@@ -67,22 +67,22 @@ export const SetSession: ClientEventInfo = {
 	returns: 'void',
 };
 
-export const ToggleMainNav: ClientEventInfo = {
-	type: 'ClientEvent',
+export const ToggleMainNav: ClientActionData = {
+	type: 'ClientAction',
 	name: 'ToggleMainNav',
 	params: null,
 	returns: 'void',
 };
 
-export const ToggleSecondaryNav: ClientEventInfo = {
-	type: 'ClientEvent',
+export const ToggleSecondaryNav: ClientActionData = {
+	type: 'ClientAction',
 	name: 'ToggleSecondaryNav',
 	params: null,
 	returns: 'void',
 };
 
-export const SetMobile: ClientEventInfo = {
-	type: 'ClientEvent',
+export const SetMobile: ClientActionData = {
+	type: 'ClientAction',
 	name: 'SetMobile',
 	params: {
 		$id: '/schemas/SetMobileParams.json',
@@ -91,8 +91,8 @@ export const SetMobile: ClientEventInfo = {
 	returns: 'void',
 };
 
-export const OpenDialog: ClientEventInfo = {
-	type: 'ClientEvent',
+export const OpenDialog: ClientActionData = {
+	type: 'ClientAction',
 	name: 'OpenDialog',
 	params: {
 		$id: '/schemas/OpenDialogParams.json',
@@ -102,15 +102,15 @@ export const OpenDialog: ClientEventInfo = {
 	returns: 'void',
 };
 
-export const CloseDialog: ClientEventInfo = {
-	type: 'ClientEvent',
+export const CloseDialog: ClientActionData = {
+	type: 'ClientAction',
 	name: 'CloseDialog',
 	params: null,
 	returns: 'void',
 };
 
-export const ViewSpace: ClientEventInfo = {
-	type: 'ClientEvent',
+export const ViewSpace: ClientActionData = {
+	type: 'ClientAction',
 	name: 'ViewSpace',
 	params: {
 		$id: '/schemas/ViewSpaceParams.json',
@@ -125,8 +125,8 @@ export const ViewSpace: ClientEventInfo = {
 	returns: 'void',
 };
 
-export const ClearFreshness: ClientEventInfo = {
-	type: 'ClientEvent',
+export const ClearFreshness: ClientActionData = {
+	type: 'ClientAction',
 	name: 'ClearFreshness',
 	params: {
 		$id: '/schemas/ClearFreshnessParams.json',

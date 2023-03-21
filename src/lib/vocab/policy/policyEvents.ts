@@ -1,7 +1,7 @@
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreatePolicy: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const CreatePolicy: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'CreatePolicy',
 	broadcast: true,
 	params: {
@@ -31,8 +31,8 @@ export const CreatePolicy: ServiceEventInfo = {
 	},
 };
 
-export const ReadPolicies: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const ReadPolicies: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'ReadPolicies',
 	params: {
 		$id: '/schemas/ReadPoliciesParams.json',
@@ -60,8 +60,8 @@ export const ReadPolicies: ServiceEventInfo = {
 	},
 };
 
-export const UpdatePolicy: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const UpdatePolicy: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'UpdatePolicy',
 	broadcast: true,
 	params: {
@@ -91,8 +91,8 @@ export const UpdatePolicy: ServiceEventInfo = {
 	},
 };
 
-export const DeletePolicy: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const DeletePolicy: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'DeletePolicy',
 	broadcast: true,
 	params: {

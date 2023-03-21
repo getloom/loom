@@ -6,7 +6,7 @@ import {toCounter} from '@feltjs/util/counter.js';
 import {Logger} from '@feltjs/util/log.js';
 
 import type {ApiClient} from '$lib/ui/ApiClient';
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {JsonRpcId, JsonRpcRequest, JsonRpcResponse} from '$lib/util/jsonRpc';
 import {parseJsonRpcResponse} from '$lib/util/jsonRpc';
 import type {BroadcastMessage, StatusMessage} from '$lib/util/websocket';
@@ -37,7 +37,7 @@ export const toWebsocketApiClient = <
 	TParamsMap extends Record<string, any>,
 	TResultMap extends Record<string, any>,
 >(
-	findService: (name: string) => ServiceEventInfo | undefined,
+	findService: (name: string) => ServiceActionData | undefined,
 	send: (request: JsonRpcRequest) => void,
 	handleBroadcastMessage: (message: BroadcastMessage) => void,
 	handleStatusMessage: (message: StatusMessage) => void,

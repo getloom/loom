@@ -2,7 +2,7 @@ import type {Gen} from '@feltjs/gro';
 import {toRootPath} from '@feltjs/gro/dist/paths.js';
 import {toVocabSchemaResolver} from '@feltjs/gro/dist/utils/schema.js';
 
-import {eventInfos} from '$lib/app/events';
+import {actionData} from '$lib/app/actionData';
 import {
 	jsonSchemaToTypescript,
 	type JsonSchemaToTypeScriptOptions,
@@ -49,18 +49,18 @@ import type {HubTemplate} from '$lib/app/templates';
 
 /* eslint-disable @typescript-eslint/array-type */
 
-export type ServiceEventName = ${eventInfos.reduce(
-		(str, eventInfo) => str + (eventInfo.type === 'ServiceEvent' ? `| '${eventInfo.name}'` : ''),
+export type ServiceActionName = ${actionData.reduce(
+		(str, eventInfo) => str + (eventInfo.type === 'ServiceAction' ? `| '${eventInfo.name}'` : ''),
 		'',
 	)};
 
-export type ClientEventName = ${eventInfos.reduce(
-		(str, eventInfo) => str + (eventInfo.type === 'ClientEvent' ? `| '${eventInfo.name}'` : ''),
+export type ClientActionName = ${actionData.reduce(
+		(str, eventInfo) => str + (eventInfo.type === 'ClientAction' ? `| '${eventInfo.name}'` : ''),
 		'',
 	)};
 
 export interface EventParamsByName {
-	${eventInfos.reduce(
+	${actionData.reduce(
 		(str, eventInfo) =>
 			str +
 			`
@@ -70,10 +70,10 @@ ${eventInfo.name}: ${toParamsName(eventInfo.name)};
 	)}
 }
 export interface EventResponseByName {
-	${eventInfos.reduce(
+	${actionData.reduce(
 		(str, eventInfo) =>
 			str +
-			(eventInfo.type === 'ClientEvent'
+			(eventInfo.type === 'ClientAction'
 				? ''
 				: `
 ${eventInfo.name}: ${toResponseName(eventInfo.name)};
@@ -94,7 +94,7 @@ export interface ServiceByName {
 	}, '')}
 }
 
-${await eventInfos.reduce(
+${await actionData.reduce(
 	async (str, eventInfo) =>
 		(await str) +
 		`
@@ -117,7 +117,7 @@ ${await jsonSchemaToTypescript(eventInfo.params, toParamsName(eventInfo.name), o
 )}
 
 export interface Actions {
-	${eventInfos.reduce(
+	${actionData.reduce(
 		(str, eventInfo) =>
 			str +
 			`${eventInfo.name}: (${
@@ -128,13 +128,13 @@ export interface Actions {
 }
 
 export interface Mutations {
-  ${eventInfos.reduce(
+  ${actionData.reduce(
 		(str, eventInfo) =>
 			str +
 			`
       ${eventInfo.name}: (
         ctx: MutationContext<${toParamsName(eventInfo.name)}, ${
-				eventInfo.type === 'ClientEvent' ? 'void' : toResponseResultName(eventInfo.name)
+				eventInfo.type === 'ClientAction' ? 'void' : toResponseResultName(eventInfo.name)
 			}>,
       ) => ${eventInfo.returns};
 `.trim(),

@@ -9,7 +9,7 @@ import {inject} from 'regexparam';
 import {Logger} from '@feltjs/util/log.js';
 
 import type {ApiClient} from '$lib/ui/ApiClient';
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {Deserialize} from '$lib/util/deserialize';
 import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error';
 
@@ -19,7 +19,7 @@ export const toHttpApiClient = <
 	TParamsMap extends Record<string, any>,
 	TResultMap extends Record<string, any>,
 >(
-	findService: (name: string) => ServiceEventInfo | undefined,
+	findService: (name: string) => ServiceActionData | undefined,
 	deserialize: Deserialize,
 ): ApiClient<TParamsMap, TResultMap> => {
 	const client: ApiClient<TParamsMap, TResultMap> = {

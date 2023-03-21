@@ -10,7 +10,7 @@ import type {Database} from '$lib/db/Database.js';
 import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';
 import type {Hub} from '$lib/vocab/hub/hub';
-import type {CreateEntityResponse, SignInParams} from '$lib/app/eventTypes';
+import type {CreateEntityResponse, SignInParams} from '$lib/app/actionTypes';
 import type {AccountPersona} from '$lib/vocab/actor/persona';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountPersonaService} from '$lib/vocab/actor/personaServices';

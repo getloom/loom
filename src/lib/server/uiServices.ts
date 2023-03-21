@@ -1,4 +1,4 @@
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/actionTypes';
 import {Ping, Ephemera} from '$lib/ui/uiEvents';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';

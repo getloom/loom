@@ -1,7 +1,7 @@
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreateSpace: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const CreateSpace: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'CreateSpace',
 	broadcast: true,
 	params: {
@@ -35,8 +35,8 @@ export const CreateSpace: ServiceEventInfo = {
 	},
 };
 
-export const ReadSpaces: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const ReadSpaces: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'ReadSpaces',
 	params: {
 		$id: '/schemas/ReadSpacesParams.json',
@@ -68,8 +68,8 @@ export const ReadSpaces: ServiceEventInfo = {
 	},
 };
 
-export const UpdateSpace: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const UpdateSpace: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'UpdateSpace',
 	broadcast: true,
 	params: {
@@ -102,8 +102,8 @@ export const UpdateSpace: ServiceEventInfo = {
 	},
 };
 
-export const DeleteSpace: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const DeleteSpace: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'DeleteSpace',
 	broadcast: true,
 	params: {

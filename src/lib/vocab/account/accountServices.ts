@@ -2,7 +2,7 @@ import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltjs/util/log.js';
 import {unwrap} from '@feltjs/util';
 
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/actionTypes';
 import {
 	SignUp,
 	SignIn,

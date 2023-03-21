@@ -47,7 +47,7 @@ import type {
 	CloseDialogParams,
 	ViewSpaceParams,
 	ClearFreshnessParams,
-} from '$lib/app/eventTypes';
+} from '$lib/app/actionTypes';
 
 export interface RandomEventParams {
 	SignUp: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignUpParams>;

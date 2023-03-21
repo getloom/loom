@@ -1,4 +1,4 @@
-import type {EventInfo} from '$lib/vocab/event/event';
+import type {ActionData} from '$lib/vocab/action/action';
 import {
 	SignIn,
 	SignOut,
@@ -47,7 +47,7 @@ import {
 	ClearFreshness,
 } from '$lib/ui/uiEvents';
 
-export const eventInfos: EventInfo[] = [
+export const actionData: ActionData[] = [
 	// accountEvents
 	SignUp,
 	SignIn,
@@ -104,4 +104,4 @@ export const eventInfos: EventInfo[] = [
 	ClearFreshness,
 ];
 
-export const eventInfoByName: Map<string, EventInfo> = new Map(eventInfos.map((e) => [e.name, e]));
+export const eventInfoByName: Map<string, ActionData> = new Map(actionData.map((e) => [e.name, e]));

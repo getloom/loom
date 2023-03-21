@@ -1,7 +1,7 @@
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const SignUp: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const SignUp: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'SignUp',
 	authenticate: false,
 	authorize: false,
@@ -31,8 +31,8 @@ export const SignUp: ServiceEventInfo = {
 	},
 };
 
-export const UpdateAccountSettings: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const UpdateAccountSettings: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'UpdateAccountSettings',
 	authorize: false,
 	params: {
@@ -56,8 +56,8 @@ export const UpdateAccountSettings: ServiceEventInfo = {
 	},
 };
 
-export const UpdateAccountPassword: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const UpdateAccountPassword: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'UpdateAccountPassword',
 	authorize: false,
 	params: {
@@ -82,8 +82,8 @@ export const UpdateAccountPassword: ServiceEventInfo = {
 	},
 };
 
-export const SignIn: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const SignIn: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'SignIn',
 	authenticate: false,
 	authorize: false,
@@ -113,8 +113,8 @@ export const SignIn: ServiceEventInfo = {
 	},
 };
 
-export const SignOut: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const SignOut: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'SignOut',
 	authorize: false,
 	websockets: false,

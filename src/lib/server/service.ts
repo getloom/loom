@@ -1,6 +1,6 @@
 import type {Logger} from '@feltjs/util/log.js';
 
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {ActorPersona} from '$lib/vocab/actor/persona';
@@ -50,7 +50,7 @@ export interface NonAuthenticatedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
-	event: ServiceEventInfo;
+	event: ServiceActionData;
 	transaction: boolean;
 	perform: (serviceRequest: NonAuthenticatedServiceRequest<TParams>) => Promise<TResult>;
 }
@@ -58,7 +58,7 @@ export interface NonAuthorizedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
-	event: ServiceEventInfo;
+	event: ServiceActionData;
 	transaction: boolean;
 	perform: (serviceRequest: NonAuthorizedServiceRequest<TParams>) => Promise<TResult>;
 }
@@ -66,7 +66,7 @@ export interface AuthorizedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
-	event: ServiceEventInfo;
+	event: ServiceActionData;
 	transaction: boolean;
 	perform: (serviceRequest: AuthorizedServiceRequest<TParams>) => Promise<TResult>;
 }

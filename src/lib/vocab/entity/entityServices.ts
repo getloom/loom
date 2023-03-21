@@ -1,6 +1,6 @@
 import {unwrap} from '@feltjs/util';
 
-import type {ServiceByName} from '$lib/app/eventTypes';
+import type {ServiceByName} from '$lib/app/actionTypes';
 import {
 	ReadEntities,
 	ReadEntitiesPaginated,

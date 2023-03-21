@@ -1,7 +1,7 @@
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreateHub: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const CreateHub: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'CreateHub',
 	params: {
 		$id: '/schemas/CreateHubParams.json',
@@ -41,8 +41,8 @@ export const CreateHub: ServiceEventInfo = {
 	},
 };
 
-export const ReadHub: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const ReadHub: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'ReadHub',
 	params: {
 		$id: '/schemas/ReadHubParams.json',
@@ -81,8 +81,8 @@ export const ReadHub: ServiceEventInfo = {
 	},
 };
 
-export const UpdateHubSettings: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const UpdateHubSettings: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'UpdateHubSettings',
 	broadcast: true,
 	params: {
@@ -107,8 +107,8 @@ export const UpdateHubSettings: ServiceEventInfo = {
 	},
 };
 
-export const DeleteHub: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const DeleteHub: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'DeleteHub',
 	params: {
 		$id: '/schemas/DeleteHubParams.json',
@@ -131,8 +131,8 @@ export const DeleteHub: ServiceEventInfo = {
 	},
 };
 
-export const InviteToHub: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const InviteToHub: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'InviteToHub',
 	broadcast: true,
 	params: {
@@ -163,8 +163,8 @@ export const InviteToHub: ServiceEventInfo = {
 	},
 };
 
-export const LeaveHub: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const LeaveHub: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'LeaveHub',
 	broadcast: true,
 	params: {
@@ -189,8 +189,8 @@ export const LeaveHub: ServiceEventInfo = {
 	},
 };
 
-export const KickFromHub: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const KickFromHub: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'KickFromHub',
 	broadcast: true,
 	params: {

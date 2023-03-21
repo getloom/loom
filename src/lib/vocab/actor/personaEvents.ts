@@ -1,7 +1,7 @@
-import type {ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreateAccountPersona: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const CreateAccountPersona: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'CreateAccountPersona',
 	authorize: false,
 	params: {
@@ -41,8 +41,8 @@ export const CreateAccountPersona: ServiceEventInfo = {
 	},
 };
 
-export const DeletePersona: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const DeletePersona: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'DeletePersona',
 	params: {
 		$id: '/schemas/DeletePersonaParams.json',

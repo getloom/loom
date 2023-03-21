@@ -1,8 +1,8 @@
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
-import type {ClientEventInfo, ServiceEventInfo} from '$lib/vocab/event/event';
+import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreateEntity: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const CreateEntity: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'CreateEntity',
 	broadcast: true,
 	params: {
@@ -59,8 +59,8 @@ export const CreateEntity: ServiceEventInfo = {
 	},
 };
 
-export const UpdateEntity: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const UpdateEntity: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'UpdateEntity',
 	broadcast: true,
 	params: {
@@ -91,8 +91,8 @@ export const UpdateEntity: ServiceEventInfo = {
 	},
 };
 
-export const ReadEntities: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const ReadEntities: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'ReadEntities',
 	params: {
 		$id: '/schemas/ReadEntitiesParams.json',
@@ -121,8 +121,8 @@ export const ReadEntities: ServiceEventInfo = {
 	},
 };
 
-export const QueryEntities: ClientEventInfo = {
-	type: 'ClientEvent',
+export const QueryEntities: ClientActionData = {
+	type: 'ClientAction',
 	name: 'QueryEntities',
 	params: {
 		$id: '/schemas/QueryEntitiesResponse.json',
@@ -137,8 +137,8 @@ export const QueryEntities: ClientEventInfo = {
 	returns: 'Query',
 };
 
-export const ReadEntitiesPaginated: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const ReadEntitiesPaginated: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'ReadEntitiesPaginated',
 	params: {
 		$id: '/schemas/ReadEntitiesPaginatedParams.json',
@@ -169,8 +169,8 @@ export const ReadEntitiesPaginated: ServiceEventInfo = {
 	},
 };
 
-export const EraseEntities: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const EraseEntities: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'EraseEntities',
 	broadcast: true,
 	params: {
@@ -199,8 +199,8 @@ export const EraseEntities: ServiceEventInfo = {
 	},
 };
 
-export const DeleteEntities: ServiceEventInfo = {
-	type: 'ServiceEvent',
+export const DeleteEntities: ServiceActionData = {
+	type: 'ServiceAction',
 	name: 'DeleteEntities',
 	broadcast: true,
 	params: {

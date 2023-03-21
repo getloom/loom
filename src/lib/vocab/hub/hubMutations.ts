@@ -1,4 +1,4 @@
-import type {Mutations} from '$lib/app/eventTypes';
+import type {Mutations} from '$lib/app/actionTypes';
 import {evictHub, stashHub} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashPersonas} from '$lib/vocab/actor/personaMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';

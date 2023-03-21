@@ -1,6 +1,6 @@
 import {unwrap} from '@feltjs/util';
 
-import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/app/eventTypes';
+import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/app/actionTypes';
 import type {Space} from '$lib/vocab/space/space';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {ApiError} from '$lib/server/api';

@@ -1,5 +1,5 @@
 import {viewTemplatesByName} from '$lib/vocab/view/view';
-import type {CreateSpaceParams} from '$lib/app/eventTypes';
+import type {CreateSpaceParams} from '$lib/app/actionTypes';
 import type {Hub} from '$lib/vocab/hub/hub';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {spaceTemplateToCreateSpaceParams} from '$lib/app/templates';

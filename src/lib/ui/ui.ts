@@ -23,7 +23,7 @@ import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import type {EphemeraResponse} from '$lib/app/eventTypes';
+import type {EphemeraResponse} from '$lib/app/actionTypes';
 import type {Role} from '$lib/vocab/role/role';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {PaginatedQueryStore, Query} from '$lib/util/query';

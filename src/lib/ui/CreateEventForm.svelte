@@ -6,8 +6,8 @@
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import CreateEventParamsFields from '$lib/ui/CreateEventParamsFields.svelte';
-	import {eventInfos} from '$lib/app/events';
-	import type {EventInfo} from '$lib/vocab/event/event';
+	import {actionData} from '$lib/app/actionData';
+	import type {ActionData} from '$lib/vocab/action/action';
 
 	const {actions} = getApp();
 
@@ -23,14 +23,14 @@
 	interface ActionHistoryItem {
 		name: string;
 		params: any; // TODO ?
-		eventInfo: EventInfo;
+		eventInfo: ActionData;
 		created: number;
 		responded: number;
 		elapsed: number;
 		error: string | null;
 	}
 
-	const actionsEvent = async (eventInfo: EventInfo, params: any): Promise<void> => {
+	const actionsEvent = async (eventInfo: ActionData, params: any): Promise<void> => {
 		if (pending) return;
 		// TODO confirmation dialog!
 		formParams = params; // depending on where the event is actionHistory, the form params may not match, but we want to load the form with whatever was just sent for UX purposes
@@ -60,11 +60,11 @@
 		actionHistory = [d].concat(actionHistory); // TODO granularly update `responded`/`elapsed` updates so we see it immediately, maybe track `status` and `error` even
 	};
 
-	let selectedEventInfo: EventInfo | undefined;
+	let selectedActionData: ActionData | undefined;
 
-	$: selectedEventInfo, (formParams = null); // TODO should this be needed?
+	$: selectedActionData, (formParams = null); // TODO should this be needed?
 
-	$: paramsProperties = selectedEventInfo?.params?.properties;
+	$: paramsProperties = selectedActionData?.params?.properties;
 	$: paramsPropertiesKeys = paramsProperties && Object.keys(paramsProperties);
 </script>
 
@@ -73,19 +73,19 @@
 	<div class="layout">
 		<fieldset class="events markup">
 			<legend>available events</legend>
-			{#each eventInfos as eventInfo (eventInfo)}
+			{#each actionData as eventInfo (eventInfo)}
 				<label class="row">
-					<input type="radio" bind:group={selectedEventInfo} value={eventInfo} />
+					<input type="radio" bind:group={selectedActionData} value={eventInfo} />
 					<code class={eventInfo.type}>{eventInfo.name}</code>
 				</label>
 			{/each}
 		</fieldset>
 		<div class="content">
-			{#if selectedEventInfo}
+			{#if selectedActionData}
 				<div class="markup">
 					<h3>
-						<code class={selectedEventInfo.type}>{selectedEventInfo.name}</code><small
-							>{selectedEventInfo.type}</small
+						<code class={selectedActionData.type}>{selectedActionData.name}</code><small
+							>{selectedActionData.type}</small
 						>
 					</h3>
 				</div>
@@ -96,19 +96,19 @@
 							<code class="params"><pre>{JSON.stringify(formParams, null, 2)}</pre></code>
 							<CreateEventParamsFields
 								{persona}
-								eventInfo={selectedEventInfo}
+								eventInfo={selectedActionData}
 								bind:params={formParams}
 							/>
 						</fieldset>
 					{/if}
 					<!-- TODO `style="width: 100%"` is a hack -->
 					<PendingButton
-						on:click={() => selectedEventInfo && actionsEvent(selectedEventInfo, formParams)}
+						on:click={() => selectedActionData && actionsEvent(selectedActionData, formParams)}
 						style="width: 100%"
 						{pending}
 						disabled={pending}
 					>
-						actions <code class={selectedEventInfo.type}>{selectedEventInfo.name}</code>
+						actions <code class={selectedActionData.type}>{selectedActionData.name}</code>
 					</PendingButton>
 					<!-- TODO implement saving events like any other data to a path/entity -->
 					<!-- <PendingButton on:click={save} pending={savePending} disabled={pending}
@@ -199,10 +199,10 @@
 		font-size: var(--font_size_lg);
 		font-weight: 700;
 	}
-	.ServiceEvent {
+	.ServiceAction {
 		color: var(--blue);
 	}
-	.ClientEvent {
+	.ClientAction {
 		color: var(--green);
 	}
 	table {
