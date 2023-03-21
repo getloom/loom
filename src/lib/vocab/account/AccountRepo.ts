@@ -36,7 +36,7 @@ export class AccountRepo extends PostgresRepo {
 			directoriesResult,
 			sessionPersonasResult,
 			hubsResult,
-			rolesResult,
+			roles,
 			assignmentsResult,
 			policiesResult,
 			personasResult,
@@ -53,7 +53,6 @@ export class AccountRepo extends PostgresRepo {
 		if (!directoriesResult.ok) return directoriesResult;
 		if (!sessionPersonasResult.ok) return sessionPersonasResult;
 		if (!hubsResult.ok) return hubsResult;
-		if (!rolesResult.ok) return rolesResult;
 		if (!assignmentsResult.ok) return assignmentsResult;
 		if (!policiesResult.ok) return policiesResult;
 		if (!personasResult.ok) return personasResult;
@@ -64,7 +63,7 @@ export class AccountRepo extends PostgresRepo {
 				account,
 				sessionPersonas: sessionPersonasResult.value,
 				hubs: hubsResult.value,
-				roles: rolesResult.value,
+				roles,
 				spaces,
 				directories: directoriesResult.value,
 				assignments: assignmentsResult.value,

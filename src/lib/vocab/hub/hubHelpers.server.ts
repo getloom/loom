@@ -93,9 +93,7 @@ export const initTemplateGovernanceForHub = async (
 	// TODO can this be safely batched?
 	for (const roleTemplate of roleTemplates) {
 		log.trace('creating role from template', roleTemplate);
-		const role = unwrap(
-			await repos.role.create(hub.hub_id, roleTemplate.name), // eslint-disable-line no-await-in-loop
-		);
+		const role = await repos.role.create(hub.hub_id, roleTemplate.name); // eslint-disable-line no-await-in-loop
 		roles.push(role);
 
 		if (roleTemplate.default) {

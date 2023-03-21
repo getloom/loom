@@ -52,12 +52,11 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 
 		await checkHubAccess(actor, hub_id, repos);
 
-		const [spaces, rolesResult, assignmentsResult] = await Promise.all([
+		const [spaces, roles, assignmentsResult] = await Promise.all([
 			repos.space.filterByHub(hub_id),
 			repos.role.filterByHub(hub_id),
 			repos.assignment.filterByHub(hub_id),
 		]);
-		const roles = unwrap(rolesResult);
 		const assignments = unwrap(assignmentsResult);
 
 		// TODO is this more efficient than parallelizing `persona.filterByHub`?

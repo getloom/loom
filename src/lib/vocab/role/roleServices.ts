@@ -16,7 +16,7 @@ export const CreateRoleService: ServiceByName['CreateRole'] = {
 		const {hub_id, name, actor} = params;
 		await checkPolicy(permissions.CreateRole, actor, hub_id, repos);
 		log.trace('creating hub role', hub_id, name);
-		const role = unwrap(await repos.role.create(hub_id, name));
+		const role = await repos.role.create(hub_id, name);
 		return {ok: true, status: 200, value: {role}};
 	},
 };
@@ -28,7 +28,7 @@ export const ReadRolesService: ServiceByName['ReadRoles'] = {
 		const {actor, hub_id} = params;
 		await checkHubAccess(actor, hub_id, repos);
 		log.trace('retrieving roles for hub', hub_id);
-		const roles = unwrap(await repos.role.filterByHub(hub_id));
+		const roles = await repos.role.filterByHub(hub_id);
 		return {ok: true, status: 200, value: {roles}};
 	},
 };
@@ -41,7 +41,7 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 		log.trace('updating role', role_id, name);
 		const {hub_id} = unwrap(await repos.hub.findByRole(role_id));
 		await checkPolicy(permissions.UpdateRole, actor, hub_id, repos);
-		const role = unwrap(await repos.role.update(role_id, name));
+		const role = await repos.role.update(role_id, name);
 		return {ok: true, status: 200, value: {role}};
 	},
 };
@@ -59,7 +59,7 @@ export const DeleteRoleService: ServiceByName['DeleteRole'] = {
 			return {ok: false, status: 405, message: 'deleting the default role is not allowed'};
 		}
 
-		unwrap(await repos.role.deleteById(role_id));
+		await repos.role.deleteById(role_id);
 
 		return {ok: true, status: 200, value: null};
 	},

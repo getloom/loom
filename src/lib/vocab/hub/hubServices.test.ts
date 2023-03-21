@@ -173,7 +173,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	assert.is(assignmentResult.length, 0);
 
 	//check roles are gone
-	const roleResult = unwrap(await repos.role.filterByHub(hub.hub_id));
+	const roleResult = await repos.role.filterByHub(hub.hub_id);
 	assert.is(roleResult.length, 0);
 
 	//check hub is gone
