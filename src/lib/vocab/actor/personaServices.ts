@@ -3,7 +3,7 @@ import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
-import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaEvents';
+import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaActions';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	cleanOrphanHubs,

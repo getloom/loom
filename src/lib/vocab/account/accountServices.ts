@@ -9,7 +9,7 @@ import {
 	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
-} from '$lib/vocab/account/accountEvents';
+} from '$lib/vocab/account/accountActions';
 import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 import {verifyPassword} from '$lib/util/password';

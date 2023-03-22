@@ -7,7 +7,7 @@ import {
 	ReadPolicies,
 	UpdatePolicy,
 	DeletePolicy,
-} from '$lib/vocab/policy/policyEvents';
+} from '$lib/vocab/policy/policyActions';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 

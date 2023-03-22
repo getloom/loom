@@ -5,7 +5,7 @@ import {
 	SignUp,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
-} from '$lib/vocab/account/accountEvents';
+} from '$lib/vocab/account/accountActions';
 import {
 	CreateHub,
 	ReadHub,
@@ -14,10 +14,10 @@ import {
 	InviteToHub,
 	LeaveHub,
 	KickFromHub,
-} from '$lib/vocab/hub/hubEvents';
-import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaEvents';
-import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentEvents';
-import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceEvents';
+} from '$lib/vocab/hub/hubActions';
+import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaActions';
+import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
+import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions';
 import {
 	CreateEntity,
 	UpdateEntity,
@@ -26,14 +26,14 @@ import {
 	EraseEntities,
 	DeleteEntities,
 	ReadEntitiesPaginated,
-} from '$lib/vocab/entity/entityEvents';
-import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleEvents';
+} from '$lib/vocab/entity/entityActions';
+import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions';
 import {
 	CreatePolicy,
 	ReadPolicies,
 	UpdatePolicy,
 	DeletePolicy,
-} from '$lib/vocab/policy/policyEvents';
+} from '$lib/vocab/policy/policyActions';
 import {
 	Ping,
 	Ephemera,
@@ -45,7 +45,7 @@ import {
 	CloseDialog,
 	ViewSpace,
 	ClearFreshness,
-} from '$lib/ui/uiEvents';
+} from '$lib/ui/uiActions';
 
 export const actionData: ActionData[] = [
 	// accountEvents

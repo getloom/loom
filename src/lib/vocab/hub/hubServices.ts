@@ -11,7 +11,7 @@ import {
 	InviteToHub,
 	LeaveHub,
 	KickFromHub,
-} from '$lib/vocab/hub/hubEvents';
+} from '$lib/vocab/hub/hubActions';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';

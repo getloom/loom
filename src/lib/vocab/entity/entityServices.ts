@@ -6,7 +6,7 @@ import {
 	CreateEntity,
 	EraseEntities,
 	DeleteEntities,
-} from '$lib/vocab/entity/entityEvents';
+} from '$lib/vocab/entity/entityActions';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {checkEntityPath, scrubEntityPath} from '$lib/vocab/entity/entityHelpers';
