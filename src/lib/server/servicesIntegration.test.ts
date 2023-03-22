@@ -117,11 +117,11 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	//
 
 	// Delete one of the two entities, to test that cascading works as expected.
-	unwrap(await repos.entity.deleteByIds([entity1.entity_id]));
+	await repos.entity.deleteByIds([entity1.entity_id]);
 
 	// delete spaces except the home space
 	for (const space of filteredSpaces) {
-		const directory = unwrap(await repos.entity.findById(space.directory_id))!; // eslint-disable-line no-await-in-loop
+		const directory = (await repos.entity.findById(space.directory_id))!; // eslint-disable-line no-await-in-loop
 		if (!isHomeSpace(directory)) {
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop

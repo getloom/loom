@@ -1,5 +1,3 @@
-import {unwrap} from '@feltjs/util';
-
 import type {ServiceByName} from '$lib/app/actionTypes';
 import {
 	ReadEntities,
@@ -33,7 +31,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(source_id);
-		const {entities} = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
+		const {entities} = await repos.entity.filterByIds(Array.from(entityIds));
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
 };
@@ -50,7 +48,7 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(ties);
 		entityIds.delete(source_id);
-		const {entities} = unwrap(await repos.entity.filterByIds(Array.from(entityIds)));
+		const {entities} = await repos.entity.filterByIds(Array.from(entityIds));
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
 };
@@ -64,7 +62,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		const {hub_id} = (await repos.space.findById(space_id))!;
 		await checkPolicy(permissions.CreateEntity, actor, hub_id, repos);
 
-		const entity = unwrap(await repos.entity.create(actor, data, space_id, path));
+		const entity = await repos.entity.create(actor, data, space_id, path);
 
 		const entities = [entity];
 
@@ -80,10 +78,10 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		}
 
 		// TODO optimize overfetching, we only want the `entity_id`
-		const directories = unwrap(await repos.entity.filterDirectoriesByEntity(entity.entity_id));
+		const directories = await repos.entity.filterDirectoriesByEntity(entity.entity_id);
 		// TODO optimize batch update
 		for (const directory of directories) {
-			entities.push(unwrap(await repos.entity.update(directory.entity_id))); // eslint-disable-line no-await-in-loop
+			entities.push(await repos.entity.update(directory.entity_id)); // eslint-disable-line no-await-in-loop
 		}
 
 		return {ok: true, status: 200, value: {entities, ties}};
@@ -104,7 +102,7 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 			if (errorMessage) return {ok: false, status: 400, message: errorMessage};
 		}
 
-		const entity = unwrap(await repos.entity.update(entity_id, data, path));
+		const entity = await repos.entity.update(entity_id, data, path);
 
 		return {ok: true, status: 200, value: {entity}};
 	},
@@ -118,7 +116,7 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 		const {actor, entityIds} = params;
 		await checkEntityOwnership(actor, entityIds, repos);
 
-		const entities = unwrap(await repos.entity.eraseByIds(entityIds));
+		const entities = await repos.entity.eraseByIds(entityIds);
 		return {ok: true, status: 200, value: {entities}};
 	},
 };
@@ -131,7 +129,7 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 		const {actor, entityIds} = params;
 		await checkEntityOwnership(actor, entityIds, repos);
 
-		unwrap(await repos.entity.deleteByIds(entityIds));
+		await repos.entity.deleteByIds(entityIds);
 
 		await cleanOrphanedEntities(repos);
 

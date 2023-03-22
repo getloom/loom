@@ -148,7 +148,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		const hubs = await repos.hub.filterByPersona(targetActor);
 
 		// swap in the ghost persona id for this `targetActor` for those objects that we don't delete
-		unwrap(await repos.entity.attributeToGhostByPersona(targetActor));
+		await repos.entity.attributeToGhostByPersona(targetActor);
 
 		// delete the persona and its related objects
 		unwrap(await repos.assignment.deleteByPersona(targetActor));

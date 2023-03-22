@@ -58,7 +58,7 @@ export const checkEntityOwnership = async (
 		return;
 	}
 
-	const {entities, missing} = unwrap(await repos.entity.filterByIds(entityIds));
+	const {entities, missing} = await repos.entity.filterByIds(entityIds);
 	if (missing && missing.length > 0) {
 		throw new ApiError(400, 'unable to process non-existing entities');
 	}

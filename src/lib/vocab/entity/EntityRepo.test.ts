@@ -1,9 +1,9 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, unwrapError} from '@feltjs/util';
 
 import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';
+import {expectError} from '$lib/util/testHelpers';
 
 /* test__EntityRepo */
 const test__EntityRepo = suite<TestDbContext>('EntityRepo');
@@ -31,7 +31,7 @@ test__EntityRepo('create and delete entities', async ({repos, random}) => {
 	// Create a second entity.
 	const {entity: entity2} = await random.entity(persona, account, hub, space, space.directory_id);
 	// Delete the created entities, and test that everything is cleaned up.
-	unwrap(await repos.entity.deleteByIds([entity1.entity_id, entity2.entity_id]));
+	await repos.entity.deleteByIds([entity1.entity_id, entity2.entity_id]);
 	await assertDbCounts();
 });
 
@@ -41,7 +41,7 @@ test__EntityRepo('find entity by id', async ({repos, random}) => {
 		data,
 	});
 	assert.equal(entity.data, data); // just in case
-	const found = unwrap(await repos.entity.findById(entity.entity_id));
+	const found = await repos.entity.findById(entity.entity_id);
 	assert.ok(found);
 	assert.is(found.entity_id, entity.entity_id);
 	assert.is(found.persona_id, entity.persona_id);
@@ -55,10 +55,12 @@ test__EntityRepo('entites return sorted by descending id', async ({repos, random
 	const {entity: entity2} = await random.entity(persona, account, hub, space, space.directory_id);
 
 	// Ensure repos sort order is shuffled from the insertion order.
-	unwrap(await repos.entity.update(entity1.entity_id, entity1.data));
-	const {entities} = unwrap(
-		await repos.entity.filterByIds([entity0.entity_id, entity2.entity_id, entity1.entity_id]),
-	);
+	await repos.entity.update(entity1.entity_id, entity1.data);
+	const {entities} = await repos.entity.filterByIds([
+		entity0.entity_id,
+		entity2.entity_id,
+		entity1.entity_id,
+	]);
 	assert.is(entity2.entity_id, entities[0].entity_id);
 	assert.is(entity1.entity_id, entities[1].entity_id);
 	assert.is(entity0.entity_id, entities[2].entity_id);
@@ -73,17 +75,16 @@ test__EntityRepo('disallow mutating tombstones', async ({repos, random}) => {
 
 	// Erase the entity.
 	const eraseResult1 = await repos.entity.eraseByIds([entity.entity_id]);
-	assert.ok(eraseResult1.ok);
-	const erased = eraseResult1.value[0];
+	const erased = eraseResult1[0];
 
 	// Disallow further `eraseByIds`
-	unwrapError(await repos.entity.eraseByIds([entity.entity_id]));
+	await expectError(repos.entity.eraseByIds([entity.entity_id]));
 
 	// Disallow `update`
-	unwrapError(await repos.entity.update(entity.entity_id, {type: 'Note', content: '2'}));
+	await expectError(repos.entity.update(entity.entity_id, {type: 'Note', content: '2'}));
 
 	// Ensure the entity is a Tombstone and didn't get mutated.
-	const found = unwrap(await repos.entity.findById(entity.entity_id));
+	const found = await repos.entity.findById(entity.entity_id);
 	assert.ok(found);
 	assert.is(found.entity_id, entity.entity_id);
 	assert.is(found.persona_id, entity.persona_id);
@@ -138,10 +139,10 @@ test__EntityRepo('check filtering for directories by entity id', async ({repos, 
 	await repos.tie.create(entityPost.entity_id, entityReply.entity_id, 'HasReply');
 
 	await repos.tie.create(space2.directory_id, entityPost.entity_id, 'HasPost');
-	const query1 = unwrap(await repos.entity.filterDirectoriesByEntity(entityIndex.entity_id));
+	const query1 = await repos.entity.filterDirectoriesByEntity(entityIndex.entity_id);
 	assert.equal(query1.length, 1);
 
-	const query2 = unwrap(await repos.entity.filterDirectoriesByEntity(entityPost.entity_id));
+	const query2 = await repos.entity.filterDirectoriesByEntity(entityPost.entity_id);
 	assert.equal(query2.length, 2);
 });
 

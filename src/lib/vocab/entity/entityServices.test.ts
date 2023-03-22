@@ -193,7 +193,7 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, re
 		ties: [{source_id: list.entity_id}],
 	});
 	const entityIds = [todo1.entity_id, todo2.entity_id, todo3.entity_id];
-	const filterResult = unwrap(await repos.entity.filterByIds(entityIds));
+	const filterResult = await repos.entity.filterByIds(entityIds);
 	assert.is(filterResult.entities.length, 3);
 	assert.is(filterResult.missing, null);
 	//delete the collection
@@ -203,7 +203,7 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, re
 			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
 		}),
 	);
-	const {missing} = unwrap(await repos.entity.filterByIds(entityIds));
+	const {missing} = await repos.entity.filterByIds(entityIds);
 	assert.equal(missing, entityIds);
 });
 
@@ -364,7 +364,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 		);
 
 		// Ensure nothing in the database changed.
-		const found = unwrap(await repos.entity.findById(directory.entity_id));
+		const found = await repos.entity.findById(directory.entity_id);
 		assert.ok(found);
 		assert.equal(found.data, directory.data);
 	};

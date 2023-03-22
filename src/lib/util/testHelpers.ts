@@ -73,3 +73,15 @@ export const expectApiError = async (status: number, cb: () => Promise<any>): Pr
 	assert.ok(error);
 	assert.is(error.status, status);
 };
+
+export const expectError = async (promise: Promise<any>): Promise<void> => {
+	let error: Error | undefined;
+	try {
+		await promise;
+	} catch (err) {
+		error = err;
+	}
+	if (!error) {
+		throw Error('expected error');
+	}
+};

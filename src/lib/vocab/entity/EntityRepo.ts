@@ -1,4 +1,3 @@
-import {NOT_OK, OK, type Result} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -15,7 +14,7 @@ export class EntityRepo extends PostgresRepo {
 		data: EntityData,
 		space_id: number | null,
 		path: string | null = null,
-	): Promise<Result<{value: Entity}>> {
+	): Promise<Entity> {
 		log.trace('[createEntity]', persona_id);
 		const entity = await this.sql<Entity[]>`
 			INSERT INTO entities (persona_id, space_id, path, data) VALUES (
@@ -23,18 +22,18 @@ export class EntityRepo extends PostgresRepo {
 			) RETURNING *
 		`;
 		// log.trace('create entity', data);
-		return {ok: true, value: entity[0]};
+		return entity[0];
 	}
 
-	async findById(entity_id: number): Promise<Result<{value: Entity | undefined}>> {
+	async findById(entity_id: number): Promise<Entity | undefined> {
 		const data = await this.sql<Entity[]>`
 			SELECT entity_id, space_id, path, data, persona_id, created, updated 
 			FROM entities WHERE entity_id=${entity_id}
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
-	async findByPath(hub_id: number, path: string): Promise<Result<{value: Entity | undefined}>> {
+	async findByPath(hub_id: number, path: string): Promise<Entity | undefined> {
 		log.trace('[findByPath]', hub_id, path);
 		const data = await this.sql<Entity[]>`
 			SELECT e.entity_id, e.space_id, e.path, e.data, e.persona_id, e.created, e.updated
@@ -44,15 +43,13 @@ export class EntityRepo extends PostgresRepo {
 			WHERE s.hub_id=${hub_id}
 		`;
 		log.trace('[findByPath] result', data);
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
 	// TODO maybe `EntityQuery`?
 	// TODO remove the `message`, handle count mismatch similar to `findById` calls, maybe returning an array of the missing ids with `ok: false`
-	async filterByIds(
-		entityIds: number[],
-	): Promise<Result<{value: {entities: Entity[]; missing: null | number[]}}>> {
-		if (entityIds.length === 0) return {ok: true, value: {entities: [], missing: null}};
+	async filterByIds(entityIds: number[]): Promise<{entities: Entity[]; missing: null | number[]}> {
+		if (entityIds.length === 0) return {entities: [], missing: null};
 		log.trace('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
 			SELECT entity_id, space_id, path, data, persona_id, created, updated 
@@ -63,10 +60,10 @@ export class EntityRepo extends PostgresRepo {
 			entities.length === entityIds.length
 				? null
 				: entityIds.filter((id) => !entities.some((e) => e.entity_id === id));
-		return {ok: true, value: {entities, missing}};
+		return {entities, missing};
 	}
 
-	async filterDirectoriesByAccount(account_id: number): Promise<Result<{value: Directory[]}>> {
+	async filterDirectoriesByAccount(account_id: number): Promise<Directory[]> {
 		const data = await this.sql<Directory[]>`
 			SELECT entity_id, data, persona_id, created, updated, space_id, path
 			FROM entities e JOIN (
@@ -78,7 +75,7 @@ export class EntityRepo extends PostgresRepo {
 			) es
 			ON e.entity_id=es.directory_id
 		`;
-		return {ok: true, value: data};
+		return data;
 	}
 
 	async update(
@@ -86,7 +83,7 @@ export class EntityRepo extends PostgresRepo {
 		data?: EntityData,
 		path?: string | null | undefined, // value is nullable in the db
 		space_id?: number,
-	): Promise<Result<{value: Entity}>> {
+	): Promise<Entity> {
 		log.trace('[update]', entity_id);
 		const _data = await this.sql<Entity[]>`
 			UPDATE entities SET
@@ -97,12 +94,12 @@ export class EntityRepo extends PostgresRepo {
 			WHERE entity_id=${entity_id} AND NOT (data @> '{"type":"Tombstone"}'::jsonb)
 			RETURNING *
 		`;
-		if (!_data.count) return NOT_OK;
-		return {ok: true, value: _data[0]};
+		if (!_data.count) throw Error();
+		return _data[0];
 	}
 
 	//This function is an idempotent soft delete, that leaves behind a Tombstone entity per Activity-Streams spec
-	async eraseByIds(entityIds: number[]): Promise<Result<{value: Entity[]}>> {
+	async eraseByIds(entityIds: number[]): Promise<Entity[]> {
 		log.trace('[eraseById]', entityIds);
 		const data = await this.sql<any[]>`
 			UPDATE entities
@@ -110,19 +107,19 @@ export class EntityRepo extends PostgresRepo {
 			WHERE entity_id IN ${this.sql(entityIds)} AND NOT (data @> '{"type":"Tombstone"}'::jsonb)
 			RETURNING *;
 		`;
-		if (!data.count) return NOT_OK;
-		return {ok: true, value: data};
+		if (!data.count) throw Error();
+		return data;
 	}
 
 	//This function actually deletes the records in the DB
-	async deleteByIds(entityIds: number[]): Promise<Result> {
+	async deleteByIds(entityIds: number[]): Promise<void> {
 		log.trace('[deleteByIds]', entityIds);
 		const data = await this.sql<any[]>`
 			DELETE FROM entities WHERE entity_id IN ${this.sql(entityIds)}
 		`;
-		if (!data.count) return NOT_OK;
-		if (data.count !== entityIds.length) return NOT_OK;
-		return OK;
+		if (!data.count) throw Error();
+		// TODO maybe return the data or count instead of throwing?
+		if (data.count !== entityIds.length) throw Error();
 	}
 
 	// TODO needs to handle `data.attributedTo` and other data properties containing personas,
@@ -131,28 +128,28 @@ export class EntityRepo extends PostgresRepo {
 	// how? see https://www.postgresql.org/docs/current/functions-json.html
 	// `WHERE data ? 'attributedTo'`
 	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
-	async attributeToGhostByPersona(persona_id: number): Promise<Result<{value: number}>> {
+	async attributeToGhostByPersona(persona_id: number): Promise<number> {
 		log.trace('[ghost]', persona_id);
 		const data = await this.sql<any[]>`
 			UPDATE entities
 			SET updated=NOW(), persona_id=${GHOST_ACTOR_ID}
 			WHERE persona_id=${persona_id};
 		`;
-		return {ok: true, value: data.count};
+		return data.count;
 	}
 
 	//This function finds all non-directory entities with no ties pointing to them & returns an array of their ids
-	async filterOrphanedEntities(): Promise<Result<{value: Array<Pick<Entity, 'entity_id'>>}>> {
+	async filterOrphanedEntities(): Promise<Array<Pick<Entity, 'entity_id'>>> {
 		const data = await this.sql<Array<Pick<Entity, 'entity_id'>>>`
 			SELECT entity_id FROM entities e
 			LEFT JOIN ties t
 			ON e.entity_id = t.dest_id
 			WHERE NOT (e.data ? 'directory') AND t.dest_id IS NULL;
 		`;
-		return {ok: true, value: data};
+		return data;
 	}
 
-	async filterDirectoriesByEntity(entity_id: number): Promise<Result<{value: Entity[]}>> {
+	async filterDirectoriesByEntity(entity_id: number): Promise<Entity[]> {
 		log.trace(`looking for directories for entity: ${entity_id}`);
 		const directories = await this.sql<Entity[]>`
 			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated, e.space_id, e.path FROM entities e
@@ -172,6 +169,6 @@ export class EntityRepo extends PostgresRepo {
 			WHERE data ? 'directory';
 		`;
 		log.trace('all directories pointing at entity', directories);
-		return {ok: true, value: directories};
+		return directories;
 	}
 }

@@ -33,7 +33,7 @@ export class AccountRepo extends PostgresRepo {
 		// TODO optimize?
 		const [
 			spaces,
-			directoriesResult,
+			directories,
 			sessionPersonasResult,
 			hubs,
 			roles,
@@ -50,7 +50,6 @@ export class AccountRepo extends PostgresRepo {
 			this.repos.policy.filterByAccount(account.account_id),
 			this.repos.persona.filterAssociatesByAccount(account.account_id),
 		]);
-		if (!directoriesResult.ok) return directoriesResult;
 		if (!sessionPersonasResult.ok) return sessionPersonasResult;
 		if (!assignmentsResult.ok) return assignmentsResult;
 		if (!personasResult.ok) return personasResult;
@@ -63,7 +62,7 @@ export class AccountRepo extends PostgresRepo {
 				hubs,
 				roles,
 				spaces,
-				directories: directoriesResult.value,
+				directories,
 				assignments: assignmentsResult.value,
 				policies,
 				personas: personasResult.value,

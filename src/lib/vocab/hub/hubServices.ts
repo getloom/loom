@@ -66,9 +66,7 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
 		]);
 		const {personas} = unwrap(personasResult);
-		const {entities: directories} = unwrap(directoriesResult) as {
-			entities: Directory[];
-		};
+		const {entities: directories} = directoriesResult as {entities: Directory[]};
 
 		return {
 			ok: true,

@@ -87,7 +87,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 		await Promise.all(
 			allSpaces.map(async (s) => {
 				assertIs(await repos.space.findById(s.space_id), undefined);
-				assertIs(unwrap(await repos.entity.findById(s.directory_id)), undefined);
+				assertIs(await repos.entity.findById(s.directory_id), undefined);
 				// TODO assertIs(unwrap(await repos.entity.filterBySpace(s.space_id)).length, 0);
 			}),
 		);
@@ -135,7 +135,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	await check(false);
 
 	// entity in other hub should be a ghost
-	const otherEntityUpdated = unwrap(await repos.entity.findById(otherEntity.entity_id));
+	const otherEntityUpdated = await repos.entity.findById(otherEntity.entity_id);
 	assert.ok(otherEntityUpdated);
 	assert.is(otherEntityUpdated.data.content, otherContent);
 	assert.is(otherEntityUpdated.persona_id, GHOST_ACTOR_ID);

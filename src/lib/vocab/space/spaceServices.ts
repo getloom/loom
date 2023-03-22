@@ -1,5 +1,4 @@
 import {Logger} from '@feltjs/util/log.js';
-import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
@@ -25,9 +24,9 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 
 		const spaces = await repos.space.filterByHub(hub_id);
 
-		const {entities: directories} = unwrap(
-			await repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
-		) as {entities: Directory[]};
+		const {entities: directories} = (await repos.entity.filterByIds(
+			spaces.map((s) => s.directory_id),
+		)) as {entities: Directory[]};
 
 		return {ok: true, status: 200, value: {spaces, directories}};
 	},
@@ -78,7 +77,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 		if (!space) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
-		const directory = unwrap(await repos.entity.findById(space.directory_id));
+		const directory = await repos.entity.findById(space.directory_id);
 		if (!directory) {
 			return {ok: false, status: 404, message: 'no directory found'};
 		}
