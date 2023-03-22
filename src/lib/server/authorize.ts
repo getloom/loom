@@ -1,4 +1,4 @@
-import {OK, unwrap, type Result} from '@feltjs/util';
+import {OK, type Result} from '@feltjs/util';
 
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
@@ -35,7 +35,7 @@ export const authorize = async (
 	if (!params.actor) {
 		return {ok: false, status: 400, message: 'actor is required'};
 	}
-	const actor = unwrap(await repos.persona.findById<Persona>(params.actor, ACTOR_COLUMNS.Persona));
+	const actor = await repos.persona.findById<Persona>(params.actor, ACTOR_COLUMNS.Persona);
 	if (!actor) {
 		return {ok: false, status: 400, message: 'actor cannot be found'};
 	}

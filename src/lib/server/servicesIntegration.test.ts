@@ -99,7 +99,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	// TODO add a service event?
 	assert.equal(
-		unwrap(await repos.persona.filterByAccount(account.account_id))
+		(await repos.persona.filterByAccount(account.account_id))
 			.sort((a, b) => (a.created < b.created ? -1 : 1))
 			.slice(), // `slice` because `RowList` is not deep equal to arrays
 		[persona1, persona2],

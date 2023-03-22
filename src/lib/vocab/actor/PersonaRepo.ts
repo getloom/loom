@@ -1,4 +1,3 @@
-import {NOT_OK, OK, type Result} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -17,7 +16,7 @@ export class PersonaRepo extends PostgresRepo {
 		name: string,
 		account_id: number,
 		hub_id: number,
-	): Promise<Result<{value: AccountPersona}>> {
+	): Promise<AccountPersona> {
 		const data = await this.sql<AccountPersona[]>`
 			INSERT INTO personas (type, name, account_id, hub_id) VALUES (
 				'account', ${name}, ${account_id}, ${hub_id}
@@ -25,13 +24,10 @@ export class PersonaRepo extends PostgresRepo {
 		`;
 		const persona = data[0];
 		log.trace('[createAccountPersona] created persona', persona);
-		return {ok: true, value: persona};
+		return persona;
 	}
 
-	async createCommunityPersona(
-		name: string,
-		hub_id: number,
-	): Promise<Result<{value: PublicPersona}>> {
+	async createCommunityPersona(name: string, hub_id: number): Promise<PublicPersona> {
 		const data = await this.sql<PublicPersona[]>`
 			INSERT INTO personas (type, name, hub_id) VALUES (
 				'community', ${name}, ${hub_id}
@@ -39,38 +35,37 @@ export class PersonaRepo extends PostgresRepo {
 		`;
 		const persona = data[0];
 		log.trace('[createCommunityPersona] created persona', persona);
-		return {ok: true, value: persona};
+		return persona;
 	}
 
-	async createGhostPersona(): Promise<Result<{value: PublicPersona}>> {
+	async createGhostPersona(): Promise<PublicPersona> {
 		const data = await this.sql<PublicPersona[]>`
 			INSERT INTO personas (type, name) VALUES (
 				'ghost', ${GHOST_ACTOR_NAME}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicPersona)}
 		`;
 		const persona = data[0];
-		if (persona.persona_id !== GHOST_ACTOR_ID) return NOT_OK;
-		return {ok: true, value: persona};
+		if (persona.persona_id !== GHOST_ACTOR_ID) throw Error();
+		return persona;
 	}
 
-	async deleteById(persona_id: number): Promise<Result> {
+	async deleteById(persona_id: number): Promise<void> {
 		const data = await this.sql<any[]>`
 			DELETE FROM personas WHERE persona_id=${persona_id}
 		`;
-		if (!data.count) return NOT_OK;
-		return OK;
+		if (!data.count) throw Error();
 	}
 
-	async filterByAccount(account_id: number): Promise<Result<{value: AccountPersona[]}>> {
+	async filterByAccount(account_id: number): Promise<AccountPersona[]> {
 		log.trace('[filterByAccount]', account_id);
 		const data = await this.sql<AccountPersona[]>`
 			SELECT ${this.sql(ACTOR_COLUMNS.Persona)}
 			FROM personas WHERE account_id=${account_id}
 		`;
-		return {ok: true, value: data};
+		return data;
 	}
 
-	async filterAssociatesByAccount(account_id: number): Promise<Result<{value: PublicPersona[]}>> {
+	async filterAssociatesByAccount(account_id: number): Promise<PublicPersona[]> {
 		const data = await this.sql<PublicPersona[]>`
 			SELECT ${this.sql(ACTOR_COLUMNS.PublicPersona.map((c) => 'p3.' + c))}
 			FROM personas p3
@@ -85,27 +80,27 @@ export class PersonaRepo extends PostgresRepo {
 				ACTOR_COLUMNS.PublicPersona,
 			)} FROM personas WHERE persona_id=${ADMIN_ACTOR_ID} OR persona_id=${GHOST_ACTOR_ID}
 		`;
-		return {ok: true, value: data};
+		return data;
 	}
 
 	async findById<T extends Partial<Persona> = PublicPersona>(
 		persona_id: number,
 		columns = ACTOR_COLUMNS.PublicPersona,
-	): Promise<Result<{value: T | undefined}>> {
+	): Promise<T | undefined> {
 		log.trace('[findById]', persona_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE persona_id=${persona_id}
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
 	// TODO handle count mismatch similar to to the entity version of this method
 	async filterByIds<T extends Partial<Persona> = PublicPersona>(
 		personaIds: number[],
 		columns = ACTOR_COLUMNS.PublicPersona,
-	): Promise<Result<{value: {personas: T[]; missing: null | number[]}}>> {
-		if (personaIds.length === 0) return {ok: true, value: {personas: [], missing: null}};
+	): Promise<{personas: T[]; missing: null | number[]}> {
+		if (personaIds.length === 0) return {personas: [], missing: null};
 		const personas = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE persona_id IN ${this.sql(personaIds)}
@@ -114,30 +109,30 @@ export class PersonaRepo extends PostgresRepo {
 			personas.length === personaIds.length
 				? null
 				: personaIds.filter((id) => !personas.some((e) => e.persona_id === id));
-		return {ok: true, value: {personas, missing}};
+		return {personas, missing};
 	}
 
 	async findByHub<T extends Partial<Persona> = PublicPersona>(
 		hub_id: number,
 		columns = ACTOR_COLUMNS.PublicPersona,
-	): Promise<Result<{value: T | undefined}>> {
+	): Promise<T | undefined> {
 		log.trace('[findByHub]', hub_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE hub_id=${hub_id}
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
 	async findByName<T extends Partial<Persona> = PublicPersona>(
 		name: string,
 		columns = ACTOR_COLUMNS.PublicPersona,
-	): Promise<Result<{value: T | undefined}>> {
+	): Promise<T | undefined> {
 		log.trace('[findByName]', name);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE LOWER(name) = LOWER(${name})
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 }

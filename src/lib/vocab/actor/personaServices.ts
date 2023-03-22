@@ -1,5 +1,4 @@
 import {Logger} from '@feltjs/util/log.js';
-import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
@@ -40,7 +39,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 		}
 
 		log.trace('[CreateAccountPersona] validating persona uniqueness', name);
-		const existingPersona = unwrap(await repos.persona.findByName(name));
+		const existingPersona = await repos.persona.findByName(name);
 		if (existingPersona) {
 			return {ok: false, status: 409, message: 'a persona with that name already exists'};
 		}
@@ -57,7 +56,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 
 		// Create the persona.
 		log.trace('[CreateAccountPersona] creating persona', name);
-		const persona = unwrap(await repos.persona.createAccountPersona(name, account_id, hub.hub_id));
+		const persona = await repos.persona.createAccountPersona(name, account_id, hub.hub_id);
 		personas.push(persona);
 
 		// Create the roles, policies, and persona assignment.
@@ -124,11 +123,9 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		if (targetActor === ADMIN_ACTOR_ID || targetActor === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
-		const persona = unwrap(
-			await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(targetActor, [
-				'type',
-				'hub_id',
-			]),
+		const persona = await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(
+			targetActor,
+			['type', 'hub_id'],
 		);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
@@ -149,8 +146,8 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		await repos.entity.attributeToGhostByPersona(targetActor);
 
 		// delete the persona and its related objects
+		await repos.persona.deleteById(targetActor);
 		await repos.assignment.deleteByPersona(targetActor);
-		unwrap(await repos.persona.deleteById(targetActor));
 		await repos.hub.deleteById(persona.hub_id); // must follow `persona.deleteById` it seems
 		await cleanOrphanHubs(
 			hubs.map((c) => c.hub_id).filter((c) => c !== persona.hub_id),

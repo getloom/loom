@@ -55,7 +55,7 @@ test__personaService('ghost persona has the expected name and id', async ({repos
 		}),
 	);
 
-	const ghostPersona = unwrap(await repos.persona.findById(GHOST_ACTOR_ID));
+	const ghostPersona = await repos.persona.findById(GHOST_ACTOR_ID);
 	assert.ok(ghostPersona);
 	assert.is(ghostPersona.type, 'ghost');
 	assert.is(ghostPersona.name, GHOST_ACTOR_NAME);
@@ -73,7 +73,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 		const assertIs = invert ? assert.is.not : assert.is;
 		await Promise.all(
 			personas.map(async (p) => {
-				assertIs(unwrap(await repos.persona.findById(p.persona_id)), undefined);
+				assertIs(await repos.persona.findById(p.persona_id), undefined);
 				assertIs((await repos.assignment.filterByPersona(p.persona_id)).length, 0);
 			}),
 		);

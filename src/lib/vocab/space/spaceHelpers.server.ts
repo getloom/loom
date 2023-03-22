@@ -1,5 +1,3 @@
-import {unwrap} from '@feltjs/util';
-
 import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/app/actionTypes';
 import type {Space} from '$lib/vocab/space/space';
 import type {Directory} from '$lib/vocab/entity/entityData';
@@ -38,7 +36,7 @@ export const createSpace = async (
 		throw new ApiError(409, 'a space with that path already exists');
 	}
 
-	const hubPersona = unwrap(await repos.persona.findByHub(hub_id));
+	const hubPersona = await repos.persona.findByHub(hub_id);
 	if (!hubPersona) {
 		throw new ApiError(409, 'failed to find the hub persona');
 	}

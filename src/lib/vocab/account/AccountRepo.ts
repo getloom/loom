@@ -31,40 +31,30 @@ export class AccountRepo extends PostgresRepo {
 		if (!account) return NOT_OK; // TODO custom error?
 
 		// TODO optimize?
-		const [
-			spaces,
-			directories,
-			sessionPersonasResult,
-			hubs,
-			roles,
-			assignments,
-			policies,
-			personasResult,
-		] = await Promise.all([
-			this.repos.space.filterByAccount(account.account_id),
-			this.repos.entity.filterDirectoriesByAccount(account.account_id),
-			this.repos.persona.filterByAccount(account.account_id),
-			this.repos.hub.filterByAccount(account.account_id),
-			this.repos.role.filterByAccount(account.account_id),
-			this.repos.assignment.filterByAccount(account.account_id),
-			this.repos.policy.filterByAccount(account.account_id),
-			this.repos.persona.filterAssociatesByAccount(account.account_id),
-		]);
-		if (!sessionPersonasResult.ok) return sessionPersonasResult;
-		if (!personasResult.ok) return personasResult;
+		const [spaces, directories, sessionPersonas, hubs, roles, assignments, policies, personas] =
+			await Promise.all([
+				this.repos.space.filterByAccount(account.account_id),
+				this.repos.entity.filterDirectoriesByAccount(account.account_id),
+				this.repos.persona.filterByAccount(account.account_id),
+				this.repos.hub.filterByAccount(account.account_id),
+				this.repos.role.filterByAccount(account.account_id),
+				this.repos.assignment.filterByAccount(account.account_id),
+				this.repos.policy.filterByAccount(account.account_id),
+				this.repos.persona.filterAssociatesByAccount(account.account_id),
+			]);
 
 		return {
 			ok: true,
 			value: {
 				account,
-				sessionPersonas: sessionPersonasResult.value,
+				sessionPersonas,
 				hubs,
 				roles,
 				spaces,
 				assignments,
 				directories,
 				policies,
-				personas: personasResult.value,
+				personas,
 			},
 		};
 	}

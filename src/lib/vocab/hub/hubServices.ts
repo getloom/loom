@@ -1,5 +1,4 @@
 import {Logger} from '@feltjs/util/log.js';
-import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
@@ -60,11 +59,11 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 
 		// TODO is this more efficient than parallelizing `persona.filterByHub`?
 		const personaIds = assignments.map((a) => a.persona_id);
-		const [personasResult, directoriesResult] = await Promise.all([
+		const [filteredPersonas, directoriesResult] = await Promise.all([
 			repos.persona.filterByIds(personaIds),
 			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
 		]);
-		const {personas} = unwrap(personasResult);
+		const {personas} = filteredPersonas;
 		const {entities: directories} = directoriesResult as {entities: Directory[]};
 
 		return {
@@ -122,7 +121,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		);
 
 		// Create the hub persona and its assignment
-		const hubPersona = unwrap(await repos.persona.createCommunityPersona(hub.name, hub_id));
+		const hubPersona = await repos.persona.createCommunityPersona(hub.name, hub_id);
 		const hubPersonaAssignment = await repos.assignment.create(
 			hubPersona.persona_id,
 			hub_id,
@@ -199,7 +198,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
 
-		const persona = unwrap(await repos.persona.findByName(name));
+		const persona = await repos.persona.findByName(name);
 		if (!persona) {
 			return {ok: false, status: 404, message: `cannot find a persona named ${name}`};
 		}

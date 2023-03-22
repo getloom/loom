@@ -1,5 +1,4 @@
 import {Logger} from '@feltjs/util/log.js';
-import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
@@ -52,11 +51,9 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 		// 	repos.persona.findById(persona_id),
 		// 	repos.hub.findById(hub_id),
 		// ]);
-		const persona = unwrap(
-			await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(persona_id, [
-				'type',
-				'hub_id',
-			]),
+		const persona = await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(
+			persona_id,
+			['type', 'hub_id'],
 		);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};

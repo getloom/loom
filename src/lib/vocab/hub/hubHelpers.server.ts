@@ -1,4 +1,3 @@
-import {unwrap} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -53,7 +52,7 @@ export const initAdminHub = async (
 	);
 
 	// Create the hub persona.
-	const persona = unwrap(await repos.persona.createCommunityPersona(hub.name, hub.hub_id));
+	const persona = await repos.persona.createCommunityPersona(hub.name, hub.hub_id);
 
 	// Init
 	const {roles, policies, assignments} = await initTemplateGovernanceForHub(
@@ -64,7 +63,7 @@ export const initAdminHub = async (
 	);
 
 	// Create the ghost persona.
-	const ghost = unwrap(await repos.persona.createGhostPersona());
+	const ghost = await repos.persona.createGhostPersona();
 
 	return {hub, persona, ghost, roles, policies, assignments};
 };
@@ -133,12 +132,10 @@ export const checkRemovePersona = async (
 	if (!(await repos.assignment.isPersonaInHub(persona_id, hub_id))) {
 		throw new ApiError(400, 'persona is not in the hub');
 	}
-	const persona = unwrap(
-		await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(persona_id, [
-			'type',
-			'hub_id',
-		]),
-	);
+	const persona = await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(persona_id, [
+		'type',
+		'hub_id',
+	]);
 	if (!persona) {
 		throw new ApiError(404, 'no persona found');
 	}

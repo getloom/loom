@@ -161,7 +161,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	);
 
 	//check hub personas are gone
-	assert.ok(!unwrap(await repos.persona.findByHub(hub.hub_id)));
+	assert.ok(!(await repos.persona.findByHub(hub.hub_id)));
 
 	//check hub spaces are gone
 	const spaceResult = await repos.space.filterByHub(hub.hub_id);
