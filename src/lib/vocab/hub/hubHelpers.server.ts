@@ -17,9 +17,8 @@ const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
 
 export const cleanOrphanHubs = async (hubIds: number[], repos: Repos): Promise<void> => {
 	for (const hub_id of hubIds) {
-		const accountPersonaAssignmentsCount = unwrap(
-			await repos.assignment.countAccountPersonaAssignmentsByHubId(hub_id), // eslint-disable-line no-await-in-loop
-		);
+		const accountPersonaAssignmentsCount =
+			await repos.assignment.countAccountPersonaAssignmentsByHubId(hub_id); // eslint-disable-line no-await-in-loop
 		if (accountPersonaAssignmentsCount === 0) {
 			log.trace('no assignments found for hub, cleaning up', hub_id);
 			await repos.hub.deleteById(hub_id); // eslint-disable-line no-await-in-loop
@@ -117,8 +116,10 @@ export const initTemplateGovernanceForHub = async (
 
 	// TODO in some cases we probably want to add both the `creatorRoleId` and `defaultRoleId` assignment, how to express that in the template data?
 	const creatorAssignmentRoleId = creatorRoleId || defaultRoleId || roles[0].role_id;
-	const creatorAssignment = unwrap(
-		await repos.assignment.create(actor, hub.hub_id, creatorAssignmentRoleId),
+	const creatorAssignment = await repos.assignment.create(
+		actor,
+		hub.hub_id,
+		creatorAssignmentRoleId,
 	);
 
 	return {roles, policies, assignments: [creatorAssignment]};
@@ -129,7 +130,7 @@ export const checkRemovePersona = async (
 	hub_id: number,
 	repos: Repos,
 ): Promise<void> => {
-	if (!unwrap(await repos.assignment.isPersonaInHub(persona_id, hub_id))) {
+	if (!(await repos.assignment.isPersonaInHub(persona_id, hub_id))) {
 		throw new ApiError(400, 'persona is not in the hub');
 	}
 	const persona = unwrap(
@@ -149,8 +150,8 @@ export const checkRemovePersona = async (
 		throw new ApiError(405, 'cannot leave a personal hub');
 	}
 	if (hub_id === ADMIN_HUB_ID) {
-		const adminAssignmentsCount = unwrap(
-			await repos.assignment.countAccountPersonaAssignmentsByHubId(hub_id),
+		const adminAssignmentsCount = await repos.assignment.countAccountPersonaAssignmentsByHubId(
+			hub_id,
 		);
 		// TODO this fails if the persona has multiple roles
 		if (adminAssignmentsCount === 1) {

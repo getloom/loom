@@ -1,4 +1,3 @@
-import {unwrap} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -23,15 +22,13 @@ export const createAssignment = async (
 	}
 
 	// Check for duplicate assignments.
-	const existingAssignment = unwrap(
-		await repos.assignment.findByUniqueIds(persona_id, hub_id, role_id),
-	);
+	const existingAssignment = await repos.assignment.findByUniqueIds(persona_id, hub_id, role_id);
 	if (existingAssignment) {
 		throw new ApiError(409, 'assignment already exists');
 	}
 
 	// TODO test what happens if the persona doesn't exist
 
-	const assignment = unwrap(await repos.assignment.create(persona_id, hub_id, role_id));
+	const assignment = await repos.assignment.create(persona_id, hub_id, role_id);
 	return assignment;
 };

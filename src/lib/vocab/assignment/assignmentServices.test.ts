@@ -63,7 +63,7 @@ test__assignmentServices('delete an assignment in a hub', async ({repos, random}
 			},
 		}),
 	);
-	assert.ok(!unwrap(await repos.assignment.findById(assignment.assignment_id)));
+	assert.ok(!(await repos.assignment.findById(assignment.assignment_id)));
 });
 
 test__assignmentServices('fail to delete a personal assignment', async ({repos, random}) => {
@@ -77,7 +77,7 @@ test__assignmentServices('fail to delete a personal assignment', async ({repos, 
 			},
 		}),
 	);
-	assert.ok(unwrap(await repos.assignment.findById(assignment.assignment_id)));
+	assert.ok(await repos.assignment.findById(assignment.assignment_id));
 });
 
 test__assignmentServices('fail to delete a hub persona assignment', async ({repos, random}) => {
@@ -95,7 +95,7 @@ test__assignmentServices('fail to delete a hub persona assignment', async ({repo
 			},
 		}),
 	);
-	assert.ok(unwrap(await repos.assignment.findById(assignment.assignment_id)));
+	assert.ok(await repos.assignment.findById(assignment.assignment_id));
 });
 
 test__assignmentServices('delete orphaned hubs on last member leaving', async ({repos, random}) => {
@@ -117,7 +117,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 			},
 		}),
 	);
-	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 3);
+	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 3);
 
 	//Delete 1 account member, the hub still exists
 	unwrap(
@@ -129,7 +129,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 			},
 		}),
 	);
-	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 2);
+	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 2);
 	assert.ok(await repos.hub.findById(hub.hub_id));
 
 	//Delete last account member, the hub is deleted
@@ -143,7 +143,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 		}),
 	);
 
-	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 0);
+	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 0);
 	assert.ok(!(await repos.hub.findById(hub.hub_id)));
 });
 

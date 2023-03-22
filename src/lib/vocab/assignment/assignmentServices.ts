@@ -41,7 +41,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 	perform: async ({repos, params}) => {
 		const {actor, assignment_id} = params;
 		log.trace('[DeleteAssignment] deleting assignment ', assignment_id);
-		const assignment = unwrap(await repos.assignment.findById(assignment_id));
+		const assignment = await repos.assignment.findById(assignment_id);
 		if (!assignment) {
 			return {ok: false, status: 404, message: 'no assignment found'};
 		}
@@ -69,8 +69,8 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 			return {ok: false, status: 405, message: 'cannot leave a personal hub'};
 		}
 		if (hub_id === ADMIN_HUB_ID) {
-			const adminAssignmentsCount = unwrap(
-				await repos.assignment.countAccountPersonaAssignmentsByHubId(hub_id),
+			const adminAssignmentsCount = await repos.assignment.countAccountPersonaAssignmentsByHubId(
+				hub_id,
 			);
 			if (adminAssignmentsCount === 1) {
 				return {ok: false, status: 405, message: 'cannot orphan the admin hub'};
@@ -80,7 +80,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 			return {ok: false, status: 405, message: 'hub persona cannot leave its hub'};
 		}
 
-		unwrap(await repos.assignment.deleteById(assignment_id));
+		await repos.assignment.deleteById(assignment_id);
 
 		await cleanOrphanHubs([hub_id], repos);
 

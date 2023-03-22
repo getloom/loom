@@ -1,4 +1,3 @@
-import {unwrap} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -32,7 +31,7 @@ export const checkHubAccess = async (
 ): Promise<void> => {
 	log.trace('checking for hub access for actor in hub', actor_id, hub_id);
 
-	const inHub = unwrap(await repos.assignment.isPersonaInHub(actor_id, hub_id));
+	const inHub = await repos.assignment.isPersonaInHub(actor_id, hub_id);
 
 	if (!inHub) {
 		throw new ApiError(403, 'actor does not have permission');

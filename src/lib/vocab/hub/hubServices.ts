@@ -52,12 +52,11 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 
 		await checkHubAccess(actor, hub_id, repos);
 
-		const [spaces, roles, assignmentsResult] = await Promise.all([
+		const [spaces, roles, assignments] = await Promise.all([
 			repos.space.filterByHub(hub_id),
 			repos.role.filterByHub(hub_id),
 			repos.assignment.filterByHub(hub_id),
 		]);
-		const assignments = unwrap(assignmentsResult);
 
 		// TODO is this more efficient than parallelizing `persona.filterByHub`?
 		const personaIds = assignments.map((a) => a.persona_id);
@@ -124,8 +123,10 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 
 		// Create the hub persona and its assignment
 		const hubPersona = unwrap(await repos.persona.createCommunityPersona(hub.name, hub_id));
-		const hubPersonaAssignment = unwrap(
-			await repos.assignment.create(hubPersona.persona_id, hub_id, hub.settings.defaultRoleId),
+		const hubPersonaAssignment = await repos.assignment.create(
+			hubPersona.persona_id,
+			hub_id,
+			hub.settings.defaultRoleId,
 		);
 		assignments.push(hubPersonaAssignment);
 
@@ -202,7 +203,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 		if (!persona) {
 			return {ok: false, status: 404, message: `cannot find a persona named ${name}`};
 		}
-		if (unwrap(await repos.assignment.isPersonaInHub(persona.persona_id, hub_id))) {
+		if (await repos.assignment.isPersonaInHub(persona.persona_id, hub_id)) {
 			return {ok: false, status: 409, message: 'persona is already in the hub'};
 		}
 
@@ -229,7 +230,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 
 		await checkRemovePersona(targetActor, hub_id, repos);
 
-		unwrap(await repos.assignment.deleteByPersonaAndHub(targetActor, hub_id));
+		await repos.assignment.deleteByPersonaAndHub(targetActor, hub_id);
 
 		await cleanOrphanHubs([hub_id], repos);
 
@@ -252,7 +253,7 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 
 		await checkRemovePersona(targetActor, hub_id, repos);
 
-		unwrap(await repos.assignment.deleteByPersonaAndHub(targetActor, hub_id));
+		await repos.assignment.deleteByPersonaAndHub(targetActor, hub_id);
 
 		await cleanOrphanHubs([hub_id], repos);
 

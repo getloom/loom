@@ -168,7 +168,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	assert.is(spaceResult.length, 0);
 
 	//check hub assignments are gone
-	const assignmentResult = unwrap(await repos.assignment.filterByHub(hub.hub_id));
+	const assignmentResult = await repos.assignment.filterByHub(hub.hub_id);
 	assert.is(assignmentResult.length, 0);
 
 	//check roles are gone
@@ -240,9 +240,7 @@ test_hubServices(
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
 		const {hub, persona: communityPersona} = await random.hub();
-		unwrap(
-			await repos.assignment.create(persona.persona_id, hub.hub_id, hub.settings.defaultRoleId),
-		);
+		await repos.assignment.create(persona.persona_id, hub.hub_id, hub.settings.defaultRoleId);
 		unwrapError(
 			await InviteToHubService.perform({
 				...toServiceRequestMock(repos, communityPersona),
@@ -258,7 +256,7 @@ test_hubServices(
 
 test_hubServices('LeaveHub removes all assignments for the persona', async ({repos, random}) => {
 	const {hub, persona} = await random.hub();
-	assert.ok(unwrap(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
+	assert.ok(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id));
 	unwrap(
 		await LeaveHubService.perform({
 			...toServiceRequestMock(repos, persona),
@@ -269,7 +267,7 @@ test_hubServices('LeaveHub removes all assignments for the persona', async ({rep
 			},
 		}),
 	);
-	assert.ok(!unwrap(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
 });
 
 test_hubServices('fail LeaveHub when the persona has no assignments', async ({repos, random}) => {
@@ -291,8 +289,8 @@ test_hubServices('fail LeaveHub when the persona has no assignments', async ({re
 test_hubServices('KickFromHub removes all assignments for the persona', async ({repos, random}) => {
 	const {persona} = await random.persona();
 	const {hub, persona: communityPersona} = await random.hub();
-	unwrap(await repos.assignment.create(persona.persona_id, hub.hub_id, hub.settings.defaultRoleId));
-	assert.ok(unwrap(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
+	await repos.assignment.create(persona.persona_id, hub.hub_id, hub.settings.defaultRoleId);
+	assert.ok(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id));
 	unwrap(
 		await KickFromHubService.perform({
 			...toServiceRequestMock(repos, communityPersona),
@@ -303,7 +301,7 @@ test_hubServices('KickFromHub removes all assignments for the persona', async ({
 			},
 		}),
 	);
-	assert.ok(!unwrap(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
 });
 
 test_hubServices(

@@ -89,12 +89,10 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 
 			// Create the persona's assignment to the admin hub.
 			assignments.push(
-				unwrap(
-					await repos.assignment.create(
-						persona.persona_id,
-						adminHub.hub_id,
-						adminHub.settings.defaultRoleId,
-					),
+				await repos.assignment.create(
+					persona.persona_id,
+					adminHub.hub_id,
+					adminHub.settings.defaultRoleId,
 				),
 			);
 
@@ -151,7 +149,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		await repos.entity.attributeToGhostByPersona(targetActor);
 
 		// delete the persona and its related objects
-		unwrap(await repos.assignment.deleteByPersona(targetActor));
+		await repos.assignment.deleteByPersona(targetActor);
 		unwrap(await repos.persona.deleteById(targetActor));
 		await repos.hub.deleteById(persona.hub_id); // must follow `persona.deleteById` it seems
 		await cleanOrphanHubs(

@@ -135,7 +135,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	assert.is((await repos.space.filterByHub(hub.hub_id)).length, 1);
 
 	// delete assignment
-	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 3);
+	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, persona2),
@@ -145,8 +145,8 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			},
 		}),
 	);
-	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 2);
-	assert.is(unwrap(await repos.assignment.countAccountPersonaAssignmentsByHubId(hub.hub_id)), 1);
+	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 2);
+	assert.is(await repos.assignment.countAccountPersonaAssignmentsByHubId(hub.hub_id), 1);
 
 	// delete hub
 	//TODO hack to allow for authorization; remove on init default impl
@@ -162,7 +162,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 		params: {actor: persona1.persona_id, hub_id: hub.hub_id},
 	});
 	assert.is(readHubResult.status, 404);
-	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 0);
+	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 0);
 
 	// TODO delete personas here
 

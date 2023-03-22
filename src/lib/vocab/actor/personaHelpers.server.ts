@@ -1,6 +1,5 @@
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
-import {unwrap} from '@feltjs/util';
 
 export const RESERVED_ACTOR_NAMES = new Set([
 	'about',
@@ -24,5 +23,5 @@ export const ACTOR_COLUMNS = {
 };
 
 export const isPersonaAdmin = async (actor_id: number, repos: Repos): Promise<boolean> => {
-	return unwrap(await repos.assignment.isPersonaInHub(actor_id, ADMIN_HUB_ID));
+	return repos.assignment.isPersonaInHub(actor_id, ADMIN_HUB_ID);
 };

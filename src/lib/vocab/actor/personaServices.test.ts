@@ -74,14 +74,14 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 		await Promise.all(
 			personas.map(async (p) => {
 				assertIs(unwrap(await repos.persona.findById(p.persona_id)), undefined);
-				assertIs(unwrap(await repos.assignment.filterByPersona(p.persona_id)).length, 0);
+				assertIs((await repos.assignment.filterByPersona(p.persona_id)).length, 0);
 			}),
 		);
 		await Promise.all(
 			allHubs.map(async (c) => {
 				assertIs(await repos.hub.findById(c.hub_id), undefined);
 				assertIs((await repos.role.filterByHub(c.hub_id)).length, 0);
-				assertIs(unwrap(await repos.assignment.filterByHub(c.hub_id)).length, 0);
+				assertIs((await repos.assignment.filterByHub(c.hub_id)).length, 0);
 			}),
 		);
 		await Promise.all(

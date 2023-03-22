@@ -58,7 +58,7 @@ export function toServiceRequestMock(
 }
 
 export const loadAdminPersona = async (repos: Repos): Promise<AccountPersona> => {
-	const assignments = unwrap(await repos.assignment.filterByHub(ADMIN_HUB_ID));
+	const assignments = await repos.assignment.filterByHub(ADMIN_HUB_ID);
 	const nonAdminAssignments = assignments.filter((p) => p.persona_id !== ADMIN_ACTOR_ID);
 	return unwrap(await repos.persona.findById(nonAdminAssignments[0].persona_id)) as AccountPersona;
 };
