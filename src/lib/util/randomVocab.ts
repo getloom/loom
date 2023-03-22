@@ -131,9 +131,11 @@ export class RandomVocabContext {
 	constructor(public readonly repos: Repos) {}
 
 	async account(params = randomAccountParams()): Promise<RandomTestAccount> {
-		const account = unwrap(
-			await this.repos.account.create(params.username, params.password, toDefaultAccountSettings()),
-		) as RandomTestAccount;
+		const account = (await this.repos.account.create(
+			params.username,
+			params.password,
+			toDefaultAccountSettings(),
+		)) as RandomTestAccount;
 		// This makes the unencrypted password available for tests,
 		// so things like `SignIn` can be tested with existing accounts.
 		account.__testPlaintextPassword = params.password;

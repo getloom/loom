@@ -1,4 +1,3 @@
-import {NOT_OK, unwrap, type Result} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -6,15 +5,12 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Account, ClientAccount, ClientAccountSession} from '$lib/vocab/account/account';
 import {toPasswordKey} from '$lib/util/password';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
+import {ApiError} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
 export class AccountRepo extends PostgresRepo {
-	async create(
-		name: string,
-		password: string,
-		settings: Account['settings'],
-	): Promise<Result<{value: Account}>> {
+	async create(name: string, password: string, settings: Account['settings']): Promise<Account> {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<Account[]>`
 			INSERT INTO accounts (name, password, settings) VALUES (
@@ -22,13 +18,13 @@ export class AccountRepo extends PostgresRepo {
 			) RETURNING *
 		`;
 		log.trace('created account', data[0]);
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
-	async loadClientSession(account_id: number): Promise<Result<{value: ClientAccountSession}>> {
+	async loadClientSession(account_id: number): Promise<ClientAccountSession> {
 		log.trace('loadClientSession', account_id);
-		const account = unwrap(await this.repos.account.findById(account_id));
-		if (!account) return NOT_OK; // TODO custom error?
+		const account = await this.repos.account.findById(account_id);
+		if (!account) throw new ApiError(404, 'no account found');
 
 		// TODO optimize?
 		const [spaces, directories, sessionPersonas, hubs, roles, assignments, policies, personas] =
@@ -44,59 +40,53 @@ export class AccountRepo extends PostgresRepo {
 			]);
 
 		return {
-			ok: true,
-			value: {
-				account,
-				sessionPersonas,
-				hubs,
-				roles,
-				spaces,
-				assignments,
-				directories,
-				policies,
-				personas,
-			},
+			account,
+			sessionPersonas,
+			hubs,
+			roles,
+			spaces,
+			assignments,
+			directories,
+			policies,
+			personas,
 		};
 	}
 
 	async findById<T extends Partial<Account> = ClientAccount>(
 		account_id: number,
 		columns = ACCOUNT_COLUMNS.ClientAccount,
-	): Promise<Result<{value: T | undefined}>> {
+	): Promise<T | undefined> {
 		log.trace('loading account', account_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM accounts WHERE account_id = ${account_id}
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
-	async findByName(name: string): Promise<Result<{value: Account | undefined}>> {
+	async findByName(name: string): Promise<Account | undefined> {
 		const data = await this.sql<Account[]>`
 			SELECT account_id, name, password, created, updated
 			FROM accounts WHERE LOWER(name) = LOWER(${name})
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
 	async updateSettings(
 		account_id: number,
 		settings: ClientAccount['settings'],
-	): Promise<Result<{value: ClientAccount}>> {
+	): Promise<ClientAccount> {
 		const data = await this.sql<any[]>`
 			UPDATE accounts
 			SET updated=NOW(), settings=${this.sql.json(settings as any)}
 			WHERE account_id=${account_id}
 			RETURNING account_id, name, settings, created, updated
 		`;
-		if (!data.count) return NOT_OK;
-		return {ok: true, value: data[0]};
+		if (!data.count) throw Error();
+		return data[0];
 	}
 
-	async updatePassword(
-		account_id: number,
-		password: string,
-	): Promise<Result<{value: ClientAccount}>> {
+	async updatePassword(account_id: number, password: string): Promise<ClientAccount> {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<any[]>`
 			UPDATE accounts
@@ -104,7 +94,7 @@ export class AccountRepo extends PostgresRepo {
 			WHERE account_id=${account_id}
 			RETURNING account_id, name, settings, created, updated
 		`;
-		if (!data.count) return NOT_OK;
-		return {ok: true, value: data[0]};
+		if (!data.count) throw Error();
+		return data[0];
 	}
 }

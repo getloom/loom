@@ -58,12 +58,10 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const accounts: Account[] = [];
 	const personas: AccountPersona[] = [];
 	for (const accountParams of accountsParams) {
-		const account = unwrap(
-			await repos.account.create(
-				accountParams.username,
-				accountParams.password,
-				toDefaultAccountSettings(),
-			),
+		const account = await repos.account.create(
+			accountParams.username,
+			accountParams.password,
+			toDefaultAccountSettings(),
 		);
 		log.trace('created account', account);
 		accounts.push(account);

@@ -30,7 +30,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			return {ok: false, status: 400, message: usernameErrorMessage};
 		}
 
-		const existingAccount = unwrap(await repos.account.findByName(username));
+		const existingAccount = await repos.account.findByName(username);
 		if (existingAccount) {
 			return {ok: false, status: 409, message: 'account already exists'};
 		}
@@ -49,13 +49,15 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			}
 		}
 
-		const account = unwrap(
-			await repos.account.create(username, params.password, toDefaultAccountSettings()),
+		const account = await repos.account.create(
+			username,
+			params.password,
+			toDefaultAccountSettings(),
 		);
 
 		unwrap(session.signIn(account.account_id));
 
-		const clientSession = unwrap(await repos.account.loadClientSession(account.account_id));
+		const clientSession = await repos.account.loadClientSession(account.account_id);
 
 		return {ok: true, status: 200, value: {session: clientSession}};
 	},
@@ -71,12 +73,12 @@ export const SignInService: ServiceByName['SignIn'] = {
 			return {ok: false, status: 400, message: usernameErrorMessage};
 		}
 
-		const account = unwrap(await repos.account.findByName(username));
+		const account = await repos.account.findByName(username);
 		if (!account || !(await verifyPassword(params.password, account.password))) {
 			return {ok: false, status: 400, message: 'invalid username or password'};
 		}
 
-		const clientSession = unwrap(await repos.account.loadClientSession(account.account_id));
+		const clientSession = await repos.account.loadClientSession(account.account_id);
 
 		unwrap(session.signIn(account.account_id));
 
@@ -98,7 +100,7 @@ export const UpdateAccountSettingsService: ServiceByName['UpdateAccountSettings'
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
 		log.trace('updating settings for account', account_id, params.settings);
-		const updatedAccount = unwrap(await repos.account.updateSettings(account_id, params.settings));
+		const updatedAccount = await repos.account.updateSettings(account_id, params.settings);
 		return {ok: true, status: 200, value: updatedAccount};
 	},
 };
@@ -107,9 +109,9 @@ export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'
 	event: UpdateAccountPassword,
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
-		const account = unwrap(
-			await repos.account.findById<Pick<Account, 'password'>>(account_id, ['password']),
-		);
+		const account = await repos.account.findById<Pick<Account, 'password'>>(account_id, [
+			'password',
+		]);
 		if (!account) {
 			return {ok: false, status: 404, message: 'account does not exist'};
 		}
@@ -118,9 +120,7 @@ export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'
 			return {ok: false, status: 400, message: 'incorrect password'};
 		}
 
-		const updatedAccount = unwrap(
-			await repos.account.updatePassword(account_id, params.newPassword),
-		);
+		const updatedAccount = await repos.account.updatePassword(account_id, params.newPassword);
 		return {ok: true, status: 200, value: updatedAccount};
 	},
 };
