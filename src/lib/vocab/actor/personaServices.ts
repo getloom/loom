@@ -52,7 +52,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 		const initAdminHubValue = await initAdminHub(repos);
 
 		// Create the persona's personal hub.
-		const hub = unwrap(await repos.hub.create('personal', name, toDefaultHubSettings(name)));
+		const hub = await repos.hub.create('personal', name, toDefaultHubSettings(name));
 		hubs.push(hub);
 
 		// Create the persona.
@@ -145,7 +145,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
-		const hubs = unwrap(await repos.hub.filterByPersona(targetActor));
+		const hubs = await repos.hub.filterByPersona(targetActor);
 
 		// swap in the ghost persona id for this `targetActor` for those objects that we don't delete
 		unwrap(await repos.entity.attributeToGhostByPersona(targetActor));
@@ -153,7 +153,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		// delete the persona and its related objects
 		unwrap(await repos.assignment.deleteByPersona(targetActor));
 		unwrap(await repos.persona.deleteById(targetActor));
-		unwrap(await repos.hub.deleteById(persona.hub_id)); // must follow `persona.deleteById` it seems
+		await repos.hub.deleteById(persona.hub_id); // must follow `persona.deleteById` it seems
 		await cleanOrphanHubs(
 			hubs.map((c) => c.hub_id).filter((c) => c !== persona.hub_id),
 			repos,

@@ -1,4 +1,4 @@
-import {NOT_OK, OK, unwrap, type Assignable, type Result} from '@feltjs/util';
+import type {Assignable} from '@feltjs/util';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
@@ -9,11 +9,7 @@ import {ADMIN_HUB_ID} from '$lib/app/constants';
 const log = new Logger(gray('[') + blue('HubRepo') + gray(']'));
 
 export class HubRepo extends PostgresRepo {
-	async create(
-		type: Hub['type'],
-		name: string,
-		settings: HubSettings,
-	): Promise<Result<{value: Hub}>> {
+	async create(type: Hub['type'], name: string, settings: HubSettings): Promise<Hub> {
 		const data = await this.sql<Hub[]>`
 			INSERT INTO hubs (type, name, settings) VALUES (
 				${type}, ${name}, ${this.sql.json(settings as any)}
@@ -21,28 +17,28 @@ export class HubRepo extends PostgresRepo {
 		`;
 		log.trace('[db] created hub', data[0]);
 		const hub = data[0];
-		return {ok: true, value: hub};
+		return hub;
 	}
 
-	async findById(hub_id: number): Promise<Result<{value: Hub | undefined}>> {
+	async findById(hub_id: number): Promise<Hub | undefined> {
 		log.trace(`[findById] ${hub_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT hub_id, type, name, settings, created, updated
 			FROM hubs WHERE hub_id=${hub_id}
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
-	async findByName(name: string): Promise<Result<{value: Hub | undefined}>> {
+	async findByName(name: string): Promise<Hub | undefined> {
 		log.trace('[findByName]', name);
 		const data = await this.sql<Hub[]>`
 			SELECT hub_id, type, name, settings, created, updated
 			FROM hubs WHERE LOWER(name) = LOWER(${name})
 		`;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 
-	async filterByAccount(account_id: number): Promise<Result<{value: Hub[]}>> {
+	async filterByAccount(account_id: number): Promise<Hub[]> {
 		log.trace(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated							
@@ -53,10 +49,10 @@ export class HubRepo extends PostgresRepo {
 			ON c.hub_id=apc.hub_id;
 		`;
 		log.trace('[filterByAccount]', data.length);
-		return {ok: true, value: data};
+		return data;
 	}
 
-	async filterByPersona(persona_id: number): Promise<Result<{value: Hub[]}>> {
+	async filterByPersona(persona_id: number): Promise<Hub[]> {
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated
 			FROM hubs c JOIN (
@@ -65,24 +61,22 @@ export class HubRepo extends PostgresRepo {
 			) ac
 			ON c.hub_id=ac.hub_id;
 		`;
-		return {ok: true, value: data};
+		return data;
 	}
 
-	async updateSettings(hub_id: number, settings: Hub['settings']): Promise<Result> {
+	async updateSettings(hub_id: number, settings: Hub['settings']): Promise<void> {
 		const data = await this.sql<any[]>`
 			UPDATE hubs SET updated=NOW(), settings=${this.sql.json(settings as any)} WHERE hub_id=${hub_id}
 		`;
-		if (!data.count) return NOT_OK;
-		return OK;
+		if (!data.count) throw Error('no hub found');
 	}
 
-	async deleteById(hub_id: number): Promise<Result> {
+	async deleteById(hub_id: number): Promise<void> {
 		log.trace('[deleteById]', hub_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM hubs WHERE hub_id=${hub_id}
 		`;
-		if (!data.count) return NOT_OK;
-		return OK;
+		if (!data.count) throw Error('no hub found');
 	}
 
 	// This seems safe to cache globally except for possibly tests,
@@ -101,12 +95,10 @@ export class HubRepo extends PostgresRepo {
 	}
 
 	async loadAdminHub(): Promise<Hub | undefined> {
-		const hub = unwrap(await this.findById(ADMIN_HUB_ID));
-		if (!hub) return undefined;
-		return hub;
+		return this.findById(ADMIN_HUB_ID);
 	}
 
-	async findByRole(role_id: number): Promise<Result<{value: Hub}>> {
+	async findByRole(role_id: number): Promise<Hub | undefined> {
 		log.trace(`[findByRole] ${role_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated
@@ -115,7 +107,6 @@ export class HubRepo extends PostgresRepo {
 			ON r.hub_id = c.hub_id
 			WHERE r.role_id=${role_id}
 		`;
-		if (!data.length) return NOT_OK;
-		return {ok: true, value: data[0]};
+		return data[0];
 	}
 }

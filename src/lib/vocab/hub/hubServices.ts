@@ -45,7 +45,7 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 		log.trace('[ReadHub] account', account_id); // TODO logging
 		log.trace('[ReadHub] hub', hub_id);
 
-		const hub = unwrap(await repos.hub.findById(hub_id));
+		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
@@ -97,7 +97,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		}
 
 		// Check for duplicate hub names.
-		const existingHub = unwrap(await repos.hub.findByName(name), 'custom');
+		const existingHub = await repos.hub.findByName(name);
 		if (existingHub) {
 			return {ok: false, status: 409, message: 'a hub with that name already exists'};
 		}
@@ -113,7 +113,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		}
 
 		// Create the hub
-		const hub = unwrap(await repos.hub.create('community', name, settings));
+		const hub = await repos.hub.create('community', name, settings);
 		const {hub_id} = hub;
 
 		const roleTemplates = template.roles?.length ? template.roles : defaultCommunityHubRoles;
@@ -159,7 +159,7 @@ export const UpdateHubSettingsService: ServiceByName['UpdateHubSettings'] = {
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, settings} = params;
 		await checkPolicy(permissions.UpdateHubSettings, actor, hub_id, repos);
-		unwrap(await repos.hub.updateSettings(hub_id, settings));
+		await repos.hub.updateSettings(hub_id, settings);
 		return {ok: true, status: 200, value: null};
 	},
 };
@@ -171,7 +171,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 		const {actor, hub_id} = params;
 		await checkPolicy(permissions.DeleteHub, actor, hub_id, repos);
 
-		const hub = unwrap(await repos.hub.findById(hub_id));
+		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
@@ -182,7 +182,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 		if (hub.hub_id === ADMIN_HUB_ID) {
 			return {ok: false, status: 405, message: 'cannot delete admin hub'};
 		}
-		unwrap(await repos.hub.deleteById(hub_id));
+		await repos.hub.deleteById(hub_id);
 
 		return {ok: true, status: 200, value: null};
 	},
@@ -195,7 +195,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 		const {actor, hub_id, name} = params;
 		await checkPolicy(permissions.InviteToHub, actor, hub_id, repos);
 
-		const hub = unwrap(await repos.hub.findById(hub_id));
+		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}

@@ -21,7 +21,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 		const {actor, hub_id, targetActor, role_id} = params;
 		log.trace('[CreateAssignment] creating assignment for persona & role', targetActor, role_id);
 		log.trace('[CreateAssignment] checking policy', actor, hub_id);
-		const hub = unwrap(await repos.hub.findById(hub_id));
+		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
@@ -61,7 +61,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
-		const hub = unwrap(await repos.hub.findById(hub_id));
+		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}

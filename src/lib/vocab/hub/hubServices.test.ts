@@ -68,7 +68,8 @@ test_hubServices('default admin hub role has all permissions', async ({repos}) =
 test_hubServices('default personal hub role has all permissions', async ({repos, random}) => {
 	const {persona} = await random.persona();
 
-	const personalHub = unwrap(await repos.hub.findById(persona.hub_id))!;
+	const personalHub = await repos.hub.findById(persona.hub_id);
+	assert.ok(personalHub);
 	const personalDefaultPolicies = await repos.policy.filterByRole(
 		personalHub.settings.defaultRoleId,
 	);
@@ -175,7 +176,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	assert.is(roleResult.length, 0);
 
 	//check hub is gone
-	assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
+	assert.ok(!(await repos.hub.findById(hub.hub_id)));
 });
 
 test_hubServices(
@@ -187,12 +188,10 @@ test_hubServices(
 		assert.ok(adminHub);
 		const {settings} = adminHub;
 		const settingValue = settings.instance?.disableCreateHub;
-		unwrap(
-			await repos.hub.updateSettings(ADMIN_HUB_ID, {
-				...settings,
-				instance: {...settings.instance, disableCreateHub: true},
-			}),
-		);
+		await repos.hub.updateSettings(ADMIN_HUB_ID, {
+			...settings,
+			instance: {...settings.instance, disableCreateHub: true},
+		});
 
 		unwrapError(
 			await CreateHubService.perform({
@@ -211,12 +210,10 @@ test_hubServices(
 		);
 
 		//cleanup from test; do not delete
-		unwrap(
-			await repos.hub.updateSettings(ADMIN_HUB_ID, {
-				...settings,
-				instance: {...settings.instance, disableCreateHub: settingValue},
-			}),
-		);
+		await repos.hub.updateSettings(ADMIN_HUB_ID, {
+			...settings,
+			instance: {...settings.instance, disableCreateHub: settingValue},
+		});
 	},
 );
 

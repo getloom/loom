@@ -1,6 +1,5 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 
@@ -17,8 +16,8 @@ test__HubRepo('updateSettings', async ({repos, random}) => {
 	const newHue = hub.settings.hue === 1 ? 2 : 1;
 	const newSettings = {...hub.settings, hue: newHue};
 	assert.is.not(hub.settings.hue, newHue); // just in case we mess the logic up
-	unwrap(await repos.hub.updateSettings(hub.hub_id, newSettings));
-	assert.equal(unwrap(await repos.hub.findById(hub.hub_id))?.settings, newSettings);
+	await repos.hub.updateSettings(hub.hub_id, newSettings);
+	assert.equal((await repos.hub.findById(hub.hub_id))?.settings, newSettings);
 });
 
 test__HubRepo.run();

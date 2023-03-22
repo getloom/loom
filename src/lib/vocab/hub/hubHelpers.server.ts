@@ -22,7 +22,7 @@ export const cleanOrphanHubs = async (hubIds: number[], repos: Repos): Promise<v
 		);
 		if (accountPersonaAssignmentsCount === 0) {
 			log.trace('no assignments found for hub, cleaning up', hub_id);
-			unwrap(await repos.hub.deleteById(hub_id)); // eslint-disable-line no-await-in-loop
+			await repos.hub.deleteById(hub_id); // eslint-disable-line no-await-in-loop
 		}
 	}
 };
@@ -47,8 +47,10 @@ export const initAdminHub = async (
 	// For more see /src/docs/admin.md
 
 	// Create the hub.
-	const hub = unwrap(
-		await repos.hub.create('community', ADMIN_HUB_NAME, toDefaultHubSettings(ADMIN_HUB_NAME)),
+	const hub = await repos.hub.create(
+		'community',
+		ADMIN_HUB_NAME,
+		toDefaultHubSettings(ADMIN_HUB_NAME),
 	);
 
 	// Create the hub persona.
@@ -99,7 +101,7 @@ export const initTemplateGovernanceForHub = async (
 		if (roleTemplate.default) {
 			defaultRoleId = role.role_id;
 			hub.settings.defaultRoleId = defaultRoleId;
-			unwrap(await repos.hub.updateSettings(hub.hub_id, hub.settings)); // eslint-disable-line no-await-in-loop
+			await repos.hub.updateSettings(hub.hub_id, hub.settings); // eslint-disable-line no-await-in-loop
 		}
 		if (roleTemplate.creator) {
 			creatorRoleId = role.role_id;
@@ -139,7 +141,7 @@ export const checkRemovePersona = async (
 	if (!persona) {
 		throw new ApiError(404, 'no persona found');
 	}
-	const hub = unwrap(await repos.hub.findById(hub_id));
+	const hub = await repos.hub.findById(hub_id);
 	if (!hub) {
 		throw new ApiError(404, 'no hub found');
 	}

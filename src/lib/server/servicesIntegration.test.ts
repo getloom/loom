@@ -94,8 +94,8 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	);
 	assert.is(foundHub.name, hub.name);
 
-	assert.is(unwrap(await repos.hub.filterByAccount(persona2.account_id)).length, 3);
-	assert.is(unwrap(await repos.hub.filterByPersona(persona2.persona_id)).length, 2);
+	assert.is((await repos.hub.filterByAccount(persona2.account_id)).length, 3);
+	assert.is((await repos.hub.filterByPersona(persona2.persona_id)).length, 2);
 
 	// TODO add a service event?
 	assert.equal(

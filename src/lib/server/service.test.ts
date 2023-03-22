@@ -1,6 +1,5 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {Hub} from '$lib/vocab/hub/hub';
@@ -55,8 +54,8 @@ test__service(`roll back the database after a failed transaction`, async ({repos
 	const s: typeof CreateHubService = {
 		...CreateHubService,
 		perform: async ({repos}) => {
-			hub = unwrap(await repos.hub.create('community', hubName, toDefaultHubSettings(hubName)));
-			const found = unwrap(await repos.hub.findByName(hubName));
+			hub = await repos.hub.create('community', hubName, toDefaultHubSettings(hubName));
+			const found = await repos.hub.findByName(hubName);
 			assert.is(found?.name, hubName);
 			return (failedResult = {ok: false, status: 400, message: 'expected fail'});
 		},
@@ -70,8 +69,8 @@ test__service(`roll back the database after a failed transaction`, async ({repos
 	assert.ok(!failedResult.ok);
 	assert.ok(returnedResult === failedResult);
 	// Ensure the hub created in the transaction no longer exists in the repos.
-	assert.ok(!unwrap(await repos.hub.findByName(hubName)));
-	assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
+	assert.ok(!(await repos.hub.findByName(hubName)));
+	assert.ok(!(await repos.hub.findById(hub.hub_id)));
 });
 
 test__service.run();

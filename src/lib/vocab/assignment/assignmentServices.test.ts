@@ -130,7 +130,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 		}),
 	);
 	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 2);
-	assert.ok(unwrap(await repos.hub.findById(hub.hub_id)));
+	assert.ok(await repos.hub.findById(hub.hub_id));
 
 	//Delete last account member, the hub is deleted
 	unwrap(
@@ -144,7 +144,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 	);
 
 	assert.is(unwrap(await repos.assignment.filterByHub(hub.hub_id)).length, 0);
-	assert.ok(!unwrap(await repos.hub.findById(hub.hub_id)));
+	assert.ok(!(await repos.hub.findById(hub.hub_id)));
 });
 
 test__assignmentServices.run();

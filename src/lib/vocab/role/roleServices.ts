@@ -1,5 +1,4 @@
 import {Logger} from '@feltjs/util/log.js';
-import {unwrap} from '@feltjs/util';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
@@ -39,8 +38,9 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 	perform: async ({repos, params}) => {
 		const {actor, role_id, name} = params;
 		log.trace('updating role', role_id, name);
-		const {hub_id} = unwrap(await repos.hub.findByRole(role_id));
-		await checkPolicy(permissions.UpdateRole, actor, hub_id, repos);
+		const hub = await repos.hub.findByRole(role_id);
+		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
+		await checkPolicy(permissions.UpdateRole, actor, hub.hub_id, repos);
 		const role = await repos.role.update(role_id, name);
 		return {ok: true, status: 200, value: {role}};
 	},
@@ -52,7 +52,8 @@ export const DeleteRoleService: ServiceByName['DeleteRole'] = {
 	perform: async ({repos, params}) => {
 		const {actor, role_id} = params;
 		log.trace('deleting role', role_id);
-		const hub = unwrap(await repos.hub.findByRole(role_id));
+		const hub = await repos.hub.findByRole(role_id);
+		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
 		await checkPolicy(permissions.DeleteRole, actor, hub.hub_id, repos);
 
 		if (hub.settings.defaultRoleId === role_id) {
