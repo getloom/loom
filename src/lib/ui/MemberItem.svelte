@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {ClientPersona} from '$lib/vocab/actor/persona';
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
+	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 
 	const {
 		ui: {contextmenu},
@@ -13,8 +13,8 @@
 	export let persona: Readable<ClientPersona>;
 </script>
 
-<li use:contextmenu.action={[[PersonaContextmenu, {persona}]]}>
-	<PersonaAvatar {persona} />
+<li use:contextmenu.action={[[ActorContextmenu, {persona}]]}>
+	<ActorAvatar {persona} />
 </li>
 
 <style>

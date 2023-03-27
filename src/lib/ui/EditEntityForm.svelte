@@ -7,13 +7,13 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {parseJson, serializeJson} from '$lib/util/json';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import SourceEntities from '$lib/ui/SourceEntities.svelte';
 	import DestEntities from '$lib/ui/DestEntities.svelte';
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
+	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
@@ -75,7 +75,7 @@
 	{...$$restProps}
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
-		[PersonaContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorPersona}],
 	]}
 >
 	<header class="markup" style:--icon_size="var(--icon_size_sm)">
@@ -85,7 +85,7 @@
 			<div><code>{$entity.data.type} {$entity.entity_id}</code></div>
 			<div class="row">
 				<span class="spaced">created by</span>
-				<PersonaAvatar persona={authorPersona} />
+				<ActorAvatar persona={authorPersona} />
 			</div>
 			<div>created {format($entity.created, 'PPPPp')}</div>
 			{#if $entity.updated !== null}

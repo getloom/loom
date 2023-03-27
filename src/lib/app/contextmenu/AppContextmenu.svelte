@@ -2,8 +2,8 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
-	import SessionPersonaContextmenuEntry from '$lib/app/contextmenu/SessionPersonaContextmenuEntry.svelte';
-	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
+	import SessionActorContextmenuEntry from '$lib/app/contextmenu/SessionActorContextmenuEntry.svelte';
+	import CreateAccountActorForm from '$lib/ui/CreateAccountActorForm.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
 	import About from '$lib/ui/About.svelte';
 	import AccountEditor from '$lib/ui/AccountEditor.svelte';
@@ -24,13 +24,13 @@
 	Account
 	<svelte:fragment slot="menu">
 		{#each $sessionPersonas.value as persona (persona)}
-			<SessionPersonaContextmenuEntry {persona} />
+			<SessionActorContextmenuEntry {persona} />
 		{/each}
 		{#if !$session.guest}
 			<ContextmenuEntry
 				run={() =>
 					actions.OpenDialog({
-						Component: CreateAccountPersonaForm,
+						Component: CreateAccountActorForm,
 						props: {done: () => actions.CloseDialog()},
 					})}
 			>

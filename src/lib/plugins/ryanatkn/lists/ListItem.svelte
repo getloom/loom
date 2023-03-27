@@ -4,10 +4,10 @@
 	import {slide} from 'svelte/transition';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {randomHue} from '$lib/ui/color';
 	import {getApp} from '$lib/ui/app';
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
+	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
@@ -75,15 +75,15 @@
 	};
 </script>
 
-<!-- TODO delete `PersonaContextmenu` ? should that be handled by the entity contextmenu?
-And then PersonaContextmenu would be only for *session* personas? `SessionPersonaContextmenu` -->
+<!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
+And then ActorContextmenu would be only for *session* personas? `SessionActorContextmenu` -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <li
 	transition:slide|local
 	class:expandItems
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[PersonaContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorPersona}],
 		[EntityContextmenu, {persona, entity}],
 	]}
 >
@@ -110,7 +110,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 			</button>
 		{/if}
 		<div class="signature" style:padding="var(--spacing_sm)">
-			<PersonaAvatar persona={authorPersona} showName={false} />
+			<ActorAvatar persona={authorPersona} showName={false} />
 		</div>
 		{#if items?.length && (expandItems || expandControls)}
 			<div class="floating-controls">

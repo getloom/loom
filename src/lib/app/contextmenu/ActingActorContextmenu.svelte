@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
-	import DeletePersonaForm from '$lib/ui/DeletePersonaForm.svelte';
+	import DeleteActorForm from '$lib/ui/DeleteActorForm.svelte';
 
 	const {actions} = getApp();
 
@@ -16,9 +16,9 @@
 
 <ContextmenuSubmenu>
 	<svelte:fragment slot="icon">
-		<PersonaAvatar {persona} showName={false} />
+		<ActorAvatar {persona} showName={false} />
 	</svelte:fragment>
-	<PersonaAvatar {persona} showIcon={false} />
+	<ActorAvatar {persona} showIcon={false} />
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>
@@ -33,7 +33,7 @@
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog({
-					Component: DeletePersonaForm,
+					Component: DeleteActorForm,
 					props: {persona, done: () => actions.CloseDialog()},
 				})}
 		>

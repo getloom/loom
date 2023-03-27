@@ -5,7 +5,7 @@
 
 	import {getApp} from '$lib/ui/app';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
@@ -35,8 +35,8 @@
 {#if $personaSelection === persona}
 	<li class="menu-item panel" role="none">
 		<div class="content">
-			<div class="icon"><PersonaAvatar {persona} showName={false} /></div>
-			<div class="title"><PersonaAvatar {persona} showIcon={false} /></div>
+			<div class="icon"><ActorAvatar {persona} showName={false} /></div>
+			<div class="title"><ActorAvatar {persona} showIcon={false} /></div>
 		</div>
 	</li>
 {:else}
@@ -51,7 +51,7 @@
 				),
 			)}
 	>
-		<svelte:fragment slot="icon"><PersonaAvatar {persona} showName={false} /></svelte:fragment>
-		<PersonaAvatar {persona} showIcon={false} />
+		<svelte:fragment slot="icon"><ActorAvatar {persona} showName={false} /></svelte:fragment>
+		<ActorAvatar {persona} showIcon={false} />
 	</ContextmenuEntry>
 {/if}

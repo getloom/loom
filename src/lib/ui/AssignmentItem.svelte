@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
@@ -27,7 +27,7 @@
 </script>
 
 <li class="assignment-item">
-	<PersonaAvatar persona={assignmentPersona} showIcon={false} />
+	<ActorAvatar persona={assignmentPersona} showIcon={false} />
 	<button class="icon-button plain-button" on:click={() => deleteAssignment()}> ✕ </button>
 </li>
 

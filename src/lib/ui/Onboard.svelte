@@ -1,10 +1,10 @@
 <script lang="ts">
-	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
+	import CreateAccountActorForm from '$lib/ui/CreateAccountActorForm.svelte';
 </script>
 
 <div class="markup">
 	<div class="welcome">@</div>
-	<CreateAccountPersonaForm />
+	<CreateAccountActorForm />
 </div>
 
 <style>

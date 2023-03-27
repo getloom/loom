@@ -4,7 +4,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona, ClientPersona} from '$lib/vocab/actor/persona';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Role} from '$lib/vocab/role/role';
 
 	const {actions} = getApp();
@@ -26,7 +26,7 @@
 
 <li>
 	<button type="button" on:click={() => createAssignment()}>
-		<PersonaAvatar persona={assignmentPersona} />
+		<ActorAvatar persona={assignmentPersona} />
 	</button>
 </li>
 

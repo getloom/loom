@@ -2,7 +2,7 @@
 	import {createEventDispatcher} from 'svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 
 	const dispatch = createEventDispatcher<{submit: string}>();
@@ -19,7 +19,7 @@
 </script>
 
 <div class="text-input">
-	<PersonaAvatar {persona} showName={false} />
+	<ActorAvatar {persona} showName={false} />
 	<textarea on:keydown={onKeydown} bind:value {...$$restProps} bind:this={el} />
 </div>
 

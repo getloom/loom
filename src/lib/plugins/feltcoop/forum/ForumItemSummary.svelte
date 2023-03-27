@@ -2,10 +2,10 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {randomHue} from '$lib/ui/color';
 	import {getApp} from '$lib/ui/app';
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
+	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
@@ -32,14 +32,14 @@
 	};
 </script>
 
-<!-- TODO delete `PersonaContextmenu` ? should that be handled by the entity contextmenu?
-And then PersonaContextmenu would be only for *session* personas? `SessionPersonaContextmenu` -->
+<!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
+And then ActorContextmenu would be only for *session* personas? `SessionActorContextmenu` -->
 {#if renderEntity($entity)}
 	<li
 		style="--hue: {hue}"
 		use:contextmenu.action={[
 			[EntityContextmenu, {persona, entity}],
-			[PersonaContextmenu, {persona: authorPersona}],
+			[ActorContextmenu, {persona: authorPersona}],
 		]}
 	>
 		<!-- TODO remove this override after implementing links -->
@@ -53,7 +53,7 @@ And then PersonaContextmenu would be only for *session* personas? `SessionPerson
 				{/if}
 			</div>
 			<div class="signature">
-				<PersonaAvatar persona={authorPersona} />
+				<ActorAvatar persona={authorPersona} />
 			</div>
 		</div>
 	</li>

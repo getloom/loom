@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
@@ -14,5 +14,5 @@
 </script>
 
 <div style:--icon_size="var(--icon_size_xs)">
-	<PersonaAvatar persona={assignmentPersona} />
+	<ActorAvatar persona={assignmentPersona} />
 </div>

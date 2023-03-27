@@ -4,7 +4,7 @@
 	import HubNavItem from '$lib/ui/HubNavItem.svelte';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {getApp} from '$lib/ui/app';
-	import ActingPersonaContextmenu from '$lib/app/contextmenu/ActingPersonaContextmenu.svelte';
+	import ActingActorContextmenu from '$lib/app/contextmenu/ActingActorContextmenu.svelte';
 
 	const {
 		ui: {personaSelection, hubSelection, hubsBySessionPersona, contextmenu},
@@ -21,7 +21,7 @@
 </script>
 
 {#if personalHub && communityHubs}
-	<div class="persona-group" use:contextmenu.action={[[ActingPersonaContextmenu, {persona}]]}>
+	<div class="persona-group" use:contextmenu.action={[[ActingActorContextmenu, {persona}]]}>
 		<HubNavItem
 			hub={personalHub}
 			{persona}

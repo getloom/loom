@@ -1,7 +1,7 @@
 <script lang="ts">
 	import HubNav from '$lib/ui/HubNav.svelte';
 	import SpaceNav from '$lib/ui/SpaceNav.svelte';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {randomHue} from '$lib/ui/color';
 	import {toName} from '$lib/vocab/entity/entityHelpers';
@@ -34,7 +34,7 @@
 		<div class="header">
 			<div class="luggage-placeholder" />
 			<div class="explorer-button">
-				<PersonaAvatar persona={selectedPersona} />
+				<ActorAvatar persona={selectedPersona} />
 			</div>
 		</div>
 		<div class="explorer">

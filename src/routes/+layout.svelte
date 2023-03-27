@@ -35,7 +35,7 @@
 	import {mutations} from '$lib/app/mutations';
 	import AppContextmenu from '$lib/app/contextmenu/AppContextmenu.svelte';
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
-	import ActingPersonaContextmenu from '$lib/app/contextmenu/ActingPersonaContextmenu.svelte';
+	import ActingActorContextmenu from '$lib/app/contextmenu/ActingActorContextmenu.svelte';
 	import SocketConnection from '$lib/ui/SocketConnection.svelte';
 	import LinkContextmenu from '$lib/app/contextmenu/LinkContextmenu.svelte';
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
@@ -132,7 +132,7 @@
 <svelte:body
 	use:contextmenu.action={[
 		[HubContextmenu, hub && persona ? {hub, persona} : undefined],
-		[ActingPersonaContextmenu, persona ? {persona} : undefined],
+		[ActingActorContextmenu, persona ? {persona} : undefined],
 		[AppContextmenu, null],
 	]}
 />

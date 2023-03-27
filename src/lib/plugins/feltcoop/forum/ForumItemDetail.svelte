@@ -3,10 +3,10 @@
 	import {format} from 'date-fns';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {randomHue} from '$lib/ui/color';
 	import {getApp} from '$lib/ui/app';
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
+	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {Space} from '$lib/vocab/space/space';
@@ -70,19 +70,19 @@
 	$: replyInputEl?.focus();
 </script>
 
-<!-- TODO delete `PersonaContextmenu` ? should that be handled by the entity contextmenu?
-And then PersonaContextmenu would be only for *session* personas? `SessionPersonaContextmenu` -->
+<!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
+And then ActorContextmenu would be only for *session* personas? `SessionActorContextmenu` -->
 {#if renderEntity($entity)}
 	<li
 		style="--hue: {hue}"
 		use:contextmenu.action={[
 			[EntityContextmenu, {persona, entity}],
-			[PersonaContextmenu, {persona: authorPersona}],
+			[ActorContextmenu, {persona: authorPersona}],
 		]}
 	>
 		<div class="wrapper">
 			<div class="signature">
-				<PersonaAvatar persona={authorPersona} />
+				<ActorAvatar persona={authorPersona} />
 				{format($entity.created, 'Pp')}
 			</div>
 

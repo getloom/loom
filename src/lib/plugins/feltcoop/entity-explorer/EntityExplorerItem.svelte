@@ -4,7 +4,7 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
+	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
@@ -21,7 +21,7 @@
 <li
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
-		[PersonaContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorPersona}],
 	]}
 >
 	<pre>{JSON.stringify($entity, null, 2)}</pre>

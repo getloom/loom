@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
@@ -28,7 +28,7 @@
 	{#if persona}
 		<div class="row">
 			<span class="spaced">as</span>
-			<PersonaAvatar {persona} />
+			<ActorAvatar {persona} />
 		</div>
 	{/if}
 </div>

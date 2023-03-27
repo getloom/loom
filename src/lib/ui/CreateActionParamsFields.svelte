@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import PropertyPicker from '$lib/ui/PropertyPicker.svelte';
 	import type {ActionData} from '$lib/vocab/action/action';
 
@@ -52,7 +52,7 @@
 			{#if key === 'actor'}
 				<!-- TODO select any of the account's personas from here easily -->
 				<div class="title">actor</div>
-				<PersonaAvatar {persona} />
+				<ActorAvatar {persona} />
 			{:else}
 				<PropertyPicker
 					value={params?.[key]}

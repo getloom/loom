@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 	import {getApp} from '$lib/ui/app';
@@ -21,7 +21,7 @@
 	{#if hub && $persona?.type === 'community'}
 		<HubAvatar {hub} {contextmenuAction} {inline}>@</HubAvatar>
 	{:else if persona}
-		<PersonaAvatar {persona} {contextmenuAction} {inline}>@</PersonaAvatar>
+		<ActorAvatar {persona} {contextmenuAction} {inline}>@</ActorAvatar>
 	{:else}
 		@{name}
 	{/if}

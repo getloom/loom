@@ -8,7 +8,7 @@
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
-	import CreateAccountPersonaForm from '$lib/ui/CreateAccountPersonaForm.svelte';
+	import CreateAccountActorForm from '$lib/ui/CreateAccountActorForm.svelte';
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
 	import {getLayoutContext} from '$lib/ui/layout';
 	import EmptyPath from '$lib/ui/EmptyPath.svelte';
@@ -52,7 +52,7 @@
 					<CreateHubForm {persona} />
 				{/if}
 			{:else}
-				<CreateAccountPersonaForm />
+				<CreateAccountActorForm />
 			{/if}
 		</div>
 		<MarqueeButton />

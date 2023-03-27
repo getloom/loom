@@ -3,7 +3,7 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
-	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
+	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
@@ -22,7 +22,7 @@
 <li
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
-		[PersonaContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorPersona}],
 	]}
 >
 	<div class="markup padded-xl formatted">
