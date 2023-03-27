@@ -14,8 +14,8 @@ import {
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/personaHelpers';
-import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/personaHelpers.server';
+import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/actorHelpers';
+import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {
 	checkRemovePersona,
 	cleanOrphanHubs,

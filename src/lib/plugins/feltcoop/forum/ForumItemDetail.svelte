@@ -12,7 +12,7 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},

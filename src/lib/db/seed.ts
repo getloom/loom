@@ -13,7 +13,7 @@ import type {Hub} from '$lib/vocab/hub/hub';
 import type {CreateEntityResponse, SignInParams} from '$lib/app/actionTypes';
 import type {AccountPersona} from '$lib/vocab/actor/persona';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
-import {CreateAccountPersonaService} from '$lib/vocab/actor/personaServices';
+import {CreateAccountPersonaService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';

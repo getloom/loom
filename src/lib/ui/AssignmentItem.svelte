@@ -5,7 +5,7 @@
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		actions,

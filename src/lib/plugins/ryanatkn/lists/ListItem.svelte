@@ -14,7 +14,7 @@
 	import ListControls from './ListControls.svelte';
 	import ClearCheckedButton from './ClearCheckedButton.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona} = $viewContext);

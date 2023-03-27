@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
-import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/personaActions';
+import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/actorActions';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	cleanOrphanHubs,
@@ -13,12 +13,12 @@ import {
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {ActorPersona, ClientPersona} from '$lib/vocab/actor/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/personaHelpers';
-import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/personaHelpers.server';
+import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/actorHelpers';
+import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
 import {defaultPersonalHubRoles} from '$lib/app/templates';
 
-const log = new Logger(gray('[') + blue('personaServices') + gray(']'));
+const log = new Logger(gray('[') + blue('actorServices') + gray(']'));
 
 //Creates a new persona
 export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] = {

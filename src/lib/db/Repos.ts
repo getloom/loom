@@ -1,6 +1,6 @@
 import type {PostgresSql} from '$lib/db/postgres';
 import {AccountRepo} from '$lib/vocab/account/AccountRepo';
-import {PersonaRepo} from '$lib/vocab/actor/PersonaRepo';
+import {ActorRepo} from '$lib/vocab/actor/ActorRepo';
 import {AssignmentRepo} from '$lib/vocab/assignment/AssignmentRepo';
 import {HubRepo} from '$lib/vocab/hub/HubRepo';
 import {SpaceRepo} from '$lib/vocab/space/SpaceRepo';
@@ -15,7 +15,7 @@ import {PolicyRepo} from '$lib/vocab/policy/PolicyRepo';
  */
 export class Repos {
 	readonly account: AccountRepo;
-	readonly persona: PersonaRepo;
+	readonly persona: ActorRepo;
 	readonly assignment: AssignmentRepo;
 	readonly hub: HubRepo;
 	readonly space: SpaceRepo;
@@ -26,7 +26,7 @@ export class Repos {
 
 	constructor(public readonly sql: PostgresSql) {
 		this.account = new AccountRepo(this, sql);
-		this.persona = new PersonaRepo(this, sql);
+		this.persona = new ActorRepo(this, sql);
 		this.assignment = new AssignmentRepo(this, sql);
 		this.hub = new HubRepo(this, sql);
 		this.space = new SpaceRepo(this, sql);

@@ -12,7 +12,7 @@
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
-	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/personaHelpers';
+	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/actorHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {

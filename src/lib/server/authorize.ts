@@ -4,7 +4,7 @@ import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
 import type {ActorPersona, Persona} from '$lib/vocab/actor/persona';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/personaHelpers.server';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 // This currently only checks for the existence of an `account_id` on the request.
 // We'll want to allow services to declare more complex rules.

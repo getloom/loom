@@ -11,7 +11,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {slide} from 'svelte/transition';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);

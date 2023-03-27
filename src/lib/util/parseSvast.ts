@@ -1,7 +1,7 @@
 import type {SvelteChild, Text} from 'svast';
 import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
-import {checkPersonaName} from '$lib/vocab/actor/personaHelpers';
+import {checkPersonaName} from '$lib/vocab/actor/actorHelpers';
 import {
 	isHubRelativePath,
 	isHubRelativePathValid,

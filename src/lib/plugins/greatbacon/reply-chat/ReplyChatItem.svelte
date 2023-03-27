@@ -11,7 +11,7 @@
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {contextmenu, personaById, entityById, sourceTiesByDestEntityId},

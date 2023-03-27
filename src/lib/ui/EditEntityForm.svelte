@@ -15,7 +15,7 @@
 	import DestEntities from '$lib/ui/DestEntities.svelte';
 	import PersonaContextmenu from '$lib/app/contextmenu/PersonaContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	export let persona: Readable<AccountPersona>;
 	export let entity: Readable<Entity>;

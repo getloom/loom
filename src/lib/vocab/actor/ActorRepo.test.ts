@@ -3,13 +3,13 @@ import {suite} from 'uvu';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import * as assert from 'uvu/assert';
 
-/* test__PersonaRepo */
-const test__PersonaRepo = suite<TestDbContext>('PersonaRepo');
+/* test__ActorRepo */
+const test__ActorRepo = suite<TestDbContext>('ActorRepo');
 
-test__PersonaRepo.before(setupDb);
-test__PersonaRepo.after(teardownDb);
+test__ActorRepo.before(setupDb);
+test__ActorRepo.after(teardownDb);
 
-test__PersonaRepo(
+test__ActorRepo(
 	'filterAssociatesByAccount should include admin & ghost personas',
 	async ({repos, random}) => {
 		//create a persona, it should have 3 associates return including ADMIN & GHOST
@@ -35,5 +35,5 @@ test__PersonaRepo(
 	},
 );
 
-test__PersonaRepo.run();
-/* test__PersonaRepo */
+test__ActorRepo.run();
+/* test__ActorRepo */

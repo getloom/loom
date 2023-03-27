@@ -10,7 +10,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona} = $viewContext);

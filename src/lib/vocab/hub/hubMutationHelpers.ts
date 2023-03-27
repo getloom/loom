@@ -11,7 +11,7 @@ import {toHubUrl} from '$lib/ui/url';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {setIfUpdated} from '$lib/util/store';
-import {isAccountPersona} from '$lib/vocab/actor/personaHelpers';
+import {isAccountPersona} from '$lib/vocab/actor/actorHelpers';
 
 export const stashHubs = (ui: WritableUi, $hubs: Hub[], replace = false): void => {
 	const {hubById, hubs} = ui;

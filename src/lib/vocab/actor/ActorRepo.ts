@@ -4,11 +4,11 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {AccountPersona, Persona, PublicPersona} from '$lib/vocab/actor/persona';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/personaHelpers.server';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
-const log = new Logger(gray('[') + blue('PersonaRepo') + gray(']'));
+const log = new Logger(gray('[') + blue('ActorRepo') + gray(']'));
 
-export class PersonaRepo extends PostgresRepo {
+export class ActorRepo extends PostgresRepo {
 	// TODO is weird to return a `PublicPersona`, could fix by having
 	// `PublicGhostPersona`, `PublicCommunityPersona`, and `PublicAccountPersona`
 	// as separate types, see also `createCommunityPersona` and `createGhostPersona`

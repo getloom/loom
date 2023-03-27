@@ -17,7 +17,7 @@ import type {
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {CreateAccountPersonaService} from '$lib/vocab/actor/personaServices';
+import {CreateAccountPersonaService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Assignment} from '$lib/vocab/assignment/assignment';

@@ -2,7 +2,7 @@
 	import {getApp} from '$lib/ui/app';
 	import PersonaAvatar from '$lib/ui/PersonaAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
-	import {lookupPersona} from '$lib/vocab/actor/personaHelpers';
+	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {personaById},

@@ -15,7 +15,7 @@ import type {ClientSession} from '$lib/vocab/account/account';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {stashPersonas} from '$lib/vocab/actor/personaMutationHelpers';
+import {stashPersonas} from '$lib/vocab/actor/actorMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 

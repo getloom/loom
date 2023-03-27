@@ -1,6 +1,6 @@
 import type {WritableUi} from '$lib/ui/ui';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {evictPersona} from '$lib/vocab/actor/personaMutationHelpers';
+import {evictPersona} from '$lib/vocab/actor/actorMutationHelpers';
 import {evictHub} from '$lib/vocab/hub/hubMutationHelpers';
 
 export const stashAssignments = (
