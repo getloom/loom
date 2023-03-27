@@ -15,11 +15,11 @@ import {
 	randomPassword,
 } from '$lib/util/randomVocab';
 import {randomHue} from '$lib/ui/color';
-import type {RandomEventParams} from '$lib/util/randomEventParamsTypes';
+import type {RandomEventParams} from '$lib/util/randomActionParamsTypes';
 
 /* eslint-disable no-param-reassign */
 
-export const randomEventParams: RandomEventParams = {
+export const randomActionParams: RandomEventParams = {
 	Ping: async () => {
 		return null;
 	},

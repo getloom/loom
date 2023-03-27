@@ -4,7 +4,7 @@ import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {CreateAccountPersonaService, DeletePersonaService} from '$lib/vocab/actor/personaServices';
-import {randomEventParams} from '$lib/util/randomEventParams';
+import {randomActionParams} from '$lib/util/randomActionParams';
 import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
@@ -16,7 +16,7 @@ test__personaService.before(setupDb);
 test__personaService.after(teardownDb);
 
 test__personaService('create a persona & test name collisions', async ({repos, random}) => {
-	const params = await randomEventParams.CreateAccountPersona(random);
+	const params = await randomActionParams.CreateAccountPersona(random);
 	params.name = params.name.toLowerCase();
 
 	const account = await random.account();
@@ -51,7 +51,7 @@ test__personaService('ghost persona has the expected name and id', async ({repos
 	unwrap(
 		await CreateAccountPersonaService.perform({
 			...toServiceRequestMock(repos, undefined, undefined, (await random.account()).account_id),
-			params: await randomEventParams.CreateAccountPersona(random),
+			params: await randomActionParams.CreateAccountPersona(random),
 		}),
 	);
 

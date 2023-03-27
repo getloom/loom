@@ -6,7 +6,7 @@ import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {log, toServiceRequestMock} from '$lib/util/testHelpers';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {services} from '$lib/server/services';
-import {randomEventParams} from '$lib/util/randomEventParams';
+import {randomActionParams} from '$lib/util/randomActionParams';
 import {SessionApiMock} from '$lib/session/SessionApiMock';
 import {toFailedApiResult} from '$lib/server/api';
 
@@ -83,7 +83,7 @@ for (const service of services.values()) {
 	test__services(`perform service ${event.name}`, async ({repos, random}) => {
 		const account = await random.account();
 		const {persona} = await random.persona(account);
-		const params = await randomEventParams[event.name](random, {account, persona});
+		const params = await randomActionParams[event.name](random, {account, persona});
 		if (!validateSchema(event.params)(params)) {
 			throw new Error(
 				`Failed to validate random params for service ${event.name}: ${toValidationErrorMessage(
@@ -122,7 +122,7 @@ for (const service of services.values()) {
 
 			// create a new hub without the persona, otherwise they might have permissions
 			const hubData = await random.hub(undefined, account);
-			const failedParams = await randomEventParams[event.name](random, {
+			const failedParams = await randomActionParams[event.name](random, {
 				...hubData,
 				space: hubData.spaces[1],
 				account,

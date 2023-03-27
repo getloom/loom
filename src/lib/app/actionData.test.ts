@@ -4,7 +4,7 @@ import * as assert from 'uvu/assert';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {actionData} from '$lib/app/actionData';
-import {randomEventParams} from '$lib/util/randomEventParams';
+import {randomActionParams} from '$lib/util/randomActionParams';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {setupApp, teardownApp} from '$lib/util/testAppHelpers';
 
@@ -19,7 +19,7 @@ test__actionData.after(teardownApp);
 for (const eventInfo of actionData.values()) {
 	test__actionData(`do action ${eventInfo.name} in a client app`, async ({app, random}) => {
 		const account = await random.account();
-		const params = await randomEventParams[eventInfo.name](random, {account});
+		const params = await randomActionParams[eventInfo.name](random, {account});
 
 		if (eventInfo.params) {
 			if (!validateSchema(eventInfo.params)(params)) {

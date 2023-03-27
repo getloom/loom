@@ -5,7 +5,7 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
-	import CreateEventParamsFields from '$lib/ui/CreateEventParamsFields.svelte';
+	import CreateActionParamsFields from '$lib/ui/CreateActionParamsFields.svelte';
 	import {actionData} from '$lib/app/actionData';
 	import type {ActionData} from '$lib/vocab/action/action';
 
@@ -94,7 +94,7 @@
 						<fieldset>
 							<legend>params</legend>
 							<code class="params"><pre>{JSON.stringify(formParams, null, 2)}</pre></code>
-							<CreateEventParamsFields
+							<CreateActionParamsFields
 								{persona}
 								eventInfo={selectedActionData}
 								bind:params={formParams}

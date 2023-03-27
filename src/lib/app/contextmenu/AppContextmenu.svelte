@@ -7,7 +7,7 @@
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
 	import About from '$lib/ui/About.svelte';
 	import AccountEditor from '$lib/ui/AccountEditor.svelte';
-	import CreateEventForm from '$lib/ui/CreateEventForm.svelte';
+	import CreateActionForm from '$lib/ui/CreateActionForm.svelte';
 
 	const {
 		actions,
@@ -63,7 +63,7 @@
 				<ContextmenuEntry
 					run={() =>
 						actions.OpenDialog({
-							Component: CreateEventForm,
+							Component: CreateActionForm,
 							props: {persona: selectedPersona},
 							dialogProps: {layout: 'page'},
 						})}

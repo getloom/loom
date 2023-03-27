@@ -9,7 +9,7 @@ import {performService} from '$lib/server/service';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {randomCommunnityName} from '$lib/util/randomVocab';
 import {ApiError, type ApiResult} from '$lib/server/api';
-import {randomEventParams} from '$lib/util/randomEventParams';
+import {randomActionParams} from '$lib/util/randomActionParams';
 import {PingService} from '$lib/server/uiServices';
 
 /* test__service */
@@ -62,7 +62,7 @@ test__service(`roll back the database after a failed transaction`, async ({repos
 	};
 	const returnedResult = await performService(s, {
 		...toServiceRequestMock(repos, persona),
-		params: await randomEventParams.CreateHub(random),
+		params: await randomActionParams.CreateHub(random),
 	});
 	assert.ok(hub);
 	assert.ok(failedResult);
