@@ -1,16 +1,14 @@
 import type {ServerResponse} from 'http';
-import {OK, type Result} from '@feltjs/util';
+import {Logger} from '@feltjs/util/log.js';
 
 import type {ApiServerRequest} from '$lib/server/ApiServer';
 import {setSessionCookie} from '$lib/session/sessionCookie';
-import {Logger} from '@feltjs/util/log.js';
-import type {ErrorResponse} from '$lib/util/error';
 
 const log = new Logger('[SessionApi]');
 
 export interface ISessionApi {
-	signIn: (account_id: number) => Result<object, ErrorResponse>;
-	signOut: () => Result<object, ErrorResponse>;
+	signIn: (account_id: number) => Promise<void>;
+	signOut: () => Promise<void>;
 }
 
 /**
@@ -22,17 +20,15 @@ export interface ISessionApi {
 export class SessionApi implements ISessionApi {
 	constructor(private readonly req: ApiServerRequest, private readonly res: ServerResponse) {}
 
-	signIn(account_id: number): Result<object, ErrorResponse> {
+	async signIn(account_id: number): Promise<void> {
 		log.trace('logging in', account_id);
 		this.req.account_id = account_id;
 		setSessionCookie(this.res, account_id);
-		return OK;
 	}
 
-	signOut(): Result<object, ErrorResponse> {
+	async signOut(): Promise<void> {
 		log.trace('logging out', this.req.account_id);
 		this.req.account_id = undefined;
 		setSessionCookie(this.res, '');
-		return OK;
 	}
 }

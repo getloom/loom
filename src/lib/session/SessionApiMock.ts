@@ -1,19 +1,14 @@
-import {OK, type Result} from '@feltjs/util';
-
 import type {ISessionApi} from '$lib/session/SessionApi';
-import type {ErrorResponse} from '$lib/util/error';
 
 export class SessionApiMock implements ISessionApi {
 	account_id: number | undefined;
 
-	signIn(account_id: number): Result<object, ErrorResponse> {
-		if (this.account_id) return {ok: false, message: 'already signed in'};
+	async signIn(account_id: number): Promise<void> {
+		if (this.account_id) throw Error('already signed in');
 		this.account_id = account_id;
-		return OK;
 	}
-	signOut(): Result<object, ErrorResponse> {
-		if (!this.account_id) return {ok: false, message: 'not signed in'};
+	async signOut(): Promise<void> {
+		if (!this.account_id) throw Error('not signed in');
 		this.account_id = undefined;
-		return OK;
 	}
 }

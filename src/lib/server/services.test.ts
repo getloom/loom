@@ -112,7 +112,7 @@ for (const service of services.values()) {
 			);
 		}
 		if (event.name === 'SignUp') {
-			session.signOut(); // sign out after `SignUp` so `SignIn` works (otherwise "already signed in")
+			await session.signOut(); // sign out after `SignUp` so `SignIn` works (otherwise "already signed in")
 		}
 		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
 

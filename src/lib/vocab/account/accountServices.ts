@@ -1,6 +1,5 @@
 import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltjs/util/log.js';
-import {unwrap} from '@feltjs/util';
 
 import type {ServiceByName} from '$lib/app/actionTypes';
 import {
@@ -55,7 +54,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			toDefaultAccountSettings(),
 		);
 
-		unwrap(session.signIn(account.account_id));
+		await session.signIn(account.account_id);
 
 		const clientSession = await repos.account.loadClientSession(account.account_id);
 
@@ -80,7 +79,7 @@ export const SignInService: ServiceByName['SignIn'] = {
 
 		const clientSession = await repos.account.loadClientSession(account.account_id);
 
-		unwrap(session.signIn(account.account_id));
+		await session.signIn(account.account_id);
 
 		return {ok: true, status: 200, value: {session: clientSession}};
 	},
@@ -90,7 +89,7 @@ export const SignOutService: ServiceByName['SignOut'] = {
 	event: SignOut,
 	transaction: false,
 	perform: async ({session}) => {
-		unwrap(session.signOut());
+		await session.signOut();
 		return {ok: true, status: 200, value: null};
 	},
 };
