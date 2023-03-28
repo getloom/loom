@@ -2,7 +2,7 @@
 	import {page} from '$app/stores';
 
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
-	import {actionData} from '$lib/app/actionData';
+	import {actionDatas} from '$lib/app/actionData';
 	import {vocabSchemas} from '$lib/app/schemas';
 	import {viewTemplates} from '$lib/vocab/view/view';
 
@@ -13,7 +13,7 @@
 	// TODO use IntersectionObserver to update hash on scroll
 
 	// TODO display plugins
-	// TODO display source code links to views and events and such
+	// TODO display source code links to views and actions and such
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
@@ -43,11 +43,12 @@
 					</li>
 				{/each}
 			</menu>
-			<li><h4><a href="#events" class:selected={hash === 'events'}>events</a></h4></li>
+			<li><h4><a href="#actions" class:selected={hash === 'actions'}>actions</a></h4></li>
 			<menu>
-				{#each actionData as eventInfo (eventInfo.name)}
+				{#each actionDatas as actionData (actionData.name)}
 					<li>
-						<a href="#{eventInfo.name}" class:selected={hash === eventInfo.name}>{eventInfo.name}</a
+						<a href="#{actionData.name}" class:selected={hash === actionData.name}
+							>{actionData.name}</a
 						>
 					</li>
 				{/each}
@@ -103,32 +104,32 @@
 			{/each}
 		</ul>
 		<div class="markup padded-xl">
-			<h2 id="events">events</h2>
+			<h2 id="actions">actions</h2>
 		</div>
 		<ul>
-			{#each actionData as eventInfo (eventInfo.name)}
-				<li id={eventInfo.name}>
+			{#each actionDatas as actionData (actionData.name)}
+				<li id={actionData.name}>
 					<div class="title">
-						<code class="name">{eventInfo.name}</code>
-						<small class="type">{eventInfo.type}</small>
+						<code class="name">{actionData.name}</code>
+						<small class="type">{actionData.type}</small>
 					</div>
 					<div class="property">
 						<span>params</span>
 						<!-- TODO display the generated type string instead of the schema,
-						probably by generating a sibling file to `events.ts` like `eventTypeStrings.ts` -->
-						<pre>{JSON.stringify(eventInfo.params, null, 2)}</pre>
+						probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
+						<pre>{JSON.stringify(actionData.params, null, 2)}</pre>
 					</div>
-					{#if eventInfo.type !== 'ClientAction'}
+					{#if actionData.type !== 'ClientAction'}
 						<div class="property">
 							<span>response</span>
 							<!-- TODO display the generated type string instead of the schema,
-							probably by generating a sibling file to `events.ts` like `eventTypeStrings.ts` -->
-							<pre>{JSON.stringify(eventInfo.response, null, 2)}</pre>
+							probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
+							<pre>{JSON.stringify(actionData.response, null, 2)}</pre>
 						</div>
 					{/if}
 					<div class="property">
 						<span>returns</span>
-						<pre>{eventInfo.returns}</pre>
+						<pre>{actionData.returns}</pre>
 					</div>
 				</li>
 			{/each}
@@ -144,7 +145,7 @@
 					</li>
 					<li>
 						<h4>
-							<a href="#events" class:selected={hash === 'events'}>events</a>
+							<a href="#actions" class:selected={hash === 'actions'}>actions</a>
 						</h4>
 					</li>
 				</menu>

@@ -13,7 +13,7 @@ export interface ClientActionData {
 	returns: string;
 }
 
-// Service events are handled by a remote `Service` (`$lib/server/service.ts`).
+// Service actions are handled by a remote `Service` (`$lib/server/service.ts`).
 // Their `route` property enables url route building for http methods.
 export interface ServiceActionData {
 	type: 'ServiceAction';
@@ -33,5 +33,5 @@ export interface ServiceActionData {
 }
 
 export const parseServiceActionData = (
-	eventInfo: ActionData | undefined,
-): ServiceActionData | undefined => (eventInfo?.type === 'ServiceAction' ? eventInfo : undefined);
+	actionData: ActionData | undefined,
+): ServiceActionData | undefined => (actionData?.type === 'ServiceAction' ? actionData : undefined);

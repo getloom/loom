@@ -6,7 +6,7 @@
 	import {getApp} from '$lib/ui/app';
 	import type {AccountPersona} from '$lib/vocab/actor/persona';
 	import CreateActionParamsFields from '$lib/ui/CreateActionParamsFields.svelte';
-	import {actionData} from '$lib/app/actionData';
+	import {actionDatas} from '$lib/app/actionData';
 	import type {ActionData} from '$lib/vocab/action/action';
 
 	const {actions} = getApp();
@@ -23,29 +23,29 @@
 	interface ActionHistoryItem {
 		name: string;
 		params: any; // TODO ?
-		eventInfo: ActionData;
+		actionData: ActionData;
 		created: number;
 		responded: number;
 		elapsed: number;
 		error: string | null;
 	}
 
-	const actionsEvent = async (eventInfo: ActionData, params: any): Promise<void> => {
+	const actionsEvent = async (actionData: ActionData, params: any): Promise<void> => {
 		if (pending) return;
 		// TODO confirmation dialog!
-		formParams = params; // depending on where the event is actionHistory, the form params may not match, but we want to load the form with whatever was just sent for UX purposes
+		formParams = params; // depending on where the action is actionHistory, the form params may not match, but we want to load the form with whatever was just sent for UX purposes
 		pending = true;
 		errorMessage = null;
 		const d: ActionHistoryItem = {
-			name: eventInfo.name,
+			name: actionData.name,
 			params,
-			eventInfo,
+			actionData,
 			created: performance.now(),
 			responded: 0,
 			elapsed: 0,
 			error: null,
 		};
-		const result = await (actions as any)[eventInfo.name](params);
+		const result = await (actions as any)[actionData.name](params);
 		pending = false;
 		if (result && 'ok' in result) {
 			if (result.ok) {
@@ -71,12 +71,12 @@
 <form {...$$restProps} class="padded-xl">
 	<h2>Create a System Event</h2>
 	<div class="layout">
-		<fieldset class="events markup">
-			<legend>available events</legend>
-			{#each actionData as eventInfo (eventInfo)}
+		<fieldset class="actions markup">
+			<legend>available actions</legend>
+			{#each actionDatas as actionData (actionData)}
 				<label class="row">
-					<input type="radio" bind:group={selectedActionData} value={eventInfo} />
-					<code class={eventInfo.type}>{eventInfo.name}</code>
+					<input type="radio" bind:group={selectedActionData} value={actionData} />
+					<code class={actionData.type}>{actionData.name}</code>
 				</label>
 			{/each}
 		</fieldset>
@@ -96,7 +96,7 @@
 							<code class="params"><pre>{JSON.stringify(formParams, null, 2)}</pre></code>
 							<CreateActionParamsFields
 								{persona}
-								eventInfo={selectedActionData}
+								actionData={selectedActionData}
 								bind:params={formParams}
 							/>
 						</fieldset>
@@ -110,9 +110,9 @@
 					>
 						actions <code class={selectedActionData.type}>{selectedActionData.name}</code>
 					</PendingButton>
-					<!-- TODO implement saving events like any other data to a path/entity -->
+					<!-- TODO implement saving actions like any other data to a path/entity -->
 					<!-- <PendingButton on:click={save} pending={savePending} disabled={pending}
-					>save event</PendingButton
+					>save action</PendingButton
 				> -->
 					{#if errorMessage}
 						<div class="error-message">
@@ -124,11 +124,11 @@
 			{#if actionHistory.length}
 				<!-- TODO extract table component with sortable headings -->
 				<table class="panel">
-					<thead><th>event</th><th>time</th><th /><th>props</th><th>error</th></thead>
+					<thead><th>action</th><th>time</th><th /><th>props</th><th>error</th></thead>
 					<tbody>
 						{#each actionHistory as item (item)}
 							<tr>
-								<td><code class={item.eventInfo.type}>{item.name}</code></td>
+								<td><code class={item.actionData.type}>{item.name}</code></td>
 								<td>{Math.round(item.elapsed)}ms</td>
 								<td>
 									<div class="buttons">
@@ -136,8 +136,8 @@
 											class="plain-button icon-button"
 											style:--icon_size="var(--icon_size_sm)"
 											type="button"
-											title="actions {item.eventInfo.name} again"
-											on:click={() => actionsEvent(item.eventInfo, item.params)}
+											title="actions {item.actionData.name} again"
+											on:click={() => actionsEvent(item.actionData, item.params)}
 										>
 											↪
 										</button>
@@ -145,7 +145,7 @@
 											class="plain-button icon-button"
 											style:--icon_size="var(--icon_size_sm)"
 											type="button"
-											title="actions {item.eventInfo.name} again"
+											title="actions {item.actionData.name} again"
 											on:click={() => (actionHistory = actionHistory.filter((d) => d !== item))}
 										>
 											✕
@@ -187,11 +187,11 @@
 		padding-left: var(--spacing_xl3);
 		flex: 1;
 	}
-	.events {
+	.actions {
 		/* TODO maybe take `width: 100%` off .markup? could then delete this */
 		width: auto;
 	}
-	.events label {
+	.actions label {
 		margin-bottom: 0;
 	}
 	/* TODO copypasted from `PropertyEditor`, maybe extract a class? `.big-text`? */

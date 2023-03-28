@@ -45,7 +45,7 @@
 	class:selected
 	use:contextmenu.action={[[SpaceContextmenu, {persona, hub, space}]]}
 	on:click={() => {
-		// TODO Should this be a click handler or react to UI system events/changes?
+		// TODO Should this be a click handler or react to UI system actions/changes?
 		// Might make more UX sense to make it react to any state changes,
 		// no matter the source -- e.g. we'll add commands that don't involve this click handler.
 		// That's probably what the user wants,

@@ -27,7 +27,7 @@ for (const service of services.values()) {
 			assert.is(
 				event.authorize,
 				false,
-				'non-authenticated events must have an authorize value of false',
+				'non-authenticated actions must have an authorize value of false',
 			);
 		} else if (event.authorize === false) {
 			// non-authorized event (yes account_id, no actor)
@@ -41,15 +41,15 @@ for (const service of services.values()) {
 			assert.equal(
 				event.params.properties?.actor,
 				{type: 'number'},
-				'authorized events must have an actor number property',
+				'authorized actions must have an actor number property',
 			);
 			assert.ok(
 				Array.isArray(event.params.required) && event.params.required.includes('actor'),
-				'authorized events must have a required actor property',
+				'authorized actions must have a required actor property',
 			);
 			assert.ok(
 				event.authenticate === undefined || event.authenticate,
-				'authorized events must have an authenticate value of true or undefined',
+				'authorized actions must have an authenticate value of true or undefined',
 			);
 		}
 	});

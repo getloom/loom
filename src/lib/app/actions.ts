@@ -17,7 +17,7 @@ export const getActions = (): Actions => getContext(KEY);
 export const setActions = (value: Actions): Actions => setContext(KEY, value);
 
 export interface ToActionsClient {
-	(eventName: string): ApiClient | null;
+	(actionName: string): ApiClient | null;
 }
 
 export const toActions = (
@@ -27,20 +27,20 @@ export const toActions = (
 ): Actions => {
 	// TODO validate the params here to improve UX, but for now we're safe letting the server validate
 	const actions: Actions = new Proxy({} as any, {
-		get: (_target, eventName: string) => (params: unknown) => {
-			log.debug(...toLoggedArgs(eventName, params));
-			const client = toClient(eventName);
-			const mutation = mutations[eventName];
+		get: (_target, actionName: string) => (params: unknown) => {
+			log.debug(...toLoggedArgs(actionName, params));
+			const client = toClient(actionName);
+			const mutation = mutations[actionName];
 			if (!mutation) {
-				log.warn('invoking event with no mutation', eventName, params);
-				return client?.invoke(eventName, params);
+				log.warn('invoking action with no mutation', actionName, params);
+				return client?.invoke(actionName, params);
 			}
 			return mutation({
-				eventName,
+				actionName,
 				params,
 				ui,
 				actions,
-				invoke: client ? (p = params) => client.invoke(eventName, p) : null,
+				invoke: client ? (p = params) => client.invoke(actionName, p) : null,
 			});
 		},
 	});
@@ -58,21 +58,21 @@ export const toActionsBroadcastMessage =
 		actions: Actions,
 	): ActionsBroadcastMessage =>
 	(message) => {
-		const {method: eventName, params} = message;
+		const {method: actionName, params} = message;
 		log.debug(
-			'%c[broadcast.%c' + eventName + '%c]',
+			'%c[broadcast.%c' + actionName + '%c]',
 			'color: gray',
 			'color: darkCyan',
 			'color: gray',
 			params === undefined ? '' : params, // print null but not undefined
 		);
-		const mutation = mutations[eventName];
+		const mutation = mutations[actionName];
 		if (!mutation) {
-			log.warn('ignoring broadcast event with no mutation', eventName, params);
+			log.warn('ignoring broadcast action with no mutation', actionName, params);
 			return;
 		}
 		return mutation({
-			eventName,
+			actionName,
 			params,
 			ui,
 			actions,
@@ -80,13 +80,13 @@ export const toActionsBroadcastMessage =
 		});
 	};
 
-const toLoggedArgs = (eventName: string, params: unknown): any[] => {
-	const args = toLoggedEventName(eventName);
+const toLoggedArgs = (actionName: string, params: unknown): any[] => {
+	const args = toLoggedActionName(actionName);
 	if (params !== undefined) args.push(params); // print null but not undefined}
 	return args;
 };
 
-const toLoggedEventName = (eventName: string): any[] =>
+const toLoggedActionName = (actionName: string): any[] =>
 	browser && dev
-		? ['%c[actions.%c' + eventName + '%c]', 'color: gray', 'color: cornflowerblue', 'color: gray']
-		: ['[actions.' + eventName + ']'];
+		? ['%c[actions.%c' + actionName + '%c]', 'color: gray', 'color: cornflowerblue', 'color: gray']
+		: ['[actions.' + actionName + ']'];

@@ -47,7 +47,7 @@ import {
 	ClearFreshness,
 } from '$lib/ui/uiActions';
 
-export const actionData: ActionData[] = [
+export const actionDatas: ActionData[] = [
 	// accountEvents
 	SignUp,
 	SignIn,
@@ -104,4 +104,6 @@ export const actionData: ActionData[] = [
 	ClearFreshness,
 ];
 
-export const eventInfoByName: Map<string, ActionData> = new Map(actionData.map((e) => [e.name, e]));
+export const actionDataByName: Map<string, ActionData> = new Map(
+	actionDatas.map((e) => [e.name, e]),
+);

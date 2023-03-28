@@ -36,7 +36,7 @@ export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui, p
 	const result = await invoke();
 	if (!result.ok) return result;
 	ui.mutate(() => evictEntities(ui, params.entityIds));
-	// TODO add `ui.events.actionsEvent('evicted_entities')`
+	// TODO add `ui.events.emit('evicted_entities')`
 	return result;
 };
 

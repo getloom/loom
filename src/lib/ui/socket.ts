@@ -174,7 +174,7 @@ const createWebSocket = (
 	// Send a heartbeat every `heartbeatInterval`,
 	// resetting to the most recent time both a send and receive event were handled.
 	// This ensures the heartbeat is sent only when actually needed.
-	// Note that if the client is receiving events but not sending them, or vice versa,
+	// Note that if the client is receiving actions but not sending them, or vice versa,
 	// the heartbeat is sent to prevent the remote connection from timing out.
 	// (nginx tracks each timer separately and both need to be accounted for --
 	// see `proxy_read_timeout` and `proxy_send_timeout` for more)

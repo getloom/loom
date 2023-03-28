@@ -11,19 +11,19 @@
 
 	export let params: null | Record<string, any> = null; // TODO type?
 	export let persona: Readable<AccountPersona>;
-	export let eventInfo: ActionData;
+	export let actionData: ActionData;
 
-	$: paramsProperties = eventInfo.params?.properties;
+	$: paramsProperties = actionData.params?.properties;
 	$: paramsPropertiesKeys = paramsProperties && Object.keys(paramsProperties);
 
-	$: params = computeParams(eventInfo);
+	$: params = computeParams(actionData);
 
 	const updateParam = (key: string, value: any): void => {
 		params = {...params, [key]: value};
 	};
 
-	const computeParams = (eventInfo: ActionData) => {
-		if (!eventInfo.params || eventInfo.params.type === 'null') {
+	const computeParams = (actionData: ActionData) => {
+		if (!actionData.params || actionData.params.type === 'null') {
 			return null;
 		}
 		// TODO  maybe iterate through all children that register as a field via context?

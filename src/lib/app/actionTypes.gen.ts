@@ -2,7 +2,7 @@ import type {Gen} from '@feltjs/gro';
 import {toRootPath} from '@feltjs/gro/dist/paths.js';
 import {toVocabSchemaResolver} from '@feltjs/gro/dist/utils/schema.js';
 
-import {actionData} from '$lib/app/actionData';
+import {actionDatas} from '$lib/app/actionData';
 import {
 	jsonSchemaToTypescript,
 	type JsonSchemaToTypeScriptOptions,
@@ -49,34 +49,35 @@ import type {HubTemplate} from '$lib/app/templates';
 
 /* eslint-disable @typescript-eslint/array-type */
 
-export type ServiceActionName = ${actionData.reduce(
-		(str, eventInfo) => str + (eventInfo.type === 'ServiceAction' ? `| '${eventInfo.name}'` : ''),
+export type ServiceActionName = ${actionDatas.reduce(
+		(str, actionData) =>
+			str + (actionData.type === 'ServiceAction' ? `| '${actionData.name}'` : ''),
 		'',
 	)};
 
-export type ClientActionName = ${actionData.reduce(
-		(str, eventInfo) => str + (eventInfo.type === 'ClientAction' ? `| '${eventInfo.name}'` : ''),
+export type ClientActionName = ${actionDatas.reduce(
+		(str, actionData) => str + (actionData.type === 'ClientAction' ? `| '${actionData.name}'` : ''),
 		'',
 	)};
 
 export interface EventParamsByName {
-	${actionData.reduce(
-		(str, eventInfo) =>
+	${actionDatas.reduce(
+		(str, actionData) =>
 			str +
 			`
-${eventInfo.name}: ${toParamsName(eventInfo.name)};
+${actionData.name}: ${toParamsName(actionData.name)};
 `.trim(),
 		'',
 	)}
 }
 export interface EventResponseByName {
-	${actionData.reduce(
-		(str, eventInfo) =>
+	${actionDatas.reduce(
+		(str, actionData) =>
 			str +
-			(eventInfo.type === 'ClientAction'
+			(actionData.type === 'ClientAction'
 				? ''
 				: `
-${eventInfo.name}: ${toResponseName(eventInfo.name)};
+${actionData.name}: ${toResponseName(actionData.name)};
 `.trim()),
 		'',
 	)}
@@ -94,21 +95,21 @@ export interface ServiceByName {
 	}, '')}
 }
 
-${await actionData.reduce(
-	async (str, eventInfo) =>
+${await actionDatas.reduce(
+	async (str, actionData) =>
 		(await str) +
 		`
-${await jsonSchemaToTypescript(eventInfo.params, toParamsName(eventInfo.name), opts)}${
-			'response' in eventInfo
-				? await jsonSchemaToTypescript(eventInfo.response, toResponseName(eventInfo.name), opts)
+${await jsonSchemaToTypescript(actionData.params, toParamsName(actionData.name), opts)}${
+			'response' in actionData
+				? await jsonSchemaToTypescript(actionData.response, toResponseName(actionData.name), opts)
 				: ''
 		}${
 			// TODO hacky, the ApiResult type should be represented in the schema
 			// but that requires generic type generation:
 			// https://github.com/bcherny/json-schema-to-typescript/issues/59
-			'response' in eventInfo
-				? `	export type ${toResponseResultName(eventInfo.name)} = ApiResult<${toResponseName(
-						eventInfo.name,
+			'response' in actionData
+				? `	export type ${toResponseResultName(actionData.name)} = ApiResult<${toResponseName(
+						actionData.name,
 				  )}>;`
 				: ''
 		}
@@ -117,26 +118,26 @@ ${await jsonSchemaToTypescript(eventInfo.params, toParamsName(eventInfo.name), o
 )}
 
 export interface Actions {
-	${actionData.reduce(
-		(str, eventInfo) =>
+	${actionDatas.reduce(
+		(str, actionData) =>
 			str +
-			`${eventInfo.name}: (${
-				eventInfo.params?.type === 'null' ? '' : `params: ${toParamsName(eventInfo.name)}`
-			}) => ${eventInfo.returns};`.trim(),
+			`${actionData.name}: (${
+				actionData.params?.type === 'null' ? '' : `params: ${toParamsName(actionData.name)}`
+			}) => ${actionData.returns};`.trim(),
 		'',
 	)}
 }
 
 export interface Mutations {
-  ${actionData.reduce(
-		(str, eventInfo) =>
+  ${actionDatas.reduce(
+		(str, actionData) =>
 			str +
 			`
-      ${eventInfo.name}: (
-        ctx: MutationContext<${toParamsName(eventInfo.name)}, ${
-				eventInfo.type === 'ClientAction' ? 'void' : toResponseResultName(eventInfo.name)
+      ${actionData.name}: (
+        ctx: MutationContext<${toParamsName(actionData.name)}, ${
+				actionData.type === 'ClientAction' ? 'void' : toResponseResultName(actionData.name)
 			}>,
-      ) => ${eventInfo.returns};
+      ) => ${actionData.returns};
 `.trim(),
 		'',
 	)}

@@ -3,66 +3,66 @@ import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
-import {actionData} from '$lib/app/actionData';
+import {actionDatas} from '$lib/app/actionData';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
 import {setupApp, teardownApp} from '$lib/util/testAppHelpers';
 
-/* test__actionData */
-const test__actionData = suite<TestDbContext & TestAppContext>('actionData');
+/* test__actionDatas */
+const test__actionDatas = suite<TestDbContext & TestAppContext>('actionDatas');
 
-test__actionData.before(setupDb);
-test__actionData.after(teardownDb);
-test__actionData.before(setupApp);
-test__actionData.after(teardownApp);
+test__actionDatas.before(setupDb);
+test__actionDatas.after(teardownDb);
+test__actionDatas.before(setupApp);
+test__actionDatas.after(teardownApp);
 
-for (const eventInfo of actionData.values()) {
-	test__actionData(`do action ${eventInfo.name} in a client app`, async ({app, random}) => {
+for (const actionData of actionDatas.values()) {
+	test__actionDatas(`do action ${actionData.name} in a client app`, async ({app, random}) => {
 		const account = await random.account();
-		const params = await randomActionParams[eventInfo.name](random, {account});
+		const params = await randomActionParams[actionData.name](random, {account});
 
-		if (eventInfo.params) {
-			if (!validateSchema(eventInfo.params)(params)) {
+		if (actionData.params) {
+			if (!validateSchema(actionData.params)(params)) {
 				throw new Error(
 					`Failed to validate random params for service ${
-						eventInfo.name
-					}: ${toValidationErrorMessage(validateSchema(eventInfo.params).errors![0])}`,
+						actionData.name
+					}: ${toValidationErrorMessage(validateSchema(actionData.params).errors![0])}`,
 				);
 			}
 		} else if (
-			eventInfo.type === 'ServiceAction' &&
-			eventInfo.params !== null // allow void params
+			actionData.type === 'ServiceAction' &&
+			actionData.params !== null // allow void params
 		) {
-			throw Error(`Expected eventInfo to have a schema: ${eventInfo.name}`);
+			throw Error(`Expected actionData to have a schema: ${actionData.name}`);
 		}
 
 		// TODO can't make remote calls yet -- either use `node-fetch` or mock
-		if (eventInfo.type !== 'ClientAction' || eventInfo.name === 'QueryEntities') {
+		if (actionData.type !== 'ClientAction' || actionData.name === 'QueryEntities') {
 			return;
 		}
 
 		// TODO this fails because the random space is not availabe in the client UI data
 		// maybe make the randomizer configurable for populating server and/or client data
-		if (eventInfo.name === 'ViewSpace') {
+		if (actionData.name === 'ViewSpace') {
 			return;
 		}
 
-		// TODO fix typecast with a union for `eventInfo`
-		const result = await (app.actions as any)[eventInfo.name](params);
-		if (eventInfo.type === 'ClientAction') {
+		// TODO fix typecast with a union for `actionData`
+		const result = await (app.actions as any)[actionData.name](params);
+		if (actionData.type === 'ClientAction') {
 			// TODO don't have schemas for `returns` yet, but eventually we'll want them and then validate here
-			if (eventInfo.returns !== 'void') {
+			if (actionData.returns !== 'void') {
 				assert.ok(result !== undefined);
 			}
 		} else {
 			// TODO can't make remote calls yet -- need to use either `node-fetch` or mock
 			// if (!result.ok) {
-			// 	log.error(`action failed: ${eventInfo.name}`, result);
-			// } else if (!validateSchema(eventInfo.response!)(result.value)) {
-			// 	log.error(`failed to validate service response: ${eventInfo.name}`, result);
+			// 	log.error(`action failed: ${actionData.name}`, result);
+			// } else if (!validateSchema(actionData.response!)(result.value)) {
+			// 	log.error(`failed to validate service response: ${actionData.name}`, result);
 			// 	throw new Error(
-			// 		`Failed to validate response for service ${eventInfo.name}: ${toValidationErrorMessage(
-			// 			validateSchema(eventInfo.response!).errors![0],
+			// 		`Failed to validate response for service ${actionData.name}: ${toValidationErrorMessage(
+			// 			validateSchema(actionData.response!).errors![0],
 			// 		)}`,
 			// 	);
 			// }
@@ -71,5 +71,5 @@ for (const eventInfo of actionData.values()) {
 	});
 }
 
-test__actionData.run();
-/* test__actionData */
+test__actionDatas.run();
+/* test__actionDatas */

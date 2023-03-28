@@ -11,7 +11,7 @@ export interface MutationContext<
 	TParams = unknown,
 	TResult extends ApiResult<unknown> | void = any,
 > {
-	eventName: string;
+	actionName: string;
 	params: TParams;
 	ui: WritableUi;
 	actions: Actions;
