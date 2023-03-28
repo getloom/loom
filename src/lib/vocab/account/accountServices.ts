@@ -98,7 +98,7 @@ export const UpdateAccountSettingsService: ServiceByName['UpdateAccountSettings'
 	event: UpdateAccountSettings,
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
-		log.trace('updating settings for account', account_id, params.settings);
+		log.debug('updating settings for account', account_id, params.settings);
 		const updatedAccount = await repos.account.updateSettings(account_id, params.settings);
 		return {ok: true, status: 200, value: updatedAccount};
 	},

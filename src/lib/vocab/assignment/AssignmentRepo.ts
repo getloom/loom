@@ -13,7 +13,7 @@ export class AssignmentRepo extends PostgresRepo {
 				${persona_id},${hub_id},${role_id}
 			) RETURNING *
 		`;
-		log.trace('created assignment', data[0]);
+		log.debug('created assignment', data[0]);
 		return data[0];
 	}
 
@@ -40,7 +40,7 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	async filterByAccount(account_id: number): Promise<Assignment[]> {
-		log.trace(`[filterByAccount] ${account_id}`);
+		log.debug(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Assignment[]>`
 			SELECT a.assignment_id, a.persona_id, a.hub_id, a.role_id, a.created
 			FROM assignments a JOIN (
@@ -66,7 +66,7 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	async filterByHub(hub_id: number): Promise<Assignment[]> {
-		log.trace(`[filterByHub] ${hub_id}`);
+		log.debug(`[filterByHub] ${hub_id}`);
 		const data = await this.sql<Assignment[]>`
 			SELECT a.assignment_id, a.persona_id, a.hub_id, a.role_id, a.created
 			FROM assignments a 
@@ -76,7 +76,7 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	async countAccountPersonaAssignmentsByHubId(hub_id: number): Promise<number> {
-		log.trace(`[filterByHub] ${hub_id}`);
+		log.debug(`[filterByHub] ${hub_id}`);
 		const data = await this.sql<Array<{count: string}>>`
 			SELECT count(*)
 			FROM personas p JOIN (

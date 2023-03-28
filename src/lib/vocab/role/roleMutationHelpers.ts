@@ -35,7 +35,7 @@ export const evictRoles = (ui: WritableUi, roleIds: number[]): void => {
 	const $roles = roles.get().value;
 	let mutated = false;
 	for (const role_id of roleIds) {
-		log.trace('evicting role', role_id);
+		log.debug('evicting role', role_id);
 		const role = roleById.get(role_id);
 		if (!role) continue;
 		roleById.delete(role_id);

@@ -24,7 +24,7 @@ export const broadcast = (
 		result,
 		params,
 	};
-	log.trace('broadcasting', message);
+	log.debug('broadcasting', message);
 	const serialized = JSON.stringify(message);
 
 	// TODO broadcast scoping - scope to hub and/or account

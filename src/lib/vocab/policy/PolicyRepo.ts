@@ -8,7 +8,7 @@ const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
 
 export class PolicyRepo extends PostgresRepo {
 	async filterByRole(role_id: number): Promise<Policy[]> {
-		log.trace('[filterByRole]', role_id);
+		log.debug('[filterByRole]', role_id);
 		const result = await this.sql<Policy[]>`
 			SELECT policy_id, role_id, permission, data, created, updated 
 			FROM policies WHERE role_id=${role_id}
@@ -21,7 +21,7 @@ export class PolicyRepo extends PostgresRepo {
 		hub_id: number,
 		permission: string,
 	): Promise<Policy[]> {
-		log.trace('[findByActorHubPermission]', actor_id, hub_id, permission);
+		log.debug('[findByActorHubPermission]', actor_id, hub_id, permission);
 		const result = await this.sql<Policy[]>`
 		SELECT * FROM policies JOIN
 			(SELECT roles.role_id FROM roles JOIN
@@ -37,7 +37,7 @@ export class PolicyRepo extends PostgresRepo {
 		permission: string,
 		data?: object | null | undefined,
 	): Promise<Policy> {
-		log.trace('[createPolicy]', role_id, permission);
+		log.debug('[createPolicy]', role_id, permission);
 		const result = await this.sql<Policy[]>`
     INSERT INTO policies (role_id, permission, data) VALUES (
       ${role_id}, ${permission}, ${data ? this.sql.json(data as any) : null}
@@ -56,7 +56,7 @@ export class PolicyRepo extends PostgresRepo {
 	}
 
 	async deleteById(policy_id: number): Promise<void> {
-		log.trace('[deleteById]', policy_id);
+		log.debug('[deleteById]', policy_id);
 		const result = await this.sql<any[]>`
 			DELETE FROM policies WHERE policy_id=${policy_id}
 		`;
@@ -64,7 +64,7 @@ export class PolicyRepo extends PostgresRepo {
 	}
 
 	async filterByAccount(account_id: number): Promise<Policy[]> {
-		log.trace('[filterByAccountId]', account_id);
+		log.debug('[filterByAccountId]', account_id);
 		const result = await this.sql<Policy[]>`
 		SELECT pol.policy_id, pol.role_id, pol.permission, pol.data, pol.created, pol.updated
 		FROM policies pol JOIN (							
@@ -76,7 +76,7 @@ export class PolicyRepo extends PostgresRepo {
 		) apcr
 		ON pol.role_id = apcr.role_id
 		`;
-		log.trace('[filterByAccount]', result.length);
+		log.debug('[filterByAccount]', result.length);
 		return result;
 	}
 }

@@ -11,6 +11,6 @@ export const initBrowser = (): void => {
 	Logger.warn.suffixes.length = 0;
 	Logger.info.prefixes.length = 0;
 	Logger.info.suffixes.length = 0;
-	Logger.trace.prefixes.length = 0;
-	Logger.trace.suffixes.length = 0;
+	Logger.debug.prefixes.length = 0;
+	Logger.debug.suffixes.length = 0;
 };

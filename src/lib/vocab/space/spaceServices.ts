@@ -18,7 +18,7 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
-		log.trace('[ReadSpaces] retrieving spaces for hub', hub_id);
+		log.debug('[ReadSpaces] retrieving spaces for hub', hub_id);
 
 		await checkHubAccess(actor, hub_id, repos);
 
@@ -70,7 +70,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 	event: DeleteSpace,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		log.trace('[DeleteSpace] deleting space with id:', params.space_id);
+		log.debug('[DeleteSpace] deleting space with id:', params.space_id);
 
 		// Check that the space can be deleted.
 		const space = await repos.space.findById(params.space_id);

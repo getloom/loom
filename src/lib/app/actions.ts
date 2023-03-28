@@ -28,7 +28,7 @@ export const toActions = (
 	// TODO validate the params here to improve UX, but for now we're safe letting the server validate
 	const actions: Actions = new Proxy({} as any, {
 		get: (_target, eventName: string) => (params: unknown) => {
-			log.trace(...toLoggedArgs(eventName, params));
+			log.debug(...toLoggedArgs(eventName, params));
 			const client = toClient(eventName);
 			const mutation = mutations[eventName];
 			if (!mutation) {
@@ -59,7 +59,7 @@ export const toActionsBroadcastMessage =
 	): ActionsBroadcastMessage =>
 	(message) => {
 		const {method: eventName, params} = message;
-		log.trace(
+		log.debug(
 			'%c[broadcast.%c' + eventName + '%c]',
 			'color: gray',
 			'color: darkCyan',

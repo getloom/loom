@@ -57,7 +57,7 @@ export const toWebsocketApiClient = <
 	const client: WebsocketApiClient<TParamsMap, TResultMap> = {
 		find: (name) => findService(name),
 		invoke: async (name, params = null!) => {
-			log.trace('invoke', name, params);
+			log.debug('invoke', name, params);
 			const request: JsonRpcRequest<typeof name, TParamsMap> = {
 				jsonrpc: '2.0',
 				id: toId(), // TODO maybe prefix with `session_id` and ignore broadcasts with your prefix, also solves problems with localStorage broadcasting
@@ -70,7 +70,7 @@ export const toWebsocketApiClient = <
 		},
 		handle: (rawMessage) => {
 			const message = parseSocketMessage(rawMessage);
-			log.trace('handle', message);
+			log.debug('handle', message);
 			if (!message) return;
 			if ('jsonrpc' in message) {
 				const found = websocketRequests.get(message.id);
@@ -87,7 +87,7 @@ export const toWebsocketApiClient = <
 			} else if (message.type === 'status') {
 				handleStatusMessage(message);
 			} else {
-				log.trace('unhandled message', message);
+				log.debug('unhandled message', message);
 			}
 		},
 		close: () => {

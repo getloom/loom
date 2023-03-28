@@ -13,12 +13,12 @@ export class TieRepo extends PostgresRepo {
 				${source_id},${dest_id},${type}
 			) RETURNING *
 		`;
-		// log.trace('create entity', data);
+		// log.debug('create entity', data);
 		return tie[0];
 	}
 
 	async filterBySourceId(source_id: number): Promise<Tie[]> {
-		log.trace(`preparing to walk graph starting with source: ${source_id}`);
+		log.debug(`preparing to walk graph starting with source: ${source_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
 				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
@@ -31,12 +31,12 @@ export class TieRepo extends PostgresRepo {
 			)
 			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths;
 		`;
-		log.trace('ties under source', ties);
+		log.debug('ties under source', ties);
 		return ties;
 	}
 
 	async filterByDestId(dest_id: number): Promise<Tie[]> {
-		log.trace(`preparing to walk graph starting with dest: ${dest_id}`);
+		log.debug(`preparing to walk graph starting with dest: ${dest_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
 				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
@@ -49,7 +49,7 @@ export class TieRepo extends PostgresRepo {
 			)
 			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths;
 		`;
-		log.trace('all ties pointing at dest', ties);
+		log.debug('all ties pointing at dest', ties);
 		return ties;
 	}
 
@@ -62,7 +62,7 @@ export class TieRepo extends PostgresRepo {
 		pageSize = DEFAULT_PAGE_SIZE,
 		pageKey?: number,
 	): Promise<Tie[]> {
-		log.trace(`paginated query of tie dests`, source_id, pageKey, pageSize);
+		log.debug(`paginated query of tie dests`, source_id, pageKey, pageSize);
 		const ties = await this.sql<Tie[]>`
 			SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created
 			FROM ties t WHERE source_id=${source_id} ${
@@ -70,12 +70,12 @@ export class TieRepo extends PostgresRepo {
 		} 
 			ORDER BY dest_id DESC LIMIT ${pageSize};
 		`;
-		log.trace('directory ties', ties);
+		log.debug('directory ties', ties);
 		return ties;
 	}
 
 	async deleteById(tie_id: number): Promise<void> {
-		log.trace('[deleteById]', tie_id);
+		log.debug('[deleteById]', tie_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM ties WHERE tie_id=${tie_id}
 		`;

@@ -30,12 +30,12 @@ export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEm
 	async init(): Promise<void> {
 		const {wss} = this;
 		wss.on('connection', (socket, req) => {
-			log.trace('connection req.url', req.url, wss.clients.size);
-			log.trace('connection req.headers', req.headers);
+			log.debug('connection req.url', req.url, wss.clients.size);
+			log.debug('connection req.headers', req.headers);
 
 			const parsed = parseSessionCookie(req.headers.cookie);
 			if (!parsed) {
-				log.trace('request to open connection was unauthenticated');
+				log.debug('request to open connection was unauthenticated');
 				socket.send(REQUIRES_AUTHENTICATION_MESSAGE_STR);
 				socket.close();
 				return;
@@ -47,21 +47,21 @@ export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEm
 				this.emit('message', socket, message, account_id);
 			});
 			socket.on('open', () => {
-				log.trace('open');
+				log.debug('open');
 			});
 			socket.on('close', (code, data) => {
 				const reason = data.toString();
-				log.trace('close', code, reason);
+				log.debug('close', code, reason);
 			});
 			socket.on('error', (err) => {
 				log.error('error', err);
 			});
 		});
 		wss.on('close', () => {
-			log.trace('close');
+			log.debug('close');
 		});
 		wss.on('error', (error) => {
-			log.trace('error', error);
+			log.debug('error', error);
 		});
 	}
 

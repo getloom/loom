@@ -34,7 +34,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			log.error('failed to parse message', err);
 			return;
 		}
-		log.trace('incoming', rawMessage);
+		log.debug('incoming', rawMessage);
 
 		// TODO possibly move the above code to a generic `websocketMiddleware`?
 		// That way we could separate any other kind of websocket messages

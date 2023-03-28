@@ -25,7 +25,7 @@ export const toHttpApiClient = <
 	const client: ApiClient<TParamsMap, TResultMap> = {
 		find: (name) => findService(name),
 		invoke: async (name, params = null!) => {
-			log.trace('invoke', name, params);
+			log.debug('invoke', name, params);
 			const service = findService(name);
 			if (!service) {
 				return {ok: false, status: 400, message: 'failed to invoke unknown service'};
@@ -58,7 +58,7 @@ export const toHttpApiClient = <
 					message: 'failed to parse server response',
 				};
 			}
-			log.trace('result', res.ok, res.status, json);
+			log.debug('result', res.ok, res.status, json);
 			if (!res.ok) {
 				return {
 					ok: false,

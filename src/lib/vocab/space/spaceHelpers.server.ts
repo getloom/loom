@@ -30,7 +30,7 @@ export const createSpace = async (
 ): Promise<CreateSpaceResponse> => {
 	const {hub_id, name, view, path, icon} = params;
 	// TODO run this same logic when a space path is updated
-	log.trace('[createSpace] validating space path uniqueness');
+	log.debug('[createSpace] validating space path uniqueness');
 	const existingDirectoryWithPath = await repos.entity.findByPath(hub_id, path);
 	if (existingDirectoryWithPath) {
 		throw new ApiError(409, 'a space with that path already exists');
@@ -41,7 +41,7 @@ export const createSpace = async (
 		throw new ApiError(409, 'failed to find the hub persona');
 	}
 
-	log.trace('[CreateSpace] initializing directory for space');
+	log.debug('[CreateSpace] initializing directory for space');
 	const uninitializedDirectory = (await repos.entity.create(
 		hubPersona.persona_id,
 		{
@@ -52,7 +52,7 @@ export const createSpace = async (
 		path,
 	)) as Directory;
 
-	log.trace('[CreateSpace] creating space for hub', hub_id);
+	log.debug('[CreateSpace] creating space for hub', hub_id);
 	const space = await repos.space.create(
 		name,
 		view,

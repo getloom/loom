@@ -119,8 +119,7 @@
 {#if open}
 	<div
 		class="contextmenu pane"
-		role="menu"
-		aria-modal
+		role="dialog"
 		tabindex="-1"
 		bind:this={el}
 		style:transform="translate3d({x}px, {y}px, 0)"

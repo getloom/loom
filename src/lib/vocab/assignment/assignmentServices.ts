@@ -18,15 +18,15 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, targetActor, role_id} = params;
-		log.trace('[CreateAssignment] creating assignment for persona & role', targetActor, role_id);
-		log.trace('[CreateAssignment] checking policy', actor, hub_id);
+		log.debug('[CreateAssignment] creating assignment for persona & role', targetActor, role_id);
+		log.debug('[CreateAssignment] checking policy', actor, hub_id);
 		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
 		await checkPolicy(permissions.CreateAssignment, actor, hub_id, repos);
 		const assignment = await createAssignment(targetActor, hub, role_id, repos);
-		log.trace('[CreateAssignment] new assignment created', assignment.assignment_id);
+		log.debug('[CreateAssignment] new assignment created', assignment.assignment_id);
 		return {ok: true, status: 200, value: {assignment}};
 	},
 };
@@ -39,7 +39,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, assignment_id} = params;
-		log.trace('[DeleteAssignment] deleting assignment ', assignment_id);
+		log.debug('[DeleteAssignment] deleting assignment ', assignment_id);
 		const assignment = await repos.assignment.findById(assignment_id);
 		if (!assignment) {
 			return {ok: false, status: 404, message: 'no assignment found'};

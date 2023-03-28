@@ -15,13 +15,13 @@ export class EntityRepo extends PostgresRepo {
 		space_id: number | null,
 		path: string | null = null,
 	): Promise<Entity> {
-		log.trace('[createEntity]', persona_id);
+		log.debug('[createEntity]', persona_id);
 		const entity = await this.sql<Entity[]>`
 			INSERT INTO entities (persona_id, space_id, path, data) VALUES (
 				${persona_id}, ${space_id}, ${path}, ${this.sql.json(data as any)}
 			) RETURNING *
 		`;
-		// log.trace('create entity', data);
+		// log.debug('create entity', data);
 		return entity[0];
 	}
 
@@ -34,7 +34,7 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	async findByPath(hub_id: number, path: string): Promise<Entity | undefined> {
-		log.trace('[findByPath]', hub_id, path);
+		log.debug('[findByPath]', hub_id, path);
 		const data = await this.sql<Entity[]>`
 			SELECT e.entity_id, e.space_id, e.path, e.data, e.persona_id, e.created, e.updated
 			FROM spaces s
@@ -42,7 +42,7 @@ export class EntityRepo extends PostgresRepo {
 			ON s.directory_id=e.entity_id AND e.path=${path}
 			WHERE s.hub_id=${hub_id}
 		`;
-		log.trace('[findByPath] result', data);
+		log.debug('[findByPath] result', data);
 		return data[0];
 	}
 
@@ -50,7 +50,7 @@ export class EntityRepo extends PostgresRepo {
 	// TODO remove the `message`, handle count mismatch similar to `findById` calls, maybe returning an array of the missing ids with `ok: false`
 	async filterByIds(entityIds: number[]): Promise<{entities: Entity[]; missing: null | number[]}> {
 		if (entityIds.length === 0) return {entities: [], missing: null};
-		log.trace('[filterByIds]', entityIds);
+		log.debug('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
 			SELECT entity_id, space_id, path, data, persona_id, created, updated 
 			FROM entities WHERE entity_id IN ${this.sql(entityIds)}
@@ -84,7 +84,7 @@ export class EntityRepo extends PostgresRepo {
 		path?: string | null | undefined, // value is nullable in the db
 		space_id?: number,
 	): Promise<Entity> {
-		log.trace('[update]', entity_id);
+		log.debug('[update]', entity_id);
 		const _data = await this.sql<Entity[]>`
 			UPDATE entities SET
 				${data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``}
@@ -100,7 +100,7 @@ export class EntityRepo extends PostgresRepo {
 
 	//This function is an idempotent soft delete, that leaves behind a Tombstone entity per Activity-Streams spec
 	async eraseByIds(entityIds: number[]): Promise<Entity[]> {
-		log.trace('[eraseById]', entityIds);
+		log.debug('[eraseById]', entityIds);
 		const data = await this.sql<any[]>`
 			UPDATE entities
 			SET updated=NOW(), data = jsonb_build_object('type','Tombstone','formerType',data->>'type','deleted',NOW())
@@ -113,7 +113,7 @@ export class EntityRepo extends PostgresRepo {
 
 	//This function actually deletes the records in the DB
 	async deleteByIds(entityIds: number[]): Promise<void> {
-		log.trace('[deleteByIds]', entityIds);
+		log.debug('[deleteByIds]', entityIds);
 		const data = await this.sql<any[]>`
 			DELETE FROM entities WHERE entity_id IN ${this.sql(entityIds)}
 		`;
@@ -129,7 +129,7 @@ export class EntityRepo extends PostgresRepo {
 	// `WHERE data ? 'attributedTo'`
 	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
 	async attributeToGhostByPersona(persona_id: number): Promise<number> {
-		log.trace('[ghost]', persona_id);
+		log.debug('[ghost]', persona_id);
 		const data = await this.sql<any[]>`
 			UPDATE entities
 			SET updated=NOW(), persona_id=${GHOST_ACTOR_ID}
@@ -150,7 +150,7 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	async filterDirectoriesByEntity(entity_id: number): Promise<Entity[]> {
-		log.trace(`looking for directories for entity: ${entity_id}`);
+		log.debug(`looking for directories for entity: ${entity_id}`);
 		const directories = await this.sql<Entity[]>`
 			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated, e.space_id, e.path FROM entities e
 			JOIN (
@@ -168,7 +168,7 @@ export class EntityRepo extends PostgresRepo {
 			ON e.entity_id = tdest.source_id
 			WHERE data ? 'directory';
 		`;
-		log.trace('all directories pointing at entity', directories);
+		log.debug('all directories pointing at entity', directories);
 		return directories;
 	}
 }

@@ -41,8 +41,8 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 	perform: async ({repos, params, account_id}) => {
 		const {actor, hub_id} = params;
 
-		log.trace('[ReadHub] account', account_id); // TODO logging
-		log.trace('[ReadHub] hub', hub_id);
+		log.debug('[ReadHub] account', account_id); // TODO logging
+		log.debug('[ReadHub] hub', hub_id);
 
 		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
@@ -81,7 +81,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 	event: CreateHub,
 	transaction: true,
 	perform: async ({repos, params: {actor, template}, account_id}) => {
-		log.trace('creating hub account_id', account_id);
+		log.debug('creating hub account_id', account_id);
 		const name = scrubPersonaName(template.name);
 		const nameErrorMessage = checkPersonaName(name);
 		if (nameErrorMessage) {
@@ -221,7 +221,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, targetActor, hub_id} = params;
-		log.trace('[LeaveHub] removing all assignments for persona in hub', actor, targetActor, hub_id);
+		log.debug('[LeaveHub] removing all assignments for persona in hub', actor, targetActor, hub_id);
 
 		if (actor !== targetActor) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
@@ -242,7 +242,7 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, targetActor, hub_id} = params;
-		log.trace(
+		log.debug(
 			'[KickFromHub] removing all assignments for persona in hub',
 			actor,
 			targetActor,

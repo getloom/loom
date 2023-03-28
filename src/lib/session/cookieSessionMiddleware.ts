@@ -14,16 +14,16 @@ export const cookieSessionMiddleware: HttpMiddleware = async (req, res, next) =>
 	}
 	const parsed = parseSessionCookie(req.headers.cookie);
 	if (parsed === undefined) {
-		log.trace('unauthenticated request');
+		log.debug('unauthenticated request');
 		return next();
 	} else if (parsed === null) {
 		setSessionCookie(res, ''); // reset invalid cookie
-		log.trace('unauthenticated request with invalid cookie');
+		log.debug('unauthenticated request with invalid cookie');
 		return next();
 	}
 	const {account_id, shouldRefreshSignature} = parsed;
 	if (shouldRefreshSignature) setSessionCookie(res, account_id); // update signature with first key
 	req.account_id = account_id;
-	log.trace('authenticated', account_id);
+	log.debug('authenticated', account_id);
 	return next();
 };

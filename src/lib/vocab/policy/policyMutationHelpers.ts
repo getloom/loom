@@ -41,7 +41,7 @@ export const evictPolicies = (ui: WritableUi, policyIdsToEvict: number[]): void 
 	const $policies = policies.get().value;
 	let mutated = false;
 	for (const policy_id of policyIdsToEvict) {
-		log.trace('evicting policy', policy_id);
+		log.debug('evicting policy', policy_id);
 		const policy = policyById.get(policy_id);
 		if (!policy) continue;
 		policyById.delete(policy_id);

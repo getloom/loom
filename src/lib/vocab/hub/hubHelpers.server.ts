@@ -19,7 +19,7 @@ export const cleanOrphanHubs = async (hubIds: number[], repos: Repos): Promise<v
 		const accountPersonaAssignmentsCount =
 			await repos.assignment.countAccountPersonaAssignmentsByHubId(hub_id); // eslint-disable-line no-await-in-loop
 		if (accountPersonaAssignmentsCount === 0) {
-			log.trace('no assignments found for hub, cleaning up', hub_id);
+			log.debug('no assignments found for hub, cleaning up', hub_id);
 			await repos.hub.deleteById(hub_id); // eslint-disable-line no-await-in-loop
 		}
 	}
@@ -92,7 +92,7 @@ export const initTemplateGovernanceForHub = async (
 
 	// TODO can this be safely batched?
 	for (const roleTemplate of roleTemplates) {
-		log.trace('creating role from template', roleTemplate);
+		log.debug('creating role from template', roleTemplate);
 		const role = await repos.role.create(hub.hub_id, roleTemplate.name); // eslint-disable-line no-await-in-loop
 		roles.push(role);
 

@@ -64,7 +64,7 @@ export class ApiServer {
 			.use(bodyParser.json())
 			.use((req, _res, next) => {
 				// TODO proper logger, also don't log sensitive info in prod
-				log.trace('req', {
+				log.debug('req', {
 					method: req.method,
 					url: req.url,
 					query: req.query,

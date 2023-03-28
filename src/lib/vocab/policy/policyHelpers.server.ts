@@ -13,12 +13,12 @@ export const checkPolicy = async (
 	hub_id: number,
 	repos: Repos,
 ): Promise<void> => {
-	log.trace('checking for policies with permission for actor in hub', permission, actor_id, hub_id);
+	log.debug('checking for policies with permission for actor in hub', permission, actor_id, hub_id);
 
 	const policy = await repos.policy.filterByActorHubPermission(actor_id, hub_id, permission);
 
 	if (policy.length === 0) {
-		log.trace('no policy present for actor in hub', actor_id, hub_id);
+		log.debug('no policy present for actor in hub', actor_id, hub_id);
 		throw new ApiError(403, 'actor does not have permission');
 	}
 };
@@ -29,7 +29,7 @@ export const checkHubAccess = async (
 	hub_id: number,
 	repos: Repos,
 ): Promise<void> => {
-	log.trace('checking for hub access for actor in hub', actor_id, hub_id);
+	log.debug('checking for hub access for actor in hub', actor_id, hub_id);
 
 	const inHub = await repos.assignment.isPersonaInHub(actor_id, hub_id);
 

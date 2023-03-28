@@ -86,7 +86,7 @@ export const toHttpServiceMiddleware =
 				throw Error('Service validation failed');
 			}
 		}
-		log.trace('result.status', result.status);
+		log.debug('result.status', result.status);
 		send(res, result.status, result.value); // TODO consider returning the entire `result` for convenience (but it's less efficient)
 
 		if (service.event.broadcast) {

@@ -56,7 +56,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	session.set($session);
 	const {guest} = $session;
 
-	if (browser) log.trace('[setSession]', $session);
+	if (browser) log.debug('[setSession]', $session);
 	deserialize(deserializers)($session);
 
 	account.set(guest ? null : $session.account);

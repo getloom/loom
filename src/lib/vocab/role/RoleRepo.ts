@@ -8,7 +8,7 @@ const log = new Logger(gray('[') + blue('RoleRepo') + gray(']'));
 
 export class RoleRepo extends PostgresRepo {
 	async findById(role_id: number): Promise<Role> {
-		log.trace('[findById]', role_id);
+		log.debug('[findById]', role_id);
 		const result = await this.sql<Role[]>`
 			SELECT role_id, hub_id, name, created, updated 
 			FROM roles WHERE role_id=${role_id}
@@ -17,7 +17,7 @@ export class RoleRepo extends PostgresRepo {
 	}
 
 	async findByPolicy(policy_id: number): Promise<Role> {
-		log.trace('[findByPolicy]', policy_id);
+		log.debug('[findByPolicy]', policy_id);
 		const result = await this.sql<Role[]>`
 			SELECT r.role_id, r.hub_id, r.name, r.created, r.updated 
 			FROM roles r JOIN
@@ -28,7 +28,7 @@ export class RoleRepo extends PostgresRepo {
 	}
 
 	async filterByHub(hub_id: number): Promise<Role[]> {
-		log.trace('[filterByHub]', hub_id);
+		log.debug('[filterByHub]', hub_id);
 		const result = await this.sql<Role[]>`
 			SELECT role_id, hub_id, name, created, updated 
 			FROM roles WHERE hub_id=${hub_id}
@@ -37,7 +37,7 @@ export class RoleRepo extends PostgresRepo {
 	}
 
 	async create(hub_id: number, name: string): Promise<Role> {
-		log.trace('[create]', hub_id, name);
+		log.debug('[create]', hub_id, name);
 		const result = await this.sql<Role[]>`
     INSERT INTO roles (hub_id, name) VALUES (
       ${hub_id}, ${name}
@@ -56,7 +56,7 @@ export class RoleRepo extends PostgresRepo {
 	}
 
 	async deleteById(role_id: number): Promise<void> {
-		log.trace('[deleteById]', role_id);
+		log.debug('[deleteById]', role_id);
 		const result = await this.sql<any[]>`
 			DELETE FROM roles WHERE role_id=${role_id}
 		`;
@@ -64,7 +64,7 @@ export class RoleRepo extends PostgresRepo {
 	}
 
 	async filterByAccount(account_id: number): Promise<Role[]> {
-		log.trace('[filterByAccount]', account_id);
+		log.debug('[filterByAccount]', account_id);
 		const result = await this.sql<Role[]>`
 			SELECT r.role_id, r.hub_id, r.name, r.created, r.updated							
 			FROM roles r JOIN (
@@ -73,7 +73,7 @@ export class RoleRepo extends PostgresRepo {
 			) apc
 			ON r.hub_id=apc.hub_id;
 		`;
-		log.trace('[filterByAccount]', result.length);
+		log.debug('[filterByAccount]', result.length);
 		return result;
 	}
 }

@@ -15,13 +15,13 @@ export class HubRepo extends PostgresRepo {
 				${type}, ${name}, ${this.sql.json(settings as any)}
 			) RETURNING *
 		`;
-		log.trace('[db] created hub', data[0]);
+		log.debug('[db] created hub', data[0]);
 		const hub = data[0];
 		return hub;
 	}
 
 	async findById(hub_id: number): Promise<Hub | undefined> {
-		log.trace(`[findById] ${hub_id}`);
+		log.debug(`[findById] ${hub_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT hub_id, type, name, settings, created, updated
 			FROM hubs WHERE hub_id=${hub_id}
@@ -30,7 +30,7 @@ export class HubRepo extends PostgresRepo {
 	}
 
 	async findByName(name: string): Promise<Hub | undefined> {
-		log.trace('[findByName]', name);
+		log.debug('[findByName]', name);
 		const data = await this.sql<Hub[]>`
 			SELECT hub_id, type, name, settings, created, updated
 			FROM hubs WHERE LOWER(name) = LOWER(${name})
@@ -39,7 +39,7 @@ export class HubRepo extends PostgresRepo {
 	}
 
 	async filterByAccount(account_id: number): Promise<Hub[]> {
-		log.trace(`[filterByAccount] ${account_id}`);
+		log.debug(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated							
 			FROM hubs c JOIN (
@@ -48,7 +48,7 @@ export class HubRepo extends PostgresRepo {
 			) apc
 			ON c.hub_id=apc.hub_id;
 		`;
-		log.trace('[filterByAccount]', data.length);
+		log.debug('[filterByAccount]', data.length);
 		return data;
 	}
 
@@ -72,7 +72,7 @@ export class HubRepo extends PostgresRepo {
 	}
 
 	async deleteById(hub_id: number): Promise<void> {
-		log.trace('[deleteById]', hub_id);
+		log.debug('[deleteById]', hub_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM hubs WHERE hub_id=${hub_id}
 		`;
@@ -99,7 +99,7 @@ export class HubRepo extends PostgresRepo {
 	}
 
 	async findByRole(role_id: number): Promise<Hub | undefined> {
-		log.trace(`[findByRole] ${role_id}`);
+		log.debug(`[findByRole] ${role_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated
 			FROM hubs c 

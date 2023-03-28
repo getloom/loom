@@ -23,7 +23,7 @@ export class ActorRepo extends PostgresRepo {
 			) RETURNING ${this.sql(ACTOR_COLUMNS.Persona)}
 		`;
 		const persona = data[0];
-		log.trace('[createAccountPersona] created persona', persona);
+		log.debug('[createAccountPersona] created persona', persona);
 		return persona;
 	}
 
@@ -34,7 +34,7 @@ export class ActorRepo extends PostgresRepo {
 			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicPersona)}
 		`;
 		const persona = data[0];
-		log.trace('[createCommunityPersona] created persona', persona);
+		log.debug('[createCommunityPersona] created persona', persona);
 		return persona;
 	}
 
@@ -57,7 +57,7 @@ export class ActorRepo extends PostgresRepo {
 	}
 
 	async filterByAccount(account_id: number): Promise<AccountPersona[]> {
-		log.trace('[filterByAccount]', account_id);
+		log.debug('[filterByAccount]', account_id);
 		const data = await this.sql<AccountPersona[]>`
 			SELECT ${this.sql(ACTOR_COLUMNS.Persona)}
 			FROM personas WHERE account_id=${account_id}
@@ -87,7 +87,7 @@ export class ActorRepo extends PostgresRepo {
 		persona_id: number,
 		columns = ACTOR_COLUMNS.PublicPersona,
 	): Promise<T | undefined> {
-		log.trace('[findById]', persona_id);
+		log.debug('[findById]', persona_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE persona_id=${persona_id}
@@ -116,7 +116,7 @@ export class ActorRepo extends PostgresRepo {
 		hub_id: number,
 		columns = ACTOR_COLUMNS.PublicPersona,
 	): Promise<T | undefined> {
-		log.trace('[findByHub]', hub_id);
+		log.debug('[findByHub]', hub_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE hub_id=${hub_id}
@@ -128,7 +128,7 @@ export class ActorRepo extends PostgresRepo {
 		name: string,
 		columns = ACTOR_COLUMNS.PublicPersona,
 	): Promise<T | undefined> {
-		log.trace('[findByName]', name);
+		log.debug('[findByName]', name);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM personas WHERE LOWER(name) = LOWER(${name})

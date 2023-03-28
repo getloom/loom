@@ -8,17 +8,17 @@ const log = new Logger(gray('[') + blue('SpaceRepo') + gray(']'));
 
 export class SpaceRepo extends PostgresRepo {
 	async findById(space_id: number): Promise<Space | undefined> {
-		log.trace(`[findById] ${space_id}`);
+		log.debug(`[findById] ${space_id}`);
 		const data = await this.sql<Space[]>`
 			SELECT space_id, name, icon, view, updated, created, hub_id, directory_id
 			FROM spaces WHERE space_id=${space_id}
 		`;
-		log.trace('[findById] result', data);
+		log.debug('[findById] result', data);
 		return data[0];
 	}
 
 	async filterByAccount(account_id: number): Promise<Space[]> {
-		log.trace('[filterByAccount]', account_id);
+		log.debug('[filterByAccount]', account_id);
 		const data = await this.sql<Space[]>`
 			SELECT s.space_id, s.name, icon, s.view, s.updated, s.created, s.hub_id, s.directory_id
 			FROM spaces s JOIN (
@@ -31,7 +31,7 @@ export class SpaceRepo extends PostgresRepo {
 	}
 
 	async filterByHub(hub_id: number): Promise<Space[]> {
-		log.trace('[filterByHub]', hub_id);
+		log.debug('[filterByHub]', hub_id);
 		const data = await this.sql<Space[]>`
 			SELECT space_id, name, icon, view, updated, created, hub_id, directory_id
 			FROM spaces WHERE hub_id=${hub_id}
@@ -58,7 +58,7 @@ export class SpaceRepo extends PostgresRepo {
 		space_id: number,
 		partial: Partial<Pick<Space, 'name' | 'icon' | 'view'>>,
 	): Promise<Space> {
-		log.trace(`updating data for space: ${space_id}`);
+		log.debug(`updating data for space: ${space_id}`);
 		const data = await this.sql<Space[]>`
 			UPDATE spaces
 			SET updated=NOW(), ${this.sql(partial as any, ...Object.keys(partial))}
@@ -70,7 +70,7 @@ export class SpaceRepo extends PostgresRepo {
 	}
 
 	async deleteById(space_id: number): Promise<void> {
-		log.trace('[deleteById]', space_id);
+		log.debug('[deleteById]', space_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM spaces WHERE space_id=${space_id}
 		`;
@@ -78,7 +78,7 @@ export class SpaceRepo extends PostgresRepo {
 	}
 
 	async findByEntity(entity_id: number): Promise<Space> {
-		log.trace(`[findByEntity] ${entity_id}`);
+		log.debug(`[findByEntity] ${entity_id}`);
 		const data = await this.sql<Space[]>`
 				SELECT s.space_id, s.name, s.icon, s.view, s.updated, s.created, s.hub_id, s.directory_id 
 				FROM spaces s

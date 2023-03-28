@@ -17,12 +17,12 @@ export class AccountRepo extends PostgresRepo {
 				${name}, ${passwordKey}, ${this.sql.json(settings as any)}
 			) RETURNING *
 		`;
-		log.trace('created account', data[0]);
+		log.debug('created account', data[0]);
 		return data[0];
 	}
 
 	async loadClientSession(account_id: number): Promise<ClientAccountSession> {
-		log.trace('loadClientSession', account_id);
+		log.debug('loadClientSession', account_id);
 		const account = await this.repos.account.findById(account_id);
 		if (!account) throw new ApiError(404, 'no account found');
 
@@ -56,7 +56,7 @@ export class AccountRepo extends PostgresRepo {
 		account_id: number,
 		columns = ACCOUNT_COLUMNS.ClientAccount,
 	): Promise<T | undefined> {
-		log.trace('loading account', account_id);
+		log.debug('loading account', account_id);
 		const data = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}
 			FROM accounts WHERE account_id = ${account_id}

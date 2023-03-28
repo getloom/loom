@@ -27,7 +27,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 	// TODO verify the `account_id` has permission to modify this persona
 	// TODO add `persona_id` and verify it's one of the `account_id`'s personas
 	perform: async ({repos, params, account_id}) => {
-		log.trace('[CreateAccountPersona] creating persona', params.name);
+		log.debug('[CreateAccountPersona] creating persona', params.name);
 		const name = scrubPersonaName(params.name);
 		const nameErrorMessage = checkPersonaName(name);
 		if (nameErrorMessage) {
@@ -38,7 +38,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			return {ok: false, status: 409, message: 'a persona with that name is not allowed'};
 		}
 
-		log.trace('[CreateAccountPersona] validating persona uniqueness', name);
+		log.debug('[CreateAccountPersona] validating persona uniqueness', name);
 		const existingPersona = await repos.persona.findByName(name);
 		if (existingPersona) {
 			return {ok: false, status: 409, message: 'a persona with that name already exists'};
@@ -55,7 +55,7 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 		hubs.push(hub);
 
 		// Create the persona.
-		log.trace('[CreateAccountPersona] creating persona', name);
+		log.debug('[CreateAccountPersona] creating persona', name);
 		const persona = await repos.persona.createAccountPersona(name, account_id, hub.hub_id);
 		personas.push(persona);
 

@@ -101,7 +101,7 @@
 	if (browser) {
 		(window as any).app = app;
 		Object.assign(window, app);
-		log.trace('app', app);
+		log.debug('app', app);
 	}
 
 	const {session} = ui;

@@ -30,7 +30,7 @@ const log = new Logger([cyan('[seed]')]);
 export const seed = async (db: Database, much = false): Promise<void> => {
 	const {sql, repos} = db;
 
-	log.trace('adding initial dataset to database');
+	log.debug('adding initial dataset to database');
 
 	const accountDocs = await sql<Account[]>`
 		SELECT account_id FROM accounts
@@ -63,7 +63,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			accountParams.password,
 			toDefaultAccountSettings(),
 		);
-		log.trace('created account', account);
+		log.debug('created account', account);
 		accounts.push(account);
 		const toAccountServiceRequest = () =>
 			toServiceRequestMock(repos, undefined, undefined, account.account_id);
@@ -75,7 +75,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				}),
 			);
 			const persona = created.personas[0] as AccountPersona;
-			log.trace('created persona', persona);
+			log.debug('created persona', persona);
 			personas.push(persona);
 			await createDefaultEntities(
 				() => ({...toAccountServiceRequest(), actor: persona}),

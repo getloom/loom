@@ -1,6 +1,7 @@
 import type {SvelteChild, Text} from 'svast';
 import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
+
 import {checkPersonaName} from '$lib/vocab/actor/actorHelpers';
 import {
 	isHubRelativePath,
@@ -16,6 +17,9 @@ const ADDED_BY_FELT = Symbol();
 
 // TODO sanitize using an allowlist of elements/attributes
 
+// TODO the type hacks are really bad here since `estree-walker` changed,
+// but we'll fix with `svast` and `svelte-parse` (and rewrite most of this anyway)
+
 /**
  * Wraps `svelte-parse` with Felt-specific plaintext extensions like linkifying URLs.
  * This is a hacky initial implementation just to get links and mentions.
@@ -26,16 +30,16 @@ const ADDED_BY_FELT = Symbol();
  */
 export const parseSvast: typeof parse = (opts) => {
 	const ast = parse(opts);
-	walk(ast, {
+	walk(ast as any, {
 		enter(node, parent) {
 			if ((node as any)[ADDED_BY_FELT]) return;
-			if (node.type === 'text') {
+			if ((node as any).type === 'text') {
 				// Parse text and replace extended syntax with new nodes.
 				// This is a temporary implementation until Pfm is ready and we write a proper plugin.
-				const {type: t} = parent;
+				const {type: t} = parent as any;
 				if (t !== 'root' && t !== 'svelteElement' && t !== 'svelteComponent') return;
-				const newNode = parseSvastText(node as any);
-				if (newNode !== node) this.replace(newNode);
+				const newNode = parseSvastText(node as any) as any;
+				if (newNode !== node) this.replace(newNode as any);
 			}
 		},
 	});

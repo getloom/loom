@@ -21,13 +21,13 @@ export class SessionApi implements ISessionApi {
 	constructor(private readonly req: ApiServerRequest, private readonly res: ServerResponse) {}
 
 	async signIn(account_id: number): Promise<void> {
-		log.trace('logging in', account_id);
+		log.debug('logging in', account_id);
 		this.req.account_id = account_id;
 		setSessionCookie(this.res, account_id);
 	}
 
 	async signOut(): Promise<void> {
-		log.trace('logging out', this.req.account_id);
+		log.debug('logging out', this.req.account_id);
 		this.req.account_id = undefined;
 		setSessionCookie(this.res, '');
 	}

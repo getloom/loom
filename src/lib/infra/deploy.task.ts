@@ -21,7 +21,7 @@ export const task: Task = {
 		const artifactName = `felt_server_${timestamp}`;
 		const artifactFilename = artifactName + '.tar';
 		const currentDeploy = `current_felt_server_deploy`;
-		log.trace(`Working with artifact: ${artifactName}`);
+		log.debug(`Working with artifact: ${artifactName}`);
 		unwrap(
 			await spawn('tar', [
 				'-cvf',
@@ -31,18 +31,18 @@ export const task: Task = {
 				'package-lock.json',
 			]),
 		);
-		log.trace('tar finished');
+		log.debug('tar finished');
 		//clean up any previous deploy directories (except the current one)
-		log.trace('cleaning up previous deployments on server');
+		log.debug('cleaning up previous deployments on server');
 		await spawn('ssh', [
 			deployLogin,
 			`ls -t | grep deploy_felt_server_[0-9] | tail -n +2 | xargs rm -r --`,
 		]);
 
-		log.trace('copying the tar');
+		log.debug('copying the tar');
 		await spawn('scp', [`${artifactFilename}`, `${deployLogin}:${artifactFilename}`]);
 		//unpack & start server
-		log.trace('setting up the server deployment');
+		log.debug('setting up the server deployment');
 		const deployDirname = `deploy_${artifactName}`;
 		await spawn('ssh', [
 			deployLogin,
@@ -55,18 +55,18 @@ export const task: Task = {
 			ln -sfn ${deployDirname}/ ${currentDeploy};`,
 		]);
 
-		log.trace('copying secrets');
+		log.debug('copying secrets');
 		await spawn('scp', [ENV_FILE_BASE, `${deployLogin}:${currentDeploy}/${ENV_FILE_BASE}`]);
 		await spawn('scp', [ENV_FILE_PROD, `${deployLogin}:${currentDeploy}/${ENV_FILE_PROD}`]);
 
-		log.trace('running post-deploy script');
+		log.debug('running post-deploy script');
 		await spawn('ssh', [
 			deployLogin,
 			`cd ${deployDirname};
 			node dist/server/${DEPLOYED_SCRIPT_PATH}.js;`,
 		]);
 
-		log.trace('starting new server deployment');
+		log.debug('starting new server deployment');
 		await spawn('ssh', [deployLogin, `pm2 start npm -- run start --prefix ~/${currentDeploy}`]);
 	},
 };

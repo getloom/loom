@@ -14,7 +14,7 @@ export const CreateRoleService: ServiceByName['CreateRole'] = {
 	perform: async ({repos, params}) => {
 		const {hub_id, name, actor} = params;
 		await checkPolicy(permissions.CreateRole, actor, hub_id, repos);
-		log.trace('creating hub role', hub_id, name);
+		log.debug('creating hub role', hub_id, name);
 		const role = await repos.role.create(hub_id, name);
 		return {ok: true, status: 200, value: {role}};
 	},
@@ -26,7 +26,7 @@ export const ReadRolesService: ServiceByName['ReadRoles'] = {
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
 		await checkHubAccess(actor, hub_id, repos);
-		log.trace('retrieving roles for hub', hub_id);
+		log.debug('retrieving roles for hub', hub_id);
 		const roles = await repos.role.filterByHub(hub_id);
 		return {ok: true, status: 200, value: {roles}};
 	},
@@ -37,7 +37,7 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, role_id, name} = params;
-		log.trace('updating role', role_id, name);
+		log.debug('updating role', role_id, name);
 		const hub = await repos.hub.findByRole(role_id);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
 		await checkPolicy(permissions.UpdateRole, actor, hub.hub_id, repos);
@@ -51,7 +51,7 @@ export const DeleteRoleService: ServiceByName['DeleteRole'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, role_id} = params;
-		log.trace('deleting role', role_id);
+		log.debug('deleting role', role_id);
 		const hub = await repos.hub.findByRole(role_id);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
 		await checkPolicy(permissions.DeleteRole, actor, hub.hub_id, repos);

@@ -15,7 +15,7 @@ export const createAssignment = async (
 	repos: Repos,
 ): Promise<Assignment> => {
 	const {hub_id} = hub;
-	log.trace('creating assingment for', persona_id, hub_id, role_id);
+	log.debug('creating assingment for', persona_id, hub_id, role_id);
 	// Personal hubs disallow assignments as a hard rule.
 	if (hub.type === 'personal') {
 		throw new ApiError(403, 'personal hubs disallow additional assignments');
