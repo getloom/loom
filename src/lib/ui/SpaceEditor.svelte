@@ -9,7 +9,7 @@
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 
 	const {
 		actions,
@@ -17,7 +17,7 @@
 		ui: {entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;

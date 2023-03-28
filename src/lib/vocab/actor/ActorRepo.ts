@@ -2,47 +2,47 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {AccountPersona, Persona, PublicPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor, Actor, PublicActor} from '$lib/vocab/actor/persona';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('ActorRepo') + gray(']'));
 
 export class ActorRepo extends PostgresRepo {
-	// TODO is weird to return a `PublicPersona`, could fix by having
-	// `PublicGhostPersona`, `PublicCommunityPersona`, and `PublicAccountPersona`
-	// as separate types, see also `createCommunityPersona` and `createGhostPersona`
-	async createAccountPersona(
+	// TODO is weird to return a `PublicActor`, could fix by having
+	// `PublicGhostActor`, `PublicCommunityActor`, and `PublicAccountActor`
+	// as separate types, see also `createCommunityActor` and `createGhostActor`
+	async createAccountActor(
 		name: string,
 		account_id: number,
 		hub_id: number,
-	): Promise<AccountPersona> {
-		const data = await this.sql<AccountPersona[]>`
+	): Promise<AccountActor> {
+		const data = await this.sql<AccountActor[]>`
 			INSERT INTO personas (type, name, account_id, hub_id) VALUES (
 				'account', ${name}, ${account_id}, ${hub_id}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.Persona)}
 		`;
 		const persona = data[0];
-		log.debug('[createAccountPersona] created persona', persona);
+		log.debug('[createAccountActor] created persona', persona);
 		return persona;
 	}
 
-	async createCommunityPersona(name: string, hub_id: number): Promise<PublicPersona> {
-		const data = await this.sql<PublicPersona[]>`
+	async createCommunityActor(name: string, hub_id: number): Promise<PublicActor> {
+		const data = await this.sql<PublicActor[]>`
 			INSERT INTO personas (type, name, hub_id) VALUES (
 				'community', ${name}, ${hub_id}
-			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicPersona)}
+			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
 		`;
 		const persona = data[0];
-		log.debug('[createCommunityPersona] created persona', persona);
+		log.debug('[createCommunityActor] created persona', persona);
 		return persona;
 	}
 
-	async createGhostPersona(): Promise<PublicPersona> {
-		const data = await this.sql<PublicPersona[]>`
+	async createGhostPersona(): Promise<PublicActor> {
+		const data = await this.sql<PublicActor[]>`
 			INSERT INTO personas (type, name) VALUES (
 				'ghost', ${GHOST_ACTOR_NAME}
-			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicPersona)}
+			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
 		`;
 		const persona = data[0];
 		if (persona.persona_id !== GHOST_ACTOR_ID) throw Error();
@@ -56,18 +56,18 @@ export class ActorRepo extends PostgresRepo {
 		if (!data.count) throw Error();
 	}
 
-	async filterByAccount(account_id: number): Promise<AccountPersona[]> {
+	async filterByAccount(account_id: number): Promise<AccountActor[]> {
 		log.debug('[filterByAccount]', account_id);
-		const data = await this.sql<AccountPersona[]>`
+		const data = await this.sql<AccountActor[]>`
 			SELECT ${this.sql(ACTOR_COLUMNS.Persona)}
 			FROM personas WHERE account_id=${account_id}
 		`;
 		return data;
 	}
 
-	async filterAssociatesByAccount(account_id: number): Promise<PublicPersona[]> {
-		const data = await this.sql<PublicPersona[]>`
-			SELECT ${this.sql(ACTOR_COLUMNS.PublicPersona.map((c) => 'p3.' + c))}
+	async filterAssociatesByAccount(account_id: number): Promise<PublicActor[]> {
+		const data = await this.sql<PublicActor[]>`
+			SELECT ${this.sql(ACTOR_COLUMNS.PublicActor.map((c) => 'p3.' + c))}
 			FROM personas p3
 			JOIN (SELECT DISTINCT persona_id FROM assignments a2
 				JOIN (SELECT DISTINCT a.hub_id FROM assignments a
@@ -77,15 +77,15 @@ export class ActorRepo extends PostgresRepo {
 			ON p3.persona_id=p2.persona_id
 			UNION
 			SELECT ${this.sql(
-				ACTOR_COLUMNS.PublicPersona,
+				ACTOR_COLUMNS.PublicActor,
 			)} FROM personas WHERE persona_id=${ADMIN_ACTOR_ID} OR persona_id=${GHOST_ACTOR_ID}
 		`;
 		return data;
 	}
 
-	async findById<T extends Partial<Persona> = PublicPersona>(
+	async findById<T extends Partial<Actor> = PublicActor>(
 		persona_id: number,
-		columns = ACTOR_COLUMNS.PublicPersona,
+		columns = ACTOR_COLUMNS.PublicActor,
 	): Promise<T | undefined> {
 		log.debug('[findById]', persona_id);
 		const data = await this.sql<T[]>`
@@ -96,9 +96,9 @@ export class ActorRepo extends PostgresRepo {
 	}
 
 	// TODO handle count mismatch similar to to the entity version of this method
-	async filterByIds<T extends Partial<Persona> = PublicPersona>(
+	async filterByIds<T extends Partial<Actor> = PublicActor>(
 		personaIds: number[],
-		columns = ACTOR_COLUMNS.PublicPersona,
+		columns = ACTOR_COLUMNS.PublicActor,
 	): Promise<{personas: T[]; missing: null | number[]}> {
 		if (personaIds.length === 0) return {personas: [], missing: null};
 		const personas = await this.sql<T[]>`
@@ -112,9 +112,9 @@ export class ActorRepo extends PostgresRepo {
 		return {personas, missing};
 	}
 
-	async findByHub<T extends Partial<Persona> = PublicPersona>(
+	async findByHub<T extends Partial<Actor> = PublicActor>(
 		hub_id: number,
-		columns = ACTOR_COLUMNS.PublicPersona,
+		columns = ACTOR_COLUMNS.PublicActor,
 	): Promise<T | undefined> {
 		log.debug('[findByHub]', hub_id);
 		const data = await this.sql<T[]>`
@@ -124,9 +124,9 @@ export class ActorRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async findByName<T extends Partial<Persona> = PublicPersona>(
+	async findByName<T extends Partial<Actor> = PublicActor>(
 		name: string,
-		columns = ACTOR_COLUMNS.PublicPersona,
+		columns = ACTOR_COLUMNS.PublicActor,
 	): Promise<T | undefined> {
 		log.debug('[findByName]', name);
 		const data = await this.sql<T[]>`

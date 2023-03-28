@@ -3,7 +3,7 @@
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
@@ -11,7 +11,7 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 </script>
 
 <ContextmenuSubmenu>

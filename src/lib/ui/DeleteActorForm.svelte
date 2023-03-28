@@ -4,12 +4,12 @@
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 	export let pending = false;
 

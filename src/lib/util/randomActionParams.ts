@@ -113,7 +113,7 @@ export const randomActionParams: RandomEventParams = {
 			hub_id: hub.hub_id,
 		};
 	},
-	CreateAccountPersona: async () => {
+	CreateAccountActor: async () => {
 		return randomPersonaParams();
 	},
 	DeletePersona: async (random, {account, persona} = {}) => {

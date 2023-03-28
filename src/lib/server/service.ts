@@ -3,7 +3,7 @@ import type {Logger} from '@feltjs/util/log.js';
 import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
-import type {ActorPersona} from '$lib/vocab/actor/persona';
+import type {ActionActor} from '$lib/vocab/actor/persona';
 import {type ApiResult, toFailedApiResult} from '$lib/server/api';
 
 export const performService = async (
@@ -86,7 +86,7 @@ export interface NonAuthorizedServiceRequest<TParams = any>
 }
 export interface AuthorizedServiceRequest<TParams = any>
 	extends NonAuthorizedServiceRequest<TParams> {
-	actor: ActorPersona;
+	actor: ActionActor;
 }
 
 export function toServiceRequest<TParams = any>(
@@ -107,14 +107,14 @@ export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
 	account_id: number,
-	actor: ActorPersona,
+	actor: ActionActor,
 	session: ISessionApi,
 ): AuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
 	account_id: number | undefined,
-	actor: ActorPersona | undefined,
+	actor: ActionActor | undefined,
 	session: ISessionApi,
 ): ServiceRequest {
 	const req: NonAuthenticatedServiceRequest = {repos, params, session};

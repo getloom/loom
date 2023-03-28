@@ -5,9 +5,9 @@
 	import {parseJson, serializeJson} from '$lib/util/json';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 
-	export let actor: Readable<AccountPersona>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 
 	const {actions} = getApp();

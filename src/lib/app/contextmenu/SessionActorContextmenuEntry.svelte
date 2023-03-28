@@ -7,7 +7,7 @@
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {
@@ -22,7 +22,7 @@
 		},
 	} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 
 	$: hubId = $hubIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.hub_id;
 	$: hub = hubById.get(hubId)!;

@@ -3,7 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/app/constants';
 import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
-import type {ActorPersona, PublicPersona} from '$lib/vocab/actor/persona';
+import type {ActionActor, PublicActor} from '$lib/vocab/actor/persona';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -17,7 +17,7 @@ const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
 export const cleanOrphanHubs = async (hubIds: number[], repos: Repos): Promise<void> => {
 	for (const hub_id of hubIds) {
 		const accountPersonaAssignmentsCount =
-			await repos.assignment.countAccountPersonaAssignmentsByHubId(hub_id); // eslint-disable-line no-await-in-loop
+			await repos.assignment.countAccountActorAssignmentsByHubId(hub_id); // eslint-disable-line no-await-in-loop
 		if (accountPersonaAssignmentsCount === 0) {
 			log.debug('no assignments found for hub, cleaning up', hub_id);
 			await repos.hub.deleteById(hub_id); // eslint-disable-line no-await-in-loop
@@ -31,8 +31,8 @@ export const initAdminHub = async (
 	| undefined
 	| {
 			hub: Hub;
-			persona: PublicPersona;
-			ghost: PublicPersona;
+			persona: PublicActor;
+			ghost: PublicActor;
 			roles: Role[];
 			policies: Policy[];
 			assignments: Assignment[];
@@ -52,7 +52,7 @@ export const initAdminHub = async (
 	);
 
 	// Create the hub persona.
-	const persona = await repos.persona.createCommunityPersona(hub.name, hub.hub_id);
+	const persona = await repos.persona.createCommunityActor(hub.name, hub.hub_id);
 
 	// Init
 	const {roles, policies, assignments} = await initTemplateGovernanceForHub(
@@ -132,7 +132,7 @@ export const checkRemovePersona = async (
 	if (!(await repos.assignment.isPersonaInHub(persona_id, hub_id))) {
 		throw new ApiError(400, 'persona is not in the hub');
 	}
-	const persona = await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(persona_id, [
+	const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(persona_id, [
 		'type',
 		'hub_id',
 	]);
@@ -147,7 +147,7 @@ export const checkRemovePersona = async (
 		throw new ApiError(405, 'cannot leave a personal hub');
 	}
 	if (hub_id === ADMIN_HUB_ID) {
-		const adminAssignmentsCount = await repos.assignment.countAccountPersonaAssignmentsByHubId(
+		const adminAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHubId(
 			hub_id,
 		);
 		// TODO this fails if the persona has multiple roles

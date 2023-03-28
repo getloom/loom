@@ -3,11 +3,11 @@
 
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import {toName, toIcon} from '$lib/vocab/entity/entityHelpers';
-	import type {ClientPersona} from '$lib/vocab/actor/persona';
+	import type {ClientActor} from '$lib/vocab/actor/persona';
 	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 
-	export let persona: Readable<ClientPersona>;
+	export let persona: Readable<ClientActor>;
 	export let showName = true;
 	export let showIcon = true;
 	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;

@@ -16,7 +16,7 @@ import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
 import {InviteToHubService} from '$lib/vocab/hub/hubServices';
 import {performService} from '$lib/server/service';
-import type {AccountPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor} from '$lib/vocab/actor/persona';
 
 /* test_entityServices */
 const test_entityServices = suite<TestDbContext>('hubRepo');
@@ -304,7 +304,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 	assert.is(directory.data.type, 'Collection');
 	assert.ok(directory.data.directory);
 
-	const mutateDirectory = async (actor: AccountPersona) => {
+	const mutateDirectory = async (actor: AccountActor) => {
 		// Disallow changing the directory's type
 		unwrapError(
 			await performService(UpdateEntityService, {
@@ -370,7 +370,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 	};
 
 	await mutateDirectory(persona);
-	await mutateDirectory(hubPersona as AccountPersona); // TODO this casting is a problem, the API expects an `AccountPersona` but we're sending a `PublicPersona` in this case
+	await mutateDirectory(hubPersona as AccountActor); // TODO this casting is a problem, the API expects an `AccountActor` but we're sending a `PublicActor` in this case
 });
 
 test_entityServices.run();

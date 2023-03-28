@@ -7,11 +7,11 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 
 	export let entity: Readable<Entity>;
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 
 	const {actions} = getApp();
 </script>

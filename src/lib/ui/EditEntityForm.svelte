@@ -9,7 +9,7 @@
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import SourceEntities from '$lib/ui/SourceEntities.svelte';
 	import DestEntities from '$lib/ui/DestEntities.svelte';
@@ -17,7 +17,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let done: (() => void) | undefined = undefined;
 

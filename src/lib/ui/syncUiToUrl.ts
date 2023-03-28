@@ -3,7 +3,7 @@ import {browser} from '$app/environment';
 import {goto} from '$app/navigation';
 import {Logger} from '@feltjs/util/log.js';
 
-import type {AccountPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor} from '$lib/vocab/actor/persona';
 import {ACTOR_QUERY_KEY, toSearchParams} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
 import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
@@ -27,7 +27,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 
 	const rawPersonaIndex = url.searchParams.get(ACTOR_QUERY_KEY);
 	const personaIndex = rawPersonaIndex ? Number(rawPersonaIndex) : null;
-	const persona: Readable<AccountPersona> | null =
+	const persona: Readable<AccountActor> | null =
 		personaIndex === null ? null : sessionPersonas.get().value[personaIndex];
 	if (!persona) {
 		if (browser) {

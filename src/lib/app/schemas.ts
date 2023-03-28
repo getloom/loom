@@ -12,12 +12,12 @@ import {
 	ClientGuestSessionSchema,
 } from '$lib/vocab/account/account.schema';
 import {
-	PersonaSchema,
-	AccountPersonaSchema,
-	CommunityPersonaSchema,
-	GhostPersonaSchema,
-	PublicPersonaSchema,
-	ClientPersonaSchema,
+	ActorSchema,
+	AccountActorSchema,
+	CommunityActorSchema,
+	GhostActorSchema,
+	PublicActorSchema,
+	ClientActorSchema,
 } from '$lib/vocab/actor/persona.schema';
 import {HubSchema, HubSettingsSchema, InitialHubSettingsSchema} from '$lib/vocab/hub/hub.schema';
 import {AssignmentSchema} from '$lib/vocab/assignment/assignment.schema';
@@ -50,12 +50,12 @@ export const vocabSchemas = [
 	ClientSessionSchema,
 	ClientAccountSessionSchema,
 	ClientGuestSessionSchema,
-	PersonaSchema,
-	AccountPersonaSchema,
-	CommunityPersonaSchema,
-	GhostPersonaSchema,
-	PublicPersonaSchema,
-	ClientPersonaSchema,
+	ActorSchema,
+	AccountActorSchema,
+	CommunityActorSchema,
+	GhostActorSchema,
+	PublicActorSchema,
+	ClientActorSchema,
 	HubSchema,
 	HubSettingsSchema,
 	InitialHubSettingsSchema,

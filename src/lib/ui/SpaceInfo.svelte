@@ -4,7 +4,7 @@
 
 	import type {Space} from '$lib/vocab/space/space.js';
 	import type {Hub} from '$lib/vocab/hub/hub.js';
-	import type {AccountPersona} from '$lib/vocab/actor/persona.js';
+	import type {AccountActor} from '$lib/vocab/actor/persona.js';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {getApp} from '$lib/ui/app';
@@ -16,7 +16,7 @@
 		ui: {contextmenu, sessionPersonaIndexById, entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
 	export let selected = false;

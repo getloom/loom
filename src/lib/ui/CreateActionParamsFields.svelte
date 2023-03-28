@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import PropertyPicker from '$lib/ui/PropertyPicker.svelte';
 	import type {ActionData} from '$lib/vocab/action/action';
@@ -10,7 +10,7 @@
 	// bind:params? on:create or on:input ?
 
 	export let params: null | Record<string, any> = null; // TODO type?
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let actionData: ActionData;
 
 	$: paramsProperties = actionData.params?.properties;

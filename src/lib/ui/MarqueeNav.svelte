@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {ClientPersona} from '$lib/vocab/actor/persona';
+	import type {ClientActor} from '$lib/vocab/actor/persona';
 	import type {Space} from '$lib/vocab/space/space';
 
 	export let space: Readable<Space> | null;
-	export let communityPersonas: Array<Readable<ClientPersona>>;
+	export let communityPersonas: Array<Readable<ClientActor>>;
 </script>
 
 <div class="marquee-nav">

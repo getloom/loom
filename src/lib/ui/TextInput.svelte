@@ -3,11 +3,11 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 
 	const dispatch = createEventDispatcher<{submit: string}>();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let value = '';
 	export let el: HTMLTextAreaElement | undefined = undefined;
 

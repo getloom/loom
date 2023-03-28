@@ -3,14 +3,14 @@
 
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {getApp} from '$lib/ui/app';
-	import type {AccountPersona, ClientPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor, ClientActor} from '$lib/vocab/actor/persona';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Role} from '$lib/vocab/role/role';
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountPersona>;
-	export let assignmentPersona: Readable<ClientPersona>;
+	export let persona: Readable<AccountActor>;
+	export let assignmentPersona: Readable<ClientActor>;
 	export let hub: Readable<Hub>;
 	export let role: Readable<Role>;
 

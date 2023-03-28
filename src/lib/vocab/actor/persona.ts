@@ -3,11 +3,11 @@
 /**
  *
  * 		Represents a human actor logged in via an Account. They are owned and managed from the account level.
- * 		When an AccountPersona is created, a personal Hub is also created for it and associated via 'hub_id'.
+ * 		When an AccountActor is created, a personal Hub is also created for it and associated via 'hub_id'.
  * 		A reference to this personal Hub is stored in 'hub_id'.
  *
  */
-export interface AccountPersona {
+export interface AccountActor {
 	persona_id: number;
 	account_id: number;
 	hub_id: number;
@@ -17,15 +17,22 @@ export interface AccountPersona {
 	created: Date;
 	updated: Date | null;
 }
-export type ActorPersona = AccountPersona | CommunityPersona;
+export type ActionActor = AccountActor | CommunityActor;
 
 /**
  *
- * 		The union of Persona subsets a user sees on their client,
- * 		including the user's AccountPersonas and all other hub actors as PublicPersonas.
+ * 	 Actors represent actors in the system. They can be of type Account, Hub, or Ghost.
  *
  */
-export type ClientPersona = AccountPersona | PublicPersona;
+export type Actor = AccountActor | CommunityActor | GhostActor;
+
+/**
+ *
+ * 		The union of Actor subsets a user sees on their client,
+ * 		including the user's AccountActors and all other hub actors as PublicActors.
+ *
+ */
+export type ClientActor = AccountActor | PublicActor;
 
 /**
  *
@@ -34,7 +41,7 @@ export type ClientPersona = AccountPersona | PublicPersona;
  * 		The Hub that owns it is represented by 'hub_id'.
  *
  */
-export interface CommunityPersona {
+export interface CommunityActor {
 	persona_id: number;
 	account_id?: null;
 	hub_id: number;
@@ -46,10 +53,10 @@ export interface CommunityPersona {
 }
 /**
  *
- * 	 A special system-level Persona that is a placeholder for deleted or otherwise unavailable Personas.
+ * 	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.
  *
  */
-export interface GhostPersona {
+export interface GhostActor {
 	persona_id: number;
 	account_id?: null;
 	hub_id?: null;
@@ -61,17 +68,10 @@ export interface GhostPersona {
 }
 /**
  *
- * 	 Personas represent actors in the system. They can be of type Account, Hub, or Ghost.
+ * 		A subset of an Actor available to all clients in a hub.
  *
  */
-export type Persona = AccountPersona | CommunityPersona | GhostPersona;
-
-/**
- *
- * 		A subset of a Persona available to all clients in a hub.
- *
- */
-export interface PublicPersona {
+export interface PublicActor {
 	persona_id: number;
 	type: 'account' | 'community' | 'ghost';
 	name: string;

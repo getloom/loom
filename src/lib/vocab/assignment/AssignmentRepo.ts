@@ -75,7 +75,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return data;
 	}
 
-	async countAccountPersonaAssignmentsByHubId(hub_id: number): Promise<number> {
+	async countAccountActorAssignmentsByHubId(hub_id: number): Promise<number> {
 		log.debug(`[filterByHub] ${hub_id}`);
 		const data = await this.sql<Array<{count: string}>>`
 			SELECT count(*)

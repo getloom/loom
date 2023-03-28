@@ -38,7 +38,7 @@
 			return;
 		}
 		status = 'pending';
-		const result = await actions.CreateAccountPersona({name});
+		const result = await actions.CreateAccountActor({name});
 		status = 'success'; // TODO handle failure (also refactor to be generic)
 		if (result.ok) {
 			errorMessage = null;

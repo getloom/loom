@@ -2,9 +2,9 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import type {ClientPersona} from '$lib/vocab/actor/persona';
+	import type {ClientActor} from '$lib/vocab/actor/persona';
 
-	export let persona: Readable<ClientPersona>;
+	export let persona: Readable<ClientActor>;
 </script>
 
 <li class="menu-item" role="none">

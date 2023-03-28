@@ -11,7 +11,7 @@ import {toHubUrl} from '$lib/ui/url';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {setIfUpdated} from '$lib/util/store';
-import {isAccountPersona} from '$lib/vocab/actor/actorHelpers';
+import {isAccountActor} from '$lib/vocab/actor/actorHelpers';
 
 export const stashHubs = (ui: WritableUi, $hubs: Hub[], replace = false): void => {
 	const {hubById, hubs} = ui;
@@ -84,7 +84,7 @@ export const evictHub = (ui: WritableUi, hub_id: number): void => {
 		if (hubIdSelection !== hub_id) continue;
 		const persona = personaById.get(persona_id);
 		const $persona = persona?.get();
-		if (!isAccountPersona($persona)) continue; // TODO this check could be refactored, shouldn't be necessary here
+		if (!isAccountActor($persona)) continue; // TODO this check could be refactored, shouldn't be necessary here
 		$hubIdSelectionByPersonaId.set(persona_id, $persona.hub_id);
 		mutated = true;
 	}

@@ -4,12 +4,12 @@ import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
 import type {WritableUi} from '$lib/ui/ui';
-import type {AccountPersona, ClientPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor, ClientActor} from '$lib/vocab/actor/persona';
 import {toHubUrl, toSearchParams} from '$lib/ui/url';
 
 export const stashPersonas = (
 	{personaById, personas, sessionPersonas, hubIdSelectionByPersonaId}: WritableUi,
-	$personasToStash: ClientPersona[],
+	$personasToStash: ClientActor[],
 	replace = false,
 ): void => {
 	if (replace) {
@@ -32,7 +32,7 @@ export const stashPersonas = (
 			mutated = true;
 			if ('account_id' in $persona) {
 				// Adding a session persona.
-				sessionPersonas.get().value.push(persona as Writable<AccountPersona>);
+				sessionPersonas.get().value.push(persona as Writable<AccountActor>);
 				hubIdSelectionByPersonaId.get().value.set($persona.persona_id, $persona.hub_id);
 				mutatedSessionPersonas = true;
 			}
@@ -47,14 +47,14 @@ export const stashPersonas = (
 
 export const evictPersonas = (
 	ui: WritableUi,
-	personasToEvict: Set<Writable<ClientPersona>>,
+	personasToEvict: Set<Writable<ClientActor>>,
 ): void => {
 	for (const persona of personasToEvict) {
 		evictPersona(ui, persona);
 	}
 };
 
-export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientPersona>): void => {
+export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientActor>): void => {
 	const {
 		personas,
 		personaById,

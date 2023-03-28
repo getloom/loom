@@ -4,7 +4,7 @@
 	import {getApp} from '$lib/ui/app';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const {
@@ -12,7 +12,7 @@
 		ui: {personaById},
 	} = getApp();
 
-	export let actor: Readable<AccountPersona>;
+	export let actor: Readable<AccountActor>;
 	export let assignment: Assignment;
 
 	$: assignmentPersona = lookupPersona(personaById, assignment.persona_id);

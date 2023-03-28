@@ -5,7 +5,7 @@ import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
-import type {AccountPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor} from '$lib/vocab/actor/persona';
 import {parseSvast} from '$lib/util/parseSvast';
 import type {Entity} from '$lib/vocab/entity/entity';
 
@@ -92,7 +92,7 @@ export const toViewProps = (
 };
 
 export interface ViewContext {
-	persona: Readable<AccountPersona>;
+	persona: Readable<AccountActor>;
 	hub: Readable<Hub>;
 	space: Readable<Space>;
 	directory: Readable<Entity>;

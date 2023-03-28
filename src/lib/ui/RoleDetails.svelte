@@ -5,7 +5,7 @@
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import type {Role} from '$lib/vocab/role/role';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import AssignmentItem from '$lib/ui/AssignmentItem.svelte';
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
@@ -18,7 +18,7 @@
 		ui: {assignmentsByRoleId, policiesByRoleId},
 	} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let role: Readable<Role>;
 	export let hub: Readable<Hub>;
 	export let deleteRole: (role: Readable<Role>) => Promise<DeleteRoleResponseResult>;

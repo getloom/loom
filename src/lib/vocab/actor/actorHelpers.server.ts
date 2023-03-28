@@ -19,7 +19,7 @@ export const isPersonaNameReserved = (name: string): boolean =>
 
 export const ACTOR_COLUMNS = {
 	Persona: ['persona_id', 'type', 'name', 'account_id', 'hub_id', 'created', 'updated'],
-	PublicPersona: ['persona_id', 'type', 'name', 'created'],
+	PublicActor: ['persona_id', 'type', 'name', 'created'],
 };
 
 export const isPersonaAdmin = async (actor_id: number, repos: Repos): Promise<boolean> => {

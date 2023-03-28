@@ -5,7 +5,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import HubSettingsHue from '$lib/ui/HubSettingsHue.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import EditHubAdvanced from '$lib/ui/EditHubAdvanced.svelte';
 	import DeleteHubForm from '$lib/ui/DeleteHubForm.svelte';
 	import LeaveHubForm from '$lib/ui/LeaveHubForm.svelte';
@@ -13,7 +13,7 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
 </script>

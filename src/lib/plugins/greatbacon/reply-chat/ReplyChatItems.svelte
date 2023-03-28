@@ -2,10 +2,10 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import ReplyChatItem from '$lib/plugins/greatbacon/reply-chat/ReplyChatItem.svelte';
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 	export let selectReply: (reply: Readable<Entity>) => void;
 </script>

@@ -9,7 +9,7 @@ import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
 import {toHubUrl, gotoUnlessActive} from '$lib/ui/url';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import type {ClientPersona} from '$lib/vocab/actor/persona';
+import type {ClientActor} from '$lib/vocab/actor/persona';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/vocab/account/account';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
@@ -117,10 +117,10 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 // Any code that needs session personas given a regular persona could do a lookup,
 // but otherwise we'd be passing around the `Persona` objects in most cases.
 // This would make things typesafe as well.
-const toInitialPersonas = (session: ClientSession): ClientPersona[] =>
+const toInitialPersonas = (session: ClientSession): ClientActor[] =>
 	session.guest
 		? []
-		: (session.sessionPersonas as ClientPersona[]).concat(
+		: (session.sessionPersonas as ClientActor[]).concat(
 				session.personas.filter(
 					(p1) => !session.sessionPersonas.find((p2) => p2.persona_id === p1.persona_id),
 				),

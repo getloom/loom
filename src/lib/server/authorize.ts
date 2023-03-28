@@ -3,7 +3,7 @@ import {OK, type Result} from '@feltjs/util';
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
-import type {ActorPersona, Persona} from '$lib/vocab/actor/persona';
+import type {ActionActor, Actor} from '$lib/vocab/actor/persona';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 // This currently only checks for the existence of an `account_id` on the request.
@@ -13,7 +13,7 @@ export const authorize = async (
 	repos: Repos,
 	account_id: number | undefined,
 	params: {actor?: number; [key: string]: unknown},
-): Promise<Result<{value?: {actor?: ActorPersona}}, ErrorResponse & {status: number}>> => {
+): Promise<Result<{value?: {actor?: ActionActor}}, ErrorResponse & {status: number}>> => {
 	// Authorize all services by default; each service can opt-out as needed.
 	const requiresAuthentication = service.event.authenticate ?? true;
 	if (!requiresAuthentication) return OK;
@@ -35,7 +35,7 @@ export const authorize = async (
 	if (!params.actor) {
 		return {ok: false, status: 400, message: 'actor is required'};
 	}
-	const actor = await repos.persona.findById<Persona>(params.actor, ACTOR_COLUMNS.Persona);
+	const actor = await repos.persona.findById<Actor>(params.actor, ACTOR_COLUMNS.Persona);
 	if (!actor) {
 		return {ok: false, status: 400, message: 'actor cannot be found'};
 	}

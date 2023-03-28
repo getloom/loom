@@ -1,28 +1,28 @@
-export const PersonaSchema = {
-	$id: '/schemas/Persona.json',
+export const ActorSchema = {
+	$id: '/schemas/Actor.json',
 	description: `
-	 Personas represent actors in the system. They can be of type Account, Hub, or Ghost.
+	 Actors represent actors in the system. They can be of type Account, Hub, or Ghost.
 	`,
 	anyOf: [
-		{$ref: '/schemas/AccountPersona.json'},
-		{$ref: '/schemas/CommunityPersona.json'},
-		{$ref: '/schemas/GhostPersona.json'},
+		{$ref: '/schemas/AccountActor.json'},
+		{$ref: '/schemas/CommunityActor.json'},
+		{$ref: '/schemas/GhostActor.json'},
 	],
-	tsType: '(AccountPersona | CommunityPersona | GhostPersona)',
+	tsType: '(AccountActor | CommunityActor | GhostActor)',
 };
 
-export const ActorPersonaSchema = {
-	$id: '/schemas/ActorPersona.json',
-	anyOf: [{$ref: '/schemas/AccountPersona.json'}, {$ref: '/schemas/CommunityPersona.json'}],
-	tsType: '(AccountPersona | CommunityPersona)',
+export const ActionActorSchema = {
+	$id: '/schemas/ActionActor.json',
+	anyOf: [{$ref: '/schemas/AccountActor.json'}, {$ref: '/schemas/CommunityActor.json'}],
+	tsType: '(AccountActor | CommunityActor)',
 };
 
-export const AccountPersonaSchema = {
-	$id: '/schemas/AccountPersona.json',
+export const AccountActorSchema = {
+	$id: '/schemas/AccountActor.json',
 	type: 'object',
 	description: `
 		Represents a human actor logged in via an Account. They are owned and managed from the account level.
-		When an AccountPersona is created, a personal Hub is also created for it and associated via 'hub_id'.
+		When an AccountActor is created, a personal Hub is also created for it and associated via 'hub_id'.
 		A reference to this personal Hub is stored in 'hub_id'.
 	`,
 	properties: {
@@ -39,8 +39,8 @@ export const AccountPersonaSchema = {
 	additionalProperties: false,
 };
 
-export const CommunityPersonaSchema = {
-	$id: '/schemas/CommunityPersona.json',
+export const CommunityActorSchema = {
+	$id: '/schemas/CommunityActor.json',
 	type: 'object',
 	description: `
 		Represents a collective actor under the ownership of a Hub. 
@@ -61,11 +61,11 @@ export const CommunityPersonaSchema = {
 	additionalProperties: false,
 };
 
-export const GhostPersonaSchema = {
-	$id: '/schemas/GhostPersona.json',
+export const GhostActorSchema = {
+	$id: '/schemas/GhostActor.json',
 	type: 'object',
 	description: `
-	 A special system-level Persona that is a placeholder for deleted or otherwise unavailable Personas.	 
+	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.	 
 	`,
 	properties: {
 		persona_id: {type: 'number'},
@@ -81,14 +81,14 @@ export const GhostPersonaSchema = {
 	additionalProperties: false,
 };
 
-// TODO this will need to be split into a type union to support hub "group" personas,
-// and it's related to `hub_id` being overloaded for account/hub persona types.
+// TODO this will need to be split into a type union to support hub "group" actors,
+// and it's related to `hub_id` being overloaded for account/hub actor types.
 // see: https://github.com/feltjs/felt-server/pull/545#discussion_r1013465948
-export const PublicPersonaSchema = {
-	$id: '/schemas/PublicPersona.json',
+export const PublicActorSchema = {
+	$id: '/schemas/PublicActor.json',
 	type: 'object',
 	description: `
-		A subset of a Persona available to all clients in a hub.
+		A subset of an Actor available to all clients in a hub.
 	`,
 	properties: {
 		persona_id: {type: 'number'},
@@ -102,12 +102,12 @@ export const PublicPersonaSchema = {
 	additionalProperties: false,
 };
 
-export const ClientPersonaSchema = {
-	$id: '/schemas/ClientPersona.json',
+export const ClientActorSchema = {
+	$id: '/schemas/ClientActor.json',
 	description: `
-		The union of Persona subsets a user sees on their client,
-		including the user's AccountPersonas and all other hub actors as PublicPersonas.
+		The union of Actor subsets a user sees on their client,
+		including the user's AccountActors and all other hub actors as PublicActors.
 	`,
-	anyOf: [{$ref: '/schemas/AccountPersona.json'}, {$ref: '/schemas/PublicPersona.json'}],
-	tsType: '(AccountPersona | PublicPersona)',
+	anyOf: [{$ref: '/schemas/AccountActor.json'}, {$ref: '/schemas/PublicActor.json'}],
+	tsType: '(AccountActor | PublicActor)',
 };

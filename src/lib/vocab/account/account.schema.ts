@@ -66,7 +66,7 @@ export const ClientAccountSessionSchema = {
 		account: {$ref: '/schemas/ClientAccount.json', tsType: 'ClientAccount'},
 		sessionPersonas: {
 			type: 'array',
-			items: {$ref: '/schemas/AccountPersona.json', tsType: 'AccountPersona'},
+			items: {$ref: '/schemas/AccountActor.json', tsType: 'AccountActor'},
 		},
 		hubs: {
 			type: 'array',
@@ -83,7 +83,7 @@ export const ClientAccountSessionSchema = {
 		policies: {type: 'array', items: {$ref: '/schemas/Policy.json', tsType: 'Policy'}},
 		personas: {
 			type: 'array',
-			items: {$ref: '/schemas/ClientPersona.json', tsType: 'ClientPersona'},
+			items: {$ref: '/schemas/ClientActor.json', tsType: 'ClientActor'},
 		},
 		guest: {enum: [false]},
 	},
@@ -102,7 +102,7 @@ export const ClientAccountSessionSchema = {
 	// TODO this data is worthless to the client
 	// TODO ideally this is generated from the above schema, need mapping between `/schemas/...` and `$lib/vocab/...`, could connect `tsType` and `$ref`
 	tsImport: [
-		"import type {AccountPersona, ClientPersona} from '$lib/vocab/actor/persona'",
+		"import type {AccountActor, ClientActor} from '$lib/vocab/actor/persona'",
 		"import type {Hub} from '$lib/vocab/hub/hub'",
 		"import type {Entity} from '$lib/vocab/entity/entity'",
 		"import type {Role} from '$lib/vocab/role/role'",

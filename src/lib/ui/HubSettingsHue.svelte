@@ -5,11 +5,11 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 
 	const UPDATE_INTERVAL = 500; // TODO extract this to config

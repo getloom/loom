@@ -10,7 +10,7 @@ import type {
 	AuthorizedService,
 } from '$lib/server/service';
 import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
-import type {PublicPersona, ClientPersona} from '$lib/vocab/actor/persona';
+import type {PublicActor, ClientActor} from '$lib/vocab/actor/persona';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
@@ -42,7 +42,7 @@ export type ServiceActionName =
 	| 'InviteToHub'
 	| 'LeaveHub'
 	| 'KickFromHub'
-	| 'CreateAccountPersona'
+	| 'CreateAccountActor'
 	| 'DeletePersona'
 	| 'CreateAssignment'
 	| 'DeleteAssignment'
@@ -91,7 +91,7 @@ export interface EventParamsByName {
 	InviteToHub: InviteToHubParams;
 	LeaveHub: LeaveHubParams;
 	KickFromHub: KickFromHubParams;
-	CreateAccountPersona: CreateAccountPersonaParams;
+	CreateAccountActor: CreateAccountActorParams;
 	DeletePersona: DeletePersonaParams;
 	CreateAssignment: CreateAssignmentParams;
 	DeleteAssignment: DeleteAssignmentParams;
@@ -138,7 +138,7 @@ export interface EventResponseByName {
 	InviteToHub: InviteToHubResponse;
 	LeaveHub: LeaveHubResponse;
 	KickFromHub: KickFromHubResponse;
-	CreateAccountPersona: CreateAccountPersonaResponse;
+	CreateAccountActor: CreateAccountActorResponse;
 	DeletePersona: DeletePersonaResponse;
 	CreateAssignment: CreateAssignmentResponse;
 	DeleteAssignment: DeleteAssignmentResponse;
@@ -178,9 +178,9 @@ export interface ServiceByName {
 		UpdateAccountPasswordParams,
 		UpdateAccountPasswordResponseResult
 	>;
-	CreateAccountPersona: NonAuthorizedService<
-		CreateAccountPersonaParams,
-		CreateAccountPersonaResponseResult
+	CreateAccountActor: NonAuthorizedService<
+		CreateAccountActorParams,
+		CreateAccountActorResponseResult
 	>;
 	DeletePersona: AuthorizedService<DeletePersonaParams, DeletePersonaResponseResult>;
 	ReadHub: AuthorizedService<ReadHubParams, ReadHubResponseResult>;
@@ -293,7 +293,7 @@ export interface CreateHubResponse {
 	directories: Directory[];
 	assignments: Assignment[];
 	policies: Policy[];
-	personas: PublicPersona[];
+	personas: PublicActor[];
 }
 export type CreateHubResponseResult = ApiResult<CreateHubResponse>;
 
@@ -314,7 +314,7 @@ export interface ReadHubResponse {
 	directories: Directory[];
 	roles: Role[];
 	assignments: Assignment[];
-	personas: PublicPersona[];
+	personas: PublicActor[];
 }
 export type ReadHubResponseResult = ApiResult<ReadHubResponse>;
 
@@ -346,10 +346,10 @@ export interface InviteToHubParams {
 export interface InviteToHubResponse {
 	/**
 	 *
-	 * 		A subset of a Persona available to all clients in a hub.
+	 * 		A subset of an Actor available to all clients in a hub.
 	 *
 	 */
-	persona: PublicPersona;
+	persona: PublicActor;
 	/**
 	 *
 	 * 	 Describes the relationship between a Persona and Role within a given Hub.
@@ -377,11 +377,11 @@ export interface KickFromHubParams {
 export type KickFromHubResponse = null;
 export type KickFromHubResponseResult = ApiResult<KickFromHubResponse>;
 
-export interface CreateAccountPersonaParams {
+export interface CreateAccountActorParams {
 	name: string;
 }
-export interface CreateAccountPersonaResponse {
-	personas: ClientPersona[];
+export interface CreateAccountActorResponse {
+	personas: ClientActor[];
 	hubs: Hub[];
 	roles: Role[];
 	policies: Policy[];
@@ -389,7 +389,7 @@ export interface CreateAccountPersonaResponse {
 	directories: Directory[];
 	assignments: Assignment[];
 }
-export type CreateAccountPersonaResponseResult = ApiResult<CreateAccountPersonaResponse>;
+export type CreateAccountActorResponseResult = ApiResult<CreateAccountActorResponse>;
 
 export interface DeletePersonaParams {
 	actor: number;
@@ -754,9 +754,9 @@ export interface Actions {
 	InviteToHub: (params: InviteToHubParams) => Promise<InviteToHubResponseResult>;
 	LeaveHub: (params: LeaveHubParams) => Promise<LeaveHubResponseResult>;
 	KickFromHub: (params: KickFromHubParams) => Promise<KickFromHubResponseResult>;
-	CreateAccountPersona: (
-		params: CreateAccountPersonaParams,
-	) => Promise<CreateAccountPersonaResponseResult>;
+	CreateAccountActor: (
+		params: CreateAccountActorParams,
+	) => Promise<CreateAccountActorResponseResult>;
 	DeletePersona: (params: DeletePersonaParams) => Promise<DeletePersonaResponseResult>;
 	CreateAssignment: (params: CreateAssignmentParams) => Promise<CreateAssignmentResponseResult>;
 	DeleteAssignment: (params: DeleteAssignmentParams) => Promise<DeleteAssignmentResponseResult>;
@@ -830,9 +830,9 @@ export interface Mutations {
 	KickFromHub: (
 		ctx: MutationContext<KickFromHubParams, KickFromHubResponseResult>,
 	) => Promise<KickFromHubResponseResult>;
-	CreateAccountPersona: (
-		ctx: MutationContext<CreateAccountPersonaParams, CreateAccountPersonaResponseResult>,
-	) => Promise<CreateAccountPersonaResponseResult>;
+	CreateAccountActor: (
+		ctx: MutationContext<CreateAccountActorParams, CreateAccountActorResponseResult>,
+	) => Promise<CreateAccountActorResponseResult>;
 	DeletePersona: (
 		ctx: MutationContext<DeletePersonaParams, DeletePersonaResponseResult>,
 	) => Promise<DeletePersonaResponseResult>;

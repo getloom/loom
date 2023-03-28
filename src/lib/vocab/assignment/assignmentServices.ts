@@ -4,7 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import type {ActorPersona} from '$lib/vocab/actor/persona';
+import type {ActionActor} from '$lib/vocab/actor/persona';
 import {cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
@@ -51,10 +51,10 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 		// 	repos.persona.findById(persona_id),
 		// 	repos.hub.findById(hub_id),
 		// ]);
-		const persona = await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(
-			persona_id,
-			['type', 'hub_id'],
-		);
+		const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(persona_id, [
+			'type',
+			'hub_id',
+		]);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
@@ -66,7 +66,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 			return {ok: false, status: 405, message: 'cannot leave a personal hub'};
 		}
 		if (hub_id === ADMIN_HUB_ID) {
-			const adminAssignmentsCount = await repos.assignment.countAccountPersonaAssignmentsByHubId(
+			const adminAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHubId(
 				hub_id,
 			);
 			if (adminAssignmentsCount === 1) {

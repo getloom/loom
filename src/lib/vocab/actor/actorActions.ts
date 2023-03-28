@@ -1,11 +1,11 @@
 import type {ServiceActionData} from '$lib/vocab/action/action';
 
-export const CreateAccountPersona: ServiceActionData = {
+export const CreateAccountActor: ServiceActionData = {
 	type: 'ServiceAction',
-	name: 'CreateAccountPersona',
+	name: 'CreateAccountActor',
 	authorize: false,
 	params: {
-		$id: '/schemas/CreateAccountPersonaParams.json',
+		$id: '/schemas/CreateAccountActorParams.json',
 		type: 'object',
 		properties: {
 			name: {type: 'string'},
@@ -14,12 +14,12 @@ export const CreateAccountPersona: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/CreateAccountPersonaResponse.json',
+		$id: '/schemas/CreateAccountActorResponse.json',
 		type: 'object',
 		properties: {
 			personas: {
 				type: 'array',
-				items: {$ref: '/schemas/ClientPersona.json', tsType: 'ClientPersona'},
+				items: {$ref: '/schemas/ClientActor.json', tsType: 'ClientActor'},
 			},
 			hubs: {type: 'array', items: {$ref: '/schemas/Hub.json', tsType: 'Hub'}},
 			roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
@@ -34,7 +34,7 @@ export const CreateAccountPersona: ServiceActionData = {
 		required: ['personas', 'hubs', 'roles', 'policies', 'spaces', 'directories', 'assignments'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<CreateAccountPersonaResponseResult>',
+	returns: 'Promise<CreateAccountActorResponseResult>',
 	route: {
 		path: '/api/v1/personas',
 		method: 'POST',

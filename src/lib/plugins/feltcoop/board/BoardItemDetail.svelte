@@ -10,7 +10,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
@@ -20,7 +20,7 @@
 	} = getApp();
 
 	export let entity: Readable<Entity>;
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let space: Readable<Space>;
 
 	$: destTies = lookupTies(destTiesBySourceEntityId, $entity.entity_id);

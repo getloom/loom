@@ -3,9 +3,9 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityExplorerItem from '$lib/plugins/feltcoop/entity-explorer/EntityExplorerItem.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 </script>
 

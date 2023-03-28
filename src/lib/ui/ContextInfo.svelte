@@ -4,11 +4,11 @@
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import type {Space} from '$lib/vocab/space/space';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 
-	export let persona: Readable<AccountPersona> | null = null;
+	export let persona: Readable<AccountActor> | null = null;
 	export let hub: Readable<Hub> | null = null;
 	export let space: Readable<Space> | null = null;
 </script>

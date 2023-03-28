@@ -3,7 +3,7 @@ import {unwrap, unwrapError} from '@feltjs/util';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {CreateAccountPersonaService, DeletePersonaService} from '$lib/vocab/actor/actorServices';
+import {CreateAccountActorService, DeletePersonaService} from '$lib/vocab/actor/actorServices';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
@@ -16,7 +16,7 @@ test__personaService.before(setupDb);
 test__personaService.after(teardownDb);
 
 test__personaService('create a persona & test name collisions', async ({repos, random}) => {
-	const params = await randomActionParams.CreateAccountPersona(random);
+	const params = await randomActionParams.CreateAccountActor(random);
 	params.name = params.name.toLowerCase();
 
 	const account = await random.account();
@@ -26,22 +26,19 @@ test__personaService('create a persona & test name collisions', async ({repos, r
 		params,
 	});
 
-	unwrap(await CreateAccountPersonaService.perform(toServiceRequest()));
+	unwrap(await CreateAccountActorService.perform(toServiceRequest()));
 
-	unwrapError(
-		await CreateAccountPersonaService.perform(toServiceRequest()),
-		'fails with same name',
-	);
+	unwrapError(await CreateAccountActorService.perform(toServiceRequest()), 'fails with same name');
 
 	params.name = params.name.toUpperCase();
 	unwrapError(
-		await CreateAccountPersonaService.perform(toServiceRequest()),
+		await CreateAccountActorService.perform(toServiceRequest()),
 		'fails with different case',
 	);
 
 	params.name += '2';
 	unwrap(
-		await CreateAccountPersonaService.perform(toServiceRequest()),
+		await CreateAccountActorService.perform(toServiceRequest()),
 		'succeeds with different name',
 	);
 });
@@ -49,9 +46,9 @@ test__personaService('create a persona & test name collisions', async ({repos, r
 test__personaService('ghost persona has the expected name and id', async ({repos, random}) => {
 	// First create an account persona, which ensures the ghost persona has been initialized.
 	unwrap(
-		await CreateAccountPersonaService.perform({
+		await CreateAccountActorService.perform({
 			...toServiceRequestMock(repos, undefined, undefined, (await random.account()).account_id),
-			params: await randomActionParams.CreateAccountPersona(random),
+			params: await randomActionParams.CreateAccountActor(random),
 		}),
 	);
 

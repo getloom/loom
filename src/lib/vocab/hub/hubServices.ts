@@ -121,7 +121,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		);
 
 		// Create the hub persona and its assignment
-		const hubPersona = await repos.persona.createCommunityPersona(hub.name, hub_id);
+		const hubPersona = await repos.persona.createCommunityActor(hub.name, hub_id);
 		const hubPersonaAssignment = await repos.assignment.create(
 			hubPersona.persona_id,
 			hub_id,

@@ -3,9 +3,9 @@
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import NotesItem from '$lib/plugins/feltcoop/notes/NotesItem.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 
 	$: notes = $entities.slice().reverse(); // TODO definitely not this

@@ -14,7 +14,7 @@ import type {
 	InviteToHubParams,
 	LeaveHubParams,
 	KickFromHubParams,
-	CreateAccountPersonaParams,
+	CreateAccountActorParams,
 	DeletePersonaParams,
 	CreateAssignmentParams,
 	DeleteAssignmentParams,
@@ -77,10 +77,10 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<KickFromHubParams>;
-	CreateAccountPersona: (
+	CreateAccountActor: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<CreateAccountPersonaParams>;
+	) => Promise<CreateAccountActorParams>;
 	DeletePersona: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

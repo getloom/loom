@@ -13,7 +13,7 @@ import {EventEmitter} from 'eventemitter3';
 
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {Space} from '$lib/vocab/space/space';
-import type {ClientPersona, AccountPersona} from '$lib/vocab/actor/persona';
+import type {ClientActor, AccountActor} from '$lib/vocab/actor/persona';
 import type {ClientAccount, ClientSession} from '$lib/vocab/account/account';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -64,16 +64,16 @@ export interface Ui {
 
 	// db state and caches
 	account: Readable<ClientAccount | null>;
-	personas: Mutable<Set<Readable<ClientPersona>>>;
+	personas: Mutable<Set<Readable<ClientActor>>>;
 	session: Readable<ClientSession>;
-	sessionPersonas: Mutable<Array<Readable<AccountPersona>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
+	sessionPersonas: Mutable<Array<Readable<AccountActor>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
 	sessionPersonaIndexById: Readable<Map<number, number>>;
 	hubs: Mutable<Set<Readable<Hub>>>;
 	roles: Mutable<Set<Readable<Role>>>;
 	spaces: Mutable<Set<Readable<Space>>>;
 	assignments: Mutable<Set<Assignment>>;
 	policies: Mutable<Set<Readable<Policy>>>;
-	personaById: Map<number, Readable<ClientPersona>>;
+	personaById: Map<number, Readable<ClientActor>>;
 	hubById: Map<number, Readable<Hub>>;
 	roleById: Map<number, Readable<Role>>;
 	assignmentById: Map<number, Assignment>;
@@ -84,7 +84,7 @@ export interface Ui {
 	// derived state
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByHubId: Readable<Map<number, Array<Readable<Space>>>>;
-	personasByHubId: Readable<Map<number, Array<Readable<ClientPersona>>>>;
+	personasByHubId: Readable<Map<number, Array<Readable<ClientActor>>>>;
 	rolesByHubId: Readable<Map<number, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<number, Assignment[]>>;
 	policiesByRoleId: Readable<Map<number, Map<string, Readable<Policy>>>>;
@@ -92,8 +92,8 @@ export interface Ui {
 	paginatedQueryByKey: Map<number, PaginatedQueryStore>;
 	sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>>;
 	destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>>;
-	hubsBySessionPersona: Readable<Map<Readable<AccountPersona>, Array<Readable<Hub>>>>;
-	adminPersonas: Readable<Set<Readable<ClientPersona>>>;
+	hubsBySessionPersona: Readable<Map<Readable<AccountActor>, Array<Readable<Hub>>>>;
+	adminPersonas: Readable<Set<Readable<ClientActor>>>;
 	// view state
 	mobile: Readable<boolean>;
 	layout: Writable<{width: number; height: number}>; // TODO maybe make `Readable` and update with an event? `resizeLayout`?
@@ -105,7 +105,7 @@ export interface Ui {
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the hub
 	ephemera: Readable<EphemeraResponse | null>;
 	personaIdSelection: Readable<number | null>;
-	personaSelection: Readable<Readable<AccountPersona> | null>;
+	personaSelection: Readable<Readable<AccountActor> | null>;
 	personaIndexSelection: Readable<number | null>;
 	hubIdSelectionByPersonaId: Mutable<Map<number, number | null>>;
 	hubSelection: Readable<Readable<Hub> | null>;
@@ -151,14 +151,14 @@ export const toUi = (
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
 	// TODO these `Persona`s need additional data compared to every other `Persona`
-	const sessionPersonas = mutable<Array<Writable<AccountPersona>>>([]);
-	const personas = mutable<Set<Writable<ClientPersona>>>(new Set());
+	const sessionPersonas = mutable<Array<Writable<AccountActor>>>([]);
+	const personas = mutable<Set<Writable<ClientActor>>>(new Set());
 	const hubs = mutable<Set<Writable<Hub>>>(new Set());
 	const roles = mutable<Set<Writable<Role>>>(new Set());
 	const spaces = mutable<Set<Writable<Space>>>(new Set());
 	const assignments = mutable<Set<Assignment>>(new Set());
 	const policies = mutable<Set<Writable<Policy>>>(new Set());
-	const personaById: Map<number, Writable<ClientPersona>> = new Map();
+	const personaById: Map<number, Writable<ClientActor>> = new Map();
 	const hubById: Map<number, Writable<Hub>> = new Map();
 	const roleById: Map<number, Writable<Role>> = new Map();
 	const assignmentById: Map<number, Assignment> = new Map();
@@ -194,12 +194,12 @@ export const toUi = (
 		},
 	);
 
-	const personasByHubId: Readable<Map<number, Array<Writable<ClientPersona>>>> = derived(
+	const personasByHubId: Readable<Map<number, Array<Writable<ClientActor>>>> = derived(
 		[hubs, assignments],
 		([$hubs, $assignments]) => {
-			const map: Map<number, Array<Writable<ClientPersona>>> = new Map();
+			const map: Map<number, Array<Writable<ClientActor>>> = new Map();
 			for (const hub of $hubs.value) {
-				const communityPersonas: Set<Writable<ClientPersona>> = new Set();
+				const communityPersonas: Set<Writable<ClientActor>> = new Set();
 				const {hub_id} = hub.get();
 				for (const assignment of $assignments.value) {
 					if (assignment.hub_id === hub_id) {
@@ -274,7 +274,7 @@ export const toUi = (
 	const personaSelection = derived(
 		[personaIdSelection],
 		([$personaIdSelection]) =>
-			($personaIdSelection && (personaById.get($personaIdSelection) as Writable<AccountPersona>)) ||
+			($personaIdSelection && (personaById.get($personaIdSelection) as Writable<AccountActor>)) ||
 			null,
 	);
 	const personaIndexSelection = derived(
@@ -286,9 +286,10 @@ export const toUi = (
 		[sessionPersonas],
 		([$sessionPersonas]) => new Map($sessionPersonas.value.map((p, i) => [p.get().persona_id, i])),
 	);
-	const hubsBySessionPersona: Readable<Map<Writable<AccountPersona>, Array<Writable<Hub>>>> =
-		derived([sessionPersonas, assignments, hubs], ([$sessionPersonas, $assignments, $hubs]) => {
-			const map: Map<Writable<AccountPersona>, Array<Writable<Hub>>> = new Map();
+	const hubsBySessionPersona: Readable<Map<Writable<AccountActor>, Array<Writable<Hub>>>> = derived(
+		[sessionPersonas, assignments, hubs],
+		([$sessionPersonas, $assignments, $hubs]) => {
+			const map: Map<Writable<AccountActor>, Array<Writable<Hub>>> = new Map();
 			for (const sessionPersona of $sessionPersonas.value) {
 				const $sessionPersona = sessionPersona.get();
 				const sessionPersonaHubs: Array<Writable<Hub>> = [];
@@ -307,7 +308,8 @@ export const toUi = (
 				map.set(sessionPersona, sessionPersonaHubs);
 			}
 			return map;
-		});
+		},
+	);
 	// TODO should these be store references instead of ids?
 	const hubIdSelectionByPersonaId = mutable<Map<number, number | null>>(new Map());
 	const hubSelection = derived(

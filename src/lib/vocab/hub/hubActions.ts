@@ -28,7 +28,7 @@ export const CreateHub: ServiceActionData = {
 			policies: {type: 'array', items: {$ref: '/schemas/Policy.json', tsType: 'Policy'}},
 			personas: {
 				type: 'array',
-				items: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
+				items: {$ref: '/schemas/PublicActor.json', tsType: 'PublicActor'},
 			},
 		},
 		required: ['hub', 'roles', 'policies', 'spaces', 'directories', 'assignments', 'personas'],
@@ -68,7 +68,7 @@ export const ReadHub: ServiceActionData = {
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
 			personas: {
 				type: 'array',
-				items: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
+				items: {$ref: '/schemas/PublicActor.json', tsType: 'PublicActor'},
 			},
 		},
 		required: ['hub', 'spaces', 'directories', 'roles', 'assignments', 'personas'],
@@ -150,7 +150,7 @@ export const InviteToHub: ServiceActionData = {
 		$id: '/schemas/InviteToHubResponse.json',
 		type: 'object',
 		properties: {
-			persona: {$ref: '/schemas/PublicPersona.json', tsType: 'PublicPersona'},
+			persona: {$ref: '/schemas/PublicActor.json', tsType: 'PublicActor'},
 			assignment: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'},
 		},
 		required: ['persona', 'assignment'],

@@ -5,13 +5,13 @@
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 
 	const {
 		ui: {contextmenu},
 	} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let destEntity: Readable<Entity>;
 	export let sourceEntity: Readable<Entity>;
 	export let tie: Tie;

@@ -3,10 +3,10 @@ import {unwrap} from '@feltjs/util';
 import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
-import type {AccountPersona, ClientPersona, PublicPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor, ClientActor, PublicActor} from '$lib/vocab/actor/persona';
 import type {
 	CreateHubParams,
-	CreateAccountPersonaParams,
+	CreateAccountActorParams,
 	CreateEntityParams,
 	CreateSpaceParams,
 	CreateAssignmentParams,
@@ -17,7 +17,7 @@ import type {
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {CreateAccountPersonaService} from '$lib/vocab/actor/actorServices';
+import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -53,7 +53,7 @@ export const randomAccountParams = (): SignInParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
 });
-export const randomPersonaParams = (): CreateAccountPersonaParams => ({
+export const randomPersonaParams = (): CreateAccountActorParams => ({
 	name: randomPersonaName(),
 });
 export const randomAssignmentParams = (
@@ -113,8 +113,8 @@ export const randomPolicyParams = (
 // TODO maybe compute in relation to `RandomVocabContext`
 export interface RandomVocab {
 	account?: RandomTestAccount;
-	actor?: AccountPersona;
-	persona?: AccountPersona;
+	actor?: AccountActor;
+	persona?: AccountActor;
 	hub?: Hub;
 	space?: Space;
 	entity?: Entity;
@@ -143,7 +143,7 @@ export class RandomVocabContext {
 	}
 
 	async persona(account?: Account): Promise<{
-		persona: AccountPersona;
+		persona: AccountActor;
 		personalHub: Hub;
 		assignment: Assignment;
 		spaces: Space[];
@@ -156,16 +156,16 @@ export class RandomVocabContext {
 			assignments: [assignment],
 			spaces,
 		} = unwrap(
-			await CreateAccountPersonaService.perform({
+			await CreateAccountActorService.perform({
 				...toServiceRequestMock(this.repos, undefined, undefined, account.account_id),
 				params: {name: randomPersonaParams().name},
 			}),
 		);
-		return {persona: persona as AccountPersona, personalHub, assignment, spaces, account};
+		return {persona: persona as AccountActor, personalHub, assignment, spaces, account};
 	}
 
 	async hub(
-		persona?: AccountPersona,
+		persona?: AccountActor,
 		account?: Account,
 	): Promise<{
 		hub: Hub;
@@ -173,9 +173,9 @@ export class RandomVocabContext {
 		policies: Policy[];
 		assignments: Assignment[];
 		spaces: Space[];
-		persona: AccountPersona;
-		hubPersona: PublicPersona;
-		personas: ClientPersona[];
+		persona: AccountActor;
+		hubPersona: PublicActor;
+		personas: ClientActor[];
 		account: Account;
 	}> {
 		if (!account) account = await this.account();
@@ -202,14 +202,14 @@ export class RandomVocabContext {
 	}
 
 	async space(
-		persona?: AccountPersona,
+		persona?: AccountActor,
 		account?: Account,
 		hub?: Hub,
 		view?: string,
 	): Promise<{
 		space: Space;
 		directory: Directory;
-		persona: AccountPersona;
+		persona: AccountActor;
 		account: Account;
 		hub: Hub;
 	}> {
@@ -227,7 +227,7 @@ export class RandomVocabContext {
 	}
 
 	async entity(
-		persona?: AccountPersona,
+		persona?: AccountActor,
 		account?: Account,
 		hub?: Hub,
 		space?: Space,
@@ -236,7 +236,7 @@ export class RandomVocabContext {
 	): Promise<{
 		entity: Entity;
 		directories: Entity[];
-		persona: AccountPersona;
+		persona: AccountActor;
 		account: Account;
 		hub: Hub;
 		space: Space;
@@ -268,7 +268,7 @@ export class RandomVocabContext {
 	async tie(
 		sourceEntity?: Entity,
 		destEntity?: Entity,
-		persona?: AccountPersona,
+		persona?: AccountActor,
 		account?: Account,
 		hub?: Hub,
 		space?: Space,
@@ -278,7 +278,7 @@ export class RandomVocabContext {
 		tie: Tie;
 		sourceEntity: Entity;
 		destEntity: Entity;
-		persona: AccountPersona;
+		persona: AccountActor;
 		account: Account;
 		hub: Hub;
 		parentSourceId: number;
@@ -307,11 +307,11 @@ export class RandomVocabContext {
 
 	async role(
 		hub?: Hub,
-		persona?: AccountPersona,
+		persona?: AccountActor,
 		account?: Account,
 	): Promise<{
 		role: Role;
-		persona: AccountPersona;
+		persona: AccountActor;
 		account: Account;
 		hub: Hub;
 	}> {
@@ -330,12 +330,12 @@ export class RandomVocabContext {
 
 	async policy(
 		hub?: Hub,
-		persona?: AccountPersona,
+		persona?: AccountActor,
 		account?: Account,
 		permission?: string,
 	): Promise<{
 		policy: Policy;
-		persona: AccountPersona;
+		persona: AccountActor;
 		account: Account;
 		hub: Hub;
 	}> {

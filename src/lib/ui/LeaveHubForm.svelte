@@ -5,13 +5,13 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	const {actions} = getApp();
 
 	export let hub: Readable<Hub>;
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 
 	let errorMessage: string | undefined;

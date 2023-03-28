@@ -11,9 +11,9 @@ import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {CreateEntityResponse, SignInParams} from '$lib/app/actionTypes';
-import type {AccountPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor} from '$lib/vocab/actor/persona';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
-import {CreateAccountPersonaService} from '$lib/vocab/actor/actorServices';
+import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
@@ -56,7 +56,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		}
 	}
 	const accounts: Account[] = [];
-	const personas: AccountPersona[] = [];
+	const personas: AccountActor[] = [];
 	for (const accountParams of accountsParams) {
 		const account = await repos.account.create(
 			accountParams.username,
@@ -69,12 +69,12 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			toServiceRequestMock(repos, undefined, undefined, account.account_id);
 		for (const personaName of personasParams[account.name]) {
 			const created = unwrap(
-				await CreateAccountPersonaService.perform({
+				await CreateAccountActorService.perform({
 					...toAccountServiceRequest(),
 					params: {name: personaName},
 				}),
 			);
-			const persona = created.personas[0] as AccountPersona;
+			const persona = created.personas[0] as AccountActor;
 			log.debug('created persona', persona);
 			personas.push(persona);
 			await createDefaultEntities(
@@ -85,7 +85,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		}
 	}
 
-	const mainPersonaCreator = personas[0] as AccountPersona;
+	const mainPersonaCreator = personas[0] as AccountActor;
 	const toMainAccountServiceRequest = () => toServiceRequestMock(repos, mainPersonaCreator);
 	const otherPersonas = personas.slice(1);
 	const nextPersona = toNext(personas);
@@ -133,7 +133,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 const createDefaultEntities = async (
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
 	spaces: Space[],
-	nextPersona: () => AccountPersona,
+	nextPersona: () => AccountActor,
 ) => {
 	for (const space of spaces) {
 		const viewName = findFirstComponentName(parseView(space.view));
@@ -204,7 +204,7 @@ const hubTemplates: HubTemplate[] = [
 
 interface SeedContext {
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>;
-	nextPersona: () => AccountPersona;
+	nextPersona: () => AccountActor;
 	space: Space;
 }
 
@@ -276,7 +276,7 @@ const MUCH_SPACE_COUNT = 100;
 const createMuchSpaces = async (
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
 	hub: Hub,
-	nextPersona: () => AccountPersona,
+	nextPersona: () => AccountActor,
 ) => {
 	const viewTemplates = toCreatableViewTemplates(false);
 

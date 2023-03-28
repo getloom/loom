@@ -4,14 +4,14 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import CreateActionParamsFields from '$lib/ui/CreateActionParamsFields.svelte';
 	import {actionDatas} from '$lib/app/actionData';
 	import type {ActionData} from '$lib/vocab/action/action';
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 
 	let pending = false;

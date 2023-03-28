@@ -6,7 +6,7 @@ import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
-export const CreateAccountPersona: Mutations['CreateAccountPersona'] = async ({invoke, ui}) => {
+export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {personas, hubs, roles, policies, spaces, directories, assignments} = result.value;

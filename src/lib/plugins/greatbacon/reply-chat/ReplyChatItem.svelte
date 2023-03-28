@@ -9,7 +9,7 @@
 	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
@@ -17,7 +17,7 @@
 		ui: {contextmenu, personaById, entityById, sourceTiesByDestEntityId},
 	} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let selectReply: (reply: Readable<Entity>) => void;
 

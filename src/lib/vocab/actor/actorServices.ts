@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
-import {CreateAccountPersona, DeletePersona} from '$lib/vocab/actor/actorActions';
+import {CreateAccountActor, DeletePersona} from '$lib/vocab/actor/actorActions';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	cleanOrphanHubs,
@@ -11,7 +11,7 @@ import {
 	toDefaultHubSettings,
 } from '$lib/vocab/hub/hubHelpers.server';
 import type {Hub} from '$lib/vocab/hub/hub';
-import type {ActorPersona, ClientPersona} from '$lib/vocab/actor/persona';
+import type {ActionActor, ClientActor} from '$lib/vocab/actor/persona';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/actorHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
@@ -21,13 +21,13 @@ import {defaultPersonalHubRoles} from '$lib/app/templates';
 const log = new Logger(gray('[') + blue('actorServices') + gray(']'));
 
 //Creates a new persona
-export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] = {
-	event: CreateAccountPersona,
+export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
+	event: CreateAccountActor,
 	transaction: true,
 	// TODO verify the `account_id` has permission to modify this persona
 	// TODO add `persona_id` and verify it's one of the `account_id`'s personas
 	perform: async ({repos, params, account_id}) => {
-		log.debug('[CreateAccountPersona] creating persona', params.name);
+		log.debug('[CreateAccountActor] creating persona', params.name);
 		const name = scrubPersonaName(params.name);
 		const nameErrorMessage = checkPersonaName(name);
 		if (nameErrorMessage) {
@@ -38,13 +38,13 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 			return {ok: false, status: 409, message: 'a persona with that name is not allowed'};
 		}
 
-		log.debug('[CreateAccountPersona] validating persona uniqueness', name);
+		log.debug('[CreateAccountActor] validating persona uniqueness', name);
 		const existingPersona = await repos.persona.findByName(name);
 		if (existingPersona) {
 			return {ok: false, status: 409, message: 'a persona with that name already exists'};
 		}
 
-		const personas: ClientPersona[] = [];
+		const personas: ClientActor[] = [];
 		const hubs: Hub[] = [];
 
 		// First create the admin hub if it doesn't exist yet.
@@ -55,8 +55,8 @@ export const CreateAccountPersonaService: ServiceByName['CreateAccountPersona'] 
 		hubs.push(hub);
 
 		// Create the persona.
-		log.debug('[CreateAccountPersona] creating persona', name);
-		const persona = await repos.persona.createAccountPersona(name, account_id, hub.hub_id);
+		log.debug('[CreateAccountActor] creating persona', name);
+		const persona = await repos.persona.createAccountActor(name, account_id, hub.hub_id);
 		personas.push(persona);
 
 		// Create the roles, policies, and persona assignment.
@@ -123,7 +123,7 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		if (targetActor === ADMIN_ACTOR_ID || targetActor === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
-		const persona = await repos.persona.findById<Pick<ActorPersona, 'type' | 'hub_id'>>(
+		const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(
 			targetActor,
 			['type', 'hub_id'],
 		);

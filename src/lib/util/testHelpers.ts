@@ -11,7 +11,7 @@ import {
 	type NonAuthenticatedServiceRequest,
 	type NonAuthorizedServiceRequest,
 } from '$lib/server/service';
-import type {AccountPersona, ActorPersona} from '$lib/vocab/actor/persona';
+import type {AccountActor, ActionActor} from '$lib/vocab/actor/persona';
 import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
 import type {ApiError} from '$lib/server/api';
@@ -43,13 +43,13 @@ export function toServiceRequestMock(
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
-	actor: ActorPersona,
+	actor: ActionActor,
 	session?: SessionApiMock,
 	account_id?: number,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
-	actor?: ActorPersona,
+	actor?: ActionActor,
 	session = new SessionApiMock(), // some tests need to reuse the same mock session
 	account_id = actor?.account_id || undefined,
 ): OmitStrict<ServiceRequest, 'params'> {
@@ -57,10 +57,10 @@ export function toServiceRequestMock(
 	return rest;
 }
 
-export const loadAdminPersona = async (repos: Repos): Promise<AccountPersona> => {
+export const loadAdminPersona = async (repos: Repos): Promise<AccountActor> => {
 	const assignments = await repos.assignment.filterByHub(ADMIN_HUB_ID);
 	const nonAdminAssignments = assignments.filter((p) => p.persona_id !== ADMIN_ACTOR_ID);
-	return repos.persona.findById(nonAdminAssignments[0].persona_id) as Promise<AccountPersona>;
+	return repos.persona.findById(nonAdminAssignments[0].persona_id) as Promise<AccountActor>;
 };
 
 export const expectApiError = async (status: number, cb: () => Promise<any>): Promise<void> => {

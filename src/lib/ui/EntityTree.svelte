@@ -6,7 +6,7 @@
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import {getApp} from '$lib/ui/app';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
-	import type {AccountPersona} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/persona';
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
 
 	const {
@@ -15,7 +15,7 @@
 		ui: {contextmenu, entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountPersona>;
+	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let ties: Readable<Array<Readable<Tie>>>; // TODO maybe don't pass these and do lookups instead
 	export let depth = 0;
