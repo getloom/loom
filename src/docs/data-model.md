@@ -4,12 +4,12 @@ This document provides a layout of Felt's core SQL database tables:
 
 ```mermaid
     classDiagram
-        Accounts <|-- Personas
-        Personas <|-- Hubs
-        Hubs <|-- Personas
+        Accounts <|-- Actors
+        Actors <|-- Hubs
+        Hubs <|-- Actors
         Hubs <|-- Roles
         Roles <|-- Assigments
-        Personas <|-- Assigments
+        Actors <|-- Assigments
         Roles <|-- Policies
         Hubs <|-- Spaces
         Spaces <|-- Entities
