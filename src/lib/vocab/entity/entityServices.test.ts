@@ -170,7 +170,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 test_entityServices('assert default as max pageSize', async ({random}) => {
 	const {space} = await random.space();
 
-	const validateParams = validateSchema(ReadEntitiesPaginatedService.event.params);
+	const validateParams = validateSchema(ReadEntitiesPaginatedService.action.params);
 	assert.ok(!validateParams({source_id: space.directory_id, pageSize: DEFAULT_PAGE_SIZE + 1}));
 });
 

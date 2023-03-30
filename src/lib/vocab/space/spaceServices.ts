@@ -14,7 +14,7 @@ const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 
 //Returns all spaces in a given hub
 export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
-	event: ReadSpaces,
+	action: ReadSpaces,
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
@@ -34,7 +34,7 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 
 //Creates a new space for a given hub
 export const CreateSpaceService: ServiceByName['CreateSpace'] = {
-	event: CreateSpace,
+	action: CreateSpace,
 	transaction: true,
 	// TODO security: verify the `account_id` has permission to modify this space
 	// TODO verify `params.persona_id` is  one of the `account_id`'s personas
@@ -50,7 +50,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 };
 
 export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
-	event: UpdateSpace,
+	action: UpdateSpace,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {space_id, actor, ...partial} = params;
@@ -67,7 +67,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 
 //deletes a single space
 export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
-	event: DeleteSpace,
+	action: DeleteSpace,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		log.debug('[DeleteSpace] deleting space with id:', params.space_id);

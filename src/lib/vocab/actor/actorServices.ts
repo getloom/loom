@@ -22,7 +22,7 @@ const log = new Logger(gray('[') + blue('actorServices') + gray(']'));
 
 //Creates a new persona
 export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
-	event: CreateAccountActor,
+	action: CreateAccountActor,
 	transaction: true,
 	// TODO verify the `account_id` has permission to modify this persona
 	// TODO add `persona_id` and verify it's one of the `account_id`'s personas
@@ -113,7 +113,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 };
 
 export const DeletePersonaService: ServiceByName['DeletePersona'] = {
-	event: DeletePersona,
+	action: DeletePersona,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, targetActor} = params;

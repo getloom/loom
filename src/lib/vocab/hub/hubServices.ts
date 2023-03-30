@@ -36,7 +36,7 @@ const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
 
 //Returns a single hub with its related data.
 export const ReadHubService: ServiceByName['ReadHub'] = {
-	event: ReadHub,
+	action: ReadHub,
 	transaction: false,
 	perform: async ({repos, params, account_id}) => {
 		const {actor, hub_id} = params;
@@ -78,7 +78,7 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 // TODO think about extracting this to a `.services.` file
 // that imports a generated type and declares only `perform`
 export const CreateHubService: ServiceByName['CreateHub'] = {
-	event: CreateHub,
+	action: CreateHub,
 	transaction: true,
 	perform: async ({repos, params: {actor, template}, account_id}) => {
 		log.debug('creating hub account_id', account_id);
@@ -152,7 +152,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 };
 
 export const UpdateHubSettingsService: ServiceByName['UpdateHubSettings'] = {
-	event: UpdateHubSettings,
+	action: UpdateHubSettings,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, settings} = params;
@@ -163,7 +163,7 @@ export const UpdateHubSettingsService: ServiceByName['UpdateHubSettings'] = {
 };
 
 export const DeleteHubService: ServiceByName['DeleteHub'] = {
-	event: DeleteHub,
+	action: DeleteHub,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
@@ -187,7 +187,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 };
 
 export const InviteToHubService: ServiceByName['InviteToHub'] = {
-	event: InviteToHub,
+	action: InviteToHub,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, name} = params;
@@ -217,7 +217,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 };
 
 export const LeaveHubService: ServiceByName['LeaveHub'] = {
-	event: LeaveHub,
+	action: LeaveHub,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, targetActor, hub_id} = params;
@@ -238,7 +238,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 };
 
 export const KickFromHubService: ServiceByName['KickFromHub'] = {
-	event: KickFromHub,
+	action: KickFromHub,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, targetActor, hub_id} = params;

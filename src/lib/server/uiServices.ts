@@ -4,13 +4,13 @@ import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 
 export const PingService: ServiceByName['Ping'] = {
-	event: Ping,
+	action: Ping,
 	transaction: false,
 	perform: async () => ({ok: true, status: 200, value: null}),
 };
 
 export const EphemeraService: ServiceByName['Ephemera'] = {
-	event: Ephemera,
+	action: Ephemera,
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, space_id} = params;

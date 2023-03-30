@@ -20,7 +20,7 @@ const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 // https://github.com/feltjs/felt-server/pull/525#discussion_r1002323512
 
 export const SignUpService: ServiceByName['SignUp'] = {
-	event: SignUp,
+	action: SignUp,
 	transaction: true,
 	perform: async ({repos, params, session}) => {
 		const username = scrubAccountName(params.username);
@@ -63,7 +63,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 };
 
 export const SignInService: ServiceByName['SignIn'] = {
-	event: SignIn,
+	action: SignIn,
 	transaction: true,
 	perform: async ({repos, params, session}) => {
 		const username = scrubAccountName(params.username);
@@ -86,7 +86,7 @@ export const SignInService: ServiceByName['SignIn'] = {
 };
 
 export const SignOutService: ServiceByName['SignOut'] = {
-	event: SignOut,
+	action: SignOut,
 	transaction: false,
 	perform: async ({session}) => {
 		await session.signOut();
@@ -95,7 +95,7 @@ export const SignOutService: ServiceByName['SignOut'] = {
 };
 
 export const UpdateAccountSettingsService: ServiceByName['UpdateAccountSettings'] = {
-	event: UpdateAccountSettings,
+	action: UpdateAccountSettings,
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
 		log.debug('updating settings for account', account_id, params.settings);
@@ -105,7 +105,7 @@ export const UpdateAccountSettingsService: ServiceByName['UpdateAccountSettings'
 };
 
 export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'] = {
-	event: UpdateAccountPassword,
+	action: UpdateAccountPassword,
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
 		const account = await repos.account.findById<Pick<Account, 'password'>>(account_id, [

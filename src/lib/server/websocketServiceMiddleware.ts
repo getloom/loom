@@ -50,7 +50,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			log.error('unhandled request method', method);
 			return;
 		}
-		if (service.event.websockets === false) {
+		if (service.action.websockets === false) {
 			log.error('service cannot be called with websockets', method);
 			return;
 		}
@@ -58,7 +58,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		let result: ApiResult;
 
 		//TODO parse/scrub params alongside validation
-		const validateParams = validateSchema<any>(service.event.params);
+		const validateParams = validateSchema<any>(service.action.params);
 		if (!validateParams(params)) {
 			// TODO handle multiple errors instead of just the first
 			log.error('failed to validate params', params, validateParams.errors);
@@ -95,11 +95,11 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 
 		// TODO maybe do this in production too
 		if (process.env.NODE_ENV !== 'production') {
-			const validateResponse = validateSchema(service.event.response);
+			const validateResponse = validateSchema(service.action.response);
 			if (!validateResponse(result.value)) {
 				log.error(
 					red('failed to validate service response'),
-					service.event.name,
+					service.action.name,
 					result,
 					validateResponse.errors,
 				);
@@ -113,7 +113,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		// and some generic broadcast message type for everyone else.
 		socket.send(serializedResponse);
 
-		if (service.event.broadcast) {
+		if (service.action.broadcast) {
 			broadcast(server, service, result, params, socket);
 		}
 	};

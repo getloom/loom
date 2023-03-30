@@ -95,5 +95,5 @@ export const services: Map<string, Service> = new Map(
 		DeletePolicyService,
 		ReadPoliciesService,
 		UpdatePolicyService,
-	].map((s) => [s.event.name, s]),
+	].map((s) => [s.action.name, s]),
 );

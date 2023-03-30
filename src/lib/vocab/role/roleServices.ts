@@ -9,7 +9,7 @@ import {permissions} from '$lib/vocab/policy/permissions';
 const log = new Logger(gray('[') + blue('roleServices') + gray(']'));
 
 export const CreateRoleService: ServiceByName['CreateRole'] = {
-	event: CreateRole,
+	action: CreateRole,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {hub_id, name, actor} = params;
@@ -21,7 +21,7 @@ export const CreateRoleService: ServiceByName['CreateRole'] = {
 };
 
 export const ReadRolesService: ServiceByName['ReadRoles'] = {
-	event: ReadRoles,
+	action: ReadRoles,
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
@@ -33,7 +33,7 @@ export const ReadRolesService: ServiceByName['ReadRoles'] = {
 };
 
 export const UpdateRoleService: ServiceByName['UpdateRole'] = {
-	event: UpdateRole,
+	action: UpdateRole,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, role_id, name} = params;
@@ -47,7 +47,7 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 };
 
 export const DeleteRoleService: ServiceByName['DeleteRole'] = {
-	event: DeleteRole,
+	action: DeleteRole,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, role_id} = params;

@@ -42,13 +42,13 @@ export const toHttpServiceMiddleware =
 			}
 		}
 
-		if (!service.event.params || !service.event.response) {
+		if (!service.action.params || !service.action.response) {
 			return send(res, 500, {message: 'unimplemented service schema'});
 		}
 
-		const params = service.event.params.type === 'null' ? null : {...reqBody, ...reqParams};
+		const params = service.action.params.type === 'null' ? null : {...reqBody, ...reqParams};
 
-		const validateParams = validateSchema<any>(service.event.params);
+		const validateParams = validateSchema<any>(service.action.params);
 		if (!validateParams(params)) {
 			// TODO handle multiple errors instead of just the first
 			log.error('failed to validate params', params, validateParams.errors);
@@ -75,11 +75,11 @@ export const toHttpServiceMiddleware =
 
 		// TODO maybe do this in production too
 		if (process.env.NODE_ENV !== 'production') {
-			const validateResponse = validateSchema(service.event.response);
+			const validateResponse = validateSchema(service.action.response);
 			if (!validateResponse(result.value)) {
 				log.error(
 					red('failed to validate service response'),
-					service.event.name,
+					service.action.name,
 					result,
 					validateResponse.errors,
 				);
@@ -89,7 +89,7 @@ export const toHttpServiceMiddleware =
 		log.debug('result.status', result.status);
 		send(res, result.status, result.value); // TODO consider returning the entire `result` for convenience (but it's less efficient)
 
-		if (service.event.broadcast) {
+		if (service.action.broadcast) {
 			broadcast(server, service, result, params);
 		}
 	};

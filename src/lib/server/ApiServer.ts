@@ -78,8 +78,8 @@ export class ApiServer {
 		// Register services as http routes.
 		for (const service of this.services.values()) {
 			this.app.add(
-				service.event.route.method,
-				service.event.route.path,
+				service.action.route.method,
+				service.action.route.path,
 				toHttpServiceMiddleware(this, service),
 			);
 		}

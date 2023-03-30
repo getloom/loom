@@ -85,7 +85,7 @@ ${actionData.name}: ${toResponseName(actionData.name)};
 
 export interface ServiceByName {
 	${Array.from(services.values()).reduce((str, service) => {
-		const {name} = service.event;
+		const {name} = service.action;
 		return (
 			str +
 			`${name}: ${toServiceAuthPrefix(service)}Service<${toParamsName(
@@ -148,8 +148,8 @@ export interface Mutations {
 };
 
 const toServiceAuthPrefix = (service: Service): string =>
-	service.event.authenticate === false
+	service.action.authenticate === false
 		? 'NonAuthenticated'
-		: service.event.authorize === false
+		: service.action.authorize === false
 		? 'NonAuthorized'
 		: 'Authorized';

@@ -20,7 +20,7 @@ export const broadcast = (
 ): void => {
 	const message: BroadcastMessage = {
 		type: 'broadcast',
-		method: service.event.name,
+		method: service.action.name,
 		result,
 		params,
 	};

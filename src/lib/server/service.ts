@@ -23,11 +23,11 @@ export const performService = async (
 			result = await service.perform(serviceRequest as any);
 		}
 		if (!result.ok) {
-			log?.error('service.perform failed with a message', service.event.name, result.message);
+			log?.error('service.perform failed with a message', service.action.name, result.message);
 		}
 		return result;
 	} catch (err) {
-		log?.error('service.perform failed with an error', service.event.name, err);
+		log?.error('service.perform failed with an error', service.action.name, err);
 		return result || toFailedApiResult(err);
 	}
 };
@@ -50,7 +50,7 @@ export interface NonAuthenticatedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
-	event: ServiceActionData;
+	action: ServiceActionData;
 	transaction: boolean;
 	perform: (serviceRequest: NonAuthenticatedServiceRequest<TParams>) => Promise<TResult>;
 }
@@ -58,7 +58,7 @@ export interface NonAuthorizedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
-	event: ServiceActionData;
+	action: ServiceActionData;
 	transaction: boolean;
 	perform: (serviceRequest: NonAuthorizedServiceRequest<TParams>) => Promise<TResult>;
 }
@@ -66,7 +66,7 @@ export interface AuthorizedService<
 	TParams extends object | null = any,
 	TResult extends ApiResult = ApiResult,
 > {
-	event: ServiceActionData;
+	action: ServiceActionData;
 	transaction: boolean;
 	perform: (serviceRequest: AuthorizedServiceRequest<TParams>) => Promise<TResult>;
 }

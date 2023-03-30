@@ -20,7 +20,7 @@ import {permissions} from '$lib/vocab/policy/permissions';
 
 // TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
-	event: ReadEntities,
+	action: ReadEntities,
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, source_id} = params;
@@ -37,7 +37,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 };
 
 export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'] = {
-	event: ReadEntitiesPaginated,
+	action: ReadEntitiesPaginated,
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, source_id, pageSize, pageKey} = params;
@@ -54,7 +54,7 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 };
 
 export const CreateEntityService: ServiceByName['CreateEntity'] = {
-	event: CreateEntity,
+	action: CreateEntity,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, data, space_id, path} = params;
@@ -89,7 +89,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 };
 
 export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
-	event: UpdateEntity,
+	action: UpdateEntity,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, entity_id, data} = params;
@@ -110,7 +110,7 @@ export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
 
 //soft deletes a single entity, leaving behind a Tombstone entity
 export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
-	event: EraseEntities,
+	action: EraseEntities,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, entityIds} = params;
@@ -123,7 +123,7 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 
 //hard deletes one to many entities, removing the records from the DB
 export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
-	event: DeleteEntities,
+	action: DeleteEntities,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, entityIds} = params;

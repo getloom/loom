@@ -5,7 +5,7 @@ import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {authorize} from '$lib/server/authorize';
 import type {AuthorizedService} from '$lib/server/service';
 
-const MockAuthorizedService = {event: {authenticate: true, authorize: true}} as AuthorizedService;
+const MockAuthorizedService = {action: {authenticate: true, authorize: true}} as AuthorizedService;
 
 /* test__authorize */
 const test__authorize = suite<TestDbContext>('services');

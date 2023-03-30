@@ -15,7 +15,7 @@ export const authorize = async (
 	params: {actor?: number; [key: string]: unknown},
 ): Promise<Result<{value?: {actor?: ActionActor}}, ErrorResponse & {status: number}>> => {
 	// Authorize all services by default; each service can opt-out as needed.
-	const requiresAuthentication = service.event.authenticate ?? true;
+	const requiresAuthentication = service.action.authenticate ?? true;
 	if (!requiresAuthentication) return OK;
 
 	// Authenticate by ensuring there's an account_id:
@@ -28,7 +28,7 @@ export const authorize = async (
 
 	// If the params have an `actor` property, authorize it for the account.
 	// Params validation ensures that omitting `actor` is caught ahead of this function call.
-	const requiresAuthorization = service.event.authorize ?? true;
+	const requiresAuthorization = service.action.authorize ?? true;
 	if (!requiresAuthorization) return OK;
 
 	// Authorize the actor against the account_id:

@@ -15,40 +15,40 @@ const test__serviceDefinitions = suite('serviceDefinitions');
 
 // Check each service's definition data for inconsistencies.
 for (const service of services.values()) {
-	const {event} = service;
-	test__serviceDefinitions('service auth definitions: ' + event.name, () => {
-		if (event.authenticate === false) {
+	const {action} = service;
+	test__serviceDefinitions('service auth definitions: ' + action.name, () => {
+		if (action.authenticate === false) {
 			// non-authenticated event (no account_id, no actor)
 			assert.is(
-				event.params.properties?.actor,
+				action.params.properties?.actor,
 				undefined,
 				'non-authenticated event params must have no actor',
 			);
 			assert.is(
-				event.authorize,
+				action.authorize,
 				false,
 				'non-authenticated actions must have an authorize value of false',
 			);
-		} else if (event.authorize === false) {
+		} else if (action.authorize === false) {
 			// non-authorized event (yes account_id, no actor)
 			assert.is(
-				event.params.properties?.actor,
+				action.params.properties?.actor,
 				undefined,
 				'non-authorized event params must have no actor',
 			);
 		} else {
 			// default to authorized (yes account_id, yes actor)
 			assert.equal(
-				event.params.properties?.actor,
+				action.params.properties?.actor,
 				{type: 'number'},
 				'authorized actions must have an actor number property',
 			);
 			assert.ok(
-				Array.isArray(event.params.required) && event.params.required.includes('actor'),
+				Array.isArray(action.params.required) && action.params.required.includes('actor'),
 				'authorized actions must have a required actor property',
 			);
 			assert.ok(
-				event.authenticate === undefined || event.authenticate,
+				action.authenticate === undefined || action.authenticate,
 				'authorized actions must have an authenticate value of true or undefined',
 			);
 		}
@@ -59,7 +59,7 @@ test__serviceDefinitions(`check for duplicate HTTP route paths`, async () => {
 	const paths = new Set();
 
 	for (const service of services.values()) {
-		const key = service.event.route.method + ':' + service.event.route.path;
+		const key = service.action.route.method + ':' + service.action.route.path;
 		if (paths.has(key)) {
 			throw Error(`Duplicate service event route ${key}`);
 		}
@@ -79,50 +79,50 @@ test__services.after(teardownDb);
 const session = new SessionApiMock(); // reuse the session so it tests SignIn sequentially
 
 for (const service of services.values()) {
-	const {event} = service;
-	test__services(`perform service ${event.name}`, async ({repos, random}) => {
+	const {action} = service;
+	test__services(`perform service ${action.name}`, async ({repos, random}) => {
 		const account = await random.account();
 		const {persona} = await random.persona(account);
-		const params = await randomActionParams[event.name](random, {account, persona});
-		if (!validateSchema(event.params)(params)) {
+		const params = await randomActionParams[action.name](random, {account, persona});
+		if (!validateSchema(action.params)(params)) {
 			throw new Error(
-				`Failed to validate random params for service ${event.name}: ${toValidationErrorMessage(
-					validateSchema(event.params).errors![0],
+				`Failed to validate random params for service ${action.name}: ${toValidationErrorMessage(
+					validateSchema(action.params).errors![0],
 				)}`,
 			);
 		}
 		const result = await service.perform({
 			...toServiceRequestMock(
 				repos,
-				event.authorize === false ? undefined! : persona,
+				action.authorize === false ? undefined! : persona,
 				session,
-				event.authenticate === false ? undefined : account.account_id,
+				action.authenticate === false ? undefined : account.account_id,
 			),
 			params,
 		});
 		if (!result.ok) {
-			log.error(red(`failed service call: ${event.name}`), params, result);
-			throw new Error(`Failed service call: ${event.name}`);
-		} else if (!validateSchema(event.response)(result.value)) {
-			log.error(red(`failed to validate service response: ${event.name}`), params, result);
+			log.error(red(`failed service call: ${action.name}`), params, result);
+			throw new Error(`Failed service call: ${action.name}`);
+		} else if (!validateSchema(action.response)(result.value)) {
+			log.error(red(`failed to validate service response: ${action.name}`), params, result);
 			throw new Error(
-				`Failed to validate response for service ${event.name}: ${toValidationErrorMessage(
-					validateSchema(event.response).errors![0],
+				`Failed to validate response for service ${action.name}: ${toValidationErrorMessage(
+					validateSchema(action.response).errors![0],
 				)}`,
 			);
 		}
-		if (event.name === 'SignUp') {
+		if (action.name === 'SignUp') {
 			await session.signOut(); // sign out after `SignUp` so `SignIn` works (otherwise "already signed in")
 		}
 		assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
 
 		// Test failure of authorized services with an unauthorized actor.
-		if (event.authorize !== false && event.name !== 'CreateHub') {
+		if (action.authorize !== false && action.name !== 'CreateHub') {
 			const {persona: unauthorizedPersona} = await random.persona(account);
 
 			// create a new hub without the persona, otherwise they might have permissions
 			const hubData = await random.hub(undefined, account);
-			const failedParams = await randomActionParams[event.name](random, {
+			const failedParams = await randomActionParams[action.name](random, {
 				...hubData,
 				space: hubData.spaces[1],
 				account,
@@ -144,12 +144,12 @@ for (const service of services.values()) {
 
 			assert.ok(
 				!failedResult.ok,
-				`Expected service ${event.name} to fail with invalid actor - are the policies checked?`,
+				`Expected service ${action.name} to fail with invalid actor - are the policies checked?`,
 			);
 			assert.is(
 				failedResult.status,
 				403,
-				`Expected service ${event.name} to fail with status code 403`,
+				`Expected service ${action.name} to fail with status code 403`,
 			);
 		}
 	});

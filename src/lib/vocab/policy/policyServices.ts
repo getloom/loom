@@ -14,7 +14,7 @@ import {permissions} from '$lib/vocab/policy/permissions';
 const log = new Logger(gray('[') + blue('policyServices') + gray(']'));
 
 export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
-	event: CreatePolicy,
+	action: CreatePolicy,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, role_id, permission} = params;
@@ -29,7 +29,7 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 };
 
 export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
-	event: ReadPolicies,
+	action: ReadPolicies,
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, role_id} = params;
@@ -44,7 +44,7 @@ export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
 };
 
 export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
-	event: UpdatePolicy,
+	action: UpdatePolicy,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, policy_id, data} = params;
@@ -59,7 +59,7 @@ export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
 };
 
 export const DeletePolicyService: ServiceByName['DeletePolicy'] = {
-	event: DeletePolicy,
+	action: DeletePolicy,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, policy_id} = params;

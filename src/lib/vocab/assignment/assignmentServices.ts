@@ -14,7 +14,7 @@ const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 
 //Creates a new member relation for a hub
 export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
-	event: CreateAssignment,
+	action: CreateAssignment,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, targetActor, role_id} = params;
@@ -35,7 +35,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
  * Deletes an assignment of a persona to a role in a hub.
  */
 export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
-	event: DeleteAssignment,
+	action: DeleteAssignment,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, assignment_id} = params;
