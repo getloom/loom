@@ -5,7 +5,7 @@
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	const {
 		ui: {contextmenu},

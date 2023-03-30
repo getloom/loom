@@ -4,7 +4,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import CreateActionParamsFields from '$lib/ui/CreateActionParamsFields.svelte';
 	import {actionDatas} from '$lib/app/actionData';
 	import type {ActionData} from '$lib/vocab/action/action';

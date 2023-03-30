@@ -11,7 +11,7 @@ import {
 	toDefaultHubSettings,
 } from '$lib/vocab/hub/hubHelpers.server';
 import type {Hub} from '$lib/vocab/hub/hub';
-import type {ActionActor, ClientActor} from '$lib/vocab/actor/persona';
+import type {ActionActor, ClientActor} from '$lib/vocab/actor/actor';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/actorHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';

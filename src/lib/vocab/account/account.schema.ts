@@ -102,7 +102,7 @@ export const ClientAccountSessionSchema = {
 	// TODO this data is worthless to the client
 	// TODO ideally this is generated from the above schema, need mapping between `/schemas/...` and `$lib/vocab/...`, could connect `tsType` and `$ref`
 	tsImport: [
-		"import type {AccountActor, ClientActor} from '$lib/vocab/actor/persona'",
+		"import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor'",
 		"import type {Hub} from '$lib/vocab/hub/hub'",
 		"import type {Entity} from '$lib/vocab/entity/entity'",
 		"import type {Role} from '$lib/vocab/role/role'",

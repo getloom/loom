@@ -5,7 +5,7 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	const {actions} = getApp();

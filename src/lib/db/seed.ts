@@ -11,7 +11,7 @@ import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {CreateEntityResponse, SignInParams} from '$lib/app/actionTypes';
-import type {AccountActor} from '$lib/vocab/actor/persona';
+import type {AccountActor} from '$lib/vocab/actor/actor';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';

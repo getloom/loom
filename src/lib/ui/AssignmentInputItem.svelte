@@ -3,7 +3,7 @@
 
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {getApp} from '$lib/ui/app';
-	import type {AccountActor, ClientActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Role} from '$lib/vocab/role/role';
 

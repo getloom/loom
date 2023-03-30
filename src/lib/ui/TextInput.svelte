@@ -3,7 +3,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	const dispatch = createEventDispatcher<{submit: string}>();
 

@@ -3,7 +3,7 @@ import {unwrap} from '@feltjs/util';
 import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
-import type {AccountActor, ClientActor, PublicActor} from '$lib/vocab/actor/persona';
+import type {AccountActor, ClientActor, PublicActor} from '$lib/vocab/actor/actor';
 import type {
 	CreateHubParams,
 	CreateAccountActorParams,

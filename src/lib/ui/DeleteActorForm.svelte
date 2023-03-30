@@ -4,7 +4,7 @@
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 
 	const {actions} = getApp();

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {ClientActor} from '$lib/vocab/actor/persona';
+	import type {ClientActor} from '$lib/vocab/actor/actor';
 	import type {Space} from '$lib/vocab/space/space';
 
 	export let space: Readable<Space> | null;

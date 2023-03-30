@@ -9,7 +9,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import Avatar from '$lib/ui/Avatar.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/actorHelpers';

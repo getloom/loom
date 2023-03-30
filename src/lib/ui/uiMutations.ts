@@ -9,7 +9,7 @@ import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
 import {toHubUrl, gotoUnlessActive} from '$lib/ui/url';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import type {ClientActor} from '$lib/vocab/actor/persona';
+import type {ClientActor} from '$lib/vocab/actor/actor';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/vocab/account/account';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';

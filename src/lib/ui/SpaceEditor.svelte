@@ -9,7 +9,7 @@
 	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	const {
 		actions,

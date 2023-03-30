@@ -5,7 +5,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import HubSettingsHue from '$lib/ui/HubSettingsHue.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import EditHubAdvanced from '$lib/ui/EditHubAdvanced.svelte';
 	import DeleteHubForm from '$lib/ui/DeleteHubForm.svelte';
 	import LeaveHubForm from '$lib/ui/LeaveHubForm.svelte';

@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
 
-	import type {AccountActor} from '$lib/vocab/actor/persona.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import type {Space} from '$lib/vocab/space/space.js';
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';

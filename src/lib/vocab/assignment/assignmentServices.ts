@@ -4,7 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import type {ActionActor} from '$lib/vocab/actor/persona';
+import type {ActionActor} from '$lib/vocab/actor/actor';
 import {cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';

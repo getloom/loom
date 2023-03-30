@@ -4,7 +4,7 @@
 	import {getApp} from '$lib/ui/app';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
 
 	const {

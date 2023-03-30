@@ -4,7 +4,7 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityTable from '$lib/ui/EntityTable.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import EditEntityForm from '$lib/ui/EditEntityForm.svelte';
 
 	export let persona: Readable<AccountActor>;

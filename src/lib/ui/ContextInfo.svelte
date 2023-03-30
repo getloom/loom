@@ -4,7 +4,7 @@
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {Space} from '$lib/vocab/space/space';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 

@@ -3,7 +3,7 @@ import {OK, type Result} from '@feltjs/util';
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
-import type {ActionActor, Actor} from '$lib/vocab/actor/persona';
+import type {ActionActor, Actor} from '$lib/vocab/actor/actor';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 // This currently only checks for the existence of an `account_id` on the request.

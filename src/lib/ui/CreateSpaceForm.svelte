@@ -9,7 +9,7 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {parseSpaceIcon, renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {ADMIN_HUB_ID} from '$lib/app/constants';

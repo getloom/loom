@@ -3,7 +3,7 @@ import {browser} from '$app/environment';
 import {goto} from '$app/navigation';
 import {Logger} from '@feltjs/util/log.js';
 
-import type {AccountActor} from '$lib/vocab/actor/persona';
+import type {AccountActor} from '$lib/vocab/actor/actor';
 import {ACTOR_QUERY_KEY, toSearchParams} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
 import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';

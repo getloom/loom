@@ -9,7 +9,7 @@
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import SourceEntities from '$lib/ui/SourceEntities.svelte';
 	import DestEntities from '$lib/ui/DestEntities.svelte';

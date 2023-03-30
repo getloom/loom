@@ -10,7 +10,7 @@ import type {
 	AuthorizedService,
 } from '$lib/server/service';
 import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
-import type {PublicActor, ClientActor} from '$lib/vocab/actor/persona';
+import type {PublicActor, ClientActor} from '$lib/vocab/actor/actor';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';

@@ -3,7 +3,7 @@ import type {Logger} from '@feltjs/util/log.js';
 import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
-import type {ActionActor} from '$lib/vocab/actor/persona';
+import type {ActionActor} from '$lib/vocab/actor/actor';
 import {type ApiResult, toFailedApiResult} from '$lib/server/api';
 
 export const performService = async (

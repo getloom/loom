@@ -18,7 +18,7 @@ import {
 	GhostActorSchema,
 	PublicActorSchema,
 	ClientActorSchema,
-} from '$lib/vocab/actor/persona.schema';
+} from '$lib/vocab/actor/actor.schema';
 import {HubSchema, HubSettingsSchema, InitialHubSettingsSchema} from '$lib/vocab/hub/hub.schema';
 import {AssignmentSchema} from '$lib/vocab/assignment/assignment.schema';
 import {SpaceSchema} from '$lib/vocab/space/space.schema';

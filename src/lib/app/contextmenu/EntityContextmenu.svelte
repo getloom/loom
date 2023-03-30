@@ -7,7 +7,7 @@
 	import {getApp} from '$lib/ui/app';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/persona';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 
 	export let entity: Readable<Entity>;

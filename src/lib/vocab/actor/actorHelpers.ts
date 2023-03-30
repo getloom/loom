@@ -1,7 +1,7 @@
 import {plural} from '@feltjs/util/string.js';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-import type {AccountActor, ActionActor, ClientActor, Actor} from '$lib/vocab/actor/persona';
+import type {AccountActor, ActionActor, ClientActor, Actor} from '$lib/vocab/actor/actor';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 
 /**
