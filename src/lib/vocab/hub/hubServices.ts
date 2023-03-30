@@ -59,11 +59,11 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 
 		// TODO is this more efficient than parallelizing `persona.filterByHub`?
 		const personaIds = assignments.map((a) => a.persona_id);
-		const [filteredPersonas, directoriesResult] = await Promise.all([
+		const [filteredActors, directoriesResult] = await Promise.all([
 			repos.persona.filterByIds(personaIds),
 			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
 		]);
-		const {personas} = filteredPersonas;
+		const {personas} = filteredActors;
 		const {entities: directories} = directoriesResult as {entities: Directory[]};
 
 		return {

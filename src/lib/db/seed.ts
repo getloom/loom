@@ -87,7 +87,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 
 	const mainPersonaCreator = personas[0] as AccountActor;
 	const toMainAccountServiceRequest = () => toServiceRequestMock(repos, mainPersonaCreator);
-	const otherPersonas = personas.slice(1);
+	const otherActors = personas.slice(1);
 	const nextPersona = toNext(personas);
 
 	const hubs: Hub[] = [];
@@ -103,7 +103,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			}),
 		);
 		hubs.push(hub);
-		for (const persona of otherPersonas) {
+		for (const persona of otherActors) {
 			unwrap(
 				await CreateAssignmentService.perform({
 					...toMainAccountServiceRequest(),

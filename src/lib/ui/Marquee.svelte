@@ -17,18 +17,18 @@
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space> | null;
 
-	$: communityPersonas = $personasByHubId.get($hub.hub_id);
+	$: communityActors = $personasByHubId.get($hub.hub_id);
 </script>
 
-{#if communityPersonas}
-	<MarqueeNav {space} {communityPersonas} />
+{#if communityActors}
+	<MarqueeNav {space} {communityActors} />
 
 	<!-- TODO display other meta info about the hub -->
 	{#if $expandMarquee}
 		<section>
 			<ul>
 				<!-- TODO probably want these to be sorted so the selected persona is always first -->
-				{#each communityPersonas as persona (persona)}
+				{#each communityActors as persona (persona)}
 					<MemberItem {persona} />
 				{/each}
 			</ul>

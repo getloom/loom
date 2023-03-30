@@ -5,12 +5,12 @@
 	import type {Space} from '$lib/vocab/space/space';
 
 	export let space: Readable<Space> | null;
-	export let communityPersonas: Array<Readable<ClientActor>>;
+	export let communityActors: Array<Readable<ClientActor>>;
 </script>
 
 <div class="marquee-nav">
 	{#if $space}<span class="icon">{$space.icon}</span>{/if}
-	{#if communityPersonas.length > 1}{communityPersonas.length}{/if}
+	{#if communityActors.length > 1}{communityActors.length}{/if}
 </div>
 
 <style>

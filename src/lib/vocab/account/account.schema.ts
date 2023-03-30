@@ -64,7 +64,7 @@ export const ClientAccountSessionSchema = {
 	`,
 	properties: {
 		account: {$ref: '/schemas/ClientAccount.json', tsType: 'ClientAccount'},
-		sessionPersonas: {
+		sessionActors: {
 			type: 'array',
 			items: {$ref: '/schemas/AccountActor.json', tsType: 'AccountActor'},
 		},
@@ -89,7 +89,7 @@ export const ClientAccountSessionSchema = {
 	},
 	required: [
 		'account',
-		'sessionPersonas',
+		'sessionActors',
 		'hubs',
 		'roles',
 		'spaces',

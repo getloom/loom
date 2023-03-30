@@ -21,7 +21,7 @@ export type ActionActor = AccountActor | CommunityActor;
 
 /**
  *
- * 	 Actors represent actors in the system. They can be of type Account, Hub, or Ghost.
+ * 	 Actors perform actions in the system. They can be of type Account, Hub, or Ghost.
  *
  */
 export type Actor = AccountActor | CommunityActor | GhostActor;

@@ -3,12 +3,12 @@
 	import HubNavGroup from '$lib/ui/HubNavGroup.svelte';
 
 	const {
-		ui: {sessionPersonas},
+		ui: {sessionActors},
 	} = getApp();
 </script>
 
 <nav class="hub-nav">
-	{#each $sessionPersonas.value as persona (persona)}
+	{#each $sessionActors.value as persona (persona)}
 		<HubNavGroup {persona} />
 	{/each}
 </nav>

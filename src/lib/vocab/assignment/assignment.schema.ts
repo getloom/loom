@@ -4,7 +4,7 @@ export const AssignmentSchema = {
 	description: `
 	 Describes the relationship between a Persona and Role within a given Hub.
 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
-	 When initially joining a Hub, Personas are given an Assignment to the default Role.
+	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	`,
 	properties: {
 		assignment_id: {type: 'number'},

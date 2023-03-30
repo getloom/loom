@@ -108,11 +108,10 @@
 	actions.SetSession({session: $session});
 	$: syncUiToUrl(ui, $page.params, $page.url);
 
-	const {mobile, layout, contextmenu, dialogs, sessionPersonas, personaSelection, hubSelection} =
-		ui;
+	const {mobile, layout, contextmenu, dialogs, sessionActors, personaSelection, hubSelection} = ui;
 
 	$: guest = $session.guest;
-	$: onboarding = !guest && !$sessionPersonas.value.length;
+	$: onboarding = !guest && !$sessionActors.value.length;
 	$: persona = $personaSelection; // this line must be after `syncUiToUrl`
 	$: hub = $hubSelection; // this line must be after `syncUiToUrl`
 

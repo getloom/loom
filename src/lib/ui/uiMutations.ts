@@ -15,7 +15,7 @@ import type {ClientSession} from '$lib/vocab/account/account';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {stashPersonas} from '$lib/vocab/actor/actorMutationHelpers';
+import {stashActors} from '$lib/vocab/actor/actorMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
@@ -62,7 +62,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	account.set(guest ? null : $session.account);
 
 	ui.mutate(() => {
-		stashPersonas(ui, guest ? [] : toInitialPersonas($session), true);
+		stashActors(ui, guest ? [] : toInitialActors($session), true);
 		stashHubs(ui, guest ? [] : $session.hubs, true);
 		stashRoles(ui, guest ? [] : $session.roles, true);
 		stashAssignments(ui, guest ? [] : $session.assignments, true);
@@ -70,14 +70,14 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		stashSpaces(ui, guest ? [] : $session.spaces, undefined, true);
 	});
 
-	personaIdSelection.set(guest ? null : $session.sessionPersonas[0]?.persona_id ?? null);
+	personaIdSelection.set(guest ? null : $session.sessionActors[0]?.persona_id ?? null);
 
 	// TODO these two selections are hacky because using the derived stores
 	// was causing various confusing issues, so they find stuff directly on the session objects
-	// instead of using derived stores like `sessionPersonas` and `spacesByHubId`.
+	// instead of using derived stores like `sessionActors` and `spacesByHubId`.
 	hubIdSelectionByPersonaId.swap(
 		// TODO first try to load this from localStorage
-		new Map(guest ? null : $session.sessionPersonas.map(($p) => [$p.persona_id, $p.hub_id!])),
+		new Map(guest ? null : $session.sessionActors.map(($p) => [$p.persona_id, $p.hub_id!])),
 	);
 	spaceIdSelectionByHubId.swap(
 		//TODO lookup space by hub_id+path (see this comment in multiple places)
@@ -117,12 +117,12 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 // Any code that needs session personas given a regular persona could do a lookup,
 // but otherwise we'd be passing around the `Persona` objects in most cases.
 // This would make things typesafe as well.
-const toInitialPersonas = (session: ClientSession): ClientActor[] =>
+const toInitialActors = (session: ClientSession): ClientActor[] =>
 	session.guest
 		? []
-		: (session.sessionPersonas as ClientActor[]).concat(
+		: (session.sessionActors as ClientActor[]).concat(
 				session.personas.filter(
-					(p1) => !session.sessionPersonas.find((p2) => p2.persona_id === p1.persona_id),
+					(p1) => !session.sessionActors.find((p2) => p2.persona_id === p1.persona_id),
 				),
 		  );
 

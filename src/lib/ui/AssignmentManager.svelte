@@ -18,10 +18,10 @@
 
 	$: selectedPersona = $personaSelection;
 
-	$: hubPersonas = $personasByHubId.get($role.hub_id)!;
+	$: hubActors = $personasByHubId.get($role.hub_id)!;
 
 	// TODO speed this up with a better cached data structures
-	$: assignablePersonas = hubPersonas.filter(
+	$: assignableActors = hubActors.filter(
 		(p) =>
 			!assignments.some((a) => a.persona_id === p.get().persona_id && a.hub_id === $hub.hub_id),
 	);
@@ -31,7 +31,7 @@
 	<h1>Assign the role "{$role.name}" to:</h1>
 	{#if selectedPersona}
 		<menu>
-			{#each assignablePersonas as persona (persona)}
+			{#each assignableActors as persona (persona)}
 				<AssignmentInputItem persona={selectedPersona} assignmentPersona={persona} {hub} {role} />
 			{:else}
 				<p>There's no one new to assign this role to</p>

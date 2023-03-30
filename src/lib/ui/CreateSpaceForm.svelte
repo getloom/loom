@@ -17,7 +17,7 @@
 
 	const {
 		actions,
-		ui: {sessionPersonaIndexById, adminPersonas},
+		ui: {sessionPersonaIndexById, adminActors},
 	} = getApp();
 
 	export let persona: Readable<AccountActor>;
@@ -25,7 +25,7 @@
 	export let initialName = ''; // TODO consider exporting `name` instead and delete this
 	export let done: (() => void) | undefined = undefined;
 
-	$: admin = $hub.hub_id === ADMIN_HUB_ID && $adminPersonas.has(persona);
+	$: admin = $hub.hub_id === ADMIN_HUB_ID && $adminActors.has(persona);
 	$: creatableViewTemplates = toCreatableViewTemplates(admin);
 
 	let name = initialName;

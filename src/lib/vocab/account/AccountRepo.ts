@@ -27,7 +27,7 @@ export class AccountRepo extends PostgresRepo {
 		if (!account) throw new ApiError(404, 'no account found');
 
 		// TODO optimize?
-		const [spaces, directories, sessionPersonas, hubs, roles, assignments, policies, personas] =
+		const [spaces, directories, sessionActors, hubs, roles, assignments, policies, personas] =
 			await Promise.all([
 				this.repos.space.filterByAccount(account.account_id),
 				this.repos.entity.filterDirectoriesByAccount(account.account_id),
@@ -41,7 +41,7 @@ export class AccountRepo extends PostgresRepo {
 
 		return {
 			account,
-			sessionPersonas,
+			sessionActors,
 			hubs,
 			roles,
 			spaces,

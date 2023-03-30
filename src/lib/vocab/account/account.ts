@@ -65,7 +65,7 @@ export interface ClientAccountSession {
 	 *
 	 */
 	account: ClientAccount;
-	sessionPersonas: AccountActor[];
+	sessionActors: AccountActor[];
 	hubs: Hub[];
 	roles: Role[];
 	spaces: Space[];

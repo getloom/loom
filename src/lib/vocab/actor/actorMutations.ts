@@ -1,5 +1,5 @@
 import type {Mutations} from '$lib/app/actionTypes';
-import {stashPersonas, evictPersona} from '$lib/vocab/actor/actorMutationHelpers';
+import {stashActors, evictPersona} from '$lib/vocab/actor/actorMutationHelpers';
 import {evictHub, stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
@@ -11,7 +11,7 @@ export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invok
 	if (!result.ok) return result;
 	const {personas, hubs, roles, policies, spaces, directories, assignments} = result.value;
 	ui.mutate(() => {
-		stashPersonas(ui, personas);
+		stashActors(ui, personas);
 		stashHubs(ui, hubs);
 		stashSpaces(ui, spaces, directories);
 		stashAssignments(ui, assignments);

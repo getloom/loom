@@ -21,14 +21,14 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 		hubSelection,
 		spacesByHubId,
 		spaceIdSelectionByHubId,
-		sessionPersonas,
+		sessionActors,
 		entityById,
 	} = ui;
 
 	const rawPersonaIndex = url.searchParams.get(ACTOR_QUERY_KEY);
 	const personaIndex = rawPersonaIndex ? Number(rawPersonaIndex) : null;
 	const persona: Readable<AccountActor> | null =
-		personaIndex === null ? null : sessionPersonas.get().value[personaIndex];
+		personaIndex === null ? null : sessionActors.get().value[personaIndex];
 	if (!persona) {
 		if (browser) {
 			const fallbackPersonaIndex = 0;

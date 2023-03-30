@@ -11,7 +11,7 @@
 
 	const {
 		actions,
-		ui: {account, session, sessionPersonas, personaSelection},
+		ui: {account, session, sessionActors, personaSelection},
 	} = getApp();
 
 	$: selectedPersona = $personaSelection;
@@ -23,7 +23,7 @@
 	</svelte:fragment>
 	Account
 	<svelte:fragment slot="menu">
-		{#each $sessionPersonas.value as persona (persona)}
+		{#each $sessionActors.value as persona (persona)}
 			<SessionActorContextmenuEntry {persona} />
 		{/each}
 		{#if !$session.guest}

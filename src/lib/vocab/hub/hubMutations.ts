@@ -1,6 +1,6 @@
 import type {Mutations} from '$lib/app/actionTypes';
 import {evictHub, stashHub} from '$lib/vocab/hub/hubMutationHelpers';
-import {stashPersonas} from '$lib/vocab/actor/actorMutationHelpers';
+import {stashActors} from '$lib/vocab/actor/actorMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
@@ -12,7 +12,7 @@ export const ReadHub: Mutations['ReadHub'] = async ({invoke, ui}) => {
 	if (!result.ok) return result;
 	const {hub, spaces, directories, roles, assignments, personas} = result.value;
 	ui.mutate(() => {
-		stashPersonas(ui, personas);
+		stashActors(ui, personas);
 		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
 		stashRoles(ui, roles);
@@ -26,7 +26,7 @@ export const CreateHub: Mutations['CreateHub'] = async ({invoke, ui}) => {
 	if (!result.ok) return result;
 	const {hub, roles, policies, spaces, directories, assignments, personas} = result.value;
 	ui.mutate(() => {
-		stashPersonas(ui, personas);
+		stashActors(ui, personas);
 		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
 		stashAssignments(ui, assignments);
@@ -69,7 +69,7 @@ export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, ui}) => {
 
 	const {assignment, persona} = result.value;
 	ui.mutate(() => {
-		stashPersonas(ui, [persona]);
+		stashActors(ui, [persona]);
 		stashAssignments(ui, [assignment]);
 	});
 

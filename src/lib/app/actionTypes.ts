@@ -282,7 +282,7 @@ export interface CreateHubParams {
 export interface CreateHubResponse {
 	/**
 	 *
-	 * 		Hubs represent the membrane around the places Personas can interact with each other or with system level data.
+	 * 		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
 	 * 		They have self contained governance and ownership of Spaces within them.
 	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
 	 *
@@ -304,7 +304,7 @@ export interface ReadHubParams {
 export interface ReadHubResponse {
 	/**
 	 *
-	 * 		Hubs represent the membrane around the places Personas can interact with each other or with system level data.
+	 * 		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
 	 * 		They have self contained governance and ownership of Spaces within them.
 	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
 	 *
@@ -354,7 +354,7 @@ export interface InviteToHubResponse {
 	 *
 	 * 	 Describes the relationship between a Persona and Role within a given Hub.
 	 * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
-	 * 	 When initially joining a Hub, Personas are given an Assignment to the default Role.
+	 * 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	 *
 	 */
 	assignment: Assignment;
@@ -409,7 +409,7 @@ export interface CreateAssignmentResponse {
 	 *
 	 * 	 Describes the relationship between a Persona and Role within a given Hub.
 	 * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
-	 * 	 When initially joining a Hub, Personas are given an Assignment to the default Role.
+	 * 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	 *
 	 */
 	assignment: Assignment;

@@ -1,7 +1,7 @@
 export const ActorSchema = {
 	$id: '/schemas/Actor.json',
 	description: `
-	 Actors represent actors in the system. They can be of type Account, Hub, or Ghost.
+	 Actors perform actions in the system. They can be of type Account, Hub, or Ghost.
 	`,
 	anyOf: [
 		{$ref: '/schemas/AccountActor.json'},

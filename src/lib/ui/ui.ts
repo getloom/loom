@@ -66,7 +66,7 @@ export interface Ui {
 	account: Readable<ClientAccount | null>;
 	personas: Mutable<Set<Readable<ClientActor>>>;
 	session: Readable<ClientSession>;
-	sessionPersonas: Mutable<Array<Readable<AccountActor>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
+	sessionActors: Mutable<Array<Readable<AccountActor>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
 	sessionPersonaIndexById: Readable<Map<number, number>>;
 	hubs: Mutable<Set<Readable<Hub>>>;
 	roles: Mutable<Set<Readable<Role>>>;
@@ -93,7 +93,7 @@ export interface Ui {
 	sourceTiesByDestEntityId: Map<number, Mutable<Set<Tie>>>;
 	destTiesBySourceEntityId: Map<number, Mutable<Set<Tie>>>;
 	hubsBySessionPersona: Readable<Map<Readable<AccountActor>, Array<Readable<Hub>>>>;
-	adminPersonas: Readable<Set<Readable<ClientActor>>>;
+	adminActors: Readable<Set<Readable<ClientActor>>>;
 	// view state
 	mobile: Readable<boolean>;
 	layout: Writable<{width: number; height: number}>; // TODO maybe make `Readable` and update with an event? `resizeLayout`?
@@ -151,7 +151,7 @@ export const toUi = (
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
 	// TODO these `Persona`s need additional data compared to every other `Persona`
-	const sessionPersonas = mutable<Array<Writable<AccountActor>>>([]);
+	const sessionActors = mutable<Array<Writable<AccountActor>>>([]);
 	const personas = mutable<Set<Writable<ClientActor>>>(new Set());
 	const hubs = mutable<Set<Writable<Hub>>>(new Set());
 	const roles = mutable<Set<Writable<Role>>>(new Set());
@@ -199,17 +199,17 @@ export const toUi = (
 		([$hubs, $assignments]) => {
 			const map: Map<number, Array<Writable<ClientActor>>> = new Map();
 			for (const hub of $hubs.value) {
-				const communityPersonas: Set<Writable<ClientActor>> = new Set();
+				const communityActors: Set<Writable<ClientActor>> = new Set();
 				const {hub_id} = hub.get();
 				for (const assignment of $assignments.value) {
 					if (assignment.hub_id === hub_id) {
 						const persona = personaById.get(assignment.persona_id);
 						if (!persona) continue;
 						if (persona.get().type !== 'account') continue;
-						communityPersonas.add(persona);
+						communityActors.add(persona);
 					}
 				}
-				map.set(hub_id, Array.from(communityPersonas));
+				map.set(hub_id, Array.from(communityActors));
 			}
 			return map;
 		},
@@ -278,19 +278,19 @@ export const toUi = (
 			null,
 	);
 	const personaIndexSelection = derived(
-		[personaSelection, sessionPersonas],
-		([$personaSelection, $sessionPersonas]) =>
-			$personaSelection ? $sessionPersonas.value.indexOf($personaSelection) : null,
+		[personaSelection, sessionActors],
+		([$personaSelection, $sessionActors]) =>
+			$personaSelection ? $sessionActors.value.indexOf($personaSelection) : null,
 	);
 	const sessionPersonaIndexById = derived(
-		[sessionPersonas],
-		([$sessionPersonas]) => new Map($sessionPersonas.value.map((p, i) => [p.get().persona_id, i])),
+		[sessionActors],
+		([$sessionActors]) => new Map($sessionActors.value.map((p, i) => [p.get().persona_id, i])),
 	);
 	const hubsBySessionPersona: Readable<Map<Writable<AccountActor>, Array<Writable<Hub>>>> = derived(
-		[sessionPersonas, assignments, hubs],
-		([$sessionPersonas, $assignments, $hubs]) => {
+		[sessionActors, assignments, hubs],
+		([$sessionActors, $assignments, $hubs]) => {
 			const map: Map<Writable<AccountActor>, Array<Writable<Hub>>> = new Map();
-			for (const sessionPersona of $sessionPersonas.value) {
+			for (const sessionPersona of $sessionActors.value) {
 				const $sessionPersona = sessionPersona.get();
 				const sessionPersonaHubs: Array<Writable<Hub>> = [];
 				for (const hub of $hubs.value) {
@@ -345,7 +345,7 @@ export const toUi = (
 
 	// TODO optimization: ideally this would recalculate only when the admin hub's personas change, not when any assignment changes
 	// TODO consider making the value of `personasByHubId` a set instead of array, then this could be simplified
-	const adminPersonas = derived(
+	const adminActors = derived(
 		[personasByHubId],
 		([$personasByHubId]) => new Set($personasByHubId.get(ADMIN_HUB_ID)),
 	);
@@ -370,7 +370,7 @@ export const toUi = (
 		personas,
 		roles,
 		session,
-		sessionPersonas,
+		sessionActors,
 		sessionPersonaIndexById,
 		spaces,
 		hubs,
@@ -395,7 +395,7 @@ export const toUi = (
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
 		hubsBySessionPersona,
-		adminPersonas,
+		adminActors,
 		// view state
 		mobile,
 		layout,

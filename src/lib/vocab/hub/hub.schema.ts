@@ -2,7 +2,7 @@ export const HubSchema = {
 	$id: '/schemas/Hub.json',
 	type: 'object',
 	description: `
-		Hubs represent the membrane around the places Personas can interact with each other or with system level data.
+		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
 		They have self contained governance and ownership of Spaces within them.
 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
 	`,
