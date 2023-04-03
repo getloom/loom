@@ -3,7 +3,7 @@
 	import type {AsyncStatus} from '@feltjs/util/async.js';
 	import {tick} from 'svelte';
 
-	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';

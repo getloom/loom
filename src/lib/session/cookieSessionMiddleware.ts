@@ -2,7 +2,7 @@ import send from '@polka/send-type';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
-import type {HttpMiddleware} from '$lib/server/ApiServer.js';
+import type {HttpMiddleware} from '$lib/server/ApiServer';
 import {parseSessionCookie, setSessionCookie} from '$lib/session/sessionCookie';
 
 const log = new Logger(gray('[') + blue('authenticationMiddleware') + gray(']'));

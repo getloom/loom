@@ -1,13 +1,14 @@
 import {Logger} from '@feltjs/util/log.js';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Tie} from '$lib/vocab/tie/tie';
+import type {Tie, TieId} from '$lib/vocab/tie/tie';
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
+import type {EntityId} from '$lib/vocab/entity/entity';
 
 const log = new Logger('[TieRepo]');
 
 export class TieRepo extends PostgresRepo {
-	async create(source_id: number, dest_id: number, type: string): Promise<Tie> {
+	async create(source_id: EntityId, dest_id: EntityId, type: string): Promise<Tie> {
 		const tie = await this.sql<Tie[]>`
 			INSERT INTO ties (source_id, dest_id, type) VALUES (
 				${source_id},${dest_id},${type}
@@ -17,7 +18,7 @@ export class TieRepo extends PostgresRepo {
 		return tie[0];
 	}
 
-	async filterBySourceId(source_id: number): Promise<Tie[]> {
+	async filterBySourceId(source_id: EntityId): Promise<Tie[]> {
 		log.debug(`preparing to walk graph starting with source: ${source_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
@@ -35,7 +36,7 @@ export class TieRepo extends PostgresRepo {
 		return ties;
 	}
 
-	async filterByDestId(dest_id: number): Promise<Tie[]> {
+	async filterByDestId(dest_id: EntityId): Promise<Tie[]> {
 		log.debug(`preparing to walk graph starting with dest: ${dest_id}`);
 		const ties = await this.sql<Tie[]>`
 			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
@@ -58,7 +59,7 @@ export class TieRepo extends PostgresRepo {
 	//To get the next page of results, provide same source_id
 	//But for the pageKey put the oldest/last dest_id as the pageKey
 	async filterBySourceIdPaginated(
-		source_id: number,
+		source_id: EntityId,
 		pageSize = DEFAULT_PAGE_SIZE,
 		pageKey?: number,
 	): Promise<Tie[]> {
@@ -74,7 +75,7 @@ export class TieRepo extends PostgresRepo {
 		return ties;
 	}
 
-	async deleteById(tie_id: number): Promise<void> {
+	async deleteById(tie_id: TieId): Promise<void> {
 		log.debug('[deleteById]', tie_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM ties WHERE tie_id=${tie_id}

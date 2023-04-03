@@ -8,7 +8,7 @@ export const CreateSpace: ServiceActionData = {
 		$id: '/schemas/CreateSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -46,7 +46,7 @@ export const ReadSpaces: ServiceActionData = {
 		$id: '/schemas/ReadSpacesParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -84,7 +84,7 @@ export const UpdateSpace: ServiceActionData = {
 		$id: '/schemas/UpdateSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			space_id: {
 				type: 'number',
 				tsType: 'SpaceId',
@@ -122,7 +122,7 @@ export const DeleteSpace: ServiceActionData = {
 		$id: '/schemas/DeleteSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			space_id: {
 				type: 'number',
 				tsType: 'SpaceId',

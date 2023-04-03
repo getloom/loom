@@ -1,8 +1,8 @@
 import type {Task} from '@feltjs/gro';
 import {z} from 'zod';
 
-import {obtainDb} from '$lib/db/obtainDb.js';
-import {seed} from '$lib/db/seed.js';
+import {obtainDb} from '$lib/db/obtainDb';
+import {seed} from '$lib/db/seed';
 
 const Args = z
 	.object({

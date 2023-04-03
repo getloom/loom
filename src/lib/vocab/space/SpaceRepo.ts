@@ -47,7 +47,7 @@ export class SpaceRepo extends PostgresRepo {
 		view: string,
 		icon: string,
 		hub_id: HubId,
-		directory_id: number,
+		directory_id: EntityId,
 	): Promise<Space> {
 		const data = await this.sql<Space[]>`
 			INSERT INTO spaces (name, icon, view, hub_id, directory_id) VALUES (

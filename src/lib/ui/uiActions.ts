@@ -27,7 +27,7 @@ export const Ephemera: ServiceActionData = {
 		$id: '/schemas/EphemeraParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			space_id: {
 				type: 'number',
 				tsType: 'SpaceId',
@@ -42,7 +42,7 @@ export const Ephemera: ServiceActionData = {
 		$id: '/schemas/EphemeraResponse.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			space_id: {
 				type: 'number',
 				tsType: 'SpaceId',
@@ -144,7 +144,7 @@ export const ClearFreshness: ClientActionData = {
 		$id: '/schemas/ClearFreshnessParams.json',
 		type: 'object',
 		properties: {
-			directory_id: {type: 'number'},
+			directory_id: {type: 'number', tsType: 'EntityId'},
 		},
 		required: ['directory_id'],
 		additionalProperties: false,

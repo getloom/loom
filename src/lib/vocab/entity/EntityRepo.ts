@@ -52,7 +52,9 @@ export class EntityRepo extends PostgresRepo {
 
 	// TODO maybe `EntityQuery`?
 	// TODO remove the `message`, handle count mismatch similar to `findById` calls, maybe returning an array of the missing ids with `ok: false`
-	async filterByIds(entityIds: number[]): Promise<{entities: Entity[]; missing: null | number[]}> {
+	async filterByIds(
+		entityIds: EntityId[],
+	): Promise<{entities: Entity[]; missing: null | EntityId[]}> {
 		if (entityIds.length === 0) return {entities: [], missing: null};
 		log.debug('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
@@ -103,7 +105,7 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	//This function is an idempotent soft delete, that leaves behind a Tombstone entity per Activity-Streams spec
-	async eraseByIds(entityIds: number[]): Promise<Entity[]> {
+	async eraseByIds(entityIds: EntityId[]): Promise<Entity[]> {
 		log.debug('[eraseById]', entityIds);
 		const data = await this.sql<any[]>`
 			UPDATE entities
@@ -116,7 +118,7 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	//This function actually deletes the records in the DB
-	async deleteByIds(entityIds: number[]): Promise<void> {
+	async deleteByIds(entityIds: EntityId[]): Promise<void> {
 		log.debug('[deleteByIds]', entityIds);
 		const data = await this.sql<any[]>`
 			DELETE FROM entities WHERE entity_id IN ${this.sql(entityIds)}

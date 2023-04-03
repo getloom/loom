@@ -6,6 +6,7 @@ import type {RoleId} from '$lib/vocab/role/role';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
 
@@ -20,7 +21,7 @@ export class PolicyRepo extends PostgresRepo {
 	}
 
 	async filterByActorHubPermission(
-		actor_id: number,
+		actor_id: ActorId,
 		hub_id: HubId,
 		permission: string,
 	): Promise<Policy[]> {

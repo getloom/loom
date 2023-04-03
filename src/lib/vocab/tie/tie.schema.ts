@@ -1,3 +1,10 @@
+export const TieIdSchema = {
+	$id: '/schemas/TieId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'TieId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const TieSchema = {
 	$id: '/schemas/Tie.json',
 	type: 'object',
@@ -7,9 +14,17 @@ export const TieSchema = {
 		A Tie specifies "the [source] has relationship of [type] with [dest]."
 	`,
 	properties: {
-		tie_id: {type: 'number'},
-		source_id: {type: 'number'},
-		dest_id: {type: 'number'},
+		tie_id: {type: 'number', tsType: 'TieId'},
+		source_id: {
+			type: 'number',
+			tsType: 'EntityId',
+			tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+		},
+		dest_id: {
+			type: 'number',
+			tsType: 'EntityId',
+			tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+		},
 		type: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 	},

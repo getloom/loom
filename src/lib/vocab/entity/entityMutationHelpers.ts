@@ -5,8 +5,8 @@ import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
 import type {WritableUi} from '$lib/ui/ui';
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {Tie} from '$lib/vocab/tie/tie';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity';
+import type {Tie, TieId} from '$lib/vocab/tie/tie';
 import {
 	setLastSeen,
 	updateLastSeen,
@@ -111,7 +111,7 @@ export const stashTies = (
 
 export const evictTie = (
 	{sourceTiesByDestEntityId, destTiesBySourceEntityId, tieById}: WritableUi,
-	tie_id: number,
+	tie_id: TieId,
 ): void => {
 	const $tie = tieById.get(tie_id);
 	if (!$tie) return;
@@ -141,7 +141,7 @@ export const evictTie = (
 };
 
 // TODO delete orphaned entities
-export const evictEntities = (ui: WritableUi, entityIds: number[]): void => {
+export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 	const {
 		entityById,
 		tieById,

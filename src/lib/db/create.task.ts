@@ -1,7 +1,7 @@
 import type {Task} from '@feltjs/gro';
 import {z} from 'zod';
 
-import {obtainDb} from '$lib/db/obtainDb.js';
+import {obtainDb} from '$lib/db/obtainDb';
 
 const Args = z
 	.object({

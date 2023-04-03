@@ -7,7 +7,7 @@ export const CreateHub: ServiceActionData = {
 		$id: '/schemas/CreateHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			template: {type: 'object', tsType: 'HubTemplate'}, // TODO add template schemas and use $ref
 		},
 		required: ['actor', 'template'],
@@ -48,7 +48,7 @@ export const ReadHub: ServiceActionData = {
 		$id: '/schemas/ReadHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -93,7 +93,7 @@ export const UpdateHubSettings: ServiceActionData = {
 		$id: '/schemas/UpdateHubSettingsParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -122,7 +122,7 @@ export const DeleteHub: ServiceActionData = {
 		$id: '/schemas/DeleteHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -151,7 +151,7 @@ export const InviteToHub: ServiceActionData = {
 		$id: '/schemas/InviteToHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -187,8 +187,12 @@ export const LeaveHub: ServiceActionData = {
 		$id: '/schemas/LeaveHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
-			targetActor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
+			targetActor: {
+				type: 'number',
+				tsType: 'ActorId',
+				tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
+			},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -217,8 +221,8 @@ export const KickFromHub: ServiceActionData = {
 		$id: '/schemas/KickFromHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
-			targetActor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
+			targetActor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',

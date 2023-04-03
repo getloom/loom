@@ -33,7 +33,11 @@ export const HubSettingsSchema = {
 	`,
 	properties: {
 		hue: {type: 'number'},
-		defaultRoleId: {type: 'number'},
+		defaultRoleId: {
+			type: 'number',
+			tsType: 'RoleId',
+			tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
+		},
 		instance: {
 			type: 'object',
 			properties: {

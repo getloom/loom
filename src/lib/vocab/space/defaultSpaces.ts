@@ -4,12 +4,13 @@ import type {Hub} from '$lib/vocab/hub/hub';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {spaceTemplateToCreateSpaceParams} from '$lib/app/templates';
 import {HOME_PATH} from '$lib/vocab/space/spaceHelpers';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 // TODO these should probably be templates not params and integrated with the default template data,
 // and then callers can call `spaceTemplateToCreateSpaceParams` directly
 // or we can have a separate composed helper, maybe adding the suffix `Params` to these existing functions
 
-export const toDefaultSpaces = (actor: number, hub: Hub): CreateSpaceParams[] => {
+export const toDefaultSpaces = (actor: ActorId, hub: Hub): CreateSpaceParams[] => {
 	const {hub_id, name, type} = hub;
 	return hub_id === ADMIN_HUB_ID
 		? toDefaultAdminSpaces(actor, hub)
@@ -29,7 +30,7 @@ export const toDefaultSpaces = (actor: number, hub: Hub): CreateSpaceParams[] =>
 		  ].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
 };
 
-export const toDefaultAdminSpaces = (actor: number, {hub_id, name}: Hub): CreateSpaceParams[] =>
+export const toDefaultAdminSpaces = (actor: ActorId, {hub_id, name}: Hub): CreateSpaceParams[] =>
 	[
 		{...toTemplatePartial('AdminHome'), name, path: HOME_PATH},
 		{...toTemplatePartial('InstanceAdmin'), name: 'instance', path: '/instance'},

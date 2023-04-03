@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
 
-	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';

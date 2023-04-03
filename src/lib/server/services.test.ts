@@ -40,8 +40,8 @@ for (const service of services.values()) {
 			// default to authorized (yes account_id, yes actor)
 			assert.equal(
 				action.params.properties?.actor,
-				{type: 'number'},
-				'authorized actions must have an actor number property',
+				{type: 'number', tsType: 'ActorId'},
+				'authorized actions must have an actor number property with type ActorId',
 			);
 			assert.ok(
 				Array.isArray(action.params.required) && action.params.required.includes('actor'),

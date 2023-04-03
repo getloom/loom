@@ -5,7 +5,7 @@ import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/app/constants';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import type {ActionActor, ActorId, PublicActor} from '$lib/vocab/actor/actor';
 import type {Repos} from '$lib/db/Repos';
-import type {Role} from '$lib/vocab/role/role';
+import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {defaultAdminHubRoles, type RoleTemplate} from '$lib/app/templates';
 import type {Policy} from '$lib/vocab/policy/policy';
@@ -20,8 +20,8 @@ const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
  * @param hubIds
  * @param repos
  */
-export const cleanOrphanHubs = async (hubIds: number[], repos: Repos): Promise<null | number[]> => {
-	let deleted: number[] | null = null;
+export const cleanOrphanHubs = async (hubIds: HubId[], repos: Repos): Promise<null | HubId[]> => {
+	let deleted: HubId[] | null = null;
 	for (const hub_id of hubIds) {
 		const accountPersonaAssignmentsCount =
 			await repos.assignment.countAccountActorAssignmentsByHubId(hub_id); // eslint-disable-line no-await-in-loop
@@ -90,14 +90,14 @@ export const initTemplateGovernanceForHub = async (
 	repos: Repos,
 	roleTemplates: RoleTemplate[],
 	hub: Hub,
-	actor: number,
+	actor: ActorId,
 ): Promise<{roles: Role[]; policies: Policy[]; assignments: Assignment[]}> => {
 	if (!roleTemplates.length) throw Error('Expected at least one role template');
 
 	const roles: Role[] = [];
 	const policies: Policy[] = [];
-	let creatorRoleId: number | undefined;
-	let defaultRoleId: number | undefined;
+	let creatorRoleId: RoleId | undefined;
+	let defaultRoleId: RoleId | undefined;
 
 	// TODO can this be safely batched?
 	for (const roleTemplate of roleTemplates) {

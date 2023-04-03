@@ -8,7 +8,7 @@ export const CreatePolicy: ServiceActionData = {
 		$id: '/schemas/CreatePolicyParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			role_id: {
 				type: 'number',
 				tsType: 'RoleId',
@@ -42,7 +42,7 @@ export const ReadPolicies: ServiceActionData = {
 		$id: '/schemas/ReadPoliciesParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			role_id: {
 				type: 'number',
 				tsType: 'RoleId',
@@ -76,7 +76,7 @@ export const UpdatePolicy: ServiceActionData = {
 		$id: '/schemas/UpdatePolicyParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			policy_id: {
 				type: 'number',
 				tsType: 'PolicyId',
@@ -111,7 +111,7 @@ export const DeletePolicy: ServiceActionData = {
 		$id: '/schemas/DeletePolicyParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			policy_id: {
 				type: 'number',
 				tsType: 'PolicyId',

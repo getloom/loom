@@ -35,7 +35,7 @@ import type {ApiResult} from '$lib/server/api';
 import type {Query} from '$lib/util/query';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
-import type {PublicActor, ClientActor} from '$lib/vocab/actor/actor';
+import type {ActorId, PublicActor, ClientActor} from '$lib/vocab/actor/actor';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';

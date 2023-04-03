@@ -5,12 +5,14 @@ import type {Repos} from '$lib/db/Repos';
 import {ApiError} from '$lib/server/api';
 import {isPersonaAdmin} from '$lib/vocab/actor/actorHelpers.server';
 import type {HubId} from '$lib/vocab/hub/hub';
+import type {ActorId} from '$lib/vocab/actor/actor';
+import type {EntityId} from '$lib/vocab/entity/entity';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
 export const checkPolicy = async (
 	permission: string,
-	actor_id: number,
+	actor_id: ActorId,
 	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
@@ -26,7 +28,7 @@ export const checkPolicy = async (
 
 //TODO should we be bypassing policy system like this?
 export const checkHubAccess = async (
-	actor_id: number,
+	actor_id: ActorId,
 	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
@@ -50,8 +52,8 @@ export const isCreateHubDisabled = async (repos: Repos): Promise<boolean> => {
 };
 
 export const checkEntityOwnership = async (
-	actor_id: number,
-	entityIds: number[],
+	actor_id: ActorId,
+	entityIds: EntityId[],
 	repos: Repos,
 ): Promise<void> => {
 	if (await isPersonaAdmin(actor_id, repos)) {

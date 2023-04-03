@@ -3,7 +3,7 @@ import {OK, type Result} from '@feltjs/util';
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
-import type {ActionActor, Actor} from '$lib/vocab/actor/actor';
+import type {ActionActor, Actor, ActorId} from '$lib/vocab/actor/actor';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -13,7 +13,7 @@ export const authorize = async (
 	service: Service,
 	repos: Repos,
 	account_id: AccountId | undefined,
-	params: {actor?: number; [key: string]: unknown},
+	params: {actor?: ActorId; [key: string]: unknown},
 ): Promise<Result<{value?: {actor?: ActionActor}}, ErrorResponse & {status: number}>> => {
 	// Authorize all services by default; each service can opt-out as needed.
 	const requiresAuthentication = service.action.authenticate ?? true;

@@ -5,7 +5,7 @@
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 
-	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';

@@ -6,8 +6,8 @@ import {magenta} from 'kleur/colors';
 import {toNext} from '@feltjs/util/array.js';
 
 import {cyan} from '$lib/server/colors';
-import type {Database} from '$lib/db/Database.js';
-import type {Account} from '$lib/vocab/account/account.js';
+import type {Database} from '$lib/db/Database';
+import type {Account} from '$lib/vocab/account/account';
 import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {CreateEntityResponse, SignInParams} from '$lib/app/actionTypes';

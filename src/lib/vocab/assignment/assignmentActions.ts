@@ -8,8 +8,8 @@ export const CreateAssignment: ServiceActionData = {
 		$id: '/schemas/CreateAssignmentParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
-			targetActor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
+			targetActor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -48,7 +48,7 @@ export const DeleteAssignment: ServiceActionData = {
 		$id: '/schemas/DeleteAssignmentParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			assignment_id: {
 				type: 'number',
 				tsType: 'AssignmentId',

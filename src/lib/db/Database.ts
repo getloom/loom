@@ -1,7 +1,7 @@
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
-import type {PostgresSql} from '$lib/db/postgres.js';
+import type {PostgresSql} from '$lib/db/postgres';
 import {Repos} from '$lib/db/Repos';
 
 export interface Options {

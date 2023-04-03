@@ -1,8 +1,8 @@
 import ley from 'ley';
-import {defaultPostgresOptions} from '$lib/db/postgres.js';
 import type {Logger} from '@feltjs/util/log.js';
 import {spawn} from '@feltjs/util/process.js';
 
+import {defaultPostgresOptions} from '$lib/db/postgres';
 import {MIGRATIONS_DIR, MIGRATIONS_DIR_PROD} from '$lib/db/migration';
 
 // Note: this requires the dependency `tsm` in development but not production

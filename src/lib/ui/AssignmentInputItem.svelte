@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import {getApp} from '$lib/ui/app';
 	import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';

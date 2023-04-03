@@ -7,9 +7,10 @@ import {
 	type Writable,
 } from '@feltcoop/svelte-gettable-stores';
 
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Actions} from '$lib/app/actionTypes';
 import type {Ui} from '$lib/ui/ui';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 export interface Query {
 	data: Mutable<Set<Writable<Entity>>>;
@@ -18,8 +19,8 @@ export interface Query {
 }
 
 export interface QueryParams {
-	actor: number;
-	source_id: number;
+	actor: ActorId;
+	source_id: EntityId;
 }
 
 export interface PaginatedQueryState {

@@ -1,5 +1,6 @@
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 export const RESERVED_ACTOR_NAMES = new Set([
 	'about',
@@ -22,6 +23,6 @@ export const ACTOR_COLUMNS = {
 	PublicActor: ['persona_id', 'type', 'name', 'created'],
 };
 
-export const isPersonaAdmin = async (actor_id: number, repos: Repos): Promise<boolean> => {
+export const isPersonaAdmin = async (actor_id: ActorId, repos: Repos): Promise<boolean> => {
 	return repos.assignment.isPersonaInHub(actor_id, ADMIN_HUB_ID);
 };

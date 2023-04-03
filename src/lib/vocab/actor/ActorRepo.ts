@@ -99,9 +99,9 @@ export class ActorRepo extends PostgresRepo {
 
 	// TODO handle count mismatch similar to to the entity version of this method
 	async filterByIds<T extends Partial<Actor> = PublicActor>(
-		personaIds: number[],
+		personaIds: ActorId[],
 		columns = ACTOR_COLUMNS.PublicActor,
-	): Promise<{personas: T[]; missing: null | number[]}> {
+	): Promise<{personas: T[]; missing: null | ActorId[]}> {
 		if (personaIds.length === 0) return {personas: [], missing: null};
 		const personas = await this.sql<T[]>`
 			SELECT ${this.sql(columns)}

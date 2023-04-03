@@ -48,7 +48,7 @@ export const checkPersonaName = (name: string): string | null => {
 };
 
 export const lookupPersona = (
-	personaById: Map<number, Readable<ClientActor>>,
+	personaById: Map<ActorId, Readable<ClientActor>>,
 	persona_id: ActorId,
 ): Readable<ClientActor> => personaById.get(persona_id) || personaById.get(GHOST_ACTOR_ID)!;
 

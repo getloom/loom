@@ -8,7 +8,7 @@ export const CreateRole: ServiceActionData = {
 		$id: '/schemas/CreateRoleParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -42,7 +42,7 @@ export const ReadRoles: ServiceActionData = {
 		$id: '/schemas/ReadRolesParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
@@ -76,7 +76,7 @@ export const UpdateRole: ServiceActionData = {
 		$id: '/schemas/UpdateRoleParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			role_id: {
 				type: 'number',
 				tsType: 'RoleId',
@@ -111,7 +111,7 @@ export const DeleteRole: ServiceActionData = {
 		$id: '/schemas/DeleteRoleParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number'},
+			actor: {type: 'number', tsType: 'ActorId'},
 			role_id: {
 				type: 'number',
 				tsType: 'RoleId',

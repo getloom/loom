@@ -4,6 +4,7 @@ import type {Policy} from '$lib/vocab/policy/policy';
 import {permissions, permissionNames, type PermissionName} from '$lib/vocab/policy/permissions';
 import type {RoleId} from '$lib/vocab/role/role';
 import type {HubId, InitialHubSettings} from '$lib/vocab/hub/hub';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 // TODO where does this belong? vocab?
 
@@ -34,7 +35,7 @@ export type EntityTemplate = EntityData | string; // strings are inferred as `{t
 
 export const spaceTemplateToCreateSpaceParams = (
 	template: SpaceTemplate,
-	actor: number,
+	actor: ActorId,
 	hub_id: HubId,
 ): CreateSpaceParams => ({
 	actor,
@@ -47,7 +48,7 @@ export const spaceTemplateToCreateSpaceParams = (
 
 export const roleTemplateToCreateRoleParams = (
 	template: RoleTemplate,
-	actor: number,
+	actor: ActorId,
 	hub_id: HubId,
 ): CreateRoleParams => ({
 	actor,
@@ -57,7 +58,7 @@ export const roleTemplateToCreateRoleParams = (
 
 export const policyTemplateToCreatePolicyParams = (
 	template: PolicyTemplate,
-	actor: number,
+	actor: ActorId,
 	role_id: RoleId,
 ): CreatePolicyParams => ({
 	actor,

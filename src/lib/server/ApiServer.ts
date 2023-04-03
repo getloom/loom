@@ -6,8 +6,8 @@ import {Logger} from '@feltjs/util/log.js';
 import {promisify} from 'util';
 
 import {blue} from '$lib/server/colors';
-import type {Database} from '$lib/db/Database.js';
-import type {WebsocketServer} from '$lib/server/WebsocketServer.js';
+import type {Database} from '$lib/db/Database';
+import type {WebsocketServer} from '$lib/server/WebsocketServer';
 import type {Service} from '$lib/server/service';
 import {toHttpServiceMiddleware} from '$lib/server/httpServiceMiddleware';
 import {cookieSessionMiddleware} from '$lib/session/cookieSessionMiddleware';

@@ -3,8 +3,8 @@ import {createServer} from 'http';
 import {Logger} from '@feltjs/util/log.js';
 import {format} from 'date-fns';
 
-import {ApiServer} from '$lib/server/ApiServer.js';
-import {WebsocketServer} from '$lib/server/WebsocketServer.js';
+import {ApiServer} from '$lib/server/ApiServer';
+import {WebsocketServer} from '$lib/server/WebsocketServer';
 import {services} from '$lib/server/services';
 import {db} from '$lib/db/db';
 import {fromEnv} from '$lib/server/env';

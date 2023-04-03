@@ -10,7 +10,7 @@ import type {
 	AuthorizedService,
 } from '$lib/server/service';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
-import type {PublicActor, ClientActor} from '$lib/vocab/actor/actor';
+import type {ActorId, PublicActor, ClientActor} from '$lib/vocab/actor/actor';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
@@ -276,7 +276,7 @@ export type UpdateAccountPasswordResponse = ClientAccount;
 export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
 
 export interface CreateHubParams {
-	actor: number;
+	actor: ActorId;
 	template: HubTemplate;
 }
 export interface CreateHubResponse {
@@ -298,7 +298,7 @@ export interface CreateHubResponse {
 export type CreateHubResponseResult = ApiResult<CreateHubResponse>;
 
 export interface ReadHubParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 }
 export interface ReadHubResponse {
@@ -319,7 +319,7 @@ export interface ReadHubResponse {
 export type ReadHubResponseResult = ApiResult<ReadHubResponse>;
 
 export interface UpdateHubSettingsParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 	/**
 	 *
@@ -332,14 +332,14 @@ export type UpdateHubSettingsResponse = null;
 export type UpdateHubSettingsResponseResult = ApiResult<UpdateHubSettingsResponse>;
 
 export interface DeleteHubParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 }
 export type DeleteHubResponse = null;
 export type DeleteHubResponseResult = ApiResult<DeleteHubResponse>;
 
 export interface InviteToHubParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 	name: string;
 }
@@ -362,16 +362,16 @@ export interface InviteToHubResponse {
 export type InviteToHubResponseResult = ApiResult<InviteToHubResponse>;
 
 export interface LeaveHubParams {
-	actor: number;
-	targetActor: number;
+	actor: ActorId;
+	targetActor: ActorId;
 	hub_id: HubId;
 }
 export type LeaveHubResponse = null;
 export type LeaveHubResponseResult = ApiResult<LeaveHubResponse>;
 
 export interface KickFromHubParams {
-	actor: number;
-	targetActor: number;
+	actor: ActorId;
+	targetActor: ActorId;
 	hub_id: HubId;
 }
 export type KickFromHubResponse = null;
@@ -392,15 +392,15 @@ export interface CreateAccountActorResponse {
 export type CreateAccountActorResponseResult = ApiResult<CreateAccountActorResponse>;
 
 export interface DeletePersonaParams {
-	actor: number;
-	targetActor: number;
+	actor: ActorId;
+	targetActor: ActorId;
 }
 export type DeletePersonaResponse = null;
 export type DeletePersonaResponseResult = ApiResult<DeletePersonaResponse>;
 
 export interface CreateAssignmentParams {
-	actor: number;
-	targetActor: number;
+	actor: ActorId;
+	targetActor: ActorId;
 	hub_id: HubId;
 	role_id: RoleId;
 }
@@ -417,14 +417,14 @@ export interface CreateAssignmentResponse {
 export type CreateAssignmentResponseResult = ApiResult<CreateAssignmentResponse>;
 
 export interface DeleteAssignmentParams {
-	actor: number;
+	actor: ActorId;
 	assignment_id: AssignmentId;
 }
 export type DeleteAssignmentResponse = null;
 export type DeleteAssignmentResponseResult = ApiResult<DeleteAssignmentResponse>;
 
 export interface CreateSpaceParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 	name: string;
 	path: string;
@@ -455,7 +455,7 @@ export interface CreateSpaceResponse {
 export type CreateSpaceResponseResult = ApiResult<CreateSpaceResponse>;
 
 export interface ReadSpacesParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 }
 export interface ReadSpacesResponse {
@@ -465,7 +465,7 @@ export interface ReadSpacesResponse {
 export type ReadSpacesResponseResult = ApiResult<ReadSpacesResponse>;
 
 export interface UpdateSpaceParams {
-	actor: number;
+	actor: ActorId;
 	space_id: SpaceId;
 	name?: string;
 	path?: string;
@@ -485,24 +485,24 @@ export interface UpdateSpaceResponse {
 export type UpdateSpaceResponseResult = ApiResult<UpdateSpaceResponse>;
 
 export interface DeleteSpaceParams {
-	actor: number;
+	actor: ActorId;
 	space_id: SpaceId;
 }
 export type DeleteSpaceResponse = null;
 export type DeleteSpaceResponseResult = ApiResult<DeleteSpaceResponse>;
 
 export interface CreateEntityParams {
-	actor: number;
+	actor: ActorId;
 	space_id: SpaceId;
 	path?: string | null;
 	data: EntityData;
 	ties?: (
 		| {
-				source_id: number;
+				source_id: EntityId;
 				type?: string;
 		  }
 		| {
-				dest_id: number;
+				dest_id: EntityId;
 				type?: string;
 		  }
 	)[];
@@ -514,7 +514,7 @@ export interface CreateEntityResponse {
 export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;
 
 export interface UpdateEntityParams {
-	actor: number;
+	actor: ActorId;
 	entity_id: EntityId;
 	data?: EntityData;
 	path?: string | null;
@@ -535,8 +535,8 @@ export interface UpdateEntityResponse {
 export type UpdateEntityResponseResult = ApiResult<UpdateEntityResponse>;
 
 export interface ReadEntitiesParams {
-	actor: number;
-	source_id: number;
+	actor: ActorId;
+	source_id: EntityId;
 }
 export interface ReadEntitiesResponse {
 	entities: Entity[];
@@ -545,8 +545,8 @@ export interface ReadEntitiesResponse {
 export type ReadEntitiesResponseResult = ApiResult<ReadEntitiesResponse>;
 
 export interface ReadEntitiesPaginatedParams {
-	actor: number;
-	source_id: number;
+	actor: ActorId;
+	source_id: EntityId;
 	pageSize?: number;
 	pageKey?: number;
 }
@@ -557,13 +557,13 @@ export interface ReadEntitiesPaginatedResponse {
 export type ReadEntitiesPaginatedResponseResult = ApiResult<ReadEntitiesPaginatedResponse>;
 
 export interface QueryEntitiesParams {
-	actor: number;
-	source_id: number;
+	actor: ActorId;
+	source_id: EntityId;
 }
 
 export interface EraseEntitiesParams {
-	actor: number;
-	entityIds: number[];
+	actor: ActorId;
+	entityIds: EntityId[];
 }
 export interface EraseEntitiesResponse {
 	entities: Entity[];
@@ -571,14 +571,14 @@ export interface EraseEntitiesResponse {
 export type EraseEntitiesResponseResult = ApiResult<EraseEntitiesResponse>;
 
 export interface DeleteEntitiesParams {
-	actor: number;
-	entityIds: number[];
+	actor: ActorId;
+	entityIds: EntityId[];
 }
 export type DeleteEntitiesResponse = null;
 export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
 export interface CreateRoleParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 	name: string;
 }
@@ -595,7 +595,7 @@ export interface CreateRoleResponse {
 export type CreateRoleResponseResult = ApiResult<CreateRoleResponse>;
 
 export interface ReadRolesParams {
-	actor: number;
+	actor: ActorId;
 	hub_id: HubId;
 }
 export interface ReadRolesResponse {
@@ -604,7 +604,7 @@ export interface ReadRolesResponse {
 export type ReadRolesResponseResult = ApiResult<ReadRolesResponse>;
 
 export interface UpdateRoleParams {
-	actor: number;
+	actor: ActorId;
 	role_id: RoleId;
 	name: string;
 }
@@ -621,14 +621,14 @@ export interface UpdateRoleResponse {
 export type UpdateRoleResponseResult = ApiResult<UpdateRoleResponse>;
 
 export interface DeleteRoleParams {
-	actor: number;
+	actor: ActorId;
 	role_id: RoleId;
 }
 export type DeleteRoleResponse = null;
 export type DeleteRoleResponseResult = ApiResult<DeleteRoleResponse>;
 
 export interface CreatePolicyParams {
-	actor: number;
+	actor: ActorId;
 	role_id: RoleId;
 	permission: string;
 }
@@ -645,7 +645,7 @@ export interface CreatePolicyResponse {
 export type CreatePolicyResponseResult = ApiResult<CreatePolicyResponse>;
 
 export interface ReadPoliciesParams {
-	actor: number;
+	actor: ActorId;
 	role_id: RoleId;
 }
 export interface ReadPoliciesResponse {
@@ -654,7 +654,7 @@ export interface ReadPoliciesResponse {
 export type ReadPoliciesResponseResult = ApiResult<ReadPoliciesResponse>;
 
 export interface UpdatePolicyParams {
-	actor: number;
+	actor: ActorId;
 	policy_id: PolicyId;
 	data: {
 		[k: string]: unknown;
@@ -673,7 +673,7 @@ export interface UpdatePolicyResponse {
 export type UpdatePolicyResponseResult = ApiResult<UpdatePolicyResponse>;
 
 export interface DeletePolicyParams {
-	actor: number;
+	actor: ActorId;
 	policy_id: PolicyId;
 }
 export type DeletePolicyResponse = null;
@@ -684,7 +684,7 @@ export type PingResponse = null;
 export type PingResponseResult = ApiResult<PingResponse>;
 
 export interface EphemeraParams {
-	actor: number;
+	actor: ActorId;
 	space_id: SpaceId;
 	data: {
 		type: string;
@@ -692,7 +692,7 @@ export interface EphemeraParams {
 	};
 }
 export interface EphemeraResponse {
-	actor: number;
+	actor: ActorId;
 	space_id: SpaceId;
 	data: {
 		type: string;
@@ -734,7 +734,7 @@ export interface ViewSpaceParams {
 }
 
 export interface ClearFreshnessParams {
-	directory_id: number;
+	directory_id: EntityId;
 }
 
 export interface Actions {

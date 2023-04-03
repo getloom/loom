@@ -2,7 +2,7 @@ import send from '@polka/send-type';
 import {Logger} from '@feltjs/util/log.js';
 
 import {red, blue, gray} from '$lib/server/colors';
-import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';
+import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer';
 import {type Service, toServiceRequest, performService, toApiResult} from '$lib/server/service';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';

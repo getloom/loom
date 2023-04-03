@@ -1,7 +1,8 @@
 import {Logger} from '@feltjs/util/log.js';
-import type {WritableUi} from '$lib/ui/ui';
 import {writable} from '@feltcoop/svelte-gettable-stores';
-import type {Policy} from '$lib/vocab/policy/policy';
+
+import type {WritableUi} from '$lib/ui/ui';
+import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
 import {setIfUpdated} from '$lib/util/store';
 
 const log = new Logger('[policyMutationHelpers]');
@@ -36,7 +37,7 @@ export const stashPolicies = (
 	if (mutated) policies.mutate();
 };
 
-export const evictPolicies = (ui: WritableUi, policyIdsToEvict: number[]): void => {
+export const evictPolicies = (ui: WritableUi, policyIdsToEvict: PolicyId[]): void => {
 	const {policies, policyById} = ui;
 	const $policies = policies.get().value;
 	let mutated = false;

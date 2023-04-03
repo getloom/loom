@@ -82,7 +82,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 
 const selectPersona = ({personaIdSelection}: Ui, persona_id: ActorId): void => {
 	// TODO could remove this typecase if `syncUiToUrl` is changed to be an event
-	(personaIdSelection as Writable<number | null>).set(persona_id);
+	(personaIdSelection as Writable<ActorId | null>).set(persona_id);
 };
 
 const selectHub = (

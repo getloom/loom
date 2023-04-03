@@ -5,7 +5,7 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {RoleId} from '$lib/vocab/role/role';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {ActorId} from '$lib/vocab/actor/actor';
-import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment.js';
+import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('AssignmentRepo') + gray(']'));

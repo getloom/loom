@@ -3,7 +3,7 @@ import {unwrap} from '@feltjs/util';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
-import type {AccountActor, ClientActor, PublicActor} from '$lib/vocab/actor/actor';
+import type {AccountActor, ActorId, ClientActor, PublicActor} from '$lib/vocab/actor/actor';
 import type {
 	CreateHubParams,
 	CreateAccountActorParams,
@@ -15,7 +15,7 @@ import type {
 	CreatePolicyParams,
 } from '$lib/app/actionTypes';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService} from '$lib/vocab/hub/hubServices';
@@ -57,8 +57,8 @@ export const randomPersonaParams = (): CreateAccountActorParams => ({
 	name: randomPersonaName(),
 });
 export const randomAssignmentParams = (
-	actor: number,
-	targetActor: number,
+	actor: ActorId,
+	targetActor: ActorId,
 	hub_id: HubId,
 	role_id: RoleId,
 ): CreateAssignmentParams => ({
@@ -67,12 +67,12 @@ export const randomAssignmentParams = (
 	hub_id,
 	role_id,
 });
-export const randomHubParams = (actor: number): CreateHubParams => {
+export const randomHubParams = (actor: ActorId): CreateHubParams => {
 	const name = randomCommunnityName();
 	return {actor, template: {name, settings: {hue: randomHue(name)}}};
 };
 export const randomSpaceParams = (
-	actor: number,
+	actor: ActorId,
 	hub_id: HubId,
 	view?: string,
 ): CreateSpaceParams => ({
@@ -84,9 +84,9 @@ export const randomSpaceParams = (
 	icon: randomSpaceIcon(),
 });
 export const randomEntityParams = (
-	actor: number,
+	actor: ActorId,
 	space_id: SpaceId,
-	source_id: number,
+	source_id: EntityId,
 ): CreateEntityParams => ({
 	actor,
 	space_id,
@@ -94,14 +94,14 @@ export const randomEntityParams = (
 	ties: [{source_id}],
 });
 
-export const randomRoleParams = (actor: number, hub_id: HubId): CreateRoleParams => ({
+export const randomRoleParams = (actor: ActorId, hub_id: HubId): CreateRoleParams => ({
 	actor,
 	hub_id,
 	name: randomRoleName(),
 });
 
 export const randomPolicyParams = (
-	actor: number,
+	actor: ActorId,
 	role_id: RoleId,
 	permission?: string,
 ): CreatePolicyParams => ({
@@ -231,7 +231,7 @@ export class RandomVocabContext {
 		account?: Account,
 		hub?: Hub,
 		space?: Space,
-		source_id?: number,
+		source_id?: EntityId,
 		paramsPartial?: Partial<CreateEntityParams>,
 	): Promise<{
 		entity: Entity;
@@ -272,7 +272,7 @@ export class RandomVocabContext {
 		account?: Account,
 		hub?: Hub,
 		space?: Space,
-		parentSourceId?: number, // optional directory or other source id for the source and dest entities (not the tie)
+		parentSourceId?: EntityId, // optional directory or other source id for the source and dest entities (not the tie)
 		type?: Tie['type'],
 	): Promise<{
 		tie: Tie;
@@ -281,7 +281,7 @@ export class RandomVocabContext {
 		persona: AccountActor;
 		account: Account;
 		hub: Hub;
-		parentSourceId: number;
+		parentSourceId: EntityId;
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));

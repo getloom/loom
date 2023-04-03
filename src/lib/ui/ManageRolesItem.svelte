@@ -2,10 +2,10 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 
-	import type {Role} from '$lib/vocab/role/role';
+	import type {Role, RoleId} from '$lib/vocab/role/role';
 
 	export let role: Readable<Role>;
-	export let defaultRoleId: number;
+	export let defaultRoleId: RoleId;
 	export let selected: boolean;
 	export let selectRole: (role: Readable<Role>) => void;
 

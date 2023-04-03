@@ -25,7 +25,11 @@ export const SpaceSchema = {
 			tsType: 'HubId',
 			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 		},
-		directory_id: {type: 'number'},
+		directory_id: {
+			type: 'number',
+			tsType: 'EntityId',
+			tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+		},
 	},
 	required: ['space_id', 'name', 'icon', 'view', 'created', 'updated', 'hub_id', 'directory_id'],
 	additionalProperties: false,
