@@ -4,7 +4,8 @@ import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {ActionActor} from '$lib/vocab/actor/actor';
-import {toFailedApiResult, type ApiResult} from '$lib/server/api';
+import {type ApiResult, toFailedApiResult} from '$lib/server/api';
+import type {AccountId} from '$lib/vocab/account/account';
 import type {Result} from '@feltjs/util';
 import type {ErrorResponse} from '$lib/util/error';
 
@@ -105,7 +106,7 @@ export interface NonAuthenticatedServiceRequest<TParams = any> {
 }
 export interface NonAuthorizedServiceRequest<TParams = any>
 	extends NonAuthenticatedServiceRequest<TParams> {
-	account_id: number;
+	account_id: AccountId;
 }
 export interface AuthorizedServiceRequest<TParams = any>
 	extends NonAuthorizedServiceRequest<TParams> {
@@ -122,21 +123,21 @@ export function toServiceRequest<TParams = any>(
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
-	account_id: number,
+	account_id: AccountId,
 	actor: undefined,
 	session: ISessionApi,
 ): NonAuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
-	account_id: number,
+	account_id: AccountId,
 	actor: ActionActor,
 	session: ISessionApi,
 ): AuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
 	params: TParams,
-	account_id: number | undefined,
+	account_id: AccountId | undefined,
 	actor: ActionActor | undefined,
 	session: ISessionApi,
 ): ServiceRequest {

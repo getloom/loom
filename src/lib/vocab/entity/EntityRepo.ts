@@ -6,6 +6,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
@@ -64,7 +65,7 @@ export class EntityRepo extends PostgresRepo {
 		return {entities, missing};
 	}
 
-	async filterDirectoriesByAccount(account_id: number): Promise<Directory[]> {
+	async filterDirectoriesByAccount(account_id: AccountId): Promise<Directory[]> {
 		const data = await this.sql<Directory[]>`
 			SELECT entity_id, data, persona_id, created, updated, space_id, path
 			FROM entities e JOIN (

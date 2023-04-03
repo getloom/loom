@@ -1,3 +1,10 @@
+export const AccountIdSchema = {
+	$id: '/schemas/AccountId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'AccountId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const AccountSchema = {
 	$id: '/schemas/Account.json',
 	type: 'object',
@@ -6,7 +13,7 @@ export const AccountSchema = {
 		It holds top level user data and is the relation through which all other data is loaded for the client.
 	`,
 	properties: {
-		account_id: {type: 'number'},
+		account_id: {type: 'number', tsType: 'AccountId'},
 		name: {type: 'string'},
 		password: {type: 'string'},
 		settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
@@ -24,7 +31,7 @@ export const ClientAccountSchema = {
 		A client-facing subset of an Account. Excludes 'password' for security.
 	`,
 	properties: {
-		account_id: {type: 'number'},
+		account_id: {type: 'number', tsType: 'AccountId'},
 		name: {type: 'string'},
 		settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},

@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Space} from '$lib/vocab/space/space.js';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('SpaceRepo') + gray(']'));
 
@@ -17,7 +18,7 @@ export class SpaceRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async filterByAccount(account_id: number): Promise<Space[]> {
+	async filterByAccount(account_id: AccountId): Promise<Space[]> {
 		log.debug('[filterByAccount]', account_id);
 		const data = await this.sql<Space[]>`
 			SELECT s.space_id, s.name, icon, s.view, s.updated, s.created, s.hub_id, s.directory_id

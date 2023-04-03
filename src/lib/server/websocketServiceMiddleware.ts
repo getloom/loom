@@ -15,13 +15,14 @@ import {
 } from '$lib/server/service';
 import type {ApiResult} from '$lib/server/api';
 import {broadcast} from '$lib/server/broadcast';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 
 const session = new SessionApiDisabled();
 
 export interface WebsocketMiddleware {
-	(socket: ws, rawMessage: ws.Data, account_id: number): Promise<void>;
+	(socket: ws, rawMessage: ws.Data, account_id: AccountId): Promise<void>;
 }
 
 export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddleware =

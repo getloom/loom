@@ -34,7 +34,11 @@ export const AccountActorSchema = {
 	`,
 	properties: {
 		persona_id: {type: 'number', tsType: 'ActorId'},
-		account_id: {type: 'number'},
+		account_id: {
+			type: 'number',
+			tsType: 'AccountId',
+			tsImport: "import type {AccountId} from '$lib/vocab/account/account'",
+		},
 		hub_id: {type: 'number'},
 		type: {type: 'string', enum: ['account']},
 		name: {type: 'string'},

@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Role} from '$lib/vocab/role/role';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('RoleRepo') + gray(']'));
 
@@ -63,7 +64,7 @@ export class RoleRepo extends PostgresRepo {
 		if (!result.count) throw Error('no role found');
 	}
 
-	async filterByAccount(account_id: number): Promise<Role[]> {
+	async filterByAccount(account_id: AccountId): Promise<Role[]> {
 		log.debug('[filterByAccount]', account_id);
 		const result = await this.sql<Role[]>`
 			SELECT r.role_id, r.hub_id, r.name, r.created, r.updated							

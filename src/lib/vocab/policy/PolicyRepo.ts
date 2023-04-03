@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Policy} from '$lib/vocab/policy/policy';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
 
@@ -63,7 +64,7 @@ export class PolicyRepo extends PostgresRepo {
 		if (!result.count) throw Error('no policy found');
 	}
 
-	async filterByAccount(account_id: number): Promise<Policy[]> {
+	async filterByAccount(account_id: AccountId): Promise<Policy[]> {
 		log.debug('[filterByAccountId]', account_id);
 		const result = await this.sql<Policy[]>`
 		SELECT pol.policy_id, pol.role_id, pol.permission, pol.data, pol.created, pol.updated

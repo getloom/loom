@@ -9,12 +9,13 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {parseSessionCookie} from '$lib/session/sessionCookie';
 import type {StatusMessage} from '$lib/util/websocket';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('wss') + gray(']'));
 
 type WebsocketServerEmitter = StrictEventEmitter<EventEmitter, WebsocketServerEvents>;
 interface WebsocketServerEvents {
-	message: (socket: WebSocket, message: Data, account_id: number) => void;
+	message: (socket: WebSocket, message: Data, account_id: AccountId) => void;
 }
 
 export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEmitter}) {

@@ -15,6 +15,7 @@ import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
 import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
 import type {ApiError} from '$lib/server/api';
+import type {AccountId} from '$lib/vocab/account/account';
 
 export const log = new Logger('[test]');
 export const logError = new Logger('[test]', undefined, {...Logger, level: 'off'});
@@ -39,13 +40,13 @@ export function toServiceRequestMock(
 	repos: Repos,
 	actor?: undefined,
 	session?: SessionApiMock,
-	account_id?: number,
+	account_id?: AccountId,
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
 	actor: ActionActor,
 	session?: SessionApiMock,
-	account_id?: number,
+	account_id?: AccountId,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,

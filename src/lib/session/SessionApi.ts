@@ -3,11 +3,12 @@ import {Logger} from '@feltjs/util/log.js';
 
 import type {ApiServerRequest} from '$lib/server/ApiServer';
 import {setSessionCookie} from '$lib/session/sessionCookie';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger('[SessionApi]');
 
 export interface ISessionApi {
-	signIn: (account_id: number) => Promise<void>;
+	signIn: (account_id: AccountId) => Promise<void>;
 	signOut: () => Promise<void>;
 }
 
@@ -20,7 +21,7 @@ export interface ISessionApi {
 export class SessionApi implements ISessionApi {
 	constructor(private readonly req: ApiServerRequest, private readonly res: ServerResponse) {}
 
-	async signIn(account_id: number): Promise<void> {
+	async signIn(account_id: AccountId): Promise<void> {
 		log.debug('logging in', account_id);
 		this.req.account_id = account_id;
 		setSessionCookie(this.res, account_id);

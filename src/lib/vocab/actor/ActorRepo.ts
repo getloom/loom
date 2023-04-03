@@ -5,6 +5,7 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {AccountActor, Actor, PublicActor, ActorId} from '$lib/vocab/actor/actor';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import type {AccountId} from '../account/account';
 
 const log = new Logger(gray('[') + blue('ActorRepo') + gray(']'));
 
@@ -14,7 +15,7 @@ export class ActorRepo extends PostgresRepo {
 	// as separate types, see also `createCommunityActor` and `createGhostActor`
 	async createAccountActor(
 		name: string,
-		account_id: number,
+		account_id: AccountId,
 		hub_id: number,
 	): Promise<AccountActor> {
 		const data = await this.sql<AccountActor[]>`
@@ -56,7 +57,7 @@ export class ActorRepo extends PostgresRepo {
 		if (!data.count) throw Error();
 	}
 
-	async filterByAccount(account_id: number): Promise<AccountActor[]> {
+	async filterByAccount(account_id: AccountId): Promise<AccountActor[]> {
 		log.debug('[filterByAccount]', account_id);
 		const data = await this.sql<AccountActor[]>`
 			SELECT ${this.sql(ACTOR_COLUMNS.Persona)}
@@ -65,7 +66,7 @@ export class ActorRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterAssociatesByAccount(account_id: number): Promise<PublicActor[]> {
+	async filterAssociatesByAccount(account_id: AccountId): Promise<PublicActor[]> {
 		const data = await this.sql<PublicActor[]>`
 			SELECT ${this.sql(ACTOR_COLUMNS.PublicActor.map((c) => 'p3.' + c))}
 			FROM personas p3

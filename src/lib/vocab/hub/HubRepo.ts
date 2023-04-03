@@ -6,6 +6,7 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('HubRepo') + gray(']'));
 
@@ -39,7 +40,7 @@ export class HubRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async filterByAccount(account_id: number): Promise<Hub[]> {
+	async filterByAccount(account_id: AccountId): Promise<Hub[]> {
 		log.debug(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated							

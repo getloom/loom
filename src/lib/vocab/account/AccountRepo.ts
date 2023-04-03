@@ -2,7 +2,12 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Account, ClientAccount, ClientAccountSession} from '$lib/vocab/account/account';
+import type {
+	Account,
+	AccountId,
+	ClientAccount,
+	ClientAccountSession,
+} from '$lib/vocab/account/account';
 import {toPasswordKey} from '$lib/util/password';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
 import {ApiError} from '$lib/server/api';
@@ -21,7 +26,7 @@ export class AccountRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async loadClientSession(account_id: number): Promise<ClientAccountSession> {
+	async loadClientSession(account_id: AccountId): Promise<ClientAccountSession> {
 		log.debug('loadClientSession', account_id);
 		const account = await this.repos.account.findById(account_id);
 		if (!account) throw new ApiError(404, 'no account found');
@@ -53,7 +58,7 @@ export class AccountRepo extends PostgresRepo {
 	}
 
 	async findById<T extends Partial<Account> = ClientAccount>(
-		account_id: number,
+		account_id: AccountId,
 		columns = ACCOUNT_COLUMNS.ClientAccount,
 	): Promise<T | undefined> {
 		log.debug('loading account', account_id);
@@ -73,7 +78,7 @@ export class AccountRepo extends PostgresRepo {
 	}
 
 	async updateSettings(
-		account_id: number,
+		account_id: AccountId,
 		settings: ClientAccount['settings'],
 	): Promise<ClientAccount> {
 		const data = await this.sql<any[]>`
@@ -86,7 +91,7 @@ export class AccountRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async updatePassword(account_id: number, password: string): Promise<ClientAccount> {
+	async updatePassword(account_id: AccountId, password: string): Promise<ClientAccount> {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<any[]>`
 			UPDATE accounts

@@ -3,6 +3,7 @@ import cookieSignature from 'cookie-signature';
 import type {ServerResponse} from 'http';
 
 import {fromEnv} from '$lib/server/env';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const dev = process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
@@ -15,7 +16,7 @@ export const COOKIE_SESSION_NAME = 'session_id';
 const keys = fromEnv('COOKIE_KEYS').split('__');
 
 export interface CookieSessionRequest {
-	account_id?: number;
+	account_id?: AccountId;
 }
 
 /**
@@ -27,7 +28,10 @@ export interface CookieSessionRequest {
 export const parseSessionCookie = (
 	value: string | undefined | null,
 	options?: cookie.CookieParseOptions | undefined,
-): {account_id: number; shouldRefreshSignature: boolean; keyIndex: number} | undefined | null => {
+):
+	| {account_id: AccountId; shouldRefreshSignature: boolean; keyIndex: number}
+	| undefined
+	| null => {
 	if (!value) return undefined;
 	const signed = cookie.parse(value, options)[COOKIE_SESSION_NAME];
 	if (!signed) return undefined;

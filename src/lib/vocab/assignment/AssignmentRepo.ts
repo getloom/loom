@@ -4,6 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Assignment} from '$lib/vocab/assignment/assignment.js';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('AssignmentRepo') + gray(']'));
 
@@ -40,7 +41,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async filterByAccount(account_id: number): Promise<Assignment[]> {
+	async filterByAccount(account_id: AccountId): Promise<Assignment[]> {
 		log.debug(`[filterByAccount] ${account_id}`);
 		const data = await this.sql<Assignment[]>`
 			SELECT a.assignment_id, a.persona_id, a.hub_id, a.role_id, a.created
