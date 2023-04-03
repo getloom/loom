@@ -1,7 +1,7 @@
 import {unwrap} from '@feltjs/util';
 
 import type {Space} from '$lib/vocab/space/space';
-import type {Hub} from '$lib/vocab/hub/hub';
+import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
 import type {AccountActor, ClientActor, PublicActor} from '$lib/vocab/actor/actor';
 import type {
@@ -59,7 +59,7 @@ export const randomPersonaParams = (): CreateAccountActorParams => ({
 export const randomAssignmentParams = (
 	actor: number,
 	targetActor: number,
-	hub_id: number,
+	hub_id: HubId,
 	role_id: number,
 ): CreateAssignmentParams => ({
 	actor,
@@ -73,7 +73,7 @@ export const randomHubParams = (actor: number): CreateHubParams => {
 };
 export const randomSpaceParams = (
 	actor: number,
-	hub_id: number,
+	hub_id: HubId,
 	view?: string,
 ): CreateSpaceParams => ({
 	actor,
@@ -94,7 +94,7 @@ export const randomEntityParams = (
 	ties: [{source_id}],
 });
 
-export const randomRoleParams = (actor: number, hub_id: number): CreateRoleParams => ({
+export const randomRoleParams = (actor: number, hub_id: HubId): CreateRoleParams => ({
 	actor,
 	hub_id,
 	name: randomRoleName(),

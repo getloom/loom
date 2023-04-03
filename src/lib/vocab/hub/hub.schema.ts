@@ -1,3 +1,10 @@
+export const HubIdSchema = {
+	$id: '/schemas/HubId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'HubId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const HubSchema = {
 	$id: '/schemas/Hub.json',
 	type: 'object',
@@ -7,7 +14,7 @@ export const HubSchema = {
 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
 	`,
 	properties: {
-		hub_id: {type: 'number'},
+		hub_id: {type: 'number', tsType: 'HubId'},
 		type: {type: 'string', enum: ['community', 'personal']},
 		name: {type: 'string'},
 		settings: {$ref: '/schemas/HubSettings.json', tsType: 'HubSettings'},

@@ -4,7 +4,7 @@ import {get} from 'svelte/store';
 import {page} from '$app/stores';
 
 import type {WritableUi} from '$lib/ui/ui';
-import type {Hub} from '$lib/vocab/hub/hub';
+import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import {evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {toHubUrl} from '$lib/ui/url';
@@ -39,7 +39,7 @@ export const stashHub = (ui: WritableUi, $hub: Hub): Writable<Hub> => {
 	return hub;
 };
 
-export const evictHub = (ui: WritableUi, hub_id: number): void => {
+export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 	const {
 		hubById,
 		hubSelection,

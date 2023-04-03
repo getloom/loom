@@ -3,7 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
+import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {AccountId} from '$lib/vocab/account/account';
@@ -22,7 +22,7 @@ export class HubRepo extends PostgresRepo {
 		return hub;
 	}
 
-	async findById(hub_id: number): Promise<Hub | undefined> {
+	async findById(hub_id: HubId): Promise<Hub | undefined> {
 		log.debug(`[findById] ${hub_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT hub_id, type, name, settings, created, updated
@@ -66,14 +66,14 @@ export class HubRepo extends PostgresRepo {
 		return data;
 	}
 
-	async updateSettings(hub_id: number, settings: Hub['settings']): Promise<void> {
+	async updateSettings(hub_id: HubId, settings: Hub['settings']): Promise<void> {
 		const data = await this.sql<any[]>`
 			UPDATE hubs SET updated=NOW(), settings=${this.sql.json(settings as any)} WHERE hub_id=${hub_id}
 		`;
 		if (!data.count) throw Error('no hub found');
 	}
 
-	async deleteById(hub_id: number): Promise<void> {
+	async deleteById(hub_id: HubId): Promise<void> {
 		log.debug('[deleteById]', hub_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM hubs WHERE hub_id=${hub_id}

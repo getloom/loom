@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Role} from '$lib/vocab/role/role';
+import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('RoleRepo') + gray(']'));
@@ -28,7 +29,7 @@ export class RoleRepo extends PostgresRepo {
 		return result[0];
 	}
 
-	async filterByHub(hub_id: number): Promise<Role[]> {
+	async filterByHub(hub_id: HubId): Promise<Role[]> {
 		log.debug('[filterByHub]', hub_id);
 		const result = await this.sql<Role[]>`
 			SELECT role_id, hub_id, name, created, updated 
@@ -37,7 +38,7 @@ export class RoleRepo extends PostgresRepo {
 		return result;
 	}
 
-	async create(hub_id: number, name: string): Promise<Role> {
+	async create(hub_id: HubId, name: string): Promise<Role> {
 		log.debug('[create]', hub_id, name);
 		const result = await this.sql<Role[]>`
     INSERT INTO roles (hub_id, name) VALUES (

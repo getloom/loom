@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Policy} from '$lib/vocab/policy/policy';
+import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
@@ -19,7 +20,7 @@ export class PolicyRepo extends PostgresRepo {
 
 	async filterByActorHubPermission(
 		actor_id: number,
-		hub_id: number,
+		hub_id: HubId,
 		permission: string,
 	): Promise<Policy[]> {
 		log.debug('[findByActorHubPermission]', actor_id, hub_id, permission);

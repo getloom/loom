@@ -9,7 +9,7 @@ import type {
 	NonAuthorizedService,
 	AuthorizedService,
 } from '$lib/server/service';
-import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
+import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import type {PublicActor, ClientActor} from '$lib/vocab/actor/actor';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
@@ -299,7 +299,7 @@ export type CreateHubResponseResult = ApiResult<CreateHubResponse>;
 
 export interface ReadHubParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 }
 export interface ReadHubResponse {
 	/**
@@ -320,7 +320,7 @@ export type ReadHubResponseResult = ApiResult<ReadHubResponse>;
 
 export interface UpdateHubSettingsParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 	/**
 	 *
 	 * 		A nested set of attributes on Hub. Holds all hub level settings.
@@ -333,14 +333,14 @@ export type UpdateHubSettingsResponseResult = ApiResult<UpdateHubSettingsRespons
 
 export interface DeleteHubParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 }
 export type DeleteHubResponse = null;
 export type DeleteHubResponseResult = ApiResult<DeleteHubResponse>;
 
 export interface InviteToHubParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 	name: string;
 }
 export interface InviteToHubResponse {
@@ -364,7 +364,7 @@ export type InviteToHubResponseResult = ApiResult<InviteToHubResponse>;
 export interface LeaveHubParams {
 	actor: number;
 	targetActor: number;
-	hub_id: number;
+	hub_id: HubId;
 }
 export type LeaveHubResponse = null;
 export type LeaveHubResponseResult = ApiResult<LeaveHubResponse>;
@@ -372,7 +372,7 @@ export type LeaveHubResponseResult = ApiResult<LeaveHubResponse>;
 export interface KickFromHubParams {
 	actor: number;
 	targetActor: number;
-	hub_id: number;
+	hub_id: HubId;
 }
 export type KickFromHubResponse = null;
 export type KickFromHubResponseResult = ApiResult<KickFromHubResponse>;
@@ -401,7 +401,7 @@ export type DeletePersonaResponseResult = ApiResult<DeletePersonaResponse>;
 export interface CreateAssignmentParams {
 	actor: number;
 	targetActor: number;
-	hub_id: number;
+	hub_id: HubId;
 	role_id: number;
 }
 export interface CreateAssignmentResponse {
@@ -425,7 +425,7 @@ export type DeleteAssignmentResponseResult = ApiResult<DeleteAssignmentResponse>
 
 export interface CreateSpaceParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 	name: string;
 	path: string;
 	icon: string;
@@ -456,7 +456,7 @@ export type CreateSpaceResponseResult = ApiResult<CreateSpaceResponse>;
 
 export interface ReadSpacesParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 }
 export interface ReadSpacesResponse {
 	spaces: Space[];
@@ -579,7 +579,7 @@ export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
 export interface CreateRoleParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 	name: string;
 }
 export interface CreateRoleResponse {
@@ -596,7 +596,7 @@ export type CreateRoleResponseResult = ApiResult<CreateRoleResponse>;
 
 export interface ReadRolesParams {
 	actor: number;
-	hub_id: number;
+	hub_id: HubId;
 }
 export interface ReadRolesResponse {
 	roles: Role[];

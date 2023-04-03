@@ -6,6 +6,7 @@ import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
@@ -35,7 +36,7 @@ export class EntityRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async findByPath(hub_id: number, path: string): Promise<Entity | undefined> {
+	async findByPath(hub_id: HubId, path: string): Promise<Entity | undefined> {
 		log.debug('[findByPath]', hub_id, path);
 		const data = await this.sql<Entity[]>`
 			SELECT e.entity_id, e.space_id, e.path, e.data, e.persona_id, e.created, e.updated

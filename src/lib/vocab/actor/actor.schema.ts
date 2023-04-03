@@ -39,7 +39,11 @@ export const AccountActorSchema = {
 			tsType: 'AccountId',
 			tsImport: "import type {AccountId} from '$lib/vocab/account/account'",
 		},
-		hub_id: {type: 'number'},
+		hub_id: {
+			type: 'number',
+			tsType: 'HubId',
+			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+		},
 		type: {type: 'string', enum: ['account']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
@@ -61,7 +65,11 @@ export const CommunityActorSchema = {
 	properties: {
 		persona_id: {type: 'number', tsType: 'ActorId'},
 		account_id: {type: 'null'},
-		hub_id: {type: 'number'},
+		hub_id: {
+			type: 'number',
+			tsType: 'HubId',
+			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+		},
 		type: {type: 'string', enum: ['community']},
 		name: {type: 'string'},
 		icon: {type: 'string'},

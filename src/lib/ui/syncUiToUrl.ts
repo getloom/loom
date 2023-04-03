@@ -7,6 +7,7 @@ import type {AccountActor, ActorId} from '$lib/vocab/actor/actor';
 import {ACTOR_QUERY_KEY, toSearchParams} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
 import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
+import type {HubId} from '$lib/vocab/hub/hub';
 
 const log = new Logger('[syncUiToUrl]');
 
@@ -85,7 +86,7 @@ const selectPersona = ({personaIdSelection}: Ui, persona_id: ActorId): void => {
 
 const selectHub = (
 	{personaIdSelection, hubIdSelectionByPersonaId}: Ui,
-	hub_id: number | null,
+	hub_id: HubId | null,
 ): void => {
 	const $personaIdSelection = personaIdSelection.get();
 	if ($personaIdSelection) {
@@ -97,7 +98,7 @@ const selectHub = (
 
 const selectSpace = (
 	{spaceIdSelectionByHubId}: Ui,
-	hub_id: number,
+	hub_id: HubId,
 	space_id: number | null,
 ): void => {
 	spaceIdSelectionByHubId.mutate(($s) => {

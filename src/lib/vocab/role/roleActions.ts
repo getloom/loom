@@ -9,7 +9,11 @@ export const CreateRole: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 			name: {type: 'string'},
 		},
 		required: ['actor', 'hub_id', 'name'],
@@ -39,7 +43,11 @@ export const ReadRoles: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 		},
 		required: ['actor', 'hub_id'],
 		additionalProperties: false,

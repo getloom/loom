@@ -5,7 +5,8 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {AccountActor, Actor, PublicActor, ActorId} from '$lib/vocab/actor/actor';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
-import type {AccountId} from '../account/account';
+import type {HubId} from '$lib/vocab/hub/hub';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('ActorRepo') + gray(']'));
 
@@ -16,7 +17,7 @@ export class ActorRepo extends PostgresRepo {
 	async createAccountActor(
 		name: string,
 		account_id: AccountId,
-		hub_id: number,
+		hub_id: HubId,
 	): Promise<AccountActor> {
 		const data = await this.sql<AccountActor[]>`
 			INSERT INTO personas (type, name, account_id, hub_id) VALUES (
@@ -28,7 +29,7 @@ export class ActorRepo extends PostgresRepo {
 		return persona;
 	}
 
-	async createCommunityActor(name: string, hub_id: number): Promise<PublicActor> {
+	async createCommunityActor(name: string, hub_id: HubId): Promise<PublicActor> {
 		const data = await this.sql<PublicActor[]>`
 			INSERT INTO personas (type, name, hub_id) VALUES (
 				'community', ${name}, ${hub_id}
@@ -114,7 +115,7 @@ export class ActorRepo extends PostgresRepo {
 	}
 
 	async findByHub<T extends Partial<Actor> = PublicActor>(
-		hub_id: number,
+		hub_id: HubId,
 		columns = ACTOR_COLUMNS.PublicActor,
 	): Promise<T | undefined> {
 		log.debug('[findByHub]', hub_id);

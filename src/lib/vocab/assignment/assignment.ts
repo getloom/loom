@@ -2,6 +2,7 @@
 
 import type {Flavored} from '@feltjs/util';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {HubId} from '$lib/vocab/hub/hub';
 
 export type AssignmentId = Flavored<number, 'AssignmentId'>;
 
@@ -15,7 +16,7 @@ export type AssignmentId = Flavored<number, 'AssignmentId'>;
 export interface Assignment {
 	assignment_id: AssignmentId;
 	persona_id: ActorId;
-	hub_id: number;
+	hub_id: HubId;
 	role_id: number;
 	created: Date;
 }

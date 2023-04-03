@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/app/constants';
-import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
+import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import type {ActionActor, ActorId, PublicActor} from '$lib/vocab/actor/actor';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
@@ -135,7 +135,7 @@ export const initTemplateGovernanceForHub = async (
 
 export const checkRemovePersona = async (
 	persona_id: ActorId,
-	hub_id: number,
+	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
 	if (!(await repos.assignment.isPersonaInHub(persona_id, hub_id))) {

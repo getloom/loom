@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Space} from '$lib/vocab/space/space.js';
+import type {HubId} from '$lib/vocab/hub/hub';
 import type {EntityId} from '$lib/vocab/entity/entity';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -32,7 +33,7 @@ export class SpaceRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterByHub(hub_id: number): Promise<Space[]> {
+	async filterByHub(hub_id: HubId): Promise<Space[]> {
 		log.debug('[filterByHub]', hub_id);
 		const data = await this.sql<Space[]>`
 			SELECT space_id, name, icon, view, updated, created, hub_id, directory_id
@@ -45,7 +46,7 @@ export class SpaceRepo extends PostgresRepo {
 		name: string,
 		view: string,
 		icon: string,
-		hub_id: number,
+		hub_id: HubId,
 		directory_id: number,
 	): Promise<Space> {
 		const data = await this.sql<Space[]>`

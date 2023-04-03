@@ -49,7 +49,11 @@ export const ReadHub: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 		},
 		required: ['actor', 'hub_id'],
 		additionalProperties: false,
@@ -90,7 +94,11 @@ export const UpdateHubSettings: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 			settings: {$ref: '/schemas/HubSettings.json', tsType: 'HubSettings'},
 		},
 		required: ['actor', 'hub_id', 'settings'],
@@ -115,7 +123,11 @@ export const DeleteHub: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 		},
 		required: ['actor', 'hub_id'],
 		additionalProperties: false,
@@ -140,7 +152,11 @@ export const InviteToHub: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 			name: {type: 'string'},
 		},
 		required: ['actor', 'hub_id', 'name'],
@@ -173,7 +189,11 @@ export const LeaveHub: ServiceActionData = {
 		properties: {
 			actor: {type: 'number'},
 			targetActor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 		},
 		required: ['actor', 'targetActor', 'hub_id'],
 		additionalProperties: false,
@@ -199,7 +219,11 @@ export const KickFromHub: ServiceActionData = {
 		properties: {
 			actor: {type: 'number'},
 			targetActor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 		},
 		required: ['actor', 'targetActor', 'hub_id'],
 		additionalProperties: false,

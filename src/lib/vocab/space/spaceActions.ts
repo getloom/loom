@@ -9,7 +9,11 @@ export const CreateSpace: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 			name: {type: 'string'},
 			path: {type: 'string'},
 			icon: {type: 'string'},
@@ -43,7 +47,11 @@ export const ReadSpaces: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 		},
 		required: ['actor', 'hub_id'],
 		additionalProperties: false,

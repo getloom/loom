@@ -20,7 +20,11 @@ export const AssignmentSchema = {
 			tsType: 'ActorId',
 			tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
 		},
-		hub_id: {type: 'number'},
+		hub_id: {
+			type: 'number',
+			tsType: 'HubId',
+			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+		},
 		role_id: {type: 'number'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 	},

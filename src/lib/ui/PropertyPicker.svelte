@@ -9,6 +9,7 @@
 	import {getApp} from '$lib/ui/app';
 	import HubPicker from '$lib/ui/HubPicker.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
+	import type {HubId} from '$lib/vocab/hub/hub';
 
 	// TODO have an API to click-to-pick for even string values (with a button for more) for things like strings (like persona names, space names, etc, from templates or random)
 	// TODO pick hub and the others
@@ -93,7 +94,7 @@
 	// picker dialog
 	// optional
 
-	const doneWithHubPicker = async (hub_id: number) => {
+	const doneWithHubPicker = async (hub_id: HubId) => {
 		fieldValue = hub_id;
 		await save();
 		actions.CloseDialog();

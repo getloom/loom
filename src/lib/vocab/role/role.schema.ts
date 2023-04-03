@@ -8,7 +8,11 @@ export const RoleSchema = {
 	`,
 	properties: {
 		role_id: {type: 'number'},
-		hub_id: {type: 'number'},
+		hub_id: {
+			type: 'number',
+			tsType: 'HubId',
+			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+		},
 		name: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},

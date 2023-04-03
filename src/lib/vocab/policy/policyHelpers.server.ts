@@ -4,13 +4,14 @@ import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 import {ApiError} from '$lib/server/api';
 import {isPersonaAdmin} from '$lib/vocab/actor/actorHelpers.server';
+import type {HubId} from '$lib/vocab/hub/hub';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
 export const checkPolicy = async (
 	permission: string,
 	actor_id: number,
-	hub_id: number,
+	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
 	log.debug('checking for policies with permission for actor in hub', permission, actor_id, hub_id);
@@ -26,7 +27,7 @@ export const checkPolicy = async (
 //TODO should we be bypassing policy system like this?
 export const checkHubAccess = async (
 	actor_id: number,
-	hub_id: number,
+	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
 	log.debug('checking for hub access for actor in hub', actor_id, hub_id);

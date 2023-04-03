@@ -10,7 +10,11 @@ export const CreateAssignment: ServiceActionData = {
 		properties: {
 			actor: {type: 'number'},
 			targetActor: {type: 'number'},
-			hub_id: {type: 'number'},
+			hub_id: {
+				type: 'number',
+				tsType: 'HubId',
+				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+			},
 			role_id: {type: 'number'},
 		},
 		required: ['actor', 'targetActor', 'hub_id', 'role_id'],

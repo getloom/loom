@@ -13,7 +13,11 @@ export const SpaceSchema = {
 		view: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
-		hub_id: {type: 'number'},
+		hub_id: {
+			type: 'number',
+			tsType: 'HubId',
+			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
+		},
 		directory_id: {type: 'number'},
 	},
 	required: ['space_id', 'name', 'icon', 'view', 'created', 'updated', 'hub_id', 'directory_id'],

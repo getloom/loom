@@ -5,6 +5,7 @@ import type {Entity} from '$lib/vocab/entity/entity';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {LAST_SEEN_KEY} from '$lib/ui/app';
 import type {WritableUi} from '$lib/ui/ui';
+import type {HubId} from '$lib/vocab/hub/hub';
 
 export const setFreshnessByDirectoryId = (ui: WritableUi, directory: Writable<Entity>): void => {
 	const {freshnessByDirectoryId, lastSeenByDirectoryId} = ui;
@@ -22,7 +23,7 @@ export const setFreshnessByDirectoryId = (ui: WritableUi, directory: Writable<En
 };
 
 //TODO this could probably a derived store (see above) based on something like "directoriesByHubId"
-export const upsertFreshnessByHubId = (ui: WritableUi, hub_id: number): void => {
+export const upsertFreshnessByHubId = (ui: WritableUi, hub_id: HubId): void => {
 	const {spacesByHubId, freshnessByHubId, freshnessByDirectoryId} = ui;
 	const spaces = spacesByHubId.get().get(hub_id) || [];
 	const fresh = spaces.some((s) => freshnessByDirectoryId.get(s.get().directory_id)?.get());
