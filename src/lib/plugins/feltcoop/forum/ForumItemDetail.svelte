@@ -83,7 +83,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		<div class="wrapper">
 			<div class="signature">
 				<ActorAvatar persona={authorPersona} />
-				{format($entity.created, 'Pp')}
+				{format($entity.created, 'MMM d, p')}
 			</div>
 
 			<div class="markup formatted">

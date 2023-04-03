@@ -49,7 +49,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		<div class="signature">
 			<ActorAvatar persona={authorPersona} showIcon={false} />
 			<div class="controls">
-				<small class="timestamp">{format($entity.created, 'Pp')}</small>
+				<small class="timestamp">{format($entity.created, 'MMM d, p')}</small>
 				<button
 					class="plain-button icon-button reply"
 					title="reply"
@@ -63,8 +63,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 					<Mention name={$repliedToPersona.name} /> said:
 					{$repliedToEntity.data.content}
 				</div>
-			{/if}
-			<EntityContent {entity} />
+			{/if}<EntityContent {entity} />
 		</div>
 	</div>
 </li>

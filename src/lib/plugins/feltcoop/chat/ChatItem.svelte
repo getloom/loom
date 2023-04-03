@@ -37,14 +37,12 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 	<div class="signature">
 		<ActorAvatar persona={authorPersona} showName={false} />
 	</div>
-	<div class="markup padded-md formatted">
+	<div class="content">
 		<div class="signature">
 			<ActorAvatar persona={authorPersona} showIcon={false} />
-			{format($entity.created, 'Pp')}
+			<small>{format($entity.created, 'MMM d, p')}</small>
 		</div>
-		<div>
-			<EntityContent {entity} />
-		</div>
+		<div class="markup formatted"><EntityContent {entity} /></div>
 	</div>
 </li>
 
@@ -60,8 +58,12 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		align-items: center;
 		justify-content: space-between;
 	}
-	.markup {
+	.content {
+		padding-left: var(--spacing_md);
+		flex: 1;
+	}
+	.formatted {
 		/* the bottom padding prevents chars like y and g from being cut off */
-		padding: 0 0 var(--spacing_xs) var(--spacing_md);
+		padding-bottom: var(--spacing_xs);
 	}
 </style>

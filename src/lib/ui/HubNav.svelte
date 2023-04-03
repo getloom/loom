@@ -16,7 +16,6 @@
 <style>
 	.hub-nav {
 		width: auto;
-		background-color: var(--tint_dark_1);
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;

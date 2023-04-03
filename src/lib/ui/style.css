@@ -132,7 +132,9 @@ maybe upstream to Felt? think about how to upstream without bloating bundles tha
 	white-space: break-spaces;
 }
 
-/* TODO this probably isn't the best name for this class -- upstream to Felt when ready */
+.selectable {
+	--border_width: 0;
+}
 .selectable:hover {
 	background-color: var(--button_color_hover);
 }
