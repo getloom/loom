@@ -1,3 +1,10 @@
+export const ActorIdSchema = {
+	$id: '/schemas/ActorId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'ActorId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const ActorSchema = {
 	$id: '/schemas/Actor.json',
 	description: `
@@ -26,7 +33,7 @@ export const AccountActorSchema = {
 		A reference to this personal Hub is stored in 'hub_id'.
 	`,
 	properties: {
-		persona_id: {type: 'number'},
+		persona_id: {type: 'number', tsType: 'ActorId'},
 		account_id: {type: 'number'},
 		hub_id: {type: 'number'},
 		type: {type: 'string', enum: ['account']},
@@ -48,7 +55,7 @@ export const CommunityActorSchema = {
 		The Hub that owns it is represented by 'hub_id'.
 	`,
 	properties: {
-		persona_id: {type: 'number'},
+		persona_id: {type: 'number', tsType: 'ActorId'},
 		account_id: {type: 'null'},
 		hub_id: {type: 'number'},
 		type: {type: 'string', enum: ['community']},
@@ -68,7 +75,7 @@ export const GhostActorSchema = {
 	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.	 
 	`,
 	properties: {
-		persona_id: {type: 'number'},
+		persona_id: {type: 'number', tsType: 'ActorId'},
 		account_id: {type: 'null'},
 		hub_id: {type: 'null'},
 		type: {type: 'string', enum: ['ghost']},
@@ -91,7 +98,7 @@ export const PublicActorSchema = {
 		A subset of an Actor available to all clients in a hub.
 	`,
 	properties: {
-		persona_id: {type: 'number'},
+		persona_id: {type: 'number', tsType: 'ActorId'},
 		type: {type: 'string', enum: ['account', 'community', 'ghost']},
 		name: {type: 'string'},
 		icon: {type: 'string'},

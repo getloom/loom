@@ -11,7 +11,11 @@ export const EntitySchema = {
 	`,
 	properties: {
 		entity_id: {type: 'number'},
-		persona_id: {type: 'number'},
+		persona_id: {
+			type: 'number',
+			tsType: 'ActorId',
+			tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
+		},
 		space_id: {type: 'number'},
 		path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 		data: {

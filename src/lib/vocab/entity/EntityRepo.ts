@@ -5,12 +5,13 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
 export class EntityRepo extends PostgresRepo {
 	async create(
-		persona_id: number,
+		persona_id: ActorId,
 		data: EntityData,
 		space_id: number | null,
 		path: string | null = null,
@@ -128,7 +129,7 @@ export class EntityRepo extends PostgresRepo {
 	// how? see https://www.postgresql.org/docs/current/functions-json.html
 	// `WHERE data ? 'attributedTo'`
 	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
-	async attributeToGhostByPersona(persona_id: number): Promise<number> {
+	async attributeToGhostByPersona(persona_id: ActorId): Promise<number> {
 		log.debug('[ghost]', persona_id);
 		const data = await this.sql<any[]>`
 			UPDATE entities

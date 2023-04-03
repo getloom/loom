@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {AccountActor, Actor, PublicActor} from '$lib/vocab/actor/actor';
+import type {AccountActor, Actor, PublicActor, ActorId} from '$lib/vocab/actor/actor';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
@@ -49,7 +49,7 @@ export class ActorRepo extends PostgresRepo {
 		return persona;
 	}
 
-	async deleteById(persona_id: number): Promise<void> {
+	async deleteById(persona_id: ActorId): Promise<void> {
 		const data = await this.sql<any[]>`
 			DELETE FROM personas WHERE persona_id=${persona_id}
 		`;
@@ -84,7 +84,7 @@ export class ActorRepo extends PostgresRepo {
 	}
 
 	async findById<T extends Partial<Actor> = PublicActor>(
-		persona_id: number,
+		persona_id: ActorId,
 		columns = ACTOR_COLUMNS.PublicActor,
 	): Promise<T | undefined> {
 		log.debug('[findById]', persona_id);

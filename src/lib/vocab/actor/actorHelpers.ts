@@ -1,7 +1,7 @@
 import {plural} from '@feltjs/util/string.js';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-import type {AccountActor, ActionActor, ClientActor, Actor} from '$lib/vocab/actor/actor';
+import type {AccountActor, ActionActor, ClientActor, Actor, ActorId} from '$lib/vocab/actor/actor';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 
 /**
@@ -49,7 +49,7 @@ export const checkPersonaName = (name: string): string | null => {
 
 export const lookupPersona = (
 	personaById: Map<number, Readable<ClientActor>>,
-	persona_id: number,
+	persona_id: ActorId,
 ): Readable<ClientActor> => personaById.get(persona_id) || personaById.get(GHOST_ACTOR_ID)!;
 
 export const isAccountActor = (

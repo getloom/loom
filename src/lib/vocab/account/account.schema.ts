@@ -78,6 +78,7 @@ export const ClientAccountSessionSchema = {
 			type: 'array',
 			items: {$ref: '/schemas/Entity.json'},
 			tsType: 'Array<Entity & {data: EntityData}>',
+			tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
 		},
 		assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
 		policies: {type: 'array', items: {$ref: '/schemas/Policy.json', tsType: 'Policy'}},

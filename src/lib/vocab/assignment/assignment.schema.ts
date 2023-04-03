@@ -8,7 +8,11 @@ export const AssignmentSchema = {
 	`,
 	properties: {
 		assignment_id: {type: 'number'},
-		persona_id: {type: 'number'},
+		persona_id: {
+			type: 'number',
+			tsType: 'ActorId',
+			tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
+		},
 		hub_id: {type: 'number'},
 		role_id: {type: 'number'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},

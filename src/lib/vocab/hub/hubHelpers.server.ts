@@ -3,7 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/app/constants';
 import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
-import type {ActionActor, PublicActor} from '$lib/vocab/actor/actor';
+import type {ActionActor, ActorId, PublicActor} from '$lib/vocab/actor/actor';
 import type {Repos} from '$lib/db/Repos';
 import type {Role} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -134,7 +134,7 @@ export const initTemplateGovernanceForHub = async (
 };
 
 export const checkRemovePersona = async (
-	persona_id: number,
+	persona_id: ActorId,
 	hub_id: number,
 	repos: Repos,
 ): Promise<void> => {

@@ -3,11 +3,12 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 const log = new Logger(gray('[') + blue('AssignmentRepo') + gray(']'));
 
 export class AssignmentRepo extends PostgresRepo {
-	async create(persona_id: number, hub_id: number, role_id: number): Promise<Assignment> {
+	async create(persona_id: ActorId, hub_id: number, role_id: number): Promise<Assignment> {
 		const data = await this.sql<Assignment[]>`
 			INSERT INTO assignments (persona_id, hub_id, role_id) VALUES (
 				${persona_id},${hub_id},${role_id}
@@ -27,7 +28,7 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	async findByUniqueIds(
-		persona_id: number,
+		persona_id: ActorId,
 		hub_id: number,
 		role_id: number,
 	): Promise<Assignment | undefined> {
@@ -53,7 +54,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterByPersona(persona_id: number): Promise<Assignment[]> {
+	async filterByPersona(persona_id: ActorId): Promise<Assignment[]> {
 		const data = await this.sql<Assignment[]>`
 			SELECT a.assignment_id, a.persona_id, a.hub_id, a.role_id, a.created
 			FROM assignments a JOIN (
@@ -88,7 +89,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return Number(data[0].count);
 	}
 
-	async isPersonaInHub(persona_id: number, hub_id: number): Promise<boolean> {
+	async isPersonaInHub(persona_id: ActorId, hub_id: number): Promise<boolean> {
 		const [{exists}] = await this.sql`
 			SELECT EXISTS(SELECT 1 FROM assignments WHERE hub_id=${hub_id} AND persona_id=${persona_id});
 		`;
@@ -103,7 +104,7 @@ export class AssignmentRepo extends PostgresRepo {
 		if (!data.count) throw Error();
 	}
 
-	async deleteByPersona(persona_id: number): Promise<number> {
+	async deleteByPersona(persona_id: ActorId): Promise<number> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments
 			WHERE persona_id=${persona_id}
@@ -111,7 +112,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return data.count;
 	}
 
-	async deleteByPersonaAndHub(persona_id: number, hub_id: number): Promise<number> {
+	async deleteByPersonaAndHub(persona_id: ActorId, hub_id: number): Promise<number> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments 
 			WHERE ${persona_id}=persona_id AND ${hub_id}=hub_id

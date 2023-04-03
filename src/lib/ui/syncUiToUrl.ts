@@ -3,7 +3,7 @@ import {browser} from '$app/environment';
 import {goto} from '$app/navigation';
 import {Logger} from '@feltjs/util/log.js';
 
-import type {AccountActor} from '$lib/vocab/actor/actor';
+import type {AccountActor, ActorId} from '$lib/vocab/actor/actor';
 import {ACTOR_QUERY_KEY, toSearchParams} from '$lib/ui/url';
 import type {Ui} from '$lib/ui/ui';
 import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
@@ -78,7 +78,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 	}
 };
 
-const selectPersona = ({personaIdSelection}: Ui, persona_id: number): void => {
+const selectPersona = ({personaIdSelection}: Ui, persona_id: ActorId): void => {
 	// TODO could remove this typecase if `syncUiToUrl` is changed to be an event
 	(personaIdSelection as Writable<number | null>).set(persona_id);
 };

@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@feltjs/eslint-config": "^0.2.1",
-    "@feltjs/gro": "^0.73.0",
+    "@feltjs/gro": "^0.74.0",
     "@ryanatkn/json-schema-to-typescript": "^11.1.2",
     "@sveltejs/adapter-node": "^1.2.3",
     "@sveltejs/kit": "^1.14.0",
