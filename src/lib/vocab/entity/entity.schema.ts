@@ -1,3 +1,10 @@
+export const EntityIdSchema = {
+	$id: '/schemas/EntityId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'EntityId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const EntitySchema = {
 	$id: '/schemas/Entity.json',
 	type: 'object',
@@ -10,7 +17,7 @@ export const EntitySchema = {
 		A directory is an ActivityStreams Collection referenced by each Space.
 	`,
 	properties: {
-		entity_id: {type: 'number'},
+		entity_id: {type: 'number', tsType: 'EntityId'},
 		persona_id: {
 			type: 'number',
 			tsType: 'ActorId',

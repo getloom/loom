@@ -68,7 +68,11 @@ export const UpdateEntity: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			entity_id: {type: 'number'},
+			entity_id: {
+				type: 'number',
+				tsType: 'EntityId',
+				tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+			},
 			data: {type: 'object', tsType: 'EntityData'},
 			path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 		},

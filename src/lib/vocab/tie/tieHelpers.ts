@@ -1,6 +1,7 @@
 import {mutable, type Mutable} from '@feltcoop/svelte-gettable-stores';
 
 import type {Tie} from '$lib/vocab/tie/tie';
+import type {EntityId} from '$lib/vocab/entity/entity';
 
 export const toTieEntityIds = (ties: Tie[]): Set<number> => {
 	const ids = new Set<number>();
@@ -13,7 +14,7 @@ export const toTieEntityIds = (ties: Tie[]): Set<number> => {
 
 export const lookupTies = (
 	tiesByEntityId: Map<number, Mutable<Set<Tie>>>,
-	entity_id: number,
+	entity_id: EntityId,
 ): Mutable<Set<Tie>> => {
 	let ties = tiesByEntityId.get(entity_id);
 	if (!ties) tiesByEntityId.set(entity_id, (ties = mutable(new Set())));

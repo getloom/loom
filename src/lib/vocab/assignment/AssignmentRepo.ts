@@ -2,8 +2,8 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment.js';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment.js';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('AssignmentRepo') + gray(']'));

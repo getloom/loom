@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
@@ -27,7 +27,7 @@ export class EntityRepo extends PostgresRepo {
 		return entity[0];
 	}
 
-	async findById(entity_id: number): Promise<Entity | undefined> {
+	async findById(entity_id: EntityId): Promise<Entity | undefined> {
 		const data = await this.sql<Entity[]>`
 			SELECT entity_id, space_id, path, data, persona_id, created, updated 
 			FROM entities WHERE entity_id=${entity_id}
@@ -81,7 +81,7 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	async update(
-		entity_id: number,
+		entity_id: EntityId,
 		data?: EntityData,
 		path?: string | null | undefined, // value is nullable in the db
 		space_id?: number,
@@ -151,7 +151,7 @@ export class EntityRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterDirectoriesByEntity(entity_id: number): Promise<Entity[]> {
+	async filterDirectoriesByEntity(entity_id: EntityId): Promise<Entity[]> {
 		log.debug(`looking for directories for entity: ${entity_id}`);
 		const directories = await this.sql<Entity[]>`
 			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated, e.space_id, e.path FROM entities e

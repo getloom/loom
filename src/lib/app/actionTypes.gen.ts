@@ -38,7 +38,7 @@ import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
 import type {PublicActor, ClientActor} from '$lib/vocab/actor/actor';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';

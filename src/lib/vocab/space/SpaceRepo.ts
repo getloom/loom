@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Space} from '$lib/vocab/space/space.js';
+import type {EntityId} from '$lib/vocab/entity/entity';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('SpaceRepo') + gray(']'));
@@ -78,7 +79,7 @@ export class SpaceRepo extends PostgresRepo {
 		if (!data.count) throw Error('no space found');
 	}
 
-	async findByEntity(entity_id: number): Promise<Space> {
+	async findByEntity(entity_id: EntityId): Promise<Space> {
 		log.debug(`[findByEntity] ${entity_id}`);
 		const data = await this.sql<Space[]>`
 				SELECT s.space_id, s.name, s.icon, s.view, s.updated, s.created, s.hub_id, s.directory_id 
