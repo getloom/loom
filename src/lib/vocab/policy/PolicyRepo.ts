@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Policy} from '$lib/vocab/policy/policy';
+import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -48,7 +48,7 @@ export class PolicyRepo extends PostgresRepo {
 		return result[0];
 	}
 
-	async update(policy_id: number, data: object | null | undefined): Promise<Policy> {
+	async update(policy_id: PolicyId, data: object | null | undefined): Promise<Policy> {
 		const result = await this.sql<Policy[]>`
 			UPDATE policies SET updated=NOW(), data=${this.sql.json(data as any)} WHERE policy_id=${policy_id}
 			RETURNING *
@@ -57,7 +57,7 @@ export class PolicyRepo extends PostgresRepo {
 		return result[0];
 	}
 
-	async deleteById(policy_id: number): Promise<void> {
+	async deleteById(policy_id: PolicyId): Promise<void> {
 		log.debug('[deleteById]', policy_id);
 		const result = await this.sql<any[]>`
 			DELETE FROM policies WHERE policy_id=${policy_id}

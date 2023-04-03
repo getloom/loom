@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Role} from '$lib/vocab/role/role';
+import type {PolicyId} from '$lib/vocab/policy/policy';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -18,7 +19,7 @@ export class RoleRepo extends PostgresRepo {
 		return result[0];
 	}
 
-	async findByPolicy(policy_id: number): Promise<Role> {
+	async findByPolicy(policy_id: PolicyId): Promise<Role> {
 		log.debug('[findByPolicy]', policy_id);
 		const result = await this.sql<Role[]>`
 			SELECT r.role_id, r.hub_id, r.name, r.created, r.updated 

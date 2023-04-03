@@ -1,3 +1,10 @@
+export const PolicyIdSchema = {
+	$id: '/schemas/PolicyId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'PolicyId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const PolicySchema = {
 	$id: '/schemas/Policy.json',
 	type: 'object',
@@ -7,7 +14,7 @@ export const PolicySchema = {
 		Data is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	`,
 	properties: {
-		policy_id: {type: 'number'},
+		policy_id: {type: 'number', tsType: 'PolicyId'},
 		role_id: {type: 'number'},
 		permission: {type: 'string'},
 		data: {anyOf: [{type: 'object'}, {type: 'null'}]},

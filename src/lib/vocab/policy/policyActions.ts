@@ -69,7 +69,11 @@ export const UpdatePolicy: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			policy_id: {type: 'number'},
+			policy_id: {
+				type: 'number',
+				tsType: 'PolicyId',
+				tsImport: "import type {PolicyId} from '$lib/vocab/policy/policy'",
+			},
 			data: {anyOf: [{type: 'object'}, {type: 'null'}]},
 		},
 		required: ['actor', 'policy_id', 'data'],
@@ -100,7 +104,11 @@ export const DeletePolicy: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			policy_id: {type: 'number'},
+			policy_id: {
+				type: 'number',
+				tsType: 'PolicyId',
+				tsImport: "import type {PolicyId} from '$lib/vocab/policy/policy'",
+			},
 		},
 		required: ['actor', 'policy_id'],
 		additionalProperties: false,

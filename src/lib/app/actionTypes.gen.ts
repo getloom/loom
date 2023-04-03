@@ -42,7 +42,7 @@ import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {Role} from '$lib/vocab/role/role';
-import type {Policy} from '$lib/vocab/policy/policy';
+import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
 import type {MutationContext} from '$lib/ui/mutation';
 import type {ClientSession, ClientAccountSession, AccountSettings, ClientAccount} from '$lib/vocab/account/account';
 import type {HubTemplate} from '$lib/app/templates';
