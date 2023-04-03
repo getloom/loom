@@ -16,7 +16,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
-import type {Role} from '$lib/vocab/role/role';
+import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
 import type {MutationContext} from '$lib/ui/mutation';
 import type {
@@ -402,7 +402,7 @@ export interface CreateAssignmentParams {
 	actor: number;
 	targetActor: number;
 	hub_id: HubId;
-	role_id: number;
+	role_id: RoleId;
 }
 export interface CreateAssignmentResponse {
 	/**
@@ -605,7 +605,7 @@ export type ReadRolesResponseResult = ApiResult<ReadRolesResponse>;
 
 export interface UpdateRoleParams {
 	actor: number;
-	role_id: number;
+	role_id: RoleId;
 	name: string;
 }
 export interface UpdateRoleResponse {
@@ -622,14 +622,14 @@ export type UpdateRoleResponseResult = ApiResult<UpdateRoleResponse>;
 
 export interface DeleteRoleParams {
 	actor: number;
-	role_id: number;
+	role_id: RoleId;
 }
 export type DeleteRoleResponse = null;
 export type DeleteRoleResponseResult = ApiResult<DeleteRoleResponse>;
 
 export interface CreatePolicyParams {
 	actor: number;
-	role_id: number;
+	role_id: RoleId;
 	permission: string;
 }
 export interface CreatePolicyResponse {
@@ -646,7 +646,7 @@ export type CreatePolicyResponseResult = ApiResult<CreatePolicyResponse>;
 
 export interface ReadPoliciesParams {
 	actor: number;
-	role_id: number;
+	role_id: RoleId;
 }
 export interface ReadPoliciesResponse {
 	policies: Policy[];

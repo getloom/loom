@@ -6,6 +6,7 @@ import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {RoleId} from '$lib/vocab/role/role';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('HubRepo') + gray(']'));
@@ -100,7 +101,7 @@ export class HubRepo extends PostgresRepo {
 		return this.findById(ADMIN_HUB_ID);
 	}
 
-	async findByRole(role_id: number): Promise<Hub | undefined> {
+	async findByRole(role_id: RoleId): Promise<Hub | undefined> {
 		log.debug(`[findByRole] ${role_id}`);
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated

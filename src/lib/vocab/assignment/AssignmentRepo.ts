@@ -2,6 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
+import type {RoleId} from '$lib/vocab/role/role';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment.js';
@@ -10,7 +11,7 @@ import type {AccountId} from '$lib/vocab/account/account';
 const log = new Logger(gray('[') + blue('AssignmentRepo') + gray(']'));
 
 export class AssignmentRepo extends PostgresRepo {
-	async create(persona_id: ActorId, hub_id: HubId, role_id: number): Promise<Assignment> {
+	async create(persona_id: ActorId, hub_id: HubId, role_id: RoleId): Promise<Assignment> {
 		const data = await this.sql<Assignment[]>`
 			INSERT INTO assignments (persona_id, hub_id, role_id) VALUES (
 				${persona_id},${hub_id},${role_id}
@@ -32,7 +33,7 @@ export class AssignmentRepo extends PostgresRepo {
 	async findByUniqueIds(
 		persona_id: ActorId,
 		hub_id: HubId,
-		role_id: number,
+		role_id: RoleId,
 	): Promise<Assignment | undefined> {
 		const data = await this.sql<Assignment[]>`
 			SELECT assignment_id, persona_id, hub_id, role_id, created

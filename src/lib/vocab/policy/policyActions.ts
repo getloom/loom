@@ -9,7 +9,11 @@ export const CreatePolicy: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			role_id: {type: 'number'},
+			role_id: {
+				type: 'number',
+				tsType: 'RoleId',
+				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
+			},
 			permission: {type: 'string'},
 		},
 		required: ['actor', 'role_id', 'permission'],
@@ -39,7 +43,11 @@ export const ReadPolicies: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			role_id: {type: 'number'},
+			role_id: {
+				type: 'number',
+				tsType: 'RoleId',
+				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
+			},
 		},
 		required: ['actor', 'role_id'],
 		additionalProperties: false,

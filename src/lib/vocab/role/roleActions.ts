@@ -77,7 +77,11 @@ export const UpdateRole: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			role_id: {type: 'number'},
+			role_id: {
+				type: 'number',
+				tsType: 'RoleId',
+				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
+			},
 			name: {type: 'string'},
 		},
 		required: ['actor', 'role_id', 'name'],
@@ -108,7 +112,11 @@ export const DeleteRole: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			role_id: {type: 'number'},
+			role_id: {
+				type: 'number',
+				tsType: 'RoleId',
+				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
+			},
 		},
 		required: ['actor', 'role_id'],
 		additionalProperties: false,

@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Role} from '$lib/vocab/role/role';
+import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {PolicyId} from '$lib/vocab/policy/policy';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
@@ -10,7 +10,7 @@ import type {AccountId} from '$lib/vocab/account/account';
 const log = new Logger(gray('[') + blue('RoleRepo') + gray(']'));
 
 export class RoleRepo extends PostgresRepo {
-	async findById(role_id: number): Promise<Role> {
+	async findById(role_id: RoleId): Promise<Role> {
 		log.debug('[findById]', role_id);
 		const result = await this.sql<Role[]>`
 			SELECT role_id, hub_id, name, created, updated 
@@ -49,7 +49,7 @@ export class RoleRepo extends PostgresRepo {
 		return result[0];
 	}
 
-	async update(role_id: number, name: string): Promise<Role> {
+	async update(role_id: RoleId, name: string): Promise<Role> {
 		const result = await this.sql<Role[]>`
 			UPDATE roles SET updated=NOW(), name=${name} WHERE role_id=${role_id}
 			RETURNING *
@@ -58,7 +58,7 @@ export class RoleRepo extends PostgresRepo {
 		return result[0];
 	}
 
-	async deleteById(role_id: number): Promise<void> {
+	async deleteById(role_id: RoleId): Promise<void> {
 		log.debug('[deleteById]', role_id);
 		const result = await this.sql<any[]>`
 			DELETE FROM roles WHERE role_id=${role_id}

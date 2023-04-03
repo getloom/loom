@@ -23,7 +23,7 @@ import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import type {Role} from '$lib/vocab/role/role';
+import type {Role, RoleId} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {randomHue} from '$lib/ui/color';
@@ -60,7 +60,7 @@ export const randomAssignmentParams = (
 	actor: number,
 	targetActor: number,
 	hub_id: HubId,
-	role_id: number,
+	role_id: RoleId,
 ): CreateAssignmentParams => ({
 	actor,
 	targetActor,
@@ -102,7 +102,7 @@ export const randomRoleParams = (actor: number, hub_id: HubId): CreateRoleParams
 
 export const randomPolicyParams = (
 	actor: number,
-	role_id: number,
+	role_id: RoleId,
 	permission?: string,
 ): CreatePolicyParams => ({
 	actor,

@@ -2,6 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
+import type {RoleId} from '$lib/vocab/role/role';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
@@ -9,7 +10,7 @@ import type {AccountId} from '$lib/vocab/account/account';
 const log = new Logger(gray('[') + blue('PolicyRepo') + gray(']'));
 
 export class PolicyRepo extends PostgresRepo {
-	async filterByRole(role_id: number): Promise<Policy[]> {
+	async filterByRole(role_id: RoleId): Promise<Policy[]> {
 		log.debug('[filterByRole]', role_id);
 		const result = await this.sql<Policy[]>`
 			SELECT policy_id, role_id, permission, data, created, updated 
@@ -35,7 +36,7 @@ export class PolicyRepo extends PostgresRepo {
 	}
 
 	async create(
-		role_id: number,
+		role_id: RoleId,
 		permission: string,
 		data?: object | null | undefined,
 	): Promise<Policy> {

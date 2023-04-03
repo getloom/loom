@@ -15,7 +15,11 @@ export const PolicySchema = {
 	`,
 	properties: {
 		policy_id: {type: 'number', tsType: 'PolicyId'},
-		role_id: {type: 'number'},
+		role_id: {
+			type: 'number',
+			tsType: 'RoleId',
+			tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
+		},
 		permission: {type: 'string'},
 		data: {anyOf: [{type: 'object'}, {type: 'null'}]},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},

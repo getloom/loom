@@ -1,3 +1,10 @@
+export const RoleIdSchema = {
+	$id: '/schemas/RoleId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'RoleId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const RoleSchema = {
 	$id: '/schemas/Role.json',
 	type: 'object',
@@ -7,7 +14,7 @@ export const RoleSchema = {
 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	`,
 	properties: {
-		role_id: {type: 'number'},
+		role_id: {type: 'number', tsType: 'RoleId'},
 		hub_id: {
 			type: 'number',
 			tsType: 'HubId',
