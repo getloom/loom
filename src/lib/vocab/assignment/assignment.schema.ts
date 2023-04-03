@@ -1,3 +1,10 @@
+export const AssignmentIdSchema = {
+	$id: '/schemas/AssignmentId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'AssignmentId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const AssignmentSchema = {
 	$id: '/schemas/Assignment.json',
 	type: 'object',
@@ -7,7 +14,7 @@ export const AssignmentSchema = {
 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	`,
 	properties: {
-		assignment_id: {type: 'number'},
+		assignment_id: {type: 'number', tsType: 'AssignmentId'},
 		persona_id: {
 			type: 'number',
 			tsType: 'ActorId',

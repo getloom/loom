@@ -11,7 +11,7 @@ import type {
 } from '$lib/server/service';
 import type {Hub, HubSettings} from '$lib/vocab/hub/hub';
 import type {PublicActor, ClientActor} from '$lib/vocab/actor/actor';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
+import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
@@ -418,7 +418,7 @@ export type CreateAssignmentResponseResult = ApiResult<CreateAssignmentResponse>
 
 export interface DeleteAssignmentParams {
 	actor: number;
-	assignment_id: number;
+	assignment_id: AssignmentId;
 }
 export type DeleteAssignmentResponse = null;
 export type DeleteAssignmentResponseResult = ApiResult<DeleteAssignmentResponse>;

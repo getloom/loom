@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment.js';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -19,7 +19,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async findById(assignment_id: number): Promise<Assignment | undefined> {
+	async findById(assignment_id: AssignmentId): Promise<Assignment | undefined> {
 		const data = await this.sql<Assignment[]>`
 			SELECT assignment_id, persona_id, hub_id, role_id, created
 			FROM assignments
@@ -97,7 +97,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return exists;
 	}
 
-	async deleteById(assignment_id: number): Promise<void> {
+	async deleteById(assignment_id: AssignmentId): Promise<void> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments 
 			WHERE assignment_id=${assignment_id}

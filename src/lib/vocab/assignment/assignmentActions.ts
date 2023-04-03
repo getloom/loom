@@ -41,7 +41,11 @@ export const DeleteAssignment: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			assignment_id: {type: 'number'},
+			assignment_id: {
+				type: 'number',
+				tsType: 'AssignmentId',
+				tsImport: "import type {AssignmentId} from '$lib/vocab/assignment/assignment'",
+			},
 		},
 		required: ['actor', 'assignment_id'],
 		additionalProperties: false,
