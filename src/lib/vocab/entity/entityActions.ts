@@ -10,7 +10,11 @@ export const CreateEntity: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			space_id: {type: 'number'},
+			space_id: {
+				type: 'number',
+				tsType: 'SpaceId',
+				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
+			},
 			path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 			data: {type: 'object', tsType: 'EntityData'},
 			ties: {

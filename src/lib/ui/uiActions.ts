@@ -28,7 +28,11 @@ export const Ephemera: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			space_id: {type: 'number'},
+			space_id: {
+				type: 'number',
+				tsType: 'SpaceId',
+				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
+			},
 			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
@@ -39,7 +43,11 @@ export const Ephemera: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			space_id: {type: 'number'},
+			space_id: {
+				type: 'number',
+				tsType: 'SpaceId',
+				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
+			},
 			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
@@ -116,7 +124,11 @@ export const ViewSpace: ClientActionData = {
 		$id: '/schemas/ViewSpaceParams.json',
 		type: 'object',
 		properties: {
-			space_id: {type: 'number'},
+			space_id: {
+				type: 'number',
+				tsType: 'SpaceId',
+				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
+			},
 			view: {type: ['string', 'null']},
 		},
 		required: ['space_id', 'view'],

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type {Space} from '$lib/vocab/space/space.js';
-	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {Space} from '$lib/vocab/space/space';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import SpaceNavItem from '$lib/ui/SpaceNavItem.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 

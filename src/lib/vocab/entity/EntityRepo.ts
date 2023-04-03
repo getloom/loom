@@ -6,6 +6,7 @@ import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {SpaceId} from '$lib/vocab/space/space';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -15,7 +16,7 @@ export class EntityRepo extends PostgresRepo {
 	async create(
 		persona_id: ActorId,
 		data: EntityData,
-		space_id: number | null,
+		space_id: SpaceId | null,
 		path: string | null = null,
 	): Promise<Entity> {
 		log.debug('[createEntity]', persona_id);
@@ -85,7 +86,7 @@ export class EntityRepo extends PostgresRepo {
 		entity_id: EntityId,
 		data?: EntityData,
 		path?: string | null | undefined, // value is nullable in the db
-		space_id?: number,
+		space_id?: SpaceId,
 	): Promise<Entity> {
 		log.debug('[update]', entity_id);
 		const _data = await this.sql<Entity[]>`

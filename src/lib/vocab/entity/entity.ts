@@ -2,6 +2,7 @@
 
 import type {Flavored} from '@feltjs/util';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {SpaceId} from '$lib/vocab/space/space';
 import type {EntityData} from '$lib/vocab/entity/entityData';
 
 export type EntityId = Flavored<number, 'EntityId'>;
@@ -19,7 +20,7 @@ export type EntityId = Flavored<number, 'EntityId'>;
 export interface Entity {
 	entity_id: EntityId;
 	persona_id: ActorId;
-	space_id: number;
+	space_id: SpaceId;
 	path: string | null;
 	data: EntityData;
 	created: Date;

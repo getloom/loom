@@ -1,3 +1,10 @@
+export const SpaceIdSchema = {
+	$id: '/schemas/SpaceId.json',
+	type: 'number',
+	tsType: "Flavored<number, 'SpaceId'>",
+	tsImport: "import {Flavored} from '@feltjs/util';",
+};
+
 export const SpaceSchema = {
 	$id: '/schemas/Space.json',
 	type: 'object',
@@ -7,7 +14,7 @@ export const SpaceSchema = {
 	 Each is a Svelte component that conforms to the View interface.
  `,
 	properties: {
-		space_id: {type: 'number'},
+		space_id: {type: 'number', tsType: 'SpaceId'},
 		name: {type: 'string'},
 		icon: {type: 'string'},
 		view: {type: 'string'},

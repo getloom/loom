@@ -2,9 +2,9 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
 
-	import type {AccountActor} from '$lib/vocab/actor/actor.js';
-	import type {Space} from '$lib/vocab/space/space.js';
-	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {Space} from '$lib/vocab/space/space';
+	import type {Hub} from '$lib/vocab/hub/hub';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
 	import {getApp} from '$lib/ui/app';
 	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';

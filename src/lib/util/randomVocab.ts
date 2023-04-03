@@ -1,6 +1,6 @@
 import {unwrap} from '@feltjs/util';
 
-import type {Space} from '$lib/vocab/space/space';
+import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import type {Account} from '$lib/vocab/account/account';
 import type {AccountActor, ClientActor, PublicActor} from '$lib/vocab/actor/actor';
@@ -85,7 +85,7 @@ export const randomSpaceParams = (
 });
 export const randomEntityParams = (
 	actor: number,
-	space_id: number,
+	space_id: SpaceId,
 	source_id: number,
 ): CreateEntityParams => ({
 	actor,

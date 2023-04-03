@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Space} from '$lib/vocab/space/space.js';
+import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {EntityId} from '$lib/vocab/entity/entity';
 import type {AccountId} from '$lib/vocab/account/account';
@@ -10,7 +10,7 @@ import type {AccountId} from '$lib/vocab/account/account';
 const log = new Logger(gray('[') + blue('SpaceRepo') + gray(']'));
 
 export class SpaceRepo extends PostgresRepo {
-	async findById(space_id: number): Promise<Space | undefined> {
+	async findById(space_id: SpaceId): Promise<Space | undefined> {
 		log.debug(`[findById] ${space_id}`);
 		const data = await this.sql<Space[]>`
 			SELECT space_id, name, icon, view, updated, created, hub_id, directory_id
@@ -58,7 +58,7 @@ export class SpaceRepo extends PostgresRepo {
 	}
 
 	async update(
-		space_id: number,
+		space_id: SpaceId,
 		partial: Partial<Pick<Space, 'name' | 'icon' | 'view'>>,
 	): Promise<Space> {
 		log.debug(`updating data for space: ${space_id}`);
@@ -72,7 +72,7 @@ export class SpaceRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async deleteById(space_id: number): Promise<void> {
+	async deleteById(space_id: SpaceId): Promise<void> {
 		log.debug('[deleteById]', space_id);
 		const data = await this.sql<any[]>`
 			DELETE FROM spaces WHERE space_id=${space_id}

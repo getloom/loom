@@ -12,7 +12,7 @@ import type {
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import type {PublicActor, ClientActor} from '$lib/vocab/actor/actor';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
-import type {Space} from '$lib/vocab/space/space';
+import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {EntityData, Directory} from '$lib/vocab/entity/entityData';
 import type {Tie} from '$lib/vocab/tie/tie';
@@ -466,7 +466,7 @@ export type ReadSpacesResponseResult = ApiResult<ReadSpacesResponse>;
 
 export interface UpdateSpaceParams {
 	actor: number;
-	space_id: number;
+	space_id: SpaceId;
 	name?: string;
 	path?: string;
 	icon?: string;
@@ -486,14 +486,14 @@ export type UpdateSpaceResponseResult = ApiResult<UpdateSpaceResponse>;
 
 export interface DeleteSpaceParams {
 	actor: number;
-	space_id: number;
+	space_id: SpaceId;
 }
 export type DeleteSpaceResponse = null;
 export type DeleteSpaceResponseResult = ApiResult<DeleteSpaceResponse>;
 
 export interface CreateEntityParams {
 	actor: number;
-	space_id: number;
+	space_id: SpaceId;
 	path?: string | null;
 	data: EntityData;
 	ties?: (
@@ -685,7 +685,7 @@ export type PingResponseResult = ApiResult<PingResponse>;
 
 export interface EphemeraParams {
 	actor: number;
-	space_id: number;
+	space_id: SpaceId;
 	data: {
 		type: string;
 		[k: string]: unknown;
@@ -693,7 +693,7 @@ export interface EphemeraParams {
 }
 export interface EphemeraResponse {
 	actor: number;
-	space_id: number;
+	space_id: SpaceId;
 	data: {
 		type: string;
 		[k: string]: unknown;
@@ -729,7 +729,7 @@ export interface OpenDialogParams {
 export type CloseDialogParams = void;
 
 export interface ViewSpaceParams {
-	space_id: number;
+	space_id: SpaceId;
 	view: string | null;
 }
 

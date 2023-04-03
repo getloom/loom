@@ -85,7 +85,11 @@ export const UpdateSpace: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			space_id: {type: 'number'},
+			space_id: {
+				type: 'number',
+				tsType: 'SpaceId',
+				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
+			},
 			name: {type: 'string'},
 			path: {type: 'string'},
 			icon: {type: 'string'},
@@ -119,7 +123,11 @@ export const DeleteSpace: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number'},
-			space_id: {type: 'number'},
+			space_id: {
+				type: 'number',
+				tsType: 'SpaceId',
+				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
+			},
 		},
 		required: ['actor', 'space_id'],
 		additionalProperties: false,
