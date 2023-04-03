@@ -7,7 +7,12 @@ import type {ApiServer} from '$lib/server/ApiServer';
 import {toValidationErrorMessage, validateSchema} from '$lib/util/ajv';
 import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
-import {performService, toServiceRequest} from '$lib/server/service';
+import {
+	performService,
+	toServiceRequest,
+	type ServiceResult,
+	toApiResult,
+} from '$lib/server/service';
 import type {ApiResult} from '$lib/server/api';
 import {broadcast} from '$lib/server/broadcast';
 
@@ -55,7 +60,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			return;
 		}
 
-		let result: ApiResult;
+		let result: ServiceResult;
 
 		//TODO parse/scrub params alongside validation
 		const validateParams = validateSchema<any>(service.action.params);
@@ -70,7 +75,11 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		} else {
 			const authorizeResult = await authorize(service, server.db.repos, account_id, params);
 			if (!authorizeResult.ok) {
-				result = {ok: false, status: authorizeResult.status, message: authorizeResult.message};
+				result = {
+					ok: false,
+					status: authorizeResult.status,
+					message: authorizeResult.message,
+				};
 			} else {
 				const actor = authorizeResult.value?.actor;
 				result = await performService(
@@ -81,10 +90,12 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			}
 		}
 
+		const apiResult = toApiResult(result);
+
 		const responseMessage: JsonRpcResponse<ApiResult> = {
 			jsonrpc: '2.0',
 			id: message.id, // TODO this should only be set for the client we're responding to -- maybe don't use `response`?
-			result,
+			result: apiResult,
 		};
 		const serializedResponse = JSON.stringify(responseMessage);
 
@@ -114,6 +125,6 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		socket.send(serializedResponse);
 
 		if (service.action.broadcast) {
-			broadcast(server, service, result, params, socket);
+			broadcast(server, service, apiResult, params, result.broadcast, socket);
 		}
 	};

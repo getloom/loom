@@ -4,7 +4,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {ApiServer} from '$lib/server/ApiServer';
 import type {BroadcastMessage} from '$lib/util/websocket';
-import type {Service} from '$lib/server/service';
+import type {BroadcastInfo, Service} from '$lib/server/service';
 import type {ApiResult} from '$lib/server/api';
 
 // TODO maybe merge with `$lib/util/websocket.ts`
@@ -16,6 +16,7 @@ export const broadcast = (
 	service: Service,
 	result: ApiResult,
 	params: any,
+	_info?: BroadcastInfo, // TODO use below and make required
 	socket?: ws,
 ): void => {
 	const message: BroadcastMessage = {
@@ -35,9 +36,6 @@ export const broadcast = (
 	// `server.websocketServer.getSocketsByHubId(hub_id)`
 	// `DeletePersona` deals with *multiple* hubs -- given some event, who needs to know about it?
 	// Each service determines which hubs should hear about a change. (hub being the starting point, needs more granularity)
-	// At least two options:
-	// - encode in the return value of `perform`
-	// - or pass in a helper like `broadcast` to `perform` that can be called to setup who should receive the result
 	for (const client of server.websocketServer.wss.clients) {
 		if (client !== socket) {
 			client.send(serialized);

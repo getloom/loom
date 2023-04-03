@@ -14,15 +14,24 @@ import {randomHue} from '$lib/ui/color';
 
 const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
 
-export const cleanOrphanHubs = async (hubIds: number[], repos: Repos): Promise<void> => {
+/**
+ * Deletes hubs that have no remaining account actors.
+ * Returns the deleted hub ids, if any.
+ * @param hubIds
+ * @param repos
+ */
+export const cleanOrphanHubs = async (hubIds: number[], repos: Repos): Promise<null | number[]> => {
+	let deleted: number[] | null = null;
 	for (const hub_id of hubIds) {
 		const accountPersonaAssignmentsCount =
 			await repos.assignment.countAccountActorAssignmentsByHubId(hub_id); // eslint-disable-line no-await-in-loop
 		if (accountPersonaAssignmentsCount === 0) {
 			log.debug('no assignments found for hub, cleaning up', hub_id);
 			await repos.hub.deleteById(hub_id); // eslint-disable-line no-await-in-loop
+			(deleted || (deleted = [])).push(hub_id);
 		}
 	}
+	return deleted;
 };
 
 export const initAdminHub = async (

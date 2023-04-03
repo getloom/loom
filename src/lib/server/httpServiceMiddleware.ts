@@ -3,7 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {red, blue, gray} from '$lib/server/colors';
 import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';
-import {type Service, toServiceRequest, performService} from '$lib/server/service';
+import {type Service, toServiceRequest, performService, toApiResult} from '$lib/server/service';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
@@ -87,9 +87,9 @@ export const toHttpServiceMiddleware =
 			}
 		}
 		log.debug('result.status', result.status);
-		send(res, result.status, result.value); // TODO consider returning the entire `result` for convenience (but it's less efficient)
+		send(res, result.status, result.value);
 
 		if (service.action.broadcast) {
-			broadcast(server, service, result, params);
+			broadcast(server, service, toApiResult(result), params, result.broadcast);
 		}
 	};

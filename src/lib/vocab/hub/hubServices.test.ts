@@ -268,6 +268,7 @@ test_hubServices('LeaveHub removes all assignments for the persona', async ({rep
 		}),
 	);
 	assert.ok(!(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
+	assert.is(await repos.hub.findById(hub.hub_id), undefined);
 });
 
 test_hubServices('fail LeaveHub when the persona has no assignments', async ({repos, random}) => {

@@ -4,14 +4,37 @@ import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {ISessionApi} from '$lib/session/SessionApi';
 import {Repos} from '$lib/db/Repos';
 import type {ActionActor} from '$lib/vocab/actor/actor';
-import {type ApiResult, toFailedApiResult} from '$lib/server/api';
+import {toFailedApiResult, type ApiResult} from '$lib/server/api';
+import type {Result} from '@feltjs/util';
+import type {ErrorResponse} from '$lib/util/error';
+
+export type BroadcastInfo = number | number[]; // TODO expand to `| {audience: BroadcastAudience; data: T}`
+
+/**
+ * This is the same as `ApiResult` with the additional `broadcast` key added.
+ * This is a server-only type, unlike the client-facing `ApiResult`.
+ */
+export type ServiceResult<TValue = any> = Result<
+	{status: number; value: TValue; broadcast?: BroadcastInfo}, // TODO make `broadcast` required after implementing for all services
+	{status: number} & ErrorResponse
+>;
+
+/**
+ * Converts a server-only `ServiceResult` to a client-facing `ApiResult`.
+ * @param serviceResult
+ * @returns an ApiResult
+ */
+export const toApiResult = <T>(serviceResult: ServiceResult<T>): ApiResult<T> =>
+	serviceResult.ok
+		? {ok: true, status: serviceResult.status, value: serviceResult.value}
+		: serviceResult;
 
 export const performService = async (
 	service: Service,
 	serviceRequest: ServiceRequest,
 	log?: Logger,
-): Promise<ApiResult> => {
-	let result!: ApiResult;
+): Promise<ServiceResult> => {
+	let result!: ServiceResult;
 	try {
 		if (service.transaction) {
 			await serviceRequest.repos.sql.begin(async (sql) => {
@@ -48,7 +71,7 @@ export type ServiceMethod =
 export type Service = NonAuthenticatedService | NonAuthorizedService | AuthorizedService;
 export interface NonAuthenticatedService<
 	TParams extends object | null = any,
-	TResult extends ApiResult = ApiResult,
+	TResult extends ServiceResult = ServiceResult,
 > {
 	action: ServiceActionData;
 	transaction: boolean;
@@ -56,7 +79,7 @@ export interface NonAuthenticatedService<
 }
 export interface NonAuthorizedService<
 	TParams extends object | null = any,
-	TResult extends ApiResult = ApiResult,
+	TResult extends ServiceResult = ServiceResult,
 > {
 	action: ServiceActionData;
 	transaction: boolean;
@@ -64,7 +87,7 @@ export interface NonAuthorizedService<
 }
 export interface AuthorizedService<
 	TParams extends object | null = any,
-	TResult extends ApiResult = ApiResult,
+	TResult extends ServiceResult = ServiceResult,
 > {
 	action: ServiceActionData;
 	transaction: boolean;

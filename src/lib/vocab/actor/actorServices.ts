@@ -149,11 +149,14 @@ export const DeletePersonaService: ServiceByName['DeletePersona'] = {
 		await repos.persona.deleteById(targetActor);
 		await repos.assignment.deleteByPersona(targetActor);
 		await repos.hub.deleteById(persona.hub_id); // must follow `persona.deleteById` it seems
-		await cleanOrphanHubs(
-			hubs.map((c) => c.hub_id).filter((c) => c !== persona.hub_id),
-			repos,
-		);
 
-		return {ok: true, status: 200, value: null};
+		// clean the hubs the persona is joined to, and assemble the broadcast audience
+		const joinedHubIds = hubs.map((c) => c.hub_id).filter((c) => c !== persona.hub_id);
+		const removedHubIds = await cleanOrphanHubs(joinedHubIds, repos);
+		const broadcastHubIds = removedHubIds
+			? joinedHubIds.filter((h) => !removedHubIds.includes(h))
+			: joinedHubIds;
+
+		return {ok: true, status: 200, value: null, broadcast: broadcastHubIds};
 	},
 };
