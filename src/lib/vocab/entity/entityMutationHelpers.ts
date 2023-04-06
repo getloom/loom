@@ -215,5 +215,10 @@ export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 			}
 		}
 		queryByKey.delete(entity_id);
+
+		// TODO
+		// if (evicted) {
+		// 	ui.afterMutation(() => ui.events.emit('evicted_entities', evicted!));
+		// }
 	}
 };

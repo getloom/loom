@@ -18,10 +18,10 @@ export const CreateEntity: Mutations['CreateEntity'] = async ({invoke, ui}) => {
 };
 
 //TODO should this be UpdateEntities & batch?
-export const UpdateEntity: Mutations['UpdateEntity'] = async ({invoke, ui}) => {
+export const UpdateEntities: Mutations['UpdateEntities'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	ui.mutate(() => stashEntities(ui, [result.value.entity]));
+	ui.mutate(() => stashEntities(ui, result.value.entities));
 	return result;
 };
 
@@ -32,11 +32,13 @@ export const EraseEntities: Mutations['EraseEntities'] = async ({invoke, ui}) =>
 	return result;
 };
 
-export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui, params}) => {
+export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	ui.mutate(() => evictEntities(ui, params.entityIds));
-	// TODO add `ui.events.emit('evicted_entities')`
+	ui.mutate(() => {
+		evictEntities(ui, result.value.deleted);
+		stashEntities(ui, result.value.entities);
+	});
 	return result;
 };
 

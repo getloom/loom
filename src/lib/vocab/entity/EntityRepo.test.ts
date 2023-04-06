@@ -2,8 +2,8 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers';
+import type {Entity} from '$lib/vocab/entity/entity';
 import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';
-import {expectError} from '$lib/util/testHelpers';
 
 /* test__EntityRepo */
 const test__EntityRepo = suite<TestDbContext>('EntityRepo');
@@ -66,37 +66,66 @@ test__EntityRepo('entites return sorted by descending id', async ({repos, random
 	assert.is(entity0.entity_id, entities[2].entity_id);
 });
 
-test__EntityRepo('disallow mutating tombstones', async ({repos, random}) => {
+test__EntityRepo('erase entities', async ({repos, random}) => {
 	const data = {type: 'Note', content: '1'} as const;
 	const {entity} = await random.entity(undefined, undefined, undefined, undefined, undefined, {
 		data,
 	});
 	assert.equal(entity.data, data); // just in case
+	const {entity: entity2} = await random.entity(
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		{data},
+	);
+	const {entity: entity3} = await random.entity(
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		undefined,
+		{data},
+	);
+
+	const ensureErased = async (e: Entity): Promise<void> => {
+		const found = await repos.entity.findById(e.entity_id);
+		assert.ok(found);
+		assert.equal(found, e);
+		const foundData = found.data as TombstoneEntityData;
+		assert.is(foundData.type, 'Tombstone');
+		assert.is(foundData.formerType, data.type);
+		assert.type(foundData.deleted, 'string');
+		assert.is(foundData.content, undefined);
+	};
 
 	// Erase the entity.
-	const eraseResult1 = await repos.entity.eraseByIds([entity.entity_id]);
-	const erased = eraseResult1[0];
+	const erased = await repos.entity.eraseByIds([entity.entity_id]);
+	assert.is(erased.length, 1);
+	assert.is(erased[0].entity_id, entity.entity_id);
+	await ensureErased(erased[0]);
 
-	// Disallow further `eraseByIds`
-	await expectError(repos.entity.eraseByIds([entity.entity_id]));
+	// Disallow further `eraseByIds` to the same entity as a no-op,
+	// but allow valid erasures in the same call.
+	const erased2 = await repos.entity.eraseByIds([
+		entity2.entity_id,
+		entity.entity_id,
+		entity3.entity_id,
+	]);
+	assert.is(erased2.length, 2);
+	assert.ok(erased2.some((e) => e.entity_id === entity2.entity_id));
+	assert.ok(erased2.some((e) => e.entity_id === entity3.entity_id));
+	await ensureErased(erased2[0]);
+	await ensureErased(erased2[1]);
 
-	// Disallow `update`
-	await expectError(repos.entity.update(entity.entity_id, {type: 'Note', content: '2'}));
-
-	// Ensure the entity is a Tombstone and didn't get mutated.
-	const found = await repos.entity.findById(entity.entity_id);
-	assert.ok(found);
-	assert.is(found.entity_id, entity.entity_id);
-	assert.is(found.persona_id, entity.persona_id);
-	const foundData = found.data as TombstoneEntityData;
-	assert.is(foundData.type, 'Tombstone');
-	assert.is(foundData.formerType, 'Note');
-	assert.type(foundData.deleted, 'string');
-	assert.is(foundData.content, undefined);
-	assert.equal(found, erased);
+	// Allow `update` to the erased entity.
+	// TODO this should be restricted through the governance system (see also the todo on the UpdateEntities service)
+	const data2 = {type: data.type, content: '2'};
+	const updated = await repos.entity.update(entity.entity_id, data2);
+	assert.is(updated.entity_id, entity.entity_id);
+	assert.equal(updated.data, data2);
 });
-
-// TODO add similar tests for Tombstones
 
 test__EntityRepo('check filtering for directories by entity id', async ({repos, random}) => {
 	//Gen space

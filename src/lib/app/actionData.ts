@@ -20,7 +20,7 @@ import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignme
 import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions';
 import {
 	CreateEntity,
-	UpdateEntity,
+	UpdateEntities,
 	ReadEntities,
 	QueryEntities,
 	EraseEntities,
@@ -75,7 +75,7 @@ export const actionDatas: ActionData[] = [
 	DeleteSpace,
 	// entityEvents
 	CreateEntity,
-	UpdateEntity,
+	UpdateEntities,
 	ReadEntities,
 	ReadEntitiesPaginated,
 	QueryEntities,

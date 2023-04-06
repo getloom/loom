@@ -29,23 +29,20 @@
 	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
-		actions.UpdateEntity({
+		actions.UpdateEntities({
 			actor: $persona.persona_id,
-			entity_id: $entity.entity_id,
-			data: {...$entity.data, [field]: updated},
+			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, [field]: updated}}],
 		});
 
 	const updateEntityData = async (updated: any) =>
-		actions.UpdateEntity({
+		actions.UpdateEntities({
 			actor: $persona.persona_id,
-			entity_id: $entity.entity_id,
-			data: updated,
+			entities: [{entity_id: $entity.entity_id, data: updated}],
 		});
 	const updateEntityPath = async (updated: string | null) =>
-		actions.UpdateEntity({
+		actions.UpdateEntities({
 			actor: $persona.persona_id,
-			entity_id: $entity.entity_id,
-			path: updated === '' ? null : updated,
+			entities: [{entity_id: $entity.entity_id, path: updated === '' ? null : updated}],
 		});
 
 	// TODO factor this out into a component or something, and handle failures

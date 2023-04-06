@@ -31,7 +31,7 @@ export class EntityRepo extends PostgresRepo {
 
 	async findById(entity_id: EntityId): Promise<Entity | undefined> {
 		const data = await this.sql<Entity[]>`
-			SELECT entity_id, space_id, path, data, persona_id, created, updated 
+			SELECT entity_id, space_id, path, data, persona_id, created, updated
 			FROM entities WHERE entity_id=${entity_id}
 		`;
 		return data[0];
@@ -97,7 +97,7 @@ export class EntityRepo extends PostgresRepo {
 				${path !== undefined ? this.sql`path=${path},` : this.sql``}
 				${space_id ? this.sql`space_id=${space_id},` : this.sql``}
 				updated=NOW()
-			WHERE entity_id=${entity_id} AND NOT (data @> '{"type":"Tombstone"}'::jsonb)
+			WHERE entity_id=${entity_id}
 			RETURNING *
 		`;
 		if (!_data.count) throw Error();
@@ -118,14 +118,15 @@ export class EntityRepo extends PostgresRepo {
 	}
 
 	//This function actually deletes the records in the DB
-	async deleteByIds(entityIds: EntityId[]): Promise<void> {
+	async deleteByIds(entityIds: EntityId[]): Promise<Entity[]> {
 		log.debug('[deleteByIds]', entityIds);
 		const data = await this.sql<any[]>`
-			DELETE FROM entities WHERE entity_id IN ${this.sql(entityIds)}
+			DELETE FROM entities
+			WHERE entity_id IN ${this.sql(entityIds)}
+			RETURNING *
 		`;
 		if (!data.count) throw Error();
-		// TODO maybe return the data or count instead of throwing?
-		if (data.count !== entityIds.length) throw Error();
+		return data;
 	}
 
 	// TODO needs to handle `data.attributedTo` and other data properties containing personas,

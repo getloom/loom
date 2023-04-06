@@ -9,7 +9,7 @@ import {
 	ReadEntitiesPaginatedService,
 	DeleteEntitiesService,
 	CreateEntityService,
-	UpdateEntityService,
+	UpdateEntitiesService,
 	EraseEntitiesService,
 } from '$lib/vocab/entity/entityServices';
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
@@ -238,12 +238,11 @@ test_entityServices(
 		).entities[0];
 
 		unwrap(
-			await UpdateEntityService.perform({
+			await UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
-					entity_id: note1.entity_id,
-					data: {type: 'Note', content: 'Note1'},
+					entities: [{entity_id: note1.entity_id, data: {type: 'Note', content: 'Note1'}}],
 				},
 			}),
 		);
@@ -261,36 +260,33 @@ test_entityServices(
 		).entities[0];
 
 		unwrap(
-			await UpdateEntityService.perform({
+			await UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
 					actor: persona.persona_id,
-					entity_id: note2.entity_id,
-					data: {type: 'Note', content: 'Note2'},
+					entities: [{entity_id: note2.entity_id, data: {type: 'Note', content: 'Note2'}}],
 				},
 			}),
 		);
 
 		//case 3, actor !== persona in common space | allowed
 		unwrap(
-			await UpdateEntityService.perform({
+			await UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona2),
 				params: {
 					actor: persona2.persona_id,
-					entity_id: note2.entity_id,
-					data: {type: 'Note', content: 'lol'},
+					entities: [{entity_id: note2.entity_id, data: {type: 'Note', content: 'lol'}}],
 				},
 			}),
 		);
 
 		//case 4, actor !== persona in regular space | block
 		await expectApiError(403, () =>
-			UpdateEntityService.perform({
+			UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona2),
 				params: {
 					actor: persona2.persona_id,
-					entity_id: note1.entity_id,
-					data: {type: 'Note', content: 'lol'},
+					entities: [{entity_id: note1.entity_id, data: {type: 'Note', content: 'lol'}}],
 				},
 			}),
 		);
@@ -307,7 +303,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 	const mutateDirectory = async (actor: AccountActor) => {
 		// Disallow changing the directory's type
 		unwrapError(
-			await performService(UpdateEntityService, {
+			await performService(UpdateEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.persona_id,
@@ -319,7 +315,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 
 		// Disallow removing `data.directory`
 		unwrapError(
-			await performService(UpdateEntityService, {
+			await performService(UpdateEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.persona_id,
@@ -331,7 +327,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 
 		// Disallow changing `data.directory`
 		unwrapError(
-			await performService(UpdateEntityService, {
+			await performService(UpdateEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.persona_id,

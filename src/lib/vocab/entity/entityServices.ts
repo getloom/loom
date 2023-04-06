@@ -2,7 +2,7 @@ import type {ServiceByName} from '$lib/app/actionTypes';
 import {
 	ReadEntities,
 	ReadEntitiesPaginated,
-	UpdateEntity,
+	UpdateEntities,
 	CreateEntity,
 	EraseEntities,
 	DeleteEntities,
@@ -10,13 +10,14 @@ import {
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {checkEntityPath, scrubEntityPath} from '$lib/vocab/entity/entityHelpers';
-import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
+import {cleanOrphanedEntities, updateDirectories} from '$lib/vocab/entity/entityHelpers.server';
 import {
 	checkHubAccess,
 	checkEntityOwnership,
 	checkPolicy,
 } from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
+import {ApiError} from '$lib/server/api';
 
 // TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
@@ -77,34 +78,46 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			}
 		}
 
-		// TODO optimize overfetching, we only want the `entity_id`
-		const directories = await repos.entity.filterDirectoriesByEntity(entity.entity_id);
-		// TODO optimize batch update
-		for (const directory of directories) {
-			entities.push(await repos.entity.update(directory.entity_id)); // eslint-disable-line no-await-in-loop
-		}
+		entities.push(...(await updateDirectories(repos, [entity.entity_id])));
 
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
 };
 
-export const UpdateEntityService: ServiceByName['UpdateEntity'] = {
-	action: UpdateEntity,
+// TODO handle tombstones in governance to allow admins and those with permission
+// (was formerly hardcoded in the repo, but that restriction was relaxed)
+export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
+	action: UpdateEntities,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, entity_id, data} = params;
-		await checkEntityOwnership(actor, [entity_id], repos);
+		const {actor} = params;
 
-		const path = scrubEntityPath(params.path);
+		// TODO add a bulk repo method (see this comment in multiple places)
+		const entities = await Promise.all(
+			params.entities.map(async (doc) => {
+				const {entity_id, data} = doc;
 
-		if (typeof path === 'string') {
-			const errorMessage = checkEntityPath(path);
-			if (errorMessage) return {ok: false, status: 400, message: errorMessage};
-		}
+				await checkEntityOwnership(actor, [entity_id], repos);
 
-		const entity = await repos.entity.update(entity_id, data, path);
+				const path = scrubEntityPath(doc.path);
 
-		return {ok: true, status: 200, value: {entity}};
+				if (typeof path === 'string') {
+					const errorMessage = checkEntityPath(path);
+					if (errorMessage) throw new ApiError(400, errorMessage);
+				}
+
+				return repos.entity.update(entity_id, data, path);
+			}),
+		);
+
+		entities.push(
+			...(await updateDirectories(
+				repos,
+				entities.map((e) => e.entity_id),
+			)),
+		);
+
+		return {ok: true, status: 200, value: {entities}};
 	},
 };
 
@@ -117,6 +130,9 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 		await checkEntityOwnership(actor, entityIds, repos);
 
 		const entities = await repos.entity.eraseByIds(entityIds);
+
+		entities.push(...(await updateDirectories(repos, entityIds)));
+
 		return {ok: true, status: 200, value: {entities}};
 	},
 };
@@ -129,10 +145,12 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 		const {actor, entityIds} = params;
 		await checkEntityOwnership(actor, entityIds, repos);
 
-		await repos.entity.deleteByIds(entityIds);
+		const deleted = (await repos.entity.deleteByIds(entityIds)).map((e) => e.entity_id);
 
-		await cleanOrphanedEntities(repos);
+		await cleanOrphanedEntities(repos); // TODO probably return the ids here that got orphaned, and scope to the hub in the function
 
-		return {ok: true, status: 200, value: null};
+		const entities = await updateDirectories(repos, entityIds);
+
+		return {ok: true, status: 200, value: {entities, deleted}};
 	},
 };

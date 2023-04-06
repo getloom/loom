@@ -18,7 +18,7 @@ import {
 	ReadEntitiesService,
 	ReadEntitiesPaginatedService,
 	CreateEntityService,
-	UpdateEntityService,
+	UpdateEntitiesService,
 	EraseEntitiesService,
 	DeleteEntitiesService,
 } from '$lib/vocab/entity/entityServices';
@@ -82,7 +82,7 @@ export const services: Map<string, Service> = new Map(
 		ReadEntitiesService,
 		ReadEntitiesPaginatedService,
 		CreateEntityService,
-		UpdateEntityService,
+		UpdateEntitiesService,
 		EraseEntitiesService,
 		DeleteEntitiesService,
 		// roleServices

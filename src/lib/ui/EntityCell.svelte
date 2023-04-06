@@ -34,10 +34,9 @@
 			errorMessage = 'invalid json';
 			return;
 		}
-		const result = await actions.UpdateEntity({
+		const result = await actions.UpdateEntities({
 			actor: $persona.persona_id,
-			entity_id: $entity.entity_id,
-			data: updatedData,
+			entities: [{entity_id: $entity.entity_id, data: updatedData}],
 		});
 		if (!result.ok) errorMessage = result.message;
 	};

@@ -19,7 +19,7 @@ import {CreateSpace, DeleteSpace, UpdateSpace} from '$lib/vocab/space/spaceMutat
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentMutations';
 import {
 	CreateEntity,
-	UpdateEntity,
+	UpdateEntities,
 	EraseEntities,
 	DeleteEntities,
 	ReadEntities,
@@ -67,7 +67,7 @@ export const mutations: Record<string, Mutation> = {
 	DeleteAssignment,
 	// entityMutations
 	CreateEntity,
-	UpdateEntity,
+	UpdateEntities,
 	EraseEntities,
 	DeleteEntities,
 	ReadEntities,

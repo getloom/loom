@@ -49,10 +49,9 @@
 	const updateEntity = async (checked: boolean) => {
 		if ($entity.data.checked === checked) return;
 		pending = true;
-		await actions.UpdateEntity({
+		await actions.UpdateEntities({
 			actor: $persona.persona_id,
-			entity_id: $entity.entity_id,
-			data: {...$entity.data, checked},
+			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, checked}}],
 		});
 		pending = false;
 	};

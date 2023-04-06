@@ -51,7 +51,7 @@ export type ServiceActionName =
 	| 'UpdateSpace'
 	| 'DeleteSpace'
 	| 'CreateEntity'
-	| 'UpdateEntity'
+	| 'UpdateEntities'
 	| 'ReadEntities'
 	| 'ReadEntitiesPaginated'
 	| 'EraseEntities'
@@ -100,7 +100,7 @@ export interface EventParamsByName {
 	UpdateSpace: UpdateSpaceParams;
 	DeleteSpace: DeleteSpaceParams;
 	CreateEntity: CreateEntityParams;
-	UpdateEntity: UpdateEntityParams;
+	UpdateEntities: UpdateEntitiesParams;
 	ReadEntities: ReadEntitiesParams;
 	ReadEntitiesPaginated: ReadEntitiesPaginatedParams;
 	QueryEntities: QueryEntitiesParams;
@@ -147,7 +147,7 @@ export interface EventResponseByName {
 	UpdateSpace: UpdateSpaceResponse;
 	DeleteSpace: DeleteSpaceResponse;
 	CreateEntity: CreateEntityResponse;
-	UpdateEntity: UpdateEntityResponse;
+	UpdateEntities: UpdateEntitiesResponse;
 	ReadEntities: ReadEntitiesResponse;
 	ReadEntitiesPaginated: ReadEntitiesPaginatedResponse;
 	EraseEntities: EraseEntitiesResponse;
@@ -202,7 +202,7 @@ export interface ServiceByName {
 		ReadEntitiesPaginatedResponseResult
 	>;
 	CreateEntity: AuthorizedService<CreateEntityParams, CreateEntityResponseResult>;
-	UpdateEntity: AuthorizedService<UpdateEntityParams, UpdateEntityResponseResult>;
+	UpdateEntities: AuthorizedService<UpdateEntitiesParams, UpdateEntitiesResponseResult>;
 	EraseEntities: AuthorizedService<EraseEntitiesParams, EraseEntitiesResponseResult>;
 	DeleteEntities: AuthorizedService<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
 	CreateRole: AuthorizedService<CreateRoleParams, CreateRoleResponseResult>;
@@ -513,26 +513,18 @@ export interface CreateEntityResponse {
 }
 export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;
 
-export interface UpdateEntityParams {
+export interface UpdateEntitiesParams {
 	actor: ActorId;
-	entity_id: EntityId;
-	data?: EntityData;
-	path?: string | null;
+	entities: {
+		entity_id: EntityId;
+		data?: EntityData;
+		path?: string | null;
+	}[];
 }
-export interface UpdateEntityResponse {
-	/**
-	 *
-	 * 		An Entity is the core data type that represents an ActivityStreams object in the system.
-	 * 		Each has an "owning" space & persona that controls its governance.
-	 * 		Entities exist within a graph architecture, with Ties serving as the paths between nodes.
-	 * 		Conventionally, all entities within a given Space can be found by traversing
-	 * 		the graph starting at the directory Entity associated with the owning Space.
-	 * 		A directory is an ActivityStreams Collection referenced by each Space.
-	 *
-	 */
-	entity: Entity;
+export interface UpdateEntitiesResponse {
+	entities: Entity[];
 }
-export type UpdateEntityResponseResult = ApiResult<UpdateEntityResponse>;
+export type UpdateEntitiesResponseResult = ApiResult<UpdateEntitiesResponse>;
 
 export interface ReadEntitiesParams {
 	actor: ActorId;
@@ -574,7 +566,10 @@ export interface DeleteEntitiesParams {
 	actor: ActorId;
 	entityIds: EntityId[];
 }
-export type DeleteEntitiesResponse = null;
+export interface DeleteEntitiesResponse {
+	entities: Entity[];
+	deleted: EntityId[];
+}
 export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
 export interface CreateRoleParams {
@@ -765,7 +760,7 @@ export interface Actions {
 	UpdateSpace: (params: UpdateSpaceParams) => Promise<UpdateSpaceResponseResult>;
 	DeleteSpace: (params: DeleteSpaceParams) => Promise<DeleteSpaceResponseResult>;
 	CreateEntity: (params: CreateEntityParams) => Promise<CreateEntityResponseResult>;
-	UpdateEntity: (params: UpdateEntityParams) => Promise<UpdateEntityResponseResult>;
+	UpdateEntities: (params: UpdateEntitiesParams) => Promise<UpdateEntitiesResponseResult>;
 	ReadEntities: (params: ReadEntitiesParams) => Promise<ReadEntitiesResponseResult>;
 	ReadEntitiesPaginated: (
 		params: ReadEntitiesPaginatedParams,
@@ -857,9 +852,9 @@ export interface Mutations {
 	CreateEntity: (
 		ctx: MutationContext<CreateEntityParams, CreateEntityResponseResult>,
 	) => Promise<CreateEntityResponseResult>;
-	UpdateEntity: (
-		ctx: MutationContext<UpdateEntityParams, UpdateEntityResponseResult>,
-	) => Promise<UpdateEntityResponseResult>;
+	UpdateEntities: (
+		ctx: MutationContext<UpdateEntitiesParams, UpdateEntitiesResponseResult>,
+	) => Promise<UpdateEntitiesResponseResult>;
 	ReadEntities: (
 		ctx: MutationContext<ReadEntitiesParams, ReadEntitiesResponseResult>,
 	) => Promise<ReadEntitiesResponseResult>;

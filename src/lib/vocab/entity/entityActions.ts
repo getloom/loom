@@ -71,38 +71,48 @@ export const CreateEntity: ServiceActionData = {
 	},
 };
 
-export const UpdateEntity: ServiceActionData = {
+export const UpdateEntities: ServiceActionData = {
 	type: 'ServiceAction',
-	name: 'UpdateEntity',
+	name: 'UpdateEntities',
 	broadcast: true,
 	params: {
-		$id: '/schemas/UpdateEntityParams.json',
+		$id: '/schemas/UpdateEntitiesParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number', tsType: 'ActorId'},
-			entity_id: {
-				type: 'number',
-				tsType: 'EntityId',
-				tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+			entities: {
+				type: 'array',
+				items: {
+					type: 'object',
+					properties: {
+						entity_id: {
+							type: 'number',
+							tsType: 'EntityId',
+							tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+						},
+						data: {type: 'object', tsType: 'EntityData'},
+						path: {anyOf: [{type: 'string'}, {type: 'null'}]},
+					},
+					required: ['entity_id'],
+					additionalProperties: false,
+				},
 			},
-			data: {type: 'object', tsType: 'EntityData'},
-			path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 		},
-		required: ['actor', 'entity_id'],
+		required: ['actor', 'entities'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/UpdateEntityResponse.json',
+		$id: '/schemas/UpdateEntitiesResponse.json',
 		type: 'object',
 		properties: {
-			entity: {$ref: '/schemas/Entity.json', tsType: 'Entity'},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
 		},
-		required: ['entity'],
+		required: ['entities'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<UpdateEntityResponseResult>',
+	returns: 'Promise<UpdateEntitiesResponseResult>',
 	route: {
-		path: '/api/v1/entities/:entity_id',
+		path: '/api/v1/entities/update',
 		method: 'POST',
 	},
 };
@@ -229,7 +239,7 @@ export const EraseEntities: ServiceActionData = {
 	},
 	returns: 'Promise<EraseEntitiesResponseResult>',
 	route: {
-		path: '/api/v1/entities/:entity_id/erase',
+		path: '/api/v1/entities/erase',
 		method: 'DELETE',
 	},
 };
@@ -257,7 +267,20 @@ export const DeleteEntities: ServiceActionData = {
 	},
 	response: {
 		$id: '/schemas/DeleteEntitiesResponse.json',
-		type: 'null',
+		type: 'object',
+		properties: {
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			deleted: {
+				type: 'array',
+				items: {
+					type: 'number',
+					tsType: 'EntityId',
+					tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+				},
+			},
+		},
+		required: ['entities', 'deleted'],
+		additionalProperties: false,
 	},
 	returns: 'Promise<DeleteEntitiesResponseResult>',
 	route: {

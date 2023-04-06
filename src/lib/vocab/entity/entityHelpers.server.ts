@@ -2,6 +2,8 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
+import type {EntityId} from '$lib/vocab/entity/entity';
+import type {Directory} from '$lib/vocab/entity/entityData';
 
 const log = new Logger(gray('[') + blue('entityHelpers.server') + gray(']'));
 
@@ -16,4 +18,24 @@ export const cleanOrphanedEntities = async (repos: Repos): Promise<void> => {
 		}
 		await repos.entity.deleteByIds(orphans.map((e) => e.entity_id)); // eslint-disable-line no-await-in-loop
 	}
+};
+
+export const updateDirectories = async (
+	repos: Repos,
+	entityIds: EntityId[],
+): Promise<Directory[]> => {
+	const directoryIds = Array.from(
+		new Set(
+			(
+				await Promise.all(
+					entityIds.map((entity_id) => repos.entity.filterDirectoriesByEntity(entity_id)),
+				)
+			).flatMap((directories) => directories.map((d) => d.entity_id)),
+		),
+	);
+
+	// TODO add a bulk repo method (see this comment in multiple places)
+	return Promise.all(
+		directoryIds.map(async (directoryId) => repos.entity.update(directoryId) as Promise<Directory>),
+	);
 };

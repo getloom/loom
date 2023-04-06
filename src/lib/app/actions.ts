@@ -65,6 +65,7 @@ export const toActionsBroadcastMessage =
 			'color: darkCyan',
 			'color: gray',
 			params === undefined ? '' : params, // print null but not undefined
+			message.result,
 		);
 		const mutation = mutations[actionName];
 		if (!mutation) {

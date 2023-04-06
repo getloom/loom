@@ -23,7 +23,7 @@ import type {
 	UpdateSpaceParams,
 	DeleteSpaceParams,
 	CreateEntityParams,
-	UpdateEntityParams,
+	UpdateEntitiesParams,
 	ReadEntitiesParams,
 	ReadEntitiesPaginatedParams,
 	QueryEntitiesParams,
@@ -110,10 +110,10 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<CreateEntityParams>;
-	UpdateEntity: (
+	UpdateEntities: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<UpdateEntityParams>;
+	) => Promise<UpdateEntitiesParams>;
 	ReadEntities: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

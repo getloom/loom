@@ -184,13 +184,22 @@ export const randomActionParams: RandomEventParams = {
 			source_id: (await random.space(persona, account, hub)).space.directory_id,
 		};
 	},
-	UpdateEntity: async (random, {account, persona, hub, space} = {}) => {
+	UpdateEntities: async (random, {account, persona, hub, space} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));
 		return {
 			actor: persona.persona_id,
-			entity_id: (await random.entity(persona, account, hub, space, space?.directory_id)).entity
-				.entity_id,
-			data: randomEntityData(),
+			entities: [
+				{
+					entity_id: (await random.entity(persona, account, hub, space, space?.directory_id)).entity
+						.entity_id,
+					data: randomEntityData(),
+				},
+				{
+					entity_id: (await random.entity(persona, account, hub, space, space?.directory_id)).entity
+						.entity_id,
+					data: randomEntityData(),
+				},
+			],
 		};
 	},
 	EraseEntities: async (random, {account, persona, hub, space} = {}) => {
