@@ -103,7 +103,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 			params: {
 				actor: otherPersona.persona_id,
 				hub_id: otherHub.hub_id,
-				targetActor: persona.persona_id,
+				actor_id: persona.persona_id,
 				role_id: otherHub.settings.defaultRoleId,
 			},
 		}),
@@ -124,7 +124,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	unwrap(
 		await DeleteActorService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, targetActor: persona.persona_id},
+			params: {actor: persona.persona_id, actor_id: persona.persona_id},
 		}),
 	);
 
@@ -146,7 +146,7 @@ test__personaService('actors cannot delete other personas', async ({repos, rando
 	unwrapError(
 		await DeleteActorService.perform({
 			...toServiceRequestMock(repos, persona1),
-			params: {actor: persona1.persona_id, targetActor: persona2.persona_id},
+			params: {actor: persona1.persona_id, actor_id: persona2.persona_id},
 		}),
 	);
 });
@@ -163,7 +163,7 @@ test__personaService(
 		unwrap(
 			await DeleteActorService.perform({
 				...toServiceRequestMock(repos, actor),
-				params: {actor: actor.persona_id, targetActor: persona.persona_id},
+				params: {actor: actor.persona_id, actor_id: persona.persona_id},
 			}),
 		);
 	},
@@ -178,7 +178,7 @@ test__personaService('actors cannot delete personas in the admin hub', async ({r
 		unwrapError(
 			await DeleteActorService.perform({
 				...toServiceRequestMock(repos, actor),
-				params: {actor: actor.persona_id, targetActor: persona.persona_id},
+				params: {actor: actor.persona_id, actor_id: persona.persona_id},
 			}),
 		).status,
 		400,

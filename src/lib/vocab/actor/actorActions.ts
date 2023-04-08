@@ -49,9 +49,9 @@ export const DeleteActor: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number', tsType: 'ActorId'},
-			targetActor: {type: 'number', tsType: 'ActorId'},
+			actor_id: {type: 'number', tsType: 'ActorId'},
 		},
-		required: ['actor', 'targetActor'],
+		required: ['actor', 'actor_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -60,7 +60,7 @@ export const DeleteActor: ServiceActionData = {
 	},
 	returns: 'Promise<DeleteActorResponseResult>',
 	route: {
-		path: '/api/v1/personas/:targetActor',
+		path: '/api/v1/personas/:actor_id',
 		method: 'DELETE',
 	},
 };

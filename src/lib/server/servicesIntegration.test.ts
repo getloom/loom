@@ -47,7 +47,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			params: {
 				actor: persona1.persona_id,
 				hub_id: hub.hub_id,
-				targetActor: persona2.persona_id,
+				actor_id: persona2.persona_id,
 				role_id: hub.settings.defaultRoleId,
 			},
 		}),

@@ -24,7 +24,7 @@
 		errorMessage = '';
 		const result = await actions.LeaveHub({
 			actor: $persona.persona_id,
-			targetActor: $persona.persona_id,
+			actor_id: $persona.persona_id,
 			hub_id: $hub.hub_id,
 		});
 		if (result.ok) {

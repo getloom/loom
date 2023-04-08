@@ -188,7 +188,7 @@ export const LeaveHub: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number', tsType: 'ActorId'},
-			targetActor: {
+			actor_id: {
 				type: 'number',
 				tsType: 'ActorId',
 				tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
@@ -199,7 +199,7 @@ export const LeaveHub: ServiceActionData = {
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
 		},
-		required: ['actor', 'targetActor', 'hub_id'],
+		required: ['actor', 'actor_id', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
@@ -222,14 +222,14 @@ export const KickFromHub: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {type: 'number', tsType: 'ActorId'},
-			targetActor: {type: 'number', tsType: 'ActorId'},
+			actor_id: {type: 'number', tsType: 'ActorId'},
 			hub_id: {
 				type: 'number',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
 		},
-		required: ['actor', 'targetActor', 'hub_id'],
+		required: ['actor', 'actor_id', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {

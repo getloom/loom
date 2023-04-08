@@ -116,38 +116,38 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 	action: DeleteActor,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, targetActor} = params;
+		const {actor, actor_id} = params;
 
 		// first check if deleting the persona is allowed
 		//TODO extract to it's own policy helper?
-		if (targetActor === ADMIN_ACTOR_ID || targetActor === GHOST_ACTOR_ID) {
+		if (actor_id === ADMIN_ACTOR_ID || actor_id === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
-		const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(
-			targetActor,
-			['type', 'hub_id'],
-		);
+		const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(actor_id, [
+			'type',
+			'hub_id',
+		]);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
 		if (persona.type === 'community') {
 			return {ok: false, status: 400, message: 'cannot delete hub personas'};
 		}
-		if (await isPersonaAdmin(targetActor, repos)) {
+		if (await isPersonaAdmin(actor_id, repos)) {
 			return {ok: false, status: 400, message: 'cannot delete admin personas'};
 		}
-		if (actor !== targetActor && !(await isPersonaAdmin(actor, repos))) {
+		if (actor !== actor_id && !(await isPersonaAdmin(actor, repos))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
-		const hubs = await repos.hub.filterByPersona(targetActor);
+		const hubs = await repos.hub.filterByPersona(actor_id);
 
-		// swap in the ghost persona id for this `targetActor` for those objects that we don't delete
-		await repos.entity.attributeToGhostByPersona(targetActor);
+		// swap in the ghost persona id for this `actor_id` for those objects that we don't delete
+		await repos.entity.attributeToGhostByPersona(actor_id);
 
 		// delete the persona and its related objects
-		await repos.persona.deleteById(targetActor);
-		await repos.assignment.deleteByPersona(targetActor);
+		await repos.persona.deleteById(actor_id);
+		await repos.assignment.deleteByPersona(actor_id);
 		await repos.hub.deleteById(persona.hub_id); // must follow `persona.deleteById` it seems
 
 		// clean the hubs the persona is joined to, and assemble the broadcast audience

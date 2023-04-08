@@ -17,15 +17,15 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 	action: CreateAssignment,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, hub_id, targetActor, role_id} = params;
-		log.debug('[CreateAssignment] creating assignment for persona & role', targetActor, role_id);
+		const {actor, hub_id, actor_id, role_id} = params;
+		log.debug('[CreateAssignment] creating assignment for persona & role', actor_id, role_id);
 		log.debug('[CreateAssignment] checking policy', actor, hub_id);
 		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
 		await checkPolicy(permissions.CreateAssignment, actor, hub_id, repos);
-		const assignment = await createAssignment(targetActor, hub, role_id, repos);
+		const assignment = await createAssignment(actor_id, hub, role_id, repos);
 		log.debug('[CreateAssignment] new assignment created', assignment.assignment_id);
 		return {ok: true, status: 200, value: {assignment}};
 	},

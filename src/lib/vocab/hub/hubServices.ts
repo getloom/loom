@@ -220,16 +220,16 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 	action: LeaveHub,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, targetActor, hub_id} = params;
-		log.debug('[LeaveHub] removing all assignments for persona in hub', actor, targetActor, hub_id);
+		const {actor, actor_id, hub_id} = params;
+		log.debug('[LeaveHub] removing all assignments for persona in hub', actor, actor_id, hub_id);
 
-		if (actor !== targetActor) {
+		if (actor !== actor_id) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 
-		await checkRemovePersona(targetActor, hub_id, repos);
+		await checkRemovePersona(actor_id, hub_id, repos);
 
-		await repos.assignment.deleteByPersonaAndHub(targetActor, hub_id);
+		await repos.assignment.deleteByPersonaAndHub(actor_id, hub_id);
 
 		await cleanOrphanHubs([hub_id], repos);
 
@@ -241,18 +241,13 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	action: KickFromHub,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, targetActor, hub_id} = params;
-		log.debug(
-			'[KickFromHub] removing all assignments for persona in hub',
-			actor,
-			targetActor,
-			hub_id,
-		);
+		const {actor, actor_id, hub_id} = params;
+		log.debug('[KickFromHub] removing all assignments for persona in hub', actor, actor_id, hub_id);
 		await checkPolicy(permissions.KickFromHub, actor, hub_id, repos);
 
-		await checkRemovePersona(targetActor, hub_id, repos);
+		await checkRemovePersona(actor_id, hub_id, repos);
 
-		await repos.assignment.deleteByPersonaAndHub(targetActor, hub_id);
+		await repos.assignment.deleteByPersonaAndHub(actor_id, hub_id);
 
 		await cleanOrphanHubs([hub_id], repos);
 

@@ -24,7 +24,7 @@ test__assignmentServices('disallow creating duplicate assignments', async ({repo
 			params: {
 				actor: persona.persona_id,
 				hub_id: hub.hub_id,
-				targetActor: persona.persona_id,
+				actor_id: persona.persona_id,
 				role_id: roles[0].role_id,
 			},
 		}),
@@ -41,7 +41,7 @@ test__assignmentServices(
 				params: {
 					actor: persona.persona_id,
 					hub_id: personalHub.hub_id,
-					targetActor: (await random.persona()).persona.persona_id,
+					actor_id: (await random.persona()).persona.persona_id,
 					role_id: personalHub.settings.defaultRoleId,
 				},
 			}),
@@ -111,7 +111,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 			...toServiceRequestMock(repos, persona1),
 			params: {
 				actor: persona1.persona_id,
-				targetActor: persona2.persona_id,
+				actor_id: persona2.persona_id,
 				hub_id: hub.hub_id,
 				role_id: hub.settings.defaultRoleId,
 			},
