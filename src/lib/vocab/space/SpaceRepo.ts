@@ -91,4 +91,21 @@ export class SpaceRepo extends PostgresRepo {
 		if (!data.length) throw Error('no space found');
 		return data[0];
 	}
+
+	/**
+	 * Given an input array of entity ids, return the set of spaces they belong to
+	 * @param entityIds - array of entity ids you want to find owning spaces of
+	 * @returns The distinct set of spaces containing the provided entities
+	 */
+	async filterByEntities(entityIds: number[]): Promise<Space[]> {
+		log.debug(`[filterByEntities] ${entityIds}`);
+		const data = await this.sql<Space[]>`
+				SELECT DISTINCT s.space_id, s.name, s.icon, s.view, s.updated, s.created, s.hub_id, s.directory_id 
+				FROM spaces s
+				JOIN entities e
+				ON s.space_id = e.space_id AND e.entity_id IN ${this.sql(entityIds)}			
+		`;
+		if (!data.length) throw Error('no space found');
+		return data;
+	}
 }

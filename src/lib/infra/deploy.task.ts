@@ -24,7 +24,7 @@ export const task: Task = {
 		log.debug(`Working with artifact: ${artifactName}`);
 		unwrap(
 			await spawn('tar', [
-				'-cvf',
+				'-cf',
 				`${artifactFilename}`,
 				DIST_DIRNAME,
 				'package.json',
@@ -49,8 +49,9 @@ export const task: Task = {
 			`mkdir ${deployDirname};
 			mv ${artifactFilename} ${deployDirname}/;
 			cd ${deployDirname};
-			tar -xvf ${artifactFilename};
-			echo 'npm ci' && npm ci;
+			tar -xf ${artifactFilename};
+			echo 'npm ci';
+			npm ci;
 			cd ~;
 			ln -sfn ${deployDirname}/ ${currentDeploy};`,
 		]);

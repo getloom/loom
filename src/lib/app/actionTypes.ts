@@ -56,6 +56,7 @@ export type ServiceActionName =
 	| 'ReadEntitiesPaginated'
 	| 'EraseEntities'
 	| 'DeleteEntities'
+	| 'ReadEntitiesById'
 	| 'CreateRole'
 	| 'ReadRoles'
 	| 'UpdateRole'
@@ -106,6 +107,7 @@ export interface EventParamsByName {
 	QueryEntities: QueryEntitiesParams;
 	EraseEntities: EraseEntitiesParams;
 	DeleteEntities: DeleteEntitiesParams;
+	ReadEntitiesById: ReadEntitiesByIdParams;
 	CreateRole: CreateRoleParams;
 	ReadRoles: ReadRolesParams;
 	UpdateRole: UpdateRoleParams;
@@ -152,6 +154,7 @@ export interface EventResponseByName {
 	ReadEntitiesPaginated: ReadEntitiesPaginatedResponse;
 	EraseEntities: EraseEntitiesResponse;
 	DeleteEntities: DeleteEntitiesResponse;
+	ReadEntitiesById: ReadEntitiesByIdResponse;
 	CreateRole: CreateRoleResponse;
 	ReadRoles: ReadRolesResponse;
 	UpdateRole: UpdateRoleResponse;
@@ -205,6 +208,7 @@ export interface ServiceByName {
 	UpdateEntities: AuthorizedService<UpdateEntitiesParams, UpdateEntitiesResponseResult>;
 	EraseEntities: AuthorizedService<EraseEntitiesParams, EraseEntitiesResponseResult>;
 	DeleteEntities: AuthorizedService<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
+	ReadEntitiesById: AuthorizedService<ReadEntitiesByIdParams, ReadEntitiesByIdResponseResult>;
 	CreateRole: AuthorizedService<CreateRoleParams, CreateRoleResponseResult>;
 	ReadRoles: AuthorizedService<ReadRolesParams, ReadRolesResponseResult>;
 	UpdateRole: AuthorizedService<UpdateRoleParams, UpdateRoleResponseResult>;
@@ -541,6 +545,7 @@ export interface ReadEntitiesPaginatedParams {
 	source_id: EntityId;
 	pageSize?: number;
 	pageKey?: number;
+	related?: 'source' | 'dest' | 'both';
 }
 export interface ReadEntitiesPaginatedResponse {
 	entities: Entity[];
@@ -571,6 +576,15 @@ export interface DeleteEntitiesResponse {
 	deleted: EntityId[];
 }
 export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
+
+export interface ReadEntitiesByIdParams {
+	actor: ActorId;
+	entityIds: number[];
+}
+export interface ReadEntitiesByIdResponse {
+	entities: Entity[];
+}
+export type ReadEntitiesByIdResponseResult = ApiResult<ReadEntitiesByIdResponse>;
 
 export interface CreateRoleParams {
 	actor: ActorId;
@@ -768,6 +782,7 @@ export interface Actions {
 	QueryEntities: (params: QueryEntitiesParams) => Query;
 	EraseEntities: (params: EraseEntitiesParams) => Promise<EraseEntitiesResponseResult>;
 	DeleteEntities: (params: DeleteEntitiesParams) => Promise<DeleteEntitiesResponseResult>;
+	ReadEntitiesById: (params: ReadEntitiesByIdParams) => Promise<ReadEntitiesByIdResponseResult>;
 	CreateRole: (params: CreateRoleParams) => Promise<CreateRoleResponseResult>;
 	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
 	UpdateRole: (params: UpdateRoleParams) => Promise<UpdateRoleResponseResult>;
@@ -868,6 +883,9 @@ export interface Mutations {
 	DeleteEntities: (
 		ctx: MutationContext<DeleteEntitiesParams, DeleteEntitiesResponseResult>,
 	) => Promise<DeleteEntitiesResponseResult>;
+	ReadEntitiesById: (
+		ctx: MutationContext<ReadEntitiesByIdParams, ReadEntitiesByIdResponseResult>,
+	) => Promise<ReadEntitiesByIdResponseResult>;
 	CreateRole: (
 		ctx: MutationContext<CreateRoleParams, CreateRoleResponseResult>,
 	) => Promise<CreateRoleResponseResult>;

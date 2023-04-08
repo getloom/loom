@@ -129,7 +129,11 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	const {entities: filtered3} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, source_id: space.directory_id, pageSize: FIRST_PAGE_SIZE},
+			params: {
+				actor: persona.persona_id,
+				source_id: space.directory_id,
+				pageSize: FIRST_PAGE_SIZE,
+			},
 		}),
 	);
 

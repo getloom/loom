@@ -17,12 +17,14 @@
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
+
 	$: query = shouldLoadEntities
 		? createPaginatedQuery(ui, actions, {
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
+
 	$: status = $query?.status;
 	$: more = $query?.more;
 	$: entities = query?.entities;

@@ -29,6 +29,7 @@ import type {
 	QueryEntitiesParams,
 	EraseEntitiesParams,
 	DeleteEntitiesParams,
+	ReadEntitiesByIdParams,
 	CreateRoleParams,
 	ReadRolesParams,
 	UpdateRoleParams,
@@ -134,6 +135,10 @@ export interface RandomEventParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<DeleteEntitiesParams>;
+	ReadEntitiesById: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<ReadEntitiesByIdParams>;
 	CreateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateRoleParams>;
 	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
 	UpdateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateRoleParams>;

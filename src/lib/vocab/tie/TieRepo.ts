@@ -75,6 +75,37 @@ export class TieRepo extends PostgresRepo {
 		return ties;
 	}
 
+	/**
+	 * This query, given an array of entities and a couple flags,
+	 * will find all ties pointing at those enties
+	 * all ties pointing away from those enties
+	 * or both
+	 *
+	 * @param entityIds - The entities whose sibling ties you want to find
+	 * @param siblingDest - If enabled, all ties with provided entities as dest are returned
+	 * @param siblingSource - If enabled, all ties with provided entities as source are returned
+	 * @returns The collection of sibling ties relating to the entityIds (or an empty array)
+	 */
+	async filterSiblingsByEntityId(
+		entityIds: number[],
+		sibling: 'dest' | 'source' | 'both',
+	): Promise<Tie[]> {
+		log.debug(`finding tie related of entites`, entityIds, sibling);
+		const ties = await this.sql<Tie[]>`
+			SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created
+			FROM ties t WHERE 
+			${
+				sibling === 'dest' || sibling === 'both'
+					? this.sql`t.dest_id IN ${this.sql(entityIds)}`
+					: this.sql``
+			}
+			${sibling === 'both' ? this.sql` OR ` : this.sql``}
+			${sibling === 'source' || sibling === 'both' ? this.sql`t.source_id IN ${entityIds}` : this.sql``}
+			;`;
+		log.debug('directory ties', ties);
+		return ties;
+	}
+
 	async deleteById(tie_id: TieId): Promise<void> {
 		log.debug('[deleteById]', tie_id);
 		const data = await this.sql<any[]>`

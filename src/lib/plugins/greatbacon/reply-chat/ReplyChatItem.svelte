@@ -12,6 +12,7 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 
 	const {
 		ui: {contextmenu, personaById, entityById, sourceTiesByDestEntityId},
@@ -20,14 +21,19 @@
 	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let selectReply: (reply: Readable<Entity>) => void;
+	export let queryReply: (entity_id: number, cb: (entity: Readable<Entity>) => void) => void;
 
 	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
 
 	$: sourceTiesSet = sourceTiesByDestEntityId.get($entity.entity_id);
 	$: replyTie =
 		$sourceTiesSet?.value && Array.from($sourceTiesSet.value).find((t) => t.type === 'HasReply');
+
 	$: repliedToEntity = replyTie && entityById.get(replyTie.source_id);
-	$: repliedToPersona = $repliedToEntity && lookupPersona(personaById, $repliedToEntity.persona_id);
+	$: if (replyTie && !repliedToEntity) {
+		queryReply(replyTie.source_id, (entity) => (repliedToEntity = entity));
+	}
+	$: repliedToPersona = lookupPersona(personaById, $repliedToEntity?.persona_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorPersona.name);
@@ -58,10 +64,14 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 			</div>
 		</div>
 		<div class="markup">
-			{#if $repliedToEntity && $repliedToPersona}
+			{#if replyTie}
 				<div class="panel ellipsis">
-					<Mention name={$repliedToPersona.name} /> said:
-					{$repliedToEntity.data.content}
+					{#if $repliedToEntity}
+						<Mention name={$repliedToPersona.name} /> said:
+						{$repliedToEntity.data.content}
+					{:else}
+						<PendingAnimation />
+					{/if}
 				</div>
 			{/if}<EntityContent {entity} />
 		</div>

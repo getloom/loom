@@ -53,6 +53,16 @@ export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, ui}) => {
 	return result;
 };
 
+export const ReadEntitiesById: Mutations['ReadEntitiesById'] = async ({invoke, ui}) => {
+	const result = await invoke();
+	if (!result.ok) return result;
+	const {entities} = result.value;
+	ui.mutate(() => {
+		stashEntities(ui, entities);
+	});
+	return result;
+};
+
 export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;

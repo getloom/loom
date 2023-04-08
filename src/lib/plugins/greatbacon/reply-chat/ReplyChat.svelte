@@ -1,40 +1,40 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {readable, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import {slide} from 'svelte/transition';
 
 	import ReplyChatItems from '$lib/plugins/greatbacon/reply-chat/ReplyChatItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getViewContext} from '$lib/vocab/view/view';
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import {slide} from 'svelte/transition';
 	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {createPaginatedQuery} from '$lib/util/query';
 
 	const viewContext = getViewContext();
 	$: ({persona, space} = $viewContext);
 
-	const {
-		actions,
-		socket,
-		ui: {personaById},
-	} = getApp();
+	const {actions, socket, ui} = getApp();
+	const {personaById, entityById} = ui;
 
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
+
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
+		? createPaginatedQuery(ui, actions, {
 				actor: $persona.persona_id,
 				source_id: $space.directory_id,
+				related: 'dest',
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+
+	$: status = $query?.status;
+	$: more = $query?.more;
+	$: entities = query?.entities;
 
 	const createEntity = async () => {
 		const content = text.trim(); // TODO parse to trim? regularize step?
@@ -69,18 +69,44 @@
 		textInputEl?.focus();
 	};
 
+	//TODO this is a hack, need a proper query system for secondary entities
+	let entityIdsToQuery: Array<{entity_id: number; cb: (entity: Readable<Entity>) => void}> | null =
+		null;
+	const queryReply = (entity_id: number, cb: (entity: Readable<Entity>) => void): void => {
+		entityIdsToQuery = (entityIdsToQuery || []).concat({entity_id, cb});
+	};
+	$: void flushEntityIdsToQuery(entityIdsToQuery);
+	const flushEntityIdsToQuery = async (last: any) => {
+		if (!entityIdsToQuery) return;
+		const localEntityIdsToQuery = entityIdsToQuery.slice();
+		await actions.ReadEntitiesById({
+			actor: $persona.persona_id,
+			entityIds: localEntityIdsToQuery.map((e) => e.entity_id),
+		});
+		for (const {entity_id, cb} of localEntityIdsToQuery) {
+			const entity = entityById.get(entity_id);
+			if (entity) cb(entity);
+		}
+		if (last !== entityIdsToQuery) entityIdsToQuery = null;
+	};
+
 	let textInputEl: HTMLTextAreaElement | undefined;
 </script>
 
 <div class="chat">
 	<div class="entities">
-		{#if entities && $queryStatus === 'success'}
-			<ReplyChatItems {persona} {entities} {selectReply} />
+		{#if query && entities}
+			<ReplyChatItems {persona} {entities} {selectReply} {queryReply} />
+			{#if more}
+				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
+					>load more</PendingButton
+				>
+			{/if}
 		{:else}
 			<PendingAnimation />
 		{/if}
 	</div>
-	{#if selectedReply && $selectedReplyPersona && $queryStatus === 'success'}
+	{#if selectedReply && $selectedReplyPersona && status === 'success'}
 		<div class="replying" transition:slide|local>
 			replying to <Mention name={$selectedReplyPersona.name} />
 		</div>

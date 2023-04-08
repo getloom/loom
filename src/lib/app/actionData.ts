@@ -26,6 +26,7 @@ import {
 	EraseEntities,
 	DeleteEntities,
 	ReadEntitiesPaginated,
+	ReadEntitiesById,
 } from '$lib/vocab/entity/entityActions';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions';
 import {
@@ -81,6 +82,7 @@ export const actionDatas: ActionData[] = [
 	QueryEntities,
 	EraseEntities,
 	DeleteEntities,
+	ReadEntitiesById,
 	// roleEvents
 	CreateRole,
 	ReadRoles,

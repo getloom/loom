@@ -24,7 +24,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 
 	const $selectedSpace = spaceSelection.get()?.get();
 
-	let added: Array<Writable<Entity>> | null = null;
+	const stashed: Array<Writable<Entity>> = [];
 
 	for (const $entity of $entities) {
 		const {entity_id} = $entity;
@@ -45,8 +45,8 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 			}
 		} else {
 			entityById.set(entity_id, (entity = writable($entity)));
-			(added || (added = [])).push(entity);
 		}
+		stashed.push(entity);
 
 		// Handle directories.
 		if ('space_id' in $entity.data) {
@@ -62,9 +62,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 		}
 	}
 
-	if (added) {
-		ui.afterMutation(() => ui.events.emit('stashed_entities', added!));
-	}
+	ui.afterMutation(() => ui.events.emit('stashed_entities', stashed));
 };
 
 // TODO possibly merge with `stashEntities` to prevent update churn

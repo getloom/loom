@@ -6,6 +6,7 @@ import {
 	CreateEntity,
 	EraseEntities,
 	DeleteEntities,
+	ReadEntitiesById,
 } from '$lib/vocab/entity/entityActions';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
@@ -15,9 +16,13 @@ import {
 	checkHubAccess,
 	checkEntityOwnership,
 	checkPolicy,
+	checkEntityAccess,
 } from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {ApiError} from '$lib/server/api';
+import {Logger} from '@feltjs/util/log.js';
+
+const log = new Logger('[EntityServices]');
 
 // TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
@@ -41,13 +46,21 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 	action: ReadEntitiesPaginated,
 	transaction: false,
 	perform: async ({repos, params}) => {
-		const {actor, source_id, pageSize, pageKey} = params;
+		const {actor, source_id, pageSize, pageKey, related} = params;
+		log.debug('checking pagiated entities for ', source_id);
 		const {hub_id} = await repos.space.findByEntity(source_id);
 		await checkHubAccess(actor, hub_id, repos);
 
-		const ties = await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey);
+		const pageTies = await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey);
+		let siblingTies: Tie[] | null = null;
+		if (related && pageTies.length) {
+			const pageEntityIds = pageTies.map((t) => t.dest_id);
+			siblingTies = await repos.tie.filterSiblingsByEntityId(pageEntityIds, related);
+		}
+		const ties = siblingTies ? pageTies.concat(siblingTies) : pageTies.slice();
+
 		//TODO stop filtering directory until we fix entity indexing by space_id
-		const entityIds = toTieEntityIds(ties);
+		const entityIds = toTieEntityIds(pageTies);
 		entityIds.delete(source_id);
 		const {entities} = await repos.entity.filterByIds(Array.from(entityIds));
 		return {ok: true, status: 200, value: {entities, ties}};
@@ -152,5 +165,23 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 		const entities = await updateDirectories(repos, entityIds);
 
 		return {ok: true, status: 200, value: {entities, deleted}};
+	},
+};
+
+export const ReadEntitiesByIdService: ServiceByName['ReadEntitiesById'] = {
+	action: ReadEntitiesById,
+	transaction: false,
+	perform: async ({repos, params}) => {
+		//TODO make this batchable; need an answer to potential multiHubAccess & rejection question
+		const {actor, entityIds} = params;
+
+		await checkEntityAccess(actor, entityIds, repos);
+
+		const {entities, missing} = await repos.entity.filterByIds(entityIds);
+		if (!missing) {
+			return {ok: true, status: 200, value: {entities}};
+		} else {
+			return {ok: false, status: 404, message: 'some entities not found'};
+		}
 	},
 };

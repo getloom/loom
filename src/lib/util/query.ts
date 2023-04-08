@@ -21,6 +21,7 @@ export interface Query {
 export interface QueryParams {
 	actor: ActorId;
 	source_id: EntityId;
+	related?: 'dest' | 'source' | 'both';
 }
 
 export interface PaginatedQueryState {

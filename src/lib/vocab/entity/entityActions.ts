@@ -186,6 +186,7 @@ export const ReadEntitiesPaginated: ServiceActionData = {
 			},
 			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
 			pageKey: {type: 'number'},
+			related: {type: 'string', enum: ['source', 'dest', 'both']},
 		},
 		required: ['actor', 'source_id'],
 		additionalProperties: false,
@@ -286,5 +287,35 @@ export const DeleteEntities: ServiceActionData = {
 	route: {
 		path: '/api/v1/entities/delete',
 		method: 'DELETE',
+	},
+};
+
+export const ReadEntitiesById: ServiceActionData = {
+	type: 'ServiceAction',
+	name: 'ReadEntitiesById',
+	broadcast: true,
+	params: {
+		$id: '/schemas/ReadEntitiesByIdParams.json',
+		type: 'object',
+		properties: {
+			actor: {type: 'number', tsType: 'ActorId'},
+			entityIds: {type: 'array', items: {type: 'number'}},
+		},
+		required: ['actor', 'entityIds'],
+		additionalProperties: false,
+	},
+	response: {
+		$id: '/schemas/ReadEntitiesByIdResponse.json',
+		type: 'object',
+		properties: {
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+		},
+		required: ['entities'],
+		additionalProperties: false,
+	},
+	returns: 'Promise<ReadEntitiesByIdResponseResult>',
+	route: {
+		path: '/api/v1/entities/fetch',
+		method: 'POST',
 	},
 };

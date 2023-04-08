@@ -80,3 +80,23 @@ export const checkEntityOwnership = async (
 		}
 	}
 };
+
+export const checkEntityAccess = async (
+	actor_id: number,
+	entityIds: number[],
+	repos: Repos,
+): Promise<void> => {
+	if (await isPersonaAdmin(actor_id, repos)) {
+		return;
+	}
+
+	const spaces = await repos.space.filterByEntities(entityIds);
+	const hubs = await repos.hub.filterByPersona(actor_id);
+	const joinedHubIds = hubs.map((h) => h.hub_id);
+
+	for (const space of spaces) {
+		if (!joinedHubIds.includes(space.hub_id)) {
+			throw new ApiError(403, 'actor does not have permission');
+		}
+	}
+};

@@ -25,6 +25,7 @@ import {
 	ReadEntities,
 	ReadEntitiesPaginated,
 	QueryEntities,
+	ReadEntitiesById,
 } from '$lib/vocab/entity/entityMutations';
 import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/roleMutations';
 import {CreatePolicy, DeletePolicy} from '$lib/vocab/policy/policyMutations';
@@ -73,6 +74,7 @@ export const mutations: Record<string, Mutation> = {
 	ReadEntities,
 	ReadEntitiesPaginated,
 	QueryEntities,
+	ReadEntitiesById,
 	// roleMutations
 	CreateRole,
 	UpdateRole,
