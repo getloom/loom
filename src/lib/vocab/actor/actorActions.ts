@@ -41,11 +41,11 @@ export const CreateAccountActor: ServiceActionData = {
 	},
 };
 
-export const DeletePersona: ServiceActionData = {
+export const DeleteActor: ServiceActionData = {
 	type: 'ServiceAction',
-	name: 'DeletePersona',
+	name: 'DeleteActor',
 	params: {
-		$id: '/schemas/DeletePersonaParams.json',
+		$id: '/schemas/DeleteActorParams.json',
 		type: 'object',
 		properties: {
 			actor: {type: 'number', tsType: 'ActorId'},
@@ -55,10 +55,10 @@ export const DeletePersona: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/DeletePersonaResponse.json',
+		$id: '/schemas/DeleteActorResponse.json',
 		type: 'null',
 	},
-	returns: 'Promise<DeletePersonaResponseResult>',
+	returns: 'Promise<DeleteActorResponseResult>',
 	route: {
 		path: '/api/v1/personas/:targetActor',
 		method: 'DELETE',

@@ -6,7 +6,7 @@ import {
 	UpdateAccountSettings,
 	UpdateAccountPassword,
 } from '$lib/vocab/account/accountMutations';
-import {CreateAccountActor, DeletePersona} from '$lib/vocab/actor/actorMutations';
+import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorMutations';
 import {
 	ReadHub,
 	CreateHub,
@@ -51,7 +51,7 @@ export const mutations: Record<string, Mutation> = {
 	UpdateAccountPassword,
 	// actorMutations
 	CreateAccountActor,
-	DeletePersona,
+	DeleteActor,
 	// hubMutations
 	ReadHub,
 	CreateHub,

@@ -1,6 +1,6 @@
 import type {Service} from '$lib/server/service';
 import {PingService, EphemeraService} from '$lib/server/uiServices';
-import {CreateAccountActorService, DeletePersonaService} from '$lib/vocab/actor/actorServices';
+import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices';
 import {
 	ReadHubService,
 	CreateHubService,
@@ -62,7 +62,7 @@ export const services: Map<string, Service> = new Map(
 		UpdateAccountPasswordService,
 		// actorServices
 		CreateAccountActorService,
-		DeletePersonaService,
+		DeleteActorService,
 		// hubServices
 		ReadHubService,
 		CreateHubService,

@@ -15,7 +15,7 @@ import {
 	LeaveHub,
 	KickFromHub,
 } from '$lib/vocab/hub/hubActions';
-import {CreateAccountActor, DeletePersona} from '$lib/vocab/actor/actorActions';
+import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
 import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions';
 import {
@@ -65,7 +65,7 @@ export const actionDatas: ActionData[] = [
 	KickFromHub,
 	// personaEvents
 	CreateAccountActor,
-	DeletePersona,
+	DeleteActor,
 	// assignmentEvents
 	CreateAssignment,
 	DeleteAssignment,

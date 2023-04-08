@@ -20,7 +20,7 @@
 	const deletePersona = async () => {
 		pending = true;
 		errorMessage = '';
-		const result = await actions.DeletePersona({
+		const result = await actions.DeleteActor({
 			actor: $persona.persona_id,
 			targetActor: $persona.persona_id,
 		});

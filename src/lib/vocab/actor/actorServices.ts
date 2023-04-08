@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
-import {CreateAccountActor, DeletePersona} from '$lib/vocab/actor/actorActions';
+import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
 	cleanOrphanHubs,
@@ -112,8 +112,8 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 	},
 };
 
-export const DeletePersonaService: ServiceByName['DeletePersona'] = {
-	action: DeletePersona,
+export const DeleteActorService: ServiceByName['DeleteActor'] = {
+	action: DeleteActor,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, targetActor} = params;

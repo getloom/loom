@@ -3,7 +3,7 @@ import {unwrap, unwrapError} from '@feltjs/util';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {CreateAccountActorService, DeletePersonaService} from '$lib/vocab/actor/actorServices';
+import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
@@ -122,7 +122,7 @@ test__personaService('delete a persona and properly clean up', async ({repos, ra
 	await check(true);
 
 	unwrap(
-		await DeletePersonaService.perform({
+		await DeleteActorService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {actor: persona.persona_id, targetActor: persona.persona_id},
 		}),
@@ -144,7 +144,7 @@ test__personaService('actors cannot delete other personas', async ({repos, rando
 	const {persona: persona2} = await random.persona(account);
 
 	unwrapError(
-		await DeletePersonaService.perform({
+		await DeleteActorService.perform({
 			...toServiceRequestMock(repos, persona1),
 			params: {actor: persona1.persona_id, targetActor: persona2.persona_id},
 		}),
@@ -161,7 +161,7 @@ test__personaService(
 		assert.ok(actor.persona_id !== persona.persona_id);
 
 		unwrap(
-			await DeletePersonaService.perform({
+			await DeleteActorService.perform({
 				...toServiceRequestMock(repos, actor),
 				params: {actor: actor.persona_id, targetActor: persona.persona_id},
 			}),
@@ -176,7 +176,7 @@ test__personaService('actors cannot delete personas in the admin hub', async ({r
 
 	assert.is(
 		unwrapError(
-			await DeletePersonaService.perform({
+			await DeleteActorService.perform({
 				...toServiceRequestMock(repos, actor),
 				params: {actor: actor.persona_id, targetActor: persona.persona_id},
 			}),

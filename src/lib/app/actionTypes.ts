@@ -43,7 +43,7 @@ export type ServiceActionName =
 	| 'LeaveHub'
 	| 'KickFromHub'
 	| 'CreateAccountActor'
-	| 'DeletePersona'
+	| 'DeleteActor'
 	| 'CreateAssignment'
 	| 'DeleteAssignment'
 	| 'CreateSpace'
@@ -93,7 +93,7 @@ export interface EventParamsByName {
 	LeaveHub: LeaveHubParams;
 	KickFromHub: KickFromHubParams;
 	CreateAccountActor: CreateAccountActorParams;
-	DeletePersona: DeletePersonaParams;
+	DeleteActor: DeleteActorParams;
 	CreateAssignment: CreateAssignmentParams;
 	DeleteAssignment: DeleteAssignmentParams;
 	CreateSpace: CreateSpaceParams;
@@ -141,7 +141,7 @@ export interface EventResponseByName {
 	LeaveHub: LeaveHubResponse;
 	KickFromHub: KickFromHubResponse;
 	CreateAccountActor: CreateAccountActorResponse;
-	DeletePersona: DeletePersonaResponse;
+	DeleteActor: DeleteActorResponse;
 	CreateAssignment: CreateAssignmentResponse;
 	DeleteAssignment: DeleteAssignmentResponse;
 	CreateSpace: CreateSpaceResponse;
@@ -185,7 +185,7 @@ export interface ServiceByName {
 		CreateAccountActorParams,
 		CreateAccountActorResponseResult
 	>;
-	DeletePersona: AuthorizedService<DeletePersonaParams, DeletePersonaResponseResult>;
+	DeleteActor: AuthorizedService<DeleteActorParams, DeleteActorResponseResult>;
 	ReadHub: AuthorizedService<ReadHubParams, ReadHubResponseResult>;
 	CreateHub: AuthorizedService<CreateHubParams, CreateHubResponseResult>;
 	UpdateHubSettings: AuthorizedService<UpdateHubSettingsParams, UpdateHubSettingsResponseResult>;
@@ -395,12 +395,12 @@ export interface CreateAccountActorResponse {
 }
 export type CreateAccountActorResponseResult = ApiResult<CreateAccountActorResponse>;
 
-export interface DeletePersonaParams {
+export interface DeleteActorParams {
 	actor: ActorId;
 	targetActor: ActorId;
 }
-export type DeletePersonaResponse = null;
-export type DeletePersonaResponseResult = ApiResult<DeletePersonaResponse>;
+export type DeleteActorResponse = null;
+export type DeleteActorResponseResult = ApiResult<DeleteActorResponse>;
 
 export interface CreateAssignmentParams {
 	actor: ActorId;
@@ -766,7 +766,7 @@ export interface Actions {
 	CreateAccountActor: (
 		params: CreateAccountActorParams,
 	) => Promise<CreateAccountActorResponseResult>;
-	DeletePersona: (params: DeletePersonaParams) => Promise<DeletePersonaResponseResult>;
+	DeleteActor: (params: DeleteActorParams) => Promise<DeleteActorResponseResult>;
 	CreateAssignment: (params: CreateAssignmentParams) => Promise<CreateAssignmentResponseResult>;
 	DeleteAssignment: (params: DeleteAssignmentParams) => Promise<DeleteAssignmentResponseResult>;
 	CreateSpace: (params: CreateSpaceParams) => Promise<CreateSpaceResponseResult>;
@@ -843,9 +843,9 @@ export interface Mutations {
 	CreateAccountActor: (
 		ctx: MutationContext<CreateAccountActorParams, CreateAccountActorResponseResult>,
 	) => Promise<CreateAccountActorResponseResult>;
-	DeletePersona: (
-		ctx: MutationContext<DeletePersonaParams, DeletePersonaResponseResult>,
-	) => Promise<DeletePersonaResponseResult>;
+	DeleteActor: (
+		ctx: MutationContext<DeleteActorParams, DeleteActorResponseResult>,
+	) => Promise<DeleteActorResponseResult>;
 	CreateAssignment: (
 		ctx: MutationContext<CreateAssignmentParams, CreateAssignmentResponseResult>,
 	) => Promise<CreateAssignmentResponseResult>;
