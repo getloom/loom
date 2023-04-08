@@ -41,7 +41,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		session,
 		account,
 		personaIdSelection,
-		hubIdSelectionByPersonaId,
+		hubIdSelectionByActorId,
 		spaceIdSelectionByHubId,
 		entityById,
 		queryByKey,
@@ -75,7 +75,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	// TODO these two selections are hacky because using the derived stores
 	// was causing various confusing issues, so they find stuff directly on the session objects
 	// instead of using derived stores like `sessionActors` and `spacesByHubId`.
-	hubIdSelectionByPersonaId.swap(
+	hubIdSelectionByActorId.swap(
 		// TODO first try to load this from localStorage
 		new Map(guest ? null : $session.sessionActors.map(($p) => [$p.persona_id, $p.hub_id!])),
 	);

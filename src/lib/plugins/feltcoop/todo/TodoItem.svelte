@@ -11,7 +11,7 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
@@ -38,10 +38,10 @@
 
 	$: ({checked} = $entity.data);
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($authorPersona.name);
+	$: hue = randomHue($authorActor.name);
 
 	$: if (checked !== undefined) void updateEntity(checked);
 
@@ -73,7 +73,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		style="--hue: {hue}"
 		use:contextmenu.action={[
 			[EntityContextmenu, {persona, entity}],
-			[ActorContextmenu, {persona: authorPersona}],
+			[ActorContextmenu, {persona: authorActor}],
 		]}
 	>
 		<!-- TODO fix a11y -->
@@ -93,7 +93,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 				<EntityContent {entity} />
 			</div>
 			<div class="signature">
-				<ActorAvatar persona={authorPersona} showName={false} />
+				<ActorAvatar persona={authorActor} showName={false} />
 			</div>
 		</div>
 		{#if items && selected}

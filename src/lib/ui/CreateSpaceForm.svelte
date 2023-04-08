@@ -17,7 +17,7 @@
 
 	const {
 		actions,
-		ui: {sessionPersonaIndexById, adminActors},
+		ui: {sessionActorIndexById, adminActors},
 	} = getApp();
 
 	export let persona: Readable<AccountActor>;
@@ -72,7 +72,7 @@
 					$hub.name,
 					renderDirectoryPath(result.value.directory.path),
 					toSearchParams($page.url.searchParams, {
-						persona: $sessionPersonaIndexById.get($persona.persona_id) + '',
+						persona: $sessionActorIndexById.get($persona.persona_id) + '',
 					}),
 				),
 			);

@@ -10,7 +10,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona} = $viewContext);
@@ -22,10 +22,10 @@
 
 	export let entity: Readable<Entity>;
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($authorPersona.name);
+	$: hue = randomHue($authorActor.name);
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
@@ -35,7 +35,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 	transition:slide|local
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[ActorContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorActor}],
 		[EntityContextmenu, {persona, entity}],
 	]}
 >
@@ -45,7 +45,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 			<EntityContent {entity} />
 		</div>
 		<div class="signature" style:padding="var(--spacing_sm)">
-			<ActorAvatar persona={authorPersona} showName={false} />
+			<ActorAvatar persona={authorActor} showName={false} />
 		</div>
 		<button
 			class="plain-button icon-button"

@@ -8,10 +8,10 @@
 
 	const {
 		actions,
-		ui: {expandMainNav, spaceSelection, personaSelection, hubSelection, spacesByHubId},
+		ui: {expandMainNav, spaceSelection, actorSelection, hubSelection, spacesByHubId},
 	} = getApp();
 
-	$: selectedPersona = $personaSelection!;
+	$: selectedActor = $actorSelection!;
 	$: selectedHub = $hubSelection;
 	$: selectedSpace = $spaceSelection;
 
@@ -19,7 +19,7 @@
 	$: selectedHubSpaces = selectedHub && $spacesByHubId.get($selectedHub!.hub_id);
 
 	// TODO refactor to some client view-model for the account
-	$: hue = randomHue(toName($selectedPersona));
+	$: hue = randomHue(toName($selectedActor));
 </script>
 
 {#if $expandMainNav}
@@ -34,14 +34,14 @@
 		<div class="header">
 			<div class="luggage-placeholder" />
 			<div class="explorer-button">
-				<ActorAvatar persona={selectedPersona} />
+				<ActorAvatar persona={selectedActor} />
 			</div>
 		</div>
 		<div class="explorer">
 			<HubNav />
-			{#if selectedPersona && selectedHub && selectedHubSpaces}
+			{#if selectedActor && selectedHub && selectedHubSpaces}
 				<SpaceNav
-					persona={selectedPersona}
+					persona={selectedActor}
 					hub={selectedHub}
 					spaces={selectedHubSpaces}
 					{selectedSpace}

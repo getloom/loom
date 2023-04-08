@@ -13,7 +13,7 @@ import {
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {ActionActor, ClientActor} from '$lib/vocab/actor/actor';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/actorHelpers';
+import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
 import {defaultPersonalHubRoles} from '$lib/app/templates';
@@ -28,8 +28,8 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 	// TODO add `persona_id` and verify it's one of the `account_id`'s personas
 	perform: async ({repos, params, account_id}) => {
 		log.debug('[CreateAccountActor] creating persona', params.name);
-		const name = scrubPersonaName(params.name);
-		const nameErrorMessage = checkPersonaName(name);
+		const name = scrubActorName(params.name);
+		const nameErrorMessage = checkActorName(name);
 		if (nameErrorMessage) {
 			return {ok: false, status: 400, message: nameErrorMessage};
 		}

@@ -8,7 +8,7 @@ import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 import {toHubUrl, toSearchParams} from '$lib/ui/url';
 
 export const stashActors = (
-	{personaById, personas, sessionActors, hubIdSelectionByPersonaId}: WritableUi,
+	{personaById, personas, sessionActors, hubIdSelectionByActorId}: WritableUi,
 	$personasToStash: ClientActor[],
 	replace = false,
 ): void => {
@@ -33,7 +33,7 @@ export const stashActors = (
 			if ('account_id' in $persona) {
 				// Adding a session persona.
 				sessionActors.get().value.push(persona as Writable<AccountActor>);
-				hubIdSelectionByPersonaId.get().value.set($persona.persona_id, $persona.hub_id);
+				hubIdSelectionByActorId.get().value.set($persona.persona_id, $persona.hub_id);
 				mutatedSessionActors = true;
 			}
 		}
@@ -41,7 +41,7 @@ export const stashActors = (
 	if (mutated) personas.mutate();
 	if (mutatedSessionActors) {
 		sessionActors.mutate();
-		hubIdSelectionByPersonaId.mutate();
+		hubIdSelectionByActorId.mutate();
 	}
 };
 
@@ -57,8 +57,8 @@ export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientActo
 		personaById,
 		personaIdSelection,
 		sessionActors,
-		sessionPersonaIndexById,
-		hubIdSelectionByPersonaId,
+		sessionActorIndexById,
+		hubIdSelectionByActorId,
 	} = ui;
 	const $personaToEvict = personaToEvict.get();
 
@@ -70,11 +70,11 @@ export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientActo
 		const $sessionActors = sessionActors.get().value;
 
 		sessionActors.mutate((s) => s.splice($sessionActors.indexOf(personaToEvict as any), 1));
-		hubIdSelectionByPersonaId.mutate((c) => c.delete($personaToEvict.persona_id));
+		hubIdSelectionByActorId.mutate((c) => c.delete($personaToEvict.persona_id));
 
 		if ($personaToEvict.persona_id === personaIdSelection.get()) {
 			const nextSelectedPersona = $sessionActors[$sessionActors[0] === personaToEvict ? 1 : 0];
-			const nextSelectedPersonaIndex = sessionPersonaIndexById
+			const nextSelectedPersonaIndex = sessionActorIndexById
 				.get()
 				.get(nextSelectedPersona.get().persona_id);
 			ui.afterMutation(() =>

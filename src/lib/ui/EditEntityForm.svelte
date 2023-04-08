@@ -15,7 +15,7 @@
 	import DestEntities from '$lib/ui/DestEntities.svelte';
 	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
@@ -26,7 +26,7 @@
 		ui: {contextmenu, personaById},
 	} = getApp();
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
 		actions.UpdateEntities({
@@ -72,7 +72,7 @@
 	{...$$restProps}
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
-		[ActorContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorActor}],
 	]}
 >
 	<header class="markup" style:--icon_size="var(--icon_size_sm)">
@@ -82,7 +82,7 @@
 			<div><code>{$entity.data.type} {$entity.entity_id}</code></div>
 			<div class="row">
 				<span class="spaced">created by</span>
-				<ActorAvatar persona={authorPersona} />
+				<ActorAvatar persona={authorActor} />
 			</div>
 			<div>created {format($entity.created, 'PPPPp')}</div>
 			{#if $entity.updated !== null}

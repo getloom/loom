@@ -52,11 +52,11 @@ test__personaService('ghost persona has the expected name and id', async ({repos
 		}),
 	);
 
-	const ghostPersona = await repos.persona.findById(GHOST_ACTOR_ID);
-	assert.ok(ghostPersona);
-	assert.is(ghostPersona.type, 'ghost');
-	assert.is(ghostPersona.name, GHOST_ACTOR_NAME);
-	assert.is(ghostPersona.persona_id, GHOST_ACTOR_ID);
+	const ghostActor = await repos.persona.findById(GHOST_ACTOR_ID);
+	assert.ok(ghostActor);
+	assert.is(ghostActor.type, 'ghost');
+	assert.is(ghostActor.name, GHOST_ACTOR_NAME);
+	assert.is(ghostActor.persona_id, GHOST_ACTOR_ID);
 });
 
 test__personaService('delete a persona and properly clean up', async ({repos, random}) => {

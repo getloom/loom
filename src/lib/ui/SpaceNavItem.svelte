@@ -18,7 +18,7 @@
 			contextmenu,
 			mobile,
 			expandMainNav,
-			sessionPersonaIndexById,
+			sessionActorIndexById,
 			freshnessByDirectoryId,
 			entityById,
 		},
@@ -31,7 +31,7 @@
 
 	$: directory = entityById.get($space.directory_id)!;
 
-	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
+	$: personaIndex = $sessionActorIndexById.get($persona.persona_id)!;
 	$: fresh = freshnessByDirectoryId.get($space.directory_id)!;
 </script>
 

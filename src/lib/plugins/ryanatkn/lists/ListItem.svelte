@@ -14,7 +14,7 @@
 	import ListControls from './ListControls.svelte';
 	import ClearCheckedButton from './ClearCheckedButton.svelte';
 	import {getViewContext} from '$lib/vocab/view/view';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const viewContext = getViewContext();
 	$: ({persona} = $viewContext);
@@ -39,10 +39,10 @@
 
 	$: ({checked} = $entity.data);
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($authorPersona.name);
+	$: hue = randomHue($authorActor.name);
 
 	$: if (checked !== undefined) void updateEntity(checked); // TODO change to a fn?
 
@@ -82,7 +82,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 	class:expandItems
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[ActorContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorActor}],
 		[EntityContextmenu, {persona, entity}],
 	]}
 >
@@ -109,7 +109,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 			</button>
 		{/if}
 		<div class="signature" style:padding="var(--spacing_sm)">
-			<ActorAvatar persona={authorPersona} showName={false} />
+			<ActorAvatar persona={authorActor} showName={false} />
 		</div>
 		{#if items?.length && (expandItems || expandControls)}
 			<div class="floating-controls">

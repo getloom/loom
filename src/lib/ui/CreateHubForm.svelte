@@ -12,12 +12,12 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {randomHue} from '$lib/ui/color';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
-	import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/actorHelpers';
+	import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {
 		actions,
-		ui: {sessionPersonaIndexById},
+		ui: {sessionActorIndexById},
 	} = getApp();
 
 	export let persona: Readable<AccountActor>;
@@ -38,13 +38,13 @@
 	$: name, (errorMessage = null);
 
 	const create = async (): Promise<void> => {
-		name = scrubPersonaName(name);
+		name = scrubActorName(name);
 		if (!name) {
 			errorMessage = 'please enter a name for your new hub';
 			nameEl.focus();
 			return;
 		}
-		const nameErrorMessage = checkPersonaName(name);
+		const nameErrorMessage = checkActorName(name);
 		if (nameErrorMessage) {
 			errorMessage = nameErrorMessage;
 			nameEl.focus();
@@ -66,7 +66,7 @@
 					result.value.hub.name,
 					null,
 					toSearchParams($page.url.searchParams, {
-						persona: $sessionPersonaIndexById.get($persona.persona_id) + '',
+						persona: $sessionActorIndexById.get($persona.persona_id) + '',
 					}),
 				),
 			);

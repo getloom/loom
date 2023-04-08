@@ -8,7 +8,7 @@
 	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {contextmenu, personaById},
@@ -18,10 +18,10 @@
 	export let entity: Readable<Entity>;
 	export let selectPost: (post: Readable<Entity>) => void;
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($authorPersona.name);
+	$: hue = randomHue($authorActor.name);
 
 	//TODO is this still needed?
 	const renderEntity = (entity: Entity): boolean => {
@@ -39,7 +39,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		style="--hue: {hue}"
 		use:contextmenu.action={[
 			[EntityContextmenu, {persona, entity}],
-			[ActorContextmenu, {persona: authorPersona}],
+			[ActorContextmenu, {persona: authorActor}],
 		]}
 	>
 		<!-- TODO remove this override after implementing links -->
@@ -53,7 +53,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 				{/if}
 			</div>
 			<div class="signature">
-				<ActorAvatar persona={authorPersona} />
+				<ActorAvatar persona={authorActor} />
 			</div>
 		</div>
 	</li>

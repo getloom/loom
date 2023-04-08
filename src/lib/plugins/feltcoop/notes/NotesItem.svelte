@@ -7,7 +7,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {contextmenu, personaById},
@@ -16,13 +16,13 @@
 	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 </script>
 
 <li
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
-		[ActorContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorActor}],
 	]}
 >
 	<div class="markup padded-xl formatted">

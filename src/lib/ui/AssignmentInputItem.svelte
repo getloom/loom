@@ -10,7 +10,7 @@
 	const {actions} = getApp();
 
 	export let persona: Readable<AccountActor>;
-	export let assignmentPersona: Readable<ClientActor>;
+	export let assignmentActor: Readable<ClientActor>;
 	export let hub: Readable<Hub>;
 	export let role: Readable<Role>;
 
@@ -18,7 +18,7 @@
 		await actions.CreateAssignment({
 			actor: $persona.persona_id,
 			hub_id: $hub.hub_id,
-			actor_id: $assignmentPersona.persona_id,
+			actor_id: $assignmentActor.persona_id,
 			role_id: $role.role_id,
 		});
 	};
@@ -26,7 +26,7 @@
 
 <li>
 	<button type="button" on:click={() => createAssignment()}>
-		<ActorAvatar persona={assignmentPersona} />
+		<ActorAvatar persona={assignmentActor} />
 	</button>
 </li>
 

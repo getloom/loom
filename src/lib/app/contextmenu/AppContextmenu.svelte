@@ -11,10 +11,10 @@
 
 	const {
 		actions,
-		ui: {account, session, sessionActors, personaSelection},
+		ui: {account, session, sessionActors, actorSelection},
 	} = getApp();
 
-	$: selectedPersona = $personaSelection;
+	$: selectedActor = $actorSelection;
 </script>
 
 <ContextmenuSubmenu>
@@ -37,7 +37,7 @@
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="@" />
 				</svelte:fragment>
-				Create Persona
+				Create Actor
 			</ContextmenuEntry>
 		{/if}
 		{#if !$session.guest}
@@ -64,7 +64,7 @@
 					run={() =>
 						actions.OpenDialog({
 							Component: CreateActionForm,
-							props: {persona: selectedPersona},
+							props: {persona: selectedActor},
 							dialogProps: {layout: 'page'},
 						})}
 				>

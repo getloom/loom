@@ -11,7 +11,7 @@
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 	import {createPaginatedQuery} from '$lib/util/query';
 
 	const viewContext = getViewContext();
@@ -59,7 +59,7 @@
 	};
 
 	let selectedReply: Readable<Entity> | null = null as any;
-	$: selectedReplyPersona = $selectedReply && lookupPersona(personaById, $selectedReply.persona_id);
+	$: selectedReplyPersona = $selectedReply && lookupActor(personaById, $selectedReply.persona_id);
 	const selectReply = (reply: Readable<Entity>) => {
 		if (selectedReply === reply) {
 			selectedReply = null;

@@ -31,9 +31,9 @@ export const stashAssignments = (
 
 export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[]): void => {
 	if (!assignmentsToEvict.length) return;
-	const {assignments, assignmentById, personaById, sessionPersonaIndexById} = ui;
+	const {assignments, assignmentById, personaById, sessionActorIndexById} = ui;
 	const $assignments = assignments.get().value;
-	const $sessionPersonaIndexById = sessionPersonaIndexById.get();
+	const $sessionActorIndexById = sessionActorIndexById.get();
 
 	for (const assignment of assignmentsToEvict) {
 		assignmentById.delete(assignment.assignment_id);
@@ -57,11 +57,11 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 			// When a non-session persona leaves a hub,
 			// the hub is never evicted,
 			// and the persona is evicted unless it has an assignment in another hub.
-			if ($sessionPersonaIndexById.has(persona_id)) {
+			if ($sessionActorIndexById.has(persona_id)) {
 				let doesHubHaveOtherSessionAssignment = false;
 				for (const a of $assignments) {
 					// TODO could speed this up a cache of assignments by hub, see in multiple places
-					if (a.hub_id === hub_id && $sessionPersonaIndexById.has(a.persona_id)) {
+					if (a.hub_id === hub_id && $sessionActorIndexById.has(a.persona_id)) {
 						doesHubHaveOtherSessionAssignment = true;
 						break;
 					}

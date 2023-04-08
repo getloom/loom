@@ -12,27 +12,27 @@
 
 	const {
 		ui: {
-			personaSelection,
+			actorSelection,
 			spaceIdSelectionByHubId,
 			spaceById,
-			hubIdSelectionByPersonaId,
+			hubIdSelectionByActorId,
 			hubById,
-			sessionPersonaIndexById,
+			sessionActorIndexById,
 			entityById,
 		},
 	} = getApp();
 
 	export let persona: Readable<AccountActor>;
 
-	$: hubId = $hubIdSelectionByPersonaId.value.get($persona.persona_id) || $persona.hub_id;
+	$: hubId = $hubIdSelectionByActorId.value.get($persona.persona_id) || $persona.hub_id;
 	$: hub = hubById.get(hubId)!;
 	$: spaceIdSelection = $spaceIdSelectionByHubId.value.get($hub.hub_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
 	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
-	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
+	$: personaIndex = $sessionActorIndexById.get($persona.persona_id)!;
 </script>
 
-{#if $personaSelection === persona}
+{#if $actorSelection === persona}
 	<li class="menu-item panel" role="none">
 		<div class="content">
 			<div class="icon"><ActorAvatar {persona} showName={false} /></div>

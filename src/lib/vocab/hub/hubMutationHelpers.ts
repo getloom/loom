@@ -43,9 +43,9 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 	const {
 		hubById,
 		hubSelection,
-		personaSelection,
+		actorSelection,
 		hubs,
-		hubIdSelectionByPersonaId,
+		hubIdSelectionByActorId,
 		personaById,
 		assignments,
 		spacesByHubId,
@@ -64,7 +64,7 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 	}
 
 	if (hubSelection.get() === hub) {
-		const persona = personaSelection.get()!;
+		const persona = actorSelection.get()!;
 		ui.afterMutation(() =>
 			goto(toHubUrl(persona.get().name, null, get(page).url.search), {
 				replaceState: true,
@@ -78,17 +78,17 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 
 	hubs.mutate((c) => c.delete(hub));
 
-	const $hubIdSelectionByPersonaId = hubIdSelectionByPersonaId.get().value;
+	const $hubIdSelectionByActorId = hubIdSelectionByActorId.get().value;
 	let mutated = false;
-	for (const [persona_id, hubIdSelection] of $hubIdSelectionByPersonaId) {
+	for (const [persona_id, hubIdSelection] of $hubIdSelectionByActorId) {
 		if (hubIdSelection !== hub_id) continue;
 		const persona = personaById.get(persona_id);
 		const $persona = persona?.get();
 		if (!isAccountActor($persona)) continue; // TODO this check could be refactored, shouldn't be necessary here
-		$hubIdSelectionByPersonaId.set(persona_id, $persona.hub_id);
+		$hubIdSelectionByActorId.set(persona_id, $persona.hub_id);
 		mutated = true;
 	}
-	if (mutated) hubIdSelectionByPersonaId.mutate();
+	if (mutated) hubIdSelectionByActorId.mutate();
 
 	// TODO could speed this up a cache of assignments by hub, see in multiple places
 	const assignmentsToEvict: Assignment[] = [];

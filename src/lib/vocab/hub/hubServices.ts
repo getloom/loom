@@ -14,7 +14,7 @@ import {
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {checkPersonaName, scrubPersonaName} from '$lib/vocab/actor/actorHelpers';
+import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {
 	checkRemovePersona,
@@ -82,8 +82,8 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 	transaction: true,
 	perform: async ({repos, params: {actor, template}, account_id}) => {
 		log.debug('creating hub account_id', account_id);
-		const name = scrubPersonaName(template.name);
-		const nameErrorMessage = checkPersonaName(name);
+		const name = scrubActorName(template.name);
+		const nameErrorMessage = checkActorName(name);
 		if (nameErrorMessage) {
 			return {ok: false, status: 400, message: nameErrorMessage};
 		}

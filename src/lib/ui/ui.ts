@@ -67,7 +67,7 @@ export interface Ui {
 	personas: Mutable<Set<Readable<ClientActor>>>;
 	session: Readable<ClientSession>;
 	sessionActors: Mutable<Array<Readable<AccountActor>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
-	sessionPersonaIndexById: Readable<Map<ActorId, number>>;
+	sessionActorIndexById: Readable<Map<ActorId, number>>;
 	hubs: Mutable<Set<Readable<Hub>>>;
 	roles: Mutable<Set<Readable<Role>>>;
 	spaces: Mutable<Set<Readable<Space>>>;
@@ -105,9 +105,9 @@ export interface Ui {
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the hub
 	ephemera: Readable<EphemeraResponse | null>;
 	personaIdSelection: Readable<ActorId | null>;
-	personaSelection: Readable<Readable<AccountActor> | null>;
+	actorSelection: Readable<Readable<AccountActor> | null>;
 	personaIndexSelection: Readable<number | null>;
-	hubIdSelectionByPersonaId: Mutable<Map<ActorId, HubId | null>>;
+	hubIdSelectionByActorId: Mutable<Map<ActorId, HubId | null>>;
 	hubSelection: Readable<Readable<Hub> | null>;
 	spaceIdSelectionByHubId: Mutable<Map<HubId, SpaceId | null>>;
 	spaceSelection: Readable<Readable<Space> | null>;
@@ -271,18 +271,18 @@ export const toUi = (
 	);
 
 	const personaIdSelection = writable<ActorId | null>(null);
-	const personaSelection = derived(
+	const actorSelection = derived(
 		[personaIdSelection],
 		([$personaIdSelection]) =>
 			($personaIdSelection && (personaById.get($personaIdSelection) as Writable<AccountActor>)) ||
 			null,
 	);
 	const personaIndexSelection = derived(
-		[personaSelection, sessionActors],
-		([$personaSelection, $sessionActors]) =>
-			$personaSelection ? $sessionActors.value.indexOf($personaSelection) : null,
+		[actorSelection, sessionActors],
+		([$actorSelection, $sessionActors]) =>
+			$actorSelection ? $sessionActors.value.indexOf($actorSelection) : null,
 	);
-	const sessionPersonaIndexById = derived(
+	const sessionActorIndexById = derived(
 		[sessionActors],
 		([$sessionActors]) => new Map($sessionActors.value.map((p, i) => [p.get().persona_id, i])),
 	);
@@ -290,33 +290,33 @@ export const toUi = (
 		[sessionActors, assignments, hubs],
 		([$sessionActors, $assignments, $hubs]) => {
 			const map: Map<Writable<AccountActor>, Array<Writable<Hub>>> = new Map();
-			for (const sessionPersona of $sessionActors.value) {
-				const $sessionPersona = sessionPersona.get();
-				const sessionPersonaHubs: Array<Writable<Hub>> = [];
+			for (const sessionActor of $sessionActors.value) {
+				const $sessionActor = sessionActor.get();
+				const sessionActorHubs: Array<Writable<Hub>> = [];
 				for (const hub of $hubs.value) {
 					const $hub = hub.get();
 					for (const assignment of $assignments.value) {
 						if (
 							assignment.hub_id === $hub.hub_id &&
-							assignment.persona_id === $sessionPersona.persona_id
+							assignment.persona_id === $sessionActor.persona_id
 						) {
-							sessionPersonaHubs.push(hub);
+							sessionActorHubs.push(hub);
 							break;
 						}
 					}
 				}
-				map.set(sessionPersona, sessionPersonaHubs);
+				map.set(sessionActor, sessionActorHubs);
 			}
 			return map;
 		},
 	);
 	// TODO should these be store references instead of ids?
-	const hubIdSelectionByPersonaId = mutable<Map<ActorId, HubId | null>>(new Map());
+	const hubIdSelectionByActorId = mutable<Map<ActorId, HubId | null>>(new Map());
 	const hubSelection = derived(
-		[personaIdSelection, hubIdSelectionByPersonaId],
-		([$personaIdSelection, $hubIdSelectionByPersonaId]) =>
+		[personaIdSelection, hubIdSelectionByActorId],
+		([$personaIdSelection, $hubIdSelectionByActorId]) =>
 			$personaIdSelection
-				? hubById.get($hubIdSelectionByPersonaId.value.get($personaIdSelection)!)!
+				? hubById.get($hubIdSelectionByActorId.value.get($personaIdSelection)!)!
 				: null,
 	);
 	// TODO consider making this the space store so we don't have to chase id references
@@ -371,7 +371,7 @@ export const toUi = (
 		roles,
 		session,
 		sessionActors,
-		sessionPersonaIndexById,
+		sessionActorIndexById,
 		spaces,
 		hubs,
 		assignments,
@@ -407,9 +407,9 @@ export const toUi = (
 		viewBySpace,
 		ephemera,
 		personaIdSelection,
-		personaSelection,
+		actorSelection,
 		personaIndexSelection,
-		hubIdSelectionByPersonaId,
+		hubIdSelectionByActorId,
 		hubSelection,
 		spaceIdSelectionByHubId,
 		spaceSelection,

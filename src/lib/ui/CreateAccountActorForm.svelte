@@ -8,11 +8,11 @@
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
 	import {toSearchParams, toHubUrl} from '$lib/ui/url';
-	import {scrubPersonaName, checkPersonaName} from '$lib/vocab/actor/actorHelpers';
+	import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		actions,
-		ui: {sessionPersonaIndexById},
+		ui: {sessionActorIndexById},
 	} = getApp();
 
 	export let done: (() => void) | undefined = undefined;
@@ -25,13 +25,13 @@
 	// TODO add initial hue!
 
 	const create = async () => {
-		name = scrubPersonaName(name);
+		name = scrubActorName(name);
 		if (!name) {
 			errorMessage = 'please enter a name for your new persona';
 			nameEl.focus();
 			return;
 		}
-		const nameErrorMessage = checkPersonaName(name);
+		const nameErrorMessage = checkActorName(name);
 		if (nameErrorMessage) {
 			errorMessage = nameErrorMessage;
 			nameEl.focus();
@@ -48,7 +48,7 @@
 					result.value.hubs[0].name,
 					null,
 					toSearchParams($page.url.searchParams, {
-						persona: $sessionPersonaIndexById.get(result.value.personas[0].persona_id) + '',
+						persona: $sessionActorIndexById.get(result.value.personas[0].persona_id) + '',
 					}),
 				),
 			);

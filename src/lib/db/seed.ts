@@ -88,7 +88,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const mainPersonaCreator = personas[0] as AccountActor;
 	const toMainAccountServiceRequest = () => toServiceRequestMock(repos, mainPersonaCreator);
 	const otherActors = personas.slice(1);
-	const nextPersona = toNext(personas);
+	const nextActor = toNext(personas);
 
 	const hubs: Hub[] = [];
 
@@ -120,20 +120,20 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			const spaceTemplate = hubTemplate.spaces?.find((s) => s.name === space.name);
 			if (spaceTemplate?.entities) {
 				await generateEntities(
-					{toServiceRequest: toMainAccountServiceRequest, nextPersona, space},
+					{toServiceRequest: toMainAccountServiceRequest, nextActor, space},
 					spaceTemplate.entities,
 				);
 			}
 		}
-		if (much) await createMuchSpaces(toMainAccountServiceRequest, hub, nextPersona);
-		await createDefaultEntities(toMainAccountServiceRequest, spaces, nextPersona);
+		if (much) await createMuchSpaces(toMainAccountServiceRequest, hub, nextActor);
+		await createDefaultEntities(toMainAccountServiceRequest, spaces, nextActor);
 	}
 };
 
 const createDefaultEntities = async (
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
 	spaces: Space[],
-	nextPersona: () => AccountActor,
+	nextActor: () => AccountActor,
 ) => {
 	for (const space of spaces) {
 		const viewName = findFirstComponentName(parseView(space.view));
@@ -143,7 +143,7 @@ const createDefaultEntities = async (
 			log.warn(`skipping entity seeding for view ${magenta(viewName)}`);
 			continue;
 		}
-		await generateEntities({toServiceRequest, nextPersona, space});
+		await generateEntities({toServiceRequest, nextActor, space});
 	}
 };
 
@@ -152,7 +152,7 @@ const generateEntity = async (
 	data: EntityTemplate,
 	source_id = ctx.space.directory_id,
 ): Promise<CreateEntityResponse> => {
-	const actor = ctx.nextPersona();
+	const actor = ctx.nextActor();
 	return unwrap(
 		await CreateEntityService.perform({
 			...ctx.toServiceRequest(),
@@ -204,7 +204,7 @@ const hubTemplates: HubTemplate[] = [
 
 interface SeedContext {
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>;
-	nextPersona: () => AccountActor;
+	nextActor: () => AccountActor;
 	space: Space;
 }
 
@@ -276,12 +276,12 @@ const MUCH_SPACE_COUNT = 100;
 const createMuchSpaces = async (
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
 	hub: Hub,
-	nextPersona: () => AccountActor,
+	nextActor: () => AccountActor,
 ) => {
 	const viewTemplates = toCreatableViewTemplates(false);
 
 	for (let i = 0; i < MUCH_SPACE_COUNT; i++) {
-		const actor = nextPersona();
+		const actor = nextActor();
 		const view = randomItem(viewTemplates);
 		const name = view.name.toLowerCase() + i;
 		unwrap(

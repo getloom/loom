@@ -4,10 +4,10 @@
 	import LayoutContextProvider from '$lib/ui/LayoutContextProvider.svelte';
 
 	const {
-		ui: {mainLayoutView, personaSelection, hubSelection, spaceSelection},
+		ui: {mainLayoutView, actorSelection, hubSelection, spaceSelection},
 	} = getApp();
 
-	$: persona = $personaSelection;
+	$: persona = $actorSelection;
 	$: hub = $hubSelection;
 	$: space = $spaceSelection;
 </script>

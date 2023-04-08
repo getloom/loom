@@ -3,8 +3,8 @@ import type {Sql} from 'postgres';
 const GHOST_ACTOR_ID = 2;
 
 export const up = async (sql: Sql<any>): Promise<void> => {
-	const [ghostPersona] = await sql`SELECT * FROM personas WHERE persona_id=${GHOST_ACTOR_ID}`;
-	if (!ghostPersona || ghostPersona.type === 'ghost') return;
+	const [ghostActor] = await sql`SELECT * FROM personas WHERE persona_id=${GHOST_ACTOR_ID}`;
+	if (!ghostActor || ghostActor.type === 'ghost') return;
 
 	// Move the existing persona -- all references to `personas.persona_id` cascade except one (see ahead).
 	const [{persona_id}] = await sql`

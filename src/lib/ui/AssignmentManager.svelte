@@ -8,7 +8,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 
 	const {
-		ui: {personaSelection, personasByHubId, assignmentsByRoleId},
+		ui: {actorSelection, personasByHubId, assignmentsByRoleId},
 	} = getApp();
 
 	export let role: Readable<Role>;
@@ -16,7 +16,7 @@
 
 	$: assignments = $assignmentsByRoleId.get($role.role_id)!;
 
-	$: selectedPersona = $personaSelection;
+	$: selectedActor = $actorSelection;
 
 	$: hubActors = $personasByHubId.get($role.hub_id)!;
 
@@ -29,10 +29,10 @@
 
 <div class="padded-xl">
 	<h1>Assign the role "{$role.name}" to:</h1>
-	{#if selectedPersona}
+	{#if selectedActor}
 		<menu>
 			{#each assignableActors as persona (persona)}
-				<AssignmentInputItem persona={selectedPersona} assignmentPersona={persona} {hub} {role} />
+				<AssignmentInputItem persona={selectedActor} assignmentActor={persona} {hub} {role} />
 			{:else}
 				<p>There's no one new to assign this role to</p>
 			{/each}

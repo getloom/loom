@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
+	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -11,8 +12,7 @@
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {contextmenu, personaById, entityById, sourceTiesByDestEntityId},
@@ -23,7 +23,7 @@
 	export let selectReply: (reply: Readable<Entity>) => void;
 	export let queryReply: (entity_id: number, cb: (entity: Readable<Entity>) => void) => void;
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 
 	$: sourceTiesSet = sourceTiesByDestEntityId.get($entity.entity_id);
 	$: replyTie =
@@ -33,10 +33,10 @@
 	$: if (replyTie && !repliedToEntity) {
 		queryReply(replyTie.source_id, (entity) => (repliedToEntity = entity));
 	}
-	$: repliedToPersona = lookupPersona(personaById, $repliedToEntity?.persona_id);
+	$: repliedToPersona = lookupActor(personaById, $repliedToEntity?.persona_id);
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($authorPersona.name);
+	$: hue = randomHue($authorActor.name);
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
@@ -45,15 +45,15 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 	style="--hue: {hue}"
 	use:contextmenu.action={[
 		[EntityContextmenu, {persona, entity}],
-		[ActorContextmenu, {persona: authorPersona}],
+		[ActorContextmenu, {persona: authorActor}],
 	]}
 >
 	<div class="icon">
-		<ActorAvatar persona={authorPersona} showName={false} />
+		<ActorAvatar persona={authorActor} showName={false} />
 	</div>
 	<div class="formatted content">
 		<div class="signature">
-			<ActorAvatar persona={authorPersona} showIcon={false} />
+			<ActorAvatar persona={authorActor} showIcon={false} />
 			<div class="controls">
 				<small class="timestamp">{format($entity.created, 'MMM d, p')}</small>
 				<button

@@ -13,7 +13,7 @@
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
 	const {
-		ui: {contextmenu, sessionPersonaIndexById, entityById},
+		ui: {contextmenu, sessionActorIndexById, entityById},
 	} = getApp();
 
 	export let persona: Readable<AccountActor>;
@@ -25,7 +25,7 @@
 
 	$: hue = randomHue($space.name); // TODO add custom setting on spaces
 
-	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
+	$: personaIndex = $sessionActorIndexById.get($persona.persona_id)!;
 </script>
 
 <a

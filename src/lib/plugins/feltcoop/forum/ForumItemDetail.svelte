@@ -12,7 +12,7 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
@@ -32,10 +32,10 @@
 		return acc;
 	}, [] as Array<Readable<Entity>>);
 
-	$: authorPersona = lookupPersona(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.persona_id);
 
 	// TODO refactor to some client view-model for the persona
-	$: hue = randomHue($authorPersona.name);
+	$: hue = randomHue($authorActor.name);
 
 	let replying = false;
 	let text = '';
@@ -77,12 +77,12 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		style="--hue: {hue}"
 		use:contextmenu.action={[
 			[EntityContextmenu, {persona, entity}],
-			[ActorContextmenu, {persona: authorPersona}],
+			[ActorContextmenu, {persona: authorActor}],
 		]}
 	>
 		<div class="wrapper">
 			<div class="signature">
-				<ActorAvatar persona={authorPersona} />
+				<ActorAvatar persona={authorActor} />
 				{format($entity.created, 'MMM d, p')}
 			</div>
 
@@ -98,13 +98,13 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 			<div>
 				<button
 					class="icon-button plain-button"
-					title="reply to @{$authorPersona.name}"
-					aria-label="reply to @{$authorPersona.name}"
+					title="reply to @{$authorActor.name}"
+					aria-label="reply to @{$authorActor.name}"
 					on:click={() => (replying = !replying)}>↩</button
 				>
 				{#if replying}
 					<textarea
-						placeholder="> replying to @{$authorPersona.name}"
+						placeholder="> replying to @{$authorActor.name}"
 						on:keydown={onKeydown}
 						bind:value={text}
 						bind:this={replyInputEl}

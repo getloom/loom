@@ -5,7 +5,7 @@
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Assignment} from '$lib/vocab/assignment/assignment';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupPersona} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
 		actions,
@@ -15,7 +15,7 @@
 	export let actor: Readable<AccountActor>;
 	export let assignment: Assignment;
 
-	$: assignmentPersona = lookupPersona(personaById, assignment.persona_id);
+	$: assignmentActor = lookupActor(personaById, assignment.persona_id);
 
 	const deleteAssignment = async () => {
 		//TODO better error handling
@@ -27,7 +27,7 @@
 </script>
 
 <li class="assignment-item">
-	<ActorAvatar persona={assignmentPersona} showIcon={false} />
+	<ActorAvatar persona={assignmentActor} showIcon={false} />
 	<button class="icon-button plain-button" on:click={() => deleteAssignment()}> ✕ </button>
 </li>
 

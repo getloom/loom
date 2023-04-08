@@ -2,7 +2,7 @@ import type {SvelteChild, Text} from 'svast';
 import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
 
-import {checkPersonaName} from '$lib/vocab/actor/actorHelpers';
+import {checkActorName} from '$lib/vocab/actor/actorHelpers';
 import {
 	isHubRelativePath,
 	isHubRelativePathValid,
@@ -116,7 +116,7 @@ const parseSvastText = (node: Text): SvelteChild => {
 					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
 				],
 			});
-		} else if (firstChar === '@' && !checkPersonaName((restStr = word.substring(1)))) {
+		} else if (firstChar === '@' && !checkActorName((restStr = word.substring(1)))) {
 			// `@persona` mentions
 			flushPlainText();
 			(children || (children = [])).push({

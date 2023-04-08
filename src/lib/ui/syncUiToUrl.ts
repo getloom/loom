@@ -86,12 +86,12 @@ const selectPersona = ({personaIdSelection}: Ui, persona_id: ActorId): void => {
 };
 
 const selectHub = (
-	{personaIdSelection, hubIdSelectionByPersonaId}: Ui,
+	{personaIdSelection, hubIdSelectionByActorId}: Ui,
 	hub_id: HubId | null,
 ): void => {
 	const $personaIdSelection = personaIdSelection.get();
 	if ($personaIdSelection) {
-		hubIdSelectionByPersonaId.mutate(($c) => {
+		hubIdSelectionByActorId.mutate(($c) => {
 			$c.set($personaIdSelection, hub_id);
 		});
 	}

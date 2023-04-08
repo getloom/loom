@@ -45,12 +45,12 @@ test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 });
 
 test_hubServices('disallow deleting admin hub', async ({repos}) => {
-	const adminPersona = await loadAdminPersona(repos);
+	const adminActor = await loadAdminPersona(repos);
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
-				...toServiceRequestMock(repos, adminPersona),
-				params: {actor: adminPersona.persona_id, hub_id: ADMIN_HUB_ID},
+				...toServiceRequestMock(repos, adminActor),
+				params: {actor: adminActor.persona_id, hub_id: ADMIN_HUB_ID},
 			}),
 		).status,
 		405,

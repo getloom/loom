@@ -10,7 +10,7 @@ import {GHOST_ACTOR_ID} from '$lib/app/constants';
  * @param name - A persona name that may be invalid
  * @returns The scrubbed value.
  */
-export const scrubPersonaName = (name: string): string => name.trim();
+export const scrubActorName = (name: string): string => name.trim();
 
 export const ACTOR_NAME_CHARACTER_MATCHER = /^[a-z\d-]+$/iu;
 // TODO maybe add these to the schema? problem is ajv will return less friendly errors from service calls
@@ -23,7 +23,7 @@ const ACTOR_NAME_MIN_LENGTH = 3;
  * @param name - A persona name that may be invalid
  * @returns `null` if valid, otherwise an error message
  */
-export const checkPersonaName = (name: string): string | null => {
+export const checkActorName = (name: string): string | null => {
 	if (name.length > ACTOR_NAME_MAX_LENGTH) {
 		return `name must be no longer than ${ACTOR_NAME_MAX_LENGTH} characters`;
 	}
@@ -47,7 +47,7 @@ export const checkPersonaName = (name: string): string | null => {
 	return null;
 };
 
-export const lookupPersona = (
+export const lookupActor = (
 	personaById: Map<ActorId, Readable<ClientActor>>,
 	persona_id: ActorId | undefined,
 ): Readable<ClientActor> =>

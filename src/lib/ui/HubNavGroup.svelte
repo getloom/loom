@@ -7,10 +7,10 @@
 	import ActingActorContextmenu from '$lib/app/contextmenu/ActingActorContextmenu.svelte';
 
 	const {
-		ui: {personaSelection, hubSelection, hubsBySessionPersona, contextmenu},
+		ui: {actorSelection, hubSelection, hubsBySessionPersona, contextmenu},
 	} = getApp();
 
-	$: selectedPersona = $personaSelection!;
+	$: selectedActor = $actorSelection!;
 	$: selectedHub = $hubSelection;
 
 	export let persona: Readable<AccountActor>; // session persona
@@ -25,10 +25,10 @@
 		<HubNavItem
 			hub={personalHub}
 			{persona}
-			selected={persona === selectedPersona && personalHub === selectedHub}
+			selected={persona === selectedActor && personalHub === selectedHub}
 		/>
 		{#each communityHubs as hub (hub)}
-			<HubNavItem {hub} {persona} selected={persona === selectedPersona && hub === selectedHub} />
+			<HubNavItem {hub} {persona} selected={persona === selectedActor && hub === selectedHub} />
 		{/each}
 	</div>
 {/if}

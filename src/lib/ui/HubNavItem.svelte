@@ -16,7 +16,7 @@
 			contextmenu,
 			spaceIdSelectionByHubId,
 			spaceById,
-			sessionPersonaIndexById,
+			sessionActorIndexById,
 			freshnessByHubId,
 			entityById,
 		},
@@ -35,7 +35,7 @@
 
 	$: isPersonaHomeHub = $hub.name === $persona.name;
 
-	$: personaIndex = $sessionPersonaIndexById.get($persona.persona_id)!;
+	$: personaIndex = $sessionActorIndexById.get($persona.persona_id)!;
 
 	$: fresh = freshnessByHubId.get($hub.hub_id);
 </script>
