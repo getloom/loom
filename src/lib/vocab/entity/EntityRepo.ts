@@ -9,6 +9,7 @@ import type {ActorId} from '$lib/vocab/actor/actor';
 import type {SpaceId} from '$lib/vocab/space/space';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
+import {ENTITY_COLUMNS, type EntityColumn} from '$lib/vocab/entity/entityHelpers.server';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
@@ -156,26 +157,30 @@ export class EntityRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterDirectoriesByEntity(entity_id: EntityId): Promise<Entity[]> {
+	async filterDirectoriesByEntity<T extends EntityColumn>(
+		entity_id: EntityId,
+		columns: T[] = ENTITY_COLUMNS.Entity as T[],
+	): Promise<Array<Pick<Entity, T>>> {
 		log.debug(`looking for directories for entity: ${entity_id}`);
-		const directories = await this.sql<Entity[]>`
-			SELECT DISTINCT e.entity_id, e.data, e.persona_id, e.created, e.updated, e.space_id, e.path FROM entities e
+		const directories = await this.sql<Array<Pick<Entity, T>>>`
+			SELECT DISTINCT ${this.sql(columns.map((e) => 'e.' + e))}
+			FROM entities e
 			JOIN (
-			WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
-				SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
-					FROM ties t WHERE dest_id=${entity_id}
-				UNION ALL
-					SELECT t.tie_id, t.source_id, t.dest_id, t.type,t.created, p.path || ARRAY[t.source_id]
-					FROM paths p
-					JOIN ties t
-					ON p.source_id = t.dest_id AND t.source_id != ALL(p.path)
-			)
-			SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths
+				WITH RECURSIVE paths (tie_id, source_id, dest_id, type, created, path) AS (
+					SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created, ARRAY[t.source_id, t.dest_id]
+						FROM ties t WHERE dest_id=${entity_id}
+					UNION ALL
+						SELECT t.tie_id, t.source_id, t.dest_id, t.type,t.created, p.path || ARRAY[t.source_id]
+						FROM paths p
+						JOIN ties t
+						ON p.source_id = t.dest_id AND t.source_id != ALL(p.path)
+				)
+				SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths
 			) as tdest
 			ON e.entity_id = tdest.source_id
 			WHERE data ? 'directory';
 		`;
-		log.debug('all directories pointing at entity', directories);
+		log.debug('all directories pointing at entity', entity_id, directories);
 		return directories;
 	}
 }

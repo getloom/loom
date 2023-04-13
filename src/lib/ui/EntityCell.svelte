@@ -6,6 +6,7 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {EntityColumn} from '$lib/vocab/entity/entityHelpers.server';
 
 	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
@@ -13,7 +14,7 @@
 
 	const {actions} = getApp();
 
-	$: value = $entity[propertyName as keyof Entity];
+	$: value = $entity[propertyName as EntityColumn];
 
 	const serialize = (propertyName: string, $entity: Entity) =>
 		propertyName === 'data' || propertyName === 'view' ? JSON.stringify($entity.data) : undefined;

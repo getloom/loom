@@ -11,10 +11,14 @@ import {
 	toDefaultHubSettings,
 } from '$lib/vocab/hub/hubHelpers.server';
 import type {Hub} from '$lib/vocab/hub/hub';
-import type {ActionActor, ClientActor} from '$lib/vocab/actor/actor';
+import type {ClientActor} from '$lib/vocab/actor/actor';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
+import {
+	ACTOR_COLUMNS,
+	isPersonaAdmin,
+	isPersonaNameReserved,
+} from '$lib/vocab/actor/actorHelpers.server';
 import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
-import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
 import {defaultPersonalHubRoles} from '$lib/app/templates';
 
@@ -39,7 +43,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 		}
 
 		log.debug('[CreateAccountActor] validating persona uniqueness', name);
-		const existingPersona = await repos.persona.findByName(name);
+		const existingPersona = await repos.persona.findByName(name, ACTOR_COLUMNS.ActorId);
 		if (existingPersona) {
 			return {ok: false, status: 409, message: 'a persona with that name already exists'};
 		}
@@ -123,10 +127,7 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		if (actor_id === ADMIN_ACTOR_ID || actor_id === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
-		const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(actor_id, [
-			'type',
-			'hub_id',
-		]);
+		const persona = await repos.persona.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
@@ -148,7 +149,9 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		// delete the persona and its related objects
 		await repos.persona.deleteById(actor_id);
 		await repos.assignment.deleteByPersona(actor_id);
-		await repos.hub.deleteById(persona.hub_id); // must follow `persona.deleteById` it seems
+		// TODO this type hack shouldn't be necessary, but somehow the types are off,
+		// looks like types aren't narrowing with `Pick` on the type union (see this comment in multiple places)
+		await repos.hub.deleteById(persona.hub_id!); // must follow `persona.deleteById`
 
 		// clean the hubs the persona is joined to, and assemble the broadcast audience
 		const joinedHubIds = hubs.map((c) => c.hub_id).filter((c) => c !== persona.hub_id);

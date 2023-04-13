@@ -3,7 +3,7 @@ import {OK, type Result} from '@feltjs/util';
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
 import type {Repos} from '$lib/db/Repos';
-import type {ActionActor, Actor, ActorId} from '$lib/vocab/actor/actor';
+import type {ActionActor, ActorId} from '$lib/vocab/actor/actor';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -36,7 +36,7 @@ export const authorize = async (
 	if (!params.actor) {
 		return {ok: false, status: 400, message: 'actor is required'};
 	}
-	const actor = await repos.persona.findById<Actor>(params.actor, ACTOR_COLUMNS.Persona);
+	const actor = await repos.persona.findById(params.actor, ACTOR_COLUMNS.Persona);
 	if (!actor) {
 		return {ok: false, status: 400, message: 'actor cannot be found'};
 	}
@@ -46,5 +46,7 @@ export const authorize = async (
 	if (actor.account_id !== account_id) {
 		return {ok: false, status: 403, message: 'actor is not authorized for this account'};
 	}
-	return {ok: true, value: {actor}};
+	// TODO this type hack shouldn't be necessary, but somehow the types are off,
+	// looks like types aren't narrowing with `Pick` on the type union (see this comment in multiple places)
+	return {ok: true, value: {actor: actor as ActionActor}};
 };

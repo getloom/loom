@@ -9,10 +9,9 @@ import {
 	UpdateAccountSettings,
 	UpdateAccountPassword,
 } from '$lib/vocab/account/accountActions';
-import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
+import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 import {verifyPassword} from '$lib/util/password';
-import type {Account} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
@@ -108,9 +107,7 @@ export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'
 	action: UpdateAccountPassword,
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
-		const account = await repos.account.findById<Pick<Account, 'password'>>(account_id, [
-			'password',
-		]);
+		const account = await repos.account.findById(account_id, ACCOUNT_COLUMNS.Password);
 		if (!account) {
 			return {ok: false, status: 404, message: 'account does not exist'};
 		}

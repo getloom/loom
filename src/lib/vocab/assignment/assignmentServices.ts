@@ -4,11 +4,11 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/app/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import type {ActionActor} from '$lib/vocab/actor/actor';
 import {cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 
@@ -51,10 +51,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 		// 	repos.persona.findById(persona_id),
 		// 	repos.hub.findById(hub_id),
 		// ]);
-		const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(persona_id, [
-			'type',
-			'hub_id',
-		]);
+		const persona = await repos.persona.findById(persona_id, ACTOR_COLUMNS.TypeAndHub);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}

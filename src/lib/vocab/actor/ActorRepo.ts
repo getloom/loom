@@ -4,7 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {AccountActor, Actor, PublicActor, ActorId} from '$lib/vocab/actor/actor';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {ACTOR_COLUMNS, type ActorColumn} from '$lib/vocab/actor/actorHelpers.server';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -85,54 +85,56 @@ export class ActorRepo extends PostgresRepo {
 		return data;
 	}
 
-	async findById<T extends Partial<Actor> = PublicActor>(
+	async findById<T extends ActorColumn>(
 		persona_id: ActorId,
-		columns = ACTOR_COLUMNS.PublicActor,
-	): Promise<T | undefined> {
+		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+	): Promise<Pick<Actor, T> | undefined> {
 		log.debug('[findById]', persona_id);
-		const data = await this.sql<T[]>`
-			SELECT ${this.sql(columns)}
+		const data = await this.sql<Array<Pick<Actor, T>>>`
+			SELECT ${this.sql(columns as string[])}
 			FROM personas WHERE persona_id=${persona_id}
 		`;
 		return data[0];
 	}
 
 	// TODO handle count mismatch similar to to the entity version of this method
-	async filterByIds<T extends Partial<Actor> = PublicActor>(
+	async filterByIds<T extends ActorColumn>(
 		personaIds: ActorId[],
-		columns = ACTOR_COLUMNS.PublicActor,
-	): Promise<{personas: T[]; missing: null | ActorId[]}> {
+		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+	): Promise<{personas: Array<Pick<Actor, T>>; missing: null | ActorId[]}> {
 		if (personaIds.length === 0) return {personas: [], missing: null};
-		const personas = await this.sql<T[]>`
-			SELECT ${this.sql(columns)}
+		const personas = await this.sql<Array<Pick<Actor, T>>>`
+			SELECT ${this.sql(columns as string[])}
 			FROM personas WHERE persona_id IN ${this.sql(personaIds)}
 		`;
 		const missing =
 			personas.length === personaIds.length
 				? null
-				: personaIds.filter((id) => !personas.some((e) => e.persona_id === id));
+				: personaIds.filter(
+						(id) => !personas.some((e) => (e as Pick<Actor, 'persona_id'>).persona_id === id), // TODO try to remove the cast to `as Pick<Actor, 'persona_id'>`
+				  );
 		return {personas, missing};
 	}
 
-	async findByHub<T extends Partial<Actor> = PublicActor>(
+	async findByHub<T extends ActorColumn>(
 		hub_id: HubId,
-		columns = ACTOR_COLUMNS.PublicActor,
-	): Promise<T | undefined> {
+		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+	): Promise<Pick<Actor, T> | undefined> {
 		log.debug('[findByHub]', hub_id);
-		const data = await this.sql<T[]>`
-			SELECT ${this.sql(columns)}
+		const data = await this.sql<Array<Pick<Actor, T>>>`
+			SELECT ${this.sql(columns as string[])}
 			FROM personas WHERE hub_id=${hub_id}
 		`;
 		return data[0];
 	}
 
-	async findByName<T extends Partial<Actor> = PublicActor>(
+	async findByName<T extends ActorColumn>(
 		name: string,
-		columns = ACTOR_COLUMNS.PublicActor,
-	): Promise<T | undefined> {
+		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+	): Promise<Pick<Actor, T> | undefined> {
 		log.debug('[findByName]', name);
-		const data = await this.sql<T[]>`
-			SELECT ${this.sql(columns)}
+		const data = await this.sql<Array<Pick<Actor, T>>>`
+			SELECT ${this.sql(columns as string[])}
 			FROM personas WHERE LOWER(name) = LOWER(${name})
 		`;
 		return data[0];

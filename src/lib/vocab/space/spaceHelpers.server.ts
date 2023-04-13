@@ -5,6 +5,7 @@ import {ApiError} from '$lib/server/api';
 import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('spaceHelpers.server') + gray(']'));
 
@@ -36,7 +37,7 @@ export const createSpace = async (
 		throw new ApiError(409, 'a space with that path already exists');
 	}
 
-	const hubPersona = await repos.persona.findByHub(hub_id);
+	const hubPersona = await repos.persona.findByHub(hub_id, ACTOR_COLUMNS.ActorId);
 	if (!hubPersona) {
 		throw new ApiError(409, 'failed to find the hub persona');
 	}

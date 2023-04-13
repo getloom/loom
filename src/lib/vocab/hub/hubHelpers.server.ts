@@ -3,7 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/app/constants';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
-import type {ActionActor, ActorId, PublicActor} from '$lib/vocab/actor/actor';
+import type {ActorId, PublicActor} from '$lib/vocab/actor/actor';
 import type {Repos} from '$lib/db/Repos';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
@@ -11,6 +11,7 @@ import {defaultAdminHubRoles, type RoleTemplate} from '$lib/app/templates';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {ApiError} from '$lib/server/api';
 import {randomHue} from '$lib/ui/color';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
 
@@ -141,12 +142,9 @@ export const checkRemoveActor = async (
 	if (!(await repos.assignment.isPersonaInHub(actor_id, hub_id))) {
 		throw new ApiError(400, 'actor is not in the hub');
 	}
-	const actor = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(actor_id, [
-		'type',
-		'hub_id',
-	]);
+	const actor = await repos.persona.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
 	if (!actor) {
-		throw new ApiError(404, 'no actor found');
+		throw new ApiError(404, 'no persona found');
 	}
 	const hub = await repos.hub.findById(hub_id);
 	if (!hub) {

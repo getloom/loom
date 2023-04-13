@@ -9,7 +9,7 @@ import type {
 	ClientAccountSession,
 } from '$lib/vocab/account/account';
 import {toPasswordKey} from '$lib/util/password';
-import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
+import {ACCOUNT_COLUMNS, type AccountColumn} from '$lib/vocab/account/accountHelpers.server';
 import {ApiError} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
@@ -57,13 +57,13 @@ export class AccountRepo extends PostgresRepo {
 		};
 	}
 
-	async findById<T extends Partial<Account> = ClientAccount>(
+	async findById<T extends AccountColumn>(
 		account_id: AccountId,
-		columns = ACCOUNT_COLUMNS.ClientAccount,
-	): Promise<T | undefined> {
+		columns: T[] = ACCOUNT_COLUMNS.ClientAccount as T[],
+	): Promise<Pick<Account, T> | undefined> {
 		log.debug('loading account', account_id);
-		const data = await this.sql<T[]>`
-			SELECT ${this.sql(columns)}
+		const data = await this.sql<Array<Pick<Account, T>>>`
+			SELECT ${this.sql(columns as string[])}
 			FROM accounts WHERE account_id = ${account_id}
 		`;
 		return data[0];
