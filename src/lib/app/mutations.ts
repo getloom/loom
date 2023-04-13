@@ -14,6 +14,7 @@ import {
 	DeleteHub,
 	InviteToHub,
 	LeaveHub,
+	KickFromHub,
 } from '$lib/vocab/hub/hubMutations';
 import {CreateSpace, DeleteSpace, UpdateSpace} from '$lib/vocab/space/spaceMutations';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentMutations';
@@ -59,6 +60,7 @@ export const mutations: Record<string, Mutation> = {
 	DeleteHub,
 	InviteToHub,
 	LeaveHub,
+	KickFromHub,
 	// spaceMutations
 	CreateSpace,
 	DeleteSpace,

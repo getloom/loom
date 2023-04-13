@@ -17,7 +17,7 @@ import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
 import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {
-	checkRemovePersona,
+	checkRemoveActor,
 	cleanOrphanHubs,
 	initTemplateGovernanceForHub,
 	toDefaultHubSettings,
@@ -227,7 +227,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 
-		await checkRemovePersona(actor_id, hub_id, repos);
+		await checkRemoveActor(actor_id, hub_id, repos);
 
 		await repos.assignment.deleteByPersonaAndHub(actor_id, hub_id);
 
@@ -242,10 +242,10 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, actor_id, hub_id} = params;
-		log.debug('[KickFromHub] removing all assignments for persona in hub', actor, actor_id, hub_id);
+		log.debug('[KickFromHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
 		await checkPolicy(permissions.KickFromHub, actor, hub_id, repos);
 
-		await checkRemovePersona(actor_id, hub_id, repos);
+		await checkRemoveActor(actor_id, hub_id, repos);
 
 		await repos.assignment.deleteByPersonaAndHub(actor_id, hub_id);
 

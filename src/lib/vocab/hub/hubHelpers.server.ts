@@ -133,20 +133,20 @@ export const initTemplateGovernanceForHub = async (
 	return {roles, policies, assignments: [creatorAssignment]};
 };
 
-export const checkRemovePersona = async (
-	persona_id: ActorId,
+export const checkRemoveActor = async (
+	actor_id: ActorId,
 	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
-	if (!(await repos.assignment.isPersonaInHub(persona_id, hub_id))) {
-		throw new ApiError(400, 'persona is not in the hub');
+	if (!(await repos.assignment.isPersonaInHub(actor_id, hub_id))) {
+		throw new ApiError(400, 'actor is not in the hub');
 	}
-	const persona = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(persona_id, [
+	const actor = await repos.persona.findById<Pick<ActionActor, 'type' | 'hub_id'>>(actor_id, [
 		'type',
 		'hub_id',
 	]);
-	if (!persona) {
-		throw new ApiError(404, 'no persona found');
+	if (!actor) {
+		throw new ApiError(404, 'no actor found');
 	}
 	const hub = await repos.hub.findById(hub_id);
 	if (!hub) {
@@ -159,13 +159,13 @@ export const checkRemovePersona = async (
 		const adminAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHubId(
 			hub_id,
 		);
-		// TODO this fails if the persona has multiple roles
+		// TODO this fails if the actor has multiple roles
 		if (adminAssignmentsCount === 1) {
 			throw new ApiError(405, 'cannot orphan the admin hub');
 		}
 	}
-	if (persona.type === 'community' && persona.hub_id === hub_id) {
-		throw new ApiError(405, 'community persona cannot leave its hub');
+	if (actor.type === 'community' && actor.hub_id === hub_id) {
+		throw new ApiError(405, 'community actor cannot leave its hub');
 	}
 };
 

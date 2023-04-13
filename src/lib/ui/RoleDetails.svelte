@@ -95,6 +95,7 @@
 					{/each}
 				</ul>
 			{:else}
+				<!-- TODO this styling doesn't match AssignmentItem and pops the dialog out-->
 				<p>there are no assignments for this role</p>
 			{/if}
 		{:else}

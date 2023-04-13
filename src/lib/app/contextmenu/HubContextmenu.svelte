@@ -9,6 +9,7 @@
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
 	import InviteToHubForm from '$lib/ui/InviteToHubForm.svelte';
+	import KickFromHubForm from '$lib/ui/KickFromHubForm.svelte';
 	import HubEditor from '$lib/ui/HubEditor.svelte';
 	import LeaveHubForm from '$lib/ui/LeaveHubForm.svelte';
 	import DeleteHubForm from '$lib/ui/DeleteHubForm.svelte';
@@ -63,6 +64,15 @@
 					})}
 			>
 				Invite People
+			</ContextmenuEntry>
+			<ContextmenuEntry
+				run={() =>
+					actions.OpenDialog({
+						Component: KickFromHubForm,
+						props: {persona, hub},
+					})}
+			>
+				Kick People
 			</ContextmenuEntry>
 			<ContextmenuEntry
 				run={() =>

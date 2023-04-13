@@ -124,6 +124,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		width: 100%;
 	}
 	.entity:hover {
 		background-color: var(--tint_dark_1);
