@@ -77,14 +77,13 @@ export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, ui}) => {
 };
 
 export const LeaveHub: Mutations['LeaveHub'] = async ({params, invoke, ui}) => {
-	const {assignments} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor_id, hub_id} = params;
 
 	const assignmentsToEvict: Assignment[] = [];
 	// TODO could speed this up a cache of assignments by hub, see in multiple places
-	for (const assignment of assignments.get().value) {
+	for (const assignment of ui.assignments.get().value) {
 		if (assignment.persona_id === actor_id && assignment.hub_id === hub_id) {
 			assignmentsToEvict.push(assignment);
 		}
@@ -95,14 +94,13 @@ export const LeaveHub: Mutations['LeaveHub'] = async ({params, invoke, ui}) => {
 };
 
 export const KickFromHub: Mutations['KickFromHub'] = async ({params, invoke, ui}) => {
-	const {assignments} = ui;
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor_id, hub_id} = params;
 
 	const assignmentsToEvict: Assignment[] = [];
 	// TODO could speed this up a cache of assignments by hub, see in multiple places
-	for (const assignment of assignments.get().value) {
+	for (const assignment of ui.assignments.get().value) {
 		if (assignment.persona_id === actor_id && assignment.hub_id === hub_id) {
 			assignmentsToEvict.push(assignment);
 		}

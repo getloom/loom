@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {getApp} from '$lib/ui/app';
 
+	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';

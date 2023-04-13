@@ -1,12 +1,11 @@
 <script lang="ts">
-	import {getApp} from '$lib/ui/app';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 
+	import {getApp} from '$lib/ui/app';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-
 	import KickActorItem from '$lib/ui/KickActorItem.svelte';
 
 	export let persona: Readable<AccountActor>;
