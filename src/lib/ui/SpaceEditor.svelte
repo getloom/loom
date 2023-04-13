@@ -30,6 +30,17 @@
 			space_id: $space.space_id,
 			[field]: updated,
 		});
+
+	const updateDirectoryPath = async (updated: any) =>
+		actions.UpdateEntities({
+			actor: $persona.persona_id,
+			entities: [
+				{
+					entity_id: $directory.entity_id,
+					path: updated,
+				},
+			],
+		});
 </script>
 
 <div class="space-editor column">
@@ -47,7 +58,7 @@
 		<fieldset>
 			<legend>properties</legend>
 			<PropertyEditor value={$space.name} field="name" update={updateSpace} />
-			<PropertyEditor value={$directory.path} field="path" update={updateSpace} />
+			<PropertyEditor value={$directory.path} field="path" update={updateDirectoryPath} />
 			<PropertyEditor
 				value={$space.icon}
 				field="icon"
