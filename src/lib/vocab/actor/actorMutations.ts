@@ -1,5 +1,5 @@
 import type {Mutations} from '$lib/app/actionTypes';
-import {stashActors, evictPersona} from '$lib/vocab/actor/actorMutationHelpers';
+import {stashActors, evictActor} from '$lib/vocab/actor/actorMutationHelpers';
 import {evictHub, stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
 import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
@@ -32,7 +32,7 @@ export const DeleteActor: Mutations['DeleteActor'] = async ({params, invoke, ui}
 			const hub_id = 'hub_id' in $persona ? $persona.hub_id : null;
 			// TODO `evictPersona` should possibly do this `evictHub` itself
 			if (hub_id) evictHub(ui, hub_id);
-			evictPersona(ui, persona);
+			evictActor(ui, persona);
 		});
 	}
 	return result;

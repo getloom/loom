@@ -9,7 +9,7 @@ import {toHubUrl, toSearchParams} from '$lib/ui/url';
 
 export const stashActors = (
 	{personaById, personas, sessionActors, hubIdSelectionByActorId}: WritableUi,
-	$personasToStash: ClientActor[],
+	$actorsToStash: ClientActor[],
 	replace = false,
 ): void => {
 	if (replace) {
@@ -20,20 +20,20 @@ export const stashActors = (
 
 	let mutated = false;
 	let mutatedSessionActors = false;
-	for (const $persona of $personasToStash) {
-		let persona = personaById.get($persona.persona_id);
-		if (persona) {
+	for (const $actor of $actorsToStash) {
+		let actor = personaById.get($actor.persona_id);
+		if (actor) {
 			// can't use `setIfUpdated` because `updated` is private
-			persona.set($persona);
+			actor.set($actor);
 		} else {
-			persona = writable($persona);
-			personaById.set($persona.persona_id, persona);
-			personas.mutate((p) => p.add(persona!));
+			actor = writable($actor);
+			personaById.set($actor.persona_id, actor);
+			personas.mutate((p) => p.add(actor!));
 			mutated = true;
-			if ('account_id' in $persona) {
-				// Adding a session persona.
-				sessionActors.get().value.push(persona as Writable<AccountActor>);
-				hubIdSelectionByActorId.get().value.set($persona.persona_id, $persona.hub_id);
+			if ('account_id' in $actor) {
+				// Adding a session actor.
+				sessionActors.get().value.push(actor as Writable<AccountActor>);
+				hubIdSelectionByActorId.get().value.set($actor.persona_id, $actor.hub_id);
 				mutatedSessionActors = true;
 			}
 		}
@@ -45,13 +45,13 @@ export const stashActors = (
 	}
 };
 
-export const evictActors = (ui: WritableUi, personasToEvict: Set<Writable<ClientActor>>): void => {
-	for (const persona of personasToEvict) {
-		evictPersona(ui, persona);
+export const evictActors = (ui: WritableUi, actorsToEvict: Set<Writable<ClientActor>>): void => {
+	for (const actor of actorsToEvict) {
+		evictActor(ui, actor);
 	}
 };
 
-export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientActor>): void => {
+export const evictActor = (ui: WritableUi, actorToEvict: Writable<ClientActor>): void => {
 	const {
 		personas,
 		personaById,
@@ -60,30 +60,30 @@ export const evictPersona = (ui: WritableUi, personaToEvict: Writable<ClientActo
 		sessionActorIndexById,
 		hubIdSelectionByActorId,
 	} = ui;
-	const $personaToEvict = personaToEvict.get();
+	const $actorToEvict = actorToEvict.get();
 
-	personaById.delete($personaToEvict.persona_id);
-	personas.mutate((p) => p.delete(personaToEvict));
+	personaById.delete($actorToEvict.persona_id);
+	personas.mutate((p) => p.delete(actorToEvict));
 
-	// evict session account personas
-	if ('account_id' in $personaToEvict) {
+	// evict session account actors
+	if ('account_id' in $actorToEvict) {
 		const $sessionActors = sessionActors.get().value;
 
-		sessionActors.mutate((s) => s.splice($sessionActors.indexOf(personaToEvict as any), 1));
-		hubIdSelectionByActorId.mutate((c) => c.delete($personaToEvict.persona_id));
+		sessionActors.mutate((s) => s.splice($sessionActors.indexOf(actorToEvict as any), 1));
+		hubIdSelectionByActorId.mutate((c) => c.delete($actorToEvict.persona_id));
 
-		if ($personaToEvict.persona_id === personaIdSelection.get()) {
-			const nextSelectedPersona = $sessionActors[$sessionActors[0] === personaToEvict ? 1 : 0];
-			const nextSelectedPersonaIndex = sessionActorIndexById
+		if ($actorToEvict.persona_id === personaIdSelection.get()) {
+			const nextSelectedActor = $sessionActors[$sessionActors[0] === actorToEvict ? 1 : 0];
+			const nextSelectedActorIndex = sessionActorIndexById
 				.get()
-				.get(nextSelectedPersona.get().persona_id);
+				.get(nextSelectedActor.get().persona_id);
 			ui.afterMutation(() =>
 				goto(
 					toHubUrl(
-						nextSelectedPersona.get().name || '',
+						nextSelectedActor.get().name || '',
 						null,
 						toSearchParams(get(page).url.searchParams, {
-							persona: nextSelectedPersonaIndex ? nextSelectedPersonaIndex + '' : null,
+							persona: nextSelectedActorIndex ? nextSelectedActorIndex + '' : null,
 						}),
 					),
 					{replaceState: true},

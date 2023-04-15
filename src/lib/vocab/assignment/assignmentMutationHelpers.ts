@@ -1,6 +1,6 @@
 import type {WritableUi} from '$lib/ui/ui';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {evictPersona} from '$lib/vocab/actor/actorMutationHelpers';
+import {evictActor} from '$lib/vocab/actor/actorMutationHelpers';
 import {evictHub} from '$lib/vocab/hub/hubMutationHelpers';
 
 export const stashAssignments = (
@@ -81,7 +81,7 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 				if (!doesPersonaHaveOtherAssignment) {
 					const persona = personaById.get(persona_id);
 					if (persona) {
-						evictPersona(ui, persona);
+						evictActor(ui, persona);
 					}
 				}
 			}

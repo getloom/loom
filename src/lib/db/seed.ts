@@ -44,19 +44,19 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		{username: 'a@a.a', password: 'a'},
 		{username: 'b@b.b', password: 'b'},
 	];
-	const personasParams: Record<string, string[]> = {
+	const actorsParams: Record<string, string[]> = {
 		'a@a.a': ['alice', 'andy'],
 		'b@b.b': ['betty', 'billy'],
 	};
 	if (much) {
 		let i = 0;
-		for (const personaNames of Object.values(personasParams)) {
-			personaNames.push(...ALPHABET.slice(2).map((a) => a.repeat(3) + i));
+		for (const actorNames of Object.values(actorsParams)) {
+			actorNames.push(...ALPHABET.slice(2).map((a) => a.repeat(3) + i));
 			i++;
 		}
 	}
 	const accounts: Account[] = [];
-	const personas: AccountActor[] = [];
+	const actors: AccountActor[] = [];
 	for (const accountParams of accountsParams) {
 		const account = await repos.account.create(
 			accountParams.username,
@@ -67,28 +67,28 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		accounts.push(account);
 		const toAccountServiceRequest = () =>
 			toServiceRequestMock(repos, undefined, undefined, account.account_id);
-		for (const personaName of personasParams[account.name]) {
+		for (const actorName of actorsParams[account.name]) {
 			const created = unwrap(
 				await CreateAccountActorService.perform({
 					...toAccountServiceRequest(),
-					params: {name: personaName},
+					params: {name: actorName},
 				}),
 			);
-			const persona = created.personas[0] as AccountActor;
-			log.debug('created persona', persona);
-			personas.push(persona);
+			const actor = created.personas[0] as AccountActor;
+			log.debug('created persona', actor);
+			actors.push(actor);
 			await createDefaultEntities(
-				() => ({...toAccountServiceRequest(), actor: persona}),
+				() => ({...toAccountServiceRequest(), actor}),
 				created.spaces,
-				() => persona,
+				() => actor,
 			);
 		}
 	}
 
-	const mainPersonaCreator = personas[0] as AccountActor;
-	const toMainAccountServiceRequest = () => toServiceRequestMock(repos, mainPersonaCreator);
-	const otherActors = personas.slice(1);
-	const nextActor = toNext(personas);
+	const mainActorCreator = actors[0] as AccountActor;
+	const toMainAccountServiceRequest = () => toServiceRequestMock(repos, mainActorCreator);
+	const otherActors = actors.slice(1);
+	const nextActor = toNext(actors);
 
 	const hubs: Hub[] = [];
 
@@ -97,19 +97,19 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			await CreateHubService.perform({
 				...toMainAccountServiceRequest(),
 				params: {
-					actor: mainPersonaCreator.persona_id,
+					actor: mainActorCreator.persona_id,
 					template: hubTemplate,
 				},
 			}),
 		);
 		hubs.push(hub);
-		for (const persona of otherActors) {
+		for (const actor of otherActors) {
 			unwrap(
 				await CreateAssignmentService.perform({
 					...toMainAccountServiceRequest(),
 					params: {
-						actor: mainPersonaCreator.persona_id,
-						actor_id: persona.persona_id,
+						actor: mainActorCreator.persona_id,
+						actor_id: actor.persona_id,
 						hub_id: hub.hub_id,
 						role_id: hub.settings.defaultRoleId,
 					},
