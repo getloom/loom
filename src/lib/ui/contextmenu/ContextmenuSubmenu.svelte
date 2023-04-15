@@ -67,6 +67,7 @@
 	<div
 		class="menu-item"
 		role="menuitem"
+		tabindex="0"
 		class:selected
 		on:click={onClick}
 		on:mousemove={onMousemove}
