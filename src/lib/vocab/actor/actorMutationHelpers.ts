@@ -1,11 +1,10 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
-import {page} from '$app/stores';
-import {get} from 'svelte/store';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
-import {toHubUrl, toSearchParams} from '$lib/ui/url';
+import {toHubUrl} from '$lib/ui/url';
+import {toAppSearchParams} from '$lib/app/url';
 
 export const stashActors = (
 	{personaById, personas, sessionActors, hubIdSelectionByActorId}: WritableUi,
@@ -82,9 +81,7 @@ export const evictActor = (ui: WritableUi, actorToEvict: Writable<ClientActor>):
 					toHubUrl(
 						nextSelectedActor.get().name || '',
 						null,
-						toSearchParams(get(page).url.searchParams, {
-							persona: nextSelectedActorIndex ? nextSelectedActorIndex + '' : null,
-						}),
+						toAppSearchParams(nextSelectedActorIndex ? nextSelectedActorIndex + '' : null),
 					),
 					{replaceState: true},
 				),

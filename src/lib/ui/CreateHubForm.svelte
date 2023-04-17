@@ -11,9 +11,10 @@
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {randomHue} from '$lib/ui/color';
-	import {toSearchParams, toHubUrl} from '$lib/ui/url';
+	import {toHubUrl} from '$lib/ui/url';
 	import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
+	import {toAppSearchParams} from '$lib/app/url';
 
 	const {
 		actions,
@@ -65,9 +66,10 @@
 				toHubUrl(
 					result.value.hub.name,
 					null,
-					toSearchParams($page.url.searchParams, {
-						persona: $sessionActorIndexById.get($persona.persona_id) + '',
-					}),
+					toAppSearchParams(
+						$sessionActorIndexById.get($persona.persona_id) + '',
+						$page.url.searchParams,
+					),
 				),
 			);
 			done?.();

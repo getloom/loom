@@ -6,7 +6,8 @@
 	import {getApp} from '$lib/ui/app';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {toSearchParams, toHubUrl} from '$lib/ui/url';
+	import {toHubUrl} from '$lib/ui/url';
+	import {toAppSearchParams} from '$lib/app/url';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
@@ -47,7 +48,7 @@
 				toHubUrl(
 					$hub.name,
 					renderDirectoryPath($selectedDirectory?.path),
-					toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
+					toAppSearchParams(personaIndex + '', $page.url.searchParams),
 				),
 			)}
 	>

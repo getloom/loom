@@ -3,8 +3,6 @@ import {base} from '$app/paths';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
-export const ACTOR_QUERY_KEY = 'persona';
-
 export type SearchParams<TKey extends string = string> = Record<TKey, string | null | undefined>;
 
 /**
@@ -29,7 +27,7 @@ export const toHubUrl = (
 	search: string | URLSearchParams,
 ): string => toUrl('/' + name + (path && path !== '/' ? path : ''), search);
 
-export const toSearchParams = (
+export const mergeSearchParams = (
 	baseParams: URLSearchParams,
 	newSearchParams: SearchParams,
 ): URLSearchParams => {

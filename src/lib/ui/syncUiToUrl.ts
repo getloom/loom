@@ -4,7 +4,7 @@ import {goto} from '$app/navigation';
 import {Logger} from '@feltjs/util/log.js';
 
 import type {AccountActor, ActorId} from '$lib/vocab/actor/actor';
-import {ACTOR_QUERY_KEY, toSearchParams} from '$lib/ui/url';
+import {ACTOR_QUERY_KEY, toAppSearchParams} from '$lib/app/url';
 import type {Ui} from '$lib/ui/ui';
 import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 import type {SpaceId} from '$lib/vocab/space/space';
@@ -35,7 +35,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 		if (browser) {
 			const fallbackPersonaIndex = 0;
 			const targetUrl =
-				url.pathname + '?' + toSearchParams(url.searchParams, {persona: fallbackPersonaIndex + ''});
+				url.pathname + '?' + toAppSearchParams(fallbackPersonaIndex + '', url.searchParams);
 			if (targetUrl !== url.pathname + url.search) {
 				log.warn(
 					`failed to find persona at index ${personaIndex}; falling back to index ${fallbackPersonaIndex}`,

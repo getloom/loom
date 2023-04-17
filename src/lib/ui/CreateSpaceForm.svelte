@@ -11,9 +11,10 @@
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {parseSpaceIcon, renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
-	import {toSearchParams, toHubUrl} from '$lib/ui/url';
+	import {toHubUrl} from '$lib/ui/url';
 	import {ADMIN_HUB_ID} from '$lib/app/constants';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
+	import {toAppSearchParams} from '$lib/app/url';
 
 	const {
 		actions,
@@ -71,9 +72,10 @@
 				toHubUrl(
 					$hub.name,
 					renderDirectoryPath(result.value.directory.path),
-					toSearchParams($page.url.searchParams, {
-						persona: $sessionActorIndexById.get($persona.persona_id) + '',
-					}),
+					toAppSearchParams(
+						$sessionActorIndexById.get($persona.persona_id) + '',
+						$page.url.searchParams,
+					),
 				),
 			);
 			done?.();

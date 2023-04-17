@@ -6,10 +6,11 @@
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
-	import {toSearchParams, toHubUrl} from '$lib/ui/url';
+	import {toHubUrl} from '$lib/ui/url';
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
+	import {toAppSearchParams} from '$lib/app/url';
 
 	const {
 		ui: {
@@ -46,7 +47,7 @@
 	href={toHubUrl(
 		$hub.name,
 		renderDirectoryPath($selectedDirectory?.path),
-		toSearchParams($page.url.searchParams, {persona: personaIndex + ''}),
+		toAppSearchParams(personaIndex + '', $page.url.searchParams),
 	)}
 	class:selected
 	class:persona={isPersonaHomeHub}

@@ -7,7 +7,9 @@
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import {toSearchParams, toHubUrl} from '$lib/ui/url';
+	import {toHubUrl} from '$lib/ui/url';
+	import {toAppSearchParams} from '$lib/app/url';
+
 	import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 
 	const {
@@ -47,9 +49,10 @@
 				toHubUrl(
 					result.value.hubs[0].name,
 					null,
-					toSearchParams($page.url.searchParams, {
-						persona: $sessionActorIndexById.get(result.value.personas[0].persona_id) + '',
-					}),
+					toAppSearchParams(
+						$sessionActorIndexById.get(result.value.personas[0].persona_id) + '',
+						$page.url.searchParams,
+					),
 				),
 			);
 			done?.();
