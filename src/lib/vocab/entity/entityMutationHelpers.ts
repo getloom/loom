@@ -25,6 +25,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 	const $selectedSpace = spaceSelection.get()?.get();
 
 	const stashed: Array<Writable<Entity>> = [];
+	const directories: Array<Writable<Entity>> = [];
 
 	for (const $entity of $entities) {
 		const {entity_id} = $entity;
@@ -49,20 +50,27 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 		stashed.push(entity);
 
 		// Handle directories.
-		if ('space_id' in $entity.data) {
-			if (!freshnessByDirectoryId.get(entity_id)) {
-				setLastSeen(ui, entity_id, ($entity.updated || $entity.created).getTime());
-				setFreshnessByDirectoryId(ui, entity);
-			}
-			upsertFreshnessByHubId(ui, spaceById.get($entity.space_id)!.get().hub_id);
-			// Is the directory's space selected? If so we don't want a notification.
-			if (entity_id === $selectedSpace?.directory_id) {
-				updateLastSeen(ui, entity_id);
-			}
+		//TODO this check is not type safe, we should fix that
+		if ('directory' in $entity.data) {
+			directories.push(entity);
 		}
 	}
 
 	ui.afterMutation(() => ui.events.emit('stashed_entities', stashed));
+
+	//TODO this chunk of code should probably rely on the 'stashed_entities' event above
+	for (const entity of directories) {
+		const $entity = entity.get();
+		if (!freshnessByDirectoryId.get($entity.entity_id)) {
+			setLastSeen(ui, $entity.entity_id, ($entity.updated || $entity.created).getTime());
+			setFreshnessByDirectoryId(ui, entity);
+		}
+		upsertFreshnessByHubId(ui, spaceById.get($entity.space_id)!.get().hub_id);
+		// Is the directory's space selected? If so we don't want a notification.
+		if ($entity.entity_id === $selectedSpace?.directory_id) {
+			updateLastSeen(ui, $entity.entity_id);
+		}
+	}
 };
 
 // TODO possibly merge with `stashEntities` to prevent update churn
