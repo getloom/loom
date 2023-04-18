@@ -82,13 +82,13 @@ test__assignmentServices('fail to delete a personal assignment', async ({repos, 
 
 test__assignmentServices('fail to delete a hub persona assignment', async ({repos, random}) => {
 	const {hub, persona, actors, assignments} = await random.hub();
-	const communityPersona = actors.find((p) => p.type === 'community') as CommunityActor;
+	const communityActor = actors.find((p) => p.type === 'community') as CommunityActor;
 	const assignment = assignments.find(
-		(a) => a.actor_id === communityPersona.actor_id && a.hub_id === hub.hub_id,
+		(a) => a.actor_id === communityActor.actor_id && a.hub_id === hub.hub_id,
 	)!;
 	unwrapError(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, communityPersona),
+			...toServiceRequestMock(repos, communityActor),
 			params: {
 				actor: persona.actor_id,
 				assignment_id: assignment.assignment_id,

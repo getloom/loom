@@ -5,7 +5,7 @@ import * as assert from 'uvu/assert';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices';
 import {randomActionParams} from '$lib/util/randomActionParams';
-import {loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
+import {loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 
@@ -71,7 +71,7 @@ test__actorService('delete a persona and properly clean up', async ({repos, rand
 		await Promise.all(
 			actors.map(async (p) => {
 				assertIs(await repos.actor.findById(p.actor_id), undefined);
-				assertIs((await repos.assignment.filterByPersona(p.actor_id)).length, 0);
+				assertIs((await repos.assignment.filterByActor(p.actor_id)).length, 0);
 			}),
 		);
 		await Promise.all(
@@ -93,15 +93,15 @@ test__actorService('delete a persona and properly clean up', async ({repos, rand
 	// create a second hub and join it, and make entities that will be turned into ghosts
 	const {
 		hub: otherHub,
-		persona: otherPersona,
+		persona: otherActor,
 		spaces: [otherSpace],
 	} = await random.hub();
 	// TODO could be simplified with `random.assignment()`
 	unwrap(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, otherPersona),
+			...toServiceRequestMock(repos, otherActor),
 			params: {
-				actor: otherPersona.actor_id,
+				actor: otherActor.actor_id,
 				hub_id: otherHub.hub_id,
 				actor_id: persona.actor_id,
 				role_id: otherHub.settings.defaultRoleId,
@@ -156,7 +156,7 @@ test__actorService(
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
 
-		const actor = await loadAdminPersona(repos);
+		const actor = await loadAdminActor(repos);
 
 		assert.ok(actor.actor_id !== persona.actor_id);
 
@@ -172,7 +172,7 @@ test__actorService(
 test__actorService('actors cannot delete actors in the admin hub', async ({repos, random}) => {
 	const {persona: actor} = await random.persona();
 
-	const persona = await loadAdminPersona(repos);
+	const persona = await loadAdminActor(repos);
 
 	assert.is(
 		unwrapError(

@@ -9,7 +9,7 @@ export type RoleId = Flavored<number, 'RoleId'>;
  *
  * 		Roles are user-defined governance objects that exist within the context of a single Hub.
  * 		They have Policies associated with them that allow for actions to be taken within the system.
- * 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+ * 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
  *
  */
 export interface Role {

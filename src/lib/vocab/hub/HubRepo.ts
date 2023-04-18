@@ -55,7 +55,7 @@ export class HubRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterByPersona(actor_id: ActorId): Promise<Hub[]> {
+	async filterByActor(actor_id: ActorId): Promise<Hub[]> {
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated
 			FROM hubs c JOIN (

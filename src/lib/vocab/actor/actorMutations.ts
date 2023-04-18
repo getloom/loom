@@ -30,7 +30,7 @@ export const DeleteActor: Mutations['DeleteActor'] = async ({params, invoke, ui}
 		ui.mutate(() => {
 			const $persona = persona.get();
 			const hub_id = 'hub_id' in $persona ? $persona.hub_id : null;
-			// TODO `evictPersona` should possibly do this `evictHub` itself
+			// TODO `evictActor` should possibly do this `evictHub` itself
 			if (hub_id) evictHub(ui, hub_id);
 			evictActor(ui, persona);
 		});

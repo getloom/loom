@@ -298,7 +298,7 @@ test_entityServices(
 );
 
 test_entityServices.only('disallow mutating directory', async ({repos, random}) => {
-	const {persona, hubPersona} = await random.hub();
+	const {persona, hubActor} = await random.hub();
 	const {directory} = await random.space(persona);
 
 	assert.is(directory.data.type, 'Collection');
@@ -370,7 +370,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 	};
 
 	await mutateDirectory(persona);
-	await mutateDirectory(hubPersona as AccountActor); // TODO this casting is a problem, the API expects an `AccountActor` but we're sending a `PublicActor` in this case
+	await mutateDirectory(hubActor as AccountActor); // TODO this casting is a problem, the API expects an `AccountActor` but we're sending a `PublicActor` in this case
 });
 
 test_entityServices.run();

@@ -34,9 +34,9 @@
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
 	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
 
-	$: isPersonaHomeHub = $hub.name === $persona.name;
+	$: isActorHomeHub = $hub.name === $persona.name;
 
-	$: personaIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
 
 	$: fresh = freshnessByHubId.get($hub.hub_id);
 </script>
@@ -47,10 +47,10 @@
 	href={toHubUrl(
 		$hub.name,
 		renderDirectoryPath($selectedDirectory?.path),
-		toAppSearchParams(personaIndex + '', $page.url.searchParams),
+		toAppSearchParams(actorIndex + '', $page.url.searchParams),
 	)}
 	class:selected
-	class:persona={isPersonaHomeHub}
+	class:actor={isActorHomeHub}
 	style="--hue: {$hub.settings.hue}"
 	use:contextmenu.action={[[HubContextmenu, {hub, persona}]]}
 >
@@ -69,7 +69,7 @@
 		text-decoration: none;
 		position: relative;
 	}
-	.persona {
+	.actor {
 		display: flex;
 		justify-content: center;
 		align-items: center;

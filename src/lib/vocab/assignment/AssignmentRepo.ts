@@ -57,7 +57,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterByPersona(actor_id: ActorId): Promise<Assignment[]> {
+	async filterByActor(actor_id: ActorId): Promise<Assignment[]> {
 		const data = await this.sql<Assignment[]>`
 			SELECT a.assignment_id, a.actor_id, a.hub_id, a.role_id, a.created
 			FROM assignments a JOIN (
@@ -92,7 +92,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return Number(data[0].count);
 	}
 
-	async isPersonaInHub(actor_id: ActorId, hub_id: HubId): Promise<boolean> {
+	async isActorInHub(actor_id: ActorId, hub_id: HubId): Promise<boolean> {
 		const [{exists}] = await this.sql`
 			SELECT EXISTS(SELECT 1 FROM assignments WHERE hub_id=${hub_id} AND actor_id=${actor_id});
 		`;
@@ -107,7 +107,7 @@ export class AssignmentRepo extends PostgresRepo {
 		if (!data.count) throw Error();
 	}
 
-	async deleteByPersona(actor_id: ActorId): Promise<number> {
+	async deleteByActor(actor_id: ActorId): Promise<number> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments
 			WHERE actor_id=${actor_id}
@@ -115,7 +115,7 @@ export class AssignmentRepo extends PostgresRepo {
 		return data.count;
 	}
 
-	async deleteByPersonaAndHub(actor_id: ActorId, hub_id: HubId): Promise<number> {
+	async deleteByActorAndHub(actor_id: ActorId, hub_id: HubId): Promise<number> {
 		const data = await this.sql<any[]>`
 			DELETE FROM assignments 
 			WHERE ${actor_id}=actor_id AND ${hub_id}=hub_id

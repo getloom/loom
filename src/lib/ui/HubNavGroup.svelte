@@ -7,7 +7,7 @@
 	import ActingActorContextmenu from '$lib/app/contextmenu/ActingActorContextmenu.svelte';
 
 	const {
-		ui: {actorSelection, hubSelection, hubsBySessionPersona, contextmenu},
+		ui: {actorSelection, hubSelection, hubsBySessionActor, contextmenu},
 	} = getApp();
 
 	$: selectedActor = $actorSelection!;
@@ -15,9 +15,9 @@
 
 	export let persona: Readable<AccountActor>; // session persona
 
-	$: personalHub = $hubsBySessionPersona.get(persona)?.find((c) => c.get().type === 'personal');
+	$: personalHub = $hubsBySessionActor.get(persona)?.find((c) => c.get().type === 'personal');
 
-	$: communityHubs = $hubsBySessionPersona.get(persona)?.filter((c) => c.get().type !== 'personal');
+	$: communityHubs = $hubsBySessionActor.get(persona)?.filter((c) => c.get().type !== 'personal');
 </script>
 
 {#if personalHub && communityHubs}

@@ -20,9 +20,9 @@ export const RESERVED_ACTOR_NAMES = new Set([
 	'vocab',
 ]);
 
-export const isPersonaNameReserved = (name: string): boolean =>
+export const isActorNameReserved = (name: string): boolean =>
 	RESERVED_ACTOR_NAMES.has(name.toLowerCase());
 
-export const isPersonaAdmin = async (actor_id: ActorId, repos: Repos): Promise<boolean> => {
-	return repos.assignment.isPersonaInHub(actor_id, ADMIN_HUB_ID);
+export const isActorAdmin = async (actor_id: ActorId, repos: Repos): Promise<boolean> => {
+	return repos.assignment.isActorInHub(actor_id, ADMIN_HUB_ID);
 };

@@ -32,7 +32,7 @@
 
 	$: directory = entityById.get($space.directory_id)!;
 
-	$: personaIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
 	$: fresh = freshnessByDirectoryId.get($space.directory_id)!;
 </script>
 
@@ -40,7 +40,7 @@
 	href={toHubUrl(
 		$hub.name,
 		renderDirectoryPath($directory.path),
-		toAppSearchParams(personaIndex + '', $page.url.searchParams),
+		toAppSearchParams(actorIndex + '', $page.url.searchParams),
 	)}
 	class="selectable"
 	class:selected

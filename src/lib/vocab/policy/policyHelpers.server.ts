@@ -3,7 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 import {ApiError} from '$lib/server/api';
-import {isPersonaAdmin} from '$lib/vocab/actor/actorHelpers.server';
+import {isActorAdmin} from '$lib/vocab/actor/actorHelpers.server';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {EntityId} from '$lib/vocab/entity/entity';
@@ -34,7 +34,7 @@ export const checkHubAccess = async (
 ): Promise<void> => {
 	log.debug('checking for hub access for actor in hub', actor_id, hub_id);
 
-	const inHub = await repos.assignment.isPersonaInHub(actor_id, hub_id);
+	const inHub = await repos.assignment.isActorInHub(actor_id, hub_id);
 
 	if (!inHub) {
 		throw new ApiError(403, 'actor does not have permission');
@@ -56,7 +56,7 @@ export const checkEntityOwnership = async (
 	entityIds: EntityId[],
 	repos: Repos,
 ): Promise<void> => {
-	if (await isPersonaAdmin(actor_id, repos)) {
+	if (await isActorAdmin(actor_id, repos)) {
 		return;
 	}
 
@@ -86,12 +86,12 @@ export const checkEntityAccess = async (
 	entityIds: number[],
 	repos: Repos,
 ): Promise<void> => {
-	if (await isPersonaAdmin(actor_id, repos)) {
+	if (await isActorAdmin(actor_id, repos)) {
 		return;
 	}
 
 	const spaces = await repos.space.filterByEntities(entityIds);
-	const hubs = await repos.hub.filterByPersona(actor_id);
+	const hubs = await repos.hub.filterByActor(actor_id);
 	const joinedHubIds = hubs.map((h) => h.hub_id);
 
 	for (const space of spaces) {

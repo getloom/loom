@@ -27,25 +27,25 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 		entityById,
 	} = ui;
 
-	const rawPersonaIndex = url.searchParams.get(ACTOR_QUERY_KEY);
-	const personaIndex = rawPersonaIndex ? Number(rawPersonaIndex) : null;
-	const persona: Readable<AccountActor> | null =
-		personaIndex === null ? null : sessionActors.get().value[personaIndex];
-	if (!persona) {
+	const rawActorIndex = url.searchParams.get(ACTOR_QUERY_KEY);
+	const actorIndex = rawActorIndex ? Number(rawActorIndex) : null;
+	const actor: Readable<AccountActor> | null =
+		actorIndex === null ? null : sessionActors.get().value[actorIndex];
+	if (!actor) {
 		if (browser) {
-			const fallbackPersonaIndex = 0;
+			const fallbackActorIndex = 0;
 			const targetUrl =
-				url.pathname + '?' + toAppSearchParams(fallbackPersonaIndex + '', url.searchParams);
+				url.pathname + '?' + toAppSearchParams(fallbackActorIndex + '', url.searchParams);
 			if (targetUrl !== url.pathname + url.search) {
 				log.warn(
-					`failed to find persona at index ${personaIndex}; falling back to index ${fallbackPersonaIndex}`,
+					`failed to find actor at index ${actorIndex}; falling back to index ${fallbackActorIndex}`,
 				);
 				void goto(targetUrl, {replaceState: true});
 				return; // exit early; this function re-runs from the `goto` call with the updated `$page`
 			}
 		}
-	} else if (personaIndex !== actorIndexSelection.get()) {
-		selectPersona(ui, persona.get().actor_id);
+	} else if (actorIndex !== actorIndexSelection.get()) {
+		selectActor(ui, actor.get().actor_id);
 	} // else already selected
 
 	// TODO speed this up with a map of hubByName
@@ -80,7 +80,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 	}
 };
 
-const selectPersona = ({actorIdSelection}: Ui, actor_id: ActorId): void => {
+const selectActor = ({actorIdSelection}: Ui, actor_id: ActorId): void => {
 	// TODO could remove this typecase if `syncUiToUrl` is changed to be an event
 	(actorIdSelection as Writable<ActorId | null>).set(actor_id);
 };

@@ -24,9 +24,9 @@ export class ActorRepo extends PostgresRepo {
 				'account', ${name}, ${account_id}, ${hub_id}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.Actor)}
 		`;
-		const persona = data[0];
-		log.debug('[createAccountActor] created persona', persona);
-		return persona;
+		const actor = data[0];
+		log.debug('[createAccountActor] created actor', actor);
+		return actor;
 	}
 
 	async createCommunityActor(name: string, hub_id: HubId): Promise<PublicActor> {
@@ -35,20 +35,20 @@ export class ActorRepo extends PostgresRepo {
 				'community', ${name}, ${hub_id}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
 		`;
-		const persona = data[0];
-		log.debug('[createCommunityActor] created persona', persona);
-		return persona;
+		const actor = data[0];
+		log.debug('[createCommunityActor] created actor', actor);
+		return actor;
 	}
 
-	async createGhostPersona(): Promise<PublicActor> {
+	async createGhostActor(): Promise<PublicActor> {
 		const data = await this.sql<PublicActor[]>`
 			INSERT INTO actors (type, name) VALUES (
 				'ghost', ${GHOST_ACTOR_NAME}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
 		`;
-		const persona = data[0];
-		if (persona.actor_id !== GHOST_ACTOR_ID) throw Error();
-		return persona;
+		const actor = data[0];
+		if (actor.actor_id !== GHOST_ACTOR_ID) throw Error();
+		return actor;
 	}
 
 	async deleteById(actor_id: ActorId): Promise<void> {
@@ -99,18 +99,18 @@ export class ActorRepo extends PostgresRepo {
 
 	// TODO handle count mismatch similar to to the entity version of this method
 	async filterByIds<T extends ActorColumn>(
-		personaIds: ActorId[],
+		actorIds: ActorId[],
 		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
 	): Promise<{actors: Array<Pick<Actor, T>>; missing: null | ActorId[]}> {
-		if (personaIds.length === 0) return {actors: [], missing: null};
+		if (actorIds.length === 0) return {actors: [], missing: null};
 		const actors = await this.sql<Array<Pick<Actor, T>>>`
 			SELECT ${this.sql(columns as string[])}
-			FROM actors WHERE actor_id IN ${this.sql(personaIds)}
+			FROM actors WHERE actor_id IN ${this.sql(actorIds)}
 		`;
 		const missing =
-			actors.length === personaIds.length
+			actors.length === actorIds.length
 				? null
-				: personaIds.filter(
+				: actorIds.filter(
 						(id) => !actors.some((e) => (e as Pick<Actor, 'actor_id'>).actor_id === id), // TODO try to remove the cast to `as Pick<Actor, 'actor_id'>`
 				  );
 		return {actors, missing};

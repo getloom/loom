@@ -59,7 +59,7 @@
 	};
 
 	let selectedReply: Readable<Entity> | null = null as any;
-	$: selectedReplyPersona = $selectedReply && lookupActor(personaById, $selectedReply.actor_id);
+	$: selectedReplyActor = $selectedReply && lookupActor(personaById, $selectedReply.actor_id);
 	const selectReply = (reply: Readable<Entity>) => {
 		if (selectedReply === reply) {
 			selectedReply = null;
@@ -106,9 +106,9 @@
 			<PendingAnimation />
 		{/if}
 	</div>
-	{#if selectedReply && $selectedReplyPersona && status === 'success'}
+	{#if selectedReply && $selectedReplyActor && status === 'success'}
 		<div class="replying" transition:slide|local>
-			replying to <Mention name={$selectedReplyPersona.name} />
+			replying to <Mention name={$selectedReplyActor.name} />
 		</div>
 	{/if}
 	<TextInput

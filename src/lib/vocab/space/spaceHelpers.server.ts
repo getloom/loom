@@ -37,14 +37,14 @@ export const createSpace = async (
 		throw new ApiError(409, 'a space with that path already exists');
 	}
 
-	const hubPersona = await repos.actor.findByHub(hub_id, ACTOR_COLUMNS.ActorId);
-	if (!hubPersona) {
+	const hubActor = await repos.actor.findByHub(hub_id, ACTOR_COLUMNS.ActorId);
+	if (!hubActor) {
 		throw new ApiError(409, 'failed to find the hub persona');
 	}
 
 	log.debug('[CreateSpace] initializing directory for space');
 	const uninitializedDirectory = (await repos.entity.create(
-		hubPersona.actor_id,
+		hubActor.actor_id,
 		{
 			type: 'Collection',
 			directory: true,

@@ -5,7 +5,7 @@ import {
 	randomEntityParams,
 	randomAssignmentParams,
 	randomString,
-	randomPersonaParams,
+	randomActorParams,
 	randomSpaceParams,
 	randomSpaceName,
 	randomHubParams,
@@ -114,7 +114,7 @@ export const randomActionParams: RandomEventParams = {
 		};
 	},
 	CreateAccountActor: async () => {
-		return randomPersonaParams();
+		return randomActorParams();
 	},
 	DeleteActor: async (random, {account, persona} = {}) => {
 		if (!persona) ({persona} = await random.persona(account));

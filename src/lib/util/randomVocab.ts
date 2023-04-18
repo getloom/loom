@@ -39,7 +39,7 @@ export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 export const randomString = (): string => 'r' + Math.random().toString().slice(2);
 export const randomAccountName = (): string => randomString() + '@email.com';
 export const randomPassword = randomString;
-export const randomPersonaName = randomString;
+export const randomActorName = randomString;
 export const randomCommunnityName = randomString;
 export const randomSpacePath = randomString;
 export const randomSpaceIcon = (): string => '🥥';
@@ -53,8 +53,8 @@ export const randomAccountParams = (): SignInParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
 });
-export const randomPersonaParams = (): CreateAccountActorParams => ({
-	name: randomPersonaName(),
+export const randomActorParams = (): CreateAccountActorParams => ({
+	name: randomActorName(),
 });
 export const randomAssignmentParams = (
 	actor: ActorId,
@@ -158,7 +158,7 @@ export class RandomVocabContext {
 		} = unwrap(
 			await CreateAccountActorService.perform({
 				...toServiceRequestMock(this.repos, undefined, undefined, account.account_id),
-				params: {name: randomPersonaParams().name},
+				params: {name: randomActorParams().name},
 			}),
 		);
 		return {persona: persona as AccountActor, personalHub, assignment, spaces, account};
@@ -174,7 +174,7 @@ export class RandomVocabContext {
 		assignments: Assignment[];
 		spaces: Space[];
 		persona: AccountActor;
-		hubPersona: PublicActor;
+		hubActor: PublicActor;
 		actors: ClientActor[];
 		account: Account;
 	}> {
@@ -187,7 +187,7 @@ export class RandomVocabContext {
 				params,
 			}),
 		);
-		const hubPersona = actors.find((p) => p.name === hub.name)!;
+		const hubActor = actors.find((p) => p.name === hub.name)!;
 		return {
 			hub,
 			roles,
@@ -195,7 +195,7 @@ export class RandomVocabContext {
 			assignments,
 			spaces,
 			persona,
-			hubPersona,
+			hubActor,
 			actors: actors.concat(persona),
 			account,
 		};

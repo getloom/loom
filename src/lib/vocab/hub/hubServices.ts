@@ -15,7 +15,7 @@ import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
-import {isPersonaAdmin, isPersonaNameReserved} from '$lib/vocab/actor/actorHelpers.server';
+import {isActorAdmin, isActorNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {
 	checkRemoveActor,
 	cleanOrphanHubs,
@@ -88,7 +88,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 			return {ok: false, status: 400, message: nameErrorMessage};
 		}
 
-		if (isPersonaNameReserved(name)) {
+		if (isActorNameReserved(name)) {
 			return {ok: false, status: 409, message: 'a hub with that name is not allowed'};
 		}
 
@@ -99,7 +99,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		}
 
 		// Check for instance settings OR admin actor
-		if ((await isCreateHubDisabled(repos)) && !(await isPersonaAdmin(actor, repos))) {
+		if ((await isCreateHubDisabled(repos)) && !(await isActorAdmin(actor, repos))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 
@@ -202,7 +202,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 		if (!actorToInvite) {
 			return {ok: false, status: 404, message: `cannot find actor named ${name}`};
 		}
-		if (await repos.assignment.isPersonaInHub(actorToInvite.actor_id, hub_id)) {
+		if (await repos.assignment.isActorInHub(actorToInvite.actor_id, hub_id)) {
 			return {ok: false, status: 409, message: 'actor is already in the hub'};
 		}
 
@@ -229,7 +229,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 
 		await checkRemoveActor(actor_id, hub_id, repos);
 
-		await repos.assignment.deleteByPersonaAndHub(actor_id, hub_id);
+		await repos.assignment.deleteByActorAndHub(actor_id, hub_id);
 
 		await cleanOrphanHubs([hub_id], repos);
 
@@ -247,7 +247,7 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 
 		await checkRemoveActor(actor_id, hub_id, repos);
 
-		await repos.assignment.deleteByPersonaAndHub(actor_id, hub_id);
+		await repos.assignment.deleteByActorAndHub(actor_id, hub_id);
 
 		await cleanOrphanHubs([hub_id], repos);
 

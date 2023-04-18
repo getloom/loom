@@ -288,7 +288,7 @@ export interface CreateHubResponse {
 	 *
 	 * 		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
 	 * 		They have self contained governance and ownership of Spaces within them.
-	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
+	 * 		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
 	 *
 	 */
 	hub: Hub;
@@ -310,7 +310,7 @@ export interface ReadHubResponse {
 	 *
 	 * 		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
 	 * 		They have self contained governance and ownership of Spaces within them.
-	 * 		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
+	 * 		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
 	 *
 	 */
 	hub: Hub;
@@ -596,7 +596,7 @@ export interface CreateRoleResponse {
 	 *
 	 * 		Roles are user-defined governance objects that exist within the context of a single Hub.
 	 * 		They have Policies associated with them that allow for actions to be taken within the system.
-	 * 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+	 * 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	 *
 	 */
 	role: Role;
@@ -622,7 +622,7 @@ export interface UpdateRoleResponse {
 	 *
 	 * 		Roles are user-defined governance objects that exist within the context of a single Hub.
 	 * 		They have Policies associated with them that allow for actions to be taken within the system.
-	 * 		When a Persona has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+	 * 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	 *
 	 */
 	role: Role;

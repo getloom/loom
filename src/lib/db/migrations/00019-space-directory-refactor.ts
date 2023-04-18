@@ -17,14 +17,14 @@ export const up = async (sql: Sql<any>): Promise<void> => {
 
 	for (const space of spaces) {
 		// eslint-disable-next-line no-await-in-loop
-		const actorPersona = await sql`
+		const actor = await sql`
 			SELECT persona_id FROM personas WHERE community_id = ${space.community_id};
 		`;
 
 		// eslint-disable-next-line no-await-in-loop
 		const entity = await sql`
 			INSERT INTO entities (actor_id, data) VALUES (
-			${actorPersona[0].persona_id},${sql.json({type: 'Collection', name: 'directory'})}
+			${actor[0].persona_id},${sql.json({type: 'Collection', name: 'directory'})}
 		) RETURNING *
 		`;
 

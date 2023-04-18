@@ -11,7 +11,7 @@ import {
 	LeaveHubService,
 	InviteToHubService,
 } from '$lib/vocab/hub/hubServices';
-import {expectApiError, loadAdminPersona, toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
@@ -45,7 +45,7 @@ test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 });
 
 test_hubServices('disallow deleting admin hub', async ({repos}) => {
-	const adminActor = await loadAdminPersona(repos);
+	const adminActor = await loadAdminActor(repos);
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
@@ -200,7 +200,7 @@ test_hubServices(
 			}),
 		);
 
-		const actor = await loadAdminPersona(repos);
+		const actor = await loadAdminActor(repos);
 
 		unwrap(
 			await CreateHubService.perform({
@@ -221,12 +221,12 @@ test_hubServices(
 	'InviteToHub assigns the default hub role to the persona',
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
-		const {hub, persona: communityPersona} = await random.hub();
+		const {hub, persona: communityActor} = await random.hub();
 		unwrap(
 			await InviteToHubService.perform({
-				...toServiceRequestMock(repos, communityPersona),
+				...toServiceRequestMock(repos, communityActor),
 				params: {
-					actor: communityPersona.actor_id,
+					actor: communityActor.actor_id,
 					hub_id: hub.hub_id,
 					name: persona.name,
 				},
@@ -239,13 +239,13 @@ test_hubServices(
 	'fail InviteToHub when the persona already has an assignment',
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
-		const {hub, persona: communityPersona} = await random.hub();
+		const {hub, persona: communityActor} = await random.hub();
 		await repos.assignment.create(persona.actor_id, hub.hub_id, hub.settings.defaultRoleId);
 		unwrapError(
 			await InviteToHubService.perform({
-				...toServiceRequestMock(repos, communityPersona),
+				...toServiceRequestMock(repos, communityActor),
 				params: {
-					actor: communityPersona.actor_id,
+					actor: communityActor.actor_id,
 					hub_id: hub.hub_id,
 					name: persona.name,
 				},
@@ -256,7 +256,7 @@ test_hubServices(
 
 test_hubServices('LeaveHub removes all assignments for the persona', async ({repos, random}) => {
 	const {hub, persona} = await random.hub();
-	assert.ok(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id));
+	assert.ok(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id));
 	unwrap(
 		await LeaveHubService.perform({
 			...toServiceRequestMock(repos, persona),
@@ -267,7 +267,7 @@ test_hubServices('LeaveHub removes all assignments for the persona', async ({rep
 			},
 		}),
 	);
-	assert.ok(!(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id)));
 	assert.is(await repos.hub.findById(hub.hub_id), undefined);
 });
 
@@ -289,33 +289,33 @@ test_hubServices('fail LeaveHub when the persona has no assignments', async ({re
 
 test_hubServices('KickFromHub removes all assignments for the persona', async ({repos, random}) => {
 	const {persona} = await random.persona();
-	const {hub, persona: communityPersona} = await random.hub();
+	const {hub, persona: communityActor} = await random.hub();
 	await repos.assignment.create(persona.actor_id, hub.hub_id, hub.settings.defaultRoleId);
-	assert.ok(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id));
+	assert.ok(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id));
 	unwrap(
 		await KickFromHubService.perform({
-			...toServiceRequestMock(repos, communityPersona),
+			...toServiceRequestMock(repos, communityActor),
 			params: {
-				actor: communityPersona.actor_id,
+				actor: communityActor.actor_id,
 				hub_id: hub.hub_id,
 				actor_id: persona.actor_id,
 			},
 		}),
 	);
-	assert.ok(!(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id)));
 });
 
 test_hubServices(
 	'fail KickFromHub when the persona has no assignments',
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
-		const {hub, persona: communityPersona} = await random.hub();
+		const {hub, persona: communityActor} = await random.hub();
 
 		await expectApiError(400, () =>
 			KickFromHubService.perform({
-				...toServiceRequestMock(repos, communityPersona),
+				...toServiceRequestMock(repos, communityActor),
 				params: {
-					actor: communityPersona.actor_id,
+					actor: communityActor.actor_id,
 					hub_id: hub.hub_id,
 					actor_id: persona.actor_id,
 				},

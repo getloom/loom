@@ -118,7 +118,7 @@ for (const service of services.values()) {
 
 		// Test failure of authorized services with an unauthorized actor.
 		if (action.authorize !== false && action.name !== 'CreateHub') {
-			const {persona: unauthorizedPersona} = await random.persona(account);
+			const {persona: unauthorizedActor} = await random.persona(account);
 
 			// create a new hub without the persona, otherwise they might have permissions
 			const hubData = await random.hub(undefined, account);
@@ -129,13 +129,13 @@ for (const service of services.values()) {
 				role: hubData.roles[0],
 			});
 			if (failedParams && 'actor' in failedParams) {
-				failedParams.actor = unauthorizedPersona.actor_id;
+				failedParams.actor = unauthorizedActor.actor_id;
 			}
 
 			let failedResult;
 			try {
 				failedResult = await service.perform({
-					...toServiceRequestMock(repos, unauthorizedPersona, session, account.account_id),
+					...toServiceRequestMock(repos, unauthorizedActor, session, account.account_id),
 					params: failedParams,
 				});
 			} catch (err) {

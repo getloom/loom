@@ -92,7 +92,7 @@ export interface Ui {
 	paginatedQueryByKey: Map<number, PaginatedQueryStore>;
 	sourceTiesByDestEntityId: Map<EntityId, Mutable<Set<Tie>>>;
 	destTiesBySourceEntityId: Map<EntityId, Mutable<Set<Tie>>>;
-	hubsBySessionPersona: Readable<Map<Readable<AccountActor>, Array<Readable<Hub>>>>;
+	hubsBySessionActor: Readable<Map<Readable<AccountActor>, Array<Readable<Hub>>>>;
 	adminActors: Readable<Set<Readable<ClientActor>>>;
 	// view state
 	mobile: Readable<boolean>;
@@ -150,7 +150,7 @@ export const toUi = (
 	const session = writable<ClientSession>($session);
 	// Importantly, these collections only change when items are added or removed,
 	// not when the items themselves change; each item is a store that can be subscribed to.
-	// TODO these `Persona`s need additional data compared to every other `Persona`
+	// TODO these `Actor`s need additional data compared to every other `Actor`
 	const sessionActors = mutable<Array<Writable<AccountActor>>>([]);
 	const actors = mutable<Set<Writable<ClientActor>>>(new Set());
 	const hubs = mutable<Set<Writable<Hub>>>(new Set());
@@ -285,7 +285,7 @@ export const toUi = (
 		[sessionActors],
 		([$sessionActors]) => new Map($sessionActors.value.map((p, i) => [p.get().actor_id, i])),
 	);
-	const hubsBySessionPersona: Readable<Map<Writable<AccountActor>, Array<Writable<Hub>>>> = derived(
+	const hubsBySessionActor: Readable<Map<Writable<AccountActor>, Array<Writable<Hub>>>> = derived(
 		[sessionActors, assignments, hubs],
 		([$sessionActors, $assignments, $hubs]) => {
 			const map: Map<Writable<AccountActor>, Array<Writable<Hub>>> = new Map();
@@ -393,7 +393,7 @@ export const toUi = (
 		paginatedQueryByKey,
 		sourceTiesByDestEntityId,
 		destTiesBySourceEntityId,
-		hubsBySessionPersona,
+		hubsBySessionActor,
 		adminActors,
 		// view state
 		mobile,

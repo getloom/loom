@@ -136,7 +136,7 @@ export class EntityRepo extends PostgresRepo {
 	// how? see https://www.postgresql.org/docs/current/functions-json.html
 	// `WHERE data ? 'attributedTo'`
 	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
-	async attributeToGhostByPersona(actor_id: ActorId): Promise<number> {
+	async attributeToGhostByActor(actor_id: ActorId): Promise<number> {
 		log.debug('[ghost]', actor_id);
 		const data = await this.sql<any[]>`
 			UPDATE entities

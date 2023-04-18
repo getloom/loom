@@ -24,9 +24,11 @@ const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
 export const cleanOrphanHubs = async (hubIds: HubId[], repos: Repos): Promise<null | HubId[]> => {
 	let deleted: HubId[] | null = null;
 	for (const hub_id of hubIds) {
-		const accountPersonaAssignmentsCount =
-			await repos.assignment.countAccountActorAssignmentsByHubId(hub_id); // eslint-disable-line no-await-in-loop
-		if (accountPersonaAssignmentsCount === 0) {
+		// eslint-disable-next-line no-await-in-loop
+		const accountActorAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHubId(
+			hub_id,
+		);
+		if (accountActorAssignmentsCount === 0) {
 			log.debug('no assignments found for hub, cleaning up', hub_id);
 			await repos.hub.deleteById(hub_id); // eslint-disable-line no-await-in-loop
 			(deleted || (deleted = [])).push(hub_id);
@@ -73,7 +75,7 @@ export const initAdminHub = async (
 	);
 
 	// Create the ghost persona.
-	const ghost = await repos.actor.createGhostPersona();
+	const ghost = await repos.actor.createGhostActor();
 
 	return {hub, persona, ghost, roles, policies, assignments};
 };
@@ -139,7 +141,7 @@ export const checkRemoveActor = async (
 	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
-	if (!(await repos.assignment.isPersonaInHub(actor_id, hub_id))) {
+	if (!(await repos.assignment.isActorInHub(actor_id, hub_id))) {
 		throw new ApiError(400, 'actor is not in the hub');
 	}
 	const actor = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);

@@ -30,7 +30,7 @@
 	$: spaceIdSelection = $spaceIdSelectionByHubId.value.get($hub.hub_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
 	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
-	$: personaIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
 </script>
 
 {#if $actorSelection === persona}
@@ -48,7 +48,7 @@
 				toHubUrl(
 					$hub.name,
 					renderDirectoryPath($selectedDirectory?.path),
-					toAppSearchParams(personaIndex + '', $page.url.searchParams),
+					toAppSearchParams(actorIndex + '', $page.url.searchParams),
 				),
 			)}
 	>

@@ -37,7 +37,7 @@
 					props: {persona, done: () => actions.CloseDialog()},
 				})}
 		>
-			Delete Persona
+			Delete Actor
 		</ContextmenuEntry>
 	</svelte:fragment>
 </ContextmenuSubmenu>

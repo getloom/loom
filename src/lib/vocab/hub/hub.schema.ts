@@ -11,7 +11,7 @@ export const HubSchema = {
 	description: `
 		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
 		They have self contained governance and ownership of Spaces within them.
-		By default they are hidden & undiscoverable and are only visible to a user once a Persona has been invited in.
+		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
 	`,
 	properties: {
 		hub_id: {type: 'number', tsType: 'HubId'},

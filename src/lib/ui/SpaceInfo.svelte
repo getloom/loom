@@ -26,14 +26,14 @@
 
 	$: hue = randomHue($space.name); // TODO add custom setting on spaces
 
-	$: personaIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
 </script>
 
 <a
 	href={toHubUrl(
 		$hub.name,
 		renderDirectoryPath($directory.path),
-		toAppSearchParams(personaIndex + '', $page.url.searchParams),
+		toAppSearchParams(actorIndex + '', $page.url.searchParams),
 	)}
 	class:selected
 	class="space-info"

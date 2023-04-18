@@ -41,16 +41,16 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 
 		// Did the persona leave the hub?
 		// Check if we need to evict any actors.
-		let didPersonaLeaveHub = true;
+		let didActorLeaveHub = true;
 		const {actor_id, hub_id} = assignment;
 		// TODO could speed this up a cache of assignments by hub, see in multiple places
 		for (const a of $assignments) {
 			if (a.actor_id === actor_id && a.hub_id === hub_id) {
-				didPersonaLeaveHub = false;
+				didActorLeaveHub = false;
 				break;
 			}
 		}
-		if (didPersonaLeaveHub) {
+		if (didActorLeaveHub) {
 			// When a session persona leaves a hub,
 			// the persona is never evicted.
 			// and we evict the hub unless another session persona has an assignment in it.
@@ -70,15 +70,15 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 					evictHub(ui, hub_id);
 				}
 			} else {
-				let doesPersonaHaveOtherAssignment = false;
+				let doesActorHaveOtherAssignment = false;
 				// TODO could speed this up with a cache of assignments by persona
 				for (const a of $assignments) {
 					if (a.actor_id === actor_id) {
-						doesPersonaHaveOtherAssignment = true;
+						doesActorHaveOtherAssignment = true;
 						break;
 					}
 				}
-				if (!doesPersonaHaveOtherAssignment) {
+				if (!doesActorHaveOtherAssignment) {
 					const persona = personaById.get(actor_id);
 					if (persona) {
 						evictActor(ui, persona);

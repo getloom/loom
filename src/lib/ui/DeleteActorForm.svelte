@@ -17,7 +17,7 @@
 	let lockText = '';
 	$: locked = lockText.toLowerCase().trim() !== $persona.name.toLowerCase();
 
-	const deletePersona = async () => {
+	const deleteActor = async () => {
 		pending = true;
 		errorMessage = '';
 		const result = await actions.DeleteActor({
@@ -36,7 +36,7 @@
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			if (!locked) {
-				await deletePersona();
+				await deleteActor();
 			}
 		}
 	};
@@ -54,7 +54,7 @@
 		bind:value={lockText}
 		on:keydown={onKeydown}
 	/>
-	<PendingButton {pending} disabled={locked || pending} on:click={deletePersona}>
+	<PendingButton {pending} disabled={locked || pending} on:click={deleteActor}>
 		delete persona
 	</PendingButton>
 </form>

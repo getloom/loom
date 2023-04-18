@@ -15,8 +15,8 @@ import type {ClientActor} from '$lib/vocab/actor/actor';
 import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {
 	ACTOR_COLUMNS,
-	isPersonaAdmin,
-	isPersonaNameReserved,
+	isActorAdmin,
+	isActorNameReserved,
 } from '$lib/vocab/actor/actorHelpers.server';
 import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
@@ -38,13 +38,13 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 			return {ok: false, status: 400, message: nameErrorMessage};
 		}
 
-		if (isPersonaNameReserved(name)) {
+		if (isActorNameReserved(name)) {
 			return {ok: false, status: 409, message: 'a persona with that name is not allowed'};
 		}
 
 		log.debug('[CreateAccountActor] validating persona uniqueness', name);
-		const existingPersona = await repos.actor.findByName(name, ACTOR_COLUMNS.ActorId);
-		if (existingPersona) {
+		const existingActor = await repos.actor.findByName(name, ACTOR_COLUMNS.ActorId);
+		if (existingActor) {
 			return {ok: false, status: 409, message: 'a persona with that name already exists'};
 		}
 
@@ -131,21 +131,21 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		if (persona.type === 'community') {
 			return {ok: false, status: 400, message: 'cannot delete hub actors'};
 		}
-		if (await isPersonaAdmin(actor_id, repos)) {
+		if (await isActorAdmin(actor_id, repos)) {
 			return {ok: false, status: 400, message: 'cannot delete admin actors'};
 		}
-		if (actor !== actor_id && !(await isPersonaAdmin(actor, repos))) {
+		if (actor !== actor_id && !(await isActorAdmin(actor, repos))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
-		const hubs = await repos.hub.filterByPersona(actor_id);
+		const hubs = await repos.hub.filterByActor(actor_id);
 
 		// swap in the ghost persona id for this `actor_id` for those objects that we don't delete
-		await repos.entity.attributeToGhostByPersona(actor_id);
+		await repos.entity.attributeToGhostByActor(actor_id);
 
 		// delete the persona and its related objects
 		await repos.actor.deleteById(actor_id);
-		await repos.assignment.deleteByPersona(actor_id);
+		await repos.assignment.deleteByActor(actor_id);
 		// TODO this type hack shouldn't be necessary, but somehow the types are off,
 		// looks like types aren't narrowing with `Pick` on the type union (see this comment in multiple places)
 		await repos.hub.deleteById(persona.hub_id!); // must follow `persona.deleteById`

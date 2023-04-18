@@ -33,7 +33,7 @@
 	$: if (replyTie && !repliedToEntity) {
 		queryReply(replyTie.source_id, (entity) => (repliedToEntity = entity));
 	}
-	$: repliedToPersona = lookupActor(personaById, $repliedToEntity?.actor_id);
+	$: repliedToActor = lookupActor(personaById, $repliedToEntity?.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);
@@ -67,7 +67,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			{#if replyTie}
 				<div class="panel ellipsis">
 					{#if $repliedToEntity}
-						<Mention name={$repliedToPersona.name} /> said:
+						<Mention name={$repliedToActor.name} /> said:
 						{$repliedToEntity.data.content}
 					{:else}
 						<PendingAnimation />
