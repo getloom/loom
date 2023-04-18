@@ -23,7 +23,7 @@
 		pending = true;
 		errorMessage = '';
 		const result = await actions.DeleteHub({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			hub_id: $hub.hub_id,
 		});
 		if (result.ok) {

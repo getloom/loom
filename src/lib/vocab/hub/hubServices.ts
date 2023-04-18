@@ -57,19 +57,19 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 			repos.assignment.filterByHub(hub_id),
 		]);
 
-		// TODO is this more efficient than parallelizing `persona.filterByHub`?
-		const personaIds = assignments.map((a) => a.persona_id);
+		// TODO is this more efficient than parallelizing `actor.filterByHub`?
+		const actorIds = assignments.map((a) => a.actor_id);
 		const [filteredActors, directoriesResult] = await Promise.all([
-			repos.persona.filterByIds(personaIds),
+			repos.actor.filterByIds(actorIds),
 			repos.entity.filterByIds(spaces.map((s) => s.directory_id)),
 		]);
-		const {personas} = filteredActors;
+		const {actors} = filteredActors;
 		const {entities: directories} = directoriesResult as {entities: Directory[]};
 
 		return {
 			ok: true,
 			status: 200,
-			value: {hub, spaces, directories, roles, assignments, personas},
+			value: {hub, spaces, directories, roles, assignments, actors},
 		};
 	},
 };
@@ -120,14 +120,14 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 			actor,
 		);
 
-		// Create the hub persona and its assignment
-		const hubPersona = await repos.persona.createCommunityActor(hub.name, hub_id);
-		const hubPersonaAssignment = await repos.assignment.create(
-			hubPersona.persona_id,
+		// Create the hub actor and its assignment
+		const hubActor = await repos.actor.createCommunityActor(hub.name, hub_id);
+		const hubActorAssignment = await repos.assignment.create(
+			hubActor.actor_id,
 			hub_id,
 			hub.settings.defaultRoleId,
 		);
-		assignments.push(hubPersonaAssignment);
+		assignments.push(hubActorAssignment);
 
 		// Create default spaces.
 		const createSpacesParams = template.spaces?.length
@@ -144,7 +144,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 				policies,
 				spaces,
 				directories,
-				personas: [hubPersona],
+				actors: [hubActor],
 				assignments,
 			},
 		};
@@ -198,21 +198,21 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
 
-		const persona = await repos.persona.findByName(name);
-		if (!persona) {
-			return {ok: false, status: 404, message: `cannot find a persona named ${name}`};
+		const actorToInvite = await repos.actor.findByName(name);
+		if (!actorToInvite) {
+			return {ok: false, status: 404, message: `cannot find actor named ${name}`};
 		}
-		if (await repos.assignment.isPersonaInHub(persona.persona_id, hub_id)) {
-			return {ok: false, status: 409, message: 'persona is already in the hub'};
+		if (await repos.assignment.isPersonaInHub(actorToInvite.actor_id, hub_id)) {
+			return {ok: false, status: 409, message: 'actor is already in the hub'};
 		}
 
 		const assignment = await createAssignment(
-			persona.persona_id,
+			actorToInvite.actor_id,
 			hub,
 			hub.settings.defaultRoleId,
 			repos,
 		);
-		return {ok: true, status: 200, value: {persona, assignment}};
+		return {ok: true, status: 200, value: {actor: actorToInvite, assignment}};
 	},
 };
 
@@ -221,7 +221,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, actor_id, hub_id} = params;
-		log.debug('[LeaveHub] removing all assignments for persona in hub', actor, actor_id, hub_id);
+		log.debug('[LeaveHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
 
 		if (actor !== actor_id) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};

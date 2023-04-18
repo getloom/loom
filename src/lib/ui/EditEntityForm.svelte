@@ -26,22 +26,22 @@
 		ui: {contextmenu, personaById},
 	} = getApp();
 
-	$: authorActor = lookupActor(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.actor_id);
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
 		actions.UpdateEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, [field]: updated}}],
 		});
 
 	const updateEntityData = async (updated: any) =>
 		actions.UpdateEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: updated}],
 		});
 	const updateEntityPath = async (updated: string | null) =>
 		actions.UpdateEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entities: [{entity_id: $entity.entity_id, path: updated === '' ? null : updated}],
 		});
 
@@ -50,7 +50,7 @@
 	const deleteEntity = async () => {
 		deletePending = true;
 		await actions.DeleteEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entityIds: [$entity.entity_id],
 		});
 		deletePending = false;
@@ -61,7 +61,7 @@
 	const eraseEntity = async () => {
 		erasePending = true;
 		await actions.EraseEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entityIds: [$entity.entity_id],
 		});
 		erasePending = false;
@@ -150,7 +150,7 @@
 		<legend>properties</legend>
 		<PropertyEditor value={$entity.entity_id} field="entity_id" />
 		<!-- TODO add contextmenu entries for this persona -->
-		<PropertyEditor value={$entity.persona_id} field="persona_id" />
+		<PropertyEditor value={$entity.actor_id} field="actor_id" />
 		<PropertyEditor
 			value={$entity.path}
 			field="path"

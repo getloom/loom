@@ -10,7 +10,7 @@
 
 	export let assignment: Assignment;
 
-	$: assignmentActor = lookupActor(personaById, assignment.persona_id);
+	$: assignmentActor = lookupActor(personaById, assignment.actor_id);
 </script>
 
 <div style:--icon_size="var(--icon_size_xs)">

@@ -37,7 +37,7 @@ test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 		unwrapError(
 			await DeleteHubService.perform({
 				...toServiceRequestMock(repos, persona),
-				params: {actor: persona.persona_id, hub_id: persona.hub_id},
+				params: {actor: persona.actor_id, hub_id: persona.hub_id},
 			}),
 		).status,
 		405,
@@ -50,7 +50,7 @@ test_hubServices('disallow deleting admin hub', async ({repos}) => {
 		unwrapError(
 			await DeleteHubService.perform({
 				...toServiceRequestMock(repos, adminActor),
-				params: {actor: adminActor.persona_id, hub_id: ADMIN_HUB_ID},
+				params: {actor: adminActor.actor_id, hub_id: ADMIN_HUB_ID},
 			}),
 		).status,
 		405,
@@ -80,7 +80,7 @@ test_hubServices('default personal hub role has all permissions', async ({repos,
 test_hubServices('disallow duplicate hub names', async ({repos, random}) => {
 	const {persona} = await random.persona();
 
-	const params = randomHubParams(persona.persona_id);
+	const params = randomHubParams(persona.actor_id);
 	params.template.name += 'Aa';
 	unwrap(await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}));
 
@@ -102,7 +102,7 @@ test_hubServices('disallow duplicate hub names', async ({repos, random}) => {
 test_hubServices('disallow reserved hub names', async ({repos, random}) => {
 	const {persona} = await random.persona();
 
-	const params = randomHubParams(persona.persona_id);
+	const params = randomHubParams(persona.actor_id);
 	params.template.name = 'docs';
 	assert.is(
 		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}))
@@ -114,7 +114,7 @@ test_hubServices('disallow reserved hub names', async ({repos, random}) => {
 test_hubServices('new hubs have default template roles & policies', async ({repos, random}) => {
 	const {persona} = await random.persona();
 
-	const params = randomHubParams(persona.persona_id);
+	const params = randomHubParams(persona.actor_id);
 	const hubResult = unwrap(
 		await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}),
 	);
@@ -122,7 +122,7 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 	const roleResult = unwrap(
 		await ReadRolesService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, hub_id: hubResult.hub.hub_id},
+			params: {actor: persona.actor_id, hub_id: hubResult.hub.hub_id},
 		}),
 	);
 	assert.is(roleResult.roles.length, 2);
@@ -132,7 +132,7 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 	const stewardPolicyResults = unwrap(
 		await ReadPoliciesService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, role_id: hubResult.roles[0].role_id},
+			params: {actor: persona.actor_id, role_id: hubResult.roles[0].role_id},
 		}),
 	);
 	assert.equal(toSortedPermissionNames(stewardPolicyResults.policies), sortedPermissionNames);
@@ -140,7 +140,7 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 	const memberPolicyResults = unwrap(
 		await ReadPoliciesService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, role_id: hubResult.roles[1].role_id},
+			params: {actor: persona.actor_id, role_id: hubResult.roles[1].role_id},
 		}),
 	);
 	assert.is(memberPolicyResults.policies.length, 5);
@@ -156,12 +156,12 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	unwrap(
 		await DeleteHubService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, hub_id: hub.hub_id},
+			params: {actor: persona.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 
-	//check hub personas are gone
-	assert.ok(!(await repos.persona.findByHub(hub.hub_id)));
+	//check hub actors are gone
+	assert.ok(!(await repos.actor.findByHub(hub.hub_id)));
 
 	//check hub spaces are gone
 	const spaceResult = await repos.space.filterByHub(hub.hub_id);
@@ -196,7 +196,7 @@ test_hubServices(
 		unwrapError(
 			await CreateHubService.perform({
 				...toServiceRequestMock(repos, persona),
-				params: randomHubParams(persona.persona_id),
+				params: randomHubParams(persona.actor_id),
 			}),
 		);
 
@@ -205,7 +205,7 @@ test_hubServices(
 		unwrap(
 			await CreateHubService.perform({
 				...toServiceRequestMock(repos, persona),
-				params: randomHubParams(actor.persona_id),
+				params: randomHubParams(actor.actor_id),
 			}),
 		);
 
@@ -226,7 +226,7 @@ test_hubServices(
 			await InviteToHubService.perform({
 				...toServiceRequestMock(repos, communityPersona),
 				params: {
-					actor: communityPersona.persona_id,
+					actor: communityPersona.actor_id,
 					hub_id: hub.hub_id,
 					name: persona.name,
 				},
@@ -240,12 +240,12 @@ test_hubServices(
 	async ({repos, random}) => {
 		const {persona} = await random.persona();
 		const {hub, persona: communityPersona} = await random.hub();
-		await repos.assignment.create(persona.persona_id, hub.hub_id, hub.settings.defaultRoleId);
+		await repos.assignment.create(persona.actor_id, hub.hub_id, hub.settings.defaultRoleId);
 		unwrapError(
 			await InviteToHubService.perform({
 				...toServiceRequestMock(repos, communityPersona),
 				params: {
-					actor: communityPersona.persona_id,
+					actor: communityPersona.actor_id,
 					hub_id: hub.hub_id,
 					name: persona.name,
 				},
@@ -256,18 +256,18 @@ test_hubServices(
 
 test_hubServices('LeaveHub removes all assignments for the persona', async ({repos, random}) => {
 	const {hub, persona} = await random.hub();
-	assert.ok(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id));
+	assert.ok(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id));
 	unwrap(
 		await LeaveHubService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.persona_id,
+				actor_id: persona.actor_id,
 			},
 		}),
 	);
-	assert.ok(!(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id)));
 	assert.is(await repos.hub.findById(hub.hub_id), undefined);
 });
 
@@ -279,9 +279,9 @@ test_hubServices('fail LeaveHub when the persona has no assignments', async ({re
 		LeaveHubService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.persona_id,
+				actor_id: persona.actor_id,
 			},
 		}),
 	);
@@ -290,19 +290,19 @@ test_hubServices('fail LeaveHub when the persona has no assignments', async ({re
 test_hubServices('KickFromHub removes all assignments for the persona', async ({repos, random}) => {
 	const {persona} = await random.persona();
 	const {hub, persona: communityPersona} = await random.hub();
-	await repos.assignment.create(persona.persona_id, hub.hub_id, hub.settings.defaultRoleId);
-	assert.ok(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id));
+	await repos.assignment.create(persona.actor_id, hub.hub_id, hub.settings.defaultRoleId);
+	assert.ok(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id));
 	unwrap(
 		await KickFromHubService.perform({
 			...toServiceRequestMock(repos, communityPersona),
 			params: {
-				actor: communityPersona.persona_id,
+				actor: communityPersona.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.persona_id,
+				actor_id: persona.actor_id,
 			},
 		}),
 	);
-	assert.ok(!(await repos.assignment.isPersonaInHub(persona.persona_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isPersonaInHub(persona.actor_id, hub.hub_id)));
 });
 
 test_hubServices(
@@ -315,9 +315,9 @@ test_hubServices(
 			KickFromHubService.perform({
 				...toServiceRequestMock(repos, communityPersona),
 				params: {
-					actor: communityPersona.persona_id,
+					actor: communityPersona.actor_id,
 					hub_id: hub.hub_id,
-					actor_id: persona.persona_id,
+					actor_id: persona.actor_id,
 				},
 			}),
 		);

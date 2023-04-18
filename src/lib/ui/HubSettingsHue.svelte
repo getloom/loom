@@ -15,7 +15,7 @@
 	const UPDATE_INTERVAL = 500; // TODO extract this to config
 	const updateHue = throttle(UPDATE_INTERVAL, async (hue: number): Promise<void> => {
 		await actions.UpdateHubSettings({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			hub_id: $hub.hub_id,
 			settings: {...$hub.settings, hue},
 		});

@@ -15,7 +15,7 @@ import {PolicyRepo} from '$lib/vocab/policy/PolicyRepo';
  */
 export class Repos {
 	readonly account: AccountRepo;
-	readonly persona: ActorRepo;
+	readonly actor: ActorRepo;
 	readonly assignment: AssignmentRepo;
 	readonly hub: HubRepo;
 	readonly space: SpaceRepo;
@@ -26,7 +26,7 @@ export class Repos {
 
 	constructor(public readonly sql: PostgresSql) {
 		this.account = new AccountRepo(this, sql);
-		this.persona = new ActorRepo(this, sql);
+		this.actor = new ActorRepo(this, sql);
 		this.assignment = new AssignmentRepo(this, sql);
 		this.hub = new HubRepo(this, sql);
 		this.space = new SpaceRepo(this, sql);

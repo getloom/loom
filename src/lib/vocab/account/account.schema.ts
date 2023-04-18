@@ -89,7 +89,7 @@ export const ClientAccountSessionSchema = {
 		},
 		assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
 		policies: {type: 'array', items: {$ref: '/schemas/Policy.json', tsType: 'Policy'}},
-		personas: {
+		actors: {
 			type: 'array',
 			items: {$ref: '/schemas/ClientActor.json', tsType: 'ClientActor'},
 		},
@@ -104,7 +104,7 @@ export const ClientAccountSessionSchema = {
 		'directories',
 		'assignments',
 		'policies',
-		'personas',
+		'actors',
 	],
 	additionalProperties: false,
 	// TODO this data is worthless to the client

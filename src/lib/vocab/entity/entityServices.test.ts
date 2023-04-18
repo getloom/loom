@@ -45,8 +45,8 @@ test_entityServices('create entities with data', async ({random}) => {
 		space.directory_id,
 		{data: entityData2},
 	);
-	assert.is(entity1.persona_id, persona.persona_id);
-	assert.is(entity2.persona_id, persona.persona_id);
+	assert.is(entity1.actor_id, persona.actor_id);
+	assert.is(entity2.actor_id, persona.actor_id);
 	assert.equal(entity1.data, entityData1);
 	assert.equal(entity2.data, entityData2);
 	assert.is(ties1.length, 1);
@@ -68,7 +68,7 @@ test_entityServices('create entity and return it and directories', async ({repos
 		await CreateEntityService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				space_id: space.space_id,
 				data: entityData,
 				ties: sourceIds.map((source_id) => ({source_id})),
@@ -94,7 +94,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	const {entities: filtered} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, source_id: space.directory_id},
+			params: {actor: persona.actor_id, source_id: space.directory_id},
 		}),
 	);
 
@@ -116,7 +116,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	const {entities: filtered2} = unwrap(
 		await ReadEntitiesPaginatedService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, source_id: space.directory_id},
+			params: {actor: persona.actor_id, source_id: space.directory_id},
 		}),
 	);
 	assert.is(filtered2.length, DEFAULT_PAGE_SIZE);
@@ -130,7 +130,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 		await ReadEntitiesPaginatedService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				source_id: space.directory_id,
 				pageSize: FIRST_PAGE_SIZE,
 			},
@@ -143,7 +143,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 		await ReadEntitiesPaginatedService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				source_id: space.directory_id,
 				pageSize: SECOND_PAGE_SIZE,
 				pageKey: filtered3.at(-1)!.entity_id,
@@ -158,7 +158,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 		await ReadEntitiesPaginatedService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				source_id: space.directory_id,
 				pageSize: SECOND_PAGE_SIZE,
 				pageKey: filtered4.at(-1)!.entity_id,
@@ -204,7 +204,7 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, re
 	unwrap(
 		await DeleteEntitiesService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, entityIds: [list.entity_id]},
+			params: {actor: persona.actor_id, entityIds: [list.entity_id]},
 		}),
 	);
 	const {missing} = await repos.entity.filterByIds(entityIds);
@@ -212,7 +212,7 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, re
 });
 
 test_entityServices(
-	'can only delete, erase, or update other personas entities in "common" views',
+	'can only delete, erase, or update other actors entities in "common" views',
 	async ({repos, random}) => {
 		const {space, persona, account, hub} = await random.space();
 		const {space: commonSpace} = await random.space(persona, account, hub, '<Todo />');
@@ -222,7 +222,7 @@ test_entityServices(
 			await InviteToHubService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
-					actor: persona.persona_id,
+					actor: persona.actor_id,
 					hub_id: hub.hub_id,
 					name: persona2.name,
 				},
@@ -234,7 +234,7 @@ test_entityServices(
 			await CreateEntityService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
-					actor: persona.persona_id,
+					actor: persona.actor_id,
 					data: {type: 'Note', content: 'note1'},
 					space_id: space.space_id,
 				},
@@ -245,7 +245,7 @@ test_entityServices(
 			await UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
-					actor: persona.persona_id,
+					actor: persona.actor_id,
 					entities: [{entity_id: note1.entity_id, data: {type: 'Note', content: 'Note1'}}],
 				},
 			}),
@@ -256,7 +256,7 @@ test_entityServices(
 			await CreateEntityService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
-					actor: persona.persona_id,
+					actor: persona.actor_id,
 					data: {type: 'Note', content: 'note2'},
 					space_id: commonSpace.space_id,
 				},
@@ -267,7 +267,7 @@ test_entityServices(
 			await UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
-					actor: persona.persona_id,
+					actor: persona.actor_id,
 					entities: [{entity_id: note2.entity_id, data: {type: 'Note', content: 'Note2'}}],
 				},
 			}),
@@ -278,7 +278,7 @@ test_entityServices(
 			await UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona2),
 				params: {
-					actor: persona2.persona_id,
+					actor: persona2.actor_id,
 					entities: [{entity_id: note2.entity_id, data: {type: 'Note', content: 'lol'}}],
 				},
 			}),
@@ -289,7 +289,7 @@ test_entityServices(
 			UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, persona2),
 				params: {
-					actor: persona2.persona_id,
+					actor: persona2.actor_id,
 					entities: [{entity_id: note1.entity_id, data: {type: 'Note', content: 'lol'}}],
 				},
 			}),
@@ -310,7 +310,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 			await performService(UpdateEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
-					actor: actor.persona_id,
+					actor: actor.actor_id,
 					entity_id: directory.entity_id,
 					data: {type: 'Note', content: 'test'},
 				},
@@ -322,7 +322,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 			await performService(UpdateEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
-					actor: actor.persona_id,
+					actor: actor.actor_id,
 					entity_id: directory.entity_id,
 					data: {type: 'Collection'},
 				},
@@ -334,7 +334,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 			await performService(UpdateEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
-					actor: actor.persona_id,
+					actor: actor.actor_id,
 					entity_id: directory.entity_id,
 					data: {type: 'Collection', directory: false as any},
 				},
@@ -346,7 +346,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 			await performService(DeleteEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
-					actor: actor.persona_id,
+					actor: actor.actor_id,
 					entityIds: [directory.entity_id],
 				},
 			}),
@@ -357,7 +357,7 @@ test_entityServices.only('disallow mutating directory', async ({repos, random}) 
 			await performService(EraseEntitiesService, {
 				...toServiceRequestMock(repos, actor),
 				params: {
-					actor: actor.persona_id,
+					actor: actor.actor_id,
 					entityIds: [directory.entity_id],
 				},
 			}),

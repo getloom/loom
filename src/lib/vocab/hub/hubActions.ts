@@ -26,12 +26,12 @@ export const CreateHub: ServiceActionData = {
 			},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
 			policies: {type: 'array', items: {$ref: '/schemas/Policy.json', tsType: 'Policy'}},
-			personas: {
+			actors: {
 				type: 'array',
 				items: {$ref: '/schemas/PublicActor.json', tsType: 'PublicActor'},
 			},
 		},
-		required: ['hub', 'roles', 'policies', 'spaces', 'directories', 'assignments', 'personas'],
+		required: ['hub', 'roles', 'policies', 'spaces', 'directories', 'assignments', 'actors'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<CreateHubResponseResult>',
@@ -70,12 +70,12 @@ export const ReadHub: ServiceActionData = {
 			},
 			roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
-			personas: {
+			actors: {
 				type: 'array',
 				items: {$ref: '/schemas/PublicActor.json', tsType: 'PublicActor'},
 			},
 		},
-		required: ['hub', 'spaces', 'directories', 'roles', 'assignments', 'personas'],
+		required: ['hub', 'spaces', 'directories', 'roles', 'assignments', 'actors'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<ReadHubResponseResult>',
@@ -166,10 +166,10 @@ export const InviteToHub: ServiceActionData = {
 		$id: '/schemas/InviteToHubResponse.json',
 		type: 'object',
 		properties: {
-			persona: {$ref: '/schemas/PublicActor.json', tsType: 'PublicActor'},
+			actor: {$ref: '/schemas/PublicActor.json', tsType: 'PublicActor'},
 			assignment: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'},
 		},
-		required: ['persona', 'assignment'],
+		required: ['actor', 'assignment'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<InviteToHubResponseResult>',

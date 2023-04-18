@@ -17,7 +17,7 @@ export const CreateAccountActor: ServiceActionData = {
 		$id: '/schemas/CreateAccountActorResponse.json',
 		type: 'object',
 		properties: {
-			personas: {
+			actors: {
 				type: 'array',
 				items: {$ref: '/schemas/ClientActor.json', tsType: 'ClientActor'},
 			},
@@ -31,12 +31,12 @@ export const CreateAccountActor: ServiceActionData = {
 			},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'}},
 		},
-		required: ['personas', 'hubs', 'roles', 'policies', 'spaces', 'directories', 'assignments'],
+		required: ['actors', 'hubs', 'roles', 'policies', 'spaces', 'directories', 'assignments'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<CreateAccountActorResponseResult>',
 	route: {
-		path: '/api/v1/personas',
+		path: '/api/v1/actors',
 		method: 'POST',
 	},
 };
@@ -60,7 +60,7 @@ export const DeleteActor: ServiceActionData = {
 	},
 	returns: 'Promise<DeleteActorResponseResult>',
 	route: {
-		path: '/api/v1/personas/:actor_id',
+		path: '/api/v1/actors/:actor_id',
 		method: 'DELETE',
 	},
 };

@@ -29,7 +29,7 @@ export class PolicyRepo extends PostgresRepo {
 		const result = await this.sql<Policy[]>`
 		SELECT * FROM policies JOIN
 			(SELECT roles.role_id FROM roles JOIN
-				(SELECT * FROM assignments WHERE persona_id=${actor_id} AND hub_id=${hub_id}) a
+				(SELECT * FROM assignments WHERE actor_id=${actor_id} AND hub_id=${hub_id}) a
 				ON a.role_id = roles.role_id) r
 		ON policies.role_id = r.role_id AND permission=${permission};
 		`;
@@ -73,8 +73,8 @@ export class PolicyRepo extends PostgresRepo {
 		SELECT pol.policy_id, pol.role_id, pol.permission, pol.data, pol.created, pol.updated
 		FROM policies pol JOIN (							
 				SELECT DISTINCT r.role_id FROM roles r JOIN (
-					SELECT DISTINCT a.hub_id FROM personas p
-					JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id = ${account_id}
+					SELECT DISTINCT a.hub_id FROM actors p
+					JOIN assignments a ON p.actor_id=a.actor_id AND p.account_id = ${account_id}
 				) apc
 				ON r.hub_id=apc.hub_id
 		) apcr

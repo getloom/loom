@@ -24,7 +24,7 @@
 	//TODO this is all done because the Query event always returns an empty array on initial call
 	$: entitiesResult = shouldLoadEntities
 		? actions.ReadEntities({
-				actor: $persona.persona_id,
+				actor: $persona.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -45,7 +45,7 @@
 
 		if (!content) return;
 		await actions.CreateEntity({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Article', content, name},
 			ties: [{source_id: $space.directory_id}],

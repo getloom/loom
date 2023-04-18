@@ -50,7 +50,7 @@
 		if (fields.name) data.name = name;
 		if (fields.content) data.content = content;
 		const result = await actions.CreateEntity({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?
 			ties: [{source_id: $space.directory_id}],

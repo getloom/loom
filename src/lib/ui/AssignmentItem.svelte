@@ -15,12 +15,12 @@
 	export let actor: Readable<AccountActor>;
 	export let assignment: Assignment;
 
-	$: assignmentActor = lookupActor(personaById, assignment.persona_id);
+	$: assignmentActor = lookupActor(personaById, assignment.actor_id);
 
 	const deleteAssignment = async () => {
 		//TODO better error handling
 		await actions.DeleteAssignment({
-			actor: $actor.persona_id,
+			actor: $actor.actor_id,
 			assignment_id: assignment.assignment_id,
 		});
 	};

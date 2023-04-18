@@ -44,7 +44,7 @@
 		if (!checkedCount) return;
 		const entityIds = $checkedItems!.map((i) => i.get().entity_id);
 		await actions.DeleteEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entityIds,
 		});
 	};

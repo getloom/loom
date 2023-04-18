@@ -297,7 +297,7 @@ export interface CreateHubResponse {
 	directories: Directory[];
 	assignments: Assignment[];
 	policies: Policy[];
-	personas: PublicActor[];
+	actors: PublicActor[];
 }
 export type CreateHubResponseResult = ApiResult<CreateHubResponse>;
 
@@ -318,7 +318,7 @@ export interface ReadHubResponse {
 	directories: Directory[];
 	roles: Role[];
 	assignments: Assignment[];
-	personas: PublicActor[];
+	actors: PublicActor[];
 }
 export type ReadHubResponseResult = ApiResult<ReadHubResponse>;
 
@@ -353,11 +353,11 @@ export interface InviteToHubResponse {
 	 * 		A subset of an Actor available to all clients in a hub.
 	 *
 	 */
-	persona: PublicActor;
+	actor: PublicActor;
 	/**
 	 *
-	 * 	 Describes the relationship between a Persona and Role within a given Hub.
-	 * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
+	 * 	 Describes the relationship between an Actor and Role within a given Hub.
+	 * 	 An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
 	 * 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	 *
 	 */
@@ -385,7 +385,7 @@ export interface CreateAccountActorParams {
 	name: string;
 }
 export interface CreateAccountActorResponse {
-	personas: ClientActor[];
+	actors: ClientActor[];
 	hubs: Hub[];
 	roles: Role[];
 	policies: Policy[];
@@ -411,8 +411,8 @@ export interface CreateAssignmentParams {
 export interface CreateAssignmentResponse {
 	/**
 	 *
-	 * 	 Describes the relationship between a Persona and Role within a given Hub.
-	 * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
+	 * 	 Describes the relationship between an Actor and Role within a given Hub.
+	 * 	 An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
 	 * 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	 *
 	 */
@@ -447,7 +447,7 @@ export interface CreateSpaceResponse {
 	/**
 	 *
 	 * 		An Entity is the core data type that represents an ActivityStreams object in the system.
-	 * 		Each has an "owning" space & persona that controls its governance.
+	 * 		Each has an "owning" space and actor that controls its governance.
 	 * 		Entities exist within a graph architecture, with Ties serving as the paths between nodes.
 	 * 		Conventionally, all entities within a given Space can be found by traversing
 	 * 		the graph starting at the directory Entity associated with the owning Space.

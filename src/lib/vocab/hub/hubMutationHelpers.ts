@@ -80,12 +80,12 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 
 	const $hubIdSelectionByActorId = hubIdSelectionByActorId.get().value;
 	let mutated = false;
-	for (const [persona_id, hubIdSelection] of $hubIdSelectionByActorId) {
+	for (const [actor_id, hubIdSelection] of $hubIdSelectionByActorId) {
 		if (hubIdSelection !== hub_id) continue;
-		const persona = personaById.get(persona_id);
+		const persona = personaById.get(actor_id);
 		const $persona = persona?.get();
 		if (!isAccountActor($persona)) continue; // TODO this check could be refactored, shouldn't be necessary here
-		$hubIdSelectionByActorId.set(persona_id, $persona.hub_id);
+		$hubIdSelectionByActorId.set(actor_id, $persona.hub_id);
 		mutated = true;
 	}
 	if (mutated) hubIdSelectionByActorId.mutate();

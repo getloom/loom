@@ -9,14 +9,14 @@ export type AssignmentId = Flavored<number, 'AssignmentId'>;
 
 /**
  *
- * 	 Describes the relationship between a Persona and Role within a given Hub.
- * 	 A Persona must have at least 1 assignment to be in a Hub and see it in the nav.
+ * 	 Describes the relationship between an Actor and Role within a given Hub.
+ * 	 An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
  * 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
  *
  */
 export interface Assignment {
 	assignment_id: AssignmentId;
-	persona_id: ActorId;
+	actor_id: ActorId;
 	hub_id: HubId;
 	role_id: RoleId;
 	created: Date;

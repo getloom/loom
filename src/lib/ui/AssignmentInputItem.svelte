@@ -16,9 +16,9 @@
 
 	const createAssignment = async () => {
 		await actions.CreateAssignment({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			hub_id: $hub.hub_id,
-			actor_id: $assignmentActor.persona_id,
+			actor_id: $assignmentActor.actor_id,
 			role_id: $role.role_id,
 		});
 	};

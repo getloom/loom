@@ -22,14 +22,14 @@
 
 	export let entity: Readable<Entity>;
 
-	$: authorActor = lookupActor(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
-And then ActorContextmenu would be only for *session* personas? `SessionActorContextmenu` -->
+And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <li
 	transition:slide|local
@@ -50,7 +50,7 @@ And then ActorContextmenu would be only for *session* personas? `SessionActorCon
 		<button
 			class="plain-button icon-button"
 			on:click={() =>
-				actions.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]})}
+				actions.DeleteEntities({actor: $persona.actor_id, entityIds: [$entity.entity_id]})}
 			title="remove item">✕</button
 		>
 	</div>

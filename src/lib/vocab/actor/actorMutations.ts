@@ -9,9 +9,9 @@ import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {personas, hubs, roles, policies, spaces, directories, assignments} = result.value;
+	const {actors, hubs, roles, policies, spaces, directories, assignments} = result.value;
 	ui.mutate(() => {
-		stashActors(ui, personas);
+		stashActors(ui, actors);
 		stashHubs(ui, hubs);
 		stashSpaces(ui, spaces, directories);
 		stashAssignments(ui, assignments);

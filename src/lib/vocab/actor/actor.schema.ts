@@ -33,7 +33,7 @@ export const AccountActorSchema = {
 		A reference to this personal Hub is stored in 'hub_id'.
 	`,
 	properties: {
-		persona_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {type: 'number', tsType: 'ActorId'},
 		account_id: {
 			type: 'number',
 			tsType: 'AccountId',
@@ -50,7 +50,7 @@ export const AccountActorSchema = {
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
-	required: ['persona_id', 'account_id', 'hub_id', 'type', 'name', 'created', 'updated'],
+	required: ['actor_id', 'account_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
 };
 
@@ -63,7 +63,7 @@ export const CommunityActorSchema = {
 		The Hub that owns it is represented by 'hub_id'.
 	`,
 	properties: {
-		persona_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {type: 'number', tsType: 'ActorId'},
 		account_id: {type: 'null'},
 		hub_id: {
 			type: 'number',
@@ -76,7 +76,7 @@ export const CommunityActorSchema = {
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
-	required: ['persona_id', 'hub_id', 'type', 'name', 'created', 'updated'],
+	required: ['actor_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
 };
 
@@ -87,7 +87,7 @@ export const GhostActorSchema = {
 	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.	 
 	`,
 	properties: {
-		persona_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {type: 'number', tsType: 'ActorId'},
 		account_id: {type: 'null'},
 		hub_id: {type: 'null'},
 		type: {type: 'string', enum: ['ghost']},
@@ -96,7 +96,7 @@ export const GhostActorSchema = {
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 	},
-	required: ['persona_id', 'type', 'name', 'created', 'updated'],
+	required: ['actor_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
 };
 
@@ -110,14 +110,14 @@ export const PublicActorSchema = {
 		A subset of an Actor available to all clients in a hub.
 	`,
 	properties: {
-		persona_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {type: 'number', tsType: 'ActorId'},
 		type: {type: 'string', enum: ['account', 'community', 'ghost']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		// `updated` is private
 	},
-	required: ['persona_id', 'type', 'name', 'created'],
+	required: ['actor_id', 'type', 'name', 'created'],
 	additionalProperties: false,
 };
 

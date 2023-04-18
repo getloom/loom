@@ -57,7 +57,7 @@
 		pending = true;
 		errorMessage = null;
 		const result = await actions.CreateSpace({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			hub_id: $hub.hub_id,
 			name,
 			path: `/${name}`,
@@ -73,7 +73,7 @@
 					$hub.name,
 					renderDirectoryPath(result.value.directory.path),
 					toAppSearchParams(
-						$sessionActorIndexById.get($persona.persona_id) + '',
+						$sessionActorIndexById.get($persona.actor_id) + '',
 						$page.url.searchParams,
 					),
 				),

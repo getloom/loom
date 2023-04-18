@@ -27,7 +27,7 @@
 	const createRole = async () => {
 		//TODO better error handling
 		const result = await actions.CreateRole({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			hub_id: $hub.hub_id,
 			name: 'new role',
 		});
@@ -45,7 +45,7 @@
 
 	const deleteRole = (role: Readable<Role>): Promise<DeleteRoleResponseResult> =>
 		actions.DeleteRole({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			role_id: role.get().role_id,
 		});
 </script>

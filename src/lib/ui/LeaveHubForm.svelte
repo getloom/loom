@@ -23,8 +23,8 @@
 		pending = true;
 		errorMessage = '';
 		const result = await actions.LeaveHub({
-			actor: $persona.persona_id,
-			actor_id: $persona.persona_id,
+			actor: $persona.actor_id,
+			actor_id: $persona.actor_id,
 			hub_id: $hub.hub_id,
 		});
 		if (result.ok) {

@@ -30,7 +30,7 @@
 		}
 		status = 'pending';
 		const result = await actions.InviteToHub({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			hub_id: $hub.hub_id,
 			name,
 		});

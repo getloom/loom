@@ -20,9 +20,9 @@ export class ActorRepo extends PostgresRepo {
 		hub_id: HubId,
 	): Promise<AccountActor> {
 		const data = await this.sql<AccountActor[]>`
-			INSERT INTO personas (type, name, account_id, hub_id) VALUES (
+			INSERT INTO actors (type, name, account_id, hub_id) VALUES (
 				'account', ${name}, ${account_id}, ${hub_id}
-			) RETURNING ${this.sql(ACTOR_COLUMNS.Persona)}
+			) RETURNING ${this.sql(ACTOR_COLUMNS.Actor)}
 		`;
 		const persona = data[0];
 		log.debug('[createAccountActor] created persona', persona);
@@ -31,7 +31,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async createCommunityActor(name: string, hub_id: HubId): Promise<PublicActor> {
 		const data = await this.sql<PublicActor[]>`
-			INSERT INTO personas (type, name, hub_id) VALUES (
+			INSERT INTO actors (type, name, hub_id) VALUES (
 				'community', ${name}, ${hub_id}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
 		`;
@@ -42,18 +42,18 @@ export class ActorRepo extends PostgresRepo {
 
 	async createGhostPersona(): Promise<PublicActor> {
 		const data = await this.sql<PublicActor[]>`
-			INSERT INTO personas (type, name) VALUES (
+			INSERT INTO actors (type, name) VALUES (
 				'ghost', ${GHOST_ACTOR_NAME}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
 		`;
 		const persona = data[0];
-		if (persona.persona_id !== GHOST_ACTOR_ID) throw Error();
+		if (persona.actor_id !== GHOST_ACTOR_ID) throw Error();
 		return persona;
 	}
 
-	async deleteById(persona_id: ActorId): Promise<void> {
+	async deleteById(actor_id: ActorId): Promise<void> {
 		const data = await this.sql<any[]>`
-			DELETE FROM personas WHERE persona_id=${persona_id}
+			DELETE FROM actors WHERE actor_id=${actor_id}
 		`;
 		if (!data.count) throw Error();
 	}
@@ -61,8 +61,8 @@ export class ActorRepo extends PostgresRepo {
 	async filterByAccount(account_id: AccountId): Promise<AccountActor[]> {
 		log.debug('[filterByAccount]', account_id);
 		const data = await this.sql<AccountActor[]>`
-			SELECT ${this.sql(ACTOR_COLUMNS.Persona)}
-			FROM personas WHERE account_id=${account_id}
+			SELECT ${this.sql(ACTOR_COLUMNS.Actor)}
+			FROM actors WHERE account_id=${account_id}
 		`;
 		return data;
 	}
@@ -70,29 +70,29 @@ export class ActorRepo extends PostgresRepo {
 	async filterAssociatesByAccount(account_id: AccountId): Promise<PublicActor[]> {
 		const data = await this.sql<PublicActor[]>`
 			SELECT ${this.sql(ACTOR_COLUMNS.PublicActor.map((c) => 'p3.' + c))}
-			FROM personas p3
-			JOIN (SELECT DISTINCT persona_id FROM assignments a2
+			FROM actors p3
+			JOIN (SELECT DISTINCT actor_id FROM assignments a2
 				JOIN (SELECT DISTINCT a.hub_id FROM assignments a
-					JOIN (SELECT * FROM personas WHERE account_id=${account_id}) p
-					ON p.persona_id=a.persona_id) c
+					JOIN (SELECT * FROM actors WHERE account_id=${account_id}) p
+					ON p.actor_id=a.actor_id) c
 				ON a2.hub_id=c.hub_id) p2
-			ON p3.persona_id=p2.persona_id
+			ON p3.actor_id=p2.actor_id
 			UNION
 			SELECT ${this.sql(
 				ACTOR_COLUMNS.PublicActor,
-			)} FROM personas WHERE persona_id=${ADMIN_ACTOR_ID} OR persona_id=${GHOST_ACTOR_ID}
+			)} FROM actors WHERE actor_id=${ADMIN_ACTOR_ID} OR actor_id=${GHOST_ACTOR_ID}
 		`;
 		return data;
 	}
 
 	async findById<T extends ActorColumn>(
-		persona_id: ActorId,
+		actor_id: ActorId,
 		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
 	): Promise<Pick<Actor, T> | undefined> {
-		log.debug('[findById]', persona_id);
+		log.debug('[findById]', actor_id);
 		const data = await this.sql<Array<Pick<Actor, T>>>`
 			SELECT ${this.sql(columns as string[])}
-			FROM personas WHERE persona_id=${persona_id}
+			FROM actors WHERE actor_id=${actor_id}
 		`;
 		return data[0];
 	}
@@ -101,19 +101,19 @@ export class ActorRepo extends PostgresRepo {
 	async filterByIds<T extends ActorColumn>(
 		personaIds: ActorId[],
 		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
-	): Promise<{personas: Array<Pick<Actor, T>>; missing: null | ActorId[]}> {
-		if (personaIds.length === 0) return {personas: [], missing: null};
-		const personas = await this.sql<Array<Pick<Actor, T>>>`
+	): Promise<{actors: Array<Pick<Actor, T>>; missing: null | ActorId[]}> {
+		if (personaIds.length === 0) return {actors: [], missing: null};
+		const actors = await this.sql<Array<Pick<Actor, T>>>`
 			SELECT ${this.sql(columns as string[])}
-			FROM personas WHERE persona_id IN ${this.sql(personaIds)}
+			FROM actors WHERE actor_id IN ${this.sql(personaIds)}
 		`;
 		const missing =
-			personas.length === personaIds.length
+			actors.length === personaIds.length
 				? null
 				: personaIds.filter(
-						(id) => !personas.some((e) => (e as Pick<Actor, 'persona_id'>).persona_id === id), // TODO try to remove the cast to `as Pick<Actor, 'persona_id'>`
+						(id) => !actors.some((e) => (e as Pick<Actor, 'actor_id'>).actor_id === id), // TODO try to remove the cast to `as Pick<Actor, 'actor_id'>`
 				  );
-		return {personas, missing};
+		return {actors, missing};
 	}
 
 	async findByHub<T extends ActorColumn>(
@@ -123,7 +123,7 @@ export class ActorRepo extends PostgresRepo {
 		log.debug('[findByHub]', hub_id);
 		const data = await this.sql<Array<Pick<Actor, T>>>`
 			SELECT ${this.sql(columns as string[])}
-			FROM personas WHERE hub_id=${hub_id}
+			FROM actors WHERE hub_id=${hub_id}
 		`;
 		return data[0];
 	}
@@ -135,7 +135,7 @@ export class ActorRepo extends PostgresRepo {
 		log.debug('[findByName]', name);
 		const data = await this.sql<Array<Pick<Actor, T>>>`
 			SELECT ${this.sql(columns as string[])}
-			FROM personas WHERE LOWER(name) = LOWER(${name})
+			FROM actors WHERE LOWER(name) = LOWER(${name})
 		`;
 		return data[0];
 	}

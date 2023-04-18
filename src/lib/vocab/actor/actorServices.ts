@@ -29,7 +29,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 	action: CreateAccountActor,
 	transaction: true,
 	// TODO verify the `account_id` has permission to modify this persona
-	// TODO add `persona_id` and verify it's one of the `account_id`'s personas
+	// TODO add `actor_id` and verify it's one of the `account_id`'s actors
 	perform: async ({repos, params, account_id}) => {
 		log.debug('[CreateAccountActor] creating persona', params.name);
 		const name = scrubActorName(params.name);
@@ -43,12 +43,12 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 		}
 
 		log.debug('[CreateAccountActor] validating persona uniqueness', name);
-		const existingPersona = await repos.persona.findByName(name, ACTOR_COLUMNS.ActorId);
+		const existingPersona = await repos.actor.findByName(name, ACTOR_COLUMNS.ActorId);
 		if (existingPersona) {
 			return {ok: false, status: 409, message: 'a persona with that name already exists'};
 		}
 
-		const personas: ClientActor[] = [];
+		const actors: ClientActor[] = [];
 		const hubs: Hub[] = [];
 
 		// First create the admin hub if it doesn't exist yet.
@@ -60,22 +60,19 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 
 		// Create the persona.
 		log.debug('[CreateAccountActor] creating persona', name);
-		const persona = await repos.persona.createAccountActor(name, account_id, hub.hub_id);
-		personas.push(persona);
+		const persona = await repos.actor.createAccountActor(name, account_id, hub.hub_id);
+		actors.push(persona);
 
 		// Create the roles, policies, and persona assignment.
 		const {roles, policies, assignments} = await initTemplateGovernanceForHub(
 			repos,
 			defaultPersonalHubRoles,
 			hub,
-			persona.persona_id,
+			persona.actor_id,
 		);
 
 		// Create the default spaces.
-		const {spaces, directories} = await createSpaces(
-			toDefaultSpaces(persona.persona_id, hub),
-			repos,
-		);
+		const {spaces, directories} = await createSpaces(toDefaultSpaces(persona.actor_id, hub), repos);
 
 		// If the admin hub was created, create the admin spaces and the persona's assignment.
 		// This is a separate step because we need to create the admin hub before any others
@@ -84,8 +81,8 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 		if (initAdminHubValue) {
 			const adminHub = initAdminHubValue.hub;
 			hubs.push(adminHub);
-			personas.push(initAdminHubValue.persona);
-			personas.push(initAdminHubValue.ghost);
+			actors.push(initAdminHubValue.persona);
+			actors.push(initAdminHubValue.ghost);
 			roles.push(...initAdminHubValue.roles);
 			policies.push(...initAdminHubValue.policies);
 			assignments.push(...initAdminHubValue.assignments);
@@ -93,7 +90,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 			// Create the persona's assignment to the admin hub.
 			assignments.push(
 				await repos.assignment.create(
-					persona.persona_id,
+					persona.actor_id,
 					adminHub.hub_id,
 					adminHub.settings.defaultRoleId,
 				),
@@ -101,7 +98,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 
 			// Create the admin community's default spaces.
 			const defaultAdminSpaces = await createSpaces(
-				toDefaultAdminSpaces(persona.persona_id, adminHub),
+				toDefaultAdminSpaces(persona.actor_id, adminHub),
 				repos,
 			);
 			spaces.push(...defaultAdminSpaces.spaces);
@@ -111,7 +108,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 		return {
 			ok: true,
 			status: 200,
-			value: {personas, hubs, roles, policies, spaces, directories, assignments},
+			value: {actors, hubs, roles, policies, spaces, directories, assignments},
 		};
 	},
 };
@@ -127,15 +124,15 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		if (actor_id === ADMIN_ACTOR_ID || actor_id === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that persona'};
 		}
-		const persona = await repos.persona.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
+		const persona = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}
 		if (persona.type === 'community') {
-			return {ok: false, status: 400, message: 'cannot delete hub personas'};
+			return {ok: false, status: 400, message: 'cannot delete hub actors'};
 		}
 		if (await isPersonaAdmin(actor_id, repos)) {
-			return {ok: false, status: 400, message: 'cannot delete admin personas'};
+			return {ok: false, status: 400, message: 'cannot delete admin actors'};
 		}
 		if (actor !== actor_id && !(await isPersonaAdmin(actor, repos))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
@@ -147,7 +144,7 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		await repos.entity.attributeToGhostByPersona(actor_id);
 
 		// delete the persona and its related objects
-		await repos.persona.deleteById(actor_id);
+		await repos.actor.deleteById(actor_id);
 		await repos.assignment.deleteByPersona(actor_id);
 		// TODO this type hack shouldn't be necessary, but somehow the types are off,
 		// looks like types aren't narrowing with `Pick` on the type union (see this comment in multiple places)

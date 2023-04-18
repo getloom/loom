@@ -36,7 +36,7 @@
 
 	$: isPersonaHomeHub = $hub.name === $persona.name;
 
-	$: personaIndex = $sessionActorIndexById.get($persona.persona_id)!;
+	$: personaIndex = $sessionActorIndexById.get($persona.actor_id)!;
 
 	$: fresh = freshnessByHubId.get($hub.hub_id);
 </script>

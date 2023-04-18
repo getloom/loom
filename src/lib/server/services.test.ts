@@ -129,7 +129,7 @@ for (const service of services.values()) {
 				role: hubData.roles[0],
 			});
 			if (failedParams && 'actor' in failedParams) {
-				failedParams.actor = unauthorizedPersona.persona_id;
+				failedParams.actor = unauthorizedPersona.actor_id;
 			}
 
 			let failedResult;

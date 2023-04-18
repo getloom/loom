@@ -44,14 +44,14 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 		if (!assignment) {
 			return {ok: false, status: 404, message: 'no assignment found'};
 		}
-		const {persona_id, hub_id} = assignment;
+		const {actor_id, hub_id} = assignment;
 		await checkPolicy(permissions.DeleteAssignment, actor, hub_id, repos);
 		// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
 		// const [personaResult, hubResult] = await Promise.all([
-		// 	repos.persona.findById(persona_id),
+		// 	repos.persona.findById(actor_id),
 		// 	repos.hub.findById(hub_id),
 		// ]);
-		const persona = await repos.persona.findById(persona_id, ACTOR_COLUMNS.TypeAndHub);
+		const persona = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
 		if (!persona) {
 			return {ok: false, status: 404, message: 'no persona found'};
 		}

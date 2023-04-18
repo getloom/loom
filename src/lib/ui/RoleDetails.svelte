@@ -35,7 +35,7 @@
 
 		//TODO better error handling
 		await actions.UpdateRole({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			role_id: $role.role_id,
 			name,
 		});

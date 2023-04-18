@@ -44,7 +44,7 @@ test__EntityRepo('find entity by id', async ({repos, random}) => {
 	const found = await repos.entity.findById(entity.entity_id);
 	assert.ok(found);
 	assert.is(found.entity_id, entity.entity_id);
-	assert.is(found.persona_id, entity.persona_id);
+	assert.is(found.actor_id, entity.actor_id);
 	assert.equal(found.data, data);
 });
 

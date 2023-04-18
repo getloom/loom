@@ -23,7 +23,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.persona_id,
+				actor: $persona.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -51,7 +51,7 @@
 		//TODO better error handling
 		await actions.CreateEntity({
 			space_id: $space.space_id,
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			data: {type: 'Note', content, checked: false},
 			ties: [{source_id: $selectedList!.entity_id}],
 		});
@@ -78,7 +78,7 @@
 		if (!items?.length) return;
 		const entityIds = items.map((i) => i.get().entity_id);
 		await actions.DeleteEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entityIds,
 		});
 	};

@@ -23,7 +23,7 @@
 	export let selectReply: (reply: Readable<Entity>) => void;
 	export let queryReply: (entity_id: number, cb: (entity: Readable<Entity>) => void) => void;
 
-	$: authorActor = lookupActor(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.actor_id);
 
 	$: sourceTiesSet = sourceTiesByDestEntityId.get($entity.entity_id);
 	$: replyTie =
@@ -33,14 +33,14 @@
 	$: if (replyTie && !repliedToEntity) {
 		queryReply(replyTie.source_id, (entity) => (repliedToEntity = entity));
 	}
-	$: repliedToPersona = lookupActor(personaById, $repliedToEntity?.persona_id);
+	$: repliedToPersona = lookupActor(personaById, $repliedToEntity?.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
-And then ActorContextmenu would be only for *session* personas? `SessionActorContextmenu` -->
+And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
 <li
 	style="--hue: {hue}"
 	use:contextmenu.action={[

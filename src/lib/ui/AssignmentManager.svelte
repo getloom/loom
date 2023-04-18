@@ -8,7 +8,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 
 	const {
-		ui: {actorSelection, personasByHubId, assignmentsByRoleId},
+		ui: {actorSelection, actorsByHubId, assignmentsByRoleId},
 	} = getApp();
 
 	export let role: Readable<Role>;
@@ -18,12 +18,11 @@
 
 	$: selectedActor = $actorSelection;
 
-	$: hubActors = $personasByHubId.get($role.hub_id)!;
+	$: hubActors = $actorsByHubId.get($role.hub_id)!;
 
 	// TODO speed this up with a better cached data structures
 	$: assignableActors = hubActors.filter(
-		(p) =>
-			!assignments.some((a) => a.persona_id === p.get().persona_id && a.hub_id === $hub.hub_id),
+		(p) => !assignments.some((a) => a.actor_id === p.get().actor_id && a.hub_id === $hub.hub_id),
 	);
 </script>
 

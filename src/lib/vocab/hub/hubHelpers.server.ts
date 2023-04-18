@@ -62,18 +62,18 @@ export const initAdminHub = async (
 	);
 
 	// Create the hub persona.
-	const persona = await repos.persona.createCommunityActor(hub.name, hub.hub_id);
+	const persona = await repos.actor.createCommunityActor(hub.name, hub.hub_id);
 
 	// Init
 	const {roles, policies, assignments} = await initTemplateGovernanceForHub(
 		repos,
 		defaultAdminHubRoles,
 		hub,
-		persona.persona_id,
+		persona.actor_id,
 	);
 
 	// Create the ghost persona.
-	const ghost = await repos.persona.createGhostPersona();
+	const ghost = await repos.actor.createGhostPersona();
 
 	return {hub, persona, ghost, roles, policies, assignments};
 };
@@ -142,7 +142,7 @@ export const checkRemoveActor = async (
 	if (!(await repos.assignment.isPersonaInHub(actor_id, hub_id))) {
 		throw new ApiError(400, 'actor is not in the hub');
 	}
-	const actor = await repos.persona.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
+	const actor = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
 	if (!actor) {
 		throw new ApiError(404, 'no persona found');
 	}

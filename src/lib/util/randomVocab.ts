@@ -151,7 +151,7 @@ export class RandomVocabContext {
 	}> {
 		if (!account) account = await this.account();
 		const {
-			personas: [persona],
+			actors: [persona],
 			hubs: [personalHub],
 			assignments: [assignment],
 			spaces,
@@ -175,19 +175,19 @@ export class RandomVocabContext {
 		spaces: Space[];
 		persona: AccountActor;
 		hubPersona: PublicActor;
-		personas: ClientActor[];
+		actors: ClientActor[];
 		account: Account;
 	}> {
 		if (!account) account = await this.account();
 		if (!persona) ({persona, account} = await this.persona(account));
-		const params = randomHubParams(persona.persona_id);
-		const {hub, roles, policies, personas, assignments, spaces} = unwrap(
+		const params = randomHubParams(persona.actor_id);
+		const {hub, roles, policies, actors, assignments, spaces} = unwrap(
 			await CreateHubService.perform({
 				...toServiceRequestMock(this.repos, persona),
 				params,
 			}),
 		);
-		const hubPersona = personas.find((p) => p.name === hub.name)!;
+		const hubPersona = actors.find((p) => p.name === hub.name)!;
 		return {
 			hub,
 			roles,
@@ -196,7 +196,7 @@ export class RandomVocabContext {
 			spaces,
 			persona,
 			hubPersona,
-			personas: personas.concat(persona),
+			actors: actors.concat(persona),
 			account,
 		};
 	}
@@ -216,7 +216,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!hub) ({hub} = await this.hub(persona, account));
-		const params = randomSpaceParams(persona.persona_id, hub.hub_id, view);
+		const params = randomSpaceParams(persona.actor_id, hub.hub_id, view);
 		const {space, directory} = unwrap(
 			await CreateSpaceService.perform({
 				...toServiceRequestMock(this.repos, persona),
@@ -257,7 +257,7 @@ export class RandomVocabContext {
 			await CreateEntityService.perform({
 				...toServiceRequestMock(this.repos, persona),
 				params: {
-					...randomEntityParams(persona.persona_id, space.space_id, source_id),
+					...randomEntityParams(persona.actor_id, space.space_id, source_id),
 					...paramsPartial,
 				},
 			}),
@@ -318,7 +318,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!hub) ({hub} = await this.hub(persona, account));
-		const params = randomRoleParams(persona.persona_id, hub.hub_id);
+		const params = randomRoleParams(persona.actor_id, hub.hub_id);
 		const {role} = unwrap(
 			await CreateRoleService.perform({
 				...toServiceRequestMock(this.repos, persona),
@@ -342,7 +342,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!persona) ({persona} = await this.persona(account));
 		if (!hub) ({hub} = await this.hub(persona, account));
-		const params = randomPolicyParams(persona.persona_id, hub.settings.defaultRoleId, permission);
+		const params = randomPolicyParams(persona.actor_id, hub.settings.defaultRoleId, permission);
 		const {policy} = unwrap(
 			await CreatePolicyService.perform({
 				...toServiceRequestMock(this.repos, persona),

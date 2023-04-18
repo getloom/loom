@@ -3,7 +3,7 @@
 
 	export let name: string;
 	export let icon: string | null = null;
-	export let type: EntityType = 'Persona';
+	export let type: EntityType = 'Actor';
 	export let inline = false;
 
 	$: squared = type === 'Hub';

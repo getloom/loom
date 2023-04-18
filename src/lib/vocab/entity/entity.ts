@@ -10,7 +10,7 @@ export type EntityId = Flavored<number, 'EntityId'>;
 /**
  *
  * 		An Entity is the core data type that represents an ActivityStreams object in the system.
- * 		Each has an "owning" space & persona that controls its governance.
+ * 		Each has an "owning" space and actor that controls its governance.
  * 		Entities exist within a graph architecture, with Ties serving as the paths between nodes.
  * 		Conventionally, all entities within a given Space can be found by traversing
  * 		the graph starting at the directory Entity associated with the owning Space.
@@ -19,7 +19,7 @@ export type EntityId = Flavored<number, 'EntityId'>;
  */
 export interface Entity {
 	entity_id: EntityId;
-	persona_id: ActorId;
+	actor_id: ActorId;
 	space_id: SpaceId;
 	path: string | null;
 	data: EntityData;

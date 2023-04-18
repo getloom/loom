@@ -36,7 +36,7 @@
 			return;
 		}
 		const result = await actions.UpdateEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: updatedData}],
 		});
 		if (!result.ok) errorMessage = result.message;
@@ -48,7 +48,7 @@
 </script>
 
 {#if propertyName.endsWith('_id')}
-	<!-- TODO  propertyName === 'persona_id' etc -->
+	<!-- TODO  propertyName === 'actor_id' etc -->
 	{value}
 {:else if propertyName === 'data' || propertyName === 'view'}<textarea
 		bind:value={updated}

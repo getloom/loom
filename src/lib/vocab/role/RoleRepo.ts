@@ -71,8 +71,8 @@ export class RoleRepo extends PostgresRepo {
 		const result = await this.sql<Role[]>`
 			SELECT r.role_id, r.hub_id, r.name, r.created, r.updated							
 			FROM roles r JOIN (
-				SELECT DISTINCT a.hub_id FROM personas p
-				JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
+				SELECT DISTINCT a.hub_id FROM actors p
+				JOIN assignments a ON p.actor_id=a.actor_id AND p.account_id=${account_id}
 			) apc
 			ON r.hub_id=apc.hub_id;
 		`;

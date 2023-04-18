@@ -15,15 +15,15 @@ const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
 export class EntityRepo extends PostgresRepo {
 	async create(
-		persona_id: ActorId,
+		actor_id: ActorId,
 		data: EntityData,
 		space_id: SpaceId | null,
 		path: string | null = null,
 	): Promise<Entity> {
-		log.debug('[createEntity]', persona_id);
+		log.debug('[createEntity]', actor_id);
 		const entity = await this.sql<Entity[]>`
-			INSERT INTO entities (persona_id, space_id, path, data) VALUES (
-				${persona_id}, ${space_id}, ${path}, ${this.sql.json(data as any)}
+			INSERT INTO entities (actor_id, space_id, path, data) VALUES (
+				${actor_id}, ${space_id}, ${path}, ${this.sql.json(data as any)}
 			) RETURNING *
 		`;
 		// log.debug('create entity', data);
@@ -32,7 +32,7 @@ export class EntityRepo extends PostgresRepo {
 
 	async findById(entity_id: EntityId): Promise<Entity | undefined> {
 		const data = await this.sql<Entity[]>`
-			SELECT entity_id, space_id, path, data, persona_id, created, updated
+			SELECT entity_id, space_id, path, data, actor_id, created, updated
 			FROM entities WHERE entity_id=${entity_id}
 		`;
 		return data[0];
@@ -41,7 +41,7 @@ export class EntityRepo extends PostgresRepo {
 	async findByPath(hub_id: HubId, path: string): Promise<Entity | undefined> {
 		log.debug('[findByPath]', hub_id, path);
 		const data = await this.sql<Entity[]>`
-			SELECT e.entity_id, e.space_id, e.path, e.data, e.persona_id, e.created, e.updated
+			SELECT e.entity_id, e.space_id, e.path, e.data, e.actor_id, e.created, e.updated
 			FROM spaces s
 			JOIN entities e
 			ON s.directory_id=e.entity_id AND e.path=${path}
@@ -59,7 +59,7 @@ export class EntityRepo extends PostgresRepo {
 		if (entityIds.length === 0) return {entities: [], missing: null};
 		log.debug('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
-			SELECT entity_id, space_id, path, data, persona_id, created, updated 
+			SELECT entity_id, space_id, path, data, actor_id, created, updated 
 			FROM entities WHERE entity_id IN ${this.sql(entityIds)}
 			ORDER BY entity_id DESC
 		`;
@@ -72,12 +72,12 @@ export class EntityRepo extends PostgresRepo {
 
 	async filterDirectoriesByAccount(account_id: AccountId): Promise<Directory[]> {
 		const data = await this.sql<Directory[]>`
-			SELECT entity_id, data, persona_id, created, updated, space_id, path
+			SELECT entity_id, data, actor_id, created, updated, space_id, path
 			FROM entities e JOIN (
 				SELECT DISTINCT s.directory_id FROM spaces s
 				JOIN (
-					SELECT DISTINCT a.hub_id FROM personas p
-					JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
+					SELECT DISTINCT a.hub_id FROM actors p
+					JOIN assignments a ON p.actor_id=a.actor_id AND p.account_id=${account_id}
 				) c ON s.hub_id=c.hub_id
 			) es
 			ON e.entity_id=es.directory_id
@@ -130,18 +130,18 @@ export class EntityRepo extends PostgresRepo {
 		return data;
 	}
 
-	// TODO needs to handle `data.attributedTo` and other data properties containing personas,
+	// TODO needs to handle `data.attributedTo` and other data properties containing actors,
 	// if possible in the same SQL statement --
 	// if `data.attributedTo` exists, replace with `GHOST_ACTOR_ID`
 	// how? see https://www.postgresql.org/docs/current/functions-json.html
 	// `WHERE data ? 'attributedTo'`
 	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
-	async attributeToGhostByPersona(persona_id: ActorId): Promise<number> {
-		log.debug('[ghost]', persona_id);
+	async attributeToGhostByPersona(actor_id: ActorId): Promise<number> {
+		log.debug('[ghost]', actor_id);
 		const data = await this.sql<any[]>`
 			UPDATE entities
-			SET updated=NOW(), persona_id=${GHOST_ACTOR_ID}
-			WHERE persona_id=${persona_id};
+			SET updated=NOW(), actor_id=${GHOST_ACTOR_ID}
+			WHERE actor_id=${actor_id};
 		`;
 		return data.count;
 	}

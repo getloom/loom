@@ -5,7 +5,7 @@
 	import {getApp} from '$lib/ui/app';
 
 	const {
-		ui: {personas, hubs},
+		ui: {actors, hubs},
 	} = getApp();
 
 	export let name: string;
@@ -14,7 +14,7 @@
 
 	// TODO maybe add a cache of persona by name
 	$: hub = Array.from($hubs.value).find((c) => c.get().name === name);
-	$: persona = Array.from($personas.value).find((p) => p.get().name === name);
+	$: persona = Array.from($actors.value).find((p) => p.get().name === name);
 </script>
 
 <span class="mention" class:inline>

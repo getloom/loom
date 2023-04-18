@@ -22,9 +22,9 @@ test__assignmentServices('disallow creating duplicate assignments', async ({repo
 		CreateAssignmentService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.persona_id,
+				actor_id: persona.actor_id,
 				role_id: roles[0].role_id,
 			},
 		}),
@@ -39,9 +39,9 @@ test__assignmentServices(
 			CreateAssignmentService.perform({
 				...toServiceRequestMock(repos, persona),
 				params: {
-					actor: persona.persona_id,
+					actor: persona.actor_id,
 					hub_id: personalHub.hub_id,
-					actor_id: (await random.persona()).persona.persona_id,
+					actor_id: (await random.persona()).persona.actor_id,
 					role_id: personalHub.settings.defaultRoleId,
 				},
 			}),
@@ -52,13 +52,13 @@ test__assignmentServices(
 test__assignmentServices('delete an assignment in a hub', async ({repos, random}) => {
 	const {hub, persona, assignments} = await random.hub();
 	const assignment = assignments.find(
-		(a) => a.persona_id === persona.persona_id && a.hub_id === hub.hub_id,
+		(a) => a.actor_id === persona.actor_id && a.hub_id === hub.hub_id,
 	)!;
 	unwrap(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -72,7 +72,7 @@ test__assignmentServices('fail to delete a personal assignment', async ({repos, 
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, persona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -81,16 +81,16 @@ test__assignmentServices('fail to delete a personal assignment', async ({repos, 
 });
 
 test__assignmentServices('fail to delete a hub persona assignment', async ({repos, random}) => {
-	const {hub, persona, personas, assignments} = await random.hub();
-	const communityPersona = personas.find((p) => p.type === 'community') as CommunityActor;
+	const {hub, persona, actors, assignments} = await random.hub();
+	const communityPersona = actors.find((p) => p.type === 'community') as CommunityActor;
 	const assignment = assignments.find(
-		(a) => a.persona_id === communityPersona.persona_id && a.hub_id === hub.hub_id,
+		(a) => a.actor_id === communityPersona.actor_id && a.hub_id === hub.hub_id,
 	)!;
 	unwrapError(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, communityPersona),
 			params: {
-				actor: persona.persona_id,
+				actor: persona.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -103,15 +103,15 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 	const {persona: persona1} = await random.persona();
 	const {hub, assignments} = await random.hub(persona1);
 	const assignment = assignments.find(
-		(a) => a.persona_id === persona1.persona_id && a.hub_id === hub.hub_id,
+		(a) => a.actor_id === persona1.actor_id && a.hub_id === hub.hub_id,
 	)!;
 	const {persona: persona2} = await random.persona();
 	const {assignment: assignment2} = unwrap(
 		await CreateAssignmentService.perform({
 			...toServiceRequestMock(repos, persona1),
 			params: {
-				actor: persona1.persona_id,
-				actor_id: persona2.persona_id,
+				actor: persona1.actor_id,
+				actor_id: persona2.actor_id,
 				hub_id: hub.hub_id,
 				role_id: hub.settings.defaultRoleId,
 			},
@@ -124,7 +124,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, persona1),
 			params: {
-				actor: persona1.persona_id,
+				actor: persona1.actor_id,
 				assignment_id: assignment2.assignment_id,
 			},
 		}),
@@ -137,7 +137,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, persona1),
 			params: {
-				actor: persona1.persona_id,
+				actor: persona1.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),

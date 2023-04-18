@@ -28,7 +28,7 @@
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
 		const result = await actions.ReadEntitiesPaginated({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			source_id: $space.directory_id,
 		});
 		if (result.ok) {
@@ -41,7 +41,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.persona_id,
+				actor: $persona.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;

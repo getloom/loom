@@ -27,7 +27,7 @@ test__spaceServices('delete a space in multiple hubs', async ({repos, random}) =
 	unwrap(
 		await DeleteSpaceService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, space_id: space.space_id},
+			params: {actor: persona.actor_id, space_id: space.space_id},
 		}),
 	);
 

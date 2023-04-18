@@ -9,7 +9,6 @@
 	import {getApp} from '$lib/ui/app';
 	import {toHubUrl} from '$lib/ui/url';
 	import {toAppSearchParams} from '$lib/app/url';
-
 	import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 
 	const {
@@ -29,7 +28,7 @@
 	const create = async () => {
 		name = scrubActorName(name);
 		if (!name) {
-			errorMessage = 'please enter a name for your new persona';
+			errorMessage = 'please enter a name for your new actor';
 			nameEl.focus();
 			return;
 		}
@@ -50,7 +49,7 @@
 					result.value.hubs[0].name,
 					null,
 					toAppSearchParams(
-						$sessionActorIndexById.get(result.value.personas[0].persona_id) + '',
+						$sessionActorIndexById.get(result.value.actors[0].actor_id) + '',
 						$page.url.searchParams,
 					),
 				),
@@ -73,7 +72,7 @@
 maybe `form.centered` should be interpreted a particular way in Felt? -->
 <div class="markup padded-xl centered">
 	<form class="centered" {...$$restProps}>
-		<h2>Create a new Persona</h2>
+		<h2>Create a new Actor</h2>
 		<fieldset class="centered">
 			<label>
 				<div class="title">name</div>
@@ -89,8 +88,8 @@ maybe `form.centered` should be interpreted a particular way in Felt? -->
 			{#if errorMessage}
 				<Message status="error">{errorMessage}</Message>
 			{/if}
-			<PendingButton on:click={create} pending={status === 'pending'}>create persona</PendingButton>
+			<PendingButton on:click={create} pending={status === 'pending'}>create actor</PendingButton>
 		</fieldset>
-		<Message icon="‼">your persona names are visible to people in the hubs you join</Message>
+		<Message icon="‼">your actor names are visible to people in the hubs you join</Message>
 	</form>
 </div>

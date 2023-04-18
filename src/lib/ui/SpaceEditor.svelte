@@ -26,14 +26,14 @@
 
 	const updateSpace = async (updated: any, field: string) =>
 		actions.UpdateSpace({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 			[field]: updated,
 		});
 
 	const updateDirectoryPath = async (updated: any) =>
 		actions.UpdateEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entities: [
 				{
 					entity_id: $directory.entity_id,

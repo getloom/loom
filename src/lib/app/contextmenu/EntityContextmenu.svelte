@@ -41,7 +41,7 @@
 						props: {
 							confirmed: () =>
 								actions.EraseEntities({
-									actor: $persona.persona_id,
+									actor: $persona.actor_id,
 									entityIds: [$entity.entity_id],
 								}),
 							promptText: 'Erase this entity? This cannot be reversed.',
@@ -58,7 +58,7 @@
 					Component: ConfirmDialog,
 					props: {
 						confirmed: () =>
-							actions.DeleteEntities({actor: $persona.persona_id, entityIds: [$entity.entity_id]}),
+							actions.DeleteEntities({actor: $persona.actor_id, entityIds: [$entity.entity_id]}),
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',
 					},

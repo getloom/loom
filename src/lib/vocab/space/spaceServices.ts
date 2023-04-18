@@ -37,7 +37,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	action: CreateSpace,
 	transaction: true,
 	// TODO security: verify the `account_id` has permission to modify this space
-	// TODO verify `params.persona_id` is  one of the `account_id`'s personas
+	// TODO verify `params.actor_id` is  one of the `account_id`'s actors
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
 

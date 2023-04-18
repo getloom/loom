@@ -14,7 +14,7 @@
 
 	const updateHubSettings = async (updated: any) =>
 		actions.UpdateHubSettings({
-			actor: $actor.persona_id,
+			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			settings: updated,
 		});

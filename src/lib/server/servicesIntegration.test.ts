@@ -45,9 +45,9 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 		await CreateAssignmentService.perform({
 			...toServiceRequestMock(repos, persona1), // add `persona2` with `persona1`
 			params: {
-				actor: persona1.persona_id,
+				actor: persona1.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona2.persona_id,
+				actor_id: persona2.actor_id,
 				role_id: hub.settings.defaultRoleId,
 			},
 		}),
@@ -56,7 +56,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	// create a space
 	const {space} = await random.space(persona1, account, hub);
 	const spaceCount = 1;
-	const defaultSpaces = toDefaultSpaces(persona1.persona_id, hub);
+	const defaultSpaces = toDefaultSpaces(persona1.actor_id, hub);
 	const defaultSpaceCount = defaultSpaces.length;
 
 	// create some entities
@@ -73,7 +73,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	const {entities: filteredEntities} = unwrap(
 		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.persona_id, source_id: space.directory_id},
+			params: {actor: persona2.actor_id, source_id: space.directory_id},
 		}),
 	);
 	assert.equal(filteredEntities.slice(), [entity2, entity1]); // `slice` because `RowList` is not deep equal to arrays
@@ -81,7 +81,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
 			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.persona_id, hub_id: hub.hub_id},
+			params: {actor: persona2.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 	assert.is(filteredSpaces.length, spaceCount + defaultSpaceCount);
@@ -89,17 +89,17 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	const {hub: foundHub} = unwrap(
 		await ReadHubService.perform({
 			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.persona_id, hub_id: hub.hub_id},
+			params: {actor: persona2.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 	assert.is(foundHub.name, hub.name);
 
 	assert.is((await repos.hub.filterByAccount(persona2.account_id)).length, 3);
-	assert.is((await repos.hub.filterByPersona(persona2.persona_id)).length, 2);
+	assert.is((await repos.hub.filterByPersona(persona2.actor_id)).length, 2);
 
 	// TODO add a service event?
 	assert.equal(
-		(await repos.persona.filterByAccount(account.account_id))
+		(await repos.actor.filterByAccount(account.account_id))
 			.sort((a, b) => (a.created < b.created ? -1 : 1))
 			.slice(), // `slice` because `RowList` is not deep equal to arrays
 		[persona1, persona2],
@@ -127,7 +127,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
 					...toServiceRequestMock(repos, persona2),
-					params: {actor: persona1.persona_id, space_id: space.space_id},
+					params: {actor: persona1.actor_id, space_id: space.space_id},
 				}),
 			);
 		}
@@ -140,7 +140,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, persona2),
 			params: {
-				actor: persona1.persona_id,
+				actor: persona1.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -154,17 +154,17 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	unwrap(
 		await DeleteHubService.perform({
 			...toServiceRequestMock(repos, persona1),
-			params: {actor: persona1.persona_id, hub_id: hub.hub_id},
+			params: {actor: persona1.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 	const readHubResult = await ReadHubService.perform({
 		...toServiceRequestMock(repos, persona1),
-		params: {actor: persona1.persona_id, hub_id: hub.hub_id},
+		params: {actor: persona1.actor_id, hub_id: hub.hub_id},
 	});
 	assert.is(readHubResult.status, 404);
 	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 0);
 
-	// TODO delete personas here
+	// TODO delete actors here
 
 	// TODO delete accounts here
 

@@ -11,7 +11,7 @@
 	export let hue: number | undefined = undefined;
 	export let showName = true;
 	export let showIcon = true;
-	export let type: EntityType = 'Persona';
+	export let type: EntityType = 'Actor';
 	export let contextmenuAction: ContextmenuItems | null = null;
 	export let inline = false;
 

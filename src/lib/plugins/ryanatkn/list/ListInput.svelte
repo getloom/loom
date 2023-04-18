@@ -25,7 +25,7 @@
 
 		//TODO better error handling
 		await actions.CreateEntity({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties: [{source_id: $list.entity_id}],

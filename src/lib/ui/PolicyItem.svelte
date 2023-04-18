@@ -24,12 +24,12 @@
 		pending = true;
 		if (policy) {
 			await actions.DeletePolicy({
-				actor: $actor.persona_id,
+				actor: $actor.actor_id,
 				policy_id: $policy!.policy_id,
 			});
 		} else {
 			await actions.CreatePolicy({
-				actor: $actor.persona_id,
+				actor: $actor.actor_id,
 				role_id: $role.role_id,
 				permission,
 			});

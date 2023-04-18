@@ -38,7 +38,7 @@
 	};
 	const getValue = (key: string): any => {
 		if (key === 'actor') {
-			return $persona.persona_id;
+			return $persona.actor_id;
 		}
 		return undefined;
 	};
@@ -50,7 +50,7 @@
 	{#each paramsPropertiesKeys as key (key)}
 		<div class="field" style:--icon_size="var(--icon_size_sm)">
 			{#if key === 'actor'}
-				<!-- TODO select any of the account's personas from here easily -->
+				<!-- TODO select any of the account's actors from here easily -->
 				<div class="title">actor</div>
 				<ActorAvatar {persona} />
 			{:else}

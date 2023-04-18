@@ -10,7 +10,7 @@ const log = new Logger(gray('[') + blue('entityHelpers.server') + gray(']'));
 export type EntityColumn = keyof Entity;
 export const ENTITY_COLUMNS = {
 	EntityId: ['entity_id'],
-	Entity: ['entity_id', 'space_id', 'path', 'data', 'persona_id', 'created', 'updated'],
+	Entity: ['entity_id', 'space_id', 'path', 'data', 'actor_id', 'created', 'updated'],
 } satisfies Record<string, EntityColumn[]>;
 
 export const cleanOrphanedEntities = async (repos: Repos): Promise<void> => {

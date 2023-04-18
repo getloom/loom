@@ -10,9 +10,9 @@ import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 export const ReadHub: Mutations['ReadHub'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {hub, spaces, directories, roles, assignments, personas} = result.value;
+	const {hub, spaces, directories, roles, assignments, actors} = result.value;
 	ui.mutate(() => {
-		stashActors(ui, personas);
+		stashActors(ui, actors);
 		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
 		stashRoles(ui, roles);
@@ -24,9 +24,9 @@ export const ReadHub: Mutations['ReadHub'] = async ({invoke, ui}) => {
 export const CreateHub: Mutations['CreateHub'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	const {hub, roles, policies, spaces, directories, assignments, personas} = result.value;
+	const {hub, roles, policies, spaces, directories, assignments, actors} = result.value;
 	ui.mutate(() => {
-		stashActors(ui, personas);
+		stashActors(ui, actors);
 		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
 		stashAssignments(ui, assignments);
@@ -67,9 +67,9 @@ export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 
-	const {assignment, persona} = result.value;
+	const {assignment, actor} = result.value;
 	ui.mutate(() => {
-		stashActors(ui, [persona]);
+		stashActors(ui, [actor]);
 		stashAssignments(ui, [assignment]);
 	});
 
@@ -84,7 +84,7 @@ export const LeaveHub: Mutations['LeaveHub'] = async ({params, invoke, ui}) => {
 	const assignmentsToEvict: Assignment[] = [];
 	// TODO could speed this up a cache of assignments by hub, see in multiple places
 	for (const assignment of ui.assignments.get().value) {
-		if (assignment.persona_id === actor_id && assignment.hub_id === hub_id) {
+		if (assignment.actor_id === actor_id && assignment.hub_id === hub_id) {
 			assignmentsToEvict.push(assignment);
 		}
 	}
@@ -101,7 +101,7 @@ export const KickFromHub: Mutations['KickFromHub'] = async ({params, invoke, ui}
 	const assignmentsToEvict: Assignment[] = [];
 	// TODO could speed this up a cache of assignments by hub, see in multiple places
 	for (const assignment of ui.assignments.get().value) {
-		if (assignment.persona_id === actor_id && assignment.hub_id === hub_id) {
+		if (assignment.actor_id === actor_id && assignment.hub_id === hub_id) {
 			assignmentsToEvict.push(assignment);
 		}
 	}

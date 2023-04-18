@@ -17,7 +17,7 @@ test__authorize("authorizes an account's persona", async ({repos, random}) => {
 	const {persona, account} = await random.persona();
 	unwrap(
 		await authorize(MockAuthorizedService, repos, account.account_id, {
-			actor: persona.persona_id,
+			actor: persona.actor_id,
 			name: 'test_authorize_success',
 		}),
 	);
@@ -28,7 +28,7 @@ test__authorize('actor cannot be impersonated', async ({repos, random}) => {
 	const {persona} = await random.persona();
 	unwrapError(
 		await authorize(MockAuthorizedService, repos, account.account_id, {
-			actor: persona.persona_id,
+			actor: persona.actor_id,
 			name: 'test_authorize_failure',
 		}),
 	);

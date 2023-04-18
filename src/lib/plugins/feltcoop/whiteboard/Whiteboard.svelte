@@ -25,7 +25,7 @@
 
 	const brodcastAction = (action: WhiteboardAction): void => {
 		void actions.Ephemera({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 			data: action as any, // TODO type
 		});
@@ -38,7 +38,7 @@
 			if (
 				v && // there may be no ephemera
 				v.space_id === $space.space_id && // scope to this space
-				v.actor !== $persona.persona_id // don't forward ephemera created by the user
+				v.actor !== $persona.actor_id // don't forward ephemera created by the user
 			) {
 				handleAction(v.data as any); // don't forward the space_id
 			}

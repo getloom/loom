@@ -25,12 +25,12 @@
 
 	export let persona: Readable<AccountActor>;
 
-	$: hubId = $hubIdSelectionByActorId.value.get($persona.persona_id) || $persona.hub_id;
+	$: hubId = $hubIdSelectionByActorId.value.get($persona.actor_id) || $persona.hub_id;
 	$: hub = hubById.get(hubId)!;
 	$: spaceIdSelection = $spaceIdSelectionByHubId.value.get($hub.hub_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
 	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
-	$: personaIndex = $sessionActorIndexById.get($persona.persona_id)!;
+	$: personaIndex = $sessionActorIndexById.get($persona.actor_id)!;
 </script>
 
 {#if $actorSelection === persona}

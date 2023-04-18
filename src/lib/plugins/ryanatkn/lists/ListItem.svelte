@@ -39,7 +39,7 @@
 
 	$: ({checked} = $entity.data);
 
-	$: authorActor = lookupActor(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);
@@ -50,7 +50,7 @@
 		if ($entity.data.checked === checked) return;
 		pending = true;
 		await actions.UpdateEntities({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, checked}}],
 		});
 		pending = false;
@@ -75,7 +75,7 @@
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
-And then ActorContextmenu would be only for *session* personas? `SessionActorContextmenu` -->
+And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <li
 	transition:slide|local

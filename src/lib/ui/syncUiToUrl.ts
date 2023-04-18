@@ -19,7 +19,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 
 	const {
 		hubs,
-		personaIndexSelection,
+		actorIndexSelection,
 		hubSelection,
 		spacesByHubId,
 		spaceIdSelectionByHubId,
@@ -44,8 +44,8 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 				return; // exit early; this function re-runs from the `goto` call with the updated `$page`
 			}
 		}
-	} else if (personaIndex !== personaIndexSelection.get()) {
-		selectPersona(ui, persona.get().persona_id);
+	} else if (personaIndex !== actorIndexSelection.get()) {
+		selectPersona(ui, persona.get().actor_id);
 	} // else already selected
 
 	// TODO speed this up with a map of hubByName
@@ -80,19 +80,16 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 	}
 };
 
-const selectPersona = ({personaIdSelection}: Ui, persona_id: ActorId): void => {
+const selectPersona = ({actorIdSelection}: Ui, actor_id: ActorId): void => {
 	// TODO could remove this typecase if `syncUiToUrl` is changed to be an event
-	(personaIdSelection as Writable<ActorId | null>).set(persona_id);
+	(actorIdSelection as Writable<ActorId | null>).set(actor_id);
 };
 
-const selectHub = (
-	{personaIdSelection, hubIdSelectionByActorId}: Ui,
-	hub_id: HubId | null,
-): void => {
-	const $personaIdSelection = personaIdSelection.get();
-	if ($personaIdSelection) {
+const selectHub = ({actorIdSelection, hubIdSelectionByActorId}: Ui, hub_id: HubId | null): void => {
+	const $actorIdSelection = actorIdSelection.get();
+	if ($actorIdSelection) {
 		hubIdSelectionByActorId.mutate(($c) => {
-			$c.set($personaIdSelection, hub_id);
+			$c.set($actorIdSelection, hub_id);
 		});
 	}
 };

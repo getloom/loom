@@ -9,7 +9,7 @@
 	import SocketConnectionControls from '$lib/ui/SocketConnectionControls.svelte';
 
 	const {
-		ui: {expandMarquee, personasByHubId},
+		ui: {expandMarquee, actorsByHubId},
 		socket,
 		devmode,
 	} = getApp();
@@ -17,7 +17,7 @@
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space> | null;
 
-	$: communityActors = $personasByHubId.get($hub.hub_id);
+	$: communityActors = $actorsByHubId.get($hub.hub_id);
 </script>
 
 {#if communityActors}

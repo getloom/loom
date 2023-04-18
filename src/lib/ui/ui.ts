@@ -64,7 +64,7 @@ export interface Ui {
 
 	// db state and caches
 	account: Readable<ClientAccount | null>;
-	personas: Mutable<Set<Readable<ClientActor>>>;
+	actors: Mutable<Set<Readable<ClientActor>>>;
 	session: Readable<ClientSession>;
 	sessionActors: Mutable<Array<Readable<AccountActor>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
 	sessionActorIndexById: Readable<Map<ActorId, number>>;
@@ -84,7 +84,7 @@ export interface Ui {
 	// derived state
 	//TODO maybe refactor to remove store around map? Like personaById
 	spacesByHubId: Readable<Map<HubId, Array<Readable<Space>>>>;
-	personasByHubId: Readable<Map<HubId, Array<Readable<ClientActor>>>>;
+	actorsByHubId: Readable<Map<HubId, Array<Readable<ClientActor>>>>;
 	rolesByHubId: Readable<Map<HubId, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<RoleId, Assignment[]>>;
 	policiesByRoleId: Readable<Map<RoleId, Map<string, Readable<Policy>>>>;
@@ -104,9 +104,9 @@ export interface Ui {
 	dialogs: Readable<DialogData[]>;
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the hub
 	ephemera: Readable<EphemeraResponse | null>;
-	personaIdSelection: Readable<ActorId | null>;
+	actorIdSelection: Readable<ActorId | null>;
 	actorSelection: Readable<Readable<AccountActor> | null>;
-	personaIndexSelection: Readable<number | null>;
+	actorIndexSelection: Readable<number | null>;
 	hubIdSelectionByActorId: Mutable<Map<ActorId, HubId | null>>;
 	hubSelection: Readable<Readable<Hub> | null>;
 	spaceIdSelectionByHubId: Mutable<Map<HubId, SpaceId | null>>;
@@ -152,7 +152,7 @@ export const toUi = (
 	// not when the items themselves change; each item is a store that can be subscribed to.
 	// TODO these `Persona`s need additional data compared to every other `Persona`
 	const sessionActors = mutable<Array<Writable<AccountActor>>>([]);
-	const personas = mutable<Set<Writable<ClientActor>>>(new Set());
+	const actors = mutable<Set<Writable<ClientActor>>>(new Set());
 	const hubs = mutable<Set<Writable<Hub>>>(new Set());
 	const roles = mutable<Set<Writable<Role>>>(new Set());
 	const spaces = mutable<Set<Writable<Space>>>(new Set());
@@ -195,7 +195,7 @@ export const toUi = (
 		},
 	);
 
-	const personasByHubId: Readable<Map<HubId, Array<Writable<ClientActor>>>> = derived(
+	const actorsByHubId: Readable<Map<HubId, Array<Writable<ClientActor>>>> = derived(
 		[hubs, assignments],
 		([$hubs, $assignments]) => {
 			const map: Map<HubId, Array<Writable<ClientActor>>> = new Map();
@@ -204,7 +204,7 @@ export const toUi = (
 				const {hub_id} = hub.get();
 				for (const assignment of $assignments.value) {
 					if (assignment.hub_id === hub_id) {
-						const persona = personaById.get(assignment.persona_id);
+						const persona = personaById.get(assignment.actor_id);
 						if (!persona) continue;
 						if (persona.get().type !== 'account') continue;
 						communityActors.add(persona);
@@ -270,21 +270,20 @@ export const toUi = (
 		},
 	);
 
-	const personaIdSelection = writable<ActorId | null>(null);
+	const actorIdSelection = writable<ActorId | null>(null);
 	const actorSelection = derived(
-		[personaIdSelection],
-		([$personaIdSelection]) =>
-			($personaIdSelection && (personaById.get($personaIdSelection) as Writable<AccountActor>)) ||
-			null,
+		[actorIdSelection],
+		([$actorIdSelection]) =>
+			($actorIdSelection && (personaById.get($actorIdSelection) as Writable<AccountActor>)) || null,
 	);
-	const personaIndexSelection = derived(
+	const actorIndexSelection = derived(
 		[actorSelection, sessionActors],
 		([$actorSelection, $sessionActors]) =>
 			$actorSelection ? $sessionActors.value.indexOf($actorSelection) : null,
 	);
 	const sessionActorIndexById = derived(
 		[sessionActors],
-		([$sessionActors]) => new Map($sessionActors.value.map((p, i) => [p.get().persona_id, i])),
+		([$sessionActors]) => new Map($sessionActors.value.map((p, i) => [p.get().actor_id, i])),
 	);
 	const hubsBySessionPersona: Readable<Map<Writable<AccountActor>, Array<Writable<Hub>>>> = derived(
 		[sessionActors, assignments, hubs],
@@ -298,7 +297,7 @@ export const toUi = (
 					for (const assignment of $assignments.value) {
 						if (
 							assignment.hub_id === $hub.hub_id &&
-							assignment.persona_id === $sessionActor.persona_id
+							assignment.actor_id === $sessionActor.actor_id
 						) {
 							sessionActorHubs.push(hub);
 							break;
@@ -313,10 +312,10 @@ export const toUi = (
 	// TODO should these be store references instead of ids?
 	const hubIdSelectionByActorId = mutable<Map<ActorId, HubId | null>>(new Map());
 	const hubSelection = derived(
-		[personaIdSelection, hubIdSelectionByActorId],
-		([$personaIdSelection, $hubIdSelectionByActorId]) =>
-			$personaIdSelection
-				? hubById.get($hubIdSelectionByActorId.value.get($personaIdSelection)!)!
+		[actorIdSelection, hubIdSelectionByActorId],
+		([$actorIdSelection, $hubIdSelectionByActorId]) =>
+			$actorIdSelection
+				? hubById.get($hubIdSelectionByActorId.value.get($actorIdSelection)!)!
 				: null,
 	);
 	// TODO consider making this the space store so we don't have to chase id references
@@ -343,11 +342,11 @@ export const toUi = (
 	const freshnessByDirectoryId: Map<EntityId, Readable<boolean>> = new Map();
 	const freshnessByHubId: Map<HubId, Writable<boolean>> = new Map();
 
-	// TODO optimization: ideally this would recalculate only when the admin hub's personas change, not when any assignment changes
-	// TODO consider making the value of `personasByHubId` a set instead of array, then this could be simplified
+	// TODO optimization: ideally this would recalculate only when the admin hub's actors change, not when any assignment changes
+	// TODO consider making the value of `actorsByHubId` a set instead of array, then this could be simplified
 	const adminActors = derived(
-		[personasByHubId],
-		([$personasByHubId]) => new Set($personasByHubId.get(ADMIN_HUB_ID)),
+		[actorsByHubId],
+		([$actorsByHubId]) => new Set($actorsByHubId.get(ADMIN_HUB_ID)),
 	);
 
 	const mobile = writable(initialMobile);
@@ -367,7 +366,7 @@ export const toUi = (
 		components,
 		// db data
 		account,
-		personas,
+		actors,
 		roles,
 		session,
 		sessionActors,
@@ -386,7 +385,7 @@ export const toUi = (
 		tieById,
 		// derived state
 		spacesByHubId,
-		personasByHubId,
+		actorsByHubId,
 		rolesByHubId,
 		assignmentsByRoleId,
 		policiesByRoleId,
@@ -406,9 +405,9 @@ export const toUi = (
 		dialogs,
 		viewBySpace,
 		ephemera,
-		personaIdSelection,
+		actorIdSelection,
 		actorSelection,
-		personaIndexSelection,
+		actorIndexSelection,
 		hubIdSelectionByActorId,
 		hubSelection,
 		spaceIdSelectionByHubId,

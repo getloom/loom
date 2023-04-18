@@ -74,7 +74,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 					params: {name: actorName},
 				}),
 			);
-			const actor = created.personas[0] as AccountActor;
+			const actor = created.actors[0] as AccountActor;
 			log.debug('created persona', actor);
 			actors.push(actor);
 			await createDefaultEntities(
@@ -97,7 +97,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			await CreateHubService.perform({
 				...toMainAccountServiceRequest(),
 				params: {
-					actor: mainActorCreator.persona_id,
+					actor: mainActorCreator.actor_id,
 					template: hubTemplate,
 				},
 			}),
@@ -108,8 +108,8 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				await CreateAssignmentService.perform({
 					...toMainAccountServiceRequest(),
 					params: {
-						actor: mainActorCreator.persona_id,
-						actor_id: actor.persona_id,
+						actor: mainActorCreator.actor_id,
+						actor_id: actor.actor_id,
 						hub_id: hub.hub_id,
 						role_id: hub.settings.defaultRoleId,
 					},
@@ -158,7 +158,7 @@ const generateEntity = async (
 			...ctx.toServiceRequest(),
 			actor,
 			params: {
-				actor: actor.persona_id,
+				actor: actor.actor_id,
 				space_id: ctx.space.space_id,
 				data: typeof data === 'string' ? {type: 'Note', content: data} : data,
 				ties: [{source_id}],
@@ -289,7 +289,7 @@ const createMuchSpaces = async (
 				...toServiceRequest(),
 				actor,
 				params: {
-					actor: actor.persona_id,
+					actor: actor.actor_id,
 					hub_id: hub.hub_id,
 					name,
 					path: '/' + name,

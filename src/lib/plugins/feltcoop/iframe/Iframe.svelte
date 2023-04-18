@@ -24,7 +24,7 @@
 				postMessage && // wait for init
 				v && // there may be no ephemera
 				v.space_id === $space.space_id && // scope to this space
-				v.actor !== $persona.persona_id // don't forward ephemera created by the user
+				v.actor !== $persona.actor_id // don't forward ephemera created by the user
 			) {
 				// TODO forward `actor: v.actor` if user allows it
 				postMessage({type: 'Ephemera', data: v.data}); // don't forward the space_id
@@ -60,7 +60,7 @@
 				// TODO validate automatically
 				const data = e.detail.params;
 				if (!data) return;
-				void actions.Ephemera({actor: $persona.persona_id, space_id: $space.space_id, data});
+				void actions.Ephemera({actor: $persona.actor_id, space_id: $space.space_id, data});
 			}
 		}}
 	/>

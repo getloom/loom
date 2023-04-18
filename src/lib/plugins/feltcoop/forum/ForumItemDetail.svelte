@@ -32,7 +32,7 @@
 		return acc;
 	}, [] as Array<Readable<Entity>>);
 
-	$: authorActor = lookupActor(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);
@@ -52,7 +52,7 @@
 
 		//TODO better error handling
 		await actions.CreateEntity({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties: [{source_id: $entity.entity_id}],
@@ -71,7 +71,7 @@
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
-And then ActorContextmenu would be only for *session* personas? `SessionActorContextmenu` -->
+And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
 {#if renderEntity($entity)}
 	<li
 		style="--hue: {hue}"

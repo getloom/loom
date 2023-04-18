@@ -75,7 +75,7 @@ export interface ClientAccountSession {
 	directories: Array<Entity & {data: EntityData}>;
 	assignments: Assignment[];
 	policies: Policy[];
-	personas: ClientActor[];
+	actors: ClientActor[];
 	guest?: false;
 }
 /**

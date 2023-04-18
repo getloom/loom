@@ -66,7 +66,7 @@ export const checkEntityOwnership = async (
 	}
 
 	const spaceIds = new Set(
-		entities.map((e) => (e.persona_id === actor_id ? null! : e.space_id)).filter(Boolean),
+		entities.map((e) => (e.actor_id === actor_id ? null! : e.space_id)).filter(Boolean),
 	);
 
 	for (const space_id of spaceIds) {

@@ -19,7 +19,7 @@ test_roleServices('unable to delete default roles in communites', async ({repos,
 	unwrapError(
 		await DeleteRoleService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, role_id: hub.settings.defaultRoleId},
+			params: {actor: persona.actor_id, role_id: hub.settings.defaultRoleId},
 		}),
 		'deleting the default role is not allowed',
 	);
@@ -27,7 +27,7 @@ test_roleServices('unable to delete default roles in communites', async ({repos,
 	unwrap(
 		await DeleteRoleService.perform({
 			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.persona_id, role_id: secondRole.role_id},
+			params: {actor: persona.actor_id, role_id: secondRole.role_id},
 		}),
 		'delete a non-default role',
 	);

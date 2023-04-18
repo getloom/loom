@@ -46,8 +46,8 @@ export class HubRepo extends PostgresRepo {
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated							
 			FROM hubs c JOIN (
-				SELECT DISTINCT a.hub_id FROM personas p
-				JOIN assignments a ON p.persona_id=a.persona_id AND p.account_id=${account_id}
+				SELECT DISTINCT a.hub_id FROM actors p
+				JOIN assignments a ON p.actor_id=a.actor_id AND p.account_id=${account_id}
 			) apc
 			ON c.hub_id=apc.hub_id;
 		`;
@@ -55,12 +55,12 @@ export class HubRepo extends PostgresRepo {
 		return data;
 	}
 
-	async filterByPersona(persona_id: ActorId): Promise<Hub[]> {
+	async filterByPersona(actor_id: ActorId): Promise<Hub[]> {
 		const data = await this.sql<Hub[]>`
 			SELECT c.hub_id, c.type, c.name, c.settings, c.created, c.updated
 			FROM hubs c JOIN (
 				SELECT DISTINCT hub_id FROM assignments
-				WHERE persona_id=${persona_id}
+				WHERE actor_id=${actor_id}
 			) ac
 			ON c.hub_id=ac.hub_id;
 		`;

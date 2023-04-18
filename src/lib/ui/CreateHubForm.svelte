@@ -55,7 +55,7 @@
 		pending = true;
 		errorMessage = null;
 		const result = await actions.CreateHub({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			template: {name, settings: {hue}},
 		});
 		pending = false;
@@ -67,7 +67,7 @@
 					result.value.hub.name,
 					null,
 					toAppSearchParams(
-						$sessionActorIndexById.get($persona.persona_id) + '',
+						$sessionActorIndexById.get($persona.actor_id) + '',
 						$page.url.searchParams,
 					),
 				),

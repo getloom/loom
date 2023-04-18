@@ -26,7 +26,7 @@
 
 	$: query = shouldLoadEntities
 		? createPaginatedQuery(ui, actions, {
-				actor: $persona.persona_id,
+				actor: $persona.actor_id,
 				source_id: $space.directory_id,
 				related: 'dest',
 		  })
@@ -45,7 +45,7 @@
 
 		if (!content) return;
 		await actions.CreateEntity({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties,
@@ -59,7 +59,7 @@
 	};
 
 	let selectedReply: Readable<Entity> | null = null as any;
-	$: selectedReplyPersona = $selectedReply && lookupActor(personaById, $selectedReply.persona_id);
+	$: selectedReplyPersona = $selectedReply && lookupActor(personaById, $selectedReply.actor_id);
 	const selectReply = (reply: Readable<Entity>) => {
 		if (selectedReply === reply) {
 			selectedReply = null;
@@ -80,7 +80,7 @@
 		if (!entityIdsToQuery) return;
 		const localEntityIdsToQuery = entityIdsToQuery.slice();
 		await actions.ReadEntitiesById({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			entityIds: localEntityIdsToQuery.map((e) => e.entity_id),
 		});
 		for (const {entity_id, cb} of localEntityIdsToQuery) {

@@ -31,7 +31,7 @@
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
 		const result = await actions.ReadEntitiesPaginated({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			source_id: $entity.entity_id,
 		});
 		if (result.ok) {

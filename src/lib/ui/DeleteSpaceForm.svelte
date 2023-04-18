@@ -25,7 +25,7 @@
 		pending = true;
 		errorMessage = '';
 		const result = await actions.DeleteSpace({
-			actor: $persona.persona_id,
+			actor: $persona.actor_id,
 			space_id: $space.space_id,
 		});
 		if (result.ok) {

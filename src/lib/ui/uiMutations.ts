@@ -40,7 +40,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	const {
 		session,
 		account,
-		personaIdSelection,
+		actorIdSelection,
 		hubIdSelectionByActorId,
 		spaceIdSelectionByHubId,
 		entityById,
@@ -70,14 +70,14 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		stashSpaces(ui, guest ? [] : $session.spaces, undefined, true);
 	});
 
-	personaIdSelection.set(guest ? null : $session.sessionActors[0]?.persona_id ?? null);
+	actorIdSelection.set(guest ? null : $session.sessionActors[0]?.actor_id ?? null);
 
 	// TODO these two selections are hacky because using the derived stores
 	// was causing various confusing issues, so they find stuff directly on the session objects
 	// instead of using derived stores like `sessionActors` and `spacesByHubId`.
 	hubIdSelectionByActorId.swap(
 		// TODO first try to load this from localStorage
-		new Map(guest ? null : $session.sessionActors.map(($p) => [$p.persona_id, $p.hub_id!])),
+		new Map(guest ? null : $session.sessionActors.map(($p) => [$p.actor_id, $p.hub_id!])),
 	);
 	spaceIdSelectionByHubId.swap(
 		//TODO lookup space by hub_id+path (see this comment in multiple places)
@@ -109,20 +109,20 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 	if (!guest) stashEntities(ui, $session.directories);
 };
 
-// TODO This is a hack until we figure out how to handle "session personas" differently from the rest.
-// The issue is that the "session personas" have private fields populated
-// but we don't treat them separately from regular personas when using them,
-// so as a hack we swap the session personas in for the regular personas,
+// TODO This is a hack until we figure out how to handle "session actors" differently from the rest.
+// The issue is that the "session actors" have private fields populated
+// but we don't treat them separately from regular actors when using them,
+// so as a hack we swap the session actors in for the regular actors,
 // but these probably need to be split into two separate collections.
-// Any code that needs session personas given a regular persona could do a lookup,
+// Any code that needs session actors given a regular persona could do a lookup,
 // but otherwise we'd be passing around the `Persona` objects in most cases.
 // This would make things typesafe as well.
 const toInitialActors = (session: ClientSession): ClientActor[] =>
 	session.guest
 		? []
 		: (session.sessionActors as ClientActor[]).concat(
-				session.personas.filter(
-					(p1) => !session.sessionActors.find((p2) => p2.persona_id === p1.persona_id),
+				session.actors.filter(
+					(p1) => !session.sessionActors.find((p2) => p2.actor_id === p1.actor_id),
 				),
 		  );
 

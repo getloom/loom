@@ -60,8 +60,8 @@ export function toServiceRequestMock(
 
 export const loadAdminPersona = async (repos: Repos): Promise<AccountActor> => {
 	const assignments = await repos.assignment.filterByHub(ADMIN_HUB_ID);
-	const nonAdminAssignments = assignments.filter((p) => p.persona_id !== ADMIN_ACTOR_ID);
-	return repos.persona.findById(nonAdminAssignments[0].persona_id) as Promise<AccountActor>;
+	const nonAdminAssignments = assignments.filter((p) => p.actor_id !== ADMIN_ACTOR_ID);
+	return repos.actor.findById(nonAdminAssignments[0].actor_id) as Promise<AccountActor>;
 };
 
 export const expectApiError = async (status: number, cb: () => Promise<any>): Promise<void> => {

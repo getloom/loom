@@ -16,7 +16,7 @@
 	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
-	$: authorActor = lookupActor(personaById, $entity.persona_id);
+	$: authorActor = lookupActor(personaById, $entity.actor_id);
 </script>
 
 <li

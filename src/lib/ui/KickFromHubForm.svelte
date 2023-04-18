@@ -12,10 +12,10 @@
 	export let hub: Readable<Hub>;
 
 	const {
-		ui: {personasByHubId},
+		ui: {actorsByHubId},
 	} = getApp();
 
-	$: communityActors = $personasByHubId.get($hub.hub_id);
+	$: communityActors = $actorsByHubId.get($hub.hub_id);
 </script>
 
 <div class="markup padded-xl">

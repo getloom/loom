@@ -4,9 +4,9 @@ import type {Actor, ActorId} from '$lib/vocab/actor/actor';
 
 export type ActorColumn = keyof Actor;
 export const ACTOR_COLUMNS = {
-	Persona: ['persona_id', 'type', 'name', 'account_id', 'hub_id', 'created', 'updated'],
-	PublicActor: ['persona_id', 'type', 'name', 'created'],
-	ActorId: ['persona_id'],
+	Actor: ['actor_id', 'type', 'name', 'account_id', 'hub_id', 'created', 'updated'],
+	PublicActor: ['actor_id', 'type', 'name', 'created'],
+	ActorId: ['actor_id'],
 	TypeAndHub: ['type', 'hub_id'],
 } satisfies Record<string, ActorColumn[]>;
 

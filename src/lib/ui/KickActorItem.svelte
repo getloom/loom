@@ -18,8 +18,8 @@
 	const kickActorFromHub = async () => {
 		kickPending = true;
 		await actions.KickFromHub({
-			actor: $persona.persona_id,
-			actor_id: $communityActor.persona_id,
+			actor: $persona.actor_id,
+			actor_id: $communityActor.actor_id,
 			hub_id: $hub.hub_id,
 		});
 		kickPending = false;

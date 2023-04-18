@@ -12,7 +12,7 @@ import type {Flavored} from '@feltjs/util';
  *
  */
 export interface AccountActor {
-	persona_id: ActorId;
+	actor_id: ActorId;
 	account_id: AccountId;
 	hub_id: HubId;
 	type: 'account';
@@ -48,7 +48,7 @@ export type ClientActor = AccountActor | PublicActor;
  *
  */
 export interface CommunityActor {
-	persona_id: ActorId;
+	actor_id: ActorId;
 	account_id?: null;
 	hub_id: HubId;
 	type: 'community';
@@ -63,7 +63,7 @@ export interface CommunityActor {
  *
  */
 export interface GhostActor {
-	persona_id: ActorId;
+	actor_id: ActorId;
 	account_id?: null;
 	hub_id?: null;
 	type: 'ghost';
@@ -78,7 +78,7 @@ export interface GhostActor {
  *
  */
 export interface PublicActor {
-	persona_id: ActorId;
+	actor_id: ActorId;
 	type: 'account' | 'community' | 'ghost';
 	name: string;
 	icon?: string;

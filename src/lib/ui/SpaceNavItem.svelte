@@ -32,7 +32,7 @@
 
 	$: directory = entityById.get($space.directory_id)!;
 
-	$: personaIndex = $sessionActorIndexById.get($persona.persona_id)!;
+	$: personaIndex = $sessionActorIndexById.get($persona.actor_id)!;
 	$: fresh = freshnessByDirectoryId.get($space.directory_id)!;
 </script>
 
