@@ -35,5 +35,26 @@ test__ActorRepo(
 	},
 );
 
+test__ActorRepo(
+	'filterHubActorsById should only include distinct hub_id:actor_id pairs',
+	async ({repos, random}) => {
+		//create a new hub with an account; it should only return 2 hub:actor pairs (personal & new hub)
+		const {account, persona, hub} = await random.hub();
+		const query1 = await repos.actor.filterHubActorsByAccount(account.account_id);
+		assert.equal(query1.length, 2);
+
+		//create another persona and invite it to the hub, now there should be 3 pairs
+		await random.persona(account);
+		const query2 = await repos.actor.filterHubActorsByAccount(account.account_id);
+		assert.equal(query2.length, 3);
+
+		//add another role assignment for the original actor, there should still only be 3 pairs
+		await repos.assignment.create(persona.actor_id, hub.hub_id, hub.settings.defaultRoleId);
+
+		const query3 = await repos.actor.filterHubActorsByAccount(account.account_id);
+		assert.equal(query3.length, 3);
+	},
+);
+
 test__ActorRepo.run();
 /* test__ActorRepo */

@@ -139,4 +139,14 @@ export class ActorRepo extends PostgresRepo {
 		`;
 		return data[0];
 	}
+
+	async filterHubActorsByAccount(
+		account_id: AccountId,
+	): Promise<Array<{hub_id: HubId; actor_id: ActorId}>> {
+		const data = await this.sql<[{hub_id: HubId; actor_id: ActorId}]>`		
+			SELECT DISTINCT a.hub_id, act.actor_id FROM actors act
+			JOIN assignments a ON act.actor_id=a.actor_id AND act.account_id=${account_id}
+		`;
+		return data;
+	}
 }
