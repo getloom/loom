@@ -16,13 +16,13 @@
 	$: ({persona} = $viewContext);
 
 	const {
-		ui: {contextmenu, personaById},
+		ui: {contextmenu, actorById},
 		actions,
 	} = getApp();
 
 	export let entity: Readable<Entity>;
 
-	$: authorActor = lookupActor(personaById, $entity.actor_id);
+	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);

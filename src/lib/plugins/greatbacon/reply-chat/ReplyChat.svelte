@@ -18,7 +18,7 @@
 	$: ({persona, space} = $viewContext);
 
 	const {actions, socket, ui} = getApp();
-	const {personaById, entityById} = ui;
+	const {actorById, entityById} = ui;
 
 	let text = '';
 
@@ -59,7 +59,7 @@
 	};
 
 	let selectedReply: Readable<Entity> | null = null as any;
-	$: selectedReplyActor = $selectedReply && lookupActor(personaById, $selectedReply.actor_id);
+	$: selectedReplyActor = $selectedReply && lookupActor(actorById, $selectedReply.actor_id);
 	const selectReply = (reply: Readable<Entity>) => {
 		if (selectedReply === reply) {
 			selectedReply = null;

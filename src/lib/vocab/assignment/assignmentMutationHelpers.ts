@@ -31,7 +31,7 @@ export const stashAssignments = (
 
 export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[]): void => {
 	if (!assignmentsToEvict.length) return;
-	const {assignments, assignmentById, personaById, sessionActorIndexById} = ui;
+	const {assignments, assignmentById, actorById, sessionActorIndexById} = ui;
 	const $assignments = assignments.get().value;
 	const $sessionActorIndexById = sessionActorIndexById.get();
 
@@ -79,7 +79,7 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 					}
 				}
 				if (!doesActorHaveOtherAssignment) {
-					const persona = personaById.get(actor_id);
+					const persona = actorById.get(actor_id);
 					if (persona) {
 						evictActor(ui, persona);
 					}

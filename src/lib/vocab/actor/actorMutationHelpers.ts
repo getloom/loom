@@ -7,12 +7,12 @@ import {toHubUrl} from '$lib/ui/url';
 import {toAppSearchParams} from '$lib/app/url';
 
 export const stashActors = (
-	{personaById, actors, sessionActors, hubIdSelectionByActorId}: WritableUi,
+	{actorById, actors, sessionActors, hubIdSelectionByActorId}: WritableUi,
 	$actorsToStash: ClientActor[],
 	replace = false,
 ): void => {
 	if (replace) {
-		personaById.clear();
+		actorById.clear();
 		actors.mutate((p) => p.clear());
 		sessionActors.mutate((s) => (s.length = 0));
 	}
@@ -20,13 +20,13 @@ export const stashActors = (
 	let mutated = false;
 	let mutatedSessionActors = false;
 	for (const $actor of $actorsToStash) {
-		let actor = personaById.get($actor.actor_id);
+		let actor = actorById.get($actor.actor_id);
 		if (actor) {
 			// can't use `setIfUpdated` because `updated` is private
 			actor.set($actor);
 		} else {
 			actor = writable($actor);
-			personaById.set($actor.actor_id, actor);
+			actorById.set($actor.actor_id, actor);
 			actors.mutate((p) => p.add(actor!));
 			mutated = true;
 			if ('account_id' in $actor) {
@@ -53,7 +53,7 @@ export const evictActors = (ui: WritableUi, actorsToEvict: Set<Writable<ClientAc
 export const evictActor = (ui: WritableUi, actorToEvict: Writable<ClientActor>): void => {
 	const {
 		actors,
-		personaById,
+		actorById,
 		actorIdSelection,
 		sessionActors,
 		sessionActorIndexById,
@@ -61,7 +61,7 @@ export const evictActor = (ui: WritableUi, actorToEvict: Writable<ClientActor>):
 	} = ui;
 	const $actorToEvict = actorToEvict.get();
 
-	personaById.delete($actorToEvict.actor_id);
+	actorById.delete($actorToEvict.actor_id);
 	actors.mutate((p) => p.delete(actorToEvict));
 
 	// evict session account actors

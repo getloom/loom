@@ -9,13 +9,13 @@
 
 	const {
 		actions,
-		ui: {personaById},
+		ui: {actorById},
 	} = getApp();
 
 	export let actor: Readable<AccountActor>;
 	export let assignment: Assignment;
 
-	$: assignmentActor = lookupActor(personaById, assignment.actor_id);
+	$: assignmentActor = lookupActor(actorById, assignment.actor_id);
 
 	const deleteAssignment = async () => {
 		//TODO better error handling

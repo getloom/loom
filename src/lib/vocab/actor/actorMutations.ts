@@ -25,7 +25,7 @@ export const DeleteActor: Mutations['DeleteActor'] = async ({params, invoke, ui}
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor_id} = params;
-	const persona = ui.personaById.get(actor_id);
+	const persona = ui.actorById.get(actor_id);
 	if (persona) {
 		ui.mutate(() => {
 			const $persona = persona.get();

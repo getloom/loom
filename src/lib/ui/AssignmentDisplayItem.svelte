@@ -5,12 +5,12 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
-		ui: {personaById},
+		ui: {actorById},
 	} = getApp();
 
 	export let assignment: Assignment;
 
-	$: assignmentActor = lookupActor(personaById, assignment.actor_id);
+	$: assignmentActor = lookupActor(actorById, assignment.actor_id);
 </script>
 
 <div style:--icon_size="var(--icon_size_xs)">

@@ -66,14 +66,14 @@ export interface Ui {
 	account: Readable<ClientAccount | null>;
 	actors: Mutable<Set<Readable<ClientActor>>>;
 	session: Readable<ClientSession>;
-	sessionActors: Mutable<Array<Readable<AccountActor>>>; // is an ordered list, the index is the value of the URL `persona` queryparam key
+	sessionActors: Mutable<Array<Readable<AccountActor>>>; // is an ordered list, the index is the value of the URL `actor` queryparam key
 	sessionActorIndexById: Readable<Map<ActorId, number>>;
 	hubs: Mutable<Set<Readable<Hub>>>;
 	roles: Mutable<Set<Readable<Role>>>;
 	spaces: Mutable<Set<Readable<Space>>>;
 	assignments: Mutable<Set<Assignment>>;
 	policies: Mutable<Set<Readable<Policy>>>;
-	personaById: Map<ActorId, Readable<ClientActor>>;
+	actorById: Map<ActorId, Readable<ClientActor>>;
 	hubById: Map<HubId, Readable<Hub>>;
 	roleById: Map<RoleId, Readable<Role>>;
 	assignmentById: Map<AssignmentId, Assignment>;
@@ -82,7 +82,7 @@ export interface Ui {
 	entityById: Map<EntityId, Readable<Entity>>;
 	tieById: Map<TieId, Tie>;
 	// derived state
-	//TODO maybe refactor to remove store around map? Like personaById
+	//TODO maybe refactor to remove store around map? Like actorById
 	spacesByHubId: Readable<Map<HubId, Array<Readable<Space>>>>;
 	actorsByHubId: Readable<Map<HubId, Array<Readable<ClientActor>>>>;
 	rolesByHubId: Readable<Map<HubId, Array<Readable<Role>>>>;
@@ -158,7 +158,7 @@ export const toUi = (
 	const spaces = mutable<Set<Writable<Space>>>(new Set());
 	const assignments = mutable<Set<Assignment>>(new Set());
 	const policies = mutable<Set<Writable<Policy>>>(new Set());
-	const personaById: Map<ActorId, Writable<ClientActor>> = new Map();
+	const actorById: Map<ActorId, Writable<ClientActor>> = new Map();
 	const hubById: Map<HubId, Writable<Hub>> = new Map();
 	const roleById: Map<RoleId, Writable<Role>> = new Map();
 	const assignmentById: Map<AssignmentId, Assignment> = new Map();
@@ -204,10 +204,10 @@ export const toUi = (
 				const {hub_id} = hub.get();
 				for (const assignment of $assignments.value) {
 					if (assignment.hub_id === hub_id) {
-						const persona = personaById.get(assignment.actor_id);
-						if (!persona) continue;
-						if (persona.get().type !== 'account') continue;
-						communityActors.add(persona);
+						const actor = actorById.get(assignment.actor_id);
+						if (!actor) continue;
+						if (actor.get().type !== 'account') continue;
+						communityActors.add(actor);
 					}
 				}
 				map.set(hub_id, Array.from(communityActors));
@@ -274,7 +274,7 @@ export const toUi = (
 	const actorSelection = derived(
 		[actorIdSelection],
 		([$actorIdSelection]) =>
-			($actorIdSelection && (personaById.get($actorIdSelection) as Writable<AccountActor>)) || null,
+			($actorIdSelection && (actorById.get($actorIdSelection) as Writable<AccountActor>)) || null,
 	);
 	const actorIndexSelection = derived(
 		[actorSelection, sessionActors],
@@ -375,7 +375,7 @@ export const toUi = (
 		hubs,
 		assignments,
 		policies,
-		personaById,
+		actorById,
 		hubById,
 		roleById,
 		assignmentById,

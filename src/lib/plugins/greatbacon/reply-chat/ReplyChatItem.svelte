@@ -15,7 +15,7 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
-		ui: {contextmenu, personaById, entityById, sourceTiesByDestEntityId},
+		ui: {contextmenu, actorById, entityById, sourceTiesByDestEntityId},
 	} = getApp();
 
 	export let persona: Readable<AccountActor>;
@@ -23,7 +23,7 @@
 	export let selectReply: (reply: Readable<Entity>) => void;
 	export let queryReply: (entity_id: number, cb: (entity: Readable<Entity>) => void) => void;
 
-	$: authorActor = lookupActor(personaById, $entity.actor_id);
+	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
 	$: sourceTiesSet = sourceTiesByDestEntityId.get($entity.entity_id);
 	$: replyTie =
@@ -33,7 +33,7 @@
 	$: if (replyTie && !repliedToEntity) {
 		queryReply(replyTie.source_id, (entity) => (repliedToEntity = entity));
 	}
-	$: repliedToActor = lookupActor(personaById, $repliedToEntity?.actor_id);
+	$: repliedToActor = lookupActor(actorById, $repliedToEntity?.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);

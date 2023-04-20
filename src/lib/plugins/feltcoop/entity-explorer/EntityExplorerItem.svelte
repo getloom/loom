@@ -9,13 +9,13 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
-		ui: {contextmenu, personaById},
+		ui: {contextmenu, actorById},
 	} = getApp();
 
 	export let persona: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
-	$: authorActor = lookupActor(personaById, $entity.actor_id);
+	$: authorActor = lookupActor(actorById, $entity.actor_id);
 </script>
 
 <li

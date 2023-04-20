@@ -23,10 +23,10 @@
 
 	const {
 		actions,
-		ui: {contextmenu, personaById},
+		ui: {contextmenu, actorById},
 	} = getApp();
 
-	$: authorActor = lookupActor(personaById, $entity.actor_id);
+	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
 		actions.UpdateEntities({

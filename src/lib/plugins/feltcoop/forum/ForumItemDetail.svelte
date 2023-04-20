@@ -15,7 +15,7 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
-		ui: {contextmenu, personaById, destTiesBySourceEntityId, entityById},
+		ui: {contextmenu, actorById, destTiesBySourceEntityId, entityById},
 		actions,
 	} = getApp();
 
@@ -32,7 +32,7 @@
 		return acc;
 	}, [] as Array<Readable<Entity>>);
 
-	$: authorActor = lookupActor(personaById, $entity.actor_id);
+	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
 	// TODO refactor to some client view-model for the persona
 	$: hue = randomHue($authorActor.name);
