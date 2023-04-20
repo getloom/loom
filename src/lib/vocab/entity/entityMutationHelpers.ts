@@ -16,16 +16,16 @@ import {
 import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 import {setIfUpdated} from '$lib/util/store';
 import {toHubUrl} from '$lib/ui/url';
+import type {Directory} from '$lib/vocab/entity/entityData';
 
 const log = new Logger('[entityMutationHelpers]');
 
 export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
-	const {entityById, spaceSelection, spaceById, freshnessByDirectoryId, hubById} = ui;
+	const {entityById, spaceSelection, hubById} = ui;
 
 	const $selectedSpace = spaceSelection.get()?.get();
 
 	const stashed: Array<Writable<Entity>> = [];
-	const directories: Array<Writable<Entity>> = [];
 
 	for (const $entity of $entities) {
 		const {entity_id} = $entity;
@@ -52,24 +52,26 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 		// Handle directories.
 		//TODO this check is not type safe, we should fix that
 		if ('directory' in $entity.data) {
-			directories.push(entity);
+			// TODO maybe invert this and listen for `'stashed_entities'` instead of calling this helper directly?
+			ui.afterMutation(() => updateDirectoryFreshness(ui, $entity as Directory));
 		}
 	}
 
 	ui.afterMutation(() => ui.events.emit('stashed_entities', stashed));
+};
 
+const updateDirectoryFreshness = (ui: WritableUi, $directory: Directory): void => {
+	const {freshnessByDirectoryId, entityById, spaceById, spaceSelection} = ui;
+	const {entity_id} = $directory;
 	//TODO this chunk of code should probably rely on the 'stashed_entities' event above
-	for (const entity of directories) {
-		const $entity = entity.get();
-		if (!freshnessByDirectoryId.get($entity.entity_id)) {
-			setLastSeen(ui, $entity.entity_id, ($entity.updated || $entity.created).getTime());
-			setFreshnessByDirectoryId(ui, entity);
-		}
-		upsertFreshnessByHubId(ui, spaceById.get($entity.space_id)!.get().hub_id);
-		// Is the directory's space selected? If so we don't want a notification.
-		if ($entity.entity_id === $selectedSpace?.directory_id) {
-			updateLastSeen(ui, $entity.entity_id);
-		}
+	if (!freshnessByDirectoryId.has(entity_id)) {
+		setLastSeen(ui, entity_id, ($directory.updated || $directory.created).getTime());
+		setFreshnessByDirectoryId(ui, entityById.get(entity_id)!);
+	}
+	upsertFreshnessByHubId(ui, spaceById.get($directory.space_id)!.get().hub_id);
+	// Is the directory's space selected? If so we don't want a notification.
+	if (entity_id === spaceSelection.get()?.get()?.directory_id) {
+		updateLastSeen(ui, entity_id);
 	}
 };
 
