@@ -12,7 +12,7 @@
 	import RolesList from '$lib/ui/RolesList.svelte';
 
 	const viewContext = getViewContext();
-	$: ({space, persona} = $viewContext);
+	$: ({space, actor} = $viewContext);
 
 	const {socket, actions} = getApp();
 
@@ -24,7 +24,7 @@
 	//TODO this is all done because the Query event always returns an empty array on initial call
 	$: entitiesResult = shouldLoadEntities
 		? actions.ReadEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -45,7 +45,7 @@
 
 		if (!content) return;
 		await actions.CreateEntity({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Article', content, name},
 			ties: [{source_id: $space.directory_id}],
@@ -96,7 +96,7 @@
 						on:click={() =>
 							actions.OpenDialog({
 								Component: EntityEditor,
-								props: {persona, entity: rules},
+								props: {persona: actor, entity: rules},
 								dialogProps: {layout: 'page'},
 							})}
 						>propose change ✍️
@@ -111,7 +111,7 @@
 						on:click={() =>
 							actions.OpenDialog({
 								Component: EntityEditor,
-								props: {persona, entity: norms},
+								props: {persona: actor, entity: norms},
 								dialogProps: {layout: 'page'},
 							})}
 						>propose change ✍️

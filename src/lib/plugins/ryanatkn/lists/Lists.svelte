@@ -10,7 +10,7 @@
 	import AddListButton from './AddListButton.svelte';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({actor, space} = $viewContext);
 
 	// TODO expand/collapse all buttons
 
@@ -19,7 +19,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;

@@ -4,7 +4,7 @@
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, hub} = $viewContext);
+	$: ({actor, space, hub} = $viewContext);
 
 	const {actions} = getApp();
 
@@ -18,7 +18,7 @@
 			props: {
 				done: () => actions.CloseDialog(),
 				entityName: 'list',
-				persona,
+				persona: actor,
 				hub,
 				space,
 				fields: {content: true},

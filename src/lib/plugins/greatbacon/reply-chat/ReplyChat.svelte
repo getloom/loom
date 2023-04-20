@@ -15,7 +15,7 @@
 	import {createPaginatedQuery} from '$lib/util/query';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({actor, space} = $viewContext);
 
 	const {actions, socket, ui} = getApp();
 	const {actorById, entityById} = ui;
@@ -26,7 +26,7 @@
 
 	$: query = shouldLoadEntities
 		? createPaginatedQuery(ui, actions, {
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 				related: 'dest',
 		  })
@@ -45,7 +45,7 @@
 
 		if (!content) return;
 		await actions.CreateEntity({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties,
@@ -80,7 +80,7 @@
 		if (!entityIdsToQuery) return;
 		const localEntityIdsToQuery = entityIdsToQuery.slice();
 		await actions.ReadEntitiesById({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entityIds: localEntityIdsToQuery.map((e) => e.entity_id),
 		});
 		for (const {entity_id, cb} of localEntityIdsToQuery) {
@@ -96,7 +96,7 @@
 <div class="chat">
 	<div class="entities">
 		{#if query && entities}
-			<ReplyChatItems {persona} {entities} {selectReply} {queryReply} />
+			<ReplyChatItems persona={actor} {entities} {selectReply} {queryReply} />
 			{#if more}
 				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
 					>load more</PendingButton
@@ -112,7 +112,7 @@
 		</div>
 	{/if}
 	<TextInput
-		{persona}
+		persona={actor}
 		placeholder="> chat"
 		on:submit={onSubmit}
 		bind:value={text}

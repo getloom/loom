@@ -10,7 +10,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, hub} = $viewContext);
+	$: ({actor, space, hub} = $viewContext);
 
 	const {actions, socket} = getApp();
 
@@ -18,7 +18,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -35,14 +35,14 @@
 			<CreateEntityForm
 				done={() => actions.CloseDialog()}
 				entityName="post"
-				{persona}
+				persona={actor}
 				{hub}
 				{space}
 			>
 				<svelte:fragment slot="content_title">post</svelte:fragment>
 				<svelte:fragment slot="error"><span style:display="none" /></svelte:fragment>
 			</CreateEntityForm>
-			<BoardItems {entities} {space} {persona} />
+			<BoardItems {entities} {space} persona={actor} />
 			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt-server/pull/514#discussion_r998626893 -->
 			<!-- {:else if $queryStatus === 'failure'}
 				<Message status="error">{$queryError.message}</Message> -->

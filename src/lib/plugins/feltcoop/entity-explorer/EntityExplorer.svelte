@@ -13,7 +13,7 @@
 	import EntityTreeItemPlaintext from '$lib/ui/EntityTreeItemPlaintext.svelte';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({actor, space} = $viewContext);
 
 	const {
 		actions,
@@ -28,7 +28,7 @@
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
 		const result = await actions.ReadEntitiesPaginated({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			source_id: $space.directory_id,
 		});
 		if (result.ok) {
@@ -41,7 +41,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -59,7 +59,12 @@
 		{#if entities2}
 			<ul>
 				{#each $entities2 as entity (entity)}
-					<EntityTree {persona} {entity} ties={ties2} itemComponent={EntityTreeItemPlaintext} />
+					<EntityTree
+						persona={actor}
+						{entity}
+						ties={ties2}
+						itemComponent={EntityTreeItemPlaintext}
+					/>
 				{/each}
 			</ul>
 		{:else}
@@ -68,7 +73,7 @@
 	</div>
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<EntityExplorerItems {persona} {entities} />
+			<EntityExplorerItems persona={actor} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}

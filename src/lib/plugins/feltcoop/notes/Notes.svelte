@@ -10,7 +10,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({actor, space} = $viewContext);
 
 	const {actions, socket} = getApp();
 
@@ -19,7 +19,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -33,7 +33,7 @@
 
 		if (!content) return;
 		await actions.CreateEntity({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties: [{source_id: $space.directory_id}],
@@ -47,10 +47,10 @@
 </script>
 
 <div class="notes">
-	<TextInput {persona} on:submit={onSubmit} bind:value={text} placeholder="> note" />
+	<TextInput persona={actor} on:submit={onSubmit} bind:value={text} placeholder="> note" />
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<NotesItems {persona} {entities} />
+			<NotesItems persona={actor} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}

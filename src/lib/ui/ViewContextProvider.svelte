@@ -17,24 +17,20 @@
 		ui: {entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 
 	const viewContext = writable({
-		persona,
+		actor,
 		hub,
 		space,
 		directory: entityById.get($space.directory_id)!,
 	});
 	setViewContext(viewContext);
 	// check to make sure we don't set twice on init
-	$: if (
-		$viewContext.persona !== persona ||
-		$viewContext.hub !== hub ||
-		$viewContext.space !== space
-	) {
-		$viewContext = {persona, hub, space, directory: entityById.get($space.directory_id)!};
+	$: if ($viewContext.actor !== actor || $viewContext.hub !== hub || $viewContext.space !== space) {
+		$viewContext = {actor, hub, space, directory: entityById.get($space.directory_id)!};
 	}
 </script>
 

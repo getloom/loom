@@ -10,7 +10,7 @@
 	import ListControls from './ListControls.svelte';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({actor, space} = $viewContext);
 
 	export let layoutDirection = 'column'; // is a `flex-direction` property
 	export let itemsDirection = 'column'; // is a `flex-direction` property
@@ -28,7 +28,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;

@@ -13,7 +13,7 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona} = $viewContext);
+	$: ({actor} = $viewContext);
 
 	const {
 		ui: {contextmenu, actorById},
@@ -36,7 +36,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	style="--hue: {hue}"
 	use:contextmenu.action={[
 		[ActorContextmenu, {persona: authorActor}],
-		[EntityContextmenu, {persona, entity}],
+		[EntityContextmenu, {persona: actor, entity}],
 	]}
 >
 	<!-- TODO fix a11y -->
@@ -50,7 +50,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<button
 			class="plain-button icon-button"
 			on:click={() =>
-				actions.DeleteEntities({actor: $persona.actor_id, entityIds: [$entity.entity_id]})}
+				actions.DeleteEntities({actor: $actor.actor_id, entityIds: [$entity.entity_id]})}
 			title="remove item">✕</button
 		>
 	</div>

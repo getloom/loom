@@ -92,7 +92,7 @@ export const toViewProps = (
 };
 
 export interface ViewContext {
-	persona: Readable<AccountActor>;
+	actor: Readable<AccountActor>;
 	hub: Readable<Hub>;
 	space: Readable<Space>;
 	directory: Readable<Entity>;

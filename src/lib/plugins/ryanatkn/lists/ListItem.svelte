@@ -17,7 +17,7 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona} = $viewContext);
+	$: ({actor} = $viewContext);
 
 	const {
 		ui: {contextmenu, actorById, destTiesBySourceEntityId, entityById},
@@ -41,7 +41,7 @@
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
-	// TODO refactor to some client view-model for the persona
+	// TODO refactor to some client view-model for the actor
 	$: hue = randomHue($authorActor.name);
 
 	$: if (checked !== undefined) void updateEntity(checked); // TODO change to a fn?
@@ -50,7 +50,7 @@
 		if ($entity.data.checked === checked) return;
 		pending = true;
 		await actions.UpdateEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, checked}}],
 		});
 		pending = false;
@@ -83,7 +83,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	style="--hue: {hue}"
 	use:contextmenu.action={[
 		[ActorContextmenu, {persona: authorActor}],
-		[EntityContextmenu, {persona, entity}],
+		[EntityContextmenu, {persona: actor, entity}],
 	]}
 >
 	<!-- TODO fix a11y -->

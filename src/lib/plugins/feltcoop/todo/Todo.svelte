@@ -12,7 +12,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, hub} = $viewContext);
+	$: ({actor, space, hub} = $viewContext);
 
 	const {
 		actions,
@@ -23,7 +23,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -51,7 +51,7 @@
 		//TODO better error handling
 		await actions.CreateEntity({
 			space_id: $space.space_id,
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			data: {type: 'Note', content, checked: false},
 			ties: [{source_id: $selectedList!.entity_id}],
 		});
@@ -78,7 +78,7 @@
 		if (!items?.length) return;
 		const entityIds = items.map((i) => i.get().entity_id);
 		await actions.DeleteEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entityIds,
 		});
 	};
@@ -88,7 +88,7 @@
 	<div class="entities">
 		<!-- TODO handle failures here-->
 		{#if entities && $queryStatus === 'success'}
-			<TodoItems {persona} {entities} {space} {selectedList} {selectList} />
+			<TodoItems persona={actor} {entities} {space} {selectedList} {selectList} />
 			<button
 				on:click={() =>
 					actions.OpenDialog({
@@ -96,7 +96,7 @@
 						props: {
 							done: () => actions.CloseDialog(),
 							entityName: 'todo',
-							persona,
+							persona: actor,
 							hub,
 							space,
 							fields: {content: true},
@@ -109,7 +109,7 @@
 	</div>
 	{#if selectedList}
 		<div class="selected-tools">
-			<TextInput {persona} placeholder="> new todo" on:submit={onSubmit} bind:value={text} />
+			<TextInput persona={actor} placeholder="> new todo" on:submit={onSubmit} bind:value={text} />
 			<button on:click={clearDone}>Clear Done</button>
 		</div>
 	{/if}

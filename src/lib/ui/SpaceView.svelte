@@ -24,6 +24,6 @@
 	$: viewText = $viewBySpace.value.get(space) || $space.view;
 </script>
 
-<ViewContextProvider {persona} {hub} {space}>
+<ViewContextProvider actor={persona} {hub} {space}>
 	<SvastText text={viewText} />
 </ViewContextProvider>

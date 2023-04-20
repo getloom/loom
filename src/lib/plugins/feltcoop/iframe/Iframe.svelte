@@ -7,7 +7,7 @@
 	import {getApp} from '$lib/ui/app';
 
 	const viewContext = getViewContext();
-	$: ({space, persona} = $viewContext);
+	$: ({space, actor} = $viewContext);
 
 	const {
 		actions,
@@ -24,7 +24,7 @@
 				postMessage && // wait for init
 				v && // there may be no ephemera
 				v.space_id === $space.space_id && // scope to this space
-				v.actor !== $persona.actor_id // don't forward ephemera created by the user
+				v.actor !== $actor.actor_id // don't forward ephemera created by the user
 			) {
 				// TODO forward `actor: v.actor` if user allows it
 				postMessage({type: 'Ephemera', data: v.data}); // don't forward the space_id
@@ -60,7 +60,7 @@
 				// TODO validate automatically
 				const data = e.detail.params;
 				if (!data) return;
-				void actions.Ephemera({actor: $persona.actor_id, space_id: $space.space_id, data});
+				void actions.Ephemera({actor: $actor.actor_id, space_id: $space.space_id, data});
 			}
 		}}
 	/>

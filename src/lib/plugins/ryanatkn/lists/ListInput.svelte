@@ -7,7 +7,7 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({actor, space} = $viewContext);
 
 	const {actions} = getApp();
 
@@ -25,7 +25,7 @@
 
 		//TODO better error handling
 		await actions.CreateEntity({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content, checked: false},
 			ties: [{source_id: $list.entity_id}],
@@ -39,7 +39,7 @@
 
 <TextInput
 	style="height: var(--input_height)"
-	{persona}
+	persona={actor}
 	placeholder=">"
 	on:submit={onSubmit}
 	bind:value={text}

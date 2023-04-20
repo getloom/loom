@@ -10,7 +10,7 @@
 	import {createPaginatedQuery} from '$lib/util/query';
 
 	const viewContext = getViewContext();
-	$: ({persona, space} = $viewContext);
+	$: ({actor, space} = $viewContext);
 
 	const {ui, actions, socket} = getApp();
 
@@ -20,7 +20,7 @@
 
 	$: query = shouldLoadEntities
 		? createPaginatedQuery(ui, actions, {
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -34,7 +34,7 @@
 
 		if (!content) return;
 		await actions.CreateEntity({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties: [{source_id: $space.directory_id}],
@@ -50,7 +50,7 @@
 <div class="chat">
 	<div class="entities">
 		{#if query && entities}
-			<ChatItems {persona} {entities} />
+			<ChatItems persona={actor} {entities} />
 			{#if more}
 				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
 					>load more</PendingButton
@@ -60,7 +60,7 @@
 			<PendingAnimation />
 		{/if}
 	</div>
-	<TextInput {persona} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
+	<TextInput persona={actor} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
 </div>
 
 <style>

@@ -8,7 +8,7 @@
 	import {getViewContext} from '$lib/vocab/view/view';
 
 	const viewContext = getViewContext();
-	$: ({persona} = $viewContext);
+	$: ({actor} = $viewContext);
 
 	const {
 		actions,
@@ -44,7 +44,7 @@
 		if (!checkedCount) return;
 		const entityIds = $checkedItems!.map((i) => i.get().entity_id);
 		await actions.DeleteEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entityIds,
 		});
 	};

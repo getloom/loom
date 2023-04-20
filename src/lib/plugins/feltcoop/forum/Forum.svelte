@@ -11,7 +11,7 @@
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 	const viewContext = getViewContext();
-	$: ({persona, space, hub} = $viewContext);
+	$: ({actor, space, hub} = $viewContext);
 
 	const {actions, socket} = getApp();
 
@@ -19,7 +19,7 @@
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
 		? actions.QueryEntities({
-				actor: $persona.actor_id,
+				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
@@ -43,7 +43,7 @@
 <div class="forum">
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<ForumItems {entities} {space} {persona} {selectedPost} {selectPost} />
+			<ForumItems {entities} {space} persona={actor} {selectedPost} {selectPost} />
 			{#if !selectedPost}
 				<button
 					on:click={() =>
@@ -53,7 +53,7 @@
 								done: () => actions.CloseDialog(),
 								entityName: 'post',
 								fields: {name: true, content: true},
-								persona,
+								persona: actor,
 								hub,
 								space,
 							},
