@@ -82,8 +82,8 @@ for (const service of services.values()) {
 	const {action} = service;
 	test__services(`perform service ${action.name}`, async ({repos, random}) => {
 		const account = await random.account();
-		const {persona} = await random.persona(account);
-		const params = await randomActionParams[action.name](random, {account, persona});
+		const {actor} = await random.actor(account);
+		const params = await randomActionParams[action.name](random, {account, actor});
 		if (!validateSchema(action.params)(params)) {
 			throw new Error(
 				`Failed to validate random params for service ${action.name}: ${toValidationErrorMessage(
@@ -94,7 +94,7 @@ for (const service of services.values()) {
 		const result = await service.perform({
 			...toServiceRequestMock(
 				repos,
-				action.authorize === false ? undefined! : persona,
+				action.authorize === false ? undefined! : actor,
 				session,
 				action.authenticate === false ? undefined : account.account_id,
 			),
@@ -118,9 +118,9 @@ for (const service of services.values()) {
 
 		// Test failure of authorized services with an unauthorized actor.
 		if (action.authorize !== false && action.name !== 'CreateHub') {
-			const {persona: unauthorizedActor} = await random.persona(account);
+			const {actor: unauthorizedActor} = await random.actor(account);
 
-			// create a new hub without the persona, otherwise they might have permissions
+			// create a new hub without the actor, otherwise they might have permissions
 			const hubData = await random.hub(undefined, account);
 			const failedParams = await randomActionParams[action.name](random, {
 				...hubData,

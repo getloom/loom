@@ -22,12 +22,12 @@ test__spaceServices(
 );
 
 test__spaceServices('delete a space in multiple hubs', async ({repos, random}) => {
-	const {space, persona} = await random.space();
+	const {space, actor} = await random.space();
 
 	unwrap(
 		await DeleteSpaceService.perform({
-			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.actor_id, space_id: space.space_id},
+			...toServiceRequestMock(repos, actor),
+			params: {actor: actor.actor_id, space_id: space.space_id},
 		}),
 	);
 

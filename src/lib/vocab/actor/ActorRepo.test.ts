@@ -12,23 +12,23 @@ test__ActorRepo.after(teardownDb);
 test__ActorRepo(
 	'filterAssociatesByAccount should include admin & ghost actors',
 	async ({repos, random}) => {
-		//create a persona, it should have 3 associates return including ADMIN & GHOST
-		const {account, persona} = await random.persona();
+		//create a actor, it should have 3 associates return including ADMIN & GHOST
+		const {account, actor} = await random.actor();
 		const query1 = await repos.actor.filterAssociatesByAccount(account.account_id);
 		assert.equal(query1.length, 3);
 
 		//create a hub, it should have 4 associates return
-		const {hub} = await random.hub(persona, account);
+		const {hub} = await random.hub(actor, account);
 		const query2 = await repos.actor.filterAssociatesByAccount(account.account_id);
 		assert.equal(query2.length, 4);
 
-		//create another persona, there should still be 4 associates returned (& not the new persona)
-		const {persona: persona2} = await random.persona();
+		//create another actor, there should still be 4 associates returned (& not the new actor)
+		const {actor: actor2} = await random.actor();
 		const query3 = await repos.actor.filterAssociatesByAccount(account.account_id);
 		assert.equal(query3.length, 4);
 
-		//add new persona to hub, now 5 associates return (including new persona)
-		await repos.assignment.create(persona2.actor_id, hub.hub_id, hub.settings.defaultRoleId);
+		//add new actor to hub, now 5 associates return (including new actor)
+		await repos.assignment.create(actor2.actor_id, hub.hub_id, hub.settings.defaultRoleId);
 
 		const query4 = await repos.actor.filterAssociatesByAccount(account.account_id);
 		assert.equal(query4.length, 5);

@@ -15,7 +15,7 @@ const test__actorService = suite<TestDbContext>('actorService');
 test__actorService.before(setupDb);
 test__actorService.after(teardownDb);
 
-test__actorService('create a persona & test name collisions', async ({repos, random}) => {
+test__actorService('create a actor & test name collisions', async ({repos, random}) => {
 	const params = await randomActionParams.CreateAccountActor(random);
 	params.name = params.name.toLowerCase();
 
@@ -43,8 +43,8 @@ test__actorService('create a persona & test name collisions', async ({repos, ran
 	);
 });
 
-test__actorService('ghost persona has the expected name and id', async ({repos, random}) => {
-	// First create an account persona, which ensures the ghost persona has been initialized.
+test__actorService('ghost actor has the expected name and id', async ({repos, random}) => {
+	// First create an account actor, which ensures the ghost actor has been initialized.
 	unwrap(
 		await CreateAccountActorService.perform({
 			...toServiceRequestMock(repos, undefined, undefined, (await random.account()).account_id),
@@ -59,11 +59,11 @@ test__actorService('ghost persona has the expected name and id', async ({repos, 
 	assert.is(ghostActor.actor_id, GHOST_ACTOR_ID);
 });
 
-test__actorService('delete a persona and properly clean up', async ({repos, random}) => {
+test__actorService('delete a actor and properly clean up', async ({repos, random}) => {
 	const account = await random.account();
-	const {persona, personalHub, spaces} = await random.persona(account);
-	const {hub, actors, spaces: hubSpaces} = await random.hub(persona, account);
-	const allHubs = [personalHub, hub];
+	const {actor, actorlHub, spaces} = await random.actor(account);
+	const {hub, actors, spaces: hubSpaces} = await random.hub(actor, account);
+	const allHubs = [actorlHub, hub];
 	const allSpaces = spaces.concat(hubSpaces);
 
 	const check = async (invert: boolean) => {
@@ -93,7 +93,7 @@ test__actorService('delete a persona and properly clean up', async ({repos, rand
 	// create a second hub and join it, and make entities that will be turned into ghosts
 	const {
 		hub: otherHub,
-		persona: otherActor,
+		actor: otherActor,
 		spaces: [otherSpace],
 	} = await random.hub();
 	// TODO could be simplified with `random.assignment()`
@@ -103,14 +103,14 @@ test__actorService('delete a persona and properly clean up', async ({repos, rand
 			params: {
 				actor: otherActor.actor_id,
 				hub_id: otherHub.hub_id,
-				actor_id: persona.actor_id,
+				actor_id: actor.actor_id,
 				role_id: otherHub.settings.defaultRoleId,
 			},
 		}),
 	);
 	const otherContent = '123';
 	const {entity: otherEntity} = await random.entity(
-		persona,
+		actor,
 		account,
 		otherHub,
 		otherSpace,
@@ -123,8 +123,8 @@ test__actorService('delete a persona and properly clean up', async ({repos, rand
 
 	unwrap(
 		await DeleteActorService.perform({
-			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.actor_id, actor_id: persona.actor_id},
+			...toServiceRequestMock(repos, actor),
+			params: {actor: actor.actor_id, actor_id: actor.actor_id},
 		}),
 	);
 
@@ -140,13 +140,13 @@ test__actorService('delete a persona and properly clean up', async ({repos, rand
 
 test__actorService('actors cannot delete other actors', async ({repos, random}) => {
 	const account = await random.account();
-	const {persona: persona1} = await random.persona(account);
-	const {persona: persona2} = await random.persona(account);
+	const {actor: actor1} = await random.actor(account);
+	const {actor: actor2} = await random.actor(account);
 
 	unwrapError(
 		await DeleteActorService.perform({
-			...toServiceRequestMock(repos, persona1),
-			params: {actor: persona1.actor_id, actor_id: persona2.actor_id},
+			...toServiceRequestMock(repos, actor1),
+			params: {actor: actor1.actor_id, actor_id: actor2.actor_id},
 		}),
 	);
 });
@@ -154,31 +154,31 @@ test__actorService('actors cannot delete other actors', async ({repos, random}) 
 test__actorService(
 	'actors can delete other actors if in the admin hub',
 	async ({repos, random}) => {
-		const {persona} = await random.persona();
+		const {actor} = await random.actor();
 
-		const actor = await loadAdminActor(repos);
+		const adminActor = await loadAdminActor(repos);
 
-		assert.ok(actor.actor_id !== persona.actor_id);
+		assert.ok(adminActor.actor_id !== actor.actor_id);
 
 		unwrap(
 			await DeleteActorService.perform({
-				...toServiceRequestMock(repos, actor),
-				params: {actor: actor.actor_id, actor_id: persona.actor_id},
+				...toServiceRequestMock(repos, adminActor),
+				params: {actor: adminActor.actor_id, actor_id: actor.actor_id},
 			}),
 		);
 	},
 );
 
 test__actorService('actors cannot delete actors in the admin hub', async ({repos, random}) => {
-	const {persona: actor} = await random.persona();
+	const {actor} = await random.actor();
 
-	const persona = await loadAdminActor(repos);
+	const adminActor = await loadAdminActor(repos);
 
 	assert.is(
 		unwrapError(
 			await DeleteActorService.perform({
 				...toServiceRequestMock(repos, actor),
-				params: {actor: actor.actor_id, actor_id: persona.actor_id},
+				params: {actor: actor.actor_id, actor_id: adminActor.actor_id},
 			}),
 		).status,
 		400,

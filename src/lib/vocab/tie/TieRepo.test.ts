@@ -13,29 +13,17 @@ test__TieRepo.after(teardownDb);
 test__TieRepo('check filtering down by source id', async ({repos, random}) => {
 	//Gen space
 	//Gen dir entity -> thread entity -> post -> reply
-	const {persona, account, hub, space} = await random.space();
-	const {entity: entityDir} = await random.entity(persona, account, hub, space, space.directory_id);
+	const {actor, account, hub, space} = await random.space();
+	const {entity: entityDir} = await random.entity(actor, account, hub, space, space.directory_id);
 	const {entity: entityThread} = await random.entity(
-		persona,
+		actor,
 		account,
 		hub,
 		space,
 		space.directory_id,
 	);
-	const {entity: entityPost} = await random.entity(
-		persona,
-		account,
-		hub,
-		space,
-		space.directory_id,
-	);
-	const {entity: entityReply} = await random.entity(
-		persona,
-		account,
-		hub,
-		space,
-		space.directory_id,
-	);
+	const {entity: entityPost} = await random.entity(actor, account, hub, space, space.directory_id);
+	const {entity: entityReply} = await random.entity(actor, account, hub, space, space.directory_id);
 
 	const tie1 = await repos.tie.create(entityDir.entity_id, entityThread.entity_id, 'HasThread');
 
@@ -55,35 +43,17 @@ test__TieRepo('check filtering down by source id', async ({repos, random}) => {
 test__TieRepo('check filtering up by dest id', async ({repos, random}) => {
 	//Gen space
 	//Gen index entity -> thread entity -> post -> reply
-	const {persona, account, hub, space} = await random.space();
-	const {entity: entityIndex} = await random.entity(
-		persona,
-		account,
-		hub,
-		space,
-		space.directory_id,
-	);
+	const {actor, account, hub, space} = await random.space();
+	const {entity: entityIndex} = await random.entity(actor, account, hub, space, space.directory_id);
 	const {entity: entityThread} = await random.entity(
-		persona,
+		actor,
 		account,
 		hub,
 		space,
 		space.directory_id,
 	);
-	const {entity: entityPost} = await random.entity(
-		persona,
-		account,
-		hub,
-		space,
-		space.directory_id,
-	);
-	const {entity: entityReply} = await random.entity(
-		persona,
-		account,
-		hub,
-		space,
-		space.directory_id,
-	);
+	const {entity: entityPost} = await random.entity(actor, account, hub, space, space.directory_id);
+	const {entity: entityReply} = await random.entity(actor, account, hub, space, space.directory_id);
 
 	const tie1 = await repos.tie.create(entityIndex.entity_id, entityThread.entity_id, 'HasThread');
 

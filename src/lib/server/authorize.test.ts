@@ -13,22 +13,22 @@ const test__authorize = suite<TestDbContext>('services');
 test__authorize.before(setupDb);
 test__authorize.after(teardownDb);
 
-test__authorize("authorizes an account's persona", async ({repos, random}) => {
-	const {persona, account} = await random.persona();
+test__authorize("authorizes an account's actor", async ({repos, random}) => {
+	const {actor, account} = await random.actor();
 	unwrap(
 		await authorize(MockAuthorizedService, repos, account.account_id, {
-			actor: persona.actor_id,
+			actor: actor.actor_id,
 			name: 'test_authorize_success',
 		}),
 	);
 });
 
-test__authorize('actor cannot be impersonated', async ({repos, random}) => {
+test__authorize('actor cannot be imactorted', async ({repos, random}) => {
 	const account = await random.account();
-	const {persona} = await random.persona();
+	const {actor} = await random.actor();
 	unwrapError(
 		await authorize(MockAuthorizedService, repos, account.account_id, {
-			actor: persona.actor_id,
+			actor: actor.actor_id,
 			name: 'test_authorize_failure',
 		}),
 	);

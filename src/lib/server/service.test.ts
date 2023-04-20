@@ -46,7 +46,7 @@ test__service('performService passes through a thrown ApiError', async ({repos})
 });
 
 test__service(`roll back the database after a failed transaction`, async ({repos, random}) => {
-	const {persona} = await random.persona();
+	const {actor} = await random.actor();
 	const hubName = randomCommunnityName();
 	let hub: Hub | undefined;
 	let failedResult: ApiResult | undefined;
@@ -61,7 +61,7 @@ test__service(`roll back the database after a failed transaction`, async ({repos
 		},
 	};
 	const returnedResult = await performService(s, {
-		...toServiceRequestMock(repos, persona),
+		...toServiceRequestMock(repos, actor),
 		params: await randomActionParams.CreateHub(random),
 	});
 	assert.ok(hub);

@@ -17,14 +17,14 @@ test__assignmentServices.before(setupDb);
 test__assignmentServices.after(teardownDb);
 
 test__assignmentServices('disallow creating duplicate assignments', async ({repos, random}) => {
-	const {hub, persona, roles} = await random.hub();
+	const {hub, actor, roles} = await random.hub();
 	await expectApiError(409, () =>
 		CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, persona),
+			...toServiceRequestMock(repos, actor),
 			params: {
-				actor: persona.actor_id,
+				actor: actor.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.actor_id,
+				actor_id: actor.actor_id,
 				role_id: roles[0].role_id,
 			},
 		}),
@@ -32,17 +32,17 @@ test__assignmentServices('disallow creating duplicate assignments', async ({repo
 });
 
 test__assignmentServices(
-	'disallow creating assignments for personal hubs',
+	'disallow creating assignments for actorl hubs',
 	async ({repos, random}) => {
-		const {personalHub, persona} = await random.persona();
+		const {actorlHub, actor} = await random.actor();
 		await expectApiError(403, async () =>
 			CreateAssignmentService.perform({
-				...toServiceRequestMock(repos, persona),
+				...toServiceRequestMock(repos, actor),
 				params: {
-					actor: persona.actor_id,
-					hub_id: personalHub.hub_id,
-					actor_id: (await random.persona()).persona.actor_id,
-					role_id: personalHub.settings.defaultRoleId,
+					actor: actor.actor_id,
+					hub_id: actorlHub.hub_id,
+					actor_id: (await random.actor()).actor.actor_id,
+					role_id: actorlHub.settings.defaultRoleId,
 				},
 			}),
 		);
@@ -50,15 +50,15 @@ test__assignmentServices(
 );
 
 test__assignmentServices('delete an assignment in a hub', async ({repos, random}) => {
-	const {hub, persona, assignments} = await random.hub();
+	const {hub, actor, assignments} = await random.hub();
 	const assignment = assignments.find(
-		(a) => a.actor_id === persona.actor_id && a.hub_id === hub.hub_id,
+		(a) => a.actor_id === actor.actor_id && a.hub_id === hub.hub_id,
 	)!;
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, persona),
+			...toServiceRequestMock(repos, actor),
 			params: {
-				actor: persona.actor_id,
+				actor: actor.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -66,13 +66,13 @@ test__assignmentServices('delete an assignment in a hub', async ({repos, random}
 	assert.ok(!(await repos.assignment.findById(assignment.assignment_id)));
 });
 
-test__assignmentServices('fail to delete a personal assignment', async ({repos, random}) => {
-	const {persona, assignment} = await random.persona();
+test__assignmentServices('fail to delete a actorl assignment', async ({repos, random}) => {
+	const {actor, assignment} = await random.actor();
 	unwrapError(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, persona),
+			...toServiceRequestMock(repos, actor),
 			params: {
-				actor: persona.actor_id,
+				actor: actor.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -80,8 +80,8 @@ test__assignmentServices('fail to delete a personal assignment', async ({repos, 
 	assert.ok(await repos.assignment.findById(assignment.assignment_id));
 });
 
-test__assignmentServices('fail to delete a hub persona assignment', async ({repos, random}) => {
-	const {hub, persona, actors, assignments} = await random.hub();
+test__assignmentServices('fail to delete a hub actor assignment', async ({repos, random}) => {
+	const {hub, actor, actors, assignments} = await random.hub();
 	const communityActor = actors.find((p) => p.type === 'community') as CommunityActor;
 	const assignment = assignments.find(
 		(a) => a.actor_id === communityActor.actor_id && a.hub_id === hub.hub_id,
@@ -90,7 +90,7 @@ test__assignmentServices('fail to delete a hub persona assignment', async ({repo
 		await DeleteAssignmentService.perform({
 			...toServiceRequestMock(repos, communityActor),
 			params: {
-				actor: persona.actor_id,
+				actor: actor.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -100,18 +100,18 @@ test__assignmentServices('fail to delete a hub persona assignment', async ({repo
 
 test__assignmentServices('delete orphaned hubs on last member leaving', async ({repos, random}) => {
 	//Need a hub with two account members
-	const {persona: persona1} = await random.persona();
-	const {hub, assignments} = await random.hub(persona1);
+	const {actor: actor1} = await random.actor();
+	const {hub, assignments} = await random.hub(actor1);
 	const assignment = assignments.find(
-		(a) => a.actor_id === persona1.actor_id && a.hub_id === hub.hub_id,
+		(a) => a.actor_id === actor1.actor_id && a.hub_id === hub.hub_id,
 	)!;
-	const {persona: persona2} = await random.persona();
+	const {actor: actor2} = await random.actor();
 	const {assignment: assignment2} = unwrap(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, persona1),
+			...toServiceRequestMock(repos, actor1),
 			params: {
-				actor: persona1.actor_id,
-				actor_id: persona2.actor_id,
+				actor: actor1.actor_id,
+				actor_id: actor2.actor_id,
 				hub_id: hub.hub_id,
 				role_id: hub.settings.defaultRoleId,
 			},
@@ -122,9 +122,9 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 	//Delete 1 account member, the hub still exists
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, persona1),
+			...toServiceRequestMock(repos, actor1),
 			params: {
-				actor: persona1.actor_id,
+				actor: actor1.actor_id,
 				assignment_id: assignment2.assignment_id,
 			},
 		}),
@@ -135,9 +135,9 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 	//Delete last account member, the hub is deleted
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, persona1),
+			...toServiceRequestMock(repos, actor1),
 			params: {
-				actor: persona1.actor_id,
+				actor: actor1.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),

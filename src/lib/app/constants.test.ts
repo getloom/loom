@@ -11,7 +11,7 @@ test__constants.before(setupDb);
 test__constants.after(teardownDb);
 
 test__constants('check admin constants', async ({repos, random}) => {
-	await random.persona(); // ensure the admin has been created -- there's probably a better way
+	await random.actor(); // ensure the admin has been created -- there's probably a better way
 	const adminActor = await repos.actor.findById(ADMIN_ACTOR_ID);
 	assert.is(adminActor?.name, ADMIN_HUB_NAME);
 	const adminHub = await repos.hub.loadAdminHub();
@@ -19,7 +19,7 @@ test__constants('check admin constants', async ({repos, random}) => {
 });
 
 test__constants('check ghost constants', async ({repos, random}) => {
-	await random.persona(); // ensure the ghost has been created -- there's probably a better way
+	await random.actor(); // ensure the ghost has been created -- there's probably a better way
 	const ghostActor = await repos.actor.findById(GHOST_ACTOR_ID);
 	assert.is(ghostActor?.name, GHOST_ACTOR_NAME);
 });

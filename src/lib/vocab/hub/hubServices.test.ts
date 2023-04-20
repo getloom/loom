@@ -29,15 +29,15 @@ const test_hubServices = suite<TestDbContext>('hubRepo');
 test_hubServices.before(setupDb);
 test_hubServices.after(teardownDb);
 
-test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
-	const {persona, personalHub} = await random.persona();
+test_hubServices('disallow deleting actorl hub', async ({repos, random}) => {
+	const {actor, actorlHub} = await random.actor();
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(personalHub.settings.defaultRoleId, permissions.DeleteHub);
+	await repos.policy.create(actorlHub.settings.defaultRoleId, permissions.DeleteHub);
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
-				...toServiceRequestMock(repos, persona),
-				params: {actor: persona.actor_id, hub_id: persona.hub_id},
+				...toServiceRequestMock(repos, actor),
+				params: {actor: actor.actor_id, hub_id: actor.hub_id},
 			}),
 		).status,
 		405,
@@ -65,64 +65,62 @@ test_hubServices('default admin hub role has all permissions', async ({repos}) =
 	assert.equal(toSortedPermissionNames(adminDefaultPolicies), sortedPermissionNames);
 });
 
-test_hubServices('default personal hub role has all permissions', async ({repos, random}) => {
-	const {persona} = await random.persona();
+test_hubServices('default actorl hub role has all permissions', async ({repos, random}) => {
+	const {actor} = await random.actor();
 
-	const personalHub = await repos.hub.findById(persona.hub_id);
-	assert.ok(personalHub);
-	const personalDefaultPolicies = await repos.policy.filterByRole(
-		personalHub.settings.defaultRoleId,
-	);
+	const actorlHub = await repos.hub.findById(actor.hub_id);
+	assert.ok(actorlHub);
+	const actorlDefaultPolicies = await repos.policy.filterByRole(actorlHub.settings.defaultRoleId);
 
-	assert.equal(toSortedPermissionNames(personalDefaultPolicies), sortedPermissionNames);
+	assert.equal(toSortedPermissionNames(actorlDefaultPolicies), sortedPermissionNames);
 });
 
 test_hubServices('disallow duplicate hub names', async ({repos, random}) => {
-	const {persona} = await random.persona();
+	const {actor} = await random.actor();
 
-	const params = randomHubParams(persona.actor_id);
+	const params = randomHubParams(actor.actor_id);
 	params.template.name += 'Aa';
-	unwrap(await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}));
+	unwrap(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}));
 
 	params.template.name = params.template.name.toLowerCase();
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}))
+		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}))
 			.status,
 		409,
 	);
 
 	params.template.name = params.template.name.toUpperCase();
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}))
+		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}))
 			.status,
 		409,
 	);
 });
 
 test_hubServices('disallow reserved hub names', async ({repos, random}) => {
-	const {persona} = await random.persona();
+	const {actor} = await random.actor();
 
-	const params = randomHubParams(persona.actor_id);
+	const params = randomHubParams(actor.actor_id);
 	params.template.name = 'docs';
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}))
+		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}))
 			.status,
 		409,
 	);
 });
 
 test_hubServices('new hubs have default template roles & policies', async ({repos, random}) => {
-	const {persona} = await random.persona();
+	const {actor} = await random.actor();
 
-	const params = randomHubParams(persona.actor_id);
+	const params = randomHubParams(actor.actor_id);
 	const hubResult = unwrap(
-		await CreateHubService.perform({...toServiceRequestMock(repos, persona), params}),
+		await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}),
 	);
 
 	const roleResult = unwrap(
 		await ReadRolesService.perform({
-			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.actor_id, hub_id: hubResult.hub.hub_id},
+			...toServiceRequestMock(repos, actor),
+			params: {actor: actor.actor_id, hub_id: hubResult.hub.hub_id},
 		}),
 	);
 	assert.is(roleResult.roles.length, 2);
@@ -131,32 +129,32 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 
 	const stewardPolicyResults = unwrap(
 		await ReadPoliciesService.perform({
-			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.actor_id, role_id: hubResult.roles[0].role_id},
+			...toServiceRequestMock(repos, actor),
+			params: {actor: actor.actor_id, role_id: hubResult.roles[0].role_id},
 		}),
 	);
 	assert.equal(toSortedPermissionNames(stewardPolicyResults.policies), sortedPermissionNames);
 
 	const memberPolicyResults = unwrap(
 		await ReadPoliciesService.perform({
-			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.actor_id, role_id: hubResult.roles[1].role_id},
+			...toServiceRequestMock(repos, actor),
+			params: {actor: actor.actor_id, role_id: hubResult.roles[1].role_id},
 		}),
 	);
 	assert.is(memberPolicyResults.policies.length, 5);
 });
 
 test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}) => {
-	const {persona} = await random.persona();
-	const {hub} = await random.hub(persona);
+	const {actor} = await random.actor();
+	const {hub} = await random.hub(actor);
 
 	//TODO hack to allow for authorization; remove on init default impl
 	await repos.policy.create(hub.settings.defaultRoleId, permissions.DeleteHub);
 
 	unwrap(
 		await DeleteHubService.perform({
-			...toServiceRequestMock(repos, persona),
-			params: {actor: persona.actor_id, hub_id: hub.hub_id},
+			...toServiceRequestMock(repos, actor),
+			params: {actor: actor.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 
@@ -182,7 +180,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 test_hubServices(
 	'when new hubs are disabled, only admins should be able to create new ones',
 	async ({repos, random}) => {
-		const {persona} = await random.persona();
+		const {actor} = await random.actor();
 
 		const adminHub = await repos.hub.loadAdminHub();
 		assert.ok(adminHub);
@@ -195,17 +193,17 @@ test_hubServices(
 
 		unwrapError(
 			await CreateHubService.perform({
-				...toServiceRequestMock(repos, persona),
-				params: randomHubParams(persona.actor_id),
+				...toServiceRequestMock(repos, actor),
+				params: randomHubParams(actor.actor_id),
 			}),
 		);
 
-		const actor = await loadAdminActor(repos);
+		const adminActor = await loadAdminActor(repos);
 
 		unwrap(
 			await CreateHubService.perform({
-				...toServiceRequestMock(repos, persona),
-				params: randomHubParams(actor.actor_id),
+				...toServiceRequestMock(repos, actor),
+				params: randomHubParams(adminActor.actor_id),
 			}),
 		);
 
@@ -218,17 +216,17 @@ test_hubServices(
 );
 
 test_hubServices(
-	'InviteToHub assigns the default hub role to the persona',
+	'InviteToHub assigns the default hub role to the actor',
 	async ({repos, random}) => {
-		const {persona} = await random.persona();
-		const {hub, persona: communityActor} = await random.hub();
+		const {actor} = await random.actor();
+		const {hub, actor: communityActor} = await random.hub();
 		unwrap(
 			await InviteToHubService.perform({
 				...toServiceRequestMock(repos, communityActor),
 				params: {
 					actor: communityActor.actor_id,
 					hub_id: hub.hub_id,
-					name: persona.name,
+					name: actor.name,
 				},
 			}),
 		);
@@ -236,93 +234,90 @@ test_hubServices(
 );
 
 test_hubServices(
-	'fail InviteToHub when the persona already has an assignment',
+	'fail InviteToHub when the actor already has an assignment',
 	async ({repos, random}) => {
-		const {persona} = await random.persona();
-		const {hub, persona: communityActor} = await random.hub();
-		await repos.assignment.create(persona.actor_id, hub.hub_id, hub.settings.defaultRoleId);
+		const {actor} = await random.actor();
+		const {hub, actor: communityActor} = await random.hub();
+		await repos.assignment.create(actor.actor_id, hub.hub_id, hub.settings.defaultRoleId);
 		unwrapError(
 			await InviteToHubService.perform({
 				...toServiceRequestMock(repos, communityActor),
 				params: {
 					actor: communityActor.actor_id,
 					hub_id: hub.hub_id,
-					name: persona.name,
+					name: actor.name,
 				},
 			}),
 		);
 	},
 );
 
-test_hubServices('LeaveHub removes all assignments for the persona', async ({repos, random}) => {
-	const {hub, persona} = await random.hub();
-	assert.ok(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id));
+test_hubServices('LeaveHub removes all assignments for the actor', async ({repos, random}) => {
+	const {hub, actor} = await random.hub();
+	assert.ok(await repos.assignment.isActorInHub(actor.actor_id, hub.hub_id));
 	unwrap(
 		await LeaveHubService.perform({
-			...toServiceRequestMock(repos, persona),
+			...toServiceRequestMock(repos, actor),
 			params: {
-				actor: persona.actor_id,
+				actor: actor.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.actor_id,
+				actor_id: actor.actor_id,
 			},
 		}),
 	);
-	assert.ok(!(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isActorInHub(actor.actor_id, hub.hub_id)));
 	assert.is(await repos.hub.findById(hub.hub_id), undefined);
 });
 
-test_hubServices('fail LeaveHub when the persona has no assignments', async ({repos, random}) => {
-	const {persona} = await random.persona();
+test_hubServices('fail LeaveHub when the actor has no assignments', async ({repos, random}) => {
+	const {actor} = await random.actor();
 	const {hub} = await random.hub();
 
 	await expectApiError(400, () =>
 		LeaveHubService.perform({
-			...toServiceRequestMock(repos, persona),
+			...toServiceRequestMock(repos, actor),
 			params: {
-				actor: persona.actor_id,
+				actor: actor.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.actor_id,
+				actor_id: actor.actor_id,
 			},
 		}),
 	);
 });
 
-test_hubServices('KickFromHub removes all assignments for the persona', async ({repos, random}) => {
-	const {persona} = await random.persona();
-	const {hub, persona: communityActor} = await random.hub();
-	await repos.assignment.create(persona.actor_id, hub.hub_id, hub.settings.defaultRoleId);
-	assert.ok(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id));
+test_hubServices('KickFromHub removes all assignments for the actor', async ({repos, random}) => {
+	const {actor} = await random.actor();
+	const {hub, actor: communityActor} = await random.hub();
+	await repos.assignment.create(actor.actor_id, hub.hub_id, hub.settings.defaultRoleId);
+	assert.ok(await repos.assignment.isActorInHub(actor.actor_id, hub.hub_id));
 	unwrap(
 		await KickFromHubService.perform({
 			...toServiceRequestMock(repos, communityActor),
 			params: {
 				actor: communityActor.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona.actor_id,
+				actor_id: actor.actor_id,
 			},
 		}),
 	);
-	assert.ok(!(await repos.assignment.isActorInHub(persona.actor_id, hub.hub_id)));
+	assert.ok(!(await repos.assignment.isActorInHub(actor.actor_id, hub.hub_id)));
 });
 
-test_hubServices(
-	'fail KickFromHub when the persona has no assignments',
-	async ({repos, random}) => {
-		const {persona} = await random.persona();
-		const {hub, persona: communityActor} = await random.hub();
+test_hubServices('fail KickFromHub when the actor has no assignments', async ({repos, random}) => {
+	const {actor} = await random.actor();
+	const {hub, actor: communityActor} = await random.hub();
 
-		await expectApiError(400, () =>
-			KickFromHubService.perform({
-				...toServiceRequestMock(repos, communityActor),
-				params: {
-					actor: communityActor.actor_id,
-					hub_id: hub.hub_id,
-					actor_id: persona.actor_id,
-				},
-			}),
-		);
-	},
-);
+	await expectApiError(400, () =>
+		KickFromHubService.perform({
+			...toServiceRequestMock(repos, communityActor),
+			params: {
+				actor: communityActor.actor_id,
+				hub_id: hub.hub_id,
+				actor_id: actor.actor_id,
+			},
+		}),
+	);
+});
 
 test_hubServices.run();
 /* test_hubServices */

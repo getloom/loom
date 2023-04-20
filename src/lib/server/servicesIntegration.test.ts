@@ -31,37 +31,37 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	//
 	const account = await random.account();
 
-	// create a persona
-	const {persona: persona1} = await random.persona(account);
+	// create a actor
+	const {actor: actor1} = await random.actor(account);
 
-	// create a second persona
-	const {persona: persona2} = await random.persona(account);
+	// create a second actor
+	const {actor: actor2} = await random.actor(account);
 
 	// create hub
-	const {hub} = await random.hub(persona1);
+	const {hub} = await random.hub(actor1);
 
-	// join the hub with the second persona
+	// join the hub with the second actor
 	const {assignment} = unwrap(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, persona1), // add `persona2` with `persona1`
+			...toServiceRequestMock(repos, actor1), // add `actor2` with `actor1`
 			params: {
-				actor: persona1.actor_id,
+				actor: actor1.actor_id,
 				hub_id: hub.hub_id,
-				actor_id: persona2.actor_id,
+				actor_id: actor2.actor_id,
 				role_id: hub.settings.defaultRoleId,
 			},
 		}),
 	);
 
 	// create a space
-	const {space} = await random.space(persona1, account, hub);
+	const {space} = await random.space(actor1, account, hub);
 	const spaceCount = 1;
-	const defaultSpaces = toDefaultSpaces(persona1.actor_id, hub);
+	const defaultSpaces = toDefaultSpaces(actor1.actor_id, hub);
 	const defaultSpaceCount = defaultSpaces.length;
 
 	// create some entities
-	const {entity: entity1} = await random.entity(persona1, account, hub, space, space.directory_id);
-	const {entity: entity2} = await random.entity(persona1, account, hub, space, space.directory_id);
+	const {entity: entity1} = await random.entity(actor1, account, hub, space, space.directory_id);
+	const {entity: entity2} = await random.entity(actor1, account, hub, space, space.directory_id);
 
 	// TODO create some ties
 
@@ -72,37 +72,37 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	const {entities: filteredEntities} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.actor_id, source_id: space.directory_id},
+			...toServiceRequestMock(repos, actor2),
+			params: {actor: actor2.actor_id, source_id: space.directory_id},
 		}),
 	);
 	assert.equal(filteredEntities.slice(), [entity2, entity1]); // `slice` because `RowList` is not deep equal to arrays
 
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
-			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.actor_id, hub_id: hub.hub_id},
+			...toServiceRequestMock(repos, actor2),
+			params: {actor: actor2.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 	assert.is(filteredSpaces.length, spaceCount + defaultSpaceCount);
 
 	const {hub: foundHub} = unwrap(
 		await ReadHubService.perform({
-			...toServiceRequestMock(repos, persona2),
-			params: {actor: persona2.actor_id, hub_id: hub.hub_id},
+			...toServiceRequestMock(repos, actor2),
+			params: {actor: actor2.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 	assert.is(foundHub.name, hub.name);
 
-	assert.is((await repos.hub.filterByAccount(persona2.account_id)).length, 3);
-	assert.is((await repos.hub.filterByActor(persona2.actor_id)).length, 2);
+	assert.is((await repos.hub.filterByAccount(actor2.account_id)).length, 3);
+	assert.is((await repos.hub.filterByActor(actor2.actor_id)).length, 2);
 
 	// TODO add a service event?
 	assert.equal(
 		(await repos.actor.filterByAccount(account.account_id))
 			.sort((a, b) => (a.created < b.created ? -1 : 1))
 			.slice(), // `slice` because `RowList` is not deep equal to arrays
-		[persona1, persona2],
+		[actor1, actor2],
 	);
 
 	// TODO add a service event?
@@ -126,8 +126,8 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
-					...toServiceRequestMock(repos, persona2),
-					params: {actor: persona1.actor_id, space_id: space.space_id},
+					...toServiceRequestMock(repos, actor2),
+					params: {actor: actor1.actor_id, space_id: space.space_id},
 				}),
 			);
 		}
@@ -138,9 +138,9 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, persona2),
+			...toServiceRequestMock(repos, actor2),
 			params: {
-				actor: persona1.actor_id,
+				actor: actor1.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),
@@ -153,13 +153,13 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	await repos.policy.create(hub.settings.defaultRoleId, permissions.DeleteHub);
 	unwrap(
 		await DeleteHubService.perform({
-			...toServiceRequestMock(repos, persona1),
-			params: {actor: persona1.actor_id, hub_id: hub.hub_id},
+			...toServiceRequestMock(repos, actor1),
+			params: {actor: actor1.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 	const readHubResult = await ReadHubService.perform({
-		...toServiceRequestMock(repos, persona1),
-		params: {actor: persona1.actor_id, hub_id: hub.hub_id},
+		...toServiceRequestMock(repos, actor1),
+		params: {actor: actor1.actor_id, hub_id: hub.hub_id},
 	});
 	assert.is(readHubResult.status, 404);
 	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 0);
