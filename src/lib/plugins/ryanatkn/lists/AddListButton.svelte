@@ -18,7 +18,7 @@
 			props: {
 				done: () => actions.CloseDialog(),
 				entityName: 'list',
-				persona: actor,
+				actor,
 				hub,
 				space,
 				fields: {content: true},

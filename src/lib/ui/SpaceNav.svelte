@@ -11,15 +11,15 @@
 		ui: {contextmenu},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let spaces: Array<Readable<Space>>;
 	export let selectedSpace: Readable<Space> | null;
 </script>
 
-<nav class="space-nav" use:contextmenu.action={[[HubContextmenu, {hub, persona}]]}>
+<nav class="space-nav" use:contextmenu.action={[[HubContextmenu, {hub, actor}]]}>
 	{#each spaces as space (space)}
-		<SpaceNavItem {persona} {hub} {space} selected={space === selectedSpace} />
+		<SpaceNavItem {actor} {hub} {space} selected={space === selectedSpace} />
 	{/each}
 </nav>
 

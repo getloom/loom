@@ -47,10 +47,10 @@
 </script>
 
 <div class="notes">
-	<TextInput persona={actor} on:submit={onSubmit} bind:value={text} placeholder="> note" />
+	<TextInput {actor} on:submit={onSubmit} bind:value={text} placeholder="> note" />
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<NotesItems persona={actor} {entities} />
+			<NotesItems {actor} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}

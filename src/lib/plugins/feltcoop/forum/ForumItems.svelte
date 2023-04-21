@@ -9,7 +9,7 @@
 
 	export let entities: Readable<Array<Readable<Entity>>>;
 	export let space: Readable<Space>;
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let selectedPost: Readable<Entity> | null;
 	export let selectPost: (post: Readable<Entity>) => void;
 
@@ -26,12 +26,12 @@
 {#if selectedPost}
 	<button on:click={goBack}>Go Back</button>
 	<div class="wrapper">
-		<ForumItemDetail entity={selectedPost} {space} {persona} />
+		<ForumItemDetail entity={selectedPost} {space} {actor} />
 	</div>
 {:else}
 	<ul>
 		{#each collectionEntities as entity (entity)}
-			<ForumItemSummary {persona} {entity} {selectPost} />
+			<ForumItemSummary {actor} {entity} {selectPost} />
 		{/each}
 	</ul>
 {/if}

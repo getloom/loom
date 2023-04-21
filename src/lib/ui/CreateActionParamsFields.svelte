@@ -10,7 +10,7 @@
 	// bind:params? on:create or on:input ?
 
 	export let params: null | Record<string, any> = null; // TODO type?
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let actionData: ActionData;
 
 	$: paramsProperties = actionData.params?.properties;
@@ -38,7 +38,7 @@
 	};
 	const getValue = (key: string): any => {
 		if (key === 'actor') {
-			return $persona.actor_id;
+			return $actor.actor_id;
 		}
 		return undefined;
 	};
@@ -52,7 +52,7 @@
 			{#if key === 'actor'}
 				<!-- TODO select any of the account's actors from here easily -->
 				<div class="title">actor</div>
-				<ActorAvatar {persona} />
+				<ActorAvatar {actor} />
 			{:else}
 				<PropertyPicker
 					value={params?.[key]}

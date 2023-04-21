@@ -20,7 +20,7 @@
 
 <div class="markup padded-xl">
 	<h1>Kicking From Hub</h1>
-	<ContextInfo {persona} {hub} />
+	<ContextInfo actor={persona} {hub} />
 </div>
 <div class="content panel">
 	{#if communityActors}

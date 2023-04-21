@@ -15,7 +15,7 @@
 		ui: {contextmenu, entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let ties: Readable<Array<Readable<Tie>>>; // TODO maybe don't pass these and do lookups instead
 	export let depth = 0;
@@ -31,7 +31,7 @@
 	$: shouldLoadEntities && loadEntities2();
 	const loadEntities2 = async () => {
 		const result = await actions.ReadEntitiesPaginated({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			source_id: $entity.entity_id,
 		});
 		if (result.ok) {
@@ -45,7 +45,7 @@
 </script>
 
 <li style:--depth={depth}>
-	<div class="item" use:contextmenu.action={[[EntityContextmenu, {persona, entity}]]}>
+	<div class="item" use:contextmenu.action={[[EntityContextmenu, {actor, entity}]]}>
 		{#if hasDestEntities}
 			<button class="icon-button" on:click={() => (expanded = !expanded)}>
 				{#if expanded}–{:else}+{/if}

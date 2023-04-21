@@ -18,7 +18,7 @@
 		actions,
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let space: Readable<Space>;
 	export let selectedList: Readable<Entity> | null;
@@ -40,7 +40,7 @@
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
-	// TODO refactor to some client view-model for the persona
+	// TODO refactor to some client view-model for the actor
 	$: hue = randomHue($authorActor.name);
 
 	$: if (checked !== undefined) void updateEntity(checked);
@@ -52,7 +52,7 @@
 		if ($entity.data.checked === checked) return;
 		pending = true;
 		await actions.UpdateEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, checked}}],
 		});
 		pending = false;
@@ -72,8 +72,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	<li
 		style="--hue: {hue}"
 		use:contextmenu.action={[
-			[EntityContextmenu, {persona, entity}],
-			[ActorContextmenu, {persona: authorActor}],
+			[EntityContextmenu, {actor, entity}],
+			[ActorContextmenu, {actor: authorActor}],
 		]}
 	>
 		<!-- TODO fix a11y -->
@@ -93,14 +93,14 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 				<EntityContent {entity} />
 			</div>
 			<div class="signature">
-				<ActorAvatar persona={authorActor} showName={false} />
+				<ActorAvatar actor={authorActor} showName={false} />
 			</div>
 		</div>
 		{#if items && selected}
 			<div class="items panel">
 				<ul>
 					{#each items as item (item)}
-						<svelte:self {persona} entity={item} {space} {selectedList} {selectList} />
+						<svelte:self {actor} entity={item} {space} {selectedList} {selectList} />
 					{/each}
 				</ul>
 			</div>

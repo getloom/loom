@@ -14,13 +14,13 @@
 		ui: {contextmenu, actorById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let selectPost: (post: Readable<Entity>) => void;
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
-	// TODO refactor to some client view-model for the persona
+	// TODO refactor to some client view-model for the actor
 	$: hue = randomHue($authorActor.name);
 
 	//TODO is this still needed?
@@ -38,8 +38,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	<li
 		style="--hue: {hue}"
 		use:contextmenu.action={[
-			[EntityContextmenu, {persona, entity}],
-			[ActorContextmenu, {persona: authorActor}],
+			[EntityContextmenu, {actor, entity}],
+			[ActorContextmenu, {actor: authorActor}],
 		]}
 	>
 		<!-- TODO remove this override after implementing links -->
@@ -53,7 +53,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 				{/if}
 			</div>
 			<div class="signature">
-				<ActorAvatar persona={authorActor} />
+				<ActorAvatar actor={authorActor} />
 			</div>
 		</div>
 	</li>

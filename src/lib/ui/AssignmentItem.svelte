@@ -27,7 +27,7 @@
 </script>
 
 <li class="assignment-item">
-	<ActorAvatar persona={assignmentActor} showIcon={false} />
+	<ActorAvatar actor={assignmentActor} showIcon={false} />
 	<button class="icon-button plain-button" on:click={() => deleteAssignment()}> ✕ </button>
 </li>
 

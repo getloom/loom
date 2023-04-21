@@ -96,7 +96,7 @@
 <div class="chat">
 	<div class="entities">
 		{#if query && entities}
-			<ReplyChatItems persona={actor} {entities} {selectReply} {queryReply} />
+			<ReplyChatItems {actor} {entities} {selectReply} {queryReply} />
 			{#if more}
 				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
 					>load more</PendingButton
@@ -112,7 +112,7 @@
 		</div>
 	{/if}
 	<TextInput
-		persona={actor}
+		{actor}
 		placeholder="> chat"
 		on:submit={onSubmit}
 		bind:value={text}

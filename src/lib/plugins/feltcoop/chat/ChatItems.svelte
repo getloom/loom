@@ -5,13 +5,13 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ChatItem from '$lib/plugins/feltcoop/chat/ChatItem.svelte';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entities: Mutable<Array<Readable<Entity>>>;
 </script>
 
 <!-- TODO possibly remove the `ul` wrapper and change the `li`s to `div`s -->
 <ul>
 	{#each $entities.value as entity (entity)}
-		<ChatItem {persona} {entity} />
+		<ChatItem {actor} {entity} />
 	{/each}
 </ul>

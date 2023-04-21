@@ -88,7 +88,7 @@
 	<div class="entities">
 		<!-- TODO handle failures here-->
 		{#if entities && $queryStatus === 'success'}
-			<TodoItems persona={actor} {entities} {space} {selectedList} {selectList} />
+			<TodoItems {actor} {entities} {space} {selectedList} {selectList} />
 			<button
 				on:click={() =>
 					actions.OpenDialog({
@@ -96,7 +96,7 @@
 						props: {
 							done: () => actions.CloseDialog(),
 							entityName: 'todo',
-							persona: actor,
+							actor,
 							hub,
 							space,
 							fields: {content: true},
@@ -109,7 +109,7 @@
 	</div>
 	{#if selectedList}
 		<div class="selected-tools">
-			<TextInput persona={actor} placeholder="> new todo" on:submit={onSubmit} bind:value={text} />
+			<TextInput {actor} placeholder="> new todo" on:submit={onSubmit} bind:value={text} />
 			<button on:click={clearDone}>Clear Done</button>
 		</div>
 	{/if}

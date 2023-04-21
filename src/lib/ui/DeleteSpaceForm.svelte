@@ -49,7 +49,7 @@
 <div class="markup padded-xl">
 	<form {...$$restProps}>
 		<h2>Delete Space?</h2>
-		<ContextInfo {persona} {hub} {space} />
+		<ContextInfo actor={persona} {hub} {space} />
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{/if}

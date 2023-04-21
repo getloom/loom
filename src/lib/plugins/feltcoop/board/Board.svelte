@@ -32,13 +32,7 @@
 <div class="board">
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<CreateEntityForm
-				done={() => actions.CloseDialog()}
-				entityName="post"
-				persona={actor}
-				{hub}
-				{space}
-			>
+			<CreateEntityForm done={() => actions.CloseDialog()} entityName="post" {actor} {hub} {space}>
 				<svelte:fragment slot="content_title">post</svelte:fragment>
 				<svelte:fragment slot="error"><span style:display="none" /></svelte:fragment>
 			</CreateEntityForm>

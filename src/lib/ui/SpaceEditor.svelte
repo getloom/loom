@@ -47,7 +47,7 @@
 	<form class="markup" {...$$restProps}>
 		<header>
 			<h2>Edit Space</h2>
-			<ContextInfo {persona} {hub} {space} />
+			<ContextInfo actor={persona} {hub} {space} />
 			<section>
 				<p>created {format($space.created, 'PPPPp')}</p>
 				{#if $space.updated !== null}

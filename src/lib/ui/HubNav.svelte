@@ -9,7 +9,7 @@
 
 <nav class="hub-nav">
 	{#each $sessionActors.value as persona (persona)}
-		<HubNavGroup {persona} />
+		<HubNavGroup actor={persona} />
 	{/each}
 </nav>
 

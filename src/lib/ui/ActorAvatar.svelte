@@ -7,7 +7,7 @@
 	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 
-	export let persona: Readable<ClientActor>;
+	export let actor: Readable<ClientActor>;
 	export let showName = true;
 	export let showIcon = true;
 	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
@@ -15,12 +15,12 @@
 </script>
 
 <Avatar
-	name={toName($persona)}
-	icon={toIcon($persona)}
+	name={toName($actor)}
+	icon={toIcon($actor)}
 	{showName}
 	{showIcon}
 	contextmenuAction={contextmenuAction === undefined
-		? [[ActorContextmenu, {persona}]]
+		? [[ActorContextmenu, {actor}]]
 		: contextmenuAction}
 	{inline}><slot /></Avatar
 >

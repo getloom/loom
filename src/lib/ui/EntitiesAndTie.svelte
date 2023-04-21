@@ -11,7 +11,7 @@
 		ui: {contextmenu},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let destEntity: Readable<Entity>;
 	export let sourceEntity: Readable<Entity>;
 	export let tie: Tie;
@@ -19,13 +19,11 @@
 
 <!-- TODO human-readable name? slug? url? path? -->
 <div>
-	<span
-		class="entity"
-		use:contextmenu.action={[[EntityContextmenu, {persona, entity: sourceEntity}]]}
+	<span class="entity" use:contextmenu.action={[[EntityContextmenu, {actor, entity: sourceEntity}]]}
 		><code><small>{$sourceEntity.data.type} {$sourceEntity.entity_id}</small></code></span
 	>
 	<code class="tie">{tie.type}</code>
-	<span class="entity" use:contextmenu.action={[[EntityContextmenu, {persona, entity: destEntity}]]}
+	<span class="entity" use:contextmenu.action={[[EntityContextmenu, {actor, entity: destEntity}]]}
 		><code><small>{$destEntity.data.type} {$destEntity.entity_id}</small></code></span
 	>
 </div>

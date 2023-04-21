@@ -82,8 +82,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	class:expandItems
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[ActorContextmenu, {persona: authorActor}],
-		[EntityContextmenu, {persona: actor, entity}],
+		[ActorContextmenu, {actor: authorActor}],
+		[EntityContextmenu, {actor, entity}],
 	]}
 >
 	<!-- TODO fix a11y -->
@@ -109,7 +109,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			</button>
 		{/if}
 		<div class="signature" style:padding="var(--spacing_sm)">
-			<ActorAvatar persona={authorActor} showName={false} />
+			<ActorAvatar actor={authorActor} showName={false} />
 		</div>
 		{#if items?.length && (expandItems || expandControls)}
 			<div class="floating-controls">

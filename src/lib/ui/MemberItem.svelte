@@ -10,11 +10,11 @@
 		ui: {contextmenu},
 	} = getApp();
 
-	export let persona: Readable<ClientActor>;
+	export let actor: Readable<ClientActor>;
 </script>
 
-<li use:contextmenu.action={[[ActorContextmenu, {persona}]]}>
-	<ActorAvatar {persona} />
+<li use:contextmenu.action={[[ActorContextmenu, {actor}]]}>
+	<ActorAvatar {actor} />
 </li>
 
 <style>

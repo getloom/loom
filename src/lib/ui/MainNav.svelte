@@ -34,14 +34,14 @@
 		<div class="header">
 			<div class="luggage-placeholder" />
 			<div class="explorer-button">
-				<ActorAvatar persona={selectedActor} />
+				<ActorAvatar actor={selectedActor} />
 			</div>
 		</div>
 		<div class="explorer">
 			<HubNav />
 			{#if selectedActor && selectedHub && selectedHubSpaces}
 				<SpaceNav
-					persona={selectedActor}
+					actor={selectedActor}
 					hub={selectedHub}
 					spaces={selectedHubSpaces}
 					{selectedSpace}

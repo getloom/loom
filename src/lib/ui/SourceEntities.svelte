@@ -6,7 +6,7 @@
 	import EntitiesAndTie from '$lib/ui/EntitiesAndTie.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
 	const {
@@ -22,7 +22,7 @@
 	<fieldset>
 		<legend>source entities</legend>
 		{#each sourceEntities as sourceEntity, i (sourceEntity)}
-			<EntitiesAndTie {persona} destEntity={entity} {sourceEntity} tie={sourceTies[i]} />
+			<EntitiesAndTie {actor} destEntity={entity} {sourceEntity} tie={sourceTies[i]} />
 		{/each}
 	</fieldset>
 {/if}

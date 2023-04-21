@@ -13,7 +13,7 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
 
@@ -30,7 +30,7 @@
 		}
 		status = 'pending';
 		const result = await actions.InviteToHub({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			name,
 		});
@@ -56,7 +56,7 @@
 
 <form class="markup padded-xl" {...$$restProps}>
 	<h2>Invite to Hub</h2>
-	<ContextInfo {persona} {hub} />
+	<ContextInfo {actor} {hub} />
 	<fieldset>
 		<label>
 			<div class="title">persona name to invite</div>

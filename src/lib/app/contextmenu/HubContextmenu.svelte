@@ -18,7 +18,7 @@
 	const {actions} = getApp();
 
 	export let hub: Readable<Hub>;
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 </script>
 
 <ContextmenuSubmenu>
@@ -31,7 +31,7 @@
 			run={() =>
 				actions.OpenDialog({
 					Component: HubEditor,
-					props: {persona, hub, done: () => actions.CloseDialog()},
+					props: {actor, hub, done: () => actions.CloseDialog()},
 				})}
 		>
 			Edit Hub
@@ -40,7 +40,7 @@
 			run={() =>
 				actions.OpenDialog({
 					Component: CreateSpaceForm,
-					props: {persona, hub, done: () => actions.CloseDialog()},
+					props: {actor, hub, done: () => actions.CloseDialog()},
 				})}
 		>
 			Create Space
@@ -50,7 +50,7 @@
 				actions.OpenDialog({
 					Component: ManageRolesForm,
 					dialogProps: {layout: 'page'},
-					props: {persona, hub},
+					props: {actor, hub},
 				})}
 		>
 			Manage Roles
@@ -60,7 +60,7 @@
 				run={() =>
 					actions.OpenDialog({
 						Component: InviteToHubForm,
-						props: {persona, hub, done: () => actions.CloseDialog()},
+						props: {actor, hub, done: () => actions.CloseDialog()},
 					})}
 			>
 				Invite People
@@ -69,7 +69,7 @@
 				run={() =>
 					actions.OpenDialog({
 						Component: KickFromHubForm,
-						props: {persona, hub},
+						props: {actor, hub},
 					})}
 			>
 				Kick People
@@ -78,7 +78,7 @@
 				run={() =>
 					actions.OpenDialog({
 						Component: LeaveHubForm,
-						props: {persona, hub, done: () => actions.CloseDialog()},
+						props: {actor, hub, done: () => actions.CloseDialog()},
 					})}
 			>
 				Leave Hub
@@ -87,7 +87,7 @@
 				run={() =>
 					actions.OpenDialog({
 						Component: DeleteHubForm,
-						props: {persona, hub, done: () => actions.CloseDialog()},
+						props: {actor, hub, done: () => actions.CloseDialog()},
 					})}
 			>
 				Delete Hub

@@ -29,7 +29,7 @@
 			<ul>
 				<!-- TODO probably want these to be sorted so the selected persona is always first -->
 				{#each communityActors as persona (persona)}
-					<MemberItem {persona} />
+					<MemberItem actor={persona} />
 				{/each}
 			</ul>
 		</section>

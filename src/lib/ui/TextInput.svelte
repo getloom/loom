@@ -7,7 +7,7 @@
 
 	const dispatch = createEventDispatcher<{submit: string}>();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let value = '';
 	export let el: HTMLTextAreaElement | undefined = undefined;
 
@@ -19,7 +19,7 @@
 </script>
 
 <div class="text-input">
-	<ActorAvatar {persona} showName={false} />
+	<ActorAvatar {actor} showName={false} />
 	<textarea on:keydown={onKeydown} bind:value {...$$restProps} bind:this={el} />
 </div>
 

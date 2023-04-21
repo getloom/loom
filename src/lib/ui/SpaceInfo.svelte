@@ -17,7 +17,7 @@
 		ui: {contextmenu, sessionActorIndexById, entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
 	export let selected = false;
@@ -26,7 +26,7 @@
 
 	$: hue = randomHue($space.name); // TODO add custom setting on spaces
 
-	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($actor.actor_id)!;
 </script>
 
 <a
@@ -38,7 +38,7 @@
 	class:selected
 	class="space-info"
 	style="--hue: {hue}"
-	use:contextmenu.action={[[SpaceContextmenu, {persona, hub, space}]]}
+	use:contextmenu.action={[[SpaceContextmenu, {actor, hub, space}]]}
 >
 	<div class="name"><SpaceName {space} /></div>
 	<div>

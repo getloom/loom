@@ -8,13 +8,13 @@
 	import type {Space} from '$lib/vocab/space/space';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 
-	export let persona: Readable<AccountActor> | null = null;
+	export let actor: Readable<AccountActor> | null = null;
 	export let hub: Readable<Hub> | null = null;
 	export let space: Readable<Space> | null = null;
 </script>
 
 <div class="context-info">
-	{#if space && persona && hub}
+	{#if space && actor && hub}
 		<div class="row" style:font-size="var(--font_size_xl)">
 			<SpaceName {space} />
 		</div>
@@ -25,10 +25,10 @@
 			<HubAvatar {hub} />
 		</div>
 	{/if}
-	{#if persona}
+	{#if actor}
 		<div class="row">
 			<span class="spaced">as</span>
-			<ActorAvatar {persona} />
+			<ActorAvatar {actor} />
 		</div>
 	{/if}
 </div>

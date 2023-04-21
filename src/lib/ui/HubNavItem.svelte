@@ -26,7 +26,7 @@
 	// TODO should this just use `ui` instead of taking all of these props?
 	// could `ui` be more composable, so it could be easily reused e.g. in docs for demonstration purposes?
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let selected = false;
 
@@ -34,9 +34,9 @@
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
 	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
 
-	$: isActorHomeHub = $hub.name === $persona.name;
+	$: isActorHomeHub = $hub.name === $actor.name;
 
-	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($actor.actor_id)!;
 
 	$: fresh = freshnessByHubId.get($hub.hub_id);
 </script>
@@ -52,7 +52,7 @@
 	class:selected
 	class:actor={isActorHomeHub}
 	style="--hue: {$hub.settings.hue}"
-	use:contextmenu.action={[[HubContextmenu, {hub, persona}]]}
+	use:contextmenu.action={[[HubContextmenu, {hub, actor}]]}
 >
 	{#if $fresh}
 		<FreshnessIndicator />

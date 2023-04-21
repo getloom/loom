@@ -16,12 +16,12 @@
 		ui: {contextmenu, actorById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
-	// TODO refactor to some client view-model for the persona
+	// TODO refactor to some client view-model for the actor
 	$: hue = randomHue($authorActor.name);
 </script>
 
@@ -30,16 +30,16 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 <li
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[EntityContextmenu, {persona, entity}],
-		[ActorContextmenu, {persona: authorActor}],
+		[EntityContextmenu, {actor, entity}],
+		[ActorContextmenu, {actor: authorActor}],
 	]}
 >
 	<div class="signature">
-		<ActorAvatar persona={authorActor} showName={false} />
+		<ActorAvatar actor={authorActor} showName={false} />
 	</div>
 	<div class="content">
 		<div class="signature">
-			<ActorAvatar persona={authorActor} showIcon={false} />
+			<ActorAvatar actor={authorActor} showIcon={false} />
 			<small>{format($entity.created, 'MMM d, p')}</small>
 		</div>
 		<div class="markup formatted"><EntityContent {entity} /></div>

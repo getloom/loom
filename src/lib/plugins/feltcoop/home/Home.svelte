@@ -96,7 +96,7 @@
 						on:click={() =>
 							actions.OpenDialog({
 								Component: EntityEditor,
-								props: {persona: actor, entity: rules},
+								props: {actor, entity: rules},
 								dialogProps: {layout: 'page'},
 							})}
 						>propose change ✍️
@@ -111,7 +111,7 @@
 						on:click={() =>
 							actions.OpenDialog({
 								Component: EntityEditor,
-								props: {persona: actor, entity: norms},
+								props: {actor, entity: norms},
 								dialogProps: {layout: 'page'},
 							})}
 						>propose change ✍️

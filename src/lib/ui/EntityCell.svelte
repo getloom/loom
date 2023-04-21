@@ -8,7 +8,7 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {EntityColumn} from '$lib/vocab/entity/entityHelpers.server';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let propertyName: string;
 
@@ -36,7 +36,7 @@
 			return;
 		}
 		const result = await actions.UpdateEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: updatedData}],
 		});
 		if (!result.ok) errorMessage = result.message;

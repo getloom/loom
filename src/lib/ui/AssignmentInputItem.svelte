@@ -26,7 +26,7 @@
 
 <li>
 	<button type="button" on:click={() => createAssignment()}>
-		<ActorAvatar persona={assignmentActor} />
+		<ActorAvatar actor={assignmentActor} />
 	</button>
 </li>
 

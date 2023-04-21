@@ -21,12 +21,12 @@
 		ui: {sessionActorIndexById, adminActors},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let initialName = ''; // TODO consider exporting `name` instead and delete this
 	export let done: (() => void) | undefined = undefined;
 
-	$: admin = $hub.hub_id === ADMIN_HUB_ID && $adminActors.has(persona);
+	$: admin = $hub.hub_id === ADMIN_HUB_ID && $adminActors.has(actor);
 	$: creatableViewTemplates = toCreatableViewTemplates(admin);
 
 	let name = initialName;
@@ -57,7 +57,7 @@
 		pending = true;
 		errorMessage = null;
 		const result = await actions.CreateSpace({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			name,
 			path: `/${name}`,
@@ -73,7 +73,7 @@
 					$hub.name,
 					renderDirectoryPath(result.value.directory.path),
 					toAppSearchParams(
-						$sessionActorIndexById.get($persona.actor_id) + '',
+						$sessionActorIndexById.get($actor.actor_id) + '',
 						$page.url.searchParams,
 					),
 				),
@@ -94,7 +94,7 @@
 
 <form class="markup padded-xl" {...$$restProps}>
 	<h2>Create a new Space</h2>
-	<ContextInfo {persona} {hub} />
+	<ContextInfo {actor} {hub} />
 	<fieldset>
 		<label>
 			<div class="title">name</div>

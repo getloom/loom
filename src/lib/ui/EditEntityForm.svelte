@@ -17,7 +17,7 @@
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let done: (() => void) | undefined = undefined;
 
@@ -30,18 +30,18 @@
 
 	const updateEntityDataProperty = async (updated: any, field: string) =>
 		actions.UpdateEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, [field]: updated}}],
 		});
 
 	const updateEntityData = async (updated: any) =>
 		actions.UpdateEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: updated}],
 		});
 	const updateEntityPath = async (updated: string | null) =>
 		actions.UpdateEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entities: [{entity_id: $entity.entity_id, path: updated === '' ? null : updated}],
 		});
 
@@ -50,7 +50,7 @@
 	const deleteEntity = async () => {
 		deletePending = true;
 		await actions.DeleteEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entityIds: [$entity.entity_id],
 		});
 		deletePending = false;
@@ -61,7 +61,7 @@
 	const eraseEntity = async () => {
 		erasePending = true;
 		await actions.EraseEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entityIds: [$entity.entity_id],
 		});
 		erasePending = false;
@@ -71,8 +71,8 @@
 <form
 	{...$$restProps}
 	use:contextmenu.action={[
-		[EntityContextmenu, {persona, entity}],
-		[ActorContextmenu, {persona: authorActor}],
+		[EntityContextmenu, {actor, entity}],
+		[ActorContextmenu, {actor: authorActor}],
 	]}
 >
 	<header class="markup" style:--icon_size="var(--icon_size_sm)">
@@ -82,7 +82,7 @@
 			<div><code>{$entity.data.type} {$entity.entity_id}</code></div>
 			<div class="row">
 				<span class="spaced">created by</span>
-				<ActorAvatar persona={authorActor} />
+				<ActorAvatar actor={authorActor} />
 			</div>
 			<div>created {format($entity.created, 'PPPPp')}</div>
 			{#if $entity.updated !== null}
@@ -149,7 +149,7 @@
 	<fieldset>
 		<legend>properties</legend>
 		<PropertyEditor value={$entity.entity_id} field="entity_id" />
-		<!-- TODO add contextmenu entries for this persona -->
+		<!-- TODO add contextmenu entries for this actor -->
 		<PropertyEditor value={$entity.actor_id} field="actor_id" />
 		<PropertyEditor
 			value={$entity.path}
@@ -165,6 +165,6 @@
 			serialize={serializeJson}
 		/>
 	</fieldset>
-	<SourceEntities {persona} {entity} />
-	<DestEntities {persona} {entity} />
+	<SourceEntities {actor} {entity} />
+	<DestEntities {actor} {entity} />
 </form>

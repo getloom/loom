@@ -50,7 +50,7 @@
 <div class="chat">
 	<div class="entities">
 		{#if query && entities}
-			<ChatItems persona={actor} {entities} />
+			<ChatItems {actor} {entities} />
 			{#if more}
 				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
 					>load more</PendingButton
@@ -60,7 +60,7 @@
 			<PendingAnimation />
 		{/if}
 	</div>
-	<TextInput persona={actor} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
+	<TextInput {actor} placeholder="> chat" on:submit={onSubmit} bind:value={text} />
 </div>
 
 <style>

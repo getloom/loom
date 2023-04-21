@@ -20,7 +20,7 @@
 	} = getApp();
 
 	export let entity: Readable<Entity>;
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let space: Readable<Space>;
 
 	$: destTies = lookupTies(destTiesBySourceEntityId, $entity.entity_id);
@@ -34,7 +34,7 @@
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
-	// TODO refactor to some client view-model for the persona
+	// TODO refactor to some client view-model for the actor
 	$: hue = randomHue($authorActor.name);
 
 	$: shouldRender = renderEntity($entity);
@@ -54,7 +54,7 @@
 
 		//TODO better error handling
 		await actions.CreateEntity({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
 			ties: [{source_id: $entity.entity_id}],
@@ -80,8 +80,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		in:slide|local
 		out:scale|local
 		use:contextmenu.action={[
-			[EntityContextmenu, {persona, entity}],
-			[ActorContextmenu, {persona: authorActor}],
+			[EntityContextmenu, {actor, entity}],
+			[ActorContextmenu, {actor: authorActor}],
 		]}
 	>
 		<div class="item markup">
@@ -91,7 +91,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 				title="reply to @{$authorActor.name}"
 				aria-label="reply to @{$authorActor.name}"
 				on:click={() => (replying = !replying)}>↩</button
-			><ActorAvatar persona={authorActor} inline={true} />
+			><ActorAvatar actor={authorActor} inline={true} />
 			<span class="content formatted">
 				<EntityContent {entity} />
 			</span>
@@ -99,7 +99,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		{#if replying}
 			<!-- TODO wrapping with a div looks a little less janky to me, but still not great -->
 			<div in:slide|local class="reply-input panel">
-				<ActorAvatar {persona} />
+				<ActorAvatar {actor} />
 				<textarea
 					placeholder="> replying to @{$authorActor.name}"
 					on:keydown={onKeydown}
@@ -112,7 +112,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			<div class="items">
 				<ol class="panel">
 					{#each items as item (item)}
-						<svelte:self entity={item} {space} {persona} />
+						<svelte:self entity={item} {space} {actor} />
 					{/each}
 				</ol>
 			</div>

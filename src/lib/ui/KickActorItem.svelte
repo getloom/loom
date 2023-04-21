@@ -27,7 +27,7 @@
 </script>
 
 <li class="actor-item">
-	<ActorAvatar persona={communityActor} showIcon={true} />
+	<ActorAvatar actor={communityActor} showIcon={true} />
 	<PendingButton
 		title="kick actor"
 		class="icon-button plain-button"

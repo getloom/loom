@@ -52,7 +52,7 @@
 
 <div class="markup padded-xl">
 	<h1>Manage Roles</h1>
-	<ContextInfo {persona} {hub} />
+	<ContextInfo actor={persona} {hub} />
 </div>
 <div class="content panel">
 	{#if roles && selectedRole}

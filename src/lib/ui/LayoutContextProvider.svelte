@@ -17,12 +17,12 @@
 		ui: {entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor> | null;
+	export let actor: Readable<AccountActor> | null;
 	export let hub: Readable<Hub> | null;
 	export let space: Readable<Space> | null;
 
 	const layoutContext = writable({
-		persona,
+		actor,
 		hub,
 		space,
 		directory: $space ? entityById.get($space.directory_id)! : null,
@@ -30,12 +30,12 @@
 	setLayoutContext(layoutContext);
 	// check to make sure we don't set twice on init
 	$: if (
-		$layoutContext.persona !== persona ||
+		$layoutContext.actor !== actor ||
 		$layoutContext.hub !== hub ||
 		$layoutContext.space !== space
 	) {
 		$layoutContext = {
-			persona,
+			actor,
 			hub,
 			space,
 			directory: $space ? entityById.get($space.directory_id)! : null,

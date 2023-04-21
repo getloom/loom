@@ -5,7 +5,7 @@
 	import EntityCell from '$lib/ui/EntityCell.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
 	$: properties = Object.keys($entity);
@@ -20,7 +20,7 @@
 	<tbody>
 		<tr>
 			{#each properties as propertyName (propertyName)}
-				<td><EntityCell {persona} {entity} {propertyName} /></td>
+				<td><EntityCell {actor} {entity} {propertyName} /></td>
 			{/each}
 		</tr>
 	</tbody>

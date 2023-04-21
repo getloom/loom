@@ -12,7 +12,7 @@
 		ui: {contextmenu, actorById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
@@ -20,8 +20,8 @@
 
 <li
 	use:contextmenu.action={[
-		[EntityContextmenu, {persona, entity}],
-		[ActorContextmenu, {persona: authorActor}],
+		[EntityContextmenu, {actor, entity}],
+		[ActorContextmenu, {actor: authorActor}],
 	]}
 >
 	<pre>{JSON.stringify($entity, null, 2)}</pre>

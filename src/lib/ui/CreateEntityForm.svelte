@@ -16,7 +16,7 @@
 
 	export let done: (() => void) | undefined = undefined;
 	export let entityName = 'Entity';
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 	export let type = 'Collection';
@@ -50,7 +50,7 @@
 		if (fields.name) data.name = name;
 		if (fields.content) data.content = content;
 		const result = await actions.CreateEntity({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?
 			ties: [{source_id: $space.directory_id}],
@@ -78,7 +78,7 @@
 	{#if $$slots.header}
 		<slot name="header">
 			<h2>Create a new {entityName}</h2>
-			<ContextInfo {persona} {hub} {space} />
+			<ContextInfo {actor} {hub} {space} />
 		</slot>
 	{/if}
 	<fieldset>

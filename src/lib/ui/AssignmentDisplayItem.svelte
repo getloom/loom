@@ -14,5 +14,5 @@
 </script>
 
 <div style:--icon_size="var(--icon_size_xs)">
-	<ActorAvatar persona={assignmentActor} />
+	<ActorAvatar actor={assignmentActor} />
 </div>

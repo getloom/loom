@@ -13,32 +13,32 @@
 	$: selectedActor = $actorSelection!;
 	$: selectedHub = $hubSelection;
 
-	export let persona: Readable<AccountActor>; // session persona
+	export let actor: Readable<AccountActor>; // session actor
 
-	$: personalHub = $hubsBySessionActor.get(persona)?.find((c) => c.get().type === 'personal');
+	$: personalHub = $hubsBySessionActor.get(actor)?.find((c) => c.get().type === 'personal');
 
-	$: communityHubs = $hubsBySessionActor.get(persona)?.filter((c) => c.get().type !== 'personal');
+	$: communityHubs = $hubsBySessionActor.get(actor)?.filter((c) => c.get().type !== 'personal');
 </script>
 
 {#if personalHub && communityHubs}
-	<div class="persona-group" use:contextmenu.action={[[ActingActorContextmenu, {persona}]]}>
+	<div class="hub-nav-group" use:contextmenu.action={[[ActingActorContextmenu, {actor}]]}>
 		<HubNavItem
 			hub={personalHub}
-			{persona}
-			selected={persona === selectedActor && personalHub === selectedHub}
+			{actor}
+			selected={actor === selectedActor && personalHub === selectedHub}
 		/>
 		{#each communityHubs as hub (hub)}
-			<HubNavItem {hub} {persona} selected={persona === selectedActor && hub === selectedHub} />
+			<HubNavItem {hub} {actor} selected={actor === selectedActor && hub === selectedHub} />
 		{/each}
 	</div>
 {/if}
 
 <style>
-	.persona-group {
+	.hub-nav-group {
 		width: 100%;
 		margin-bottom: var(--navbar_size);
 	}
-	.persona-group:last-child {
+	.hub-nav-group:last-child {
 		margin-bottom: 0;
 	}
 </style>

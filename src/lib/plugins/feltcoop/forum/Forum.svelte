@@ -43,7 +43,7 @@
 <div class="forum">
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<ForumItems {entities} {space} persona={actor} {selectedPost} {selectPost} />
+			<ForumItems {entities} {space} {actor} {selectedPost} {selectPost} />
 			{#if !selectedPost}
 				<button
 					on:click={() =>
@@ -53,7 +53,7 @@
 								done: () => actions.CloseDialog(),
 								entityName: 'post',
 								fields: {name: true, content: true},
-								persona: actor,
+								actor,
 								hub,
 								space,
 							},

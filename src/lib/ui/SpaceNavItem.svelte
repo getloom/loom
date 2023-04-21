@@ -25,14 +25,14 @@
 		},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 	export let selected: boolean;
 
 	$: directory = entityById.get($space.directory_id)!;
 
-	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($actor.actor_id)!;
 	$: fresh = freshnessByDirectoryId.get($space.directory_id)!;
 </script>
 
@@ -44,7 +44,7 @@
 	)}
 	class="selectable"
 	class:selected
-	use:contextmenu.action={[[SpaceContextmenu, {persona, hub, space}]]}
+	use:contextmenu.action={[[SpaceContextmenu, {actor, hub, space}]]}
 	on:click={() => {
 		// TODO Should this be a click handler or react to UI system actions/changes?
 		// Might make more UX sense to make it react to any state changes,

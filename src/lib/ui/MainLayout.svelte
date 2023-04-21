@@ -12,6 +12,6 @@
 	$: space = $spaceSelection;
 </script>
 
-<LayoutContextProvider {persona} {hub} {space}>
+<LayoutContextProvider actor={persona} {hub} {space}>
 	<SvastText text={$mainLayoutView} />
 </LayoutContextProvider>

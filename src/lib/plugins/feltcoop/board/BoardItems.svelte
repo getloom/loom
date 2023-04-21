@@ -15,7 +15,7 @@
 
 <ol>
 	{#each $entities as entity (entity)}
-		<BoardItemDetail {persona} {entity} {space} />
+		<BoardItemDetail actor={persona} {entity} {space} />
 	{/each}
 </ol>
 

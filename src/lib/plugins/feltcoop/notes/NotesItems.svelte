@@ -5,7 +5,7 @@
 	import NotesItem from '$lib/plugins/feltcoop/notes/NotesItem.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 
 	$: notes = $entities.slice().reverse(); // TODO definitely not this
@@ -13,7 +13,7 @@
 
 <ul>
 	{#each notes as entity (entity)}
-		<NotesItem {persona} {entity} />
+		<NotesItem {actor} {entity} />
 	{/each}
 </ul>
 

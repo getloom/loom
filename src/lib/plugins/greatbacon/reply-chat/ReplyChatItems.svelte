@@ -5,7 +5,7 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ReplyChatItem from '$lib/plugins/greatbacon/reply-chat/ReplyChatItem.svelte';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entities: Mutable<Array<Readable<Entity>>>;
 	export let selectReply: (reply: Readable<Entity>) => void;
 	export let queryReply: (entity_id: number, cb: (entity: Readable<Entity>) => void) => void;
@@ -14,6 +14,6 @@
 <!-- TODO possibly remove the `ul` wrapper and change the `li`s to `div`s -->
 <ul>
 	{#each $entities.value as entity (entity)}
-		<ReplyChatItem {persona} {entity} {selectReply} {queryReply} />
+		<ReplyChatItem {actor} {entity} {selectReply} {queryReply} />
 	{/each}
 </ul>

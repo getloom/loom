@@ -11,20 +11,20 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 </script>
 
 <ContextmenuSubmenu>
 	<svelte:fragment slot="icon">
-		<ActorAvatar {persona} showName={false} />
+		<ActorAvatar {actor} showName={false} />
 	</svelte:fragment>
-	<ActorAvatar {persona} showIcon={false} />
+	<ActorAvatar {actor} showIcon={false} />
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog({
 					Component: CreateHubForm,
-					props: {persona, done: () => actions.CloseDialog()},
+					props: {actor, done: () => actions.CloseDialog()},
 					dialogProps: {layout: 'page'},
 				})}
 		>
@@ -34,7 +34,7 @@
 			run={() =>
 				actions.OpenDialog({
 					Component: DeleteActorForm,
-					props: {persona, done: () => actions.CloseDialog()},
+					props: {actor, done: () => actions.CloseDialog()},
 				})}
 		>
 			Delete Actor

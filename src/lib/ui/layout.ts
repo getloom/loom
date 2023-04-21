@@ -7,7 +7,7 @@ import type {Space} from '$lib/vocab/space/space';
 import {getContext, setContext} from 'svelte';
 
 export interface LayoutContext {
-	persona: Readable<AccountActor> | null;
+	actor: Readable<AccountActor> | null;
 	hub: Readable<Hub> | null;
 	space: Readable<Space> | null;
 	directory: Readable<Entity> | null;

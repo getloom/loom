@@ -39,7 +39,7 @@
 
 <TextInput
 	style="height: var(--input_height)"
-	persona={actor}
+	{actor}
 	placeholder=">"
 	on:submit={onSubmit}
 	bind:value={text}

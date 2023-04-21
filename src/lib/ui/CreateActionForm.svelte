@@ -11,7 +11,7 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 
 	let pending = false;
@@ -95,7 +95,7 @@
 							<legend>params</legend>
 							<code class="params"><pre>{JSON.stringify(formParams, null, 2)}</pre></code>
 							<CreateActionParamsFields
-								{persona}
+								{actor}
 								actionData={selectedActionData}
 								bind:params={formParams}
 							/>

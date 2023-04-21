@@ -23,8 +23,8 @@
 	</svelte:fragment>
 	Account
 	<svelte:fragment slot="menu">
-		{#each $sessionActors.value as persona (persona)}
-			<SessionActorContextmenuEntry {persona} />
+		{#each $sessionActors.value as actor (actor)}
+			<SessionActorContextmenuEntry {actor} />
 		{/each}
 		{#if !$session.guest}
 			<ContextmenuEntry
@@ -64,7 +64,7 @@
 					run={() =>
 						actions.OpenDialog({
 							Component: CreateActionForm,
-							props: {persona: selectedActor},
+							props: {actor: selectedActor},
 							dialogProps: {layout: 'page'},
 						})}
 				>

@@ -23,21 +23,21 @@
 		},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 
-	$: hubId = $hubIdSelectionByActorId.value.get($persona.actor_id) || $persona.hub_id;
+	$: hubId = $hubIdSelectionByActorId.value.get($actor.actor_id) || $actor.hub_id;
 	$: hub = hubById.get(hubId)!;
 	$: spaceIdSelection = $spaceIdSelectionByHubId.value.get($hub.hub_id);
 	$: selectedSpace = spaceIdSelection ? spaceById.get(spaceIdSelection)! : null;
 	$: selectedDirectory = selectedSpace ? entityById.get($selectedSpace!.directory_id)! : null;
-	$: actorIndex = $sessionActorIndexById.get($persona.actor_id)!;
+	$: actorIndex = $sessionActorIndexById.get($actor.actor_id)!;
 </script>
 
-{#if $actorSelection === persona}
+{#if $actorSelection === actor}
 	<li class="menu-item panel" role="none">
 		<div class="content">
-			<div class="icon"><ActorAvatar {persona} showName={false} /></div>
-			<div class="title"><ActorAvatar {persona} showIcon={false} /></div>
+			<div class="icon"><ActorAvatar {actor} showName={false} /></div>
+			<div class="title"><ActorAvatar {actor} showIcon={false} /></div>
 		</div>
 	</li>
 {:else}
@@ -52,7 +52,7 @@
 				),
 			)}
 	>
-		<svelte:fragment slot="icon"><ActorAvatar {persona} showName={false} /></svelte:fragment>
-		<ActorAvatar {persona} showIcon={false} />
+		<svelte:fragment slot="icon"><ActorAvatar {actor} showName={false} /></svelte:fragment>
+		<ActorAvatar {actor} showIcon={false} />
 	</ContextmenuEntry>
 {/if}

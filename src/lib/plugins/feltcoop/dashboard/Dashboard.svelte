@@ -19,7 +19,7 @@
 	} = getApp();
 
 	const layoutContext = getLayoutContext();
-	$: ({persona, hub, space} = $layoutContext);
+	$: ({actor, hub, space} = $layoutContext);
 </script>
 
 <Luggage />
@@ -27,8 +27,8 @@
 <main
 	class="dashboard"
 	use:contextmenu.action={[
-		[SpaceContextmenu, space ? {persona, hub, space} : undefined],
-		[HubContextmenu, hub && persona ? {hub, persona} : undefined],
+		[SpaceContextmenu, space ? {actor, hub, space} : undefined],
+		[HubContextmenu, hub && actor ? {hub, actor} : undefined],
 	]}
 >
 	{#if $expandMarquee}
@@ -41,15 +41,15 @@
 	<div class="space column">
 		<DashboardHeader {space} {hub} />
 		<div class="content">
-			{#if persona}
+			{#if actor}
 				{#if hub}
 					{#if space}
-						<SpaceView {persona} {hub} {space} />
+						<SpaceView {actor} {hub} {space} />
 					{:else}
-						<EmptyPath {persona} {hub} />
+						<EmptyPath {actor} {hub} />
 					{/if}
 				{:else}
-					<CreateHubForm {persona} />
+					<CreateHubForm {actor} />
 				{/if}
 			{:else}
 				<CreateAccountActorForm />

@@ -11,7 +11,7 @@
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 
 	export let entity: Readable<Entity>;
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 
 	const {actions} = getApp();
 </script>
@@ -26,7 +26,7 @@
 			run={() =>
 				actions.OpenDialog({
 					Component: EntityEditor,
-					props: {persona, entity, done: () => actions.CloseDialog()},
+					props: {actor, entity, done: () => actions.CloseDialog()},
 					dialogProps: {layout: 'page'},
 				})}
 		>
@@ -41,7 +41,7 @@
 						props: {
 							confirmed: () =>
 								actions.EraseEntities({
-									actor: $persona.actor_id,
+									actor: $actor.actor_id,
 									entityIds: [$entity.entity_id],
 								}),
 							promptText: 'Erase this entity? This cannot be reversed.',
@@ -58,7 +58,7 @@
 					Component: ConfirmDialog,
 					props: {
 						confirmed: () =>
-							actions.DeleteEntities({actor: $persona.actor_id, entityIds: [$entity.entity_id]}),
+							actions.DeleteEntities({actor: $actor.actor_id, entityIds: [$entity.entity_id]}),
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',
 					},

@@ -13,7 +13,7 @@
 		ui: {viewBySpace},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 
@@ -24,6 +24,6 @@
 	$: viewText = $viewBySpace.value.get(space) || $space.view;
 </script>
 
-<ViewContextProvider actor={persona} {hub} {space}>
+<ViewContextProvider {actor} {hub} {space}>
 	<SvastText text={viewText} />
 </ViewContextProvider>

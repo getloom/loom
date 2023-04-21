@@ -112,7 +112,7 @@
 
 	$: guest = $session.guest;
 	$: onboarding = !guest && !$sessionActors.value.length;
-	$: persona = $actorSelection; // this line must be after `syncUiToUrl`
+	$: actor = $actorSelection; // this line must be after `syncUiToUrl`
 	$: hub = $hubSelection; // this line must be after `syncUiToUrl`
 
 	let clientWidth: number;
@@ -130,8 +130,8 @@
 
 <svelte:body
 	use:contextmenu.action={[
-		[HubContextmenu, hub && persona ? {hub, persona} : undefined],
-		[ActingActorContextmenu, persona ? {persona} : undefined],
+		[HubContextmenu, hub && actor ? {hub, actor} : undefined],
+		[ActingActorContextmenu, actor ? {actor} : undefined],
 		[AppContextmenu, null],
 	]}
 />

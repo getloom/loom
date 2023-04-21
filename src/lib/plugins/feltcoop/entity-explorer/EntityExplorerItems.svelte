@@ -5,13 +5,13 @@
 	import EntityExplorerItem from '$lib/plugins/feltcoop/entity-explorer/EntityExplorerItem.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entities: Readable<Array<Readable<Entity>>>;
 </script>
 
 <ul>
 	{#each $entities as entity (entity)}
-		<EntityExplorerItem {persona} {entity} />
+		<EntityExplorerItem {actor} {entity} />
 	{/each}
 </ul>
 

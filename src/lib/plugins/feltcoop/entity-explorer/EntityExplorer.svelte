@@ -59,12 +59,7 @@
 		{#if entities2}
 			<ul>
 				{#each $entities2 as entity (entity)}
-					<EntityTree
-						persona={actor}
-						{entity}
-						ties={ties2}
-						itemComponent={EntityTreeItemPlaintext}
-					/>
+					<EntityTree {actor} {entity} ties={ties2} itemComponent={EntityTreeItemPlaintext} />
 				{/each}
 			</ul>
 		{:else}
@@ -73,7 +68,7 @@
 	</div>
 	<div class="entities">
 		{#if entities && $queryStatus === 'success'}
-			<EntityExplorerItems persona={actor} {entities} />
+			<EntityExplorerItems {actor} {entities} />
 		{:else}
 			<PendingAnimation />
 		{/if}

@@ -18,7 +18,7 @@
 		ui: {spacesByHubId, entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 
 	let selectedView: 'space' | 'entity' =
@@ -52,10 +52,10 @@
 		</button>
 	</div>
 	{#if selectedView === 'space'}
-		<CreateSpaceForm {persona} {hub} initialName={initialSpaceName} />
+		<CreateSpaceForm {actor} {hub} initialName={initialSpaceName} />
 	{:else if selectedView === 'entity'}
 		{#if homeSpace}
-			<CreateEntityForm {persona} {hub} space={homeSpace} />
+			<CreateEntityForm {actor} {hub} space={homeSpace} />
 		{:else}
 			<span class="error-text">[error: expected a space]</span>
 		{/if}

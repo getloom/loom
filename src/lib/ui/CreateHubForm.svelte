@@ -21,7 +21,7 @@
 		ui: {sessionActorIndexById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 
 	let name = '';
@@ -55,7 +55,7 @@
 		pending = true;
 		errorMessage = null;
 		const result = await actions.CreateHub({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			template: {name, settings: {hue}},
 		});
 		pending = false;
@@ -67,7 +67,7 @@
 					result.value.hub.name,
 					null,
 					toAppSearchParams(
-						$sessionActorIndexById.get($persona.actor_id) + '',
+						$sessionActorIndexById.get($actor.actor_id) + '',
 						$page.url.searchParams,
 					),
 				),
@@ -88,7 +88,7 @@
 
 <form class="markup padded-xl" {...$$restProps}>
 	<h2>Create a new Hub</h2>
-	<ContextInfo {persona} />
+	<ContextInfo {actor} />
 	<fieldset>
 		<label>
 			<div class="title">name</div>

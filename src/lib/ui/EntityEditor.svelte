@@ -7,7 +7,7 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import EditEntityForm from '$lib/ui/EditEntityForm.svelte';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let done: (() => void) | undefined = undefined;
 
@@ -15,11 +15,11 @@
 </script>
 
 <div class="entity-editor column">
-	<EditEntityForm {persona} {entity} {done} />
+	<EditEntityForm {actor} {entity} {done} />
 	{#if $devmode}
 		<hr />
 		<section>
-			<EntityTable {persona} {entity} />
+			<EntityTable {actor} {entity} />
 		</section>
 	{/if}
 </div>

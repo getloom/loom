@@ -17,7 +17,7 @@
 		ui: {entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 
@@ -34,7 +34,7 @@
 			run={() =>
 				actions.OpenDialog({
 					Component: SpaceEditor,
-					props: {persona, space, hub},
+					props: {actor, space, hub},
 					dialogProps: {layout: 'page'},
 				})}
 		>
@@ -45,7 +45,7 @@
 				run={() =>
 					actions.OpenDialog({
 						Component: DeleteSpaceForm,
-						props: {persona, hub, space, done: () => actions.CloseDialog()},
+						props: {actor, hub, space, done: () => actions.CloseDialog()},
 					})}
 			>
 				Delete Space

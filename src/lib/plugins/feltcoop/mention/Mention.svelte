@@ -21,7 +21,7 @@
 	{#if hub && $persona?.type === 'community'}
 		<HubAvatar {hub} {contextmenuAction} {inline}>@</HubAvatar>
 	{:else if persona}
-		<ActorAvatar {persona} {contextmenuAction} {inline}>@</ActorAvatar>
+		<ActorAvatar actor={persona} {contextmenuAction} {inline}>@</ActorAvatar>
 	{:else}
 		@{name}
 	{/if}

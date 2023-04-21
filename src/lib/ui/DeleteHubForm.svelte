@@ -46,7 +46,7 @@
 
 <form class="markup padded-xl" {...$$restProps}>
 	<h2>Delete Hub?</h2>
-	<ContextInfo {persona} {hub} />
+	<ContextInfo actor={persona} {hub} />
 	<label>
 		<div class="title">hub name</div>
 		<input type="text" name="name" placeholder=">" bind:value={lockText} on:keydown={onKeydown} />

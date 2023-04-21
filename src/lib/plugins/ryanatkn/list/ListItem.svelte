@@ -35,8 +35,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	transition:slide|local
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[ActorContextmenu, {persona: authorActor}],
-		[EntityContextmenu, {persona: actor, entity}],
+		[ActorContextmenu, {actor: authorActor}],
+		[EntityContextmenu, {actor, entity}],
 	]}
 >
 	<!-- TODO fix a11y -->
@@ -45,7 +45,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			<EntityContent {entity} />
 		</div>
 		<div class="signature" style:padding="var(--spacing_sm)">
-			<ActorAvatar persona={authorActor} showName={false} />
+			<ActorAvatar actor={authorActor} showName={false} />
 		</div>
 		<button
 			class="plain-button icon-button"
