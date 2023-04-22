@@ -1,4 +1,5 @@
 import {derived, writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {Logger} from '@feltjs/util/log.js';
 
 import {locallyStored} from '$lib/ui/locallyStored';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
@@ -7,12 +8,20 @@ import {LAST_SEEN_KEY} from '$lib/ui/app';
 import type {WritableUi} from '$lib/ui/ui';
 import type {HubId} from '$lib/vocab/hub/hub';
 
+const log = new Logger('[uiMutationHelpers]');
+
 export const setFreshnessByDirectoryId = (ui: WritableUi, directory: Writable<Entity>): void => {
 	const {freshnessByDirectoryId, lastSeenByDirectoryId} = ui;
 	const {entity_id} = directory.get();
 	const lastSeen = lastSeenByDirectoryId.get(entity_id);
-	if (!lastSeen) throw Error(`no lastSeenByDirectoryId for directory:${entity_id}`);
-	if (freshnessByDirectoryId.has(entity_id)) throw Error(`derived already exists dir:${entity_id}`);
+	if (!lastSeen) {
+		log.error(`no lastSeenByDirectoryId for directory:${entity_id}`);
+		return;
+	}
+	if (freshnessByDirectoryId.has(entity_id)) {
+		log.error(`derived already exists dir:${entity_id}`);
+		return;
+	}
 	freshnessByDirectoryId.set(
 		entity_id,
 		derived(
@@ -37,7 +46,8 @@ export const upsertFreshnessByHubId = (ui: WritableUi, hub_id: HubId): void => {
 export const setLastSeen = (ui: WritableUi, directory_id: EntityId, time = Date.now()): void => {
 	const {lastSeenByDirectoryId} = ui;
 	if (lastSeenByDirectoryId.has(directory_id)) {
-		throw Error(`lastSeenByDirectoryId has already been set for directory ${directory_id}`);
+		log.error(`lastSeenByDirectoryId has already been set for directory ${directory_id}`);
+		return;
 	}
 	lastSeenByDirectoryId.set(
 		directory_id,

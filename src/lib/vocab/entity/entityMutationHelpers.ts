@@ -61,11 +61,13 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 };
 
 const updateDirectoryFreshness = (ui: WritableUi, $directory: Directory): void => {
-	const {freshnessByDirectoryId, entityById, spaceById, spaceSelection} = ui;
+	const {lastSeenByDirectoryId, freshnessByDirectoryId, entityById, spaceById, spaceSelection} = ui;
 	const {entity_id} = $directory;
 	//TODO this chunk of code should probably rely on the 'stashed_entities' event above
-	if (!freshnessByDirectoryId.has(entity_id)) {
+	if (!lastSeenByDirectoryId.has(entity_id)) {
 		setLastSeen(ui, entity_id, ($directory.updated || $directory.created).getTime());
+	}
+	if (!freshnessByDirectoryId.has(entity_id)) {
 		setFreshnessByDirectoryId(ui, entityById.get(entity_id)!);
 	}
 	upsertFreshnessByHubId(ui, spaceById.get($directory.space_id)!.get().hub_id);
