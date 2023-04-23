@@ -27,9 +27,9 @@
 	{#if $expandMarquee}
 		<section>
 			<ul>
-				<!-- TODO probably want these to be sorted so the selected persona is always first -->
-				{#each communityActors as persona (persona)}
-					<MemberItem actor={persona} />
+				<!-- TODO probably want these to be sorted so the selected actor is always first -->
+				{#each communityActors as actor (actor)}
+					<MemberItem {actor} />
 				{/each}
 			</ul>
 		</section>

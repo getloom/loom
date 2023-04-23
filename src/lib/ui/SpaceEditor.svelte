@@ -17,7 +17,7 @@
 		ui: {entityById},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
@@ -26,14 +26,14 @@
 
 	const updateSpace = async (updated: any, field: string) =>
 		actions.UpdateSpace({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			[field]: updated,
 		});
 
 	const updateDirectoryPath = async (updated: any) =>
 		actions.UpdateEntities({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			entities: [
 				{
 					entity_id: $directory.entity_id,
@@ -47,7 +47,7 @@
 	<form class="markup" {...$$restProps}>
 		<header>
 			<h2>Edit Space</h2>
-			<ContextInfo actor={persona} {hub} {space} />
+			<ContextInfo {actor} {hub} {space} />
 			<section>
 				<p>created {format($space.created, 'PPPPp')}</p>
 				{#if $space.updated !== null}
@@ -75,7 +75,7 @@
 					actions.OpenDialog({
 						Component: DeleteSpaceForm,
 						props: {
-							persona,
+							actor,
 							hub,
 							space,
 							done: () => {

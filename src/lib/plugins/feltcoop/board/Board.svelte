@@ -36,7 +36,7 @@
 				<svelte:fragment slot="content_title">post</svelte:fragment>
 				<svelte:fragment slot="error"><span style:display="none" /></svelte:fragment>
 			</CreateEntityForm>
-			<BoardItems {entities} {space} persona={actor} />
+			<BoardItems {entities} {space} {actor} />
 			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt-server/pull/514#discussion_r998626893 -->
 			<!-- {:else if $queryStatus === 'failure'}
 				<Message status="error">{$queryError.message}</Message> -->

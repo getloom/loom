@@ -29,7 +29,7 @@ export const createAssignment = async (
 		throw new ApiError(409, 'assignment already exists');
 	}
 
-	// TODO test what happens if the persona doesn't exist
+	// TODO test what happens if the actor doesn't exist
 
 	const assignment = await repos.assignment.create(actor_id, hub_id, role_id);
 	return assignment;

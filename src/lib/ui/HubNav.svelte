@@ -8,8 +8,8 @@
 </script>
 
 <nav class="hub-nav">
-	{#each $sessionActors.value as persona (persona)}
-		<HubNavGroup actor={persona} />
+	{#each $sessionActors.value as actor (actor)}
+		<HubNavGroup {actor} />
 	{/each}
 </nav>
 

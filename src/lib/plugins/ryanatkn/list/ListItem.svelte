@@ -24,7 +24,7 @@
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
-	// TODO refactor to some client view-model for the persona
+	// TODO refactor to some client view-model for the actor
 	$: hue = randomHue($authorActor.name);
 </script>
 

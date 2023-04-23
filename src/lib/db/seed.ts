@@ -75,7 +75,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 				}),
 			);
 			const actor = created.actors[0] as AccountActor;
-			log.debug('created persona', actor);
+			log.debug('created actor', actor);
 			actors.push(actor);
 			await createDefaultEntities(
 				() => ({...toAccountServiceRequest(), actor}),

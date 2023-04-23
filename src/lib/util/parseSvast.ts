@@ -117,7 +117,7 @@ const parseSvastText = (node: Text): SvelteChild => {
 				],
 			});
 		} else if (firstChar === '@' && !checkActorName((restStr = word.substring(1)))) {
-			// `@persona` mentions
+			// `@actor` mentions
 			flushPlainText();
 			(children || (children = [])).push({
 				[ADDED_BY_FELT as any]: true,

@@ -55,7 +55,7 @@
 	$: if (entities) {
 		const result = entities.filter((e) => e.data.name === 'rules' || e.data.name === 'norms');
 		if (result.length === 0) {
-			//TODO initialize these with hub, not user persona
+			//TODO initialize these with hub, not user actor
 			void createEntity(DEFAULT_RULES, 'rules');
 			void createEntity(DEFAULT_NORMS, 'norms');
 		}

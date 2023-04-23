@@ -5,9 +5,9 @@ import type {AccountActor, ActionActor, ClientActor, Actor, ActorId} from '$lib/
 import {GHOST_ACTOR_ID} from '$lib/app/constants';
 
 /**
- * Converts a persona name string to its regular form.
- * Used for both persona and hub names.
- * @param name - A persona name that may be invalid
+ * Converts a actor name string to its regular form.
+ * Used for both actor and hub names.
+ * @param name - A actor name that may be invalid
  * @returns The scrubbed value.
  */
 export const scrubActorName = (name: string): string => name.trim();
@@ -18,9 +18,9 @@ const ACTOR_NAME_MAX_LENGTH = 39; // same as github
 const ACTOR_NAME_MIN_LENGTH = 3;
 
 /**
- * Checks if a persona name is valid.
- * Used for both persona and hub names.
- * @param name - A persona name that may be invalid
+ * Checks if a actor name is valid.
+ * Used for both actor and hub names.
+ * @param name - A actor name that may be invalid
  * @returns `null` if valid, otherwise an error message
  */
 export const checkActorName = (name: string): string | null => {
@@ -53,5 +53,5 @@ export const lookupActor = (
 ): Readable<ClientActor> => (actor_id && actorById.get(actor_id)) || actorById.get(GHOST_ACTOR_ID)!;
 
 export const isAccountActor = (
-	persona: Actor | ClientActor | ActionActor | undefined | null,
-): persona is AccountActor => persona?.type === 'account' && 'hub_id' in persona;
+	actor: Actor | ClientActor | ActionActor | undefined | null,
+): actor is AccountActor => actor?.type === 'account' && 'hub_id' in actor;

@@ -18,7 +18,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, actor_id, role_id} = params;
-		log.debug('[CreateAssignment] creating assignment for persona & role', actor_id, role_id);
+		log.debug('[CreateAssignment] creating assignment for actor & role', actor_id, role_id);
 		log.debug('[CreateAssignment] checking policy', actor, hub_id);
 		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
@@ -32,7 +32,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 };
 
 /**
- * Deletes an assignment of a persona to a role in a hub.
+ * Deletes an assignment of a actor to a role in a hub.
  */
 export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 	action: DeleteAssignment,
@@ -47,13 +47,13 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 		const {actor_id, hub_id} = assignment;
 		await checkPolicy(permissions.DeleteAssignment, actor, hub_id, repos);
 		// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
-		// const [personaResult, hubResult] = await Promise.all([
-		// 	repos.persona.findById(actor_id),
+		// const [actorResult, hubResult] = await Promise.all([
+		// 	repos.actor.findById(actor_id),
 		// 	repos.hub.findById(hub_id),
 		// ]);
-		const persona = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
-		if (!persona) {
-			return {ok: false, status: 404, message: 'no persona found'};
+		const actorData = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
+		if (!actorData) {
+			return {ok: false, status: 404, message: 'no actor found'};
 		}
 		const hub = await repos.hub.findById(hub_id);
 		if (!hub) {
@@ -70,8 +70,8 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 				return {ok: false, status: 405, message: 'cannot orphan the admin hub'};
 			}
 		}
-		if (persona.type === 'community' && persona.hub_id === hub_id) {
-			return {ok: false, status: 405, message: 'hub persona cannot leave its hub'};
+		if (actorData.type === 'community' && actorData.hub_id === hub_id) {
+			return {ok: false, status: 405, message: 'hub actor cannot leave its hub'};
 		}
 
 		await repos.assignment.deleteById(assignment_id);

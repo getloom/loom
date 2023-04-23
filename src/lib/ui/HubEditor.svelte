@@ -13,7 +13,7 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
 </script>
@@ -34,7 +34,7 @@
 		</header>
 		<fieldset>
 			<legend>settings</legend>
-			<HubSettingsHue {persona} {hub} />
+			<HubSettingsHue {actor} {hub} />
 		</fieldset>
 		<fieldset>
 			<legend class="error-text">danger! zone</legend>
@@ -44,7 +44,7 @@
 					actions.OpenDialog({
 						Component: LeaveHubForm,
 						props: {
-							persona,
+							actor,
 							hub,
 							done: () => {
 								actions.CloseDialog();
@@ -59,7 +59,7 @@
 					actions.OpenDialog({
 						Component: DeleteHubForm,
 						props: {
-							persona,
+							actor,
 							hub,
 							done: () => {
 								actions.CloseDialog();
@@ -69,7 +69,7 @@
 					})}>delete hub</button
 			>
 		</fieldset>
-		<EditHubAdvanced actor={persona} {hub} />
+		<EditHubAdvanced {actor} {hub} />
 	</form>
 </div>
 

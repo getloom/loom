@@ -8,7 +8,7 @@
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import KickActorItem from '$lib/ui/KickActorItem.svelte';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 
 	const {
@@ -20,13 +20,13 @@
 
 <div class="markup padded-xl">
 	<h1>Kicking From Hub</h1>
-	<ContextInfo actor={persona} {hub} />
+	<ContextInfo {actor} {hub} />
 </div>
 <div class="content panel">
 	{#if communityActors}
 		<ul class="details-wrapper">
 			{#each communityActors as communityActor (communityActor)}
-				<KickActorItem {persona} {hub} {communityActor} />
+				<KickActorItem {actor} {hub} {communityActor} />
 			{/each}
 		</ul>
 	{:else}

@@ -9,20 +9,20 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 	export let pending = false;
 
 	let errorMessage: string | undefined;
 	let lockText = '';
-	$: locked = lockText.toLowerCase().trim() !== $persona.name.toLowerCase();
+	$: locked = lockText.toLowerCase().trim() !== $actor.name.toLowerCase();
 
 	const deleteActor = async () => {
 		pending = true;
 		errorMessage = '';
 		const result = await actions.DeleteActor({
-			actor: $persona.actor_id,
-			actor_id: $persona.actor_id,
+			actor: $actor.actor_id,
+			actor_id: $actor.actor_id,
 		});
 		if (result.ok) {
 			done?.();
@@ -43,7 +43,7 @@
 </script>
 
 <form class="markup padded-xl" {...$$restProps}>
-	<h2>Delete <Mention name={$persona.name} />?</h2>
+	<h2>Delete <Mention name={$actor.name} />?</h2>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>
 	{/if}
@@ -55,6 +55,6 @@
 		on:keydown={onKeydown}
 	/>
 	<PendingButton {pending} disabled={locked || pending} on:click={deleteActor}>
-		delete persona
+		delete actor
 	</PendingButton>
 </form>

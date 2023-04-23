@@ -114,7 +114,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 // but we don't treat them separately from regular actors when using them,
 // so as a hack we swap the session actors in for the regular actors,
 // but these probably need to be split into two separate collections.
-// Any code that needs session actors given a regular persona could do a lookup,
+// Any code that needs session actors given a regular actor could do a lookup,
 // but otherwise we'd be passing around the `Actor` objects in most cases.
 // This would make things typesafe as well.
 const toInitialActors = (session: ClientSession): ClientActor[] =>

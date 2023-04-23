@@ -39,7 +39,7 @@ export const createSpace = async (
 
 	const hubActor = await repos.actor.findByHub(hub_id, ACTOR_COLUMNS.ActorId);
 	if (!hubActor) {
-		throw new ApiError(409, 'failed to find the hub persona');
+		throw new ApiError(409, 'failed to find the hub actor');
 	}
 
 	log.debug('[CreateSpace] initializing directory for space');

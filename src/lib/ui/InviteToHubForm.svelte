@@ -59,7 +59,7 @@
 	<ContextInfo {actor} {hub} />
 	<fieldset>
 		<label>
-			<div class="title">persona name to invite</div>
+			<div class="title">actor name to invite</div>
 			<input
 				placeholder=">"
 				bind:this={nameEl}

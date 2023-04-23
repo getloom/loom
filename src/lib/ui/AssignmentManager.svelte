@@ -30,8 +30,8 @@
 	<h1>Assign the role "{$role.name}" to:</h1>
 	{#if selectedActor}
 		<menu>
-			{#each assignableActors as persona (persona)}
-				<AssignmentInputItem persona={selectedActor} assignmentActor={persona} {hub} {role} />
+			{#each assignableActors as actor (actor)}
+				<AssignmentInputItem actor={selectedActor} assignmentActor={actor} {hub} {role} />
 			{:else}
 				<p>There's no one new to assign this role to</p>
 			{/each}

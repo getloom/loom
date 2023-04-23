@@ -43,7 +43,7 @@ export const initAdminHub = async (
 	| undefined
 	| {
 			hub: Hub;
-			persona: PublicActor;
+			actor: PublicActor;
 			ghost: PublicActor;
 			roles: Role[];
 			policies: Policy[];
@@ -53,7 +53,7 @@ export const initAdminHub = async (
 	if (await repos.hub.hasAdminHub()) return;
 
 	// The admin hub doesn't exist, so this is a freshly installed instance!
-	// We need to set up the admin hub and its persona.
+	// We need to set up the admin hub and its actor.
 	// For more see /src/docs/admin.md
 
 	// Create the hub.
@@ -63,30 +63,30 @@ export const initAdminHub = async (
 		toDefaultHubSettings(ADMIN_HUB_NAME),
 	);
 
-	// Create the hub persona.
-	const persona = await repos.actor.createCommunityActor(hub.name, hub.hub_id);
+	// Create the hub actor.
+	const actor = await repos.actor.createCommunityActor(hub.name, hub.hub_id);
 
 	// Init
 	const {roles, policies, assignments} = await initTemplateGovernanceForHub(
 		repos,
 		defaultAdminHubRoles,
 		hub,
-		persona.actor_id,
+		actor.actor_id,
 	);
 
-	// Create the ghost persona.
+	// Create the ghost actor.
 	const ghost = await repos.actor.createGhostActor();
 
-	return {hub, persona, ghost, roles, policies, assignments};
+	return {hub, actor, ghost, roles, policies, assignments};
 };
 
 /**
  * Initializes hub governance from templates,
- * creating the initial roles and policies, and the assignment for the creator persona.
+ * creating the initial roles and policies, and the assignment for the creator actor.
  * @param repos - the db repo
  * @param roleTemplates - the array of role templates
  * @param hub  - the hub which the templates are being initialized
- * @param actor - the creator persona
+ * @param actor - the creator actor
  * @returns
  */
 export const initTemplateGovernanceForHub = async (
@@ -146,7 +146,7 @@ export const checkRemoveActor = async (
 	}
 	const actor = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
 	if (!actor) {
-		throw new ApiError(404, 'no persona found');
+		throw new ApiError(404, 'no actor found');
 	}
 	const hub = await repos.hub.findById(hub_id);
 	if (!hub) {

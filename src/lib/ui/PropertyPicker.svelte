@@ -11,7 +11,7 @@
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {HubId} from '$lib/vocab/hub/hub';
 
-	// TODO have an API to click-to-pick for even string values (with a button for more) for things like strings (like persona names, space names, etc, from templates or random)
+	// TODO have an API to click-to-pick for even string values (with a button for more) for things like strings (like actor names, space names, etc, from templates or random)
 	// TODO pick hub and the others
 	// TODO optional properties
 

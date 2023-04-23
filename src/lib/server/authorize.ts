@@ -25,7 +25,7 @@ export const authorize = async (
 	}
 	// TODO possibly check that the account still exists and is in good standing,
 	// and if loading the account is required for the check, add it to the service request,
-	// similar to the `persona` in the authorization code below
+	// similar to the `actor` in the authorization code below
 
 	// If the params have an `actor` property, authorize it for the account.
 	// Params validation ensures that omitting `actor` is caught ahead of this function call.

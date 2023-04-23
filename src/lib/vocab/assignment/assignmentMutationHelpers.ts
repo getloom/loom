@@ -39,7 +39,7 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 		assignmentById.delete(assignment.assignment_id);
 		$assignments.delete(assignment);
 
-		// Did the persona leave the hub?
+		// Did the actor leave the hub?
 		// Check if we need to evict any actors.
 		let didActorLeaveHub = true;
 		const {actor_id, hub_id} = assignment;
@@ -51,12 +51,12 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 			}
 		}
 		if (didActorLeaveHub) {
-			// When a session persona leaves a hub,
-			// the persona is never evicted.
-			// and we evict the hub unless another session persona has an assignment in it.
-			// When a non-session persona leaves a hub,
+			// When a session actor leaves a hub,
+			// the actor is never evicted.
+			// and we evict the hub unless another session actor has an assignment in it.
+			// When a non-session actor leaves a hub,
 			// the hub is never evicted,
-			// and the persona is evicted unless it has an assignment in another hub.
+			// and the actor is evicted unless it has an assignment in another hub.
 			if ($sessionActorIndexById.has(actor_id)) {
 				let doesHubHaveOtherSessionAssignment = false;
 				for (const a of $assignments) {
@@ -71,7 +71,7 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 				}
 			} else {
 				let doesActorHaveOtherAssignment = false;
-				// TODO could speed this up with a cache of assignments by persona
+				// TODO could speed this up with a cache of assignments by actor
 				for (const a of $assignments) {
 					if (a.actor_id === actor_id) {
 						doesActorHaveOtherAssignment = true;
@@ -79,9 +79,9 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 					}
 				}
 				if (!doesActorHaveOtherAssignment) {
-					const persona = actorById.get(actor_id);
-					if (persona) {
-						evictActor(ui, persona);
+					const actor = actorById.get(actor_id);
+					if (actor) {
+						evictActor(ui, actor);
 					}
 				}
 			}

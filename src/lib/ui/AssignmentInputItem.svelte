@@ -9,14 +9,14 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let assignmentActor: Readable<ClientActor>;
 	export let hub: Readable<Hub>;
 	export let role: Readable<Role>;
 
 	const createAssignment = async () => {
 		await actions.CreateAssignment({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			actor_id: $assignmentActor.actor_id,
 			role_id: $role.role_id,

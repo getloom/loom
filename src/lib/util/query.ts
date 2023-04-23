@@ -52,7 +52,7 @@ export const createPaginatedQuery = (
 	matchEntity: QueryMatchEntity = matchEntityBySourceId,
 ): PaginatedQueryStore => {
 	// TODO the key should be something like `params.actor + '__ ' + params.source_id`
-	// but we currently don't handle queries per persona in the mutation layer.
+	// but we currently don't handle queries per actor in the mutation layer.
 	const key = params.source_id;
 	const {paginatedQueryByKey} = ui;
 	let query = paginatedQueryByKey.get(key);

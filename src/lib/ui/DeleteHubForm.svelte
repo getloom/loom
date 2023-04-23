@@ -11,7 +11,7 @@
 	const {actions} = getApp();
 
 	export let hub: Readable<Hub>;
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 
 	let errorMessage: string | undefined;
@@ -23,7 +23,7 @@
 		pending = true;
 		errorMessage = '';
 		const result = await actions.DeleteHub({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 		});
 		if (result.ok) {
@@ -46,7 +46,7 @@
 
 <form class="markup padded-xl" {...$$restProps}>
 	<h2>Delete Hub?</h2>
-	<ContextInfo actor={persona} {hub} />
+	<ContextInfo {actor} {hub} />
 	<label>
 		<div class="title">hub name</div>
 		<input type="text" name="name" placeholder=">" bind:value={lockText} on:keydown={onKeydown} />

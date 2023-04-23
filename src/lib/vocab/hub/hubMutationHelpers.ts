@@ -64,9 +64,9 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 	}
 
 	if (hubSelection.get() === hub) {
-		const persona = actorSelection.get()!;
+		const actor = actorSelection.get()!;
 		ui.afterMutation(() =>
-			goto(toHubUrl(persona.get().name, null, get(page).url.search), {
+			goto(toHubUrl(actor.get().name, null, get(page).url.search), {
 				replaceState: true,
 			}),
 		);
@@ -82,10 +82,10 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 	let mutated = false;
 	for (const [actor_id, hubIdSelection] of $hubIdSelectionByActorId) {
 		if (hubIdSelection !== hub_id) continue;
-		const persona = actorById.get(actor_id);
-		const $persona = persona?.get();
-		if (!isAccountActor($persona)) continue; // TODO this check could be refactored, shouldn't be necessary here
-		$hubIdSelectionByActorId.set(actor_id, $persona.hub_id);
+		const actor = actorById.get(actor_id);
+		const $actor = actor?.get();
+		if (!isAccountActor($actor)) continue; // TODO this check could be refactored, shouldn't be necessary here
+		$hubIdSelectionByActorId.set(actor_id, $actor.hub_id);
 		mutated = true;
 	}
 	if (mutated) hubIdSelectionByActorId.mutate();

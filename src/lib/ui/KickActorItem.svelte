@@ -10,7 +10,7 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let communityActor: Readable<ClientActor>;
 
@@ -18,7 +18,7 @@
 	const kickActorFromHub = async () => {
 		kickPending = true;
 		await actions.KickFromHub({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			actor_id: $communityActor.actor_id,
 			hub_id: $hub.hub_id,
 		});

@@ -8,14 +8,14 @@
 
 	export let entities: Readable<Array<Readable<Entity>>>;
 	export let space: Readable<Space>;
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 </script>
 
 <!-- TODO possibly remove the `ol` wrapper and change the `li`s to `div`s -->
 
 <ol>
 	{#each $entities as entity (entity)}
-		<BoardItemDetail actor={persona} {entity} {space} />
+		<BoardItemDetail {actor} {entity} {space} />
 	{/each}
 </ol>
 

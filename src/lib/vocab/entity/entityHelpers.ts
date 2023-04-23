@@ -30,7 +30,7 @@ const WHITESPACE_MATCHER = /\s/u;
 
 /**
  * Checks if a path is valid.
- * Used for both persona and community paths.
+ * Used for both actor and community paths.
  * @param path
  * @returns `null` if valid, otherwise an error message
  */

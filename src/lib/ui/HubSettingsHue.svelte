@@ -9,13 +9,13 @@
 
 	const {actions} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 
 	const UPDATE_INTERVAL = 500; // TODO extract this to config
 	const updateHue = throttle(UPDATE_INTERVAL, async (hue: number): Promise<void> => {
 		await actions.UpdateHubSettings({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			settings: {...$hub.settings, hue},
 		});

@@ -18,7 +18,7 @@
 		ui: {assignmentsByRoleId, policiesByRoleId},
 	} = getApp();
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let role: Readable<Role>;
 	export let hub: Readable<Hub>;
 	export let deleteRole: (role: Readable<Role>) => Promise<DeleteRoleResponseResult>;
@@ -35,7 +35,7 @@
 
 		//TODO better error handling
 		await actions.UpdateRole({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			role_id: $role.role_id,
 			name,
 		});
@@ -84,14 +84,14 @@
 						props: {role, hub},
 					})}
 			>
-				assign this role to a persona
+				assign this role to an actor
 			</button>
 		</form>
 		{#if assignments}
 			{#if assignments.length}
 				<ul class="assignments">
 					{#each assignments as assignment (assignment)}
-						<AssignmentItem actor={persona} {assignment} />
+						<AssignmentItem {actor} {assignment} />
 					{/each}
 				</ul>
 			{:else}
@@ -107,7 +107,7 @@
 		{#if policies}
 			<ul class="policies">
 				{#each permissionNames as permission (permission)}
-					<PolicyItem actor={persona} {role} {permission} policy={policies.get(permission)} />
+					<PolicyItem {actor} {role} {permission} policy={policies.get(permission)} />
 				{/each}
 			</ul>
 		{:else}

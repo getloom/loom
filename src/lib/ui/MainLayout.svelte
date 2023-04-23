@@ -7,11 +7,11 @@
 		ui: {mainLayoutView, actorSelection, hubSelection, spaceSelection},
 	} = getApp();
 
-	$: persona = $actorSelection;
+	$: actor = $actorSelection;
 	$: hub = $hubSelection;
 	$: space = $spaceSelection;
 </script>
 
-<LayoutContextProvider actor={persona} {hub} {space}>
+<LayoutContextProvider {actor} {hub} {space}>
 	<SvastText text={$mainLayoutView} />
 </LayoutContextProvider>

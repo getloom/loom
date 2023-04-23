@@ -12,16 +12,16 @@
 	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
 	export let inline = true;
 
-	// TODO maybe add a cache of persona by name
+	// TODO maybe add a cache of actor by name
 	$: hub = Array.from($hubs.value).find((c) => c.get().name === name);
-	$: persona = Array.from($actors.value).find((p) => p.get().name === name);
+	$: actor = Array.from($actors.value).find((p) => p.get().name === name);
 </script>
 
 <span class="mention" class:inline>
-	{#if hub && $persona?.type === 'community'}
+	{#if hub && $actor?.type === 'community'}
 		<HubAvatar {hub} {contextmenuAction} {inline}>@</HubAvatar>
-	{:else if persona}
-		<ActorAvatar actor={persona} {contextmenuAction} {inline}>@</ActorAvatar>
+	{:else if actor}
+		<ActorAvatar {actor} {contextmenuAction} {inline}>@</ActorAvatar>
 	{:else}
 		@{name}
 	{/if}

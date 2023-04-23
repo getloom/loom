@@ -13,7 +13,7 @@
 
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 	export let pending = false;
 
@@ -25,7 +25,7 @@
 		pending = true;
 		errorMessage = '';
 		const result = await actions.DeleteSpace({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
 		});
 		if (result.ok) {
@@ -49,7 +49,7 @@
 <div class="markup padded-xl">
 	<form {...$$restProps}>
 		<h2>Delete Space?</h2>
-		<ContextInfo actor={persona} {hub} {space} />
+		<ContextInfo {actor} {hub} {space} />
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{/if}

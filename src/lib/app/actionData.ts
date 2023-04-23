@@ -63,7 +63,7 @@ export const actionDatas: ActionData[] = [
 	InviteToHub,
 	LeaveHub,
 	KickFromHub,
-	// personaEvents
+	// actorEvents
 	CreateAccountActor,
 	DeleteActor,
 	// assignmentEvents

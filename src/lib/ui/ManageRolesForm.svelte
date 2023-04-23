@@ -12,7 +12,7 @@
 	import RoleDetails from '$lib/ui/RoleDetails.svelte';
 	import type {DeleteRoleResponseResult} from '$lib/app/actionTypes';
 
-	export let persona: Readable<AccountActor>;
+	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 
 	$: defaultRoleId = $hub.settings.defaultRoleId;
@@ -27,7 +27,7 @@
 	const createRole = async () => {
 		//TODO better error handling
 		const result = await actions.CreateRole({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			name: 'new role',
 		});
@@ -45,14 +45,14 @@
 
 	const deleteRole = (role: Readable<Role>): Promise<DeleteRoleResponseResult> =>
 		actions.DeleteRole({
-			actor: $persona.actor_id,
+			actor: $actor.actor_id,
 			role_id: role.get().role_id,
 		});
 </script>
 
 <div class="markup padded-xl">
 	<h1>Manage Roles</h1>
-	<ContextInfo actor={persona} {hub} />
+	<ContextInfo {actor} {hub} />
 </div>
 <div class="content panel">
 	{#if roles && selectedRole}
@@ -67,7 +67,7 @@
 			<button type="button" class="plain-button" on:click={createRole}>create a new role</button>
 		</div>
 		<div class="details-wrapper">
-			<RoleDetails {persona} role={selectedRole} {hub} {deleteRole} />
+			<RoleDetails {actor} role={selectedRole} {hub} {deleteRole} />
 		</div>
 	{:else}
 		<PendingAnimation />
