@@ -33,14 +33,14 @@ export const AccountActorSchema = {
 		A reference to this personal Hub is stored in 'hub_id'.
 	`,
 	properties: {
-		actor_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 		account_id: {
-			type: 'number',
+			$ref: '/schemas/AccountId.json',
 			tsType: 'AccountId',
 			tsImport: "import type {AccountId} from '$lib/vocab/account/account'",
 		},
 		hub_id: {
-			type: 'number',
+			$ref: '/schemas/HubId.json',
 			tsType: 'HubId',
 			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 		},
@@ -63,10 +63,10 @@ export const CommunityActorSchema = {
 		The Hub that owns it is represented by 'hub_id'.
 	`,
 	properties: {
-		actor_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 		account_id: {type: 'null'},
 		hub_id: {
-			type: 'number',
+			$ref: '/schemas/HubId.json',
 			tsType: 'HubId',
 			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 		},
@@ -87,7 +87,7 @@ export const GhostActorSchema = {
 	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.	 
 	`,
 	properties: {
-		actor_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 		account_id: {type: 'null'},
 		hub_id: {type: 'null'},
 		type: {type: 'string', enum: ['ghost']},
@@ -110,7 +110,7 @@ export const PublicActorSchema = {
 		A subset of an Actor available to all clients in a hub.
 	`,
 	properties: {
-		actor_id: {type: 'number', tsType: 'ActorId'},
+		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 		type: {type: 'string', enum: ['account', 'community', 'ghost']},
 		name: {type: 'string'},
 		icon: {type: 'string'},

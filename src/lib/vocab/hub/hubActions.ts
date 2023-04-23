@@ -7,7 +7,7 @@ export const CreateHub: ServiceActionData = {
 		$id: '/schemas/CreateHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			template: {type: 'object', tsType: 'HubTemplate'}, // TODO add template schemas and use $ref
 		},
 		required: ['actor', 'template'],
@@ -48,9 +48,9 @@ export const ReadHub: ServiceActionData = {
 		$id: '/schemas/ReadHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
@@ -93,9 +93,9 @@ export const UpdateHubSettings: ServiceActionData = {
 		$id: '/schemas/UpdateHubSettingsParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
@@ -122,9 +122,9 @@ export const DeleteHub: ServiceActionData = {
 		$id: '/schemas/DeleteHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
@@ -151,9 +151,9 @@ export const InviteToHub: ServiceActionData = {
 		$id: '/schemas/InviteToHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
@@ -187,14 +187,14 @@ export const LeaveHub: ServiceActionData = {
 		$id: '/schemas/LeaveHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			actor_id: {
-				type: 'number',
+				$ref: '/schemas/ActorId.json',
 				tsType: 'ActorId',
 				tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
 			},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
@@ -221,10 +221,10 @@ export const KickFromHub: ServiceActionData = {
 		$id: '/schemas/KickFromHubParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
-			actor_id: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+			actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},

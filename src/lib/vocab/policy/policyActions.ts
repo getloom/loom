@@ -8,9 +8,9 @@ export const CreatePolicy: ServiceActionData = {
 		$id: '/schemas/CreatePolicyParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			role_id: {
-				type: 'number',
+				$ref: '/schemas/RoleId.json',
 				tsType: 'RoleId',
 				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
 			},
@@ -42,9 +42,9 @@ export const ReadPolicies: ServiceActionData = {
 		$id: '/schemas/ReadPoliciesParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			role_id: {
-				type: 'number',
+				$ref: '/schemas/RoleId.json',
 				tsType: 'RoleId',
 				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
 			},
@@ -76,9 +76,9 @@ export const UpdatePolicy: ServiceActionData = {
 		$id: '/schemas/UpdatePolicyParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			policy_id: {
-				type: 'number',
+				$ref: '/schemas/PolicyId.json',
 				tsType: 'PolicyId',
 				tsImport: "import type {PolicyId} from '$lib/vocab/policy/policy'",
 			},
@@ -111,9 +111,9 @@ export const DeletePolicy: ServiceActionData = {
 		$id: '/schemas/DeletePolicyParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			policy_id: {
-				type: 'number',
+				$ref: '/schemas/PolicyId.json',
 				tsType: 'PolicyId',
 				tsImport: "import type {PolicyId} from '$lib/vocab/policy/policy'",
 			},

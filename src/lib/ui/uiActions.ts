@@ -27,9 +27,9 @@ export const Ephemera: ServiceActionData = {
 		$id: '/schemas/EphemeraParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			space_id: {
-				type: 'number',
+				$ref: '/schemas/SpaceId.json',
 				tsType: 'SpaceId',
 				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
 			},
@@ -42,9 +42,9 @@ export const Ephemera: ServiceActionData = {
 		$id: '/schemas/EphemeraResponse.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			space_id: {
-				type: 'number',
+				$ref: '/schemas/SpaceId.json',
 				tsType: 'SpaceId',
 				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
 			},
@@ -125,7 +125,7 @@ export const ViewSpace: ClientActionData = {
 		type: 'object',
 		properties: {
 			space_id: {
-				type: 'number',
+				$ref: '/schemas/SpaceId.json',
 				tsType: 'SpaceId',
 				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
 			},
@@ -144,7 +144,7 @@ export const ClearFreshness: ClientActionData = {
 		$id: '/schemas/ClearFreshnessParams.json',
 		type: 'object',
 		properties: {
-			directory_id: {type: 'number', tsType: 'EntityId'},
+			directory_id: {$ref: '/schemas/EntityId.json', tsType: 'EntityId'},
 		},
 		required: ['directory_id'],
 		additionalProperties: false,

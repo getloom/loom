@@ -13,7 +13,7 @@ export const AccountSchema = {
 		It holds top level user data and is the relation through which all other data is loaded for the client.
 	`,
 	properties: {
-		account_id: {type: 'number', tsType: 'AccountId'},
+		account_id: {$ref: '/schemas/AccountId.json', tsType: 'AccountId'},
 		name: {type: 'string'},
 		password: {type: 'string'},
 		settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
@@ -31,7 +31,7 @@ export const ClientAccountSchema = {
 		A client-facing subset of an Account. Excludes 'password' for security.
 	`,
 	properties: {
-		account_id: {type: 'number', tsType: 'AccountId'},
+		account_id: {$ref: '/schemas/AccountId.json', tsType: 'AccountId'},
 		name: {type: 'string'},
 		settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},

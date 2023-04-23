@@ -8,15 +8,15 @@ export const CreateAssignment: ServiceActionData = {
 		$id: '/schemas/CreateAssignmentParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
-			actor_id: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+			actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
 			role_id: {
-				type: 'number',
+				$ref: '/schemas/RoleId.json',
 				tsType: 'RoleId',
 				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
 			},
@@ -48,9 +48,9 @@ export const DeleteAssignment: ServiceActionData = {
 		$id: '/schemas/DeleteAssignmentParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			assignment_id: {
-				type: 'number',
+				$ref: '/schemas/AssignmentId.json',
 				tsType: 'AssignmentId',
 				tsImport: "import type {AssignmentId} from '$lib/vocab/assignment/assignment'",
 			},

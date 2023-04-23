@@ -14,14 +14,14 @@ export const TieSchema = {
 		A Tie specifies "the [source] has relationship of [type] with [dest]."
 	`,
 	properties: {
-		tie_id: {type: 'number', tsType: 'TieId'},
+		tie_id: {$ref: '/schemas/TieId.json', tsType: 'TieId'},
 		source_id: {
-			type: 'number',
+			$ref: '/schemas/EntityId.json',
 			tsType: 'EntityId',
 			tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
 		},
 		dest_id: {
-			type: 'number',
+			$ref: '/schemas/EntityId.json',
 			tsType: 'EntityId',
 			tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
 		},

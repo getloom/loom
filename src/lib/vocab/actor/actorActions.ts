@@ -48,8 +48,8 @@ export const DeleteActor: ServiceActionData = {
 		$id: '/schemas/DeleteActorParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
-			actor_id: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+			actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 		},
 		required: ['actor', 'actor_id'],
 		additionalProperties: false,

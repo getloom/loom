@@ -14,19 +14,19 @@ export const SpaceSchema = {
 	 Each is a Svelte component that conforms to the View interface.
  `,
 	properties: {
-		space_id: {type: 'number', tsType: 'SpaceId'},
+		space_id: {$ref: '/schemas/SpaceId.json', tsType: 'SpaceId'},
 		name: {type: 'string'},
 		icon: {type: 'string'},
 		view: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
 		hub_id: {
-			type: 'number',
+			$ref: '/schemas/HubId.json',
 			tsType: 'HubId',
 			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 		},
 		directory_id: {
-			type: 'number',
+			$ref: '/schemas/EntityId.json',
 			tsType: 'EntityId',
 			tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
 		},

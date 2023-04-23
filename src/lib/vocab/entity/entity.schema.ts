@@ -17,14 +17,14 @@ export const EntitySchema = {
 		A directory is an ActivityStreams Collection referenced by each Space.
 	`,
 	properties: {
-		entity_id: {type: 'number', tsType: 'EntityId'},
+		entity_id: {$ref: '/schemas/EntityId.json', tsType: 'EntityId'},
 		actor_id: {
-			type: 'number',
+			$ref: '/schemas/ActorId.json',
 			tsType: 'ActorId',
 			tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
 		},
 		space_id: {
-			type: 'number',
+			$ref: '/schemas/SpaceId.json',
 			tsType: 'SpaceId',
 			tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
 		},

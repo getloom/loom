@@ -14,9 +14,9 @@ export const RoleSchema = {
 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	`,
 	properties: {
-		role_id: {type: 'number', tsType: 'RoleId'},
+		role_id: {$ref: '/schemas/RoleId.json', tsType: 'RoleId'},
 		hub_id: {
-			type: 'number',
+			$ref: '/schemas/HubId.json',
 			tsType: 'HubId',
 			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 		},

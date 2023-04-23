@@ -8,9 +8,9 @@ export const CreateSpace: ServiceActionData = {
 		$id: '/schemas/CreateSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
@@ -46,9 +46,9 @@ export const ReadSpaces: ServiceActionData = {
 		$id: '/schemas/ReadSpacesParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			hub_id: {
-				type: 'number',
+				$ref: '/schemas/HubId.json',
 				tsType: 'HubId',
 				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 			},
@@ -84,9 +84,9 @@ export const UpdateSpace: ServiceActionData = {
 		$id: '/schemas/UpdateSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			space_id: {
-				type: 'number',
+				$ref: '/schemas/SpaceId.json',
 				tsType: 'SpaceId',
 				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
 			},
@@ -122,9 +122,9 @@ export const DeleteSpace: ServiceActionData = {
 		$id: '/schemas/DeleteSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {type: 'number', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
 			space_id: {
-				type: 'number',
+				$ref: '/schemas/SpaceId.json',
 				tsType: 'SpaceId',
 				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
 			},

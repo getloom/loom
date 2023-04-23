@@ -14,9 +14,9 @@ export const PolicySchema = {
 		Data is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	`,
 	properties: {
-		policy_id: {type: 'number', tsType: 'PolicyId'},
+		policy_id: {$ref: '/schemas/PolicyId.json', tsType: 'PolicyId'},
 		role_id: {
-			type: 'number',
+			$ref: '/schemas/RoleId.json',
 			tsType: 'RoleId',
 			tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
 		},

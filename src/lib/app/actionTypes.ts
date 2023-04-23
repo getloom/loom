@@ -579,7 +579,7 @@ export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
 
 export interface ReadEntitiesByIdParams {
 	actor: ActorId;
-	entityIds: number[];
+	entityIds: EntityId[];
 }
 export interface ReadEntitiesByIdResponse {
 	entities: Entity[];

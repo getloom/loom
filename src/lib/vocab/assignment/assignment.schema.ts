@@ -14,19 +14,19 @@ export const AssignmentSchema = {
 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	`,
 	properties: {
-		assignment_id: {type: 'number', tsType: 'AssignmentId'},
+		assignment_id: {$ref: '/schemas/AssignmentId.json', tsType: 'AssignmentId'},
 		actor_id: {
-			type: 'number',
+			$ref: '/schemas/ActorId.json',
 			tsType: 'ActorId',
 			tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
 		},
 		hub_id: {
-			type: 'number',
+			$ref: '/schemas/HubId.json',
 			tsType: 'HubId',
 			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
 		},
 		role_id: {
-			type: 'number',
+			$ref: '/schemas/RoleId.json',
 			tsType: 'RoleId',
 			tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
 		},

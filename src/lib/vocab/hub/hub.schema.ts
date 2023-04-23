@@ -14,7 +14,7 @@ export const HubSchema = {
 		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
 	`,
 	properties: {
-		hub_id: {type: 'number', tsType: 'HubId'},
+		hub_id: {$ref: '/schemas/HubId.json', tsType: 'HubId'},
 		type: {type: 'string', enum: ['community', 'personal']},
 		name: {type: 'string'},
 		settings: {$ref: '/schemas/HubSettings.json', tsType: 'HubSettings'},
@@ -34,7 +34,7 @@ export const HubSettingsSchema = {
 	properties: {
 		hue: {type: 'number'},
 		defaultRoleId: {
-			type: 'number',
+			$ref: '/schemas/RoleId.json',
 			tsType: 'RoleId',
 			tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
 		},
