@@ -319,5 +319,39 @@ test_hubServices('fail KickFromHub when the actor has no assignments', async ({r
 	);
 });
 
+test_hubServices('fail Admin LeaveHub if last actor', async ({repos}) => {
+	const adminHub = await repos.hub.loadAdminHub();
+	assert.ok(adminHub);
+	const adminActor = await loadAdminActor(repos);
+
+	await expectApiError(405, () =>
+		LeaveHubService.perform({
+			...toServiceRequestMock(repos, adminActor),
+			params: {
+				actor: adminActor.actor_id,
+				hub_id: adminHub.hub_id,
+				actor_id: adminActor.actor_id,
+			},
+		}),
+	);
+});
+
+test_hubServices('fail KickFromHub if last actor', async ({repos}) => {
+	const adminHub = await repos.hub.loadAdminHub();
+	assert.ok(adminHub);
+	const adminActor = await loadAdminActor(repos);
+
+	await expectApiError(405, () =>
+		KickFromHubService.perform({
+			...toServiceRequestMock(repos, adminActor),
+			params: {
+				actor: adminActor.actor_id,
+				hub_id: adminHub.hub_id,
+				actor_id: adminActor.actor_id,
+			},
+		}),
+	);
+});
+
 test_hubServices.run();
 /* test_hubServices */

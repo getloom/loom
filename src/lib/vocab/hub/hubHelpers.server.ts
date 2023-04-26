@@ -25,7 +25,7 @@ export const cleanOrphanHubs = async (hubIds: HubId[], repos: Repos): Promise<nu
 	let deleted: HubId[] | null = null;
 	for (const hub_id of hubIds) {
 		// eslint-disable-next-line no-await-in-loop
-		const accountActorAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHubId(
+		const accountActorAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHub(
 			hub_id,
 		);
 		if (accountActorAssignmentsCount === 0) {
@@ -156,11 +156,11 @@ export const checkRemoveActor = async (
 		throw new ApiError(405, 'cannot leave a personal hub');
 	}
 	if (hub_id === ADMIN_HUB_ID) {
-		const adminAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHubId(
+		const distinctAccountActorCount = await repos.assignment.countDistinctAccountActorsByHub(
 			hub_id,
 		);
 		// TODO this fails if the actor has multiple roles
-		if (adminAssignmentsCount === 1) {
+		if (distinctAccountActorCount === 1) {
 			throw new ApiError(405, 'cannot orphan the admin hub');
 		}
 	}

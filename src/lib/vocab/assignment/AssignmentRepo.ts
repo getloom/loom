@@ -79,12 +79,25 @@ export class AssignmentRepo extends PostgresRepo {
 		return data;
 	}
 
-	async countAccountActorAssignmentsByHubId(hub_id: HubId): Promise<number> {
-		log.debug(`[filterByHub] ${hub_id}`);
+	async countAccountActorAssignmentsByHub(hub_id: HubId): Promise<number> {
+		log.debug(`[countAccountActorAssignmentsByHub] ${hub_id}`);
 		const data = await this.sql<Array<{count: string}>>`
 			SELECT count(*)
 			FROM actors p JOIN (
 				SELECT actor_id
+				FROM assignments 
+				WHERE hub_id=${hub_id}
+			) as a ON a.actor_id = p.actor_id WHERE p.type = 'account';
+		`;
+		return Number(data[0].count);
+	}
+
+	async countDistinctAccountActorsByHub(hub_id: HubId): Promise<number> {
+		log.debug(`[countDistinctAccountActorsByHub] ${hub_id}`);
+		const data = await this.sql<Array<{count: string}>>`
+			SELECT count(*)
+			FROM actors p JOIN (
+				SELECT DISTINCT actor_id
 				FROM assignments 
 				WHERE hub_id=${hub_id}
 			) as a ON a.actor_id = p.actor_id WHERE p.type = 'account';

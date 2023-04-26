@@ -146,7 +146,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 		}),
 	);
 	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 2);
-	assert.is(await repos.assignment.countAccountActorAssignmentsByHubId(hub.hub_id), 1);
+	assert.is(await repos.assignment.countAccountActorAssignmentsByHub(hub.hub_id), 1);
 
 	// delete hub
 	//TODO hack to allow for authorization; remove on init default impl
