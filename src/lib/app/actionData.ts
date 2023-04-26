@@ -49,13 +49,13 @@ import {
 } from '$lib/ui/uiActions';
 
 export const actionDatas: ActionData[] = [
-	// accountEvents
+	// account actions
 	SignUp,
 	SignIn,
 	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
-	// hubEvents
+	// hub actions
 	CreateHub,
 	ReadHub,
 	UpdateHubSettings,
@@ -63,18 +63,18 @@ export const actionDatas: ActionData[] = [
 	InviteToHub,
 	LeaveHub,
 	KickFromHub,
-	// actorEvents
+	// actor actions
 	CreateAccountActor,
 	DeleteActor,
-	// assignmentEvents
+	// assignment actions
 	CreateAssignment,
 	DeleteAssignment,
-	// spaceEvents
+	// space actions
 	CreateSpace,
 	ReadSpaces,
 	UpdateSpace,
 	DeleteSpace,
-	// entityEvents
+	// entity actions
 	CreateEntity,
 	UpdateEntities,
 	ReadEntities,
@@ -83,17 +83,17 @@ export const actionDatas: ActionData[] = [
 	EraseEntities,
 	DeleteEntities,
 	ReadEntitiesById,
-	// roleEvents
+	// role actions
 	CreateRole,
 	ReadRoles,
 	UpdateRole,
 	DeleteRole,
-	// policyEvents
+	// policy actions
 	CreatePolicy,
 	ReadPolicies,
 	UpdatePolicy,
 	DeletePolicy,
-	// uiEvents
+	// ui actions
 	Ping,
 	Ephemera,
 	SetSession,

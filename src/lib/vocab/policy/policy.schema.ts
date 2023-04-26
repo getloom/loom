@@ -9,9 +9,9 @@ export const PolicySchema = {
 	$id: '/schemas/Policy.json',
 	type: 'object',
 	description: `
-		Policies are associated with Roles to describe the actions a Role is able to take with the system.
-		Permissions are the enumeration of the those actions, often 1:1 with system Events.
-		Data is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
+		Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
+		Permissions are the enumeration of the those Actions and are often 1:1.
+		\`data\` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	`,
 	properties: {
 		policy_id: {$ref: '/schemas/PolicyId.json', tsType: 'PolicyId'},
