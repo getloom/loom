@@ -9,14 +9,14 @@ export const CreateEntity: ServiceActionData = {
 		$id: '/schemas/CreateEntityParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			space_id: {
-				$ref: '/schemas/SpaceId.json',
-				tsType: 'SpaceId',
-				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			space_id: {$ref: '/schemas/SpaceId.json'},
 			path: {anyOf: [{type: 'string'}, {type: 'null'}]},
-			data: {type: 'object', tsType: 'EntityData'},
+			data: {
+				type: 'object',
+				tsType: 'EntityData',
+				tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
+			},
 			ties: {
 				type: 'array',
 				items: {
@@ -24,11 +24,7 @@ export const CreateEntity: ServiceActionData = {
 						{
 							type: 'object',
 							properties: {
-								source_id: {
-									$ref: '/schemas/EntityId.json',
-									tsType: 'EntityId',
-									tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-								},
+								source_id: {$ref: '/schemas/EntityId.json'},
 								type: {type: 'string'},
 							},
 							required: ['source_id'],
@@ -37,11 +33,7 @@ export const CreateEntity: ServiceActionData = {
 						{
 							type: 'object',
 							properties: {
-								dest_id: {
-									$ref: '/schemas/EntityId.json',
-									tsType: 'EntityId',
-									tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-								},
+								dest_id: {$ref: '/schemas/EntityId.json'},
 								type: {type: 'string'},
 							},
 							required: ['dest_id'],
@@ -58,8 +50,8 @@ export const CreateEntity: ServiceActionData = {
 		$id: '/schemas/CreateEntityResponse.json',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
-			ties: {type: 'array', items: {$ref: '/schemas/Tie.json', tsType: 'Tie'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie.json'}},
 		},
 		required: ['entities', 'ties'],
 		additionalProperties: false,
@@ -79,18 +71,18 @@ export const UpdateEntities: ServiceActionData = {
 		$id: '/schemas/UpdateEntitiesParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json'},
 			entities: {
 				type: 'array',
 				items: {
 					type: 'object',
 					properties: {
-						entity_id: {
-							$ref: '/schemas/EntityId.json',
-							tsType: 'EntityId',
-							tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
+						entity_id: {$ref: '/schemas/EntityId.json'},
+						data: {
+							type: 'object',
+							tsType: 'EntityData',
+							tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
 						},
-						data: {type: 'object', tsType: 'EntityData'},
 						path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 					},
 					required: ['entity_id'],
@@ -105,7 +97,7 @@ export const UpdateEntities: ServiceActionData = {
 		$id: '/schemas/UpdateEntitiesResponse.json',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
 		},
 		required: ['entities'],
 		additionalProperties: false,
@@ -124,12 +116,8 @@ export const ReadEntities: ServiceActionData = {
 		$id: '/schemas/ReadEntitiesParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			source_id: {
-				$ref: '/schemas/EntityId.json',
-				tsType: 'EntityId',
-				tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			source_id: {$ref: '/schemas/EntityId.json'},
 		},
 		required: ['actor', 'source_id'],
 		additionalProperties: false,
@@ -138,8 +126,8 @@ export const ReadEntities: ServiceActionData = {
 		$id: '/schemas/ReadEntitiesResponse.json',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
-			ties: {type: 'array', items: {$ref: '/schemas/Tie.json', tsType: 'Tie'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie.json'}},
 		},
 		required: ['entities', 'ties'],
 		additionalProperties: false,
@@ -158,12 +146,8 @@ export const QueryEntities: ClientActionData = {
 		$id: '/schemas/QueryEntitiesResponse.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			source_id: {
-				$ref: '/schemas/EntityId.json',
-				tsType: 'EntityId',
-				tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			source_id: {$ref: '/schemas/EntityId.json'},
 		},
 		required: ['actor', 'source_id'],
 		additionalProperties: false,
@@ -178,12 +162,8 @@ export const ReadEntitiesPaginated: ServiceActionData = {
 		$id: '/schemas/ReadEntitiesPaginatedParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			source_id: {
-				$ref: '/schemas/EntityId.json',
-				tsType: 'EntityId',
-				tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			source_id: {$ref: '/schemas/EntityId.json'},
 			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
 			pageKey: {type: 'number'},
 			related: {type: 'string', enum: ['source', 'dest', 'both']},
@@ -195,8 +175,8 @@ export const ReadEntitiesPaginated: ServiceActionData = {
 		$id: '/schemas/ReadEntitiesPaginatedResponse.json',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
-			ties: {type: 'array', items: {$ref: '/schemas/Tie.json', tsType: 'Tie'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie.json'}},
 		},
 		required: ['entities', 'ties'],
 		additionalProperties: false,
@@ -216,14 +196,10 @@ export const EraseEntities: ServiceActionData = {
 		$id: '/schemas/EraseEntitiesParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json'},
 			entityIds: {
 				type: 'array',
-				items: {
-					$ref: '/schemas/EntityId.json',
-					tsType: 'EntityId',
-					tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-				},
+				items: {$ref: '/schemas/EntityId.json'},
 			},
 		},
 		required: ['actor', 'entityIds'],
@@ -233,7 +209,7 @@ export const EraseEntities: ServiceActionData = {
 		$id: '/schemas/EraseEntitiesResponse.json',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
 		},
 		required: ['entities'],
 		additionalProperties: false,
@@ -253,14 +229,10 @@ export const DeleteEntities: ServiceActionData = {
 		$id: '/schemas/DeleteEntitiesParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+			actor: {$ref: '/schemas/ActorId.json'},
 			entityIds: {
 				type: 'array',
-				items: {
-					$ref: '/schemas/EntityId.json',
-					tsType: 'EntityId',
-					tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-				},
+				items: {$ref: '/schemas/EntityId.json'},
 			},
 		},
 		required: ['actor', 'entityIds'],
@@ -270,14 +242,10 @@ export const DeleteEntities: ServiceActionData = {
 		$id: '/schemas/DeleteEntitiesResponse.json',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
 			deleted: {
 				type: 'array',
-				items: {
-					$ref: '/schemas/EntityId.json',
-					tsType: 'EntityId',
-					tsImport: "import type {EntityId} from '$lib/vocab/entity/entity'",
-				},
+				items: {$ref: '/schemas/EntityId.json'},
 			},
 		},
 		required: ['entities', 'deleted'],
@@ -298,8 +266,8 @@ export const ReadEntitiesById: ServiceActionData = {
 		$id: '/schemas/ReadEntitiesByIdParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			entityIds: {type: 'array', items: {$ref: '/schemas/EntityId.json', tsType: 'EntityId'}},
+			actor: {$ref: '/schemas/ActorId.json'},
+			entityIds: {type: 'array', items: {$ref: '/schemas/EntityId.json'}},
 		},
 		required: ['actor', 'entityIds'],
 		additionalProperties: false,
@@ -308,7 +276,7 @@ export const ReadEntitiesById: ServiceActionData = {
 		$id: '/schemas/ReadEntitiesByIdResponse.json',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json', tsType: 'Entity'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
 		},
 		required: ['entities'],
 		additionalProperties: false,

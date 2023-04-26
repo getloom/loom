@@ -8,18 +8,10 @@ export const CreateAssignment: ServiceActionData = {
 		$id: '/schemas/CreateAssignmentParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			hub_id: {
-				$ref: '/schemas/HubId.json',
-				tsType: 'HubId',
-				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-			},
-			role_id: {
-				$ref: '/schemas/RoleId.json',
-				tsType: 'RoleId',
-				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			actor_id: {$ref: '/schemas/ActorId.json'},
+			hub_id: {$ref: '/schemas/HubId.json'},
+			role_id: {$ref: '/schemas/RoleId.json'},
 		},
 		required: ['actor', 'actor_id', 'hub_id', 'role_id'],
 		additionalProperties: false,
@@ -28,7 +20,7 @@ export const CreateAssignment: ServiceActionData = {
 		$id: '/schemas/Create AssignmentResponse.json',
 		type: 'object',
 		properties: {
-			assignment: {$ref: '/schemas/Assignment.json', tsType: 'Assignment'},
+			assignment: {$ref: '/schemas/Assignment.json'},
 		},
 		required: ['assignment'],
 		additionalProperties: false,
@@ -48,12 +40,8 @@ export const DeleteAssignment: ServiceActionData = {
 		$id: '/schemas/DeleteAssignmentParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			assignment_id: {
-				$ref: '/schemas/AssignmentId.json',
-				tsType: 'AssignmentId',
-				tsImport: "import type {AssignmentId} from '$lib/vocab/assignment/assignment'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			assignment_id: {$ref: '/schemas/AssignmentId.json'},
 		},
 		required: ['actor', 'assignment_id'],
 		additionalProperties: false,

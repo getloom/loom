@@ -17,25 +17,17 @@ export const EntitySchema = {
 		A directory is an ActivityStreams Collection referenced by each Space.
 	`,
 	properties: {
-		entity_id: {$ref: '/schemas/EntityId.json', tsType: 'EntityId'},
-		actor_id: {
-			$ref: '/schemas/ActorId.json',
-			tsType: 'ActorId',
-			tsImport: "import type {ActorId} from '$lib/vocab/actor/actor'",
-		},
-		space_id: {
-			$ref: '/schemas/SpaceId.json',
-			tsType: 'SpaceId',
-			tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
-		},
+		entity_id: {$ref: '/schemas/EntityId.json'},
+		actor_id: {$ref: '/schemas/ActorId.json'},
+		space_id: {$ref: '/schemas/SpaceId.json'},
 		path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 		data: {
 			type: 'object',
 			tsType: 'EntityData',
 			tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
 		},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
 	required: ['entity_id', 'actor_id', 'space_id', 'path', 'data', 'created', 'updated'],
 	additionalProperties: false,

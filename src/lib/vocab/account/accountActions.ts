@@ -19,7 +19,7 @@ export const SignUp: ServiceActionData = {
 		$id: '/schemas/SignUpResponse.json',
 		type: 'object',
 		properties: {
-			session: {$ref: '/schemas/ClientAccountSession.json', tsType: 'ClientAccountSession'},
+			session: {$ref: '/schemas/ClientAccountSession.json'},
 		},
 		required: ['session'],
 		additionalProperties: false,
@@ -39,7 +39,7 @@ export const UpdateAccountSettings: ServiceActionData = {
 		$id: '/schemas/UpdateAccountSettingsParams.json',
 		type: 'object',
 		properties: {
-			settings: {$ref: '/schemas/AccountSettings.json', tsType: 'AccountSettings'},
+			settings: {$ref: '/schemas/AccountSettings.json'},
 		},
 		required: ['settings'],
 		additionalProperties: false,
@@ -47,7 +47,6 @@ export const UpdateAccountSettings: ServiceActionData = {
 	response: {
 		$id: '/schemas/UpdateAccountSettingsResponse.json',
 		$ref: '/schemas/ClientAccount.json',
-		tsType: 'ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountSettingsResponseResult>',
 	route: {
@@ -73,7 +72,6 @@ export const UpdateAccountPassword: ServiceActionData = {
 	response: {
 		$id: '/schemas/UpdateAccountPasswordResponse.json',
 		$ref: '/schemas/ClientAccount.json',
-		tsType: 'ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountPasswordResponseResult>',
 	route: {
@@ -101,7 +99,7 @@ export const SignIn: ServiceActionData = {
 		$id: '/schemas/SignInResponse.json',
 		type: 'object',
 		properties: {
-			session: {$ref: '/schemas/ClientAccountSession.json', tsType: 'ClientAccountSession'},
+			session: {$ref: '/schemas/ClientAccountSession.json'},
 		},
 		required: ['session'],
 		additionalProperties: false,

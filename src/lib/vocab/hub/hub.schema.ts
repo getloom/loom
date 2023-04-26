@@ -14,12 +14,12 @@ export const HubSchema = {
 		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
 	`,
 	properties: {
-		hub_id: {$ref: '/schemas/HubId.json', tsType: 'HubId'},
+		hub_id: {$ref: '/schemas/HubId.json'},
 		type: {type: 'string', enum: ['community', 'personal']},
 		name: {type: 'string'},
-		settings: {$ref: '/schemas/HubSettings.json', tsType: 'HubSettings'},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
+		settings: {$ref: '/schemas/HubSettings.json'},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
 	required: ['hub_id', 'type', 'name', 'settings', 'created', 'updated'],
 	additionalProperties: false,

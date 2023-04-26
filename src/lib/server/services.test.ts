@@ -39,8 +39,8 @@ for (const service of services.values()) {
 		} else {
 			// default to authorized (yes account_id, yes actor)
 			assert.equal(
-				action.params.properties?.actor,
-				{$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+				action.params.properties?.actor.$ref,
+				'/schemas/ActorId.json',
 				'authorized actions must have an actor number property with type ActorId',
 			);
 			assert.ok(

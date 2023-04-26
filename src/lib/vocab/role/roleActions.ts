@@ -8,12 +8,8 @@ export const CreateRole: ServiceActionData = {
 		$id: '/schemas/CreateRoleParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			hub_id: {
-				$ref: '/schemas/HubId.json',
-				tsType: 'HubId',
-				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			hub_id: {$ref: '/schemas/HubId.json'},
 			name: {type: 'string'},
 		},
 		required: ['actor', 'hub_id', 'name'],
@@ -23,7 +19,7 @@ export const CreateRole: ServiceActionData = {
 		$id: '/schemas/CreateRoleResponse.json',
 		type: 'object',
 		properties: {
-			role: {$ref: '/schemas/Role.json', tsType: 'Role'},
+			role: {$ref: '/schemas/Role.json'},
 		},
 		required: ['role'],
 		additionalProperties: false,
@@ -42,12 +38,8 @@ export const ReadRoles: ServiceActionData = {
 		$id: '/schemas/ReadRolesParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			hub_id: {
-				$ref: '/schemas/HubId.json',
-				tsType: 'HubId',
-				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			hub_id: {$ref: '/schemas/HubId.json'},
 		},
 		required: ['actor', 'hub_id'],
 		additionalProperties: false,
@@ -56,7 +48,7 @@ export const ReadRoles: ServiceActionData = {
 		$id: '/schemas/ReadRolesResponse.json',
 		type: 'object',
 		properties: {
-			roles: {type: 'array', items: {$ref: '/schemas/Role.json', tsType: 'Role'}},
+			roles: {type: 'array', items: {$ref: '/schemas/Role.json'}},
 		},
 		required: ['roles'],
 		additionalProperties: false,
@@ -76,12 +68,8 @@ export const UpdateRole: ServiceActionData = {
 		$id: '/schemas/UpdateRoleParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			role_id: {
-				$ref: '/schemas/RoleId.json',
-				tsType: 'RoleId',
-				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			role_id: {$ref: '/schemas/RoleId.json'},
 			name: {type: 'string'},
 		},
 		required: ['actor', 'role_id', 'name'],
@@ -91,7 +79,7 @@ export const UpdateRole: ServiceActionData = {
 		$id: '/schemas/UpdateRoleResponse.json',
 		type: 'object',
 		properties: {
-			role: {$ref: '/schemas/Role.json', tsType: 'Role'},
+			role: {$ref: '/schemas/Role.json'},
 		},
 		required: ['role'],
 		additionalProperties: false,
@@ -111,12 +99,8 @@ export const DeleteRole: ServiceActionData = {
 		$id: '/schemas/DeleteRoleParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			role_id: {
-				$ref: '/schemas/RoleId.json',
-				tsType: 'RoleId',
-				tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			role_id: {$ref: '/schemas/RoleId.json'},
 		},
 		required: ['actor', 'role_id'],
 		additionalProperties: false,

@@ -14,15 +14,11 @@ export const RoleSchema = {
 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	`,
 	properties: {
-		role_id: {$ref: '/schemas/RoleId.json', tsType: 'RoleId'},
-		hub_id: {
-			$ref: '/schemas/HubId.json',
-			tsType: 'HubId',
-			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-		},
+		role_id: {$ref: '/schemas/RoleId.json'},
+		hub_id: {$ref: '/schemas/HubId.json'},
 		name: {type: 'string'},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
 	required: ['role_id', 'hub_id', 'name', 'created', 'updated'],
 	additionalProperties: false,

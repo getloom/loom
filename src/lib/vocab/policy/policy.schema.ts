@@ -14,16 +14,12 @@ export const PolicySchema = {
 		\`data\` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	`,
 	properties: {
-		policy_id: {$ref: '/schemas/PolicyId.json', tsType: 'PolicyId'},
-		role_id: {
-			$ref: '/schemas/RoleId.json',
-			tsType: 'RoleId',
-			tsImport: "import type {RoleId} from '$lib/vocab/role/role'",
-		},
+		policy_id: {$ref: '/schemas/PolicyId.json'},
+		role_id: {$ref: '/schemas/RoleId.json'},
 		permission: {type: 'string'},
 		data: {anyOf: [{type: 'object'}, {type: 'null'}]},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
 	required: ['policy_id', 'role_id', 'permission', 'data', 'created', 'updated'],
 	additionalProperties: false,

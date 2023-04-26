@@ -33,22 +33,14 @@ export const AccountActorSchema = {
 		A reference to this personal Hub is stored in 'hub_id'.
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-		account_id: {
-			$ref: '/schemas/AccountId.json',
-			tsType: 'AccountId',
-			tsImport: "import type {AccountId} from '$lib/vocab/account/account'",
-		},
-		hub_id: {
-			$ref: '/schemas/HubId.json',
-			tsType: 'HubId',
-			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-		},
+		actor_id: {$ref: '/schemas/ActorId.json'},
+		account_id: {$ref: '/schemas/AccountId.json'},
+		hub_id: {$ref: '/schemas/HubId.json'},
 		type: {type: 'string', enum: ['account']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
 	required: ['actor_id', 'account_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
@@ -63,18 +55,14 @@ export const CommunityActorSchema = {
 		The Hub that owns it is represented by 'hub_id'.
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+		actor_id: {$ref: '/schemas/ActorId.json'},
 		account_id: {type: 'null'},
-		hub_id: {
-			$ref: '/schemas/HubId.json',
-			tsType: 'HubId',
-			tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-		},
+		hub_id: {$ref: '/schemas/HubId.json'},
 		type: {type: 'string', enum: ['community']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
 	required: ['actor_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
@@ -87,14 +75,14 @@ export const GhostActorSchema = {
 	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.	 
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+		actor_id: {$ref: '/schemas/ActorId.json'},
 		account_id: {type: 'null'},
 		hub_id: {type: 'null'},
 		type: {type: 'string', enum: ['ghost']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
-		updated: {anyOf: [{type: 'object', instanceof: 'Date', tsType: 'Date'}, {type: 'null'}]},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
 	required: ['actor_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
@@ -110,11 +98,11 @@ export const PublicActorSchema = {
 		A subset of an Actor available to all clients in a hub.
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
+		actor_id: {$ref: '/schemas/ActorId.json'},
 		type: {type: 'string', enum: ['account', 'community', 'ghost']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
-		created: {type: 'object', instanceof: 'Date', tsType: 'Date'},
+		created: {type: 'object', instanceof: 'Date'},
 		// `updated` is private
 	},
 	required: ['actor_id', 'type', 'name', 'created'],

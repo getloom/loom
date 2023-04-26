@@ -8,12 +8,8 @@ export const CreateSpace: ServiceActionData = {
 		$id: '/schemas/CreateSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			hub_id: {
-				$ref: '/schemas/HubId.json',
-				tsType: 'HubId',
-				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			hub_id: {$ref: '/schemas/HubId.json'},
 			name: {type: 'string'},
 			path: {type: 'string'},
 			icon: {type: 'string'},
@@ -26,8 +22,12 @@ export const CreateSpace: ServiceActionData = {
 		$id: '/schemas/CreateSpaceResponse.json',
 		type: 'object',
 		properties: {
-			space: {$ref: '/schemas/Space.json', tsType: 'Space'},
-			directory: {$ref: '/schemas/Entity.json', tsType: 'Directory'},
+			space: {$ref: '/schemas/Space.json'},
+			directory: {
+				$ref: '/schemas/Entity.json',
+				tsType: 'Directory',
+				tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
+			},
 		},
 		required: ['space', 'directory'],
 		additionalProperties: false,
@@ -46,12 +46,8 @@ export const ReadSpaces: ServiceActionData = {
 		$id: '/schemas/ReadSpacesParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			hub_id: {
-				$ref: '/schemas/HubId.json',
-				tsType: 'HubId',
-				tsImport: "import type {HubId} from '$lib/vocab/hub/hub'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			hub_id: {$ref: '/schemas/HubId.json'},
 		},
 		required: ['actor', 'hub_id'],
 		additionalProperties: false,
@@ -60,10 +56,14 @@ export const ReadSpaces: ServiceActionData = {
 		$id: '/schemas/ReadSpacesResponse.json',
 		type: 'object',
 		properties: {
-			spaces: {type: 'array', items: {$ref: '/schemas/Space.json', tsType: 'Space'}},
+			spaces: {type: 'array', items: {$ref: '/schemas/Space.json'}},
 			directories: {
 				type: 'array',
-				items: {$ref: '/schemas/Entity.json', tsType: '(Directory)'},
+				items: {
+					$ref: '/schemas/Entity.json',
+					tsType: 'Directory',
+					tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
+				},
 			},
 		},
 		required: ['spaces', 'directories'],
@@ -84,12 +84,8 @@ export const UpdateSpace: ServiceActionData = {
 		$id: '/schemas/UpdateSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			space_id: {
-				$ref: '/schemas/SpaceId.json',
-				tsType: 'SpaceId',
-				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			space_id: {$ref: '/schemas/SpaceId.json'},
 			name: {type: 'string'},
 			path: {type: 'string'},
 			icon: {type: 'string'},
@@ -102,7 +98,7 @@ export const UpdateSpace: ServiceActionData = {
 		$id: '/schemas/UpdateSpaceResponse.json',
 		type: 'object',
 		properties: {
-			space: {$ref: '/schemas/Space.json', tsType: 'Space'},
+			space: {$ref: '/schemas/Space.json'},
 		},
 		required: ['space'],
 		additionalProperties: false,
@@ -122,12 +118,8 @@ export const DeleteSpace: ServiceActionData = {
 		$id: '/schemas/DeleteSpaceParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			space_id: {
-				$ref: '/schemas/SpaceId.json',
-				tsType: 'SpaceId',
-				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			space_id: {$ref: '/schemas/SpaceId.json'},
 		},
 		required: ['actor', 'space_id'],
 		additionalProperties: false,

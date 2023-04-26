@@ -27,12 +27,8 @@ export const Ephemera: ServiceActionData = {
 		$id: '/schemas/EphemeraParams.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			space_id: {
-				$ref: '/schemas/SpaceId.json',
-				tsType: 'SpaceId',
-				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			space_id: {$ref: '/schemas/SpaceId.json'},
 			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
@@ -42,12 +38,8 @@ export const Ephemera: ServiceActionData = {
 		$id: '/schemas/EphemeraResponse.json',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json', tsType: 'ActorId'},
-			space_id: {
-				$ref: '/schemas/SpaceId.json',
-				tsType: 'SpaceId',
-				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
-			},
+			actor: {$ref: '/schemas/ActorId.json'},
+			space_id: {$ref: '/schemas/SpaceId.json'},
 			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
@@ -67,7 +59,7 @@ export const SetSession: ClientActionData = {
 		$id: '/schemas/SetSessionParams.json',
 		type: 'object',
 		properties: {
-			session: {$ref: '/schemas/ClientSession.json', tsType: 'ClientSession'},
+			session: {$ref: '/schemas/ClientSession.json'},
 		},
 		required: ['session'],
 		additionalProperties: false,
@@ -124,11 +116,7 @@ export const ViewSpace: ClientActionData = {
 		$id: '/schemas/ViewSpaceParams.json',
 		type: 'object',
 		properties: {
-			space_id: {
-				$ref: '/schemas/SpaceId.json',
-				tsType: 'SpaceId',
-				tsImport: "import type {SpaceId} from '$lib/vocab/space/space'",
-			},
+			space_id: {$ref: '/schemas/SpaceId.json'},
 			view: {type: ['string', 'null']},
 		},
 		required: ['space_id', 'view'],
@@ -144,7 +132,7 @@ export const ClearFreshness: ClientActionData = {
 		$id: '/schemas/ClearFreshnessParams.json',
 		type: 'object',
 		properties: {
-			directory_id: {$ref: '/schemas/EntityId.json', tsType: 'EntityId'},
+			directory_id: {$ref: '/schemas/EntityId.json'},
 		},
 		required: ['directory_id'],
 		additionalProperties: false,
