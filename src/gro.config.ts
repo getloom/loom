@@ -1,11 +1,10 @@
 import type {GroConfigCreator} from '@feltjs/gro';
-import {
-	API_SERVER_BUILD_NAME,
-	NODE_LIBRARY_BUILD_NAME,
-} from '@feltjs/gro/dist/build/buildConfigDefaults.js';
 
 import {MIGRATIONS_DIR, MIGRATIONS_PATH} from '$lib/db/migration';
 import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
+
+const API_SERVER_BUILD_NAME = 'server';
+const NODE_LIBRARY_BUILD_NAME = 'library';
 
 const files = [
 	'lib/index.ts', // same as 'lib/server/server.ts'
