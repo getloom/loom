@@ -5,10 +5,9 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 
-	const viewContext = getViewContext();
-	$: ({actor} = $viewContext);
+	const {actor} = getSpaceContext();
 
 	const {
 		actions,

@@ -3,7 +3,7 @@
 	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import Forum from '$lib/plugins/feltcoop/forum/Forum.svelte';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -11,8 +11,7 @@
 	import NewcomerSubmission from '$lib/ui/NewcomerSubmission.svelte';
 	import RolesList from '$lib/ui/RolesList.svelte';
 
-	const viewContext = getViewContext();
-	$: ({space, actor} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	const {socket, actions} = getApp();
 

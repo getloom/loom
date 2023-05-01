@@ -3,11 +3,10 @@
 
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import type {Entity} from '$lib/vocab/entity/entity';
 
-	const viewContext = getViewContext();
-	$: ({actor, space} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	const {actions} = getApp();
 

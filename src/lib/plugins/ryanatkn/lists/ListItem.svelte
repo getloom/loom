@@ -13,11 +13,10 @@
 	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 	import ListControls from './ListControls.svelte';
 	import ClearCheckedButton from './ClearCheckedButton.svelte';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
-	const viewContext = getViewContext();
-	$: ({actor} = $viewContext);
+	const {actor} = getSpaceContext();
 
 	const {
 		ui: {contextmenu, actorById, destTiesBySourceEntityId, entityById},

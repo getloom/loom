@@ -1,10 +1,9 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import RoleItem from '$lib/ui/RoleItem.svelte';
 
-	const viewContext = getViewContext();
-	$: ({hub} = $viewContext);
+	const {hub} = getSpaceContext();
 
 	const {
 		ui: {rolesByHubId, assignmentsByRoleId},

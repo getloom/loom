@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {
 		isHubRelativePath,
 		isHubRelativePathValid,
@@ -12,8 +12,7 @@
 	} from '$lib/util/fuz';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
-	const viewContext = getViewContext();
-	$: ({hub, directory} = $viewContext);
+	const {hub, directory} = getSpaceContext();
 
 	export let href: string;
 

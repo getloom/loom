@@ -5,12 +5,11 @@
 
 	import ListItems from './ListItems.svelte';
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import AddListButton from './AddListButton.svelte';
 
-	const viewContext = getViewContext();
-	$: ({actor, space} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	// TODO expand/collapse all buttons
 

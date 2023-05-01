@@ -6,12 +6,11 @@
 	import ForumItems from '$lib/plugins/feltcoop/forum/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
-	const viewContext = getViewContext();
-	$: ({actor, space, hub} = $viewContext);
+	const {actor, space, hub} = getSpaceContext();
 
 	const {actions, socket} = getApp();
 

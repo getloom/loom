@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {AsyncStatus} from '@feltjs/util/async.js';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
@@ -7,8 +7,7 @@
 
 	import {autofocus} from '$lib/ui/actions';
 
-	const viewContext = getViewContext();
-	$: ({hub} = $viewContext);
+	const {hub} = getSpaceContext();
 
 	let status: AsyncStatus = 'initial'; // TODO refactor
 	let submitted = false;

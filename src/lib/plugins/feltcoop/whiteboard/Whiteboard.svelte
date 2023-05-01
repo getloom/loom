@@ -3,11 +3,10 @@
 	import type {WhiteboardAction} from '@feltjs/felt-ui/entity.js';
 	import {onDestroy} from 'svelte';
 
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {getApp} from '$lib/ui/app';
 
-	const viewContext = getViewContext();
-	$: ({space, actor} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	const {
 		actions,

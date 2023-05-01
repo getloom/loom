@@ -6,11 +6,10 @@
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import NotesItems from '$lib/plugins/feltcoop/notes/NotesItems.svelte';
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
-	const viewContext = getViewContext();
-	$: ({actor, space} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	const {actions, socket} = getApp();
 

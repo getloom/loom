@@ -5,12 +5,11 @@
 
 	import ChatItems from '$lib/plugins/feltcoop/chat/ChatItems.svelte';
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import {createPaginatedQuery} from '$lib/util/query';
 
-	const viewContext = getViewContext();
-	$: ({actor, space} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	const {ui, actions, socket} = getApp();
 

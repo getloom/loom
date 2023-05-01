@@ -1,10 +1,9 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 
-	const viewContext = getViewContext();
-	$: ({actor, space, hub} = $viewContext);
+	const {actor, space, hub} = getSpaceContext();
 
 	const {actions} = getApp();
 

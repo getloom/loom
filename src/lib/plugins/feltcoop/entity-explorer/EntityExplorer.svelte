@@ -6,14 +6,13 @@
 	import EntityExplorerItems from '$lib/plugins/feltcoop/entity-explorer/EntityExplorerItems.svelte';
 	import EntityTree from '$lib/ui/EntityTree.svelte';
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import EntityTreeItemPlaintext from '$lib/ui/EntityTreeItemPlaintext.svelte';
 
-	const viewContext = getViewContext();
-	$: ({actor, space} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	const {
 		actions,

@@ -1,10 +1,9 @@
 <script lang="ts">
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import Notes from '$lib/plugins/feltcoop/notes/Notes.svelte';
 	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
 
-	const viewContext = getViewContext();
-	$: ({actor} = $viewContext);
+	const {actor} = getSpaceContext();
 </script>
 
 <div class="personal-home">

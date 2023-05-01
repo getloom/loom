@@ -5,12 +5,11 @@
 
 	import ListItems from './ListItems.svelte';
 	import {getApp} from '$lib/ui/app';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import ListControls from './ListControls.svelte';
 
-	const viewContext = getViewContext();
-	$: ({actor, space} = $viewContext);
+	const {actor, space} = getSpaceContext();
 
 	export let layoutDirection = 'column'; // is a `flex-direction` property
 	export let itemsDirection = 'column'; // is a `flex-direction` property

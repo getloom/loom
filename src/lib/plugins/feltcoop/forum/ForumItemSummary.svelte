@@ -71,6 +71,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	}
 	.entity {
 		display: flex;
+		width: 100%;
 	}
 	.entity:hover {
 		background-color: var(--tint_dark_1);

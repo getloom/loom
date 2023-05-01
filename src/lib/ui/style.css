@@ -107,6 +107,7 @@ fieldset {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	padding: 2px 0;
 }
 
 /* TODO change to SVG? or use CSS vars for size and color? rename to indicate it's facing right?

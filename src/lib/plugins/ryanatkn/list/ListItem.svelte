@@ -9,11 +9,10 @@
 	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import {getViewContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
-	const viewContext = getViewContext();
-	$: ({actor} = $viewContext);
+	const {actor} = getSpaceContext();
 
 	const {
 		ui: {contextmenu, actorById},

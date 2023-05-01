@@ -91,17 +91,16 @@ export const toViewProps = (
 	return props;
 };
 
-export interface ViewContext {
+export interface SpaceContext {
 	actor: Readable<AccountActor>;
 	hub: Readable<Hub>;
 	space: Readable<Space>;
 	directory: Readable<Entity>;
 }
 
-const KEY = Symbol('ViewContext');
-export const getViewContext = (): Readable<ViewContext> => getContext(KEY);
-export const setViewContext = (ctx: Readable<ViewContext>): Readable<ViewContext> =>
-	setContext(KEY, ctx);
+const KEY = Symbol('SpaceContext');
+export const getSpaceContext = (): SpaceContext => getContext(KEY);
+export const setSpaceContext = (ctx: SpaceContext): SpaceContext => setContext(KEY, ctx);
 
 export const parseView = (value: string, generatePositions = false): ViewData =>
 	parseSvast({value, generatePositions});
