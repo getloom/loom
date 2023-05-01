@@ -14,9 +14,33 @@ See [library-usage](./library-usage.md).
 `@feltjs/felt-server` depends on the following core technologies:
 
 - [Node](https://nodejs.org)
-- [PostgreSQL](https://www.postgresql.org) aka Postgres
+- [PostgreSQL](https://www.postgresql.org) using
+  the [`postgres`](https://www.npmjs.com/package/postgres) driver
 - [Svelte](https://svelte.dev) and [SvelteKit](https://kit.svelte.dev)
 - [TypeScript](https://www.typescriptlang.org)
+
+## felt-server overview diagram
+
+```mermaid
+%%{ init: { 'flowchart': { 'curve': 'monotoneY' } } }%%
+flowchart
+	subgraph db
+		P[(postgres)]
+		click P "https://github.com/feltjs/felt-server/blob/main/src/docs/data-model.md"
+	end
+	subgraph Node backend
+		S[Services] -- function calls --> R[Repos]
+		R -- queries -->
+		P -- data --> R
+		R -- data --> S
+	end
+	subgraph browser frontend
+		A[Actions] -- "API requests
+		(websockets and RESTful http)" --> S
+		S -- "API response and broadcast data" --> A
+		C["Views (Svelte components)"] <-- ui --> A
+	end
+```
 
 ## Setup
 
