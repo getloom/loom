@@ -79,7 +79,7 @@ export type ClientActionName =
 	| 'ViewSpace'
 	| 'ClearFreshness';
 
-export interface EventParamsByName {
+export interface ActionParamsByName {
 	SignUp: SignUpParams;
 	SignIn: SignInParams;
 	SignOut: SignOutParams;
@@ -127,7 +127,7 @@ export interface EventParamsByName {
 	ViewSpace: ViewSpaceParams;
 	ClearFreshness: ClearFreshnessParams;
 }
-export interface EventResponseByName {
+export interface ActionResponseByName {
 	SignUp: SignUpResponse;
 	SignIn: SignInResponse;
 	SignOut: SignOutResponse;

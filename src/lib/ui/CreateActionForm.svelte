@@ -69,7 +69,7 @@
 </script>
 
 <form {...$$restProps} class="padded-xl">
-	<h2>Create a System Event</h2>
+	<h2>Create a system Action</h2>
 	<div class="layout">
 		<fieldset class="actions markup">
 			<legend>available actions</legend>

@@ -9,7 +9,7 @@ import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('spaceHelpers.server') + gray(']'));
 
-//TODO change CreateSpace event to batched & refactor this away?
+//TODO change CreateSpace action to batched & refactor this away?
 export const createSpaces = async (
 	serviceParams: CreateSpaceParams[],
 	repos: Repos,

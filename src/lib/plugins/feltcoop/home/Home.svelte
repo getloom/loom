@@ -21,7 +21,7 @@
 
 	$: shouldLoadEntities = browser && $socket.open;
 
-	//TODO this is all done because the Query event always returns an empty array on initial call
+	//TODO this is all done because the Query action always returns an empty array on initial call
 	$: entitiesResult = shouldLoadEntities
 		? actions.ReadEntities({
 				actor: $actor.actor_id,

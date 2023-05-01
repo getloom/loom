@@ -21,11 +21,11 @@ export interface ServiceActionData {
 	authenticate?: boolean; // `true` by default -- does this service require login?
 	authorize?: boolean; // `true` by default -- does this service require `params.actor`?
 	websockets?: boolean; // `true` by default -- can this service be called via websockets?
-	broadcast?: boolean; // `false` by default -- does this service event rebroadcast to other hub clients
+	broadcast?: boolean; // `false` by default -- does this service action rebroadcast to other hub clients
 	params: VocabSchema;
 	response: VocabSchema;
 	returns: string;
-	// `ServiceAction`s have a `route` for http clients; websocket clients only need the event `name`
+	// `ServiceAction`s have a `route` for http clients; websocket clients only need the action `name`
 	route: {
 		path: string; // e.g. '/api/v1/some/:neat/:path'
 		method: ServiceMethod; // supports each `trouter` http method: https://github.com/lukeed/trouter#method

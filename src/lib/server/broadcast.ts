@@ -34,7 +34,7 @@ export const broadcast = (
 	// Something like:
 	// `server.websocketServer.socketsByHubId.get(hub_id)`
 	// `server.websocketServer.getSocketsByHubId(hub_id)`
-	// `DeleteActor` deals with *multiple* hubs -- given some event, who needs to know about it?
+	// `DeleteActor` deals with *multiple* hubs -- given some action, who needs to know about it?
 	// Each service determines which hubs should hear about a change. (hub being the starting point, needs more granularity)
 	for (const client of server.websocketServer.wss.clients) {
 		if (client !== socket) {

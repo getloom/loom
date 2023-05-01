@@ -45,7 +45,7 @@ const loadImports = async (fs: Filesystem): Promise<Record<string, string>> => {
 	return imports;
 };
 
-// Outputs a file with event types that can be imported from anywhere with no runtime cost.
+// Outputs a file with action types that can be imported from anywhere with no runtime cost.
 export const gen: Gen = async ({originId, fs, log}) => {
 	// TODO see about cleaning this up with a helper, we're basically doing a manual `gen` task run
 	const imports = await loadImports(fs);
@@ -88,7 +88,7 @@ export type ClientActionName = ${actionDatas.reduce(
 		'',
 	)};
 
-export interface EventParamsByName {
+export interface ActionParamsByName {
 	${actionDatas.reduce(
 		(str, actionData) =>
 			str +
@@ -98,7 +98,7 @@ ${actionData.name}: ${toParamsName(actionData.name)};
 		'',
 	)}
 }
-export interface EventResponseByName {
+export interface ActionResponseByName {
 	${actionDatas.reduce(
 		(str, actionData) =>
 			str +

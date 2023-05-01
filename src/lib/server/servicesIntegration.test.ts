@@ -97,7 +97,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	assert.is((await repos.hub.filterByAccount(actor2.account_id)).length, 3);
 	assert.is((await repos.hub.filterByActor(actor2.actor_id)).length, 2);
 
-	// TODO add a service event?
+	// TODO add a service action?
 	assert.equal(
 		(await repos.actor.filterByAccount(account.account_id))
 			.sort((a, b) => (a.created < b.created ? -1 : 1))
@@ -105,10 +105,10 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 		[actor1, actor2],
 	);
 
-	// TODO add a service event?
+	// TODO add a service action?
 	assert.is((await repos.account.findById(account.account_id))?.name, account.name);
 
-	// TODO add a service event?
+	// TODO add a service action?
 	assert.is((await repos.account.findByName(account.name))?.name, account.name);
 
 	// do changes

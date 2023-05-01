@@ -170,7 +170,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	assert.equal(filtered3.concat(filtered4).concat(filtered5), entities);
 });
 
-//TODO move to event tests if/when that happens
+//TODO move to action tests if/when that happens
 test_entityServices('assert default as max pageSize', async ({random}) => {
 	const {space} = await random.space();
 

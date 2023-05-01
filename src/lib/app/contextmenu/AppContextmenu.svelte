@@ -68,7 +68,7 @@
 							dialogProps: {layout: 'page'},
 						})}
 				>
-					Create a System Event
+					Create a system Action
 				</ContextmenuEntry>
 			</svelte:fragment>
 		</ContextmenuSubmenu>

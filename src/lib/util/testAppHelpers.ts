@@ -3,7 +3,7 @@ import {writable} from '@feltcoop/svelte-gettable-stores';
 import type {App} from '$lib/ui/app';
 import {toUi} from '$lib/ui/ui';
 import {toHttpApiClient} from '$lib/ui/HttpApiClient';
-import type {EventParamsByName, EventResponseByName} from '$lib/app/actionTypes';
+import type {ActionParamsByName, ActionResponseByName} from '$lib/app/actionTypes';
 import {toActions} from '$lib/app/actions';
 import {findHttpService} from '$lib/ui/services';
 import {installSourceMaps} from '$lib/util/testHelpers';
@@ -18,7 +18,7 @@ export interface TestAppContext {
 
 export const setupApp = async (context: TestAppContext): Promise<void> => {
 	const ui = toUi({guest: true}, false, {}, (_) => _);
-	const httpApiClient = toHttpApiClient<EventParamsByName, EventResponseByName>(
+	const httpApiClient = toHttpApiClient<ActionParamsByName, ActionResponseByName>(
 		findHttpService,
 		deserialize(deserializers),
 	);

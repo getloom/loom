@@ -81,7 +81,7 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 };
 
 const selectActor = ({actorIdSelection}: Ui, actor_id: ActorId): void => {
-	// TODO could remove this typecase if `syncUiToUrl` is changed to be an event
+	// TODO could remove this typecast if `syncUiToUrl` is changed to be an action
 	(actorIdSelection as Writable<ActorId | null>).set(actor_id);
 };
 

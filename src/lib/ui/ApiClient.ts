@@ -5,7 +5,7 @@ export interface ApiClient<
 	TParamsMap extends Record<string, any> = any, // TODO default and value types?
 	TResultMap extends Record<string, any> = any, // TODO default and value types?
 > {
-	find: (name: string) => ServiceActionData | undefined; // TODO custom event types
+	find: (name: string) => ServiceActionData | undefined; // TODO custom action types
 	invoke: <TServiceName extends string, TParams extends TParamsMap[TServiceName]>(
 		name: TServiceName,
 		params: TParams,

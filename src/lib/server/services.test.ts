@@ -18,11 +18,11 @@ for (const service of services.values()) {
 	const {action} = service;
 	test__serviceDefinitions('service auth definitions: ' + action.name, () => {
 		if (action.authenticate === false) {
-			// non-authenticated event (no account_id, no actor)
+			// non-authenticated action (no account_id, no actor)
 			assert.is(
 				action.params.properties?.actor,
 				undefined,
-				'non-authenticated event params must have no actor',
+				'non-authenticated action params must have no actor',
 			);
 			assert.is(
 				action.authorize,
@@ -30,11 +30,11 @@ for (const service of services.values()) {
 				'non-authenticated actions must have an authorize value of false',
 			);
 		} else if (action.authorize === false) {
-			// non-authorized event (yes account_id, no actor)
+			// non-authorized action (yes account_id, no actor)
 			assert.is(
 				action.params.properties?.actor,
 				undefined,
-				'non-authorized event params must have no actor',
+				'non-authorized action params must have no actor',
 			);
 		} else {
 			// default to authorized (yes account_id, yes actor)
@@ -61,7 +61,7 @@ test__serviceDefinitions(`check for duplicate HTTP route paths`, async () => {
 	for (const service of services.values()) {
 		const key = service.action.route.method + ':' + service.action.route.path;
 		if (paths.has(key)) {
-			throw Error(`Duplicate service event route ${key}`);
+			throw Error(`Duplicate service action route ${key}`);
 		}
 		paths.add(key);
 	}

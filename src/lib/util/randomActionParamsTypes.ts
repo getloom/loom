@@ -50,7 +50,7 @@ import type {
 	ClearFreshnessParams,
 } from '$lib/app/actionTypes';
 
-export interface RandomEventParams {
+export interface RandomActionParams {
 	SignUp: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignUpParams>;
 	SignIn: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignInParams>;
 	SignOut: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignOutParams>;

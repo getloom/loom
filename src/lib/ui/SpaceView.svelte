@@ -18,7 +18,7 @@
 	export let space: Readable<Space>;
 
 	$: ({directory_id} = $space);
-	//TODO we might want to just roll the logic from this event into the SelectSpace mutation
+	//TODO we might want to just roll the logic from this action into the SelectSpace mutation
 	$: actions.ClearFreshness({directory_id});
 
 	$: viewText = $viewBySpace.value.get(space) || $space.view;
