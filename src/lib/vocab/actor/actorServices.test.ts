@@ -61,9 +61,9 @@ test__actorService('ghost actor has the expected name and id', async ({repos, ra
 
 test__actorService('delete a actor and properly clean up', async ({repos, random}) => {
 	const account = await random.account();
-	const {actor, actorlHub, spaces} = await random.actor(account);
+	const {actor, personalHub, spaces} = await random.actor(account);
 	const {hub, actors, spaces: hubSpaces} = await random.hub(actor, account);
-	const allHubs = [actorlHub, hub];
+	const allHubs = [personalHub, hub];
 	const allSpaces = spaces.concat(hubSpaces);
 
 	const check = async (invert: boolean) => {

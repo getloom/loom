@@ -143,7 +143,7 @@ export class RandomVocabContext {
 
 	async actor(account?: Account): Promise<{
 		actor: AccountActor;
-		actorlHub: Hub;
+		personalHub: Hub;
 		assignment: Assignment;
 		spaces: Space[];
 		account: Account;
@@ -151,7 +151,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		const {
 			actors: [actor],
-			hubs: [actorlHub],
+			hubs: [personalHub],
 			assignments: [assignment],
 			spaces,
 		} = unwrap(
@@ -160,7 +160,7 @@ export class RandomVocabContext {
 				params: {name: randomActorParams().name},
 			}),
 		);
-		return {actor: actor as AccountActor, actorlHub, assignment, spaces, account};
+		return {actor: actor as AccountActor, personalHub, assignment, spaces, account};
 	}
 
 	async hub(

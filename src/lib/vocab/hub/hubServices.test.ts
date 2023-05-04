@@ -29,10 +29,10 @@ const test_hubServices = suite<TestDbContext>('hubRepo');
 test_hubServices.before(setupDb);
 test_hubServices.after(teardownDb);
 
-test_hubServices('disallow deleting actorl hub', async ({repos, random}) => {
-	const {actor, actorlHub} = await random.actor();
+test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
+	const {actor, personalHub} = await random.actor();
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(actorlHub.settings.defaultRoleId, permissions.DeleteHub);
+	await repos.policy.create(personalHub.settings.defaultRoleId, permissions.DeleteHub);
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
@@ -65,14 +65,16 @@ test_hubServices('default admin hub role has all permissions', async ({repos}) =
 	assert.equal(toSortedPermissionNames(adminDefaultPolicies), sortedPermissionNames);
 });
 
-test_hubServices('default actorl hub role has all permissions', async ({repos, random}) => {
+test_hubServices('default personal hub role has all permissions', async ({repos, random}) => {
 	const {actor} = await random.actor();
 
-	const actorlHub = await repos.hub.findById(actor.hub_id);
-	assert.ok(actorlHub);
-	const actorlDefaultPolicies = await repos.policy.filterByRole(actorlHub.settings.defaultRoleId);
+	const personalHub = await repos.hub.findById(actor.hub_id);
+	assert.ok(personalHub);
+	const personalDefaultPolicies = await repos.policy.filterByRole(
+		personalHub.settings.defaultRoleId,
+	);
 
-	assert.equal(toSortedPermissionNames(actorlDefaultPolicies), sortedPermissionNames);
+	assert.equal(toSortedPermissionNames(personalDefaultPolicies), sortedPermissionNames);
 });
 
 test_hubServices('disallow duplicate hub names', async ({repos, random}) => {

@@ -32,17 +32,17 @@ test__assignmentServices('disallow creating duplicate assignments', async ({repo
 });
 
 test__assignmentServices(
-	'disallow creating assignments for actorl hubs',
+	'disallow creating assignments for personal hubs',
 	async ({repos, random}) => {
-		const {actorlHub, actor} = await random.actor();
+		const {personalHub, actor} = await random.actor();
 		await expectApiError(403, async () =>
 			CreateAssignmentService.perform({
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.actor_id,
-					hub_id: actorlHub.hub_id,
+					hub_id: personalHub.hub_id,
 					actor_id: (await random.actor()).actor.actor_id,
-					role_id: actorlHub.settings.defaultRoleId,
+					role_id: personalHub.settings.defaultRoleId,
 				},
 			}),
 		);
@@ -66,7 +66,7 @@ test__assignmentServices('delete an assignment in a hub', async ({repos, random}
 	assert.ok(!(await repos.assignment.findById(assignment.assignment_id)));
 });
 
-test__assignmentServices('fail to delete a actorl assignment', async ({repos, random}) => {
+test__assignmentServices('fail to delete a personal assignment', async ({repos, random}) => {
 	const {actor, assignment} = await random.actor();
 	unwrapError(
 		await DeleteAssignmentService.perform({
