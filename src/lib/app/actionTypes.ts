@@ -225,9 +225,7 @@ export interface SignUpParams {
 }
 export interface SignUpResponse {
 	/**
-	 *
-	 * 		The session data loaded on each page for authenticated users.
-	 *
+	 * The session data loaded on each page for authenticated users.
 	 */
 	session: ClientAccountSession;
 }
@@ -239,9 +237,7 @@ export interface SignInParams {
 }
 export interface SignInResponse {
 	/**
-	 *
-	 * 		The session data loaded on each page for authenticated users.
-	 *
+	 * The session data loaded on each page for authenticated users.
 	 */
 	session: ClientAccountSession;
 }
@@ -253,16 +249,12 @@ export type SignOutResponseResult = ApiResult<SignOutResponse>;
 
 export interface UpdateAccountSettingsParams {
 	/**
-	 *
-	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
-	 *
+	 * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
 	 */
 	settings: AccountSettings;
 }
 /**
- *
- * 		A client-facing subset of an Account. Excludes 'password' for security.
- *
+ * A client-facing subset of an Account. Excludes 'password' for security.
  */
 export type UpdateAccountSettingsResponse = ClientAccount;
 export type UpdateAccountSettingsResponseResult = ApiResult<UpdateAccountSettingsResponse>;
@@ -272,9 +264,7 @@ export interface UpdateAccountPasswordParams {
 	newPassword: string;
 }
 /**
- *
- * 		A client-facing subset of an Account. Excludes 'password' for security.
- *
+ * A client-facing subset of an Account. Excludes 'password' for security.
  */
 export type UpdateAccountPasswordResponse = ClientAccount;
 export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
@@ -285,11 +275,9 @@ export interface CreateHubParams {
 }
 export interface CreateHubResponse {
 	/**
-	 *
-	 * 		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
-	 * 		They have self contained governance and ownership of Spaces within them.
-	 * 		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
-	 *
+	 * Hubs represent the membrane around the places Actors can interact with each other or with system level data.
+	 * They have self contained governance and ownership of Spaces within them.
+	 * By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
 	 */
 	hub: Hub;
 	roles: Role[];
@@ -307,11 +295,9 @@ export interface ReadHubParams {
 }
 export interface ReadHubResponse {
 	/**
-	 *
-	 * 		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
-	 * 		They have self contained governance and ownership of Spaces within them.
-	 * 		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
-	 *
+	 * Hubs represent the membrane around the places Actors can interact with each other or with system level data.
+	 * They have self contained governance and ownership of Spaces within them.
+	 * By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
 	 */
 	hub: Hub;
 	spaces: Space[];
@@ -326,9 +312,7 @@ export interface UpdateHubSettingsParams {
 	actor: ActorId;
 	hub_id: HubId;
 	/**
-	 *
-	 * 		A nested set of attributes on Hub. Holds all hub level settings.
-	 *
+	 * A nested set of attributes on Hub. Holds all hub level settings.
 	 */
 	settings: HubSettings;
 }
@@ -349,17 +333,13 @@ export interface InviteToHubParams {
 }
 export interface InviteToHubResponse {
 	/**
-	 *
-	 * 		A subset of an Actor available to all clients in a hub.
-	 *
+	 * A subset of an Actor available to all clients in a hub.
 	 */
 	actor: PublicActor;
 	/**
-	 *
-	 * 	 Describes the relationship between an Actor and Role within a given Hub.
-	 * 	 An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
-	 * 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
-	 *
+	 * Describes the relationship between an Actor and Role within a given Hub.
+	 * An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
+	 * When initially joining a Hub, Actors are given an Assignment to the default Role.
 	 */
 	assignment: Assignment;
 }
@@ -410,11 +390,9 @@ export interface CreateAssignmentParams {
 }
 export interface CreateAssignmentResponse {
 	/**
-	 *
-	 * 	 Describes the relationship between an Actor and Role within a given Hub.
-	 * 	 An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
-	 * 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
-	 *
+	 * Describes the relationship between an Actor and Role within a given Hub.
+	 * An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
+	 * When initially joining a Hub, Actors are given an Assignment to the default Role.
 	 */
 	assignment: Assignment;
 }
@@ -437,22 +415,18 @@ export interface CreateSpaceParams {
 }
 export interface CreateSpaceResponse {
 	/**
-	 *
-	 * 	 Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
-	 * 	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
-	 * 	 Each is a Svelte component that conforms to the View interface.
-	 *
+	 * Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
+	 * The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
+	 * Each is a Svelte component that conforms to the View interface.
 	 */
 	space: Space;
 	/**
-	 *
-	 * 		An Entity is the core data type that represents an ActivityStreams object in the system.
-	 * 		Each has an "owning" space and actor that controls its governance.
-	 * 		Entities exist within a graph architecture, with Ties serving as the paths between nodes.
-	 * 		Conventionally, all entities within a given Space can be found by traversing
-	 * 		the graph starting at the directory Entity associated with the owning Space.
-	 * 		A directory is an ActivityStreams Collection referenced by each Space.
-	 *
+	 * An Entity is the core data type that represents an ActivityStreams object in the system.
+	 * Each has an "owning" space and actor that controls its governance.
+	 * Entities exist within a graph architecture, with Ties serving as the paths between nodes.
+	 * Conventionally, all entities within a given Space can be found by traversing
+	 * the graph starting at the directory Entity associated with the owning Space.
+	 * A directory is an ActivityStreams Collection referenced by each Space.
 	 */
 	directory: Directory;
 }
@@ -478,11 +452,9 @@ export interface UpdateSpaceParams {
 }
 export interface UpdateSpaceResponse {
 	/**
-	 *
-	 * 	 Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
-	 * 	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
-	 * 	 Each is a Svelte component that conforms to the View interface.
-	 *
+	 * Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
+	 * The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
+	 * Each is a Svelte component that conforms to the View interface.
 	 */
 	space: Space;
 }
@@ -593,11 +565,9 @@ export interface CreateRoleParams {
 }
 export interface CreateRoleResponse {
 	/**
-	 *
-	 * 		Roles are user-defined governance objects that exist within the context of a single Hub.
-	 * 		They have Policies associated with them that allow for actions to be taken within the system.
-	 * 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
-	 *
+	 * Roles are user-defined governance objects that exist within the context of a single Hub.
+	 * They have Policies associated with them that allow for actions to be taken within the system.
+	 * When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	 */
 	role: Role;
 }
@@ -619,11 +589,9 @@ export interface UpdateRoleParams {
 }
 export interface UpdateRoleResponse {
 	/**
-	 *
-	 * 		Roles are user-defined governance objects that exist within the context of a single Hub.
-	 * 		They have Policies associated with them that allow for actions to be taken within the system.
-	 * 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
-	 *
+	 * Roles are user-defined governance objects that exist within the context of a single Hub.
+	 * They have Policies associated with them that allow for actions to be taken within the system.
+	 * When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	 */
 	role: Role;
 }
@@ -643,11 +611,9 @@ export interface CreatePolicyParams {
 }
 export interface CreatePolicyResponse {
 	/**
-	 *
-	 * 		Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
-	 * 		Permissions are the enumeration of the those Actions and are often 1:1.
-	 * 		`data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
-	 *
+	 * Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
+	 * Permissions are the enumeration of the those Actions and are often 1:1.
+	 * `data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	 */
 	policy: Policy;
 }
@@ -671,11 +637,9 @@ export interface UpdatePolicyParams {
 }
 export interface UpdatePolicyResponse {
 	/**
-	 *
-	 * 		Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
-	 * 		Permissions are the enumeration of the those Actions and are often 1:1.
-	 * 		`data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
-	 *
+	 * Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
+	 * Permissions are the enumeration of the those Actions and are often 1:1.
+	 * `data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	 */
 	policy: Policy;
 }
@@ -712,9 +676,7 @@ export type EphemeraResponseResult = ApiResult<EphemeraResponse>;
 
 export interface SetSessionParams {
 	/**
-	 *
-	 * 		The session data loaded on each page for authenticated and unauthenticated users.
-	 *
+	 * The session data loaded on each page for authenticated and unauthenticated users.
 	 */
 	session: ClientSession;
 }

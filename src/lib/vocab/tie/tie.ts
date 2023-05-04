@@ -6,11 +6,9 @@ import type {EntityId} from '$lib/vocab/entity/entity';
 export type TieId = Flavored<number, 'TieId'>;
 
 /**
- *
- * 		Ties are part of the Entity/Tie graph data system.
- * 		Each represents a named, directional relationship between two entities.
- * 		A Tie specifies "the [source] has relationship of [type] with [dest]."
- *
+ * Ties are part of the Entity/Tie graph data system.
+ * Each represents a named, directional relationship between two entities.
+ * A Tie specifies "the [source] has relationship of [type] with [dest]."
  */
 export interface Tie {
 	tie_id: TieId;

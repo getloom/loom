@@ -13,59 +13,45 @@ import type {Policy} from '$lib/vocab/policy/policy';
 export type AccountId = Flavored<number, 'AccountId'>;
 
 /**
- *
- * 		Represents the point of entry to the system and is responsible for managing authentication to the system.
- * 		It holds top level user data and is the relation through which all other data is loaded for the client.
- *
+ * Represents the point of entry to the system and is responsible for managing authentication to the system.
+ * It holds top level user data and is the relation through which all other data is loaded for the client.
  */
 export interface Account {
 	account_id: AccountId;
 	name: string;
 	password: string;
 	/**
-	 *
-	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
-	 *
+	 * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
 	 */
 	settings: AccountSettings;
 	created: Date;
 	updated: Date | null;
 }
 /**
- *
- * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
- *
+ * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
  */
 export interface AccountSettings {
 	darkmode?: boolean;
 }
 /**
- *
- * 		A client-facing subset of an Account. Excludes 'password' for security.
- *
+ * A client-facing subset of an Account. Excludes 'password' for security.
  */
 export interface ClientAccount {
 	account_id: AccountId;
 	name: string;
 	/**
-	 *
-	 * 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
-	 *
+	 * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
 	 */
 	settings: AccountSettings;
 	created: Date;
 	updated: Date | null;
 }
 /**
- *
- * 		The session data loaded on each page for authenticated users.
- *
+ * The session data loaded on each page for authenticated users.
  */
 export interface ClientAccountSession {
 	/**
-	 *
-	 * 		A client-facing subset of an Account. Excludes 'password' for security.
-	 *
+	 * A client-facing subset of an Account. Excludes 'password' for security.
 	 */
 	account: ClientAccount;
 	sessionActors: AccountActor[];
@@ -79,17 +65,13 @@ export interface ClientAccountSession {
 	guest?: false;
 }
 /**
- *
- * 		A type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.
- *
+ * A type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.
  */
 export interface ClientGuestSession {
 	guest: true;
 }
 /**
- *
- * 		The session data loaded on each page for authenticated and unauthenticated users.
- *
+ * The session data loaded on each page for authenticated and unauthenticated users.
  */
 export type ClientSession = ClientAccountSession | ClientGuestSession;
 
