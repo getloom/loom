@@ -43,10 +43,8 @@ npm i # install dependencies
 **3. Postgres**
 
 `@feltjs/felt-server` requires [Postgres](https://www.postgresql.org/) >= 15.
-For more details see
-[the database docs](https://github.com/feltjs/felt-server/tree/main/src/db).
-
-TODO defaults are in code, not the env vars, is a better UX to include them
+For details about felt-server's database implementation, see
+[the data model docs](/src/docs/data-model.md).
 
 `@feltjs/felt-server` defaults to user `postgres` with password `password` and database `felt`.
 To set up its database with the expected defaults:
