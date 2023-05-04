@@ -183,4 +183,16 @@ export class EntityRepo extends PostgresRepo {
 		log.debug('all directories pointing at entity', entity_id, directories);
 		return directories;
 	}
+
+	async filterDirectoriesByHub(hub_id: HubId): Promise<Directory[]> {
+		const data = await this.sql<Directory[]>`
+			SELECT entity_id, data, actor_id, created, updated, space_id, path
+			FROM entities e JOIN (
+				SELECT DISTINCT s.directory_id FROM spaces s
+				WHERE s.hub_id=${hub_id}
+			) es
+			ON e.entity_id=es.directory_id
+		`;
+		return data;
+	}
 }

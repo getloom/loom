@@ -4,7 +4,11 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {AccountActor, Actor, PublicActor, ActorId} from '$lib/vocab/actor/actor';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
-import {ACTOR_COLUMNS, type ActorColumn} from '$lib/vocab/actor/actorHelpers.server';
+import {
+	ACTOR_COLUMNS,
+	type ActorColumn,
+	type PublicActorColumn,
+} from '$lib/vocab/actor/actorHelpers.server';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
@@ -146,6 +150,22 @@ export class ActorRepo extends PostgresRepo {
 		const data = await this.sql<[{hub_id: HubId; actor_id: ActorId}]>`		
 			SELECT DISTINCT a.hub_id, act.actor_id FROM actors act
 			JOIN assignments a ON act.actor_id=a.actor_id AND act.account_id=${account_id}
+		`;
+		return data;
+	}
+
+	async filterAssociatesByHub<T extends PublicActorColumn>(
+		hub_id: HubId,
+		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+	): Promise<Array<Pick<PublicActor, T>>> {
+		const data = await this.sql<PublicActor[]>`
+		SELECT ${this.sql(columns.map((c) => 'act.' + c))}
+			FROM actors act
+			JOIN (
+				SELECT DISTINCT actor_id FROM assignments
+				WHERE hub_id=${hub_id}
+			) a
+			ON act.actor_id=a.actor_id			
 		`;
 		return data;
 	}

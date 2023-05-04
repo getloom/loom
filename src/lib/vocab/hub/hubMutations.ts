@@ -63,11 +63,19 @@ export const DeleteHub: Mutations['DeleteHub'] = async ({params, invoke, ui}) =>
 	return result;
 };
 
-export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, ui}) => {
+export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, actions, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 
 	const {assignment, actor} = result.value;
+	const {hub_id} = assignment;
+	const {hubById} = ui;
+
+	if (!hubById.has(hub_id)) {
+		const readHubResult = await actions.ReadHub({actor: actor.actor_id, hub_id});
+		if (!readHubResult.ok) return readHubResult;
+	}
+
 	ui.mutate(() => {
 		stashActors(ui, [actor]);
 		stashAssignments(ui, [assignment]);

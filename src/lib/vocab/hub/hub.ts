@@ -30,6 +30,7 @@ export interface HubSettings {
 	instance?: {
 		allowedAccountNames?: string[];
 		disableCreateHub?: boolean;
+		defaultHubIds?: HubId[];
 	};
 }
 /**

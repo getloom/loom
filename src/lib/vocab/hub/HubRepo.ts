@@ -5,9 +5,12 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import type {ActorId} from '$lib/vocab/actor/actor';
-import type {RoleId} from '$lib/vocab/role/role';
+import type {ActorId, ClientActor} from '$lib/vocab/actor/actor';
+import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {AccountId} from '$lib/vocab/account/account';
+import type {Policy} from '../policy/policy';
+import type {Space} from '../space/space';
+import type {Directory} from '../entity/entityData';
 
 const log = new Logger(gray('[') + blue('HubRepo') + gray(']'));
 
@@ -111,5 +114,34 @@ export class HubRepo extends PostgresRepo {
 			WHERE r.role_id=${role_id}
 		`;
 		return data[0];
+	}
+
+	async filterByIds(hubIds: HubId[]): Promise<Hub[]> {
+		log.debug(`[filterByIds] ${hubIds}`);
+		const data = await this.sql<Hub[]>`
+			SELECT hub_id, type, name, settings, created, updated
+			FROM hubs WHERE hub_id IN ${this.sql(hubIds)}
+		`;
+		return data;
+	}
+
+	async loadHubContext(hub_id: HubId): Promise<{
+		hubActors: ClientActor[];
+		hubRoles: Role[];
+		hubPolicies: Policy[];
+		hubSpaces: Space[];
+		hubDirectories: Directory[];
+	}> {
+		log.debug('loadHubContext', hub_id);
+
+		const [hubSpaces, hubDirectories, hubRoles, hubPolicies, hubActors] = await Promise.all([
+			this.repos.space.filterByHub(hub_id),
+			this.repos.entity.filterDirectoriesByHub(hub_id),
+			this.repos.role.filterByHub(hub_id),
+			this.repos.policy.filterByHub(hub_id),
+			this.repos.actor.filterAssociatesByHub(hub_id),
+		]);
+
+		return {hubActors, hubRoles, hubPolicies, hubSpaces, hubDirectories};
 	}
 }

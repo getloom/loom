@@ -43,6 +43,7 @@ export const HubSettingsSchema = {
 			properties: {
 				allowedAccountNames: {type: 'array', items: {type: 'string'}},
 				disableCreateHub: {type: 'boolean'},
+				defaultHubIds: {type: 'array', items: {$ref: '/schemas/HubId.json'}},
 			},
 			additionalProperties: false,
 		},

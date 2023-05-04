@@ -21,6 +21,7 @@ import {
 import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
 import {defaultPersonalHubRoles} from '$lib/app/templates';
+import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 
 const log = new Logger(gray('[') + blue('actorServices') + gray(']'));
 
@@ -103,6 +104,31 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 			);
 			spaces.push(...defaultAdminSpaces.spaces);
 			directories.push(...defaultAdminSpaces.directories);
+		}
+
+		// once all initial hubs & assignments have been created properly
+		// check to see if there are any instance configured default hubs the actor needs assigned to
+		const adminHub = await repos.hub.loadAdminHub();
+		if (adminHub) {
+			const defaultHubIds = adminHub.settings.instance?.defaultHubIds;
+			if (defaultHubIds) {
+				const defaultHubs = await repos.hub.filterByIds(defaultHubIds);
+				await Promise.all(
+					defaultHubs.map(async (hub) => {
+						const role_id = hub.settings.defaultRoleId;
+						const assignment = await createAssignment(actor.actor_id, hub, role_id, repos);
+						assignments.push(assignment);
+						hubs.push(hub);
+						const {hubActors, hubRoles, hubPolicies, hubSpaces, hubDirectories} =
+							await repos.hub.loadHubContext(hub.hub_id);
+						actors.push(...hubActors);
+						roles.push(...hubRoles);
+						policies.push(...hubPolicies);
+						spaces.push(...hubSpaces);
+						directories.push(...hubDirectories);
+					}),
+				);
+			}
 		}
 
 		return {

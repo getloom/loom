@@ -68,7 +68,7 @@ export class PolicyRepo extends PostgresRepo {
 	}
 
 	async filterByAccount(account_id: AccountId): Promise<Policy[]> {
-		log.debug('[filterByAccountId]', account_id);
+		log.debug('[filterByAccount]', account_id);
 		const result = await this.sql<Policy[]>`
 		SELECT pol.policy_id, pol.role_id, pol.permission, pol.data, pol.created, pol.updated
 		FROM policies pol JOIN (							
@@ -79,6 +79,20 @@ export class PolicyRepo extends PostgresRepo {
 				ON r.hub_id=apc.hub_id
 		) apcr
 		ON pol.role_id = apcr.role_id
+		`;
+		log.debug('[filterByAccount]', result.length);
+		return result;
+	}
+
+	async filterByHub(hub_id: HubId): Promise<Policy[]> {
+		log.debug('[filterByHub]', hub_id);
+		const result = await this.sql<Policy[]>`
+		SELECT pol.policy_id, pol.role_id, pol.permission, pol.data, pol.created, pol.updated
+		FROM policies pol JOIN (							
+				SELECT DISTINCT r.role_id FROM roles r 
+				WHERE r.hub_id=${hub_id}
+		) ro
+		ON pol.role_id = ro.role_id
 		`;
 		log.debug('[filterByAccount]', result.length);
 		return result;

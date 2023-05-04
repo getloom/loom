@@ -1,8 +1,9 @@
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
-import type {Actor, ActorId} from '$lib/vocab/actor/actor';
+import type {Actor, ActorId, PublicActor} from '$lib/vocab/actor/actor';
 
 export type ActorColumn = keyof Actor;
+export type PublicActorColumn = keyof PublicActor;
 export const ACTOR_COLUMNS = {
 	Actor: ['actor_id', 'type', 'name', 'account_id', 'hub_id', 'created', 'updated'],
 	PublicActor: ['actor_id', 'type', 'name', 'created'],
