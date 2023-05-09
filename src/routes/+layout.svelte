@@ -19,6 +19,7 @@
 	import Dialogs from '@feltjs/felt-ui/Dialogs.svelte';
 	import {isEditable, swallow} from '@feltjs/util/dom.js';
 	import {format} from 'date-fns';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Onboard from '$lib/ui/Onboard.svelte';
@@ -64,7 +65,7 @@
 		() => actions.Ping(),
 	);
 	const ui = toUi(data, initialMobileValue, components, (errorMessage) => {
-		actions.OpenDialog({Component: ErrorMessage, props: {text: errorMessage}});
+		actions.OpenDialog(toDialogData(ErrorMessage, {text: errorMessage}));
 	});
 	setUi(ui);
 

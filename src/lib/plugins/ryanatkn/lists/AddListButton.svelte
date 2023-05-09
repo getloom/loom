@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
@@ -12,15 +14,16 @@
 
 <button
 	on:click={() =>
-		actions.OpenDialog({
-			Component: CreateEntityForm,
-			props: {
+		actions.OpenDialog(
+			toDialogData(CreateEntityForm, {
 				done: () => actions.CloseDialog(),
 				entityName: 'list',
 				actor,
 				hub,
 				space,
 				fields: {content: true},
-			},
-		})}>add list</button
+			}),
+		)}
 >
+	add list
+</button>

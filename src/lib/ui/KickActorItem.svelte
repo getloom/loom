@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -32,14 +33,13 @@
 		title="kick actor"
 		class="icon-button plain-button"
 		on:click={() =>
-			actions.OpenDialog({
-				Component: ConfirmDialog,
-				props: {
+			actions.OpenDialog(
+				toDialogData(ConfirmDialog, {
 					confirmed: kickActorFromHub,
 					promptText: `Kick ${$communityActor.name} from ${$hub.name}? This cannot be reversed.`,
 					confirmText: 'kick them',
-				},
-			})}
+				}),
+			)}
 		pending={kickPending}
 	>
 		✕

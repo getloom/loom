@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -22,20 +23,17 @@
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog({
-					Component: CreateHubForm,
-					props: {actor, done: () => actions.CloseDialog()},
-					dialogProps: {layout: 'page'},
-				})}
+				actions.OpenDialog(
+					toDialogData(CreateHubForm, {actor, done: () => actions.CloseDialog()}, {layout: 'page'}),
+				)}
 		>
 			Create Hub
 		</ContextmenuEntry>
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog({
-					Component: DeleteActorForm,
-					props: {actor, done: () => actions.CloseDialog()},
-				})}
+				actions.OpenDialog(
+					toDialogData(DeleteActorForm, {actor, done: () => actions.CloseDialog()}),
+				)}
 		>
 			Delete Actor
 		</ContextmenuEntry>

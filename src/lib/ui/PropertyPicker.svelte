@@ -4,6 +4,7 @@
 	import type {Result} from '@feltjs/util';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
@@ -121,11 +122,7 @@
 {#if field === 'hub_id'}
 	<button
 		type="button"
-		on:click={() =>
-			actions.OpenDialog({
-				Component: HubPicker,
-				props: {done: doneWithHubPicker},
-			})}
+		on:click={() => actions.OpenDialog(toDialogData(HubPicker, {done: doneWithHubPicker}))}
 	>
 		pick hub
 	</button>

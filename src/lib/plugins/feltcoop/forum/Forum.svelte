@@ -2,6 +2,7 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import {type Readable, readable} from '@feltcoop/svelte-gettable-stores';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import ForumItems from '$lib/plugins/feltcoop/forum/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -46,18 +47,19 @@
 			{#if !selectedPost}
 				<button
 					on:click={() =>
-						actions.OpenDialog({
-							Component: CreateEntityForm,
-							props: {
+						actions.OpenDialog(
+							toDialogData(CreateEntityForm, {
 								done: () => actions.CloseDialog(),
 								entityName: 'post',
 								fields: {name: true, content: true},
 								actor,
 								hub,
 								space,
-							},
-						})}>Submit a new post</button
+							}),
+						)}
 				>
+					Submit a new post
+				</button>
 			{/if}
 			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt-server/pull/514#discussion_r998626893 -->
 			<!-- {:else if $queryStatus === 'failure'}

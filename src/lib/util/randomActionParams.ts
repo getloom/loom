@@ -1,4 +1,6 @@
 import {randomBool} from '@feltjs/util/random.js';
+import {SvelteComponent} from 'svelte';
+import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 import {
 	randomEntityData,
@@ -289,13 +291,7 @@ export const randomActionParams: RandomActionParams = {
 		return randomBool();
 	},
 	OpenDialog: async () => {
-		// TODO should use the `instanceof` `ajv-keywords` extension for this:
-		// https://github.com/ajv-validator/ajv-keywords#instanceof
-		// using the single keyword directly:
-		// `require("ajv-keywords/dist/keywords/instanceof")(ajv, opts)`
-		// and this value should be:
-		// `class SomeComponent extends SvelteComponent {}`
-		return {Component: {} as any};
+		return toDialogData(class SomeComponent extends SvelteComponent {}, {});
 	},
 	CloseDialog: async () => {
 		return undefined;

@@ -2,6 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -121,28 +122,26 @@
 			<PendingButton
 				title="erase entity"
 				on:click={() =>
-					actions.OpenDialog({
-						Component: ConfirmDialog,
-						props: {
+					actions.OpenDialog(
+						toDialogData(ConfirmDialog, {
 							confirmed: eraseEntity,
 							promptText: 'Erase this entity? This cannot be reversed.',
 							confirmText: 'erase entity',
-						},
-					})}
+						}),
+					)}
 				pending={erasePending}>erase entity</PendingButton
 			>
 		{/if}
 		<PendingButton
 			title="delete entity"
 			on:click={() =>
-				actions.OpenDialog({
-					Component: ConfirmDialog,
-					props: {
+				actions.OpenDialog(
+					toDialogData(ConfirmDialog, {
 						confirmed: deleteEntity,
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',
-					},
-				})}
+					}),
+				)}
 			pending={deletePending}>delete entity</PendingButton
 		>
 	</fieldset>

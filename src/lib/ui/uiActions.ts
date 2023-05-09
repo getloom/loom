@@ -96,8 +96,9 @@ export const OpenDialog: ClientActionData = {
 	name: 'OpenDialog',
 	params: {
 		$id: '/schemas/OpenDialogParams.json',
-		// TODO probably extend this type with the project-level dialog types
-		$ref: '/schemas/DialogData.json',
+		type: 'object',
+		tsType: 'DialogData',
+		tsImport: 'import type {DialogData} from "@feltjs/felt-ui/dialog.js"',
 	},
 	returns: 'void',
 };

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
@@ -75,7 +76,7 @@
 		<section class="markup padded-xl">
 			<p>
 				<strong>
-					Check out our hub rules and norms!<br />
+					Here's our hub rules and norms!<br />
 					Please feel free to voice your thoughts about them. Deliberation is always helpful for maintaining
 					a healthy hub.
 				</strong>
@@ -92,13 +93,17 @@
 					<h4>rules</h4>
 					<!--TODO how to trigger a directory freshen from result of this dialogue-->
 					<button
-						on:click={() =>
-							actions.OpenDialog({
-								Component: EntityEditor,
-								props: {actor, entity: rules},
-								dialogProps: {layout: 'page'},
-							})}
-						>propose change ✍️
+						on:click={() => {
+							if (rules && $rules) {
+								actions.OpenDialog(
+									toDialogData(EntityEditor, {actor, entity: rules}, {layout: 'page'}),
+								);
+							}
+						}}
+						disabled={!$rules}
+						title="propose change"
+					>
+						✎
 					</button>
 				</div>
 				{#if rules && $rules}<EntityContent entity={rules} />{:else}rules not found{/if}
@@ -107,13 +112,17 @@
 				<div class="header">
 					<h4>norms</h4>
 					<button
-						on:click={() =>
-							actions.OpenDialog({
-								Component: EntityEditor,
-								props: {actor, entity: norms},
-								dialogProps: {layout: 'page'},
-							})}
-						>propose change ✍️
+						on:click={() => {
+							if (norms && $norms) {
+								actions.OpenDialog(
+									toDialogData(EntityEditor, {actor, entity: norms}, {layout: 'page'}),
+								);
+							}
+						}}
+						disabled={!$norms}
+						title="propose change"
+					>
+						✎
 					</button>
 				</div>
 				{#if norms && $norms}<EntityContent entity={norms} />{:else}norms not found{/if}

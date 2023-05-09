@@ -2,6 +2,7 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import {readable, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import TodoItems from '$lib/plugins/feltcoop/todo/TodoItems.svelte';
@@ -90,18 +91,19 @@
 			<TodoItems {actor} {entities} {space} {selectedList} {selectList} />
 			<button
 				on:click={() =>
-					actions.OpenDialog({
-						Component: CreateEntityForm,
-						props: {
+					actions.OpenDialog(
+						toDialogData(CreateEntityForm, {
 							done: () => actions.CloseDialog(),
 							entityName: 'todo',
 							actor,
 							hub,
 							space,
 							fields: {content: true},
-						},
-					})}>+ Create List</button
+						}),
+					)}
 			>
+				+ Create List
+			</button>
 		{:else}
 			<PendingAnimation />
 		{/if}

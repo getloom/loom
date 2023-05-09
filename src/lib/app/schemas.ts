@@ -1,4 +1,3 @@
-import {DialogDataSchema} from '@feltjs/felt-ui/dialog.schema.js';
 import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
 
 import {actionDatas} from '$lib/app/actionData';
@@ -91,6 +90,4 @@ export const schemas = vocabSchemas.concat(
 		])
 		.filter(Boolean)
 		.map(toFeltVocabSchema),
-	// Include external schema dependencies.
-	toFeltVocabSchema(DialogDataSchema as VocabSchema),
 );

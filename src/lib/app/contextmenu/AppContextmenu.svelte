@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+
 	import {getApp} from '$lib/ui/app';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
@@ -29,10 +31,9 @@
 		{#if !$session.guest}
 			<ContextmenuEntry
 				run={() =>
-					actions.OpenDialog({
-						Component: CreateAccountActorForm,
-						props: {done: () => actions.CloseDialog()},
-					})}
+					actions.OpenDialog(
+						toDialogData(CreateAccountActorForm, {done: () => actions.CloseDialog()}),
+					)}
 			>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="@" />
@@ -41,38 +42,35 @@
 			</ContextmenuEntry>
 		{/if}
 		{#if !$session.guest}
-			<ContextmenuEntry
-				run={() =>
-					actions.OpenDialog({
-						Component: AccountEditor,
-						props: {account},
-					})}
-			>
+			<ContextmenuEntry run={() => actions.OpenDialog(toDialogData(AccountEditor, {account}))}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="$" />
 				</svelte:fragment>
 				Account settings
 			</ContextmenuEntry>
 		{/if}
-		<ContextmenuSubmenu>
-			<svelte:fragment slot="icon">
-				<UnicodeIcon icon="*" />
-			</svelte:fragment>
-			Advanced
-			<svelte:fragment slot="menu">
-				<ContextmenuEntry
-					run={() =>
-						actions.OpenDialog({
-							Component: CreateActionForm,
-							props: {actor: selectedActor},
-							dialogProps: {layout: 'page'},
-						})}
-				>
-					Create a system Action
-				</ContextmenuEntry>
-			</svelte:fragment>
-		</ContextmenuSubmenu>
-		<ContextmenuEntry run={() => actions.OpenDialog({Component: About})}>
+		{#if selectedActor}
+			<ContextmenuSubmenu>
+				<svelte:fragment slot="icon">
+					<UnicodeIcon icon="*" />
+				</svelte:fragment>
+				Advanced
+				<svelte:fragment slot="menu">
+					<ContextmenuEntry
+						run={() => {
+							if (selectedActor) {
+								actions.OpenDialog(
+									toDialogData(CreateActionForm, {actor: selectedActor}, {layout: 'page'}),
+								);
+							}
+						}}
+					>
+						Create a system Action
+					</ContextmenuEntry>
+				</svelte:fragment>
+			</ContextmenuSubmenu>
+		{/if}
+		<ContextmenuEntry run={() => actions.OpenDialog(toDialogData(About, {}))}>
 			<svelte:fragment slot="icon">
 				<UnicodeIcon icon="?" />
 			</svelte:fragment>

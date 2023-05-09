@@ -4,6 +4,7 @@
 	import type {Result} from '@feltjs/util';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import {autofocus} from '$lib/ui/actions';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -87,17 +88,16 @@
 	};
 
 	const deleteField = () => {
-		actions.OpenDialog({
-			Component: ConfirmDialog,
-			props: {
+		actions.OpenDialog(
+			toDialogData(ConfirmDialog, {
 				confirmed: async () => {
 					fieldValue = undefined;
 					await save();
 				},
 				promptText: `Delete '${field}' from this entity? The data will be lost.`,
 				confirmText: `delete '${field}' property`,
-			},
-		});
+			}),
+		);
 	};
 
 	$: currentSerialized = serialize(value, true);

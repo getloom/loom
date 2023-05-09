@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
@@ -24,11 +25,13 @@
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog({
-					Component: EntityEditor,
-					props: {actor, entity, done: () => actions.CloseDialog()},
-					dialogProps: {layout: 'page'},
-				})}
+				actions.OpenDialog(
+					toDialogData(
+						EntityEditor,
+						{actor, entity, done: () => actions.CloseDialog()},
+						{layout: 'page'},
+					),
+				)}
 		>
 			Edit Entity
 		</ContextmenuEntry>
@@ -36,9 +39,8 @@
 		{#if $entity.data.type !== 'Tombstone'}
 			<ContextmenuEntry
 				run={() =>
-					actions.OpenDialog({
-						Component: ConfirmDialog,
-						props: {
+					actions.OpenDialog(
+						toDialogData(ConfirmDialog, {
 							confirmed: () =>
 								actions.EraseEntities({
 									actor: $actor.actor_id,
@@ -46,23 +48,22 @@
 								}),
 							promptText: 'Erase this entity? This cannot be reversed.',
 							confirmText: 'erase entity',
-						},
-					})}
+						}),
+					)}
 			>
 				Erase Entity
 			</ContextmenuEntry>
 		{/if}
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog({
-					Component: ConfirmDialog,
-					props: {
+				actions.OpenDialog(
+					toDialogData(ConfirmDialog, {
 						confirmed: () =>
 							actions.DeleteEntities({actor: $actor.actor_id, entityIds: [$entity.entity_id]}),
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',
-					},
-				})}
+					}),
+				)}
 		>
 			Delete Entity
 		</ContextmenuEntry>

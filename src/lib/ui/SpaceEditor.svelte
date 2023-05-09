@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import type {Space} from '$lib/vocab/space/space';
@@ -72,9 +73,8 @@
 			<button
 				title="delete space"
 				on:click={() =>
-					actions.OpenDialog({
-						Component: DeleteSpaceForm,
-						props: {
+					actions.OpenDialog(
+						toDialogData(DeleteSpaceForm, {
 							actor,
 							hub,
 							space,
@@ -82,9 +82,11 @@
 								actions.CloseDialog();
 								done?.();
 							},
-						},
-					})}>delete space</button
+						}),
+					)}
 			>
+				delete space
+			</button>
 		</fieldset>
 	</form>
 

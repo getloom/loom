@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -29,66 +30,50 @@
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog({
-					Component: HubEditor,
-					props: {actor, hub, done: () => actions.CloseDialog()},
-				})}
+				actions.OpenDialog(
+					toDialogData(HubEditor, {actor, hub, done: () => actions.CloseDialog()}),
+				)}
 		>
 			Edit Hub
 		</ContextmenuEntry>
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog({
-					Component: CreateSpaceForm,
-					props: {actor, hub, done: () => actions.CloseDialog()},
-				})}
+				actions.OpenDialog(
+					toDialogData(CreateSpaceForm, {actor, hub, done: () => actions.CloseDialog()}),
+				)}
 		>
 			Create Space
 		</ContextmenuEntry>
 		<ContextmenuEntry
-			run={() =>
-				actions.OpenDialog({
-					Component: ManageRolesForm,
-					dialogProps: {layout: 'page'},
-					props: {actor, hub},
-				})}
+			run={() => actions.OpenDialog(toDialogData(ManageRolesForm, {actor, hub}, {layout: 'page'}))}
 		>
 			Manage Roles
 		</ContextmenuEntry>
 		{#if $hub.type !== 'personal'}
 			<ContextmenuEntry
 				run={() =>
-					actions.OpenDialog({
-						Component: InviteToHubForm,
-						props: {actor, hub, done: () => actions.CloseDialog()},
-					})}
+					actions.OpenDialog(
+						toDialogData(InviteToHubForm, {actor, hub, done: () => actions.CloseDialog()}),
+					)}
 			>
 				Invite People
 			</ContextmenuEntry>
-			<ContextmenuEntry
-				run={() =>
-					actions.OpenDialog({
-						Component: KickFromHubForm,
-						props: {actor, hub},
-					})}
-			>
+			<ContextmenuEntry run={() => actions.OpenDialog(toDialogData(KickFromHubForm, {actor, hub}))}>
 				Kick People
 			</ContextmenuEntry>
 			<ContextmenuEntry
 				run={() =>
-					actions.OpenDialog({
-						Component: LeaveHubForm,
-						props: {actor, hub, done: () => actions.CloseDialog()},
-					})}
+					actions.OpenDialog(
+						toDialogData(LeaveHubForm, {actor, hub, done: () => actions.CloseDialog()}),
+					)}
 			>
 				Leave Hub
 			</ContextmenuEntry>
 			<ContextmenuEntry
 				run={() =>
-					actions.OpenDialog({
-						Component: DeleteHubForm,
-						props: {actor, hub, done: () => actions.CloseDialog()},
-					})}
+					actions.OpenDialog(
+						toDialogData(DeleteHubForm, {actor, hub, done: () => actions.CloseDialog()}),
+					)}
 			>
 				Delete Hub
 			</ContextmenuEntry>
