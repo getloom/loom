@@ -1,16 +1,15 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
-	import Forum from '$lib/plugins/feltcoop/forum/Forum.svelte';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import NewcomerSubmission from '$lib/ui/NewcomerSubmission.svelte';
 	import RolesList from '$lib/ui/RolesList.svelte';
+	import {transformQueryDataToArray} from '$lib/util/query';
 
 	const {actor, space} = getSpaceContext();
 
@@ -21,24 +20,23 @@
 
 	$: shouldLoadEntities = browser && $socket.open;
 
-	//TODO this is all done because the Query action always returns an empty array on initial call
-	$: entitiesResult = shouldLoadEntities
-		? actions.ReadEntities({
+	$: query = shouldLoadEntities
+		? actions.QueryEntities({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	let entities: Entity[] | undefined;
+	$: queryData = query?.data;
+	$: queryStatus = query?.status;
+	$: querySuccess = $queryStatus === 'success';
+
+	let entities: Readable<Array<Readable<Entity>>> | undefined;
 	let rules: Readable<Entity> | undefined;
 	let norms: Readable<Entity> | undefined;
 
-	$: void entitiesResult?.then((data) => {
-		if (data.ok) {
-			entities = data.value.entities;
-			rules = writable(entities.find((e) => e.data.name === 'rules'));
-			norms = writable(entities.find((e) => e.data.name === 'norms'));
-		}
-	});
+	$: entities = $queryData?.value && transformQueryDataToArray(queryData!);
+	$: rules = entities && $entities?.find((e) => e.get().data.name === 'rules');
+	$: norms = entities && $entities?.find((e) => e.get().data.name === 'norms');
 
 	const createEntity = async (text: string, name: string) => {
 		const content = text.trim(); // TODO parse to trim? regularize step?
@@ -52,91 +50,74 @@
 		});
 	};
 
-	$: if (entities) {
-		const result = entities.filter((e) => e.data.name === 'rules' || e.data.name === 'norms');
-		if (result.length === 0) {
+	$: if ($entities && querySuccess) {
+		if (!$rules && !$norms) {
 			//TODO initialize these with hub, not user actor
 			void createEntity(DEFAULT_RULES, 'rules');
 			void createEntity(DEFAULT_NORMS, 'norms');
 		}
 	}
-
-	let newcomer = false;
 </script>
 
-<label>
-	<input type="checkbox" bind:checked={newcomer} />
-	Toggle newcomer view
-</label>
-{#if newcomer}
-	<NewcomerSubmission />
-{:else}
-	<!--TODO extract stuff below into new component-->
-	<div class="home">
-		<section class="markup padded-xl">
-			<p>
-				<strong>
-					Here's our hub rules and norms!<br />
-					Please feel free to voice your thoughts about them. Deliberation is always helpful for maintaining
-					a healthy hub.
-				</strong>
-			</p>
-
-			<p>
-				You can also check out other hubs’ governance structures here (limited to those that are
-				public). You can fork other types of governance here.
-			</p>
-		</section>
-		<section class="rules-and-norms">
-			<div class="rules markup padded-xl panel">
-				<div class="header">
-					<h4>rules</h4>
-					<!--TODO how to trigger a directory freshen from result of this dialogue-->
-					<button
-						on:click={() => {
-							if (rules && $rules) {
-								actions.OpenDialog(
-									toDialogData(EntityEditor, {actor, entity: rules}, {layout: 'page'}),
-								);
-							}
-						}}
-						disabled={!$rules}
-						title="propose change"
-					>
-						✎
-					</button>
-				</div>
-				{#if rules && $rules}<EntityContent entity={rules} />{:else}rules not found{/if}
+<!--TODO extract stuff below into new component-->
+<div class="home">
+	<section class="markup padded-xl">
+		<p>
+			<strong>
+				Here's our hub rules and norms!<br />
+				Please feel free to voice your thoughts about them. Deliberation is always helpful for maintaining
+				a healthy hub.
+			</strong>
+		</p>
+	</section>
+	<section class="rules-and-norms">
+		<div class="rules markup padded-xl panel">
+			<div class="header">
+				<h4>rules</h4>
+				<!--TODO how to trigger a directory freshen from result of this dialogue-->
+				<button
+					on:click={() => {
+						if (rules) {
+							actions.OpenDialog(
+								toDialogData(EntityEditor, {actor, entity: rules}, {layout: 'page'}),
+							);
+						}
+					}}
+					disabled={!$rules}
+					title="propose change"
+				>
+					✎
+				</button>
 			</div>
-			<div class="norms markup padded-xl panel">
-				<div class="header">
-					<h4>norms</h4>
-					<button
-						on:click={() => {
-							if (norms && $norms) {
-								actions.OpenDialog(
-									toDialogData(EntityEditor, {actor, entity: norms}, {layout: 'page'}),
-								);
-							}
-						}}
-						disabled={!$norms}
-						title="propose change"
-					>
-						✎
-					</button>
-				</div>
-				{#if norms && $norms}<EntityContent entity={norms} />{:else}norms not found{/if}
+			{#if rules}<EntityContent entity={rules} />{:else}rules not found{/if}
+		</div>
+		<div class="norms markup padded-xl panel">
+			<div class="header">
+				<h4>norms</h4>
+				<button
+					on:click={() => {
+						if (norms) {
+							actions.OpenDialog(
+								toDialogData(EntityEditor, {actor, entity: norms}, {layout: 'page'}),
+							);
+						}
+					}}
+					disabled={!$norms}
+					title="propose change"
+				>
+					✎
+				</button>
 			</div>
-		</section>
-		<section class="roles">
-			<div class="panel">
-				<h2>roles</h2>
-				<RolesList />
-			</div>
-		</section>
-		<Forum />
-	</div>
-{/if}
+			{#if norms}<EntityContent entity={norms} />{:else}norms not found{/if}
+		</div>
+	</section>
+	<section class="roles">
+		<div class="panel">
+			<h2>roles</h2>
+			<RolesList />
+		</div>
+	</section>
+</div>
 
 <style>
 	.header {

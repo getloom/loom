@@ -5,12 +5,14 @@ import {
 	type Mutable,
 	type Readable,
 	type Writable,
+	readable,
 } from '@feltcoop/svelte-gettable-stores';
 
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Actions} from '$lib/app/actionTypes';
 import type {Ui} from '$lib/ui/ui';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 export interface Query {
 	data: Mutable<Set<Writable<Entity>>>;
@@ -174,4 +176,10 @@ const matchEntityBySourceId: QueryMatchEntity = (entity, params, ui) => {
 		}
 	}
 	return false;
+};
+
+export const transformQueryDataToArray = (
+	data: Mutable<Set<Writable<Entity>>>,
+): Readable<Array<Readable<Entity>>> => {
+	return readable(sortEntitiesByCreated(Array.from(data.get().value)));
 };

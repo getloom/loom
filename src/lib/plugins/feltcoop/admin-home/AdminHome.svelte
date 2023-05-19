@@ -1,6 +1,5 @@
 <script lang="ts">
 	import RolesList from '$lib/ui/RolesList.svelte';
-	import Todo from '$lib/plugins/feltcoop/todo/Todo.svelte';
 </script>
 
 <div class="padded-xl">
@@ -14,12 +13,6 @@
 			<h2>roles</h2>
 		</div>
 		<RolesList />
-	</section>
-	<section>
-		<div class="markup">
-			<h2>todo</h2>
-		</div>
-		<Todo />
 	</section>
 </div>
 
