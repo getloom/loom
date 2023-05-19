@@ -19,6 +19,7 @@
 		actions,
 	} = getApp();
 
+	export let thread: Readable<Entity>;
 	export let entity: Readable<Entity>;
 	export let actor: Readable<AccountActor>;
 	export let space: Readable<Space>;
@@ -26,7 +27,7 @@
 	$: destTies = lookupTies(destTiesBySourceEntityId, $entity.entity_id);
 
 	$: items = Array.from($destTies.value).reduce((acc, tie) => {
-		if (tie.type === 'HasItem') {
+		if (tie.type === 'HasReply') {
 			acc.unshift(entityById.get(tie.dest_id)!);
 		}
 		return acc;
@@ -57,7 +58,10 @@
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: {type: 'Note', content},
-			ties: [{source_id: $entity.entity_id}],
+			ties: [
+				{source_id: $thread.entity_id, type: 'HasItem'},
+				{source_id: $entity.entity_id, type: 'HasReply'},
+			],
 		});
 		text = '';
 		replying = false;
@@ -112,7 +116,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			<div class="items">
 				<ol class="panel">
 					{#each items as item (item)}
-						<svelte:self entity={item} {space} {actor} />
+						<svelte:self entity={item} {space} {actor} {thread} />
 					{/each}
 				</ol>
 			</div>

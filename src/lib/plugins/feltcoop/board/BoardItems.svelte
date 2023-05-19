@@ -9,13 +9,14 @@
 	export let entities: Readable<Array<Readable<Entity>>>;
 	export let space: Readable<Space>;
 	export let actor: Readable<AccountActor>;
+	export let thread: Readable<Entity>;
 </script>
 
 <!-- TODO possibly remove the `ol` wrapper and change the `li`s to `div`s -->
 
 <ol>
 	{#each $entities as entity (entity)}
-		<BoardItemDetail {actor} {entity} {space} />
+		<BoardItemDetail {actor} {entity} {space} {thread} />
 	{/each}
 </ol>
 
