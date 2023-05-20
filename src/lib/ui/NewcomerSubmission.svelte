@@ -4,10 +4,14 @@
 	import type {AsyncStatus} from '@feltjs/util/async.js';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import Message from '@feltjs/felt-ui/Message.svelte';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	const {hub} = getSpaceContext();
+
+	export let actor: Readable<AccountActor>;
 
 	let status: AsyncStatus = 'initial'; // TODO refactor
 	let submitted = false;
@@ -62,7 +66,7 @@
 <div class="markup panel padded-xl">
 	<!-- TODO fix HubAvatar on newline-->
 	<h1 class="row">
-		Submit application to <HubAvatar {hub} showName={true} contextmenuAction={null} />
+		Submit application to <HubAvatar {actor} {hub} showName={true} contextmenuParams={null} />
 	</h1>
 	{#if !submitted}
 		<form>

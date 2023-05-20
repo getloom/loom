@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {toContextmenuParams} from '@feltjs/felt-ui';
+
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
@@ -17,7 +19,7 @@
 	export let selectedSpace: Readable<Space> | null;
 </script>
 
-<nav class="space-nav" use:contextmenu.action={[[HubContextmenu, {hub, actor}]]}>
+<nav class="space-nav" use:contextmenu.action={toContextmenuParams(HubContextmenu, {actor, hub})}>
 	{#each spaces as space (space)}
 		<SpaceNavItem {actor} {hub} {space} selected={space === selectedSpace} />
 	{/each}

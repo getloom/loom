@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toContextmenuParams} from '@feltjs/felt-ui';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -13,7 +14,7 @@
 	export let actor: Readable<ClientActor>;
 </script>
 
-<li use:contextmenu.action={[[ActorContextmenu, {actor}]]}>
+<li use:contextmenu.action={toContextmenuParams(ActorContextmenu, {actor})}>
 	<ActorAvatar {actor} />
 </li>
 

@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData, toContextmenuParams} from '@feltjs/felt-ui';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -72,8 +72,8 @@
 <form
 	{...$$restProps}
 	use:contextmenu.action={[
-		[EntityContextmenu, {actor, entity}],
-		[ActorContextmenu, {actor: authorActor}],
+		toContextmenuParams(EntityContextmenu, {actor, entity}),
+		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 	]}
 >
 	<header class="markup" style:--icon_size="var(--icon_size_sm)">

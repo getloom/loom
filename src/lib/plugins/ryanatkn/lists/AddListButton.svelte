@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';

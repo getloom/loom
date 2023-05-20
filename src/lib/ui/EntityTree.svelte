@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 	import {browser} from '$app/environment';
+	import {toContextmenuParams} from '@feltjs/felt-ui';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {Tie} from '$lib/vocab/tie/tie';
@@ -45,7 +46,10 @@
 </script>
 
 <li style:--depth={depth}>
-	<div class="item" use:contextmenu.action={[[EntityContextmenu, {actor, entity}]]}>
+	<div
+		class="item"
+		use:contextmenu.action={toContextmenuParams(EntityContextmenu, {actor, entity})}
+	>
 		{#if hasDestEntities}
 			<button class="icon-button" on:click={() => (expanded = !expanded)}>
 				{#if expanded}–{:else}+{/if}

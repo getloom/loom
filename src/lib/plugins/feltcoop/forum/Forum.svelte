@@ -2,7 +2,7 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import {type Readable, readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import ForumItems from '$lib/plugins/feltcoop/forum/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import About from '$lib/ui/About.svelte';
 	import {getApp} from '$lib/ui/app';

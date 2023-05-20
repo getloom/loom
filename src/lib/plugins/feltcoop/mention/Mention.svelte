@@ -1,27 +1,31 @@
 <script lang="ts">
+	import type {ContextmenuActionParams} from '@feltjs/felt-ui';
+
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 	import {getApp} from '$lib/ui/app';
+	import {getSpaceContext} from '$lib/vocab/view/view';
 
 	const {
 		ui: {actors, hubs},
 	} = getApp();
 
+	const {actor} = getSpaceContext();
+
 	export let name: string;
-	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
+	export let contextmenuParams: ContextmenuActionParams | null | undefined = undefined;
 	export let inline = true;
 
 	// TODO maybe add a cache of actor by name
 	$: hub = Array.from($hubs.value).find((c) => c.get().name === name);
-	$: actor = Array.from($actors.value).find((p) => p.get().name === name);
+	$: mentionedActor = Array.from($actors.value).find((p) => p.get().name === name);
 </script>
 
 <span class="mention" class:inline>
-	{#if hub && $actor?.type === 'community'}
-		<HubAvatar {hub} {contextmenuAction} {inline}>@</HubAvatar>
-	{:else if actor}
-		<ActorAvatar {actor} {contextmenuAction} {inline}>@</ActorAvatar>
+	{#if mentionedActor && hub && $mentionedActor?.type === 'community'}
+		<HubAvatar {actor} {hub} {contextmenuParams} {inline}>@</HubAvatar>
+	{:else if mentionedActor}
+		<ActorAvatar actor={mentionedActor} {contextmenuParams} {inline}>@</ActorAvatar>
 	{:else}
 		@{name}
 	{/if}

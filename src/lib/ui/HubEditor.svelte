@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
@@ -24,7 +24,7 @@
 		<header>
 			<h2>Edit Hub</h2>
 			<p style:font-size="var(--font_size_xl)">
-				<HubAvatar {hub} />
+				<HubAvatar {actor} {hub} />
 			</p>
 			<section>
 				<p>created {format($hub.created, 'PPPPp')}</p>

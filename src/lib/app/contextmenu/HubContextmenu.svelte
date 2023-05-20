@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
+	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
 	import InviteToHubForm from '$lib/ui/InviteToHubForm.svelte';
 	import KickFromHubForm from '$lib/ui/KickFromHubForm.svelte';
@@ -18,15 +18,15 @@
 
 	const {actions} = getApp();
 
-	export let hub: Readable<Hub>;
 	export let actor: Readable<AccountActor>;
+	export let hub: Readable<Hub>;
 </script>
 
 <ContextmenuSubmenu>
 	<svelte:fragment slot="icon">
-		<HubAvatar {hub} showName={false} />
+		<HubAvatar {actor} {hub} showName={false} />
 	</svelte:fragment>
-	<HubAvatar {hub} showIcon={false} />
+	<HubAvatar {actor} {hub} showIcon={false} />
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>

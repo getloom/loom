@@ -1,12 +1,14 @@
 <script lang="ts">
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import Message from '@feltjs/felt-ui/Message.svelte';
 	import {identity} from '@feltjs/util/function.js';
 	import type {Result} from '@feltjs/util';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import {autofocus} from '$lib/ui/actions';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
 	import HubPicker from '$lib/ui/HubPicker.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
@@ -23,6 +25,7 @@
 
 	type TValue = $$Generic;
 
+	export let actor: Readable<AccountActor>;
 	export let value: TValue;
 	export let field: string;
 	export let update:
@@ -110,7 +113,7 @@
 {#if field !== 'hub_id' || hub}
 	<div class="preview markup panel" style:--icon_size="var(--icon_size_sm)">
 		{#if field === 'hub_id' && hub}
-			<HubAvatar {hub} />
+			<HubAvatar {actor} {hub} />
 		{:else if value === undefined}
 			<em>undefined</em>
 			<!-- TODO add a button to add/instantiate the field with some value -->
@@ -122,7 +125,7 @@
 {#if field === 'hub_id'}
 	<button
 		type="button"
-		on:click={() => actions.OpenDialog(toDialogData(HubPicker, {done: doneWithHubPicker}))}
+		on:click={() => actions.OpenDialog(toDialogData(HubPicker, {actor, done: doneWithHubPicker}))}
 	>
 		pick hub
 	</button>

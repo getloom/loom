@@ -17,7 +17,7 @@ export interface TestAppContext {
 }
 
 export const setupApp = async (context: TestAppContext): Promise<void> => {
-	const ui = toUi({guest: true}, false, {}, (_) => _);
+	const ui = toUi({guest: true}, false, {}, {} as any, {} as any, (_) => _);
 	const httpApiClient = toHttpApiClient<ActionParamsByName, ActionResponseByName>(
 		findHttpService,
 		deserialize(deserializers),

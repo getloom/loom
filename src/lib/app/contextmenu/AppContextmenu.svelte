@@ -1,9 +1,9 @@
 <script lang="ts">
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
+	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import {getApp} from '$lib/ui/app';
-	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import SessionActorContextmenuEntry from '$lib/app/contextmenu/SessionActorContextmenuEntry.svelte';
 	import CreateAccountActorForm from '$lib/ui/CreateAccountActorForm.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';

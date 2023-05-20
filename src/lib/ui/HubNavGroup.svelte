@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toContextmenuParams} from '@feltjs/felt-ui';
 
 	import HubNavItem from '$lib/ui/HubNavItem.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
@@ -21,7 +22,10 @@
 </script>
 
 {#if personalHub && communityHubs}
-	<div class="hub-nav-group" use:contextmenu.action={[[ActingActorContextmenu, {actor}]]}>
+	<div
+		class="hub-nav-group"
+		use:contextmenu.action={toContextmenuParams(ActingActorContextmenu, {actor})}
+	>
 		<HubNavItem
 			hub={personalHub}
 			{actor}

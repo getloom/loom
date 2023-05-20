@@ -2,9 +2,9 @@
 	import {goto} from '$app/navigation';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
+	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
 
 	import {getApp} from '$lib/ui/app';
-	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {toHubUrl} from '$lib/ui/url';
 	import {toAppSearchParams} from '$lib/app/url';

@@ -1,6 +1,6 @@
 import {randomBool} from '@feltjs/util/random.js';
 import {SvelteComponent} from 'svelte';
-import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+import {toDialogData} from '@feltjs/felt-ui';
 
 import {
 	randomEntityData,

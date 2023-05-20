@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
+	import {toContextmenuParams} from '@feltjs/felt-ui';
 
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {Space} from '$lib/vocab/space/space';
@@ -44,7 +45,7 @@
 	)}
 	class="selectable"
 	class:selected
-	use:contextmenu.action={[[SpaceContextmenu, {actor, hub, space}]]}
+	use:contextmenu.action={toContextmenuParams(SpaceContextmenu, {actor, hub, space})}
 	on:click={() => {
 		// TODO Should this be a click handler or react to UI system actions/changes?
 		// Might make more UX sense to make it react to any state changes,

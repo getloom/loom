@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toContextmenuParams} from '@feltjs/felt-ui';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
@@ -21,8 +22,8 @@
 
 <li
 	use:contextmenu.action={[
-		[EntityContextmenu, {actor, entity}],
-		[ActorContextmenu, {actor: authorActor}],
+		toContextmenuParams(EntityContextmenu, {actor, entity}),
+		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 	]}
 >
 	<div class="markup padded-xl formatted">

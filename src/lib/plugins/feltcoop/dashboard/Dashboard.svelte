@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {toContextmenuParams} from '@feltjs/felt-ui';
+
 	import Luggage from '$lib/ui/Luggage.svelte';
 	import MainNav from '$lib/ui/MainNav.svelte';
 	import SpaceView from '$lib/ui/SpaceView.svelte';
@@ -27,8 +29,8 @@
 <main
 	class="dashboard"
 	use:contextmenu.action={[
-		[SpaceContextmenu, space ? {actor, hub, space} : undefined],
-		[HubContextmenu, hub && actor ? {hub, actor} : undefined],
+		actor && hub && space ? toContextmenuParams(SpaceContextmenu, {actor, hub, space}) : null,
+		hub && actor ? toContextmenuParams(HubContextmenu, {actor, hub}) : null,
 	]}
 >
 	{#if $expandMarquee}
@@ -39,7 +41,7 @@
 		/>
 	{/if}
 	<div class="space column">
-		<DashboardHeader {space} {hub} />
+		<DashboardHeader {actor} {space} {hub} />
 		<div class="content">
 			{#if actor}
 				{#if hub}

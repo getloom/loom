@@ -55,6 +55,7 @@
 				<ActorAvatar {actor} />
 			{:else}
 				<PropertyPicker
+					{actor}
 					value={params?.[key]}
 					field={key}
 					update={(value) => updateParam(key, value)}

@@ -1,16 +1,16 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {toContextmenuParams, type ContextmenuActionParams} from '@feltjs/felt-ui';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import {toName, toIcon} from '$lib/vocab/entity/entityHelpers';
 	import type {ClientActor} from '$lib/vocab/actor/actor';
 	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
-	import type {ContextmenuItems} from '$lib/ui/contextmenu/contextmenu';
 
 	export let actor: Readable<ClientActor>;
 	export let showName = true;
 	export let showIcon = true;
-	export let contextmenuAction: ContextmenuItems | null | undefined = undefined;
+	export let contextmenuParams: ContextmenuActionParams | null | undefined = undefined;
 	export let inline = false;
 </script>
 
@@ -19,8 +19,8 @@
 	icon={toIcon($actor)}
 	{showName}
 	{showIcon}
-	contextmenuAction={contextmenuAction === undefined
-		? [[ActorContextmenu, {actor}]]
-		: contextmenuAction}
+	contextmenuParams={contextmenuParams === undefined
+		? toContextmenuParams(ActorContextmenu, {actor})
+		: contextmenuParams}
 	{inline}><slot /></Avatar
 >

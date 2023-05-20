@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
+	import {toContextmenuParams} from '@feltjs/felt-ui';
 
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
@@ -52,7 +53,7 @@
 	class:selected
 	class:actor={isActorHomeHub}
 	style="--hue: {$hub.settings.hue}"
-	use:contextmenu.action={[[HubContextmenu, {hub, actor}]]}
+	use:contextmenu.action={toContextmenuParams(HubContextmenu, {actor, hub})}
 >
 	{#if $fresh}
 		<FreshnessIndicator />

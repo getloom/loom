@@ -6,11 +6,13 @@
 	import {getApp} from '$lib/ui/app';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	const {
 		ui: {expandMainNav, expandMarquee},
 	} = getApp();
 
+	export let actor: Readable<AccountActor> | null;
 	export let space: Readable<Space> | null;
 	export let hub: Readable<Hub> | null;
 </script>
@@ -22,9 +24,14 @@
 >
 	<li class="luggage-placeholder" />
 	<li class="breadcrumbs">
-		{#if hub && $hub}<HubAvatar {hub} showName={false} contextmenuAction={null} /><span
-				class="title">{$hub.name}</span
-			>{/if}{#if space}<span style:font-size="var(--font_size_lg)"><SpaceIcon {space} /></span>
+		{#if actor && hub && $hub}<HubAvatar
+				{actor}
+				{hub}
+				showName={false}
+				contextmenuParams={null}
+			/><span class="title">{$hub.name}</span>{/if}{#if space}<span
+				style:font-size="var(--font_size_lg)"><SpaceIcon {space} /></span
+			>
 			<span class="title">{$space?.name || ''}</span>{/if}
 	</li>
 	<li class="marquee-button-placeholder" />

@@ -1,6 +1,9 @@
 <script lang="ts">
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+
 	import {getApp} from '$lib/ui/app';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {HubId} from '$lib/vocab/hub/hub';
 
 	const {
@@ -9,6 +12,7 @@
 
 	$: items = Array.from($hubs.value);
 
+	export let actor: Readable<AccountActor>;
 	export let done: (hub_id: HubId) => void;
 </script>
 
@@ -17,7 +21,7 @@
 <div>
 	{#each items as hub (hub)}
 		<button on:click={() => done(hub.get().hub_id)} class="menu-item">
-			<HubAvatar {hub} />
+			<HubAvatar {actor} {hub} />
 		</button>
 	{/each}
 </div>

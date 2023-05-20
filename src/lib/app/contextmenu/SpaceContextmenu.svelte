@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
+	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import {getApp} from '$lib/ui/app';
-	import ContextmenuEntry from '$lib/ui/contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '$lib/ui/contextmenu/ContextmenuSubmenu.svelte';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {Hub} from '$lib/vocab/hub/hub';

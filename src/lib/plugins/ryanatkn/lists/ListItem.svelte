@@ -2,6 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {tick} from 'svelte';
 	import {slide} from 'svelte/transition';
+	import {toContextmenuParams} from '@feltjs/felt-ui';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -81,8 +82,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	class:expandItems
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		[ActorContextmenu, {actor: authorActor}],
-		[EntityContextmenu, {actor, entity}],
+		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
+		toContextmenuParams(EntityContextmenu, {actor, entity}),
 	]}
 >
 	<!-- TODO fix a11y -->

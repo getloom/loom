@@ -19,10 +19,10 @@
 			<SpaceName {space} />
 		</div>
 	{/if}
-	{#if hub}
+	{#if actor && hub}
 		<div class="row">
 			<span class="spaced">in</span>
-			<HubAvatar {hub} />
+			<HubAvatar {actor} {hub} />
 		</div>
 	{/if}
 	{#if actor}

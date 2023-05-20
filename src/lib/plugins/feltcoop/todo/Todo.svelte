@@ -2,7 +2,7 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import {readable, type Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import TodoItems from '$lib/plugins/feltcoop/todo/TodoItems.svelte';

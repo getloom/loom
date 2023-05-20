@@ -1,7 +1,4 @@
 <script lang="ts" context="module">
-	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
-	import {Logger} from '@feltjs/util/log.js';
-
 	if (!dev) {
 		if (!browser) {
 			Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
@@ -19,7 +16,12 @@
 	import Dialogs from '@feltjs/felt-ui/Dialogs.svelte';
 	import {isEditable, swallow} from '@feltjs/util/dom.js';
 	import {format} from 'date-fns';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import Contextmenu from '@feltjs/felt-ui/Contextmenu.svelte';
+	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
+	import {Logger} from '@feltjs/util/log.js';
+	import {toDialogData, toContextmenuParams} from '@feltjs/felt-ui';
+	import ContextmenuLinkEntry from '@feltjs/felt-ui/ContextmenuLinkEntry.svelte';
+	import ContextmenuTextEntry from '@feltjs/felt-ui/ContextmenuTextEntry.svelte';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Onboard from '$lib/ui/Onboard.svelte';
@@ -31,14 +33,12 @@
 	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient';
 	import {toHttpApiClient} from '$lib/ui/HttpApiClient';
 	import {findHttpService, findWebsocketService} from '$lib/ui/services';
-	import Contextmenu from '$lib/ui/contextmenu/Contextmenu.svelte';
 	import {components} from '$lib/app/components';
 	import {mutations} from '$lib/app/mutations';
 	import AppContextmenu from '$lib/app/contextmenu/AppContextmenu.svelte';
 	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
 	import ActingActorContextmenu from '$lib/app/contextmenu/ActingActorContextmenu.svelte';
 	import SocketConnection from '$lib/ui/SocketConnection.svelte';
-	import LinkContextmenu from '$lib/app/contextmenu/LinkContextmenu.svelte';
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
 	import {deserialize, deserializers} from '$lib/util/deserialize';
 	import type {ClientSession} from '$lib/vocab/account/account';
@@ -64,9 +64,16 @@
 		(message) => websocketClient.handle(message.data),
 		() => actions.Ping(),
 	);
-	const ui = toUi(data, initialMobileValue, components, (errorMessage) => {
-		actions.OpenDialog(toDialogData(ErrorMessage, {text: errorMessage}));
-	});
+	const ui = toUi(
+		data,
+		initialMobileValue,
+		components,
+		ContextmenuLinkEntry,
+		ContextmenuTextEntry,
+		(errorMessage) => {
+			actions.OpenDialog(toDialogData(ErrorMessage, {text: errorMessage}));
+		},
+	);
 	setUi(ui);
 
 	const actions = toActions(ui, mutations, (e) =>
@@ -131,9 +138,9 @@
 
 <svelte:body
 	use:contextmenu.action={[
-		[HubContextmenu, hub && actor ? {hub, actor} : undefined],
-		[ActingActorContextmenu, actor ? {actor} : undefined],
-		[AppContextmenu, null],
+		hub && actor ? toContextmenuParams(HubContextmenu, {actor, hub}) : null,
+		actor ? toContextmenuParams(ActingActorContextmenu, {actor}) : null,
+		toContextmenuParams(AppContextmenu, {}),
 	]}
 />
 
@@ -163,7 +170,7 @@
 	{/if}
 	<DevmodeControls {devmode} />
 	<Dialogs {dialogs} on:close={() => actions.CloseDialog()} />
-	<Contextmenu {contextmenu} {LinkContextmenu} />
+	<Contextmenu {contextmenu} />
 </div>
 
 <style>

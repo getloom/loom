@@ -12,7 +12,6 @@ const files = [
 	// exported user modules
 	'lib/app/contextmenu/ActingActorContextmenu.svelte',
 	'lib/app/contextmenu/AppContextmenu.svelte',
-	'lib/app/contextmenu/LinkContextmenu.svelte',
 	'lib/app/actionData.ts',
 	'lib/app/actions.ts',
 	'lib/app/components.ts',
@@ -30,7 +29,6 @@ const files = [
 	'lib/ui/SocketConnection.svelte',
 	'lib/ui/WebsocketApiClient.ts',
 	'lib/ui/app.ts',
-	'lib/ui/contextmenu/Contextmenu.svelte',
 	'lib/ui/services.ts',
 	'lib/ui/socket.ts',
 	'lib/ui/style.css',

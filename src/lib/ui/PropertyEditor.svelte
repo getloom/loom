@@ -4,7 +4,7 @@
 	import type {Result} from '@feltjs/util';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
-	import {toDialogData} from '@feltjs/felt-ui/dialog.js';
+	import {toDialogData} from '@feltjs/felt-ui';
 
 	import {autofocus} from '$lib/ui/actions';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';

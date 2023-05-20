@@ -6,10 +6,13 @@ import {
 	mutable,
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
-import {setContext, getContext, type SvelteComponent} from 'svelte';
-import type {DialogData} from '@feltjs/felt-ui/dialog.js';
+import {setContext, getContext, type SvelteComponent, type ComponentType} from 'svelte';
+import type {DialogData} from '@feltjs/felt-ui';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
+import {createContextmenu, type ContextmenuStore} from '@feltjs/felt-ui';
+import type ContextmenuLinkEntry from '@feltjs/felt-ui/ContextmenuLinkEntry.svelte';
+import type ContextmenuTextEntry from '@feltjs/felt-ui/ContextmenuTextEntry.svelte';
 
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
@@ -17,7 +20,6 @@ import type {ClientActor, AccountActor, ActorId} from '$lib/vocab/actor/actor';
 import type {ClientAccount, ClientSession} from '$lib/vocab/account/account';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
-import {createContextmenuStore, type ContextmenuStore} from '$lib/ui/contextmenu/contextmenu';
 import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
@@ -123,7 +125,9 @@ export const toUi = (
 	$session: ClientSession,
 	initialMobile: boolean,
 	components: {[key: string]: typeof SvelteComponent},
-	onError: (message: string | undefined) => void,
+	contextmenuLinkComponent: ComponentType<ContextmenuLinkEntry>,
+	contextmenuTextComponent: ComponentType<ContextmenuTextEntry>,
+	error: (message: string | undefined) => void,
 ) => {
 	const events: UiEvents = new EventEmitter();
 
@@ -354,7 +358,12 @@ export const toUi = (
 	const mainLayoutView = writable('<Dashboard />'); // TODO source this from the hub/space context (so routes can customize the UI)
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
-	const contextmenu = createContextmenuStore({layout, onError});
+	const contextmenu = createContextmenu({
+		linkComponent: contextmenuLinkComponent,
+		textComponent: contextmenuTextComponent,
+		layout,
+		error,
+	});
 	const dialogs = writable<DialogData[]>([]);
 	const viewBySpace = mutable(new WeakMap<Readable<Space>, string>());
 	const ephemera = writable<EphemeraResponse | null>(null);
