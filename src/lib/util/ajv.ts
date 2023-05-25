@@ -1,8 +1,8 @@
 import Ajv, {type Options, type ErrorObject, type ValidateFunction, type SchemaObject} from 'ajv';
-import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
+import type {VocabSchema} from '@feltjs/gro';
 import AjvKeywordInstanceof from 'ajv-keywords/dist/keywords/instanceof.js';
 
-import {schemas} from '$lib/app/schemas';
+import {schemas} from '$lib/vocab/schemas';
 
 // see also $lib/util/schema.ts
 
@@ -12,7 +12,7 @@ let ajvInstance: Ajv | null = null;
 export const ajv = (opts?: Options): Ajv => {
 	if (ajvInstance) return ajvInstance;
 	ajvInstance = new Ajv(opts);
-	ajvInstance.addKeyword('tsType').addKeyword('tsImport').addKeyword('name');
+	ajvInstance.addKeyword('tsType').addKeyword('tsImport').addKeyword('name').addKeyword('$anchor');
 	AjvKeywordInstanceof(ajvInstance);
 	for (const schema of schemas) {
 		// This cast is needed because TypeScript's `exactOptionalPropertyTypes` is enabled

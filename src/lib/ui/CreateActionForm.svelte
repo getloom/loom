@@ -6,7 +6,7 @@
 	import {getApp} from '$lib/ui/app';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import CreateActionParamsFields from '$lib/ui/CreateActionParamsFields.svelte';
-	import {actionDatas} from '$lib/app/actionData';
+	import {actionDatas} from '$lib/vocab/action/actionData';
 	import type {ActionData} from '$lib/vocab/action/action';
 
 	const {actions} = getApp();

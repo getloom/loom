@@ -10,7 +10,7 @@ import type {Database} from '$lib/db/Database';
 import type {Account} from '$lib/vocab/account/account';
 import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
-import type {CreateEntityResponse, SignInParams} from '$lib/app/actionTypes';
+import type {CreateEntityResponse, SignInParams} from '$lib/vocab/action/actionTypes';
 import type {AccountActor} from '$lib/vocab/actor/actor';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';

@@ -9,7 +9,7 @@ import {
 } from '@feltcoop/svelte-gettable-stores';
 
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Actions} from '$lib/app/actionTypes';
+import type {Actions} from '$lib/vocab/action/actionTypes';
 import type {Ui} from '$lib/ui/ui';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';

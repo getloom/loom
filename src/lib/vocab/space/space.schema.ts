@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const SpaceIdSchema = {
 	$id: '/schemas/SpaceId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'SpaceId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const SpaceSchema = {
 	$id: '/schemas/Space.json',
@@ -25,4 +27,4 @@ export const SpaceSchema = {
 	},
 	required: ['space_id', 'name', 'icon', 'view', 'created', 'updated', 'hub_id', 'directory_id'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;

@@ -48,7 +48,7 @@ import type {
 	CloseDialogParams,
 	ViewSpaceParams,
 	ClearFreshnessParams,
-} from '$lib/app/actionTypes';
+} from '$lib/vocab/action/actionTypes';
 
 export interface RandomActionParams {
 	SignUp: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignUpParams>;

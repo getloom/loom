@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const AssignmentIdSchema = {
 	$id: '/schemas/AssignmentId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'AssignmentId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const AssignmentSchema = {
 	$id: '/schemas/Assignment.json',
@@ -22,4 +24,4 @@ export const AssignmentSchema = {
 	},
 	required: ['assignment_id', 'actor_id', 'hub_id', 'role_id', 'created'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;

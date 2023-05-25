@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import Message from '@feltjs/felt-ui/Message.svelte';
-	import type {SignOutResponseResult} from '$lib/app/actionTypes';
+	import type {SignOutResponseResult} from '$lib/vocab/action/actionTypes';
 
 	import type {ClientAccount} from '$lib/vocab/account/account';
 	import {getApp} from '$lib/ui/app';

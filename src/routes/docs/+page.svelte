@@ -2,8 +2,8 @@
 	import {page} from '$app/stores';
 
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
-	import {actionDatas} from '$lib/app/actionData';
-	import {vocabSchemas} from '$lib/app/schemas';
+	import {actionDatas} from '$lib/vocab/action/actionData';
+	import {modelSchemas} from '$lib/vocab/schemas';
 	import {viewTemplates} from '$lib/vocab/view/view';
 
 	const title = 'docs';
@@ -22,10 +22,10 @@
 	<!-- TODO extract an accessible menu component, see PRS
 	https://github.com/feltjs/felt-server/pull/362
 	and https://github.com/feltjs/felt-ui/pull/197 -->
-	<div class="menu-wrapper markup padded-xl column-sm">
-		<menu class="menu">
-			<li><h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3></li>
-			<li><h4><a href="#views" class:selected={hash === 'views'}>views</a></h4></li>
+	<div class="nav-wrapper markup padded-xl column-sm">
+		<nav>
+			<h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3>
+			<h4><a href="#views" class:selected={hash === 'views'}>views</a></h4>
 			<menu>
 				{#each viewTemplates as viewTemplate (viewTemplate)}
 					<li>
@@ -35,15 +35,15 @@
 					</li>
 				{/each}
 			</menu>
-			<li><h4><a href="#vocab" class:selected={hash === 'vocab'}>vocab</a></h4></li>
+			<h4><a href="#models" class:selected={hash === 'models'}>models</a></h4>
 			<menu>
-				{#each vocabSchemas as schema (schema)}
+				{#each modelSchemas as schema (schema)}
 					<li>
 						<a href="#{schema.name}" class:selected={hash === schema.name}>{schema.name}</a>
 					</li>
 				{/each}
 			</menu>
-			<li><h4><a href="#actions" class:selected={hash === 'actions'}>actions</a></h4></li>
+			<h4><a href="#actions" class:selected={hash === 'actions'}>actions</a></h4>
 			<menu>
 				{#each actionDatas as actionData (actionData.name)}
 					<li>
@@ -53,14 +53,13 @@
 					</li>
 				{/each}
 			</menu>
-			<li>
-				<h4>
-					💚 <a href="https://www.felt.dev">felt.dev</a> ∙
-					<a href="https://github.com/feltjs/felt-server">GitHub</a> ∙
-					<a href="https://npmjs.com/@feltjs/felt-server">npm</a>
-				</h4>
-			</li>
-		</menu>
+			<footer>
+				<h4><code>@feltjs/felt-server</code></h4>
+				<div><a href="https://github.com/feltjs/felt-server">GitHub</a></div>
+				<div><a href="https://npmjs.com/@feltjs/felt-server">npm</a></div>
+				<div><a href="https://www.felt.dev">felt.dev</a> 💚</div>
+			</footer>
+		</nav>
 	</div>
 	<div class="column">
 		<div class="markup padded-xl">
@@ -71,38 +70,37 @@
 		</div>
 		<ul>
 			{#each viewTemplates as viewTemplate (viewTemplate)}
-				<li id={viewTemplate.name}>
-					<span class="padded-xs">
+				<li class="view-template" id={viewTemplate.name}>
+					<div class="title padded-xs">
 						<span style:font-size="var(--font_size_lg)">
 							{viewTemplate.icon}
 							{viewTemplate.name}
 						</span>
 						{#if viewTemplate.creatable !== false}
-							<span
-								class="chip"
-								title="users are given the option to create this view in normal circumstances"
+							<span class="chip" title="users can create this view in normal circumstances"
 								>creatable</span
 							>
 						{/if}
 						{#if viewTemplate.admin}
-							<span class="chip" title="requires instance admin permissions to function">admin</span
-							>
+							<span class="chip" title="requires instance admin permissions">admin</span>
 						{/if}
-					</span>
+					</div>
 					<code class="padded-xs">{viewTemplate.view}</code>
 				</li>
 			{/each}
 		</ul>
+		<hr />
 		<div class="markup padded-xl">
-			<h2 id="vocab">vocab</h2>
+			<h2 id="models">models</h2>
 		</div>
 		<ul>
-			{#each vocabSchemas as schema (schema)}
+			{#each modelSchemas as schema (schema)}
 				<li id={schema.name}>
 					<SchemaInfo {schema} />
 				</li>
 			{/each}
 		</ul>
+		<hr />
 		<div class="markup padded-xl">
 			<h2 id="actions">actions</h2>
 		</div>
@@ -140,7 +138,7 @@
 				<menu>
 					<li>
 						<h4>
-							<a href="#vocab" class:selected={hash === 'vocab'}>vocab</a>
+							<a href="#models" class:selected={hash === 'models'}>models</a>
 						</h4>
 					</li>
 					<li>
@@ -170,31 +168,28 @@
 	li {
 		display: flex;
 		flex-direction: column;
-		padding: var(--spacing_lg) 0;
+		padding: var(--spacing_xl3) 0;
 	}
-	.menu li {
+	nav li {
 		padding: 0;
 	}
-	.menu-wrapper {
+	.nav-wrapper {
 		height: 100%;
 		overflow: auto;
 	}
-	.menu {
+	nav {
 		position: sticky;
 		top: 0;
+		right: 0;
 		padding: var(--spacing_sm);
+		flex-direction: column;
 	}
 	@media (max-width: 1500px) {
-		.menu-wrapper {
+		.nav-wrapper {
 			position: relative;
 			transform: none;
 			margin-bottom: var(--spacing_xl3);
 		}
-	}
-	.menu {
-		position: sticky;
-		right: 0;
-		top: 0;
 	}
 	.title {
 		display: flex;
@@ -204,6 +199,8 @@
 	.name {
 		font-size: var(--font_size_lg);
 		padding: var(--spacing_md);
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 	.type {
 		padding: var(--spacing_lg);

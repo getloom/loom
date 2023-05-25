@@ -12,11 +12,9 @@ const files = [
 	// exported user modules
 	'lib/app/contextmenu/ActingActorContextmenu.svelte',
 	'lib/app/contextmenu/AppContextmenu.svelte',
-	'lib/app/actionData.ts',
-	'lib/app/actions.ts',
 	'lib/app/components.ts',
 	'lib/app/mutations.ts',
-	'lib/app/schemas.ts',
+	'lib/vocab/schemas.ts',
 	'lib/db/db.ts',
 	'lib/server/server.ts',
 	'lib/ui/AccountForm.svelte',
@@ -35,6 +33,8 @@ const files = [
 	'lib/ui/syncUiToUrl.ts',
 	'lib/ui/ui.ts',
 	'lib/util/deserialize.ts',
+	'lib/vocab/action/actionData.ts',
+	'lib/vocab/action/actions.ts',
 
 	// tasks
 	'lib/db/create.task.ts',

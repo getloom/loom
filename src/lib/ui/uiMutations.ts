@@ -4,7 +4,7 @@ import {page} from '$app/stores';
 import {get} from 'svelte/store';
 import {browser} from '$app/environment';
 
-import type {Mutations} from '$lib/app/actionTypes';
+import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
 import {toHubUrl, gotoUnlessActive} from '$lib/ui/url';
 import {deserialize, deserializers} from '$lib/util/deserialize';

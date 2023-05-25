@@ -1,7 +1,7 @@
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/app/actionTypes';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {

@@ -1,7 +1,7 @@
-import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
+import type {VocabSchema} from '@feltjs/gro';
 
-import {actionDatas} from '$lib/app/actionData';
-import {toSchemaName} from '$lib/util/schema';
+import {actionDatas} from '$lib/vocab/action/actionData';
+import {parseSchemaName} from '$lib/util/schema';
 import {
 	AccountSchema,
 	AccountIdSchema,
@@ -33,23 +33,19 @@ import {TieSchema, TieIdSchema} from '$lib/vocab/tie/tie.schema';
 import {RoleSchema, RoleIdSchema} from '$lib/vocab/role/role.schema';
 import {PolicySchema, PolicyIdSchema} from '$lib/vocab/policy/policy.schema';
 
-// TODO The casts to `as VocabSchema` in this file
-// are needed because the `json-schema` types are very strict,
-// and `as const` fails due to `readonly` properties.
-// It could be fixed by declaring schemas with their type,
-// e.g. `export const AccountSchema: VocabSchema = {`
-// but this has the downside of losing the inferred default types,
-// which are handy when the schemas are used directly.
-
 export interface FeltVocabSchema extends VocabSchema {
 	name: string;
+	$anchor: string;
 }
 export const toFeltVocabSchema = (schema: VocabSchema): FeltVocabSchema => {
-	schema.name = toSchemaName(schema.$id);
+	schema.name = parseSchemaName(schema.$id);
+	schema.$anchor = schema.name;
 	return schema as FeltVocabSchema;
 };
 
-export const vocabSchemas = [
+// Model schemas are distinct from the action schemas.
+// They're the nouns compared to the action verbs.
+export const modelSchemas: FeltVocabSchema[] = [
 	AccountSchema,
 	AccountIdSchema,
 	ClientAccountSchema,
@@ -80,14 +76,16 @@ export const vocabSchemas = [
 	RoleIdSchema,
 	PolicySchema,
 	PolicyIdSchema,
-].map((s) => toFeltVocabSchema(s as VocabSchema));
+] as FeltVocabSchema[];
 
-export const schemas = vocabSchemas.concat(
-	actionDatas
-		.flatMap((actionData) => [
-			actionData.params,
-			'response' in actionData ? actionData.response : (null as any),
-		])
-		.filter(Boolean)
-		.map(toFeltVocabSchema),
-);
+export const actionSchemas: FeltVocabSchema[] = actionDatas
+	.flatMap((actionData) => [
+		actionData.params,
+		'response' in actionData ? actionData.response : (null as any),
+	])
+	.filter(Boolean);
+
+export const schemas = modelSchemas.concat(actionSchemas);
+
+// mutate the schemas with additional properties
+for (const s of schemas) toFeltVocabSchema(s);

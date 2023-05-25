@@ -1,7 +1,7 @@
 import {blue, gray} from 'kleur/colors';
 import {Logger} from '@feltjs/util/log.js';
 
-import type {ServiceByName} from '$lib/app/actionTypes';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {
 	SignUp,
 	SignIn,

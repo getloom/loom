@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {schemas} from '$lib/app/schemas';
+import {schemas} from '$lib/vocab/schemas';
 
 /* test__schemas */
 const test__schemas = suite('schemas');

@@ -8,9 +8,9 @@ import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {ActorId, ClientActor} from '$lib/vocab/actor/actor';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {AccountId} from '$lib/vocab/account/account';
-import type {Policy} from '../policy/policy';
-import type {Space} from '../space/space';
-import type {Directory} from '../entity/entityData';
+import type {Policy} from '$lib/vocab/policy/policy';
+import type {Space} from '$lib/vocab/space/space';
+import type {Directory} from '$lib/vocab/entity/entityData';
 
 const log = new Logger(gray('[') + blue('HubRepo') + gray(']'));
 

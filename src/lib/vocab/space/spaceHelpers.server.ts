@@ -1,4 +1,4 @@
-import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/app/actionTypes';
+import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/vocab/action/actionTypes';
 import type {Space} from '$lib/vocab/space/space';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {ApiError} from '$lib/server/api';

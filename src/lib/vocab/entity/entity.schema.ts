@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const EntityIdSchema = {
 	$id: '/schemas/EntityId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'EntityId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const EntitySchema = {
 	$id: '/schemas/Entity.json',
@@ -31,7 +33,7 @@ export const EntitySchema = {
 	},
 	required: ['entity_id', 'actor_id', 'space_id', 'path', 'data', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 // TODO expand to the entire vocabulary? generate if so
 export type EntityType = 'Actor' | 'Hub';

@@ -9,12 +9,12 @@ import type {Filesystem} from '@feltjs/gro/dist/fs/filesystem.js';
 import {normalizeTypeImports} from '@feltjs/gro/dist/gen/helpers/typeImports.js';
 import {traverse} from '@feltjs/util/object.js';
 
-import {actionDatas} from '$lib/app/actionData';
+import {actionDatas} from '$lib/vocab/action/actionData';
 import {
 	jsonSchemaToTypescript,
 	type JsonSchemaToTypeScriptOptions,
 } from '$lib/util/jsonSchemaToTypescript';
-import {schemas} from '$lib/app/schemas';
+import {schemas} from '$lib/vocab/schemas';
 import {services} from '$lib/server/services';
 import type {Service} from '$lib/server/service';
 

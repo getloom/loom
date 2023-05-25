@@ -12,7 +12,7 @@
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import {permissionNames} from '$lib/vocab/policy/permissions';
-	import type {DeleteRoleResponseResult} from '$lib/app/actionTypes';
+	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes';
 
 	const {
 		actions,

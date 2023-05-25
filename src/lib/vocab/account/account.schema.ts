@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const AccountIdSchema = {
 	$id: '/schemas/AccountId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'AccountId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const AccountSchema = {
 	$id: '/schemas/Account.json',
@@ -22,7 +24,7 @@ export const AccountSchema = {
 	},
 	required: ['account_id', 'name', 'settings', 'password', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const ClientAccountSchema = {
 	$id: '/schemas/ClientAccount.json',
@@ -39,7 +41,7 @@ export const ClientAccountSchema = {
 	},
 	required: ['account_id', 'name', 'settings', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const AccountSettingsSchema = {
 	$id: '/schemas/AccountSettings.json',
@@ -52,7 +54,7 @@ export const AccountSettingsSchema = {
 	},
 	required: [],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const ClientSessionSchema = {
 	$id: '/schemas/ClientSession.json',
@@ -61,7 +63,7 @@ export const ClientSessionSchema = {
 	`,
 	anyOf: [{$ref: '/schemas/ClientAccountSession.json'}, {$ref: '/schemas/ClientGuestSession.json'}],
 	tsType: '(ClientAccountSession | ClientGuestSession)',
-};
+} satisfies VocabSchema;
 
 export const ClientAccountSessionSchema = {
 	$id: '/schemas/ClientAccountSession.json',
@@ -118,7 +120,7 @@ export const ClientAccountSessionSchema = {
 		"import type {Assignment} from '$lib/vocab/assignment/assignment'",
 		"import type {Policy} from '$lib/vocab/policy/policy'",
 	],
-};
+} satisfies VocabSchema;
 
 export const ClientGuestSessionSchema = {
 	$id: '/schemas/ClientGuestSession.json',
@@ -131,4 +133,4 @@ export const ClientGuestSessionSchema = {
 	},
 	required: ['guest'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;

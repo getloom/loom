@@ -27,7 +27,7 @@
 	import Onboard from '$lib/ui/Onboard.svelte';
 	import {setUi, toUi} from '$lib/ui/ui';
 	import {syncUiToUrl} from '$lib/ui/syncUiToUrl';
-	import {toActions, toActionsBroadcastMessage} from '$lib/app/actions';
+	import {toActions, toActionsBroadcastMessage} from '$lib/vocab/action/actions';
 	import {setApp} from '$lib/ui/app';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
 	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient';

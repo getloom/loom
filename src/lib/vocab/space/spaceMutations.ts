@@ -1,4 +1,4 @@
-import type {Mutations} from '$lib/app/actionTypes';
+import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {evictSpaces, stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 
 export const CreateSpace: Mutations['CreateSpace'] = async ({invoke, ui}) => {

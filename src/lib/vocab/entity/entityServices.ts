@@ -1,4 +1,4 @@
-import type {ServiceByName} from '$lib/app/actionTypes';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {
 	ReadEntities,
 	ReadEntitiesPaginated,

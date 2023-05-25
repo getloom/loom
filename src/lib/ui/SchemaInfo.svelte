@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
+	import type {VocabSchema} from '@feltjs/gro';
 	import type {JSONSchema} from '@ryanatkn/json-schema-to-typescript';
 
 	export let schema: VocabSchema;
@@ -54,6 +54,8 @@
 		font-size: var(--font_size_lg);
 		padding: var(--spacing_md);
 		font-family: var(--font_family_mono);
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 	.type {
 		padding: var(--spacing_lg);
@@ -64,9 +66,7 @@
 		display: flex;
 		align-items: center;
 		background-color: var(--tint_dark_1);
-		font-size: var(--font_size_lg);
 		padding: var(--spacing_md);
-		font-family: var(--font_family_mono);
 	}
 	.property {
 		display: flex;

@@ -1,5 +1,9 @@
 import type {EntityData} from '$lib/vocab/entity/entityData';
-import type {CreatePolicyParams, CreateRoleParams, CreateSpaceParams} from '$lib/app/actionTypes';
+import type {
+	CreatePolicyParams,
+	CreateRoleParams,
+	CreateSpaceParams,
+} from '$lib/vocab/action/actionTypes';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {permissions, permissionNames, type PermissionName} from '$lib/vocab/policy/permissions';
 import type {RoleId} from '$lib/vocab/role/role';

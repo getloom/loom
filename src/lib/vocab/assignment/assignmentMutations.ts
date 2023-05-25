@@ -1,4 +1,4 @@
-import type {Mutations} from '$lib/app/actionTypes';
+import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 
 export const CreateAssignment: Mutations['CreateAssignment'] = async ({

@@ -4,7 +4,7 @@ import {browser, dev} from '$app/environment';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {ApiClient} from '$lib/ui/ApiClient';
-import type {Actions} from '$lib/app/actionTypes';
+import type {Actions} from '$lib/vocab/action/actionTypes';
 import type {BroadcastMessage} from '$lib/util/websocket';
 import type {Mutation} from '$lib/ui/mutation';
 

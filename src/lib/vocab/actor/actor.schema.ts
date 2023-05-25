@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const ActorIdSchema = {
 	$id: '/schemas/ActorId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'ActorId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const ActorSchema = {
 	$id: '/schemas/Actor.json',
@@ -16,13 +18,13 @@ export const ActorSchema = {
 		{$ref: '/schemas/GhostActor.json'},
 	],
 	tsType: '(AccountActor | CommunityActor | GhostActor)',
-};
+} satisfies VocabSchema;
 
 export const ActionActorSchema = {
 	$id: '/schemas/ActionActor.json',
 	anyOf: [{$ref: '/schemas/AccountActor.json'}, {$ref: '/schemas/CommunityActor.json'}],
 	tsType: '(AccountActor | CommunityActor)',
-};
+} satisfies VocabSchema;
 
 export const AccountActorSchema = {
 	$id: '/schemas/AccountActor.json',
@@ -44,7 +46,7 @@ export const AccountActorSchema = {
 	},
 	required: ['actor_id', 'account_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const CommunityActorSchema = {
 	$id: '/schemas/CommunityActor.json',
@@ -66,7 +68,7 @@ export const CommunityActorSchema = {
 	},
 	required: ['actor_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const GhostActorSchema = {
 	$id: '/schemas/GhostActor.json',
@@ -86,7 +88,7 @@ export const GhostActorSchema = {
 	},
 	required: ['actor_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 // TODO this will need to be split into a type union to support hub "group" actors,
 // and it's related to `hub_id` being overloaded for account/hub actor types.
@@ -107,7 +109,7 @@ export const PublicActorSchema = {
 	},
 	required: ['actor_id', 'type', 'name', 'created'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const ClientActorSchema = {
 	$id: '/schemas/ClientActor.json',
@@ -117,4 +119,4 @@ export const ClientActorSchema = {
 	`,
 	anyOf: [{$ref: '/schemas/AccountActor.json'}, {$ref: '/schemas/PublicActor.json'}],
 	tsType: '(AccountActor | PublicActor)',
-};
+} satisfies VocabSchema;

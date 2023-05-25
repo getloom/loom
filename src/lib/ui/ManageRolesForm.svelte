@@ -10,7 +10,7 @@
 
 	import type {Role} from '$lib/vocab/role/role';
 	import RoleDetails from '$lib/ui/RoleDetails.svelte';
-	import type {DeleteRoleResponseResult} from '$lib/app/actionTypes';
+	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes';
 
 	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;

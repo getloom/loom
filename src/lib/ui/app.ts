@@ -2,7 +2,7 @@ import {setContext, getContext} from 'svelte';
 import type {Writable as SvelteWritable} from 'svelte/store';
 
 import type {Ui} from '$lib/ui/ui';
-import type {Actions} from '$lib/app/actionTypes';
+import type {Actions} from '$lib/vocab/action/actionTypes';
 import type {SocketStore} from '$lib/ui/socket';
 
 export interface App {

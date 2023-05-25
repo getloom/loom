@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const TieIdSchema = {
 	$id: '/schemas/TieId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'TieId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const TieSchema = {
 	$id: '/schemas/Tie.json',
@@ -22,4 +24,4 @@ export const TieSchema = {
 	},
 	required: ['tie_id', 'source_id', 'dest_id', 'type', 'created'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;

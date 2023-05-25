@@ -1,6 +1,6 @@
 import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
 
-import type {Mutations} from '$lib/app/actionTypes';
+import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityMutationHelpers';
 
 // TODO if `Create/Update/Erase` remain identical, probably make them use a single helper

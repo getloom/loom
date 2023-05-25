@@ -1,7 +1,7 @@
-import type {VocabSchema} from '@feltjs/gro/dist/utils/schema.js';
+import type {VocabSchema} from '@feltjs/gro';
 
 import type {ServiceMethod} from '$lib/server/service';
-import type {ClientActionName, ServiceActionName} from '$lib/app/actionTypes';
+import type {ClientActionName, ServiceActionName} from '$lib/vocab/action/actionTypes';
 
 export type ActionData = ClientActionData | ServiceActionData;
 

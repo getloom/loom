@@ -4,9 +4,8 @@
 
 - **break**: rename `$lib/app/components.ts` from `$lib/app/views.ts`
   ([#733](https://github.com/feltjs/felt-server/pull/733))
-
-## 0.1.1
-
+- **break**: move action-related modules to `$lib/vocab/actions/`
+  ([#807](https://github.com/feltjs/felt-server/pull/807))
 - publish migration files
   ([#591](https://github.com/feltjs/felt-server/pull/591))
 

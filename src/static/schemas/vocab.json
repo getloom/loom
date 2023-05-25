@@ -1,0 +1,1038 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "@feltjs/felt-server vocab",
+	"$defs": {
+		"Account": {
+			"$anchor": "Account",
+			"type": "object",
+			"description": "\n\t\tRepresents the point of entry to the system and is responsible for managing authentication to the system. \n\t\tIt holds top level user data and is the relation through which all other data is loaded for the client.\n\t",
+			"properties": {
+				"account_id": {"$ref": "#AccountId"},
+				"password": {"type": "string"},
+				"settings": {"$ref": "#AccountSettings"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["account_id", "name", "settings", "password", "created", "updated"],
+			"additionalProperties": false
+		},
+		"AccountActor": {
+			"$anchor": "AccountActor",
+			"type": "object",
+			"description": "\n\t\tRepresents a human actor logged in via an Account. They are owned and managed from the account level.\n\t\tWhen an AccountActor is created, a personal Hub is also created for it and associated via 'hub_id'.\n\t\tA reference to this personal Hub is stored in 'hub_id'.\n\t",
+			"properties": {
+				"actor_id": {
+					"$ref": "#ActorId",
+					"tsType": "ActorId",
+					"tsImport": "import type {ActorId} from '$lib/vocab/actor/actor';"
+				},
+				"account_id": {
+					"$ref": "#AccountId",
+					"tsType": "AccountId",
+					"tsImport": "import type {AccountId} from '$lib/vocab/account/account';"
+				},
+				"hub_id": {
+					"$ref": "#HubId",
+					"tsType": "HubId",
+					"tsImport": "import type {HubId} from '$lib/vocab/hub/hub';"
+				},
+				"type": {"type": "string", "enum": ["account"]},
+				"icon": {"type": "string"},
+				"created": {"type": "object", "instanceof": "Date", "tsType": "Date"},
+				"updated": {
+					"anyOf": [{"type": "object", "instanceof": "Date", "tsType": "Date"}, {"type": "null"}]
+				}
+			},
+			"required": ["actor_id", "account_id", "hub_id", "type", "name", "created", "updated"],
+			"additionalProperties": false
+		},
+		"AccountId": {
+			"$anchor": "AccountId",
+			"type": "number",
+			"tsType": "Flavored<number, 'AccountId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"AccountSettings": {
+			"$anchor": "AccountSettings",
+			"type": "object",
+			"description": "\n\t\tA nested set of attributes on Account & ClientAccount. Holds all account level settings.\n\t",
+			"properties": {"darkmode": {"type": "boolean"}},
+			"required": [],
+			"additionalProperties": false
+		},
+		"Actor": {
+			"$anchor": "Actor",
+			"description": "\n\t Actors perform actions in the system. They can be of type Account, Hub, or Ghost.\n\t",
+			"anyOf": [{"$ref": "#AccountActor"}, {"$ref": "#CommunityActor"}, {"$ref": "#GhostActor"}],
+			"tsType": "(AccountActor | CommunityActor | GhostActor)"
+		},
+		"ActorId": {
+			"$anchor": "ActorId",
+			"type": "number",
+			"tsType": "Flavored<number, 'ActorId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"Assignment": {
+			"$anchor": "Assignment",
+			"type": "object",
+			"description": "\n\t Describes the relationship between an Actor and Role within a given Hub.\n\t An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.\n\t When initially joining a Hub, Actors are given an Assignment to the default Role.\n\t",
+			"properties": {
+				"assignment_id": {"$ref": "#AssignmentId"},
+				"actor_id": {"$ref": "#ActorId"},
+				"hub_id": {"$ref": "#HubId"},
+				"role_id": {"$ref": "#RoleId"},
+				"created": {"type": "object", "instanceof": "Date"}
+			},
+			"required": ["assignment_id", "actor_id", "hub_id", "role_id", "created"],
+			"additionalProperties": false
+		},
+		"AssignmentId": {
+			"$anchor": "AssignmentId",
+			"type": "number",
+			"tsType": "Flavored<number, 'AssignmentId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"ClearFreshnessParams": {
+			"$anchor": "ClearFreshnessParams",
+			"type": "object",
+			"properties": {"directory_id": {"$ref": "#EntityId"}},
+			"required": ["directory_id"],
+			"additionalProperties": false
+		},
+		"ClientAccount": {
+			"$anchor": "ClientAccount",
+			"type": "object",
+			"description": "\n\t\tA client-facing subset of an Account. Excludes 'password' for security.\n\t",
+			"properties": {
+				"account_id": {"$ref": "#AccountId"},
+				"settings": {"$ref": "#AccountSettings"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["account_id", "name", "settings", "created", "updated"],
+			"additionalProperties": false
+		},
+		"ClientAccountSession": {
+			"$anchor": "ClientAccountSession",
+			"type": "object",
+			"description": "\n\t\tThe session data loaded on each page for authenticated users.\n\t",
+			"properties": {
+				"account": {"$ref": "#ClientAccount"},
+				"sessionActors": {"type": "array", "items": {"$ref": "#AccountActor"}},
+				"hubs": {"type": "array", "items": {"$ref": "#Hub"}},
+				"roles": {"type": "array", "items": {"$ref": "#Role"}},
+				"spaces": {"type": "array", "items": {"$ref": "#Space"}},
+				"directories": {
+					"type": "array",
+					"items": {"$ref": "#Entity"},
+					"tsType": "Array<Entity & {data: EntityData}>",
+					"tsImport": "import type {EntityData} from '$lib/vocab/entity/entityData'"
+				},
+				"assignments": {"type": "array", "items": {"$ref": "#Assignment"}},
+				"policies": {"type": "array", "items": {"$ref": "#Policy"}},
+				"actors": {"type": "array", "items": {"$ref": "#ClientActor"}},
+				"guest": {"enum": [false]}
+			},
+			"required": [
+				"account",
+				"sessionActors",
+				"hubs",
+				"roles",
+				"spaces",
+				"directories",
+				"assignments",
+				"policies",
+				"actors"
+			],
+			"additionalProperties": false,
+			"tsImport": [
+				"import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor'",
+				"import type {Hub} from '$lib/vocab/hub/hub'",
+				"import type {Entity} from '$lib/vocab/entity/entity'",
+				"import type {Role} from '$lib/vocab/role/role'",
+				"import type {Space} from '$lib/vocab/space/space'",
+				"import type {Assignment} from '$lib/vocab/assignment/assignment'",
+				"import type {Policy} from '$lib/vocab/policy/policy'"
+			]
+		},
+		"ClientActor": {
+			"$anchor": "ClientActor",
+			"description": "\n\t\tThe union of Actor subsets a user sees on their client,\n\t\tincluding the user's AccountActors and all other hub actors as PublicActors.\n\t",
+			"anyOf": [{"$ref": "#AccountActor"}, {"$ref": "#PublicActor"}],
+			"tsType": "(AccountActor | PublicActor)"
+		},
+		"ClientGuestSession": {
+			"$anchor": "ClientGuestSession",
+			"type": "object",
+			"description": "\n\t\tA type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.\n\t",
+			"properties": {"guest": {"enum": [true]}},
+			"required": ["guest"],
+			"additionalProperties": false
+		},
+		"ClientSession": {
+			"$anchor": "ClientSession",
+			"description": "\n\t\tThe session data loaded on each page for authenticated and unauthenticated users.\n\t",
+			"anyOf": [{"$ref": "#ClientAccountSession"}, {"$ref": "#ClientGuestSession"}],
+			"tsType": "(ClientAccountSession | ClientGuestSession)"
+		},
+		"CommunityActor": {
+			"$anchor": "CommunityActor",
+			"type": "object",
+			"description": "\n\t\tRepresents a collective actor under the ownership of a Hub. \n\t\tCurrently, these are only created when a new Hub is made and have no extended functionality within the system.\n\t\tThe Hub that owns it is represented by 'hub_id'.\n\t",
+			"properties": {
+				"actor_id": {"$ref": "#ActorId"},
+				"account_id": {"type": "null"},
+				"hub_id": {"$ref": "#HubId"},
+				"type": {"type": "string", "enum": ["community"]},
+				"icon": {"type": "string"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["actor_id", "hub_id", "type", "name", "created", "updated"],
+			"additionalProperties": false
+		},
+		"Create AssignmentResponse": {
+			"$anchor": "Create AssignmentResponse",
+			"type": "object",
+			"properties": {"assignment": {"$ref": "#Assignment"}},
+			"required": ["assignment"],
+			"additionalProperties": false
+		},
+		"CreateAccountActorParams": {
+			"$anchor": "CreateAccountActorParams",
+			"type": "object",
+			"properties": {},
+			"required": ["name"],
+			"additionalProperties": false
+		},
+		"CreateAccountActorResponse": {
+			"$anchor": "CreateAccountActorResponse",
+			"type": "object",
+			"properties": {
+				"actors": {"type": "array", "items": {"$ref": "#ClientActor"}},
+				"hubs": {"type": "array", "items": {"$ref": "#Hub"}},
+				"roles": {"type": "array", "items": {"$ref": "#Role"}},
+				"policies": {"type": "array", "items": {"$ref": "#Policy"}},
+				"spaces": {"type": "array", "items": {"$ref": "#Space"}},
+				"directories": {
+					"type": "array",
+					"items": {
+						"$ref": "#Entity",
+						"tsType": "Directory",
+						"tsImport": "import type {Directory} from '$lib/vocab/entity/entityData';"
+					}
+				},
+				"assignments": {"type": "array", "items": {"$ref": "#Assignment"}}
+			},
+			"required": ["actors", "hubs", "roles", "policies", "spaces", "directories", "assignments"],
+			"additionalProperties": false
+		},
+		"CreateAssignmentParams": {
+			"$anchor": "CreateAssignmentParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"actor_id": {"$ref": "#ActorId"},
+				"hub_id": {"$ref": "#HubId"},
+				"role_id": {"$ref": "#RoleId"}
+			},
+			"required": ["actor", "actor_id", "hub_id", "role_id"],
+			"additionalProperties": false
+		},
+		"CreateEntityParams": {
+			"$anchor": "CreateEntityParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"space_id": {"$ref": "#SpaceId"},
+				"path": {"anyOf": [{"type": "string"}, {"type": "null"}]},
+				"data": {
+					"type": "object",
+					"tsType": "EntityData",
+					"tsImport": "import type {EntityData} from '$lib/vocab/entity/entityData'"
+				},
+				"ties": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"type": "object",
+								"properties": {"source_id": {"$ref": "#EntityId"}, "type": {"type": "string"}},
+								"required": ["source_id"],
+								"additionalProperties": false
+							},
+							{
+								"type": "object",
+								"properties": {"dest_id": {"$ref": "#EntityId"}, "type": {"type": "string"}},
+								"required": ["dest_id"],
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			},
+			"required": ["actor", "space_id", "data"],
+			"additionalProperties": false
+		},
+		"CreateEntityResponse": {
+			"$anchor": "CreateEntityResponse",
+			"type": "object",
+			"properties": {
+				"entities": {"type": "array", "items": {"$ref": "#Entity"}},
+				"ties": {"type": "array", "items": {"$ref": "#Tie"}}
+			},
+			"required": ["entities", "ties"],
+			"additionalProperties": false
+		},
+		"CreateHubParams": {
+			"$anchor": "CreateHubParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"template": {"type": "object", "tsType": "HubTemplate"}
+			},
+			"required": ["actor", "template"],
+			"additionalProperties": false
+		},
+		"CreateHubResponse": {
+			"$anchor": "CreateHubResponse",
+			"type": "object",
+			"properties": {
+				"hub": {"$ref": "#Hub"},
+				"roles": {"type": "array", "items": {"$ref": "#Role"}},
+				"spaces": {"type": "array", "items": {"$ref": "#Space"}},
+				"directories": {
+					"type": "array",
+					"items": {
+						"$ref": "#Entity",
+						"tsType": "Directory",
+						"tsImport": "import type {Directory} from '$lib/vocab/entity/entityData';"
+					}
+				},
+				"assignments": {"type": "array", "items": {"$ref": "#Assignment"}},
+				"policies": {"type": "array", "items": {"$ref": "#Policy"}},
+				"actors": {"type": "array", "items": {"$ref": "#PublicActor"}}
+			},
+			"required": ["hub", "roles", "policies", "spaces", "directories", "assignments", "actors"],
+			"additionalProperties": false
+		},
+		"CreatePolicyParams": {
+			"$anchor": "CreatePolicyParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"role_id": {"$ref": "#RoleId"},
+				"permission": {"type": "string"}
+			},
+			"required": ["actor", "role_id", "permission"],
+			"additionalProperties": false
+		},
+		"CreatePolicyResponse": {
+			"$anchor": "CreatePolicyResponse",
+			"type": "object",
+			"properties": {"policy": {"$ref": "#Policy"}},
+			"required": ["policy"],
+			"additionalProperties": false
+		},
+		"CreateRoleParams": {
+			"$anchor": "CreateRoleParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "hub_id": {"$ref": "#HubId"}},
+			"required": ["actor", "hub_id", "name"],
+			"additionalProperties": false
+		},
+		"CreateRoleResponse": {
+			"$anchor": "CreateRoleResponse",
+			"type": "object",
+			"properties": {"role": {"$ref": "#Role"}},
+			"required": ["role"],
+			"additionalProperties": false
+		},
+		"CreateSpaceParams": {
+			"$anchor": "CreateSpaceParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"hub_id": {"$ref": "#HubId"},
+				"path": {"type": "string"},
+				"icon": {"type": "string"},
+				"view": {"type": "string"}
+			},
+			"required": ["actor", "hub_id", "name", "path", "icon", "view"],
+			"additionalProperties": false
+		},
+		"CreateSpaceResponse": {
+			"$anchor": "CreateSpaceResponse",
+			"type": "object",
+			"properties": {
+				"space": {"$ref": "#Space"},
+				"directory": {
+					"$ref": "#Entity",
+					"tsType": "Directory",
+					"tsImport": "import type {Directory} from '$lib/vocab/entity/entityData';"
+				}
+			},
+			"required": ["space", "directory"],
+			"additionalProperties": false
+		},
+		"DeleteActorParams": {
+			"$anchor": "DeleteActorParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "actor_id": {"$ref": "#ActorId"}},
+			"required": ["actor", "actor_id"],
+			"additionalProperties": false
+		},
+		"DeleteActorResponse": {"$anchor": "DeleteActorResponse", "type": "null"},
+		"DeleteAssignmentParams": {
+			"$anchor": "DeleteAssignmentParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "assignment_id": {"$ref": "#AssignmentId"}},
+			"required": ["actor", "assignment_id"],
+			"additionalProperties": false
+		},
+		"DeleteAssignmentResponse": {"$anchor": "DeleteAssignmentResponse", "type": "null"},
+		"DeleteEntitiesParams": {
+			"$anchor": "DeleteEntitiesParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"entityIds": {"type": "array", "items": {"$ref": "#EntityId"}}
+			},
+			"required": ["actor", "entityIds"],
+			"additionalProperties": false
+		},
+		"DeleteEntitiesResponse": {
+			"$anchor": "DeleteEntitiesResponse",
+			"type": "object",
+			"properties": {
+				"entities": {"type": "array", "items": {"$ref": "#Entity"}},
+				"deleted": {"type": "array", "items": {"$ref": "#EntityId"}}
+			},
+			"required": ["entities", "deleted"],
+			"additionalProperties": false
+		},
+		"DeleteHubParams": {
+			"$anchor": "DeleteHubParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "hub_id": {"$ref": "#HubId"}},
+			"required": ["actor", "hub_id"],
+			"additionalProperties": false
+		},
+		"DeleteHubResponse": {"$anchor": "DeleteHubResponse", "type": "null"},
+		"DeletePolicyParams": {
+			"$anchor": "DeletePolicyParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "policy_id": {"$ref": "#PolicyId"}},
+			"required": ["actor", "policy_id"],
+			"additionalProperties": false
+		},
+		"DeletePolicyResponse": {"$anchor": "DeletePolicyResponse", "type": "null"},
+		"DeleteRoleParams": {
+			"$anchor": "DeleteRoleParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "role_id": {"$ref": "#RoleId"}},
+			"required": ["actor", "role_id"],
+			"additionalProperties": false
+		},
+		"DeleteRoleResponse": {"$anchor": "DeleteRoleResponse", "type": "null"},
+		"DeleteSpaceParams": {
+			"$anchor": "DeleteSpaceParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "space_id": {"$ref": "#SpaceId"}},
+			"required": ["actor", "space_id"],
+			"additionalProperties": false
+		},
+		"DeleteSpaceResponse": {"$anchor": "DeleteSpaceResponse", "type": "null"},
+		"Entity": {
+			"$anchor": "Entity",
+			"type": "object",
+			"description": "\n\t\tAn Entity is the core data type that represents an ActivityStreams object in the system.\n\t\tEach has an \"owning\" space and actor that controls its governance.\n\t\tEntities exist within a graph architecture, with Ties serving as the paths between nodes.\n\t\tConventionally, all entities within a given Space can be found by traversing\n\t\tthe graph starting at the directory Entity associated with the owning Space.\n\t\tA directory is an ActivityStreams Collection referenced by each Space.\n\t",
+			"properties": {
+				"entity_id": {"$ref": "#EntityId"},
+				"actor_id": {"$ref": "#ActorId"},
+				"space_id": {"$ref": "#SpaceId"},
+				"path": {"anyOf": [{"type": "string"}, {"type": "null"}]},
+				"data": {
+					"type": "object",
+					"tsType": "EntityData",
+					"tsImport": "import type {EntityData} from '$lib/vocab/entity/entityData'"
+				},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["entity_id", "actor_id", "space_id", "path", "data", "created", "updated"],
+			"additionalProperties": false
+		},
+		"EntityId": {
+			"$anchor": "EntityId",
+			"type": "number",
+			"tsType": "Flavored<number, 'EntityId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"EphemeraParams": {
+			"$anchor": "EphemeraParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"space_id": {"$ref": "#SpaceId"},
+				"data": {"type": "object", "properties": {"type": {"type": "string"}}, "required": ["type"]}
+			},
+			"required": ["actor", "space_id", "data"],
+			"additionalProperties": false
+		},
+		"EphemeraResponse": {
+			"$anchor": "EphemeraResponse",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"space_id": {"$ref": "#SpaceId"},
+				"data": {"type": "object", "properties": {"type": {"type": "string"}}, "required": ["type"]}
+			},
+			"required": ["actor", "space_id", "data"],
+			"additionalProperties": false
+		},
+		"EraseEntitiesParams": {
+			"$anchor": "EraseEntitiesParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"entityIds": {"type": "array", "items": {"$ref": "#EntityId"}}
+			},
+			"required": ["actor", "entityIds"],
+			"additionalProperties": false
+		},
+		"EraseEntitiesResponse": {
+			"$anchor": "EraseEntitiesResponse",
+			"type": "object",
+			"properties": {"entities": {"type": "array", "items": {"$ref": "#Entity"}}},
+			"required": ["entities"],
+			"additionalProperties": false
+		},
+		"GhostActor": {
+			"$anchor": "GhostActor",
+			"type": "object",
+			"description": "\n\t A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.\t \n\t",
+			"properties": {
+				"actor_id": {"$ref": "#ActorId"},
+				"account_id": {"type": "null"},
+				"hub_id": {"type": "null"},
+				"type": {"type": "string", "enum": ["ghost"]},
+				"icon": {"type": "string"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["actor_id", "type", "name", "created", "updated"],
+			"additionalProperties": false
+		},
+		"Hub": {
+			"$anchor": "Hub",
+			"type": "object",
+			"description": "\n\t\tHubs represent the membrane around the places Actors can interact with each other or with system level data.\n\t\tThey have self contained governance and ownership of Spaces within them.\n\t\tBy default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.\n\t",
+			"properties": {
+				"hub_id": {"$ref": "#HubId"},
+				"type": {"type": "string", "enum": ["community", "personal"]},
+				"settings": {"$ref": "#HubSettings"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["hub_id", "type", "name", "settings", "created", "updated"],
+			"additionalProperties": false
+		},
+		"HubId": {
+			"$anchor": "HubId",
+			"type": "number",
+			"tsType": "Flavored<number, 'HubId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"HubSettings": {
+			"$anchor": "HubSettings",
+			"type": "object",
+			"description": "\n\t\tA nested set of attributes on Hub. Holds all hub level settings.\n\t",
+			"properties": {
+				"hue": {"type": "number"},
+				"defaultRoleId": {
+					"$ref": "#RoleId",
+					"tsType": "RoleId",
+					"tsImport": "import type {RoleId} from '$lib/vocab/role/role'"
+				},
+				"instance": {
+					"type": "object",
+					"properties": {
+						"allowedAccountNames": {"type": "array", "items": {"type": "string"}},
+						"disableCreateHub": {"type": "boolean"},
+						"defaultHubIds": {"type": "array", "items": {"$ref": "#HubId"}}
+					},
+					"additionalProperties": false
+				}
+			},
+			"required": ["hue", "defaultRoleId"],
+			"additionalProperties": false
+		},
+		"InitialHubSettings": {
+			"$anchor": "InitialHubSettings",
+			"type": "object",
+			"description": "\n\t\tA subset of HubSettings needed for defaults at the time of Hub creation.\n\t",
+			"properties": {"hue": {"type": "number"}},
+			"required": ["hue"],
+			"additionalProperties": false
+		},
+		"InviteToHubParams": {
+			"$anchor": "InviteToHubParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "hub_id": {"$ref": "#HubId"}},
+			"required": ["actor", "hub_id", "name"],
+			"additionalProperties": false
+		},
+		"InviteToHubResponse": {
+			"$anchor": "InviteToHubResponse",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#PublicActor"}, "assignment": {"$ref": "#Assignment"}},
+			"required": ["actor", "assignment"],
+			"additionalProperties": false
+		},
+		"KickFromHubParams": {
+			"$anchor": "KickFromHubParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"actor_id": {"$ref": "#ActorId"},
+				"hub_id": {"$ref": "#HubId"}
+			},
+			"required": ["actor", "actor_id", "hub_id"],
+			"additionalProperties": false
+		},
+		"KickFromHubResponse": {"$anchor": "KickFromHubResponse", "type": "null"},
+		"LeaveHubParams": {
+			"$anchor": "LeaveHubParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"actor_id": {"$ref": "#ActorId"},
+				"hub_id": {"$ref": "#HubId"}
+			},
+			"required": ["actor", "actor_id", "hub_id"],
+			"additionalProperties": false
+		},
+		"LeaveHubResponse": {"$anchor": "LeaveHubResponse", "type": "null"},
+		"OpenDialogParams": {
+			"$anchor": "OpenDialogParams",
+			"type": "object",
+			"tsType": "DialogData",
+			"tsImport": "import type {DialogData} from \"@feltjs/felt-ui\""
+		},
+		"PingParams": {"$anchor": "PingParams", "type": "null"},
+		"PingResponse": {"$anchor": "PingResponse", "type": "null"},
+		"Policy": {
+			"$anchor": "Policy",
+			"type": "object",
+			"description": "\n\t\tPolicies are associated with Roles to describe the system Actions a Role is able to take in the system.\n\t\tPermissions are the enumeration of the those Actions and are often 1:1.\n\t\t`data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.\n\t",
+			"properties": {
+				"policy_id": {"$ref": "#PolicyId"},
+				"role_id": {"$ref": "#RoleId"},
+				"permission": {"type": "string"},
+				"data": {"anyOf": [{"type": "object"}, {"type": "null"}]},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["policy_id", "role_id", "permission", "data", "created", "updated"],
+			"additionalProperties": false
+		},
+		"PolicyId": {
+			"$anchor": "PolicyId",
+			"type": "number",
+			"tsType": "Flavored<number, 'PolicyId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"PublicActor": {
+			"$anchor": "PublicActor",
+			"type": "object",
+			"description": "\n\t\tA subset of an Actor available to all clients in a hub.\n\t",
+			"properties": {
+				"actor_id": {"$ref": "#ActorId"},
+				"type": {"type": "string", "enum": ["account", "community", "ghost"]},
+				"icon": {"type": "string"},
+				"created": {"type": "object", "instanceof": "Date"}
+			},
+			"required": ["actor_id", "type", "name", "created"],
+			"additionalProperties": false
+		},
+		"QueryEntitiesResponse": {
+			"$anchor": "QueryEntitiesResponse",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "source_id": {"$ref": "#EntityId"}},
+			"required": ["actor", "source_id"],
+			"additionalProperties": false
+		},
+		"ReadEntitiesByIdParams": {
+			"$anchor": "ReadEntitiesByIdParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"entityIds": {"type": "array", "items": {"$ref": "#EntityId"}}
+			},
+			"required": ["actor", "entityIds"],
+			"additionalProperties": false
+		},
+		"ReadEntitiesByIdResponse": {
+			"$anchor": "ReadEntitiesByIdResponse",
+			"type": "object",
+			"properties": {"entities": {"type": "array", "items": {"$ref": "#Entity"}}},
+			"required": ["entities"],
+			"additionalProperties": false
+		},
+		"ReadEntitiesPaginatedParams": {
+			"$anchor": "ReadEntitiesPaginatedParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"source_id": {"$ref": "#EntityId"},
+				"pageSize": {"type": "number", "maximum": 20},
+				"pageKey": {"type": "number"},
+				"related": {"type": "string", "enum": ["source", "dest", "both"]}
+			},
+			"required": ["actor", "source_id"],
+			"additionalProperties": false
+		},
+		"ReadEntitiesPaginatedResponse": {
+			"$anchor": "ReadEntitiesPaginatedResponse",
+			"type": "object",
+			"properties": {
+				"entities": {"type": "array", "items": {"$ref": "#Entity"}},
+				"ties": {"type": "array", "items": {"$ref": "#Tie"}}
+			},
+			"required": ["entities", "ties"],
+			"additionalProperties": false
+		},
+		"ReadEntitiesParams": {
+			"$anchor": "ReadEntitiesParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "source_id": {"$ref": "#EntityId"}},
+			"required": ["actor", "source_id"],
+			"additionalProperties": false
+		},
+		"ReadEntitiesResponse": {
+			"$anchor": "ReadEntitiesResponse",
+			"type": "object",
+			"properties": {
+				"entities": {"type": "array", "items": {"$ref": "#Entity"}},
+				"ties": {"type": "array", "items": {"$ref": "#Tie"}}
+			},
+			"required": ["entities", "ties"],
+			"additionalProperties": false
+		},
+		"ReadHubParams": {
+			"$anchor": "ReadHubParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "hub_id": {"$ref": "#HubId"}},
+			"required": ["actor", "hub_id"],
+			"additionalProperties": false
+		},
+		"ReadHubResponse": {
+			"$anchor": "ReadHubResponse",
+			"type": "object",
+			"properties": {
+				"hub": {"$ref": "#Hub"},
+				"spaces": {"type": "array", "items": {"$ref": "#Space"}},
+				"directories": {
+					"type": "array",
+					"items": {
+						"$ref": "#Entity",
+						"tsType": "Directory",
+						"tsImport": "import type {Directory} from '$lib/vocab/entity/entityData';"
+					}
+				},
+				"roles": {"type": "array", "items": {"$ref": "#Role"}},
+				"assignments": {"type": "array", "items": {"$ref": "#Assignment"}},
+				"actors": {"type": "array", "items": {"$ref": "#PublicActor"}}
+			},
+			"required": ["hub", "spaces", "directories", "roles", "assignments", "actors"],
+			"additionalProperties": false
+		},
+		"ReadPoliciesParams": {
+			"$anchor": "ReadPoliciesParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "role_id": {"$ref": "#RoleId"}},
+			"required": ["actor", "role_id"],
+			"additionalProperties": false
+		},
+		"ReadPoliciesResponse": {
+			"$anchor": "ReadPoliciesResponse",
+			"type": "object",
+			"properties": {"policies": {"type": "array", "items": {"$ref": "#Policy"}}},
+			"required": ["policies"],
+			"additionalProperties": false
+		},
+		"ReadRolesParams": {
+			"$anchor": "ReadRolesParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "hub_id": {"$ref": "#HubId"}},
+			"required": ["actor", "hub_id"],
+			"additionalProperties": false
+		},
+		"ReadRolesResponse": {
+			"$anchor": "ReadRolesResponse",
+			"type": "object",
+			"properties": {"roles": {"type": "array", "items": {"$ref": "#Role"}}},
+			"required": ["roles"],
+			"additionalProperties": false
+		},
+		"ReadSpacesParams": {
+			"$anchor": "ReadSpacesParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "hub_id": {"$ref": "#HubId"}},
+			"required": ["actor", "hub_id"],
+			"additionalProperties": false
+		},
+		"ReadSpacesResponse": {
+			"$anchor": "ReadSpacesResponse",
+			"type": "object",
+			"properties": {
+				"spaces": {"type": "array", "items": {"$ref": "#Space"}},
+				"directories": {
+					"type": "array",
+					"items": {
+						"$ref": "#Entity",
+						"tsType": "Directory",
+						"tsImport": "import type {Directory} from '$lib/vocab/entity/entityData';"
+					}
+				}
+			},
+			"required": ["spaces", "directories"],
+			"additionalProperties": false
+		},
+		"Role": {
+			"$anchor": "Role",
+			"type": "object",
+			"description": "\n\t\tRoles are user-defined governance objects that exist within the context of a single Hub.\n\t\tThey have Policies associated with them that allow for actions to be taken within the system.\n\t\tWhen an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.\n\t",
+			"properties": {
+				"role_id": {"$ref": "#RoleId"},
+				"hub_id": {"$ref": "#HubId"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["role_id", "hub_id", "name", "created", "updated"],
+			"additionalProperties": false
+		},
+		"RoleId": {
+			"$anchor": "RoleId",
+			"type": "number",
+			"tsType": "Flavored<number, 'RoleId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"SetMobileParams": {"$anchor": "SetMobileParams", "type": "boolean"},
+		"SetSessionParams": {
+			"$anchor": "SetSessionParams",
+			"type": "object",
+			"properties": {"session": {"$ref": "#ClientSession"}},
+			"required": ["session"],
+			"additionalProperties": false
+		},
+		"SignInParams": {
+			"$anchor": "SignInParams",
+			"type": "object",
+			"properties": {"username": {"type": "string"}, "password": {"type": "string"}},
+			"required": ["username", "password"],
+			"additionalProperties": false
+		},
+		"SignInResponse": {
+			"$anchor": "SignInResponse",
+			"type": "object",
+			"properties": {"session": {"$ref": "#ClientAccountSession"}},
+			"required": ["session"],
+			"additionalProperties": false
+		},
+		"SignOutParams": {"$anchor": "SignOutParams", "type": "null"},
+		"SignOutResponse": {"$anchor": "SignOutResponse", "type": "null"},
+		"SignUpParams": {
+			"$anchor": "SignUpParams",
+			"type": "object",
+			"properties": {"username": {"type": "string"}, "password": {"type": "string"}},
+			"required": ["username", "password"],
+			"additionalProperties": false
+		},
+		"SignUpResponse": {
+			"$anchor": "SignUpResponse",
+			"type": "object",
+			"properties": {"session": {"$ref": "#ClientAccountSession"}},
+			"required": ["session"],
+			"additionalProperties": false
+		},
+		"Space": {
+			"$anchor": "Space",
+			"type": "object",
+			"description": "\n\t Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.\n\t The View is used to interpret, visualize, and manipulate the Entities connected to the directory.\n\t Each is a Svelte component that conforms to the View interface.\n ",
+			"properties": {
+				"space_id": {"$ref": "#SpaceId"},
+				"icon": {"type": "string"},
+				"view": {"type": "string"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]},
+				"hub_id": {"$ref": "#HubId"},
+				"directory_id": {"$ref": "#EntityId"}
+			},
+			"required": [
+				"space_id",
+				"name",
+				"icon",
+				"view",
+				"created",
+				"updated",
+				"hub_id",
+				"directory_id"
+			],
+			"additionalProperties": false
+		},
+		"SpaceId": {
+			"$anchor": "SpaceId",
+			"type": "number",
+			"tsType": "Flavored<number, 'SpaceId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"Tie": {
+			"$anchor": "Tie",
+			"type": "object",
+			"description": "\n\t\tTies are part of the Entity/Tie graph data system.\n\t\tEach represents a named, directional relationship between two entities.\n\t\tA Tie specifies \"the [source] has relationship of [type] with [dest].\"\n\t",
+			"properties": {
+				"tie_id": {"$ref": "#TieId"},
+				"source_id": {"$ref": "#EntityId"},
+				"dest_id": {"$ref": "#EntityId"},
+				"type": {"type": "string"},
+				"created": {"type": "object", "instanceof": "Date"}
+			},
+			"required": ["tie_id", "source_id", "dest_id", "type", "created"],
+			"additionalProperties": false
+		},
+		"TieId": {
+			"$anchor": "TieId",
+			"type": "number",
+			"tsType": "Flavored<number, 'TieId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"UpdateAccountPasswordParams": {
+			"$anchor": "UpdateAccountPasswordParams",
+			"type": "object",
+			"properties": {"oldPassword": {"type": "string"}, "newPassword": {"type": "string"}},
+			"required": ["oldPassword", "newPassword"],
+			"additionalProperties": false
+		},
+		"UpdateAccountPasswordResponse": {
+			"$anchor": "UpdateAccountPasswordResponse",
+			"$ref": "#ClientAccount"
+		},
+		"UpdateAccountSettingsParams": {
+			"$anchor": "UpdateAccountSettingsParams",
+			"type": "object",
+			"properties": {"settings": {"$ref": "#AccountSettings"}},
+			"required": ["settings"],
+			"additionalProperties": false
+		},
+		"UpdateAccountSettingsResponse": {
+			"$anchor": "UpdateAccountSettingsResponse",
+			"$ref": "#ClientAccount"
+		},
+		"UpdateEntitiesParams": {
+			"$anchor": "UpdateEntitiesParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"entities": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"entity_id": {"$ref": "#EntityId"},
+							"data": {
+								"type": "object",
+								"tsType": "EntityData",
+								"tsImport": "import type {EntityData} from '$lib/vocab/entity/entityData'"
+							},
+							"path": {"anyOf": [{"type": "string"}, {"type": "null"}]}
+						},
+						"required": ["entity_id"],
+						"additionalProperties": false
+					}
+				}
+			},
+			"required": ["actor", "entities"],
+			"additionalProperties": false
+		},
+		"UpdateEntitiesResponse": {
+			"$anchor": "UpdateEntitiesResponse",
+			"type": "object",
+			"properties": {"entities": {"type": "array", "items": {"$ref": "#Entity"}}},
+			"required": ["entities"],
+			"additionalProperties": false
+		},
+		"UpdateHubSettingsParams": {
+			"$anchor": "UpdateHubSettingsParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"hub_id": {"$ref": "#HubId"},
+				"settings": {"$ref": "#HubSettings"}
+			},
+			"required": ["actor", "hub_id", "settings"],
+			"additionalProperties": false
+		},
+		"UpdateHubSettingsResponse": {"$anchor": "UpdateHubSettingsResponse", "type": "null"},
+		"UpdatePolicyParams": {
+			"$anchor": "UpdatePolicyParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"policy_id": {"$ref": "#PolicyId"},
+				"data": {"anyOf": [{"type": "object"}, {"type": "null"}]}
+			},
+			"required": ["actor", "policy_id", "data"],
+			"additionalProperties": false
+		},
+		"UpdatePolicyResponse": {
+			"$anchor": "UpdatePolicyResponse",
+			"type": "object",
+			"properties": {"policy": {"$ref": "#Policy"}},
+			"required": ["policy"],
+			"additionalProperties": false
+		},
+		"UpdateRoleParams": {
+			"$anchor": "UpdateRoleParams",
+			"type": "object",
+			"properties": {"actor": {"$ref": "#ActorId"}, "role_id": {"$ref": "#RoleId"}},
+			"required": ["actor", "role_id", "name"],
+			"additionalProperties": false
+		},
+		"UpdateRoleResponse": {
+			"$anchor": "UpdateRoleResponse",
+			"type": "object",
+			"properties": {"role": {"$ref": "#Role"}},
+			"required": ["role"],
+			"additionalProperties": false
+		},
+		"UpdateSpaceParams": {
+			"$anchor": "UpdateSpaceParams",
+			"type": "object",
+			"properties": {
+				"actor": {"$ref": "#ActorId"},
+				"space_id": {"$ref": "#SpaceId"},
+				"path": {"type": "string"},
+				"icon": {"type": "string"},
+				"view": {"type": "string"}
+			},
+			"required": ["actor", "space_id"],
+			"additionalProperties": false
+		},
+		"UpdateSpaceResponse": {
+			"$anchor": "UpdateSpaceResponse",
+			"type": "object",
+			"properties": {"space": {"$ref": "#Space"}},
+			"required": ["space"],
+			"additionalProperties": false
+		},
+		"ViewSpaceParams": {
+			"$anchor": "ViewSpaceParams",
+			"type": "object",
+			"properties": {"space_id": {"$ref": "#SpaceId"}, "view": {"type": ["string", "null"]}},
+			"required": ["space_id", "view"],
+			"additionalProperties": false
+		}
+	}
+}

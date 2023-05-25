@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const HubIdSchema = {
 	$id: '/schemas/HubId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'HubId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const HubSchema = {
 	$id: '/schemas/Hub.json',
@@ -23,7 +25,7 @@ export const HubSchema = {
 	},
 	required: ['hub_id', 'type', 'name', 'settings', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const HubSettingsSchema = {
 	$id: '/schemas/HubSettings.json',
@@ -50,7 +52,7 @@ export const HubSettingsSchema = {
 	},
 	required: ['hue', 'defaultRoleId'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const InitialHubSettingsSchema = {
 	$id: '/schemas/InitialHubSettings.json',
@@ -63,4 +65,4 @@ export const InitialHubSettingsSchema = {
 	},
 	required: ['hue'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;

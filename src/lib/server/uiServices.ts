@@ -1,4 +1,4 @@
-import type {ServiceByName} from '$lib/app/actionTypes';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {Ping, Ephemera} from '$lib/ui/uiActions';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';

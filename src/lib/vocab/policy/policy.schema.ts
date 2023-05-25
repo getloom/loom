@@ -1,9 +1,11 @@
+import type {VocabSchema} from '@feltjs/gro';
+
 export const PolicyIdSchema = {
 	$id: '/schemas/PolicyId.json',
 	type: 'number',
 	tsType: "Flavored<number, 'PolicyId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
-};
+} satisfies VocabSchema;
 
 export const PolicySchema = {
 	$id: '/schemas/Policy.json',
@@ -23,4 +25,4 @@ export const PolicySchema = {
 	},
 	required: ['policy_id', 'role_id', 'permission', 'data', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
