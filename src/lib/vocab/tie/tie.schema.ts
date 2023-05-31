@@ -1,14 +1,14 @@
 import type {VocabSchema} from '@feltjs/gro';
 
 export const TieIdSchema = {
-	$id: '/schemas/TieId.json',
+	$id: '/schemas/TieId',
 	type: 'number',
 	tsType: "Flavored<number, 'TieId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
 } satisfies VocabSchema;
 
 export const TieSchema = {
-	$id: '/schemas/Tie.json',
+	$id: '/schemas/Tie',
 	type: 'object',
 	description: `
 		Ties are part of the Entity/Tie graph data system.
@@ -16,9 +16,9 @@ export const TieSchema = {
 		A Tie specifies "the [source] has relationship of [type] with [dest]."
 	`,
 	properties: {
-		tie_id: {$ref: '/schemas/TieId.json'},
-		source_id: {$ref: '/schemas/EntityId.json'},
-		dest_id: {$ref: '/schemas/EntityId.json'},
+		tie_id: {$ref: '/schemas/TieId'},
+		source_id: {$ref: '/schemas/EntityId'},
+		dest_id: {$ref: '/schemas/EntityId'},
 		type: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date'},
 	},

@@ -5,11 +5,11 @@ export const CreateSpace: ServiceActionData = {
 	name: 'CreateSpace',
 	broadcast: true,
 	params: {
-		$id: '/schemas/CreateSpaceParams.json',
+		$id: '/schemas/CreateSpaceParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			hub_id: {$ref: '/schemas/HubId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			hub_id: {$ref: '/schemas/HubId'},
 			name: {type: 'string'},
 			path: {type: 'string'},
 			icon: {type: 'string'},
@@ -19,12 +19,12 @@ export const CreateSpace: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/CreateSpaceResponse.json',
+		$id: '/schemas/CreateSpaceResponse',
 		type: 'object',
 		properties: {
-			space: {$ref: '/schemas/Space.json'},
+			space: {$ref: '/schemas/Space'},
 			directory: {
-				$ref: '/schemas/Entity.json',
+				$ref: '/schemas/Entity',
 				tsType: 'Directory',
 				tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
 			},
@@ -43,24 +43,24 @@ export const ReadSpaces: ServiceActionData = {
 	type: 'ServiceAction',
 	name: 'ReadSpaces',
 	params: {
-		$id: '/schemas/ReadSpacesParams.json',
+		$id: '/schemas/ReadSpacesParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			hub_id: {$ref: '/schemas/HubId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			hub_id: {$ref: '/schemas/HubId'},
 		},
 		required: ['actor', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/ReadSpacesResponse.json',
+		$id: '/schemas/ReadSpacesResponse',
 		type: 'object',
 		properties: {
-			spaces: {type: 'array', items: {$ref: '/schemas/Space.json'}},
+			spaces: {type: 'array', items: {$ref: '/schemas/Space'}},
 			directories: {
 				type: 'array',
 				items: {
-					$ref: '/schemas/Entity.json',
+					$ref: '/schemas/Entity',
 					tsType: 'Directory',
 					tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
 				},
@@ -81,11 +81,11 @@ export const UpdateSpace: ServiceActionData = {
 	name: 'UpdateSpace',
 	broadcast: true,
 	params: {
-		$id: '/schemas/UpdateSpaceParams.json',
+		$id: '/schemas/UpdateSpaceParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			space_id: {$ref: '/schemas/SpaceId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			space_id: {$ref: '/schemas/SpaceId'},
 			name: {type: 'string'},
 			path: {type: 'string'},
 			icon: {type: 'string'},
@@ -95,10 +95,10 @@ export const UpdateSpace: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/UpdateSpaceResponse.json',
+		$id: '/schemas/UpdateSpaceResponse',
 		type: 'object',
 		properties: {
-			space: {$ref: '/schemas/Space.json'},
+			space: {$ref: '/schemas/Space'},
 		},
 		required: ['space'],
 		additionalProperties: false,
@@ -115,17 +115,17 @@ export const DeleteSpace: ServiceActionData = {
 	name: 'DeleteSpace',
 	broadcast: true,
 	params: {
-		$id: '/schemas/DeleteSpaceParams.json',
+		$id: '/schemas/DeleteSpaceParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			space_id: {$ref: '/schemas/SpaceId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			space_id: {$ref: '/schemas/SpaceId'},
 		},
 		required: ['actor', 'space_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/DeleteSpaceResponse.json',
+		$id: '/schemas/DeleteSpaceResponse',
 		type: 'null',
 	},
 	returns: 'Promise<DeleteSpaceResponseResult>',

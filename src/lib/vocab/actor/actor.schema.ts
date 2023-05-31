@@ -1,33 +1,31 @@
 import type {VocabSchema} from '@feltjs/gro';
 
 export const ActorIdSchema = {
-	$id: '/schemas/ActorId.json',
+	$id: '/schemas/ActorId',
 	type: 'number',
 	tsType: "Flavored<number, 'ActorId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
 } satisfies VocabSchema;
 
 export const ActorSchema = {
-	$id: '/schemas/Actor.json',
+	$id: '/schemas/Actor',
 	description: `
 	 Actors perform actions in the system. They can be of type Account, Hub, or Ghost.
 	`,
 	anyOf: [
-		{$ref: '/schemas/AccountActor.json'},
-		{$ref: '/schemas/CommunityActor.json'},
-		{$ref: '/schemas/GhostActor.json'},
+		{$ref: '/schemas/AccountActor'},
+		{$ref: '/schemas/CommunityActor'},
+		{$ref: '/schemas/GhostActor'},
 	],
-	tsType: '(AccountActor | CommunityActor | GhostActor)',
 } satisfies VocabSchema;
 
 export const ActionActorSchema = {
-	$id: '/schemas/ActionActor.json',
-	anyOf: [{$ref: '/schemas/AccountActor.json'}, {$ref: '/schemas/CommunityActor.json'}],
-	tsType: '(AccountActor | CommunityActor)',
+	$id: '/schemas/ActionActor',
+	anyOf: [{$ref: '/schemas/AccountActor'}, {$ref: '/schemas/CommunityActor'}],
 } satisfies VocabSchema;
 
 export const AccountActorSchema = {
-	$id: '/schemas/AccountActor.json',
+	$id: '/schemas/AccountActor',
 	type: 'object',
 	description: `
 		Represents a human actor logged in via an Account. They are owned and managed from the account level.
@@ -35,9 +33,9 @@ export const AccountActorSchema = {
 		A reference to this personal Hub is stored in 'hub_id'.
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json'},
-		account_id: {$ref: '/schemas/AccountId.json'},
-		hub_id: {$ref: '/schemas/HubId.json'},
+		actor_id: {$ref: '/schemas/ActorId'},
+		account_id: {$ref: '/schemas/AccountId'},
+		hub_id: {$ref: '/schemas/HubId'},
 		type: {type: 'string', enum: ['account']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
@@ -49,7 +47,7 @@ export const AccountActorSchema = {
 } satisfies VocabSchema;
 
 export const CommunityActorSchema = {
-	$id: '/schemas/CommunityActor.json',
+	$id: '/schemas/CommunityActor',
 	type: 'object',
 	description: `
 		Represents a collective actor under the ownership of a Hub. 
@@ -57,9 +55,9 @@ export const CommunityActorSchema = {
 		The Hub that owns it is represented by 'hub_id'.
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json'},
+		actor_id: {$ref: '/schemas/ActorId'},
 		account_id: {type: 'null'},
-		hub_id: {$ref: '/schemas/HubId.json'},
+		hub_id: {$ref: '/schemas/HubId'},
 		type: {type: 'string', enum: ['community']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
@@ -71,13 +69,13 @@ export const CommunityActorSchema = {
 } satisfies VocabSchema;
 
 export const GhostActorSchema = {
-	$id: '/schemas/GhostActor.json',
+	$id: '/schemas/GhostActor',
 	type: 'object',
 	description: `
 	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.	 
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json'},
+		actor_id: {$ref: '/schemas/ActorId'},
 		account_id: {type: 'null'},
 		hub_id: {type: 'null'},
 		type: {type: 'string', enum: ['ghost']},
@@ -94,13 +92,13 @@ export const GhostActorSchema = {
 // and it's related to `hub_id` being overloaded for account/hub actor types.
 // see: https://github.com/feltjs/felt-server/pull/545#discussion_r1013465948
 export const PublicActorSchema = {
-	$id: '/schemas/PublicActor.json',
+	$id: '/schemas/PublicActor',
 	type: 'object',
 	description: `
 		A subset of an Actor available to all clients in a hub.
 	`,
 	properties: {
-		actor_id: {$ref: '/schemas/ActorId.json'},
+		actor_id: {$ref: '/schemas/ActorId'},
 		type: {type: 'string', enum: ['account', 'community', 'ghost']},
 		name: {type: 'string'},
 		icon: {type: 'string'},
@@ -112,11 +110,10 @@ export const PublicActorSchema = {
 } satisfies VocabSchema;
 
 export const ClientActorSchema = {
-	$id: '/schemas/ClientActor.json',
+	$id: '/schemas/ClientActor',
 	description: `
 		The union of Actor subsets a user sees on their client,
 		including the user's AccountActors and all other hub actors as PublicActors.
 	`,
-	anyOf: [{$ref: '/schemas/AccountActor.json'}, {$ref: '/schemas/PublicActor.json'}],
-	tsType: '(AccountActor | PublicActor)',
+	anyOf: [{$ref: '/schemas/AccountActor'}, {$ref: '/schemas/PublicActor'}],
 } satisfies VocabSchema;

@@ -5,11 +5,11 @@ export const Ping: ServiceActionData = {
 	name: 'Ping',
 	authorize: false,
 	params: {
-		$id: '/schemas/PingParams.json',
+		$id: '/schemas/PingParams',
 		type: 'null',
 	},
 	response: {
-		$id: '/schemas/PingResponse.json',
+		$id: '/schemas/PingResponse',
 		type: 'null',
 	},
 	returns: `Promise<ApiResult<null>>`,
@@ -24,22 +24,22 @@ export const Ephemera: ServiceActionData = {
 	name: 'Ephemera',
 	broadcast: true,
 	params: {
-		$id: '/schemas/EphemeraParams.json',
+		$id: '/schemas/EphemeraParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			space_id: {$ref: '/schemas/SpaceId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			space_id: {$ref: '/schemas/SpaceId'},
 			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/EphemeraResponse.json',
+		$id: '/schemas/EphemeraResponse',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			space_id: {$ref: '/schemas/SpaceId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			space_id: {$ref: '/schemas/SpaceId'},
 			data: {type: 'object', properties: {type: {type: 'string'}}, required: ['type']},
 		},
 		required: ['actor', 'space_id', 'data'],
@@ -56,10 +56,10 @@ export const SetSession: ClientActionData = {
 	type: 'ClientAction',
 	name: 'SetSession',
 	params: {
-		$id: '/schemas/SetSessionParams.json',
+		$id: '/schemas/SetSessionParams',
 		type: 'object',
 		properties: {
-			session: {$ref: '/schemas/ClientSession.json'},
+			session: {$ref: '/schemas/ClientSession'},
 		},
 		required: ['session'],
 		additionalProperties: false,
@@ -85,7 +85,7 @@ export const SetMobile: ClientActionData = {
 	type: 'ClientAction',
 	name: 'SetMobile',
 	params: {
-		$id: '/schemas/SetMobileParams.json',
+		$id: '/schemas/SetMobileParams',
 		type: 'boolean',
 	},
 	returns: 'void',
@@ -95,7 +95,7 @@ export const OpenDialog: ClientActionData = {
 	type: 'ClientAction',
 	name: 'OpenDialog',
 	params: {
-		$id: '/schemas/OpenDialogParams.json',
+		$id: '/schemas/OpenDialogParams',
 		type: 'object',
 		tsType: 'DialogData',
 		tsImport: 'import type {DialogData} from "@feltjs/felt-ui"',
@@ -114,10 +114,10 @@ export const ViewSpace: ClientActionData = {
 	type: 'ClientAction',
 	name: 'ViewSpace',
 	params: {
-		$id: '/schemas/ViewSpaceParams.json',
+		$id: '/schemas/ViewSpaceParams',
 		type: 'object',
 		properties: {
-			space_id: {$ref: '/schemas/SpaceId.json'},
+			space_id: {$ref: '/schemas/SpaceId'},
 			view: {type: ['string', 'null']},
 		},
 		required: ['space_id', 'view'],
@@ -130,10 +130,10 @@ export const ClearFreshness: ClientActionData = {
 	type: 'ClientAction',
 	name: 'ClearFreshness',
 	params: {
-		$id: '/schemas/ClearFreshnessParams.json',
+		$id: '/schemas/ClearFreshnessParams',
 		type: 'object',
 		properties: {
-			directory_id: {$ref: '/schemas/EntityId.json'},
+			directory_id: {$ref: '/schemas/EntityId'},
 		},
 		required: ['directory_id'],
 		additionalProperties: false,

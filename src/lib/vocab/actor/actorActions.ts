@@ -5,7 +5,7 @@ export const CreateAccountActor: ServiceActionData = {
 	name: 'CreateAccountActor',
 	authorize: false,
 	params: {
-		$id: '/schemas/CreateAccountActorParams.json',
+		$id: '/schemas/CreateAccountActorParams',
 		type: 'object',
 		properties: {
 			name: {type: 'string'},
@@ -14,26 +14,26 @@ export const CreateAccountActor: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/CreateAccountActorResponse.json',
+		$id: '/schemas/CreateAccountActorResponse',
 		type: 'object',
 		properties: {
 			actors: {
 				type: 'array',
-				items: {$ref: '/schemas/ClientActor.json'},
+				items: {$ref: '/schemas/ClientActor'},
 			},
-			hubs: {type: 'array', items: {$ref: '/schemas/Hub.json'}},
-			roles: {type: 'array', items: {$ref: '/schemas/Role.json'}},
-			policies: {type: 'array', items: {$ref: '/schemas/Policy.json'}},
-			spaces: {type: 'array', items: {$ref: '/schemas/Space.json'}},
+			hubs: {type: 'array', items: {$ref: '/schemas/Hub'}},
+			roles: {type: 'array', items: {$ref: '/schemas/Role'}},
+			policies: {type: 'array', items: {$ref: '/schemas/Policy'}},
+			spaces: {type: 'array', items: {$ref: '/schemas/Space'}},
 			directories: {
 				type: 'array',
 				items: {
-					$ref: '/schemas/Entity.json',
+					$ref: '/schemas/Entity',
 					tsType: 'Directory',
 					tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
 				},
 			},
-			assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json'}},
+			assignments: {type: 'array', items: {$ref: '/schemas/Assignment'}},
 		},
 		required: ['actors', 'hubs', 'roles', 'policies', 'spaces', 'directories', 'assignments'],
 		additionalProperties: false,
@@ -49,17 +49,17 @@ export const DeleteActor: ServiceActionData = {
 	type: 'ServiceAction',
 	name: 'DeleteActor',
 	params: {
-		$id: '/schemas/DeleteActorParams.json',
+		$id: '/schemas/DeleteActorParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			actor_id: {$ref: '/schemas/ActorId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			actor_id: {$ref: '/schemas/ActorId'},
 		},
 		required: ['actor', 'actor_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/DeleteActorResponse.json',
+		$id: '/schemas/DeleteActorResponse',
 		type: 'null',
 	},
 	returns: 'Promise<DeleteActorResponseResult>',

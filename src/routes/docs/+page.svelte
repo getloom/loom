@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {page} from '$app/stores';
+	import {parseSchemaName} from '@feltjs/gro/dist/utils/schema.js';
 
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
 	import {actionDatas} from '$lib/vocab/action/actionData';
@@ -14,6 +15,12 @@
 
 	// TODO display plugins
 	// TODO display source code links to views and actions and such
+
+	$: sortedActionDatas = actionDatas.slice().sort((a, b) => a.name.localeCompare(b.name));
+	$: sortedModelSchemas = modelSchemas.slice().sort((a, b) => a.$id.localeCompare(b.$id));
+	$: sortedViewTemplates = viewTemplates.slice().sort((a, b) => a.name.localeCompare(b.name));
+
+	$: schemaNames = sortedModelSchemas.map((s) => parseSchemaName(s.$id));
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
@@ -27,7 +34,7 @@
 			<h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3>
 			<h4><a href="#views" class:selected={hash === 'views'}>views</a></h4>
 			<menu>
-				{#each viewTemplates as viewTemplate (viewTemplate)}
+				{#each sortedViewTemplates as viewTemplate (viewTemplate)}
 					<li>
 						<a href="#{viewTemplate.name}" class:selected={hash === viewTemplate.name}
 							>{viewTemplate.name}</a
@@ -37,15 +44,16 @@
 			</menu>
 			<h4><a href="#models" class:selected={hash === 'models'}>models</a></h4>
 			<menu>
-				{#each modelSchemas as schema (schema)}
+				{#each sortedModelSchemas as schema, i (schema)}
+					{@const name = schemaNames[i]}
 					<li>
-						<a href="#{schema.name}" class:selected={hash === schema.name}>{schema.name}</a>
+						<a href="#{name}" class:selected={hash === name}>{name}</a>
 					</li>
 				{/each}
 			</menu>
 			<h4><a href="#actions" class:selected={hash === 'actions'}>actions</a></h4>
 			<menu>
-				{#each actionDatas as actionData (actionData.name)}
+				{#each sortedActionDatas as actionData (actionData.name)}
 					<li>
 						<a href="#{actionData.name}" class:selected={hash === actionData.name}
 							>{actionData.name}</a
@@ -69,7 +77,7 @@
 			<h2 id="views">views</h2>
 		</div>
 		<ul>
-			{#each viewTemplates as viewTemplate (viewTemplate)}
+			{#each sortedViewTemplates as viewTemplate (viewTemplate)}
 				<li class="view-template" id={viewTemplate.name}>
 					<div class="title padded-xs">
 						<span style:font-size="var(--font_size_lg)">
@@ -94,8 +102,9 @@
 			<h2 id="models">models</h2>
 		</div>
 		<ul>
-			{#each modelSchemas as schema (schema)}
-				<li id={schema.name}>
+			{#each sortedModelSchemas as schema, i (schema)}
+				{@const name = schemaNames[i]}
+				<li id={name}>
 					<SchemaInfo {schema} />
 				</li>
 			{/each}
@@ -105,7 +114,7 @@
 			<h2 id="actions">actions</h2>
 		</div>
 		<ul>
-			{#each actionDatas as actionData (actionData.name)}
+			{#each sortedActionDatas as actionData (actionData.name)}
 				<li id={actionData.name}>
 					<div class="title">
 						<code class="name">{actionData.name}</code>

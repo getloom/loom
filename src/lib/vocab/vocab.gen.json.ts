@@ -1,7 +1,7 @@
 import type {Gen} from '@feltjs/gro';
+import {bundleSchemas} from '@feltjs/gro/dist/utils/schema.js';
 
 import {schemas} from '$lib/vocab/schemas';
-import {bundleSchemas} from '$lib/util/schema';
 
 /**
  * Outputs a bunedled schema for the entire vocabulary.
@@ -9,7 +9,12 @@ import {bundleSchemas} from '$lib/util/schema';
  * @returns
  */
 export const gen: Gen = async () => {
-	const schema = bundleSchemas(schemas);
+	// TODO make these options configurable
+	const schema = bundleSchemas(
+		schemas,
+		'https://app.felt.dev/schemas/vocab.json',
+		'@feltjs/felt-server vocab',
+	);
 	return {
 		filename: '../../static/schemas/vocab.json',
 		content: JSON.stringify(schema),

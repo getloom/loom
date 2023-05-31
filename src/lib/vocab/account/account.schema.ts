@@ -1,24 +1,24 @@
 import type {VocabSchema} from '@feltjs/gro';
 
 export const AccountIdSchema = {
-	$id: '/schemas/AccountId.json',
+	$id: '/schemas/AccountId',
 	type: 'number',
 	tsType: "Flavored<number, 'AccountId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
 } satisfies VocabSchema;
 
 export const AccountSchema = {
-	$id: '/schemas/Account.json',
+	$id: '/schemas/Account',
 	type: 'object',
 	description: `
 		Represents the point of entry to the system and is responsible for managing authentication to the system. 
 		It holds top level user data and is the relation through which all other data is loaded for the client.
 	`,
 	properties: {
-		account_id: {$ref: '/schemas/AccountId.json'},
+		account_id: {$ref: '/schemas/AccountId'},
 		name: {type: 'string'},
 		password: {type: 'string'},
-		settings: {$ref: '/schemas/AccountSettings.json'},
+		settings: {$ref: '/schemas/AccountSettings'},
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
@@ -27,15 +27,15 @@ export const AccountSchema = {
 } satisfies VocabSchema;
 
 export const ClientAccountSchema = {
-	$id: '/schemas/ClientAccount.json',
+	$id: '/schemas/ClientAccount',
 	type: 'object',
 	description: `
 		A client-facing subset of an Account. Excludes 'password' for security.
 	`,
 	properties: {
-		account_id: {$ref: '/schemas/AccountId.json'},
+		account_id: {$ref: '/schemas/AccountId'},
 		name: {type: 'string'},
-		settings: {$ref: '/schemas/AccountSettings.json'},
+		settings: {$ref: '/schemas/AccountSettings'},
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
@@ -44,7 +44,7 @@ export const ClientAccountSchema = {
 } satisfies VocabSchema;
 
 export const AccountSettingsSchema = {
-	$id: '/schemas/AccountSettings.json',
+	$id: '/schemas/AccountSettings',
 	type: 'object',
 	description: `
 		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
@@ -57,43 +57,42 @@ export const AccountSettingsSchema = {
 } satisfies VocabSchema;
 
 export const ClientSessionSchema = {
-	$id: '/schemas/ClientSession.json',
+	$id: '/schemas/ClientSession',
 	description: `
 		The session data loaded on each page for authenticated and unauthenticated users.
 	`,
-	anyOf: [{$ref: '/schemas/ClientAccountSession.json'}, {$ref: '/schemas/ClientGuestSession.json'}],
-	tsType: '(ClientAccountSession | ClientGuestSession)',
+	anyOf: [{$ref: '/schemas/ClientAccountSession'}, {$ref: '/schemas/ClientGuestSession'}],
 } satisfies VocabSchema;
 
 export const ClientAccountSessionSchema = {
-	$id: '/schemas/ClientAccountSession.json',
+	$id: '/schemas/ClientAccountSession',
 	type: 'object',
 	description: `
 		The session data loaded on each page for authenticated users.
 	`,
 	properties: {
-		account: {$ref: '/schemas/ClientAccount.json'},
+		account: {$ref: '/schemas/ClientAccount'},
 		sessionActors: {
 			type: 'array',
-			items: {$ref: '/schemas/AccountActor.json'},
+			items: {$ref: '/schemas/AccountActor'},
 		},
 		hubs: {
 			type: 'array',
-			items: {$ref: '/schemas/Hub.json'},
+			items: {$ref: '/schemas/Hub'},
 		},
-		roles: {type: 'array', items: {$ref: '/schemas/Role.json'}},
-		spaces: {type: 'array', items: {$ref: '/schemas/Space.json'}},
+		roles: {type: 'array', items: {$ref: '/schemas/Role'}},
+		spaces: {type: 'array', items: {$ref: '/schemas/Space'}},
 		directories: {
 			type: 'array',
-			items: {$ref: '/schemas/Entity.json'},
+			items: {$ref: '/schemas/Entity'},
 			tsType: 'Array<Entity & {data: EntityData}>',
 			tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
 		},
-		assignments: {type: 'array', items: {$ref: '/schemas/Assignment.json'}},
-		policies: {type: 'array', items: {$ref: '/schemas/Policy.json'}},
+		assignments: {type: 'array', items: {$ref: '/schemas/Assignment'}},
+		policies: {type: 'array', items: {$ref: '/schemas/Policy'}},
 		actors: {
 			type: 'array',
-			items: {$ref: '/schemas/ClientActor.json'},
+			items: {$ref: '/schemas/ClientActor'},
 		},
 		guest: {enum: [false]},
 	},
@@ -109,21 +108,10 @@ export const ClientAccountSessionSchema = {
 		'actors',
 	],
 	additionalProperties: false,
-	// TODO this data is worthless to the client
-	// TODO ideally this is generated from the above schema, need mapping between `/schemas/...` and `$lib/vocab/...`, could connect `tsType` and `$ref`
-	tsImport: [
-		"import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor'",
-		"import type {Hub} from '$lib/vocab/hub/hub'",
-		"import type {Entity} from '$lib/vocab/entity/entity'",
-		"import type {Role} from '$lib/vocab/role/role'",
-		"import type {Space} from '$lib/vocab/space/space'",
-		"import type {Assignment} from '$lib/vocab/assignment/assignment'",
-		"import type {Policy} from '$lib/vocab/policy/policy'",
-	],
 } satisfies VocabSchema;
 
 export const ClientGuestSessionSchema = {
-	$id: '/schemas/ClientGuestSession.json',
+	$id: '/schemas/ClientGuestSession',
 	type: 'object',
 	description: `
 		A type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.

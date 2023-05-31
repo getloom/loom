@@ -12,13 +12,9 @@ let ajvInstance: Ajv | null = null;
 export const ajv = (opts?: Options): Ajv => {
 	if (ajvInstance) return ajvInstance;
 	ajvInstance = new Ajv(opts);
-	ajvInstance.addKeyword('tsType').addKeyword('tsImport').addKeyword('name').addKeyword('$anchor');
+	ajvInstance.addKeyword('tsType').addKeyword('tsImport');
 	AjvKeywordInstanceof(ajvInstance);
-	for (const schema of schemas) {
-		// This cast is needed because TypeScript's `exactOptionalPropertyTypes` is enabled
-		// and `json-schema` types have `| undefined` but `ajv` does not.
-		ajvInstance.addSchema(schema as SchemaObject);
-	}
+	ajvInstance.addSchema(schemas);
 	return ajvInstance;
 };
 

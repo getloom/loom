@@ -1,14 +1,14 @@
 import type {VocabSchema} from '@feltjs/gro';
 
 export const RoleIdSchema = {
-	$id: '/schemas/RoleId.json',
+	$id: '/schemas/RoleId',
 	type: 'number',
 	tsType: "Flavored<number, 'RoleId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
 } satisfies VocabSchema;
 
 export const RoleSchema = {
-	$id: '/schemas/Role.json',
+	$id: '/schemas/Role',
 	type: 'object',
 	description: `
 		Roles are user-defined governance objects that exist within the context of a single Hub.
@@ -16,8 +16,8 @@ export const RoleSchema = {
 		When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
 	`,
 	properties: {
-		role_id: {$ref: '/schemas/RoleId.json'},
-		hub_id: {$ref: '/schemas/HubId.json'},
+		role_id: {$ref: '/schemas/RoleId'},
+		hub_id: {$ref: '/schemas/HubId'},
 		name: {type: 'string'},
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},

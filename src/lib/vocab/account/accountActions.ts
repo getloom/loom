@@ -6,7 +6,7 @@ export const SignUp: ServiceActionData = {
 	authenticate: false,
 	authorize: false,
 	params: {
-		$id: '/schemas/SignUpParams.json',
+		$id: '/schemas/SignUpParams',
 		type: 'object',
 		properties: {
 			username: {type: 'string'},
@@ -16,10 +16,10 @@ export const SignUp: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/SignUpResponse.json',
+		$id: '/schemas/SignUpResponse',
 		type: 'object',
 		properties: {
-			session: {$ref: '/schemas/ClientAccountSession.json'},
+			session: {$ref: '/schemas/ClientAccountSession'},
 		},
 		required: ['session'],
 		additionalProperties: false,
@@ -36,17 +36,17 @@ export const UpdateAccountSettings: ServiceActionData = {
 	name: 'UpdateAccountSettings',
 	authorize: false,
 	params: {
-		$id: '/schemas/UpdateAccountSettingsParams.json',
+		$id: '/schemas/UpdateAccountSettingsParams',
 		type: 'object',
 		properties: {
-			settings: {$ref: '/schemas/AccountSettings.json'},
+			settings: {$ref: '/schemas/AccountSettings'},
 		},
 		required: ['settings'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/UpdateAccountSettingsResponse.json',
-		$ref: '/schemas/ClientAccount.json',
+		$id: '/schemas/UpdateAccountSettingsResponse',
+		$ref: '/schemas/ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountSettingsResponseResult>',
 	route: {
@@ -60,7 +60,7 @@ export const UpdateAccountPassword: ServiceActionData = {
 	name: 'UpdateAccountPassword',
 	authorize: false,
 	params: {
-		$id: '/schemas/UpdateAccountPasswordParams.json',
+		$id: '/schemas/UpdateAccountPasswordParams',
 		type: 'object',
 		properties: {
 			oldPassword: {type: 'string'},
@@ -70,8 +70,8 @@ export const UpdateAccountPassword: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/UpdateAccountPasswordResponse.json',
-		$ref: '/schemas/ClientAccount.json',
+		$id: '/schemas/UpdateAccountPasswordResponse',
+		$ref: '/schemas/ClientAccount',
 	},
 	returns: 'Promise<UpdateAccountPasswordResponseResult>',
 	route: {
@@ -86,7 +86,7 @@ export const SignIn: ServiceActionData = {
 	authenticate: false,
 	authorize: false,
 	params: {
-		$id: '/schemas/SignInParams.json',
+		$id: '/schemas/SignInParams',
 		type: 'object',
 		properties: {
 			username: {type: 'string'},
@@ -96,10 +96,10 @@ export const SignIn: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/SignInResponse.json',
+		$id: '/schemas/SignInResponse',
 		type: 'object',
 		properties: {
-			session: {$ref: '/schemas/ClientAccountSession.json'},
+			session: {$ref: '/schemas/ClientAccountSession'},
 		},
 		required: ['session'],
 		additionalProperties: false,
@@ -117,11 +117,11 @@ export const SignOut: ServiceActionData = {
 	authorize: false,
 	websockets: false,
 	params: {
-		$id: '/schemas/SignOutParams.json',
+		$id: '/schemas/SignOutParams',
 		type: 'null',
 	},
 	response: {
-		$id: '/schemas/SignOutResponse.json',
+		$id: '/schemas/SignOutResponse',
 		type: 'null',
 	},
 	returns: 'Promise<SignOutResponseResult>',

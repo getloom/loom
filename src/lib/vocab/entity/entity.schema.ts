@@ -1,14 +1,14 @@
 import type {VocabSchema} from '@feltjs/gro';
 
 export const EntityIdSchema = {
-	$id: '/schemas/EntityId.json',
+	$id: '/schemas/EntityId',
 	type: 'number',
 	tsType: "Flavored<number, 'EntityId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
 } satisfies VocabSchema;
 
 export const EntitySchema = {
-	$id: '/schemas/Entity.json',
+	$id: '/schemas/Entity',
 	type: 'object',
 	description: `
 		An Entity is the core data type that represents an ActivityStreams object in the system.
@@ -19,9 +19,9 @@ export const EntitySchema = {
 		A directory is an ActivityStreams Collection referenced by each Space.
 	`,
 	properties: {
-		entity_id: {$ref: '/schemas/EntityId.json'},
-		actor_id: {$ref: '/schemas/ActorId.json'},
-		space_id: {$ref: '/schemas/SpaceId.json'},
+		entity_id: {$ref: '/schemas/EntityId'},
+		actor_id: {$ref: '/schemas/ActorId'},
+		space_id: {$ref: '/schemas/SpaceId'},
 		path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 		data: {
 			type: 'object',

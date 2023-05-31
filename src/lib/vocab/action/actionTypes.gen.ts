@@ -59,7 +59,7 @@ export const gen: Gen = async ({originId, fs, log}) => {
 		if (key === '$ref' && !('tsImport' in obj)) $refs.add(value);
 	});
 	const rawImports = Object.entries(imports)
-		.filter((v) => $refs.has('/schemas/' + v[0] + '.json'))
+		.filter((v) => $refs.has('/schemas/' + v[0]))
 		.map((v) => v[1])
 		.concat(tsImports);
 	const typeImports = await normalizeTypeImports(fs, rawImports, originId);

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type {VocabSchema} from '@feltjs/gro';
+	import {stripStart} from '@feltjs/util/string.js';
 	import type {JSONSchema} from '@ryanatkn/json-schema-to-typescript';
 
 	export let schema: VocabSchema;
@@ -16,7 +17,7 @@
 	{:else}
 		<div class="title">
 			{#if schema.$id}
-				<code class="name">{schema.name}</code>
+				<code class="name">{stripStart(schema.$id, '/schemas/')}</code>
 			{/if}
 			<small class="type">{schema.type || 'unknown'}</small>
 		</div>

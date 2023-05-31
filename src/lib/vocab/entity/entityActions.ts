@@ -6,11 +6,11 @@ export const CreateEntity: ServiceActionData = {
 	name: 'CreateEntity',
 	broadcast: true,
 	params: {
-		$id: '/schemas/CreateEntityParams.json',
+		$id: '/schemas/CreateEntityParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			space_id: {$ref: '/schemas/SpaceId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			space_id: {$ref: '/schemas/SpaceId'},
 			path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 			data: {
 				type: 'object',
@@ -24,7 +24,7 @@ export const CreateEntity: ServiceActionData = {
 						{
 							type: 'object',
 							properties: {
-								source_id: {$ref: '/schemas/EntityId.json'},
+								source_id: {$ref: '/schemas/EntityId'},
 								type: {type: 'string'},
 							},
 							required: ['source_id'],
@@ -33,7 +33,7 @@ export const CreateEntity: ServiceActionData = {
 						{
 							type: 'object',
 							properties: {
-								dest_id: {$ref: '/schemas/EntityId.json'},
+								dest_id: {$ref: '/schemas/EntityId'},
 								type: {type: 'string'},
 							},
 							required: ['dest_id'],
@@ -47,11 +47,11 @@ export const CreateEntity: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/CreateEntityResponse.json',
+		$id: '/schemas/CreateEntityResponse',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
-			ties: {type: 'array', items: {$ref: '/schemas/Tie.json'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie'}},
 		},
 		required: ['entities', 'ties'],
 		additionalProperties: false,
@@ -68,16 +68,16 @@ export const UpdateEntities: ServiceActionData = {
 	name: 'UpdateEntities',
 	broadcast: true,
 	params: {
-		$id: '/schemas/UpdateEntitiesParams.json',
+		$id: '/schemas/UpdateEntitiesParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
+			actor: {$ref: '/schemas/ActorId'},
 			entities: {
 				type: 'array',
 				items: {
 					type: 'object',
 					properties: {
-						entity_id: {$ref: '/schemas/EntityId.json'},
+						entity_id: {$ref: '/schemas/EntityId'},
 						data: {
 							type: 'object',
 							tsType: 'EntityData',
@@ -94,10 +94,10 @@ export const UpdateEntities: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/UpdateEntitiesResponse.json',
+		$id: '/schemas/UpdateEntitiesResponse',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
 		},
 		required: ['entities'],
 		additionalProperties: false,
@@ -113,21 +113,21 @@ export const ReadEntities: ServiceActionData = {
 	type: 'ServiceAction',
 	name: 'ReadEntities',
 	params: {
-		$id: '/schemas/ReadEntitiesParams.json',
+		$id: '/schemas/ReadEntitiesParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			source_id: {$ref: '/schemas/EntityId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			source_id: {$ref: '/schemas/EntityId'},
 		},
 		required: ['actor', 'source_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/ReadEntitiesResponse.json',
+		$id: '/schemas/ReadEntitiesResponse',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
-			ties: {type: 'array', items: {$ref: '/schemas/Tie.json'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie'}},
 		},
 		required: ['entities', 'ties'],
 		additionalProperties: false,
@@ -143,11 +143,11 @@ export const QueryEntities: ClientActionData = {
 	type: 'ClientAction',
 	name: 'QueryEntities',
 	params: {
-		$id: '/schemas/QueryEntitiesResponse.json',
+		$id: '/schemas/QueryEntitiesResponse',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			source_id: {$ref: '/schemas/EntityId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			source_id: {$ref: '/schemas/EntityId'},
 		},
 		required: ['actor', 'source_id'],
 		additionalProperties: false,
@@ -159,11 +159,11 @@ export const ReadEntitiesPaginated: ServiceActionData = {
 	type: 'ServiceAction',
 	name: 'ReadEntitiesPaginated',
 	params: {
-		$id: '/schemas/ReadEntitiesPaginatedParams.json',
+		$id: '/schemas/ReadEntitiesPaginatedParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			source_id: {$ref: '/schemas/EntityId.json'},
+			actor: {$ref: '/schemas/ActorId'},
+			source_id: {$ref: '/schemas/EntityId'},
 			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
 			pageKey: {type: 'number'},
 			related: {type: 'string', enum: ['source', 'dest', 'both']},
@@ -172,11 +172,11 @@ export const ReadEntitiesPaginated: ServiceActionData = {
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/ReadEntitiesPaginatedResponse.json',
+		$id: '/schemas/ReadEntitiesPaginatedResponse',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
-			ties: {type: 'array', items: {$ref: '/schemas/Tie.json'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
+			ties: {type: 'array', items: {$ref: '/schemas/Tie'}},
 		},
 		required: ['entities', 'ties'],
 		additionalProperties: false,
@@ -193,23 +193,23 @@ export const EraseEntities: ServiceActionData = {
 	name: 'EraseEntities',
 	broadcast: true,
 	params: {
-		$id: '/schemas/EraseEntitiesParams.json',
+		$id: '/schemas/EraseEntitiesParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
+			actor: {$ref: '/schemas/ActorId'},
 			entityIds: {
 				type: 'array',
-				items: {$ref: '/schemas/EntityId.json'},
+				items: {$ref: '/schemas/EntityId'},
 			},
 		},
 		required: ['actor', 'entityIds'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/EraseEntitiesResponse.json',
+		$id: '/schemas/EraseEntitiesResponse',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
 		},
 		required: ['entities'],
 		additionalProperties: false,
@@ -226,26 +226,26 @@ export const DeleteEntities: ServiceActionData = {
 	name: 'DeleteEntities',
 	broadcast: true,
 	params: {
-		$id: '/schemas/DeleteEntitiesParams.json',
+		$id: '/schemas/DeleteEntitiesParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
+			actor: {$ref: '/schemas/ActorId'},
 			entityIds: {
 				type: 'array',
-				items: {$ref: '/schemas/EntityId.json'},
+				items: {$ref: '/schemas/EntityId'},
 			},
 		},
 		required: ['actor', 'entityIds'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/DeleteEntitiesResponse.json',
+		$id: '/schemas/DeleteEntitiesResponse',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
 			deleted: {
 				type: 'array',
-				items: {$ref: '/schemas/EntityId.json'},
+				items: {$ref: '/schemas/EntityId'},
 			},
 		},
 		required: ['entities', 'deleted'],
@@ -263,20 +263,20 @@ export const ReadEntitiesById: ServiceActionData = {
 	name: 'ReadEntitiesById',
 	broadcast: true,
 	params: {
-		$id: '/schemas/ReadEntitiesByIdParams.json',
+		$id: '/schemas/ReadEntitiesByIdParams',
 		type: 'object',
 		properties: {
-			actor: {$ref: '/schemas/ActorId.json'},
-			entityIds: {type: 'array', items: {$ref: '/schemas/EntityId.json'}},
+			actor: {$ref: '/schemas/ActorId'},
+			entityIds: {type: 'array', items: {$ref: '/schemas/EntityId'}},
 		},
 		required: ['actor', 'entityIds'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/ReadEntitiesByIdResponse.json',
+		$id: '/schemas/ReadEntitiesByIdResponse',
 		type: 'object',
 		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity.json'}},
+			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
 		},
 		required: ['entities'],
 		additionalProperties: false,

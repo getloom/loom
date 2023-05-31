@@ -1,14 +1,14 @@
 import type {VocabSchema} from '@feltjs/gro';
 
 export const AssignmentIdSchema = {
-	$id: '/schemas/AssignmentId.json',
+	$id: '/schemas/AssignmentId',
 	type: 'number',
 	tsType: "Flavored<number, 'AssignmentId'>",
 	tsImport: "import {Flavored} from '@feltjs/util';",
 } satisfies VocabSchema;
 
 export const AssignmentSchema = {
-	$id: '/schemas/Assignment.json',
+	$id: '/schemas/Assignment',
 	type: 'object',
 	description: `
 	 Describes the relationship between an Actor and Role within a given Hub.
@@ -16,10 +16,10 @@ export const AssignmentSchema = {
 	 When initially joining a Hub, Actors are given an Assignment to the default Role.
 	`,
 	properties: {
-		assignment_id: {$ref: '/schemas/AssignmentId.json'},
-		actor_id: {$ref: '/schemas/ActorId.json'},
-		hub_id: {$ref: '/schemas/HubId.json'},
-		role_id: {$ref: '/schemas/RoleId.json'},
+		assignment_id: {$ref: '/schemas/AssignmentId'},
+		actor_id: {$ref: '/schemas/ActorId'},
+		hub_id: {$ref: '/schemas/HubId'},
+		role_id: {$ref: '/schemas/RoleId'},
 		created: {type: 'object', instanceof: 'Date'},
 	},
 	required: ['assignment_id', 'actor_id', 'hub_id', 'role_id', 'created'],
