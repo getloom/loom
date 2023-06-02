@@ -1,17 +1,19 @@
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 
 export type EntityData =
 	| DirectoryEntityData
 	| NoteEntityData
 	| ArticleEntityData
 	| CollectionEntityData
-	| TombstoneEntityData;
+	| TombstoneEntityData
+	| OrderedCollectionEntityData;
 
 export interface BaseEntityData {
 	type: string;
 	content?: string;
 	name?: string;
 	checked?: boolean;
+	orderedItems?: EntityId[];
 }
 
 export interface DirectoryEntityData extends BaseEntityData {
@@ -44,4 +46,9 @@ export interface TombstoneEntityData extends BaseEntityData {
 export interface Directory extends Entity {
 	path: string; // directories always have a `path`, can't be `null`
 	data: DirectoryEntityData;
+}
+
+export interface OrderedCollectionEntityData extends BaseEntityData {
+	type: 'OrderedCollection';
+	orderedItems: EntityId[];
 }

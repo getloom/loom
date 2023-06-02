@@ -106,6 +106,8 @@ export const stashTies = (
 			// TODO this lookup is wrong, but what's the best design here?
 			// extract from mutation helpers into the query store?
 			// (currently there's no query store for non-paginated queries, that's a todo)
+			// the issue here is that only entities with a direct tie back to the directory
+			// provided to the query get stored, not the whole entity return set
 			const query = queryByKey.get(source_id);
 			if (query) {
 				if (!query.data.get().value.has(entity)) {

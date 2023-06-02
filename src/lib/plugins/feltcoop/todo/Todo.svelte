@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {readable, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {toDialogData} from '@feltjs/felt-ui';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
@@ -10,15 +10,14 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
+	import {transformQueryDataToArray} from '$lib/util/query';
+	import {lookupOrderedItems} from '$lib/vocab/entity/entityHelpers';
 
 	const {actor, space, hub} = getSpaceContext();
 
-	const {
-		actions,
-		socket,
-		ui: {destTiesBySourceEntityId, entityById},
-	} = getApp();
+	const {actions, socket, ui} = getApp();
+
+	const {destTiesBySourceEntityId, entityById} = ui;
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
@@ -29,19 +28,42 @@
 		: null;
 	$: queryData = query?.data;
 	$: queryStatus = query?.status;
+	$: querySuccess = $queryStatus === 'success';
 	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+	$: entities = $queryData?.value && transformQueryDataToArray(queryData!);
+
+	let listsCollection: Readable<Entity> | undefined;
+	$: listsCollection = entities && $entities!.find((e) => e.get().data.name === 'lists');
+
+	$: if ($entities && $queryStatus === 'success') {
+		if (!$listsCollection) {
+			//TODO initialize these with hub, not user actor
+			void initListsCollection();
+		}
+	}
+
+	$: lists = $listsCollection && lookupOrderedItems($listsCollection, ui);
 
 	let text = '';
 
 	let selectedList: Readable<Entity> | null = null as any;
 	const selectList = (list: Readable<Entity>) => {
-		if (list.get().data.type !== 'Collection') return;
+		if (list.get().data.type !== 'OrderedCollection') return;
 		if (selectedList === list) {
 			selectedList = null;
 		} else {
 			selectedList = list;
 		}
+	};
+
+	const initListsCollection = async () => {
+		//TODO init with hub actor not user actor
+		await actions.CreateEntity({
+			space_id: $space.space_id,
+			actor: $actor.actor_id,
+			data: {type: 'OrderedCollection', name: 'lists', orderedItems: []},
+			ties: [{source_id: $space.directory_id}],
+		});
 	};
 
 	const createEntity = async () => {
@@ -87,18 +109,27 @@
 <div class="todo">
 	<div class="entities">
 		<!-- TODO handle failures here-->
-		{#if entities && $queryStatus === 'success'}
-			<TodoItems {actor} {entities} {space} {selectedList} {selectList} />
+		{#if listsCollection && $listsCollection && querySuccess && lists}
+			<TodoItems
+				{actor}
+				parentList={listsCollection}
+				entities={lists}
+				{space}
+				{selectedList}
+				{selectList}
+			/>
 			<button
 				on:click={() =>
+					$listsCollection &&
 					actions.OpenDialog(
 						toDialogData(CreateEntityForm, {
 							done: () => actions.CloseDialog(),
-							entityName: 'todo',
+							entityName: 'todo list',
 							actor,
 							hub,
 							space,
-							fields: {content: true},
+							type: 'OrderedCollection',
+							ties: [{source_id: $listsCollection.entity_id}],
 						}),
 					)}
 			>

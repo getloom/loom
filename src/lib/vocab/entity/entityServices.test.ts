@@ -3,7 +3,7 @@ import * as assert from 'uvu/assert';
 import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {NoteEntityData} from '$lib/vocab/entity/entityData';
+import type {NoteEntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData';
 import {expectApiError, toServiceRequestMock} from '$lib/util/testHelpers';
 import {
 	ReadEntitiesPaginatedService,
@@ -362,6 +362,113 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	const found = await repos.entity.findById(directory.entity_id);
 	assert.ok(found);
 	assert.equal(found.data, directory.data);
+});
+
+test_entityServices('create and remove orderedItem entities ', async ({repos, random}) => {
+	const {space, actor, account, hub} = await random.space();
+
+	const collectionData1: OrderedCollectionEntityData = {
+		type: 'OrderedCollection',
+		content: 'this is collection 1',
+		orderedItems: [],
+	};
+	const collectionData2: OrderedCollectionEntityData = {
+		type: 'OrderedCollection',
+		content: 'this is collection 2',
+		orderedItems: [],
+	};
+	let {entity: collection1} = await random.entity(actor, account, hub, space, space.directory_id, {
+		data: collectionData1,
+	});
+	let {entity: collection2} = await random.entity(actor, account, hub, space, space.directory_id, {
+		data: collectionData2,
+	});
+	const entityData1: NoteEntityData = {type: 'Note', content: 'entity: 1'};
+	const entityData2: NoteEntityData = {type: 'Note', content: 'entity: 2'};
+	const entityData3: NoteEntityData = {type: 'Note', content: 'entity: 3'};
+
+	const {entity: entity1} = await random.entity(actor, account, hub, space, space.directory_id, {
+		data: entityData1,
+		ties: [
+			{source_id: collection1.entity_id, type: 'HasItem'},
+			{source_id: collection2.entity_id, type: 'HasItem'},
+		],
+	});
+	const {entity: entity2} = await random.entity(actor, account, hub, space, space.directory_id, {
+		data: entityData2,
+		ties: [
+			{source_id: collection1.entity_id, type: 'HasItem'},
+			{source_id: collection2.entity_id, type: 'HasItem'},
+		],
+	});
+	const {entity: entity3, directories: directories3} = await random.entity(
+		actor,
+		account,
+		hub,
+		space,
+		space.directory_id,
+		{
+			data: entityData3,
+			ties: [
+				{source_id: collection1.entity_id, type: 'HasItem'},
+				{source_id: collection2.entity_id, type: 'HasItem'},
+			],
+		},
+	);
+	collection1 = directories3.find((e) => e.entity_id === collection1.entity_id)!;
+	collection2 = directories3.find((e) => e.entity_id === collection2.entity_id)!;
+
+	assert.is(collection1.data.orderedItems!.length, 3);
+	assert.is(collection2.data.orderedItems!.length, 3);
+	assert.equal(collection1, await repos.entity.findById(collection1.entity_id));
+	assert.equal(collection2, await repos.entity.findById(collection2.entity_id));
+
+	//delete 2nd note; collection should have orderedItem length 2
+	const {entities: e1} = unwrap(
+		await DeleteEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entityIds: [entity2.entity_id],
+			},
+		}),
+	);
+	collection1 = e1.find((e) => e.entity_id === collection1.entity_id)!;
+	collection2 = e1.find((e) => e.entity_id === collection2.entity_id)!;
+
+	assert.is(collection1.data.orderedItems!.length, 2);
+	assert.is(collection2.data.orderedItems!.length, 2);
+	assert.equal(collection1, await repos.entity.findById(collection1.entity_id));
+	assert.equal(collection2, await repos.entity.findById(collection2.entity_id));
+
+	//delete 1 collection; entities should still be present & in other collection
+	unwrap(
+		await DeleteEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entityIds: [collection2.entity_id],
+			},
+		}),
+	);
+	assert.equal(collection1, await repos.entity.findById(collection1.entity_id));
+	assert.equal(entity1, await repos.entity.findById(entity1.entity_id));
+	assert.equal(entity3, await repos.entity.findById(entity3.entity_id));
+
+	//delete 2nd collection; entities should be gone now
+	unwrap(
+		await DeleteEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entityIds: [collection1.entity_id],
+			},
+		}),
+	);
+	assert.not(await repos.entity.findById(collection1.entity_id));
+	assert.not(await repos.entity.findById(entity1.entity_id));
+	assert.not(await repos.entity.findById(entity3.entity_id));
+	//TODO handle earsures as well
 });
 
 test_entityServices.run();

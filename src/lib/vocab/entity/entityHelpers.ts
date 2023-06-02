@@ -2,6 +2,7 @@ import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import {GUEST_ACTOR_NAME} from '$lib/vocab/actor/constants';
 import type {Entity} from '$lib/vocab/entity/entity';
+import type {Ui} from '$lib/ui/ui';
 
 export const toName = (entity: null | undefined | {name?: string}): string =>
 	entity?.name ?? GUEST_ACTOR_NAME;
@@ -49,4 +50,25 @@ export const checkEntityPath = (path: string): string | null => {
 		return 'path must not contain consecutive slashes';
 	}
 	return null;
+};
+
+/**
+ * Takes an entity with orderedItems in its data
+ * and constructs an ordered array of its items
+ * @param orderedCollection
+ * @param ui
+ * @returns null if invalid, otherwise an array of readable entities
+ */
+export const lookupOrderedItems = (
+	orderedCollection: Entity,
+	ui: Ui,
+): Array<Readable<Entity>> | null => {
+	//TODO add recovery logic i.e.
+	//if there are entities in collection, but not orderedIteam array, append
+	//or if there are ids in the array, but not tied to collection; remove them
+	const {entityById} = ui;
+	if (!orderedCollection.data.orderedItems) return null;
+	//TODO assertion is not great, so how best to defensively lookup?
+	const orderdItems = orderedCollection.data.orderedItems.map((id) => entityById.get(id)!);
+	return orderdItems;
 };

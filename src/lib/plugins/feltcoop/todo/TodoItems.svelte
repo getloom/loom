@@ -7,18 +7,16 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	export let actor: Readable<AccountActor>;
-	export let entities: Readable<Array<Readable<Entity>>>;
+	export let entities: Array<Readable<Entity>>;
+	export let parentList: Readable<Entity>;
 	export let space: Readable<Space>;
 	export let selectedList: Readable<Entity> | null;
 	export let selectList: (list: Readable<Entity>) => void;
-
-	//TODO in directory structure, this would just grab the "lists" collection from the dir
-	$: collectionEntities = $entities?.filter((e) => e.get().data.type === 'Collection');
 </script>
 
 <!-- TODO possibly remove the `ul` wrapper and change the `li`s to `div`s -->
 <ul>
-	{#each collectionEntities as entity (entity)}
-		<TodoItem {actor} {entity} {space} {selectedList} {selectList} />
+	{#each entities as entity (entity)}
+		<TodoItem {actor} {parentList} {entity} {space} {selectedList} {selectList} />
 	{/each}
 </ul>

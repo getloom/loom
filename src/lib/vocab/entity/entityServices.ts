@@ -11,7 +11,12 @@ import {
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
 import {checkEntityPath, scrubEntityPath} from '$lib/vocab/entity/entityHelpers';
-import {cleanOrphanedEntities, updateDirectories} from '$lib/vocab/entity/entityHelpers.server';
+import {
+	checkAddOrderedItem,
+	checkRemoveOrderedItems,
+	cleanOrphanedEntities,
+	updateDirectories,
+} from '$lib/vocab/entity/entityHelpers.server';
 import {
 	checkHubAccess,
 	checkEntityOwnership,
@@ -73,10 +78,15 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	perform: async ({repos, params}) => {
 		const {actor, data, space_id, path} = params;
 
+		//TODO revist this, should data drive ties or vice versa?
+		if (data.orderedItems?.length)
+			throw new ApiError(400, 'cannot create entity with orderedItems directly');
+
 		const {hub_id} = (await repos.space.findById(space_id))!;
 		await checkPolicy(permissions.CreateEntity, actor, hub_id, repos);
 
-		const entity = await repos.entity.create(actor, data, space_id, path);
+		//TODO maybe construct orderedItems here
+		let entity = await repos.entity.create(actor, data, space_id, path);
 
 		const entities = [entity];
 
@@ -87,11 +97,26 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 					'source_id' in tieParams
 						? {source_id: tieParams.source_id, dest_id: entity.entity_id}
 						: {source_id: entity.entity_id, dest_id: tieParams.dest_id};
-				ties.push(await repos.tie.create(source_id, dest_id, tieParams.type || 'HasItem')); // eslint-disable-line no-await-in-loop
+				const tie = await repos.tie.create(source_id, dest_id, tieParams.type || 'HasItem'); // eslint-disable-line no-await-in-loop
+				ties.push(tie);
+				const collection = await checkAddOrderedItem(repos, entity, tie); // eslint-disable-line no-await-in-loop
+				if (collection) {
+					if (entity.entity_id === collection.entity_id) {
+						entity = collection;
+						entities[0] = entity; // TODO pay attention to this when batched
+					} else {
+						entities.push(collection);
+					}
+				}
 			}
 		}
 
-		entities.push(...(await updateDirectories(repos, [entity.entity_id])));
+		entities.push(
+			...(await updateDirectories(
+				repos,
+				entities.map((e) => e.entity_id),
+			)),
+		);
 
 		return {ok: true, status: 200, value: {entities, ties}};
 	},
@@ -109,6 +134,18 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 		const entities = await Promise.all(
 			params.entities.map(async (doc) => {
 				const {entity_id, data} = doc;
+
+				//TODO revist this, should data drive ties or vice versa?
+				if (data && 'orderedItems' in data) {
+					const newOrderedItems =
+						data.orderedItems && Array.from(new Set(data.orderedItems)).sort((a, b) => a - b);
+					const entity = await repos.entity.findById(entity_id);
+					const oldOrderedItems =
+						entity?.data.orderedItems &&
+						Array.from(new Set(entity.data.orderedItems)).sort((a, b) => a - b);
+					if (newOrderedItems?.toString() !== oldOrderedItems?.toString())
+						throw new ApiError(400, 'cannot update entity with orderedItems directly');
+				}
 
 				await checkEntityOwnership(actor, [entity_id], repos);
 
@@ -158,11 +195,15 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 		const {actor, entityIds} = params;
 		await checkEntityOwnership(actor, entityIds, repos);
 
+		const collections = await checkRemoveOrderedItems(repos, entityIds);
+
 		const deleted = (await repos.entity.deleteByIds(entityIds)).map((e) => e.entity_id);
 
 		await cleanOrphanedEntities(repos); // TODO probably return the ids here that got orphaned, and scope to the hub in the function
 
-		const entities = await updateDirectories(repos, entityIds);
+		const directories = await updateDirectories(repos, entityIds);
+
+		const entities = collections.concat(directories);
 
 		return {ok: true, status: 200, value: {entities, deleted}};
 	},

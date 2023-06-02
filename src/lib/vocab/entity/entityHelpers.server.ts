@@ -4,6 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Directory} from '$lib/vocab/entity/entityData';
+import type {Tie} from '$lib/vocab/tie/tie';
 
 const log = new Logger(gray('[') + blue('entityHelpers.server') + gray(']'));
 
@@ -46,4 +47,61 @@ export const updateDirectories = async (
 	return Promise.all(
 		directoryIds.map(async (directoryId) => repos.entity.update(directoryId) as Promise<Directory>),
 	);
+};
+
+/** This helper function takes a newly created entity & tie and checks
+ * to see if the source entity needs its orderedItems attribute updated
+ *
+ * @param repos - the db repos
+ * @param createdEntity - the newly created entity, may or may not have orderedItems
+ * @param tie - the newly created relationship
+ * @returns either the updated entity with orderedItems or void if no change
+ */
+export const checkAddOrderedItem = async (
+	repos: Repos,
+	createdEntity: Entity,
+	tie: Tie,
+): Promise<Entity | void> => {
+	if (tie.type !== 'HasItem') return;
+	const source =
+		createdEntity.entity_id === tie.source_id
+			? createdEntity
+			: await repos.entity.findById(tie.source_id);
+	if (source?.data.orderedItems) {
+		source.data.orderedItems.push(tie.dest_id);
+		const collection = await repos.entity.update(source.entity_id, source.data);
+		return collection;
+	}
+};
+
+/** This helper function takes a newly deleted entity and checks
+ * to see if any source entities needs an orderedItems attribute updated
+ *
+ * @param repos - the db repos
+ * @param createdEntity - the newly created entity, may or may not have orderedItems
+ * @param tie - the newly created relationship
+ * @returns either the updated entity with orderedItems or void if no change
+ */
+export const checkRemoveOrderedItems = async (
+	repos: Repos,
+	deletedEntities: EntityId[],
+): Promise<Entity[]> => {
+	const updatedEntities: Entity[] = [];
+	const ties = (await repos.tie.filterSiblingsByEntityId(deletedEntities, 'dest')).filter(
+		(t) => t.type === 'HasItem',
+	);
+	for (const tie of ties) {
+		// eslint-disable-next-line no-await-in-loop
+		const collection = await repos.entity.findById(tie.source_id);
+		if (collection?.data.orderedItems) {
+			const index = collection.data.orderedItems.indexOf(tie.dest_id);
+			if (index > -1) {
+				collection.data.orderedItems.splice(index, 1);
+				// eslint-disable-next-line no-await-in-loop
+				const entity = await repos.entity.update(collection.entity_id, collection.data);
+				updatedEntities.push(entity);
+			}
+		}
+	}
+	return updatedEntities;
 };

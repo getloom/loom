@@ -11,17 +11,21 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
+	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {CreateEntityParams} from '$lib/vocab/action/actionTypes';
 
 	const {actions} = getApp();
 
-	export let done: (() => void) | undefined = undefined;
+	export let done: ((entity?: Entity) => void) | undefined = undefined;
 	export let entityName = 'Entity';
 	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let space: Readable<Space>;
 	export let type = 'Collection';
+	export let ties: CreateEntityParams['ties'] | undefined = undefined;
 	export let fields: {name?: boolean; content?: boolean} = {content: true}; // TODO add customization like display names for each field
 
+	$: finalTies = ties ?? [{source_id: $space.directory_id}];
 	let name = '';
 	let content = '';
 	let status: AsyncStatus = 'initial'; // TODO refactor
@@ -49,18 +53,19 @@
 		const data: BaseEntityData = {type};
 		if (fields.name) data.name = name;
 		if (fields.content) data.content = content;
+		if (type === 'OrderedCollection') data.orderedItems = [];
 		const result = await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
 			data: data as EntityData, // TODO avoid typecast, probably validation against type?
-			ties: [{source_id: $space.directory_id}],
+			ties: finalTies,
 		});
 		status = 'success'; // TODO handle failure (also refactor to be generic)
 		if (result.ok) {
 			errorMessage = null;
 			name = '';
 			content = '';
-			done?.();
+			done?.(result.value.entities[0]);
 		} else {
 			errorMessage = result.message;
 		}

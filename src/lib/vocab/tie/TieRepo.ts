@@ -82,8 +82,7 @@ export class TieRepo extends PostgresRepo {
 	 * or both
 	 *
 	 * @param entityIds - The entities whose sibling ties you want to find
-	 * @param siblingDest - If enabled, all ties with provided entities as dest are returned
-	 * @param siblingSource - If enabled, all ties with provided entities as source are returned
+	 * @param sibling - Enumerated flag for picking tie direction. 'dest' means provided ids are in dest_id of tie
 	 * @returns The collection of sibling ties relating to the entityIds (or an empty array)
 	 */
 	async filterSiblingsByEntityId(

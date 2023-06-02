@@ -11,16 +11,15 @@
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import {lookupOrderedItems} from '$lib/vocab/entity/entityHelpers';
 
-	const {
-		ui: {contextmenu, actorById, destTiesBySourceEntityId, entityById},
-		actions,
-	} = getApp();
+	const {ui, actions} = getApp();
+	const {contextmenu, actorById} = ui;
 
 	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
+	export let parentList: Readable<Entity>;
 	export let space: Readable<Space>;
 	export let selectedList: Readable<Entity> | null;
 	export let selectList: (list: Readable<Entity>) => void;
@@ -28,14 +27,7 @@
 	$: selected = selectedList ? selectedList === entity : false;
 	let pending = false;
 
-	$: destTies = lookupTies(destTiesBySourceEntityId, $entity.entity_id);
-
-	$: items = Array.from($destTies.value).reduce((acc, tie) => {
-		if (tie.type === 'HasItem') {
-			acc.push(entityById.get(tie.dest_id)!);
-		}
-		return acc;
-	}, [] as Array<Readable<Entity>>);
+	$: items = lookupOrderedItems($entity, ui);
 
 	$: ({checked} = $entity.data);
 
@@ -46,7 +38,6 @@
 
 	$: if (checked !== undefined) void updateEntity(checked);
 
-	$: hasItems = items !== undefined || $entity.data.type === 'Collection';
 	$: hasChecked = checked !== undefined || $entity.data.type === 'Note';
 
 	const updateEntity = async (checked: boolean) => {
@@ -62,8 +53,42 @@
 	const renderEntity = (entity: Entity): boolean => {
 		const type = entity.data.type;
 		//1) Only render Collections or Notes
-		if (!(type === 'Collection' || type === 'Note')) return false;
+		if (!(type === 'OrderedCollection' || type === 'Note')) return false;
 		return true;
+	};
+
+	const moveUp = async (item: Readable<Entity>) => {
+		const itemId = item.get().entity_id;
+		const index = $parentList.data.orderedItems!.findIndex((f) => f === itemId);
+		if (index === 0) return;
+		$parentList.data.orderedItems!.splice(
+			index - 1,
+			0,
+			$parentList.data.orderedItems!.splice(index, 1)[0],
+		);
+		pending = true;
+		await actions.UpdateEntities({
+			actor: $actor.actor_id,
+			entities: [{entity_id: $parentList.entity_id, data: {...$parentList.data}}],
+		});
+		pending = false;
+	};
+
+	const moveDown = async (item: Readable<Entity>) => {
+		const itemId = item.get().entity_id;
+		const index = $parentList.data.orderedItems!.findIndex((f) => f === itemId);
+		if (index === $parentList.data.orderedItems!.length - 1) return;
+		$parentList.data.orderedItems!.splice(
+			index + 1,
+			0,
+			$parentList.data.orderedItems!.splice(index, 1)[0],
+		);
+		pending = true;
+		await actions.UpdateEntities({
+			actor: $actor.actor_id,
+			entities: [{entity_id: $parentList.entity_id, data: {...$parentList.data}}],
+		});
+		pending = false;
 	};
 </script>
 
@@ -77,31 +102,47 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 		]}
 	>
-		<!-- TODO fix a11y -->
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div on:click={() => selectList(entity)} class="entity markup formatted">
-			{#if hasItems}
-				<div class="icon-button">
-					{#if selected}👉{:else}📝{/if}
-				</div>
-			{/if}
-			{#if hasChecked}
-				<!-- TODO checkbox not updated properly on event broadcast-->
-				<!-- TODO maybe use Felt checkbox component when available-->
-				<input type="checkbox" disabled={pending} bind:checked />
-			{/if}
-			<div class="text">
-				<EntityContent {entity} />
+		<div class="entity markup formatted">
+			<div class="order-buttons">
+				<button
+					class="plain-button icon-button reply"
+					title="moveUp"
+					on:click={() => moveUp(entity)}>🔼</button
+				>
+				<button
+					class="plain-button icon-button reply"
+					title="moveDown"
+					on:click={() => moveDown(entity)}>🔽</button
+				>
 			</div>
-			<div class="signature">
-				<ActorAvatar actor={authorActor} showName={false} />
+			<!-- TODO fix a11y -->
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div on:click={() => selectList(entity)} class="entity markup formatted">
+				{#if hasChecked}
+					<!-- TODO checkbox not updated properly on event broadcast-->
+					<!-- TODO maybe use Felt checkbox component when available-->
+					<input type="checkbox" disabled={pending} bind:checked />
+				{/if}
+				<div class="text">
+					<EntityContent {entity} />
+				</div>
+				<div class="signature">
+					<ActorAvatar actor={authorActor} showName={false} />
+				</div>
 			</div>
 		</div>
 		{#if items && selected}
 			<div class="items panel">
 				<ul>
 					{#each items as item (item)}
-						<svelte:self {actor} entity={item} {space} {selectedList} {selectList} />
+						<svelte:self
+							{actor}
+							parentList={entity}
+							entity={item}
+							{space}
+							{selectedList}
+							{selectList}
+						/>
 					{/each}
 				</ul>
 			</div>
@@ -140,6 +181,12 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	.markup {
 		/* the bottom padding prevents chars like y and g from being cut off */
 		padding: 0 0 var(--spacing_xs) var(--spacing_md);
+	}
+	.order-buttons {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 0;
 	}
 	.icon-button {
 		font-size: var(--font_size_xl);
