@@ -65,20 +65,24 @@ export const checkEntityOwnership = async (
 		throw new ApiError(400, 'unable to process non-existing entities');
 	}
 
-	const spaceIds = new Set(
-		entities.map((e) => (e.actor_id === actor_id ? null! : e.space_id)).filter(Boolean),
+	const spaceIds = Array.from(
+		new Set(entities.map((e) => (e.actor_id === actor_id ? null! : e.space_id)).filter(Boolean)),
 	);
 
-	for (const space_id of spaceIds) {
-		// eslint-disable-next-line no-await-in-loop
-		const space = (await repos.space.findById(space_id))!;
-		//TODO hack in advance of space/entity policy checks
-		const common_aka_skipAuthorshipCheck =
-			space.view.includes('<Todo') || space.view.includes('<List');
-		if (!common_aka_skipAuthorshipCheck) {
-			throw new ApiError(403, 'actor does not have permission');
-		}
-	}
+	await Promise.all(
+		spaceIds.map(async (space_id) => {
+			const space = await repos.space.findById(space_id);
+			//TODO hack in advance of space/entity policy checks
+			if (!space) {
+				throw new ApiError(404, 'no space found');
+			}
+			const common_aka_skipAuthorshipCheck =
+				space.view.includes('<Todo') || space.view.includes('<List');
+			if (!common_aka_skipAuthorshipCheck) {
+				throw new ApiError(403, 'actor does not have permission');
+			}
+		}),
+	);
 };
 
 export const checkEntityAccess = async (

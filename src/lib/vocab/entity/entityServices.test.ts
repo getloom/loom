@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, unwrapError} from '@feltjs/util';
+import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {NoteEntityData} from '$lib/vocab/entity/entityData';
@@ -15,8 +15,6 @@ import {
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
 import {InviteToHubService} from '$lib/vocab/hub/hubServices';
-import {performService} from '$lib/server/service';
-import type {AccountActor} from '$lib/vocab/actor/actor';
 
 /* test_entityServices */
 const test_entityServices = suite<TestDbContext>('hubRepo');
@@ -297,80 +295,73 @@ test_entityServices(
 	},
 );
 
-test_entityServices.only('disallow mutating directory', async ({repos, random}) => {
-	const {actor, hubActor} = await random.hub();
-	const {directory} = await random.space(actor);
+test_entityServices('disallow mutating directory', async ({repos, random}) => {
+	const {directory, actor} = await random.space();
 
 	assert.is(directory.data.type, 'Collection');
 	assert.ok(directory.data.directory);
 
-	const mutateDirectory = async (actor: AccountActor) => {
-		// Disallow changing the directory's type
-		unwrapError(
-			await performService(UpdateEntitiesService, {
-				...toServiceRequestMock(repos, actor),
-				params: {
-					actor: actor.actor_id,
-					entity_id: directory.entity_id,
-					data: {type: 'Note', content: 'test'},
-				},
-			}),
-		);
+	// Disallow changing the directory's type
+	await expectApiError(403, () =>
+		UpdateEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entities: [{entity_id: directory.entity_id, data: {type: 'Note', content: 'test'}}],
+			},
+		}),
+	);
 
-		// Disallow removing `data.directory`
-		unwrapError(
-			await performService(UpdateEntitiesService, {
-				...toServiceRequestMock(repos, actor),
-				params: {
-					actor: actor.actor_id,
-					entity_id: directory.entity_id,
-					data: {type: 'Collection'},
-				},
-			}),
-		);
+	// Disallow removing `data.directory`
+	await expectApiError(403, () =>
+		UpdateEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entities: [{entity_id: directory.entity_id, data: {type: 'Collection'}}],
+			},
+		}),
+	);
 
-		// Disallow changing `data.directory`
-		unwrapError(
-			await performService(UpdateEntitiesService, {
-				...toServiceRequestMock(repos, actor),
-				params: {
-					actor: actor.actor_id,
-					entity_id: directory.entity_id,
-					data: {type: 'Collection', directory: false as any},
-				},
-			}),
-		);
+	// Disallow changing `data.directory`
+	await expectApiError(403, () =>
+		UpdateEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entities: [
+					{entity_id: directory.entity_id, data: {type: 'Collection', directory: false as any}},
+				],
+			},
+		}),
+	);
 
-		// Disallow deleting the directory
-		unwrapError(
-			await performService(DeleteEntitiesService, {
-				...toServiceRequestMock(repos, actor),
-				params: {
-					actor: actor.actor_id,
-					entityIds: [directory.entity_id],
-				},
-			}),
-		);
+	// Disallow deleting the directory
+	await expectApiError(403, () =>
+		DeleteEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entityIds: [directory.entity_id],
+			},
+		}),
+	);
 
-		// Disallow erasing the directory
-		unwrapError(
-			await performService(EraseEntitiesService, {
-				...toServiceRequestMock(repos, actor),
-				params: {
-					actor: actor.actor_id,
-					entityIds: [directory.entity_id],
-				},
-			}),
-		);
+	// Disallow erasing the directory
+	await expectApiError(403, () =>
+		EraseEntitiesService.perform({
+			...toServiceRequestMock(repos, actor),
+			params: {
+				actor: actor.actor_id,
+				entityIds: [directory.entity_id],
+			},
+		}),
+	);
 
-		// Ensure nothing in the database changed.
-		const found = await repos.entity.findById(directory.entity_id);
-		assert.ok(found);
-		assert.equal(found.data, directory.data);
-	};
-
-	await mutateDirectory(actor);
-	await mutateDirectory(hubActor as AccountActor); // TODO this casting is a problem, the API expects an `AccountActor` but we're sending a `PublicActor` in this case
+	// Ensure nothing in the database changed.
+	const found = await repos.entity.findById(directory.entity_id);
+	assert.ok(found);
+	assert.equal(found.data, directory.data);
 });
 
 test_entityServices.run();
