@@ -87,7 +87,7 @@ export const checkRemoveOrderedItems = async (
 	deletedEntities: EntityId[],
 ): Promise<Entity[]> => {
 	const updatedEntities: Entity[] = [];
-	const ties = (await repos.tie.filterSiblingsByEntityId(deletedEntities, 'dest')).filter(
+	const ties = (await repos.tie.filterRelatedByEntityId(deletedEntities, 'dest')).filter(
 		(t) => t.type === 'HasItem',
 	);
 	for (const tie of ties) {

@@ -76,30 +76,26 @@ export class TieRepo extends PostgresRepo {
 	}
 
 	/**
-	 * This query, given an array of entities and a couple flags,
-	 * will find all ties pointing at those enties
-	 * all ties pointing away from those enties
-	 * or both
-	 *
-	 * @param entityIds - The entities whose sibling ties you want to find
-	 * @param sibling - Enumerated flag for picking tie direction. 'dest' means provided ids are in dest_id of tie
-	 * @returns The collection of sibling ties relating to the entityIds (or an empty array)
+	 * Finds all ties given an array of entities and the kind of relations to follow.
+	 * @param entityIds - the entities whose related ties you want to find
+	 * @param related - the kind of relation to follow, either dest, source, or both
+	 * @returns the collection of ties relating to the entityIds, may be an an empty array
 	 */
-	async filterSiblingsByEntityId(
+	async filterRelatedByEntityId(
 		entityIds: number[],
-		sibling: 'dest' | 'source' | 'both',
+		related: 'dest' | 'source' | 'both',
 	): Promise<Tie[]> {
-		log.debug(`finding tie related of entites`, entityIds, sibling);
+		log.debug(`finding tie related of entites`, entityIds, related);
 		const ties = await this.sql<Tie[]>`
 			SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created
 			FROM ties t WHERE 
 			${
-				sibling === 'dest' || sibling === 'both'
+				related === 'dest' || related === 'both'
 					? this.sql`t.dest_id IN ${this.sql(entityIds)}`
 					: this.sql``
 			}
-			${sibling === 'both' ? this.sql` OR ` : this.sql``}
-			${sibling === 'source' || sibling === 'both' ? this.sql`t.source_id IN ${entityIds}` : this.sql``}
+			${related === 'both' ? this.sql` OR ` : this.sql``}
+			${related === 'source' || related === 'both' ? this.sql`t.source_id IN ${entityIds}` : this.sql``}
 			;`;
 		log.debug('directory ties', ties);
 		return ties;

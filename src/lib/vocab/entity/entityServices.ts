@@ -57,12 +57,12 @@ export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'
 		await checkHubAccess(actor, hub_id, repos);
 
 		const pageTies = await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey);
-		let siblingTies: Tie[] | null = null;
+		let relatedTies: Tie[] | null = null;
 		if (related && pageTies.length) {
 			const pageEntityIds = pageTies.map((t) => t.dest_id);
-			siblingTies = await repos.tie.filterSiblingsByEntityId(pageEntityIds, related);
+			relatedTies = await repos.tie.filterRelatedByEntityId(pageEntityIds, related);
 		}
-		const ties = siblingTies ? pageTies.concat(siblingTies) : pageTies.slice();
+		const ties = relatedTies ? pageTies.concat(relatedTies) : pageTies.slice();
 
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(pageTies);
