@@ -10,8 +10,8 @@ const log = new Logger(gray('[') + blue('entityHelpers.server') + gray(']'));
 
 export type EntityColumn = keyof Entity;
 export const ENTITY_COLUMNS = {
-	EntityId: ['entity_id'],
-	Entity: ['entity_id', 'space_id', 'path', 'data', 'actor_id', 'created', 'updated'],
+	all: ['entity_id', 'space_id', 'path', 'data', 'actor_id', 'created', 'updated'],
+	entity_id: ['entity_id'],
 } satisfies Record<string, EntityColumn[]>;
 
 export const cleanOrphanedEntities = async (repos: Repos): Promise<void> => {
@@ -36,7 +36,7 @@ export const updateDirectories = async (
 			(
 				await Promise.all(
 					entityIds.map((entity_id) =>
-						repos.entity.filterDirectoriesByEntity(entity_id, ENTITY_COLUMNS.EntityId),
+						repos.entity.filterDirectoriesByEntity(entity_id, ENTITY_COLUMNS.entity_id),
 					),
 				)
 			).flatMap((directories) => directories.map((d) => d.entity_id)),

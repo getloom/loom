@@ -5,6 +5,7 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('roleServices') + gray(']'));
 
@@ -38,7 +39,7 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 	perform: async ({repos, params}) => {
 		const {actor, role_id, name} = params;
 		log.debug('updating role', role_id, name);
-		const hub = await repos.hub.findByRole(role_id);
+		const hub = await repos.hub.findByRole(role_id, HUB_COLUMNS.hub_id);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
 		await checkPolicy(permissions.UpdateRole, actor, hub.hub_id, repos);
 		const role = await repos.role.update(role_id, name);
@@ -52,7 +53,7 @@ export const DeleteRoleService: ServiceByName['DeleteRole'] = {
 	perform: async ({repos, params}) => {
 		const {actor, role_id} = params;
 		log.debug('deleting role', role_id);
-		const hub = await repos.hub.findByRole(role_id);
+		const hub = await repos.hub.findByRole(role_id, HUB_COLUMNS.hub_id_settings);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
 		await checkPolicy(permissions.DeleteRole, actor, hub.hub_id, repos);
 

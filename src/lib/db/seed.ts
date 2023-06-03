@@ -18,7 +18,7 @@ import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
-import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
+import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
 import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$lib/app/templates';
@@ -62,6 +62,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			accountParams.username,
 			accountParams.password,
 			toDefaultAccountSettings(),
+			ACCOUNT_COLUMNS.all,
 		);
 		log.debug('created account', account);
 		accounts.push(account);

@@ -12,7 +12,7 @@ const log = new Logger(gray('[') + blue('assignmentHelpers.server') + gray(']'))
 
 export const createAssignment = async (
 	actor_id: ActorId,
-	hub: Hub,
+	hub: Pick<Hub, 'hub_id' | 'type'>,
 	role_id: RoleId,
 	repos: Repos,
 ): Promise<Assignment> => {

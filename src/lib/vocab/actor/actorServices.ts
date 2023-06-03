@@ -5,6 +5,7 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
 import {
+	HUB_COLUMNS,
 	cleanOrphanHubs,
 	initAdminHub,
 	initTemplateGovernanceForHub,
@@ -44,7 +45,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 		}
 
 		log.debug('[CreateAccountActor] validating actor uniqueness', name);
-		const existingActor = await repos.actor.findByName(name, ACTOR_COLUMNS.ActorId);
+		const existingActor = await repos.actor.findByName(name, ACTOR_COLUMNS.actor_id);
 		if (existingActor) {
 			return {ok: false, status: 409, message: 'a actor with that name already exists'};
 		}
@@ -108,7 +109,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 
 		// once all initial hubs & assignments have been created properly
 		// check to see if there are any instance configured default hubs the actor needs assigned to
-		const adminHub = await repos.hub.loadAdminHub();
+		const adminHub = await repos.hub.loadAdminHub(HUB_COLUMNS.settings);
 		if (adminHub) {
 			const defaultHubIds = adminHub.settings.instance?.defaultHubIds;
 			if (defaultHubIds) {
@@ -150,7 +151,7 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		if (actor_id === ADMIN_ACTOR_ID || actor_id === GHOST_ACTOR_ID) {
 			return {ok: false, status: 400, message: 'cannot delete that actor'};
 		}
-		const actorData = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
+		const actorData = await repos.actor.findById(actor_id, ACTOR_COLUMNS.type_hub_id);
 		if (!actorData) {
 			return {ok: false, status: 404, message: 'no actor found'};
 		}
@@ -164,7 +165,7 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
-		const hubs = await repos.hub.filterByActor(actor_id);
+		const hubs = await repos.hub.filterByActor(actor_id, HUB_COLUMNS.hub_id);
 
 		// swap in the ghost actor id for this `actor_id` for those objects that we don't delete
 		await repos.entity.attributeToGhostByActor(actor_id);
@@ -177,7 +178,7 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		await repos.hub.deleteById(actorData.hub_id!); // must follow `actor.deleteById`
 
 		// clean the hubs the actor is joined to, and assemble the broadcast audience
-		const joinedHubIds = hubs.map((c) => c.hub_id).filter((c) => c !== actorData.hub_id);
+		const joinedHubIds = hubs.map((h) => h.hub_id).filter((h) => h !== actorData.hub_id);
 		const removedHubIds = await cleanOrphanHubs(joinedHubIds, repos);
 		const broadcastHubIds = removedHubIds
 			? joinedHubIds.filter((h) => !removedHubIds.includes(h))

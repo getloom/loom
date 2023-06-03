@@ -10,6 +10,7 @@ import {
 } from '$lib/vocab/policy/policyActions';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('policyServices') + gray(']'));
 
@@ -33,7 +34,7 @@ export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, role_id} = params;
-		const hub = await repos.hub.findByRole(role_id);
+		const hub = await repos.hub.findByRole(role_id, HUB_COLUMNS.hub_id);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
 		await checkHubAccess(actor, hub.hub_id, repos);
 

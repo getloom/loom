@@ -26,7 +26,7 @@ export class ActorRepo extends PostgresRepo {
 		const data = await this.sql<AccountActor[]>`
 			INSERT INTO actors (type, name, account_id, hub_id) VALUES (
 				'account', ${name}, ${account_id}, ${hub_id}
-			) RETURNING ${this.sql(ACTOR_COLUMNS.Actor)}
+			) RETURNING ${this.sql(ACTOR_COLUMNS.all)}
 		`;
 		const actor = data[0];
 		log.debug('[createAccountActor] created actor', actor);
@@ -37,7 +37,7 @@ export class ActorRepo extends PostgresRepo {
 		const data = await this.sql<PublicActor[]>`
 			INSERT INTO actors (type, name, hub_id) VALUES (
 				'community', ${name}, ${hub_id}
-			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
+			) RETURNING ${this.sql(ACTOR_COLUMNS.public)}
 		`;
 		const actor = data[0];
 		log.debug('[createCommunityActor] created actor', actor);
@@ -48,7 +48,7 @@ export class ActorRepo extends PostgresRepo {
 		const data = await this.sql<PublicActor[]>`
 			INSERT INTO actors (type, name) VALUES (
 				'ghost', ${GHOST_ACTOR_NAME}
-			) RETURNING ${this.sql(ACTOR_COLUMNS.PublicActor)}
+			) RETURNING ${this.sql(ACTOR_COLUMNS.public)}
 		`;
 		const actor = data[0];
 		if (actor.actor_id !== GHOST_ACTOR_ID) throw Error();
@@ -65,7 +65,7 @@ export class ActorRepo extends PostgresRepo {
 	async filterByAccount(account_id: AccountId): Promise<AccountActor[]> {
 		log.debug('[filterByAccount]', account_id);
 		const data = await this.sql<AccountActor[]>`
-			SELECT ${this.sql(ACTOR_COLUMNS.Actor)}
+			SELECT ${this.sql(ACTOR_COLUMNS.all)}
 			FROM actors WHERE account_id=${account_id}
 		`;
 		return data;
@@ -73,7 +73,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async filterAssociatesByAccount(account_id: AccountId): Promise<PublicActor[]> {
 		const data = await this.sql<PublicActor[]>`
-			SELECT ${this.sql(ACTOR_COLUMNS.PublicActor.map((c) => 'p3.' + c))}
+			SELECT ${this.sql(ACTOR_COLUMNS.public.map((c) => 'p3.' + c))}
 			FROM actors p3
 			JOIN (SELECT DISTINCT actor_id FROM assignments a2
 				JOIN (SELECT DISTINCT a.hub_id FROM assignments a
@@ -83,7 +83,7 @@ export class ActorRepo extends PostgresRepo {
 			ON p3.actor_id=p2.actor_id
 			UNION
 			SELECT ${this.sql(
-				ACTOR_COLUMNS.PublicActor,
+				ACTOR_COLUMNS.public,
 			)} FROM actors WHERE actor_id=${ADMIN_ACTOR_ID} OR actor_id=${GHOST_ACTOR_ID}
 		`;
 		return data;
@@ -91,7 +91,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async findById<T extends ActorColumn>(
 		actor_id: ActorId,
-		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+		columns: T[] = ACTOR_COLUMNS.public as T[],
 	): Promise<Pick<Actor, T> | undefined> {
 		log.debug('[findById]', actor_id);
 		const data = await this.sql<Array<Pick<Actor, T>>>`
@@ -104,7 +104,7 @@ export class ActorRepo extends PostgresRepo {
 	// TODO handle count mismatch similar to to the entity version of this method
 	async filterByIds<T extends ActorColumn>(
 		actorIds: ActorId[],
-		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+		columns: T[] = ACTOR_COLUMNS.public as T[],
 	): Promise<{actors: Array<Pick<Actor, T>>; missing: null | ActorId[]}> {
 		if (actorIds.length === 0) return {actors: [], missing: null};
 		const actors = await this.sql<Array<Pick<Actor, T>>>`
@@ -122,7 +122,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async findByHub<T extends ActorColumn>(
 		hub_id: HubId,
-		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+		columns: T[] = ACTOR_COLUMNS.public as T[],
 	): Promise<Pick<Actor, T> | undefined> {
 		log.debug('[findByHub]', hub_id);
 		const data = await this.sql<Array<Pick<Actor, T>>>`
@@ -134,7 +134,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async findByName<T extends ActorColumn>(
 		name: string,
-		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+		columns: T[] = ACTOR_COLUMNS.public as T[],
 	): Promise<Pick<Actor, T> | undefined> {
 		log.debug('[findByName]', name);
 		const data = await this.sql<Array<Pick<Actor, T>>>`
@@ -156,7 +156,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async filterAssociatesByHub<T extends PublicActorColumn>(
 		hub_id: HubId,
-		columns: T[] = ACTOR_COLUMNS.PublicActor as T[],
+		columns: T[] = ACTOR_COLUMNS.public as T[],
 	): Promise<Array<Pick<PublicActor, T>>> {
 		const data = await this.sql<PublicActor[]>`
 		SELECT ${this.sql(columns.map((c) => 'act.' + c))}

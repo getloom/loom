@@ -36,7 +36,7 @@ export const authorize = async (
 	if (!params.actor) {
 		return {ok: false, status: 400, message: 'actor is required'};
 	}
-	const actor = await repos.actor.findById(params.actor, ACTOR_COLUMNS.Actor);
+	const actor = await repos.actor.findById(params.actor, ACTOR_COLUMNS.all);
 	if (!actor) {
 		return {ok: false, status: 400, message: 'actor cannot be found'};
 	}

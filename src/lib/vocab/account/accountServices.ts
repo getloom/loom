@@ -12,6 +12,7 @@ import {
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
 import {verifyPassword} from '$lib/util/password';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
@@ -28,7 +29,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			return {ok: false, status: 400, message: usernameErrorMessage};
 		}
 
-		const existingAccount = await repos.account.findByName(username);
+		const existingAccount = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id);
 		if (existingAccount) {
 			return {ok: false, status: 409, message: 'account already exists'};
 		}
@@ -36,9 +37,8 @@ export const SignUpService: ServiceByName['SignUp'] = {
 		// check `instance.allowedAccountNames`
 		// TODO does this belong in `checkAccountName` above?
 		// TODO consider `const settings = repos.entity.filterByUrl('/instance');` (but scoped to admin?)
-		// should entities be scoped?  or /e/ to reference any path or id?
 		if (await repos.hub.hasAdminHub()) {
-			const adminHub = await repos.hub.loadAdminHub();
+			const adminHub = await repos.hub.loadAdminHub(HUB_COLUMNS.settings);
 			const allowedAccountNames = adminHub!.settings.instance?.allowedAccountNames;
 			if (allowedAccountNames) {
 				if (!allowedAccountNames.includes(username.toLowerCase())) {
@@ -51,6 +51,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			username,
 			params.password,
 			toDefaultAccountSettings(),
+			ACCOUNT_COLUMNS.account_id,
 		);
 
 		await session.signIn(account.account_id);
@@ -71,7 +72,7 @@ export const SignInService: ServiceByName['SignIn'] = {
 			return {ok: false, status: 400, message: usernameErrorMessage};
 		}
 
-		const account = await repos.account.findByName(username);
+		const account = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id_password);
 		if (!account || !(await verifyPassword(params.password, account.password))) {
 			return {ok: false, status: 400, message: 'invalid username or password'};
 		}
@@ -98,7 +99,11 @@ export const UpdateAccountSettingsService: ServiceByName['UpdateAccountSettings'
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
 		log.debug('updating settings for account', account_id, params.settings);
-		const updatedAccount = await repos.account.updateSettings(account_id, params.settings);
+		const updatedAccount = await repos.account.updateSettings(
+			account_id,
+			params.settings,
+			ACCOUNT_COLUMNS.client,
+		);
 		return {ok: true, status: 200, value: updatedAccount};
 	},
 };
@@ -107,7 +112,7 @@ export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'
 	action: UpdateAccountPassword,
 	transaction: true,
 	perform: async ({repos, account_id, params}) => {
-		const account = await repos.account.findById(account_id, ACCOUNT_COLUMNS.Password);
+		const account = await repos.account.findById(account_id, ACCOUNT_COLUMNS.password);
 		if (!account) {
 			return {ok: false, status: 404, message: 'account does not exist'};
 		}
@@ -116,7 +121,11 @@ export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'
 			return {ok: false, status: 400, message: 'incorrect password'};
 		}
 
-		const updatedAccount = await repos.account.updatePassword(account_id, params.newPassword);
+		const updatedAccount = await repos.account.updatePassword(
+			account_id,
+			params.newPassword,
+			ACCOUNT_COLUMNS.client,
+		);
 		return {ok: true, status: 200, value: updatedAccount};
 	},
 };

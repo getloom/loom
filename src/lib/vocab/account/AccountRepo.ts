@@ -15,12 +15,17 @@ import {ApiError} from '$lib/server/api';
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
 export class AccountRepo extends PostgresRepo {
-	async create(name: string, password: string, settings: Account['settings']): Promise<Account> {
+	async create<T extends AccountColumn>(
+		name: string,
+		password: string,
+		settings: Account['settings'],
+		columns: T[],
+	): Promise<Pick<Account, T>> {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<Account[]>`
 			INSERT INTO accounts (name, password, settings) VALUES (
 				${name}, ${passwordKey}, ${this.sql.json(settings as any)}
-			) RETURNING *
+			) RETURNING ${this.sql(columns as string[])}
 		`;
 		log.debug('created account', data[0]);
 		return data[0];
@@ -28,7 +33,7 @@ export class AccountRepo extends PostgresRepo {
 
 	async loadClientSession(account_id: AccountId): Promise<ClientAccountSession> {
 		log.debug('loadClientSession', account_id);
-		const account = await this.repos.account.findById(account_id);
+		const account = await this.repos.account.findById(account_id, ACCOUNT_COLUMNS.client);
 		if (!account) throw new ApiError(404, 'no account found');
 
 		// TODO optimize?
@@ -59,7 +64,7 @@ export class AccountRepo extends PostgresRepo {
 
 	async findById<T extends AccountColumn>(
 		account_id: AccountId,
-		columns: T[] = ACCOUNT_COLUMNS.ClientAccount as T[],
+		columns: T[],
 	): Promise<Pick<Account, T> | undefined> {
 		log.debug('loading account', account_id);
 		const data = await this.sql<Array<Pick<Account, T>>>`
@@ -69,35 +74,43 @@ export class AccountRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async findByName(name: string): Promise<Account | undefined> {
+	async findByName<T extends AccountColumn>(
+		name: string,
+		columns: T[],
+	): Promise<Pick<Account, T> | undefined> {
 		const data = await this.sql<Account[]>`
-			SELECT account_id, name, password, created, updated
+			SELECT ${this.sql(columns as string[])}
 			FROM accounts WHERE LOWER(name) = LOWER(${name})
 		`;
 		return data[0];
 	}
 
-	async updateSettings(
+	async updateSettings<T extends AccountColumn>(
 		account_id: AccountId,
 		settings: ClientAccount['settings'],
-	): Promise<ClientAccount> {
+		columns: T[],
+	): Promise<Pick<Account, T>> {
 		const data = await this.sql<any[]>`
 			UPDATE accounts
 			SET updated=NOW(), settings=${this.sql.json(settings as any)}
 			WHERE account_id=${account_id}
-			RETURNING account_id, name, settings, created, updated
+			RETURNING ${this.sql(columns as string[])}
 		`;
 		if (!data.count) throw Error();
 		return data[0];
 	}
 
-	async updatePassword(account_id: AccountId, password: string): Promise<ClientAccount> {
+	async updatePassword<T extends AccountColumn>(
+		account_id: AccountId,
+		password: string,
+		columns: T[],
+	): Promise<Pick<Account, T>> {
 		const passwordKey = await toPasswordKey(password);
 		const data = await this.sql<any[]>`
 			UPDATE accounts
 			SET updated=NOW(), password=${passwordKey}
 			WHERE account_id=${account_id}
-			RETURNING account_id, name, settings, created, updated
+			RETURNING ${this.sql(columns as string[])}
 		`;
 		if (!data.count) throw Error();
 		return data[0];

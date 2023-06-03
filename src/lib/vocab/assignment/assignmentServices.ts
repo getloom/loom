@@ -4,7 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
-import {cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
+import {HUB_COLUMNS, cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
@@ -20,7 +20,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 		const {actor, hub_id, actor_id, role_id} = params;
 		log.debug('[CreateAssignment] creating assignment for actor & role', actor_id, role_id);
 		log.debug('[CreateAssignment] checking policy', actor, hub_id);
-		const hub = await repos.hub.findById(hub_id);
+		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
@@ -51,11 +51,11 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 		// 	repos.actor.findById(actor_id),
 		// 	repos.hub.findById(hub_id),
 		// ]);
-		const actorData = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
+		const actorData = await repos.actor.findById(actor_id, ACTOR_COLUMNS.type_hub_id);
 		if (!actorData) {
 			return {ok: false, status: 404, message: 'no actor found'};
 		}
-		const hub = await repos.hub.findById(hub_id);
+		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.type);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}

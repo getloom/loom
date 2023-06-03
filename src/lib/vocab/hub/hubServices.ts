@@ -17,6 +17,7 @@ import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
 import {isActorAdmin, isActorNameReserved} from '$lib/vocab/actor/actorHelpers.server';
 import {
+	HUB_COLUMNS,
 	checkRemoveActor,
 	cleanOrphanHubs,
 	initTemplateGovernanceForHub,
@@ -93,7 +94,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		}
 
 		// Check for duplicate hub names.
-		const existingHub = await repos.hub.findByName(name);
+		const existingHub = await repos.hub.findByName(name, HUB_COLUMNS.hub_id);
 		if (existingHub) {
 			return {ok: false, status: 409, message: 'a hub with that name already exists'};
 		}
@@ -169,7 +170,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 		const {actor, hub_id} = params;
 		await checkPolicy(permissions.DeleteHub, actor, hub_id, repos);
 
-		const hub = await repos.hub.findById(hub_id);
+		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
@@ -193,7 +194,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 		const {actor, hub_id, name} = params;
 		await checkPolicy(permissions.InviteToHub, actor, hub_id, repos);
 
-		const hub = await repos.hub.findById(hub_id);
+		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type_settings);
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}

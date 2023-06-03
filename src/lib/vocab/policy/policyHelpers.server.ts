@@ -7,6 +7,7 @@ import {isActorAdmin} from '$lib/vocab/actor/actorHelpers.server';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {EntityId} from '$lib/vocab/entity/entity';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
@@ -42,7 +43,7 @@ export const checkHubAccess = async (
 };
 
 export const isCreateHubDisabled = async (repos: Repos): Promise<boolean> => {
-	const hub = await repos.hub.loadAdminHub();
+	const hub = await repos.hub.loadAdminHub(HUB_COLUMNS.settings);
 	if (hub) {
 		return !!hub.settings.instance?.disableCreateHub;
 	} else {
@@ -95,7 +96,7 @@ export const checkEntityAccess = async (
 	}
 
 	const spaces = await repos.space.filterByEntities(entityIds);
-	const hubs = await repos.hub.filterByActor(actor_id);
+	const hubs = await repos.hub.filterByActor(actor_id, HUB_COLUMNS.hub_id);
 	const joinedHubIds = hubs.map((h) => h.hub_id);
 
 	for (const space of spaces) {

@@ -159,7 +159,7 @@ export class EntityRepo extends PostgresRepo {
 
 	async filterDirectoriesByEntity<T extends EntityColumn>(
 		entity_id: EntityId,
-		columns: T[] = ENTITY_COLUMNS.Entity as T[],
+		columns: T[] = ENTITY_COLUMNS.all as T[],
 	): Promise<Array<Pick<Entity, T>>> {
 		log.debug(`looking for directories for entity: ${entity_id}`);
 		const directories = await this.sql<Array<Pick<Entity, T>>>`

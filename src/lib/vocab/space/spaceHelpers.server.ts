@@ -37,7 +37,7 @@ export const createSpace = async (
 		throw new ApiError(409, 'a space with that path already exists');
 	}
 
-	const hubActor = await repos.actor.findByHub(hub_id, ACTOR_COLUMNS.ActorId);
+	const hubActor = await repos.actor.findByHub(hub_id, ACTOR_COLUMNS.actor_id);
 	if (!hubActor) {
 		throw new ApiError(409, 'failed to find the hub actor');
 	}

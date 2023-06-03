@@ -14,6 +14,7 @@ import {
 } from '$lib/vocab/assignment/assignmentServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {permissions} from '$lib/vocab/policy/permissions';
+import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
 
 /* test_servicesIntegration */
 const test_servicesIntegration = suite<TestDbContext>('repos');
@@ -106,10 +107,16 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	);
 
 	// TODO add a service action?
-	assert.is((await repos.account.findById(account.account_id))?.name, account.name);
+	assert.is(
+		(await repos.account.findById(account.account_id, ACCOUNT_COLUMNS.name))?.name,
+		account.name,
+	);
 
 	// TODO add a service action?
-	assert.is((await repos.account.findByName(account.name))?.name, account.name);
+	assert.is(
+		(await repos.account.findByName(account.name, ACCOUNT_COLUMNS.name))?.name,
+		account.name,
+	);
 
 	// do changes
 	//

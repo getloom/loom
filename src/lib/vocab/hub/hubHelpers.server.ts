@@ -15,6 +15,17 @@ import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
 
+export type HubColumn = keyof Hub;
+export const HUB_COLUMNS = {
+	all: ['hub_id', 'type', 'name', 'settings', 'created', 'updated'],
+	hub_id: ['hub_id'],
+	type: ['type'],
+	settings: ['settings'],
+	hub_id_type: ['hub_id', 'type'],
+	hub_id_settings: ['hub_id', 'settings'],
+	hub_id_type_settings: ['hub_id', 'type', 'settings'],
+} satisfies Record<string, HubColumn[]>;
+
 /**
  * Deletes hubs that have no remaining account actors.
  * Returns the deleted hub ids, if any.
@@ -144,11 +155,11 @@ export const checkRemoveActor = async (
 	if (!(await repos.assignment.isActorInHub(actor_id, hub_id))) {
 		throw new ApiError(400, 'actor is not in the hub');
 	}
-	const actor = await repos.actor.findById(actor_id, ACTOR_COLUMNS.TypeAndHub);
+	const actor = await repos.actor.findById(actor_id, ACTOR_COLUMNS.type_hub_id);
 	if (!actor) {
 		throw new ApiError(404, 'no actor found');
 	}
-	const hub = await repos.hub.findById(hub_id);
+	const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.type);
 	if (!hub) {
 		throw new ApiError(404, 'no hub found');
 	}

@@ -25,7 +25,7 @@ import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
-import {toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
+import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {randomHue} from '$lib/ui/color';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
@@ -134,6 +134,7 @@ export class RandomVocabContext {
 			params.username,
 			params.password,
 			toDefaultAccountSettings(),
+			ACCOUNT_COLUMNS.all,
 		)) as RandomTestAccount;
 		// This makes the unencrypted password available for tests,
 		// so things like `SignIn` can be tested with existing accounts.
