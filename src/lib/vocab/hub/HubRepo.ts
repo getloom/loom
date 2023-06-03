@@ -9,7 +9,7 @@ import type {ActorId, ClientActor} from '$lib/vocab/actor/actor';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {AccountId} from '$lib/vocab/account/account';
 import type {Policy} from '$lib/vocab/policy/policy';
-import type {Space} from '$lib/vocab/space/space';
+import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {HUB_COLUMNS, type HubColumn} from '$lib/vocab/hub/hubHelpers.server';
 
@@ -86,6 +86,19 @@ export class HubRepo extends PostgresRepo {
 				WHERE actor_id=${actor_id}
 			) a
 			ON h.hub_id=a.hub_id;
+		`;
+		return data;
+	}
+
+	async filterBySpaces(spaceIds: SpaceId[]): Promise<Hub[]> {
+		const data = await this.sql<Hub[]>`
+			SELECT h.hub_id, h.type, h.name, h.settings, h.created, h.updated
+			FROM hubs h
+			JOIN (
+				SELECT DISTINCT hub_id FROM spaces
+				WHERE space_id IN ${this.sql(spaceIds)}
+			) s
+			ON h.hub_id=s.hub_id;
 		`;
 		return data;
 	}

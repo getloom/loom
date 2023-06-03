@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {AccountActor, Actor, PublicActor, ActorId} from '$lib/vocab/actor/actor';
+import type {AccountActor, ActorRecord, PublicActor, ActorId} from '$lib/vocab/actor/actor';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {
 	ACTOR_COLUMNS,
@@ -92,9 +92,9 @@ export class ActorRepo extends PostgresRepo {
 	async findById<T extends ActorColumn>(
 		actor_id: ActorId,
 		columns: T[] = ACTOR_COLUMNS.public as T[],
-	): Promise<Pick<Actor, T> | undefined> {
+	): Promise<Pick<ActorRecord, T> | undefined> {
 		log.debug('[findById]', actor_id);
-		const data = await this.sql<Array<Pick<Actor, T>>>`
+		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
 			SELECT ${this.sql(columns as string[])}
 			FROM actors WHERE actor_id=${actor_id}
 		`;
@@ -105,9 +105,9 @@ export class ActorRepo extends PostgresRepo {
 	async filterByIds<T extends ActorColumn>(
 		actorIds: ActorId[],
 		columns: T[] = ACTOR_COLUMNS.public as T[],
-	): Promise<{actors: Array<Pick<Actor, T>>; missing: null | ActorId[]}> {
+	): Promise<{actors: Array<Pick<ActorRecord, T>>; missing: null | ActorId[]}> {
 		if (actorIds.length === 0) return {actors: [], missing: null};
-		const actors = await this.sql<Array<Pick<Actor, T>>>`
+		const actors = await this.sql<Array<Pick<ActorRecord, T>>>`
 			SELECT ${this.sql(columns as string[])}
 			FROM actors WHERE actor_id IN ${this.sql(actorIds)}
 		`;
@@ -115,7 +115,7 @@ export class ActorRepo extends PostgresRepo {
 			actors.length === actorIds.length
 				? null
 				: actorIds.filter(
-						(id) => !actors.some((e) => (e as Pick<Actor, 'actor_id'>).actor_id === id), // TODO try to remove the cast to `as Pick<Actor, 'actor_id'>`
+						(id) => !actors.some((e) => (e as Pick<ActorRecord, 'actor_id'>).actor_id === id), // TODO try to remove the cast to `as Pick<Actor, 'actor_id'>`
 				  );
 		return {actors, missing};
 	}
@@ -123,9 +123,9 @@ export class ActorRepo extends PostgresRepo {
 	async findByHub<T extends ActorColumn>(
 		hub_id: HubId,
 		columns: T[] = ACTOR_COLUMNS.public as T[],
-	): Promise<Pick<Actor, T> | undefined> {
+	): Promise<Pick<ActorRecord, T> | undefined> {
 		log.debug('[findByHub]', hub_id);
-		const data = await this.sql<Array<Pick<Actor, T>>>`
+		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
 			SELECT ${this.sql(columns as string[])}
 			FROM actors WHERE hub_id=${hub_id}
 		`;
@@ -135,9 +135,9 @@ export class ActorRepo extends PostgresRepo {
 	async findByName<T extends ActorColumn>(
 		name: string,
 		columns: T[] = ACTOR_COLUMNS.public as T[],
-	): Promise<Pick<Actor, T> | undefined> {
+	): Promise<Pick<ActorRecord, T> | undefined> {
 		log.debug('[findByName]', name);
-		const data = await this.sql<Array<Pick<Actor, T>>>`
+		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
 			SELECT ${this.sql(columns as string[])}
 			FROM actors WHERE LOWER(name) = LOWER(${name})
 		`;

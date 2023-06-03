@@ -173,9 +173,7 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		// delete the actor and its related objects
 		await repos.actor.deleteById(actor_id);
 		await repos.assignment.deleteByActor(actor_id);
-		// TODO this type hack shouldn't be necessary, but somehow the types are off,
-		// looks like types aren't narrowing with `Pick` on the type union (see this comment in multiple places)
-		await repos.hub.deleteById(actorData.hub_id!); // must follow `actor.deleteById`
+		await repos.hub.deleteById(actorData.hub_id); // must follow `actor.deleteById`
 
 		// clean the hubs the actor is joined to, and assemble the broadcast audience
 		const joinedHubIds = hubs.map((h) => h.hub_id).filter((h) => h !== actorData.hub_id);

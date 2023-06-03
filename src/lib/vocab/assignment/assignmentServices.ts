@@ -27,7 +27,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 		await checkPolicy(permissions.CreateAssignment, actor, hub_id, repos);
 		const assignment = await createAssignment(actor_id, hub, role_id, repos);
 		log.debug('[CreateAssignment] new assignment created', assignment.assignment_id);
-		return {ok: true, status: 200, value: {assignment}};
+		return {ok: true, status: 200, value: {assignment}, broadcast: hub_id};
 	},
 };
 
@@ -78,6 +78,6 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 
 		await cleanOrphanHubs([hub_id], repos);
 
-		return {ok: true, status: 200, value: null};
+		return {ok: true, status: 200, value: null, broadcast: hub_id};
 	},
 };

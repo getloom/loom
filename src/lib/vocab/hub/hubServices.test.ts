@@ -9,9 +9,8 @@ import {
 	CreateHubService,
 	KickFromHubService,
 	LeaveHubService,
-	InviteToHubService,
 } from '$lib/vocab/hub/hubServices';
-import {expectApiError, loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, invite, loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
@@ -220,37 +219,22 @@ test_hubServices(
 test_hubServices(
 	'InviteToHub assigns the default hub role to the actor',
 	async ({repos, random}) => {
-		const {actor} = await random.actor();
-		const {hub, actor: communityActor} = await random.hub();
-		unwrap(
-			await InviteToHubService.perform({
-				...toServiceRequestMock(repos, communityActor),
-				params: {
-					actor: communityActor.actor_id,
-					hub_id: hub.hub_id,
-					name: actor.name,
-				},
-			}),
-		);
+		const {hub, actor} = await random.hub();
+		const {actor: actorToInvite} = await random.actor();
+		const {assignment} = await invite(repos, actor, hub.hub_id, actorToInvite.name);
+		assert.is(assignment.role_id, hub.settings.defaultRoleId);
+		assert.is(assignment.actor_id, actorToInvite.actor_id);
+		assert.is(assignment.hub_id, hub.hub_id);
 	},
 );
 
 test_hubServices(
 	'fail InviteToHub when the actor already has an assignment',
 	async ({repos, random}) => {
-		const {actor} = await random.actor();
-		const {hub, actor: communityActor} = await random.hub();
-		await repos.assignment.create(actor.actor_id, hub.hub_id, hub.settings.defaultRoleId);
-		unwrapError(
-			await InviteToHubService.perform({
-				...toServiceRequestMock(repos, communityActor),
-				params: {
-					actor: communityActor.actor_id,
-					hub_id: hub.hub_id,
-					name: actor.name,
-				},
-			}),
-		);
+		const {hub, actor} = await random.hub();
+		const {actor: actorToInvite} = await random.actor();
+		await repos.assignment.create(actorToInvite.actor_id, hub.hub_id, hub.settings.defaultRoleId);
+		await expectApiError(409, invite(repos, actor, hub.hub_id, actorToInvite.name));
 	},
 );
 
@@ -275,7 +259,8 @@ test_hubServices('fail LeaveHub when the actor has no assignments', async ({repo
 	const {actor} = await random.actor();
 	const {hub} = await random.hub();
 
-	await expectApiError(400, () =>
+	await expectApiError(
+		400,
 		LeaveHubService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -309,7 +294,8 @@ test_hubServices('fail KickFromHub when the actor has no assignments', async ({r
 	const {actor} = await random.actor();
 	const {hub, actor: communityActor} = await random.hub();
 
-	await expectApiError(400, () =>
+	await expectApiError(
+		400,
 		KickFromHubService.perform({
 			...toServiceRequestMock(repos, communityActor),
 			params: {
@@ -326,7 +312,8 @@ test_hubServices('fail Admin LeaveHub if last actor', async ({repos}) => {
 	assert.ok(adminHub);
 	const adminActor = await loadAdminActor(repos);
 
-	await expectApiError(405, () =>
+	await expectApiError(
+		405,
 		LeaveHubService.perform({
 			...toServiceRequestMock(repos, adminActor),
 			params: {
@@ -343,7 +330,8 @@ test_hubServices('fail KickFromHub if last actor', async ({repos}) => {
 	assert.ok(adminHub);
 	const adminActor = await loadAdminActor(repos);
 
-	await expectApiError(405, () =>
+	await expectApiError(
+		405,
 		KickFromHubService.perform({
 			...toServiceRequestMock(repos, adminActor),
 			params: {

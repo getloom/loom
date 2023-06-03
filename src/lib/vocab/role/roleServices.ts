@@ -17,7 +17,7 @@ export const CreateRoleService: ServiceByName['CreateRole'] = {
 		await checkPolicy(permissions.CreateRole, actor, hub_id, repos);
 		log.debug('creating hub role', hub_id, name);
 		const role = await repos.role.create(hub_id, name);
-		return {ok: true, status: 200, value: {role}};
+		return {ok: true, status: 200, value: {role}, broadcast: hub_id};
 	},
 };
 
@@ -43,7 +43,7 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
 		await checkPolicy(permissions.UpdateRole, actor, hub.hub_id, repos);
 		const role = await repos.role.update(role_id, name);
-		return {ok: true, status: 200, value: {role}};
+		return {ok: true, status: 200, value: {role}, broadcast: hub.hub_id};
 	},
 };
 
@@ -63,6 +63,6 @@ export const DeleteRoleService: ServiceByName['DeleteRole'] = {
 
 		await repos.role.deleteById(role_id);
 
-		return {ok: true, status: 200, value: null};
+		return {ok: true, status: 200, value: null, broadcast: hub.hub_id};
 	},
 };

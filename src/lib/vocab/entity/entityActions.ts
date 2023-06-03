@@ -261,7 +261,6 @@ export const DeleteEntities: ServiceActionData = {
 export const ReadEntitiesById: ServiceActionData = {
 	type: 'ServiceAction',
 	name: 'ReadEntitiesById',
-	broadcast: true,
 	params: {
 		$id: '/schemas/ReadEntitiesByIdParams',
 		type: 'object',
@@ -283,7 +282,7 @@ export const ReadEntitiesById: ServiceActionData = {
 	},
 	returns: 'Promise<ReadEntitiesByIdResponseResult>',
 	route: {
-		path: '/api/v1/entities/fetch',
-		method: 'POST',
+		path: '/api/v1/entities/ids',
+		method: 'GET',
 	},
 };

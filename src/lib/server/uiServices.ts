@@ -19,6 +19,6 @@ export const EphemeraService: ServiceByName['Ephemera'] = {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
 		await checkPolicy(permissions.Ephemera, actor, space.hub_id, repos);
-		return {ok: true, status: 200, value: params};
+		return {ok: true, status: 200, value: params, broadcast: space.hub_id};
 	},
 };

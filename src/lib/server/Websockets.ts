@@ -1,7 +1,5 @@
-import {WebSocketServer, type WebSocket, type Data} from 'ws';
+import type {WebSocketServer, WebSocket, Data as WebSocketMessageData} from 'ws';
 import {promisify} from 'util';
-import type {Server as HttpServer} from 'http';
-import type {Server as HttpsServer} from 'https';
 import {EventEmitter} from 'events';
 import type StrictEventEmitter from 'strict-event-emitter-types';
 import {Logger} from '@feltjs/util/log.js';
@@ -11,29 +9,26 @@ import {parseSessionCookie} from '$lib/session/sessionCookie';
 import type {StatusMessage} from '$lib/util/websocket';
 import type {AccountId} from '$lib/vocab/account/account';
 
-const log = new Logger(gray('[') + blue('wss') + gray(']'));
+// TODO detect broken connections -
+// see https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
+
+const log = new Logger(gray('[') + blue('Websockets') + gray(']'));
 
 type WebsocketServerEmitter = StrictEventEmitter<EventEmitter, WebsocketServerEvents>;
 interface WebsocketServerEvents {
-	message: (socket: WebSocket, message: Data, account_id: AccountId) => void;
+	message: (socket: WebSocket, message: WebSocketMessageData, account_id: AccountId) => void;
+	open: (socket: WebSocket, account_id: AccountId) => void;
+	close: (socket: WebSocket, account_id: AccountId) => void;
 }
 
-export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEmitter}) {
-	readonly wss: WebSocketServer;
-	readonly server: HttpServer | HttpsServer;
-
-	constructor(server: HttpServer | HttpsServer) {
+export class Websockets extends (EventEmitter as {new (): WebsocketServerEmitter}) {
+	constructor(public readonly wss: WebSocketServer) {
 		super();
-		this.server = server;
-		this.wss = new WebSocketServer({server});
 	}
 
 	async init(): Promise<void> {
 		const {wss} = this;
 		wss.on('connection', (socket, req) => {
-			log.debug('connection req.url', req.url, wss.clients.size);
-			log.debug('connection req.headers', req.headers);
-
 			const parsed = parseSessionCookie(req.headers.cookie);
 			if (!parsed) {
 				log.debug('request to open connection was unauthenticated');
@@ -43,20 +38,18 @@ export class WebsocketServer extends (EventEmitter as {new (): WebsocketServerEm
 			}
 			const {account_id} = parsed;
 
-			socket.on('message', async (data, isBinary) => {
+			socket.on('message', (data, isBinary) => {
 				const message = isBinary ? data : data.toString(); // eslint-disable-line @typescript-eslint/no-base-to-string
 				this.emit('message', socket, message, account_id);
 			});
-			socket.on('open', () => {
-				log.debug('open');
-			});
-			socket.on('close', (code, data) => {
-				const reason = data.toString();
-				log.debug('close', code, reason);
+			socket.on('close', () => {
+				this.emit('close', socket, account_id);
 			});
 			socket.on('error', (err) => {
 				log.error('error', err);
 			});
+
+			this.emit('open', socket, account_id); // emit on `'connection'` -- `'open'` is client-only
 		});
 		wss.on('close', () => {
 			log.debug('close');

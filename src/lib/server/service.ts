@@ -8,15 +8,17 @@ import {type ApiResult, toFailedApiResult} from '$lib/server/api';
 import type {AccountId} from '$lib/vocab/account/account';
 import type {Result} from '@feltjs/util';
 import type {ErrorResponse} from '$lib/util/error';
+import type {HubId} from '$lib/vocab/hub/hub';
+import type {IBroadcastApi} from '$lib/server/Broadcast';
 
-export type BroadcastInfo = number | number[]; // TODO expand to `| {audience: BroadcastAudience; data: T}`
+export type BroadcastAudience = HubId | HubId[]; // TODO expand to `| {audience: BroadcastAudience; data: T}`
 
 /**
  * This is the same as `ApiResult` with the additional `broadcast` key added.
  * This is a server-only type, unlike the client-facing `ApiResult`.
  */
 export type ServiceResult<TValue = any> = Result<
-	{status: number; value: TValue; broadcast?: BroadcastInfo}, // TODO make `broadcast` required after implementing for all services
+	{status: number; value: TValue; broadcast?: BroadcastAudience}, // TODO make `broadcast` required after implementing for all services
 	{status: number} & ErrorResponse
 >;
 
@@ -30,6 +32,10 @@ export const toApiResult = <T>(serviceResult: ServiceResult<T>): ApiResult<T> =>
 		? {ok: true, status: serviceResult.status, value: serviceResult.value}
 		: serviceResult;
 
+/**
+ * Calls `perform` for a `service` by providing its dependencies,
+ * including `repos` wrapped in a transaction as needed.
+ */
 export const performService = async (
 	service: Service,
 	serviceRequest: ServiceRequest,
@@ -103,6 +109,7 @@ export interface NonAuthenticatedServiceRequest<TParams = any> {
 	repos: Repos;
 	params: TParams;
 	session: ISessionApi;
+	broadcast: IBroadcastApi;
 }
 export interface NonAuthorizedServiceRequest<TParams = any>
 	extends NonAuthenticatedServiceRequest<TParams> {
@@ -119,6 +126,7 @@ export function toServiceRequest<TParams = any>(
 	account_id: undefined,
 	actor: undefined,
 	session: ISessionApi,
+	broadcast: IBroadcastApi,
 ): NonAuthenticatedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -126,6 +134,7 @@ export function toServiceRequest<TParams = any>(
 	account_id: AccountId,
 	actor: undefined,
 	session: ISessionApi,
+	broadcast: IBroadcastApi,
 ): NonAuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -133,6 +142,7 @@ export function toServiceRequest<TParams = any>(
 	account_id: AccountId,
 	actor: ActionActor,
 	session: ISessionApi,
+	broadcast: IBroadcastApi,
 ): AuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -140,8 +150,9 @@ export function toServiceRequest<TParams = any>(
 	account_id: AccountId | undefined,
 	actor: ActionActor | undefined,
 	session: ISessionApi,
+	broadcast: IBroadcastApi,
 ): ServiceRequest {
-	const req: NonAuthenticatedServiceRequest = {repos, params, session};
+	const req: NonAuthenticatedServiceRequest = {repos, params, session, broadcast};
 	// TODO this is a bit hacky -- it may be preferred to have 3 different versions of `toServiceRequest` instead
 	if (account_id) {
 		(req as NonAuthorizedServiceRequest).account_id = account_id;

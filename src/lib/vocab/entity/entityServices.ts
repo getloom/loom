@@ -111,14 +111,13 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			}
 		}
 
-		entities.push(
-			...(await updateDirectories(
-				repos,
-				entities.map((e) => e.entity_id),
-			)),
+		const {updatedDirectories, hubIds} = await updateDirectories(
+			repos,
+			entities.map((e) => e.entity_id),
 		);
+		entities.push(...updatedDirectories);
 
-		return {ok: true, status: 200, value: {entities, ties}};
+		return {ok: true, status: 200, value: {entities, ties}, broadcast: hubIds};
 	},
 };
 
@@ -160,14 +159,13 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 			}),
 		);
 
-		entities.push(
-			...(await updateDirectories(
-				repos,
-				entities.map((e) => e.entity_id),
-			)),
+		const {updatedDirectories, hubIds} = await updateDirectories(
+			repos,
+			entities.map((e) => e.entity_id),
 		);
+		entities.push(...updatedDirectories);
 
-		return {ok: true, status: 200, value: {entities}};
+		return {ok: true, status: 200, value: {entities}, broadcast: hubIds};
 	},
 };
 
@@ -181,9 +179,10 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 
 		const entities = await repos.entity.eraseByIds(entityIds);
 
-		entities.push(...(await updateDirectories(repos, entityIds)));
+		const {updatedDirectories, hubIds} = await updateDirectories(repos, entityIds);
+		entities.push(...updatedDirectories);
 
-		return {ok: true, status: 200, value: {entities}};
+		return {ok: true, status: 200, value: {entities}, broadcast: hubIds};
 	},
 };
 
@@ -201,11 +200,16 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 
 		await cleanOrphanedEntities(repos); // TODO probably return the ids here that got orphaned, and scope to the hub in the function
 
-		const directories = await updateDirectories(repos, entityIds);
+		const {updatedDirectories, hubIds} = await updateDirectories(repos, entityIds);
 
-		const entities = collections.concat(directories);
+		const entities = collections.concat(updatedDirectories);
 
-		return {ok: true, status: 200, value: {entities, deleted}};
+		return {
+			ok: true,
+			status: 200,
+			value: {entities, deleted},
+			broadcast: hubIds,
+		};
 	},
 };
 

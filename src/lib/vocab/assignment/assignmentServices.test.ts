@@ -18,7 +18,8 @@ test__assignmentServices.after(teardownDb);
 
 test__assignmentServices('disallow creating duplicate assignments', async ({repos, random}) => {
 	const {hub, actor, roles} = await random.hub();
-	await expectApiError(409, () =>
+	await expectApiError(
+		409,
 		CreateAssignmentService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -35,7 +36,8 @@ test__assignmentServices(
 	'disallow creating assignments for personal hubs',
 	async ({repos, random}) => {
 		const {personalHub, actor} = await random.actor();
-		await expectApiError(403, async () =>
+		await expectApiError(
+			403,
 			CreateAssignmentService.perform({
 				...toServiceRequestMock(repos, actor),
 				params: {

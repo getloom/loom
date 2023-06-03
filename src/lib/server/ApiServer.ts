@@ -4,15 +4,18 @@ import type {Polka, Request as PolkaRequest, Middleware as PolkaMiddleware} from
 import bodyParser from 'body-parser';
 import {Logger} from '@feltjs/util/log.js';
 import {promisify} from 'util';
+import type {WebSocket} from 'ws';
 
 import {blue} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database';
-import type {WebsocketServer} from '$lib/server/WebsocketServer';
+import type {Websockets} from '$lib/server/Websockets';
 import type {Service} from '$lib/server/service';
 import {toHttpServiceMiddleware} from '$lib/server/httpServiceMiddleware';
 import {cookieSessionMiddleware} from '$lib/session/cookieSessionMiddleware';
 import {toWebsocketServiceMiddleware} from '$lib/server/websocketServiceMiddleware';
 import type {CookieSessionRequest} from '$lib/session/sessionCookie';
+import type {IBroadcast} from '$lib/server/Broadcast';
+import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger([blue('[ApiServer]')]);
 
@@ -22,7 +25,8 @@ export interface HttpMiddleware extends PolkaMiddleware<ApiServerRequest> {} // 
 export interface Options {
 	server: HttpServer | HttpsServer;
 	app: Polka<ApiServerRequest>;
-	websocketServer: WebsocketServer;
+	websockets: Websockets;
+	broadcast: IBroadcast;
 	port: number;
 	db: Database;
 	services: Map<string, Service>;
@@ -31,17 +35,17 @@ export interface Options {
 export class ApiServer {
 	readonly server: HttpServer | HttpsServer;
 	readonly app: Polka<ApiServerRequest>;
-	readonly websocketServer: WebsocketServer;
+	readonly websockets: Websockets;
+	readonly broadcast: IBroadcast;
 	readonly port: number;
 	readonly db: Database;
 	readonly services: Map<string, Service>;
 
-	readonly websocketListener = toWebsocketServiceMiddleware(this);
-
 	constructor(options: Options) {
 		this.server = options.server;
 		this.app = options.app;
-		this.websocketServer = options.websocketServer;
+		this.websockets = options.websockets;
+		this.broadcast = options.broadcast;
 		this.port = options.port;
 		this.db = options.db;
 		this.services = options.services;
@@ -56,8 +60,6 @@ export class ApiServer {
 		log.info('initing');
 
 		// TODO refactor to paralleize `init` of the various pieces
-		this.websocketServer.on('message', this.websocketListener);
-		await this.websocketServer.init();
 
 		// Set up the app and its middleware.
 		this.app
@@ -96,6 +98,12 @@ export class ApiServer {
 			this.app.use(handler);
 		}
 
+		// Websockets
+		this.websockets.on('message', this.onWebsocketMessage);
+		this.websockets.on('open', this.onWebsocketOpen);
+		this.websockets.on('close', this.onWebsocketClose);
+		await this.websockets.init();
+
 		// Start the app.
 		await new Promise<void>((resolve) => {
 			this.app.listen(this.port, () => {
@@ -109,11 +117,24 @@ export class ApiServer {
 
 	async close(): Promise<void> {
 		log.info('close');
-		this.websocketServer.off('message', this.websocketListener);
+		this.websockets.off('message', this.onWebsocketMessage);
+		this.websockets.off('open', this.onWebsocketOpen);
+		this.websockets.off('close', this.onWebsocketClose);
 		await Promise.all([
-			this.websocketServer.close(),
+			this.websockets.close(),
+			this.broadcast.close(),
 			this.db.close(),
 			promisify(this.app.server.close).call(this.app.server),
 		]);
 	}
+
+	readonly onWebsocketMessage = toWebsocketServiceMiddleware(this);
+
+	private onWebsocketOpen = (socket: WebSocket, account_id: AccountId): Promise<void> => {
+		return this.broadcast.openSocket(socket, account_id);
+	};
+
+	private onWebsocketClose = (socket: WebSocket, account_id: AccountId): Promise<void> => {
+		return this.broadcast.closeSocket(socket, account_id);
+	};
 }

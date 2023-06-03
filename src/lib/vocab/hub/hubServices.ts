@@ -15,7 +15,11 @@ import {ADMIN_HUB_ID} from '$lib/app/constants';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
-import {isActorAdmin, isActorNameReserved} from '$lib/vocab/actor/actorHelpers.server';
+import {
+	ACTOR_COLUMNS,
+	isActorAdmin,
+	isActorNameReserved,
+} from '$lib/vocab/actor/actorHelpers.server';
 import {
 	HUB_COLUMNS,
 	checkRemoveActor,
@@ -81,7 +85,7 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 export const CreateHubService: ServiceByName['CreateHub'] = {
 	action: CreateHub,
 	transaction: true,
-	perform: async ({repos, params: {actor, template}, account_id}) => {
+	perform: async ({repos, params: {actor, template}, account_id, broadcast}) => {
 		log.debug('creating hub account_id', account_id);
 		const name = scrubActorName(template.name);
 		const nameErrorMessage = checkActorName(name);
@@ -136,6 +140,8 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 			: toDefaultSpaces(actor, hub);
 		const {spaces, directories} = await createSpaces(createSpacesParams, repos);
 
+		await broadcast.createHub(hub_id, account_id, actor);
+
 		return {
 			ok: true,
 			status: 200,
@@ -159,14 +165,14 @@ export const UpdateHubSettingsService: ServiceByName['UpdateHubSettings'] = {
 		const {actor, hub_id, settings} = params;
 		await checkPolicy(permissions.UpdateHubSettings, actor, hub_id, repos);
 		await repos.hub.updateSettings(hub_id, settings);
-		return {ok: true, status: 200, value: null};
+		return {ok: true, status: 200, value: null, broadcast: hub_id};
 	},
 };
 
 export const DeleteHubService: ServiceByName['DeleteHub'] = {
 	action: DeleteHub,
 	transaction: true,
-	perform: async ({repos, params}) => {
+	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id} = params;
 		await checkPolicy(permissions.DeleteHub, actor, hub_id, repos);
 
@@ -183,6 +189,8 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 		}
 		await repos.hub.deleteById(hub_id);
 
+		await broadcast.deleteHub(hub_id);
+
 		return {ok: true, status: 200, value: null};
 	},
 };
@@ -190,7 +198,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 export const InviteToHubService: ServiceByName['InviteToHub'] = {
 	action: InviteToHub,
 	transaction: true,
-	perform: async ({repos, params}) => {
+	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id, name} = params;
 		await checkPolicy(permissions.InviteToHub, actor, hub_id, repos);
 
@@ -199,10 +207,11 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
 
-		const actorToInvite = await repos.actor.findByName(name);
-		if (!actorToInvite) {
-			return {ok: false, status: 404, message: `cannot find actor named ${name}`};
+		const found = await repos.actor.findByName(name, ACTOR_COLUMNS.public_with_account_id);
+		if (!found) {
+			return {ok: false, status: 404, message: `cannot find actor with that name`};
 		}
+		const {account_id: accountIdToInvite, ...actorToInvite} = found;
 		if (await repos.assignment.isActorInHub(actorToInvite.actor_id, hub_id)) {
 			return {ok: false, status: 409, message: 'actor is already in the hub'};
 		}
@@ -213,14 +222,17 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 			hub.settings.defaultRoleId,
 			repos,
 		);
-		return {ok: true, status: 200, value: {actor: actorToInvite, assignment}};
+
+		await broadcast.addActor(hub_id, accountIdToInvite, actorToInvite.actor_id);
+
+		return {ok: true, status: 200, value: {actor: actorToInvite, assignment}, broadcast: hub_id};
 	},
 };
 
 export const LeaveHubService: ServiceByName['LeaveHub'] = {
 	action: LeaveHub,
 	transaction: true,
-	perform: async ({repos, params}) => {
+	perform: async ({repos, params, broadcast}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[LeaveHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
 
@@ -234,14 +246,21 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 
 		await cleanOrphanHubs([hub_id], repos);
 
-		return {ok: true, status: 200, value: null};
+		const actorToLeave = await repos.actor.findById(actor_id, ACTOR_COLUMNS.account_id);
+		if (!actorToLeave) {
+			return {ok: false, status: 404, message: 'no actor found'};
+		}
+
+		await broadcast.removeActor(hub_id, actorToLeave.account_id, actor_id);
+
+		return {ok: true, status: 200, value: null, broadcast: hub_id};
 	},
 };
 
 export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	action: KickFromHub,
 	transaction: true,
-	perform: async ({repos, params}) => {
+	perform: async ({repos, params, broadcast}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[KickFromHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
 		await checkPolicy(permissions.KickFromHub, actor, hub_id, repos);
@@ -252,6 +271,13 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 
 		await cleanOrphanHubs([hub_id], repos);
 
-		return {ok: true, status: 200, value: null};
+		const actorToKick = await repos.actor.findById(actor_id, ACTOR_COLUMNS.account_id);
+		if (!actorToKick) {
+			return {ok: false, status: 404, message: 'no actor found'};
+		}
+
+		await broadcast.removeActor(hub_id, actorToKick.account_id, actor_id);
+
+		return {ok: true, status: 200, value: null, broadcast: hub_id};
 	},
 };

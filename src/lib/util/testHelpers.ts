@@ -1,9 +1,10 @@
 import sourcemapSupport from 'source-map-support';
 import {Logger} from '@feltjs/util/log.js';
-import type {OmitStrict} from '@feltjs/util';
+import {unwrap, type OmitStrict} from '@feltjs/util';
 import * as assert from 'uvu/assert';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';
+import {BroadcastMock} from '$lib/server/BroadcastMock';
 import {
 	toServiceRequest,
 	type AuthorizedServiceRequest,
@@ -14,8 +15,12 @@ import {
 import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
 import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/app/constants';
 import type {Repos} from '$lib/db/Repos';
-import type {ApiError} from '$lib/server/api';
+import {toFailedApiResult, type FailedApiResult} from '$lib/server/api';
 import type {AccountId} from '$lib/vocab/account/account';
+import type {IBroadcast} from '$lib/server/Broadcast';
+import type {HubId} from '$lib/vocab/hub/hub';
+import {InviteToHubService} from '$lib/vocab/hub/hubServices';
+import type {InviteToHubResponse} from '$lib/vocab/action/actionTypes';
 
 export const log = new Logger('[test]');
 export const logError = new Logger('[test]', undefined, {...Logger, level: 'off'});
@@ -35,26 +40,37 @@ export function toServiceRequestMock(
 	actor?: undefined,
 	session?: SessionApiMock,
 	account_id?: undefined,
+	broadcast?: IBroadcast,
 ): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
 	actor?: undefined,
 	session?: SessionApiMock,
 	account_id?: AccountId,
+	broadcast?: IBroadcast,
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
 	actor: ActionActor,
 	session?: SessionApiMock,
 	account_id?: AccountId,
+	broadcast?: IBroadcast,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
 	actor?: ActionActor,
 	session = new SessionApiMock(), // some tests need to reuse the same mock session
 	account_id = actor?.account_id || undefined,
+	broadcast: IBroadcast = new BroadcastMock(),
 ): OmitStrict<ServiceRequest, 'params'> {
-	const {params: _, ...rest} = toServiceRequest(repos, undefined, account_id!, actor!, session);
+	const {params: _, ...rest} = toServiceRequest(
+		repos,
+		undefined,
+		account_id!,
+		actor!,
+		session,
+		broadcast,
+	);
 	return rest;
 }
 
@@ -64,12 +80,15 @@ export const loadAdminActor = async (repos: Repos): Promise<AccountActor> => {
 	return repos.actor.findById(nonAdminAssignments[0].actor_id) as Promise<AccountActor>;
 };
 
-export const expectApiError = async (status: number, cb: () => Promise<any>): Promise<void> => {
-	let error: ApiError | undefined;
+export const expectApiError = async (status: number, promise: Promise<any>): Promise<void> => {
+	let error: FailedApiResult | undefined;
 	try {
-		await cb();
+		const result = await promise;
+		if (result && 'ok' in result) {
+			unwrap(result);
+		}
 	} catch (err) {
-		error = err;
+		error = toFailedApiResult(err);
 	}
 	assert.ok(error);
 	assert.is(error.status, status);
@@ -78,7 +97,10 @@ export const expectApiError = async (status: number, cb: () => Promise<any>): Pr
 export const expectError = async (promise: Promise<any>): Promise<void> => {
 	let error: Error | undefined;
 	try {
-		await promise;
+		const result = await promise;
+		if (result && 'ok' in result) {
+			unwrap(result);
+		}
 	} catch (err) {
 		error = err;
 	}
@@ -86,3 +108,20 @@ export const expectError = async (promise: Promise<any>): Promise<void> => {
 		throw Error('expected error');
 	}
 };
+
+/**
+ * This test helper reduces boilerplate and ensures the correct actor is passed in the params.
+ */
+export const invite = async (
+	repos: Repos,
+	actor: AccountActor,
+	hub_id: HubId,
+	invitedActorName: string,
+	broadcast?: IBroadcast,
+): Promise<InviteToHubResponse> =>
+	unwrap(
+		await InviteToHubService.perform({
+			...toServiceRequestMock(repos, actor, undefined, undefined, broadcast),
+			params: {actor: actor.actor_id, hub_id, name: invitedActorName},
+		}),
+	);

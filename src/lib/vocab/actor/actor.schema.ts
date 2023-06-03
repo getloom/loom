@@ -7,6 +7,26 @@ export const ActorIdSchema = {
 	tsImport: "import {Flavored} from '@feltjs/util';",
 } satisfies VocabSchema;
 
+export const ActorRecordSchema = {
+	$id: '/schemas/ActorRecord',
+	type: 'object',
+	description: `
+		The full database record for the various Actor types.
+	`,
+	properties: {
+		actor_id: {$ref: '/schemas/ActorId'},
+		account_id: {$ref: '/schemas/AccountId'},
+		hub_id: {$ref: '/schemas/HubId'},
+		type: {type: 'string', enum: ['account', 'community', 'ghost']},
+		name: {type: 'string'},
+		icon: {type: 'string'},
+		created: {type: 'object', instanceof: 'Date'},
+		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
+	},
+	required: ['actor_id', 'account_id', 'hub_id', 'type', 'name', 'icon', 'created', 'updated'],
+	additionalProperties: false,
+};
+
 export const ActorSchema = {
 	$id: '/schemas/Actor',
 	description: `

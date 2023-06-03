@@ -24,6 +24,19 @@ export type ActionActor = AccountActor | CommunityActor;
 export type ActorId = Flavored<number, 'ActorId'>;
 
 /**
+ * The full database record for the various Actor types.
+ */
+export interface ActorRecord {
+	actor_id: ActorId;
+	account_id: AccountId;
+	hub_id: HubId;
+	type: 'account' | 'community' | 'ghost';
+	name: string;
+	icon: string;
+	created: Date;
+	updated: Date | null;
+}
+/**
  * Actors perform actions in the system. They can be of type Account, Hub, or Ghost.
  */
 export type Actor = AccountActor | CommunityActor | GhostActor;

@@ -4,6 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Directory} from '$lib/vocab/entity/entityData';
+import type {HubId} from '$lib/vocab/hub/hub';
 import type {Tie} from '$lib/vocab/tie/tie';
 
 const log = new Logger(gray('[') + blue('entityHelpers.server') + gray(']'));
@@ -30,7 +31,7 @@ export const cleanOrphanedEntities = async (repos: Repos): Promise<void> => {
 export const updateDirectories = async (
 	repos: Repos,
 	entityIds: EntityId[],
-): Promise<Directory[]> => {
+): Promise<{updatedDirectories: Directory[]; hubIds: HubId[]}> => {
 	const directoryIds = Array.from(
 		new Set(
 			(
@@ -43,10 +44,15 @@ export const updateDirectories = async (
 		),
 	);
 
-	// TODO add a bulk repo method (see this comment in multiple places)
-	return Promise.all(
+	const updatedDirectories = await Promise.all(
 		directoryIds.map(async (directoryId) => repos.entity.update(directoryId) as Promise<Directory>),
 	);
+	const hubIds = (await repos.hub.filterBySpaces(updatedDirectories.map((d) => d.space_id))).map(
+		(h) => h.hub_id,
+	);
+
+	// TODO add a bulk repo method (see this comment in multiple places)
+	return {updatedDirectories, hubIds};
 };
 
 /** This helper function takes a newly created entity & tie and checks

@@ -8,6 +8,12 @@ import type {Repos} from '$lib/db/Repos';
 
 installSourceMaps();
 
+/**
+ * The `setupDb` test helper provides a subset of `setupServer` in `testServerHelpers`.
+ * If a test suite needs access to `server` or its properties like `websockets` or `broadcast`,
+ * use `setupServer` instead of `setupDb`.
+ */
+
 // TODO we want to create this once and close it after all tests have run --
 // maybe refactor to use the Felt obtainable helper --
 // but how can we do that without an error-prone timeout?
@@ -27,6 +33,8 @@ export const setupDb = async (context: TestDbContext): Promise<void> => {
 export const teardownDb = async (context: TestDbContext): Promise<void> => {
 	const {db} = context;
 	context.db = null!;
+	context.repos = null!;
+	context.random = null!;
 	try {
 		await db.close();
 	} catch (err) {

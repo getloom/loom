@@ -7,7 +7,7 @@ import {type Service, toServiceRequest, performService, toApiResult} from '$lib/
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
-import {broadcast} from '$lib/server/broadcast';
+import {checkBroadcastAudience} from '$lib/server/Broadcast';
 
 const log = new Logger(gray('[') + blue('httpServiceMiddleware') + gray(']'));
 
@@ -64,9 +64,16 @@ export const toHttpServiceMiddleware =
 
 		const result = await performService(
 			service,
-			toServiceRequest(server.db.repos, params, req.account_id!, actor!, new SessionApi(req, res)),
+			toServiceRequest(
+				server.db.repos,
+				params,
+				req.account_id!, // TODO try to remove these non-null assertions without loosening type safety, is tricky
+				actor!, // TODO try to remove these non-null assertions without loosening type safety, is tricky
+				new SessionApi(req, res),
+				server.broadcast,
+			),
 			log,
-		); // TODO try to avoid the non-null assertions, looks tricky
+		);
 
 		if (!result.ok) {
 			send(res, result.status || 500, {message: result.message});
@@ -89,7 +96,8 @@ export const toHttpServiceMiddleware =
 		log.debug('result.status', result.status);
 		send(res, result.status, result.value);
 
-		if (service.action.broadcast) {
-			broadcast(server, service, toApiResult(result), params, result.broadcast);
+		checkBroadcastAudience(service, result.broadcast, log);
+		if (result.broadcast && service.action.broadcast) {
+			server.broadcast.send(service, toApiResult(result), params, result.broadcast);
 		}
 	};

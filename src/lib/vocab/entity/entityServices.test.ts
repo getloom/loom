@@ -4,7 +4,7 @@ import {unwrap} from '@feltjs/util';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {NoteEntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData';
-import {expectApiError, toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, invite, toServiceRequestMock} from '$lib/util/testHelpers';
 import {
 	ReadEntitiesPaginatedService,
 	DeleteEntitiesService,
@@ -14,7 +14,6 @@ import {
 } from '$lib/vocab/entity/entityServices';
 import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
 import {validateSchema} from '$lib/util/ajv';
-import {InviteToHubService} from '$lib/vocab/hub/hubServices';
 
 /* test_entityServices */
 const test_entityServices = suite<TestDbContext>('hubRepo');
@@ -216,16 +215,7 @@ test_entityServices(
 		const {space: commonSpace} = await random.space(actor, account, hub, '<Todo />');
 		const {actor: actor2} = await random.actor();
 
-		unwrap(
-			await InviteToHubService.perform({
-				...toServiceRequestMock(repos, actor),
-				params: {
-					actor: actor.actor_id,
-					hub_id: hub.hub_id,
-					name: actor2.name,
-				},
-			}),
-		);
+		await invite(repos, actor, hub.hub_id, actor2.name);
 
 		//case 1, actor === actor in regular space | allowed
 		const note1 = unwrap(
@@ -283,7 +273,8 @@ test_entityServices(
 		);
 
 		//case 4, actor !== actor in regular space | block
-		await expectApiError(403, () =>
+		await expectApiError(
+			403,
 			UpdateEntitiesService.perform({
 				...toServiceRequestMock(repos, actor2),
 				params: {
@@ -302,7 +293,8 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	assert.ok(directory.data.directory);
 
 	// Disallow changing the directory's type
-	await expectApiError(403, () =>
+	await expectApiError(
+		403,
 		UpdateEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -313,7 +305,8 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	);
 
 	// Disallow removing `data.directory`
-	await expectApiError(403, () =>
+	await expectApiError(
+		403,
 		UpdateEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -324,7 +317,8 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	);
 
 	// Disallow changing `data.directory`
-	await expectApiError(403, () =>
+	await expectApiError(
+		403,
 		UpdateEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -337,7 +331,8 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	);
 
 	// Disallow deleting the directory
-	await expectApiError(403, () =>
+	await expectApiError(
+		403,
 		DeleteEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -348,7 +343,8 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	);
 
 	// Disallow erasing the directory
-	await expectApiError(403, () =>
+	await expectApiError(
+		403,
 		EraseEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {

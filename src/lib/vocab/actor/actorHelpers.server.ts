@@ -7,8 +7,10 @@ export type PublicActorColumn = keyof PublicActor;
 export const ACTOR_COLUMNS = {
 	all: ['actor_id', 'type', 'name', 'account_id', 'hub_id', 'created', 'updated'],
 	public: ['actor_id', 'type', 'name', 'created'],
+	public_with_account_id: ['account_id', 'actor_id', 'type', 'name', 'created'],
 	actor_id: ['actor_id'],
 	type_hub_id: ['type', 'hub_id'],
+	account_id: ['account_id'],
 } satisfies Record<string, ActorColumn[]>;
 
 export const RESERVED_ACTOR_NAMES = new Set([

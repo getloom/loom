@@ -13,6 +13,12 @@ export type ApiResult<TValue = any> = Result<
 	{status: number} & ErrorResponse
 >;
 
+export interface FailedApiResult {
+	ok: false;
+	status: number;
+	message: string;
+}
+
 /**
  * Converts an `Error` object that may or may not
  * be an `ApiError` or `ResultError` to a failed `ApiResult`.
@@ -21,7 +27,7 @@ export type ApiResult<TValue = any> = Result<
  * @param err - Any `Error`, may or may not be a `ResultError`.
  * @returns An `ApiResult` with `ok: false`.
  */
-export const toFailedApiResult = (err: any): {ok: false; status: number; message: string} =>
+export const toFailedApiResult = (err: any): FailedApiResult =>
 	err instanceof ApiError
 		? {ok: false, status: err.status, message: err.message}
 		: err instanceof ResultError

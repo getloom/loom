@@ -25,7 +25,7 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 
 		log.debug('creating policy', role_id, permission);
 		const policy = await repos.policy.create(role_id, permission);
-		return {ok: true, status: 200, value: {policy}};
+		return {ok: true, status: 200, value: {policy}, broadcast: hub_id};
 	},
 };
 
@@ -55,7 +55,7 @@ export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
 
 		log.debug('updating role', policy_id, data);
 		const policy = await repos.policy.update(policy_id, data);
-		return {ok: true, status: 200, value: {policy}};
+		return {ok: true, status: 200, value: {policy}, broadcast: hub_id};
 	},
 };
 
@@ -71,6 +71,6 @@ export const DeletePolicyService: ServiceByName['DeletePolicy'] = {
 		log.debug('deleting policy', policy_id);
 		await repos.policy.deleteById(policy_id);
 
-		return {ok: true, status: 200, value: null};
+		return {ok: true, status: 200, value: null, broadcast: hub_id};
 	},
 };

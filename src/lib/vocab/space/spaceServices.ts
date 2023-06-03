@@ -45,7 +45,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 
 		const {space, directory} = await createSpace(params, repos);
 
-		return {ok: true, status: 200, value: {space, directory}};
+		return {ok: true, status: 200, value: {space, directory}, broadcast: hub_id};
 	},
 };
 
@@ -61,7 +61,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 
 		await checkPolicy(permissions.UpdateSpace, actor, space.hub_id, repos);
 		const updatedSpace = await repos.space.update(space_id, partial);
-		return {ok: true, status: 200, value: {space: updatedSpace}};
+		return {ok: true, status: 200, value: {space: updatedSpace}, broadcast: space.hub_id};
 	},
 };
 
@@ -92,6 +92,6 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 
 		await cleanOrphanedEntities(repos);
 
-		return {ok: true, status: 200, value: null};
+		return {ok: true, status: 200, value: null, broadcast: space.hub_id};
 	},
 };

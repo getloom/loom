@@ -1,4 +1,4 @@
-import type ws from 'ws';
+import type {WebSocket, Data as WebSocketMessageData} from 'ws';
 import {Logger} from '@feltjs/util/log.js';
 
 import {red, blue, gray} from '$lib/server/colors';
@@ -14,15 +14,15 @@ import {
 	toApiResult,
 } from '$lib/server/service';
 import type {ApiResult} from '$lib/server/api';
-import {broadcast} from '$lib/server/broadcast';
 import type {AccountId} from '$lib/vocab/account/account';
+import {checkBroadcastAudience} from '$lib/server/Broadcast';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 
 const session = new SessionApiDisabled();
 
 export interface WebsocketMiddleware {
-	(socket: ws, rawMessage: ws.Data, account_id: AccountId): Promise<void>;
+	(socket: WebSocket, rawMessage: WebSocketMessageData, account_id: AccountId): Promise<void>;
 }
 
 export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddleware =
@@ -85,7 +85,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 				const actor = authorizeResult.value?.actor;
 				result = await performService(
 					service,
-					toServiceRequest(server.db.repos, params, account_id!, actor!, session),
+					toServiceRequest(server.db.repos, params, account_id!, actor!, session, server.broadcast),
 					log,
 				); // TODO try to avoid the non-null assertions, looks tricky
 			}
@@ -125,7 +125,8 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		// and some generic broadcast message type for everyone else.
 		socket.send(serializedResponse);
 
-		if (service.action.broadcast) {
-			broadcast(server, service, apiResult, params, result.broadcast, socket);
+		checkBroadcastAudience(service, result.broadcast, log);
+		if (result.broadcast && service.action.broadcast) {
+			server.broadcast.send(service, apiResult, params, result.broadcast, socket);
 		}
 	};
