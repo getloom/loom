@@ -11,7 +11,7 @@ import {
 } from '$lib/vocab/account/accountActions';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
-import {verifyPassword} from '$lib/util/password';
+import {verifyPassword} from '$lib/server/password';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));

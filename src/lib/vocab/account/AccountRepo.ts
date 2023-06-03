@@ -8,7 +8,7 @@ import type {
 	ClientAccount,
 	ClientAccountSession,
 } from '$lib/vocab/account/account';
-import {toPasswordKey} from '$lib/util/password';
+import {toPasswordKey} from '$lib/server/password';
 import {ACCOUNT_COLUMNS, type AccountColumn} from '$lib/vocab/account/accountHelpers.server';
 import {ApiError} from '$lib/server/api';
 

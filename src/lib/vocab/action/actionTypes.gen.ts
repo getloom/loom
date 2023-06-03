@@ -13,7 +13,7 @@ import {actionDatas} from '$lib/vocab/action/actionData';
 import {
 	jsonSchemaToTypescript,
 	type JsonSchemaToTypeScriptOptions,
-} from '$lib/util/jsonSchemaToTypescript';
+} from '$lib/util/jsonSchemaToTypescript.server';
 import {schemas} from '$lib/vocab/schemas';
 import {services} from '$lib/server/services';
 import type {Service} from '$lib/server/service';
