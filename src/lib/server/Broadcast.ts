@@ -1,6 +1,5 @@
 import type {WebSocket} from 'ws';
 import {Logger} from '@feltjs/util/log.js';
-import {dev} from '$app/environment';
 
 import {blue, gray} from '$lib/server/colors';
 import type {BroadcastMessage} from '$lib/util/websocket';
@@ -12,6 +11,8 @@ import type {AccountId} from '$lib/vocab/account/account';
 import type {Repos} from '$lib/db/Repos';
 
 const log = new Logger(gray('[') + blue('Broadcast') + gray(']'));
+
+const dev = process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
 export interface IBroadcastApi {
 	createHub: (hub_id: HubId, account_id: AccountId, actor_id: ActorId) => Promise<void>;
