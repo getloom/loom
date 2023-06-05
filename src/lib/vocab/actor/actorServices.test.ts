@@ -8,6 +8,7 @@ import {randomActionParams} from '$lib/util/randomActionParams';
 import {loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 /* test__actorService */
 const test__actorService = suite<TestDbContext>('actorService');
@@ -52,7 +53,7 @@ test__actorService('ghost actor has the expected name and id', async ({repos, ra
 		}),
 	);
 
-	const ghostActor = await repos.actor.findById(GHOST_ACTOR_ID);
+	const ghostActor = await repos.actor.findById(GHOST_ACTOR_ID, ACTOR_COLUMNS.all);
 	assert.ok(ghostActor);
 	assert.is(ghostActor.type, 'ghost');
 	assert.is(ghostActor.name, GHOST_ACTOR_NAME);
@@ -70,7 +71,7 @@ test__actorService('delete a actor and properly clean up', async ({repos, random
 		const assertIs = invert ? assert.is.not : assert.is;
 		await Promise.all(
 			actors.map(async (p) => {
-				assertIs(await repos.actor.findById(p.actor_id), undefined);
+				assertIs(await repos.actor.findById(p.actor_id, ACTOR_COLUMNS.actor_id), undefined);
 				assertIs((await repos.assignment.filterByActor(p.actor_id)).length, 0);
 			}),
 		);

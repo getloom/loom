@@ -21,6 +21,7 @@ import type {IBroadcast} from '$lib/server/Broadcast';
 import type {HubId} from '$lib/vocab/hub/hub';
 import {InviteToHubService} from '$lib/vocab/hub/hubServices';
 import type {InviteToHubResponse} from '$lib/vocab/action/actionTypes';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 export const log = new Logger('[test]');
 export const logError = new Logger('[test]', undefined, {...Logger, level: 'off'});
@@ -77,7 +78,10 @@ export function toServiceRequestMock(
 export const loadAdminActor = async (repos: Repos): Promise<AccountActor> => {
 	const assignments = await repos.assignment.filterByHub(ADMIN_HUB_ID);
 	const nonAdminAssignments = assignments.filter((p) => p.actor_id !== ADMIN_ACTOR_ID);
-	return repos.actor.findById(nonAdminAssignments[0].actor_id) as Promise<AccountActor>;
+	return repos.actor.findById(
+		nonAdminAssignments[0].actor_id,
+		ACTOR_COLUMNS.all,
+	) as Promise<AccountActor>;
 };
 
 export const expectApiError = async (status: number, promise: Promise<any>): Promise<void> => {

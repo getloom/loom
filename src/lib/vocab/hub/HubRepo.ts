@@ -12,6 +12,7 @@ import type {Policy} from '$lib/vocab/policy/policy';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {HUB_COLUMNS, type HubColumn} from '$lib/vocab/hub/hubHelpers.server';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('HubRepo') + gray(']'));
 
@@ -183,7 +184,7 @@ export class HubRepo extends PostgresRepo {
 			this.repos.entity.filterDirectoriesByHub(hub_id),
 			this.repos.role.filterByHub(hub_id),
 			this.repos.policy.filterByHub(hub_id),
-			this.repos.actor.filterAssociatesByHub(hub_id),
+			this.repos.actor.filterAssociatesByHub(hub_id, ACTOR_COLUMNS.public),
 		]);
 
 		return {hubActors, hubRoles, hubPolicies, hubSpaces, hubDirectories};

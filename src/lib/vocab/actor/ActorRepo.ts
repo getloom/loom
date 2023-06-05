@@ -4,20 +4,13 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {AccountActor, ActorRecord, PublicActor, ActorId} from '$lib/vocab/actor/actor';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
-import {
-	ACTOR_COLUMNS,
-	type ActorColumn,
-	type PublicActorColumn,
-} from '$lib/vocab/actor/actorHelpers.server';
+import {ACTOR_COLUMNS, type ActorColumn} from '$lib/vocab/actor/actorHelpers.server';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {AccountId} from '$lib/vocab/account/account';
 
 const log = new Logger(gray('[') + blue('ActorRepo') + gray(']'));
 
 export class ActorRepo extends PostgresRepo {
-	// TODO is weird to return a `PublicActor`, could fix by having
-	// `PublicGhostActor`, `PublicCommunityActor`, and `PublicAccountActor`
-	// as separate types, see also `createCommunityActor` and `createGhostActor`
 	async createAccountActor(
 		name: string,
 		account_id: AccountId,
@@ -50,30 +43,36 @@ export class ActorRepo extends PostgresRepo {
 				'ghost', ${GHOST_ACTOR_NAME}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.public)}
 		`;
-		const actor = data[0];
-		if (actor.actor_id !== GHOST_ACTOR_ID) throw Error();
-		return actor;
+		return data[0];
 	}
 
 	async deleteById(actor_id: ActorId): Promise<void> {
 		const data = await this.sql<any[]>`
-			DELETE FROM actors WHERE actor_id=${actor_id}
+			DELETE FROM actors
+			WHERE actor_id=${actor_id}
 		`;
 		if (!data.count) throw Error();
 	}
 
-	async filterByAccount(account_id: AccountId): Promise<AccountActor[]> {
+	async filterByAccount<T extends ActorColumn>(
+		account_id: AccountId,
+		columns: T[],
+	): Promise<Array<Pick<AccountActor, T>>> {
 		log.debug('[filterByAccount]', account_id);
-		const data = await this.sql<AccountActor[]>`
-			SELECT ${this.sql(ACTOR_COLUMNS.all)}
-			FROM actors WHERE account_id=${account_id}
+		const data = await this.sql<Array<Pick<AccountActor, T>>>`
+			SELECT ${this.sql(columns as string[])}
+			FROM actors
+			WHERE account_id=${account_id}
 		`;
 		return data;
 	}
 
-	async filterAssociatesByAccount(account_id: AccountId): Promise<PublicActor[]> {
-		const data = await this.sql<PublicActor[]>`
-			SELECT ${this.sql(ACTOR_COLUMNS.public.map((c) => 'p3.' + c))}
+	async filterAssociatesByAccount<T extends ActorColumn>(
+		account_id: AccountId,
+		columns: T[],
+	): Promise<Array<Pick<ActorRecord, T>>> {
+		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
+			SELECT ${this.sql(columns.map((c) => 'p3.' + c))}
 			FROM actors p3
 			JOIN (SELECT DISTINCT actor_id FROM assignments a2
 				JOIN (SELECT DISTINCT a.hub_id FROM assignments a
@@ -82,16 +81,16 @@ export class ActorRepo extends PostgresRepo {
 				ON a2.hub_id=c.hub_id) p2
 			ON p3.actor_id=p2.actor_id
 			UNION
-			SELECT ${this.sql(
-				ACTOR_COLUMNS.public,
-			)} FROM actors WHERE actor_id=${ADMIN_ACTOR_ID} OR actor_id=${GHOST_ACTOR_ID}
+			SELECT ${this.sql(columns as string[])}
+			FROM actors
+			WHERE actor_id=${ADMIN_ACTOR_ID} OR actor_id=${GHOST_ACTOR_ID}
 		`;
 		return data;
 	}
 
 	async findById<T extends ActorColumn>(
 		actor_id: ActorId,
-		columns: T[] = ACTOR_COLUMNS.public as T[],
+		columns: T[],
 	): Promise<Pick<ActorRecord, T> | undefined> {
 		log.debug('[findById]', actor_id);
 		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
@@ -104,7 +103,7 @@ export class ActorRepo extends PostgresRepo {
 	// TODO handle count mismatch similar to to the entity version of this method
 	async filterByIds<T extends ActorColumn>(
 		actorIds: ActorId[],
-		columns: T[] = ACTOR_COLUMNS.public as T[],
+		columns: T[],
 	): Promise<{actors: Array<Pick<ActorRecord, T>>; missing: null | ActorId[]}> {
 		if (actorIds.length === 0) return {actors: [], missing: null};
 		const actors = await this.sql<Array<Pick<ActorRecord, T>>>`
@@ -122,7 +121,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async findByHub<T extends ActorColumn>(
 		hub_id: HubId,
-		columns: T[] = ACTOR_COLUMNS.public as T[],
+		columns: T[],
 	): Promise<Pick<ActorRecord, T> | undefined> {
 		log.debug('[findByHub]', hub_id);
 		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
@@ -134,7 +133,7 @@ export class ActorRepo extends PostgresRepo {
 
 	async findByName<T extends ActorColumn>(
 		name: string,
-		columns: T[] = ACTOR_COLUMNS.public as T[],
+		columns: T[],
 	): Promise<Pick<ActorRecord, T> | undefined> {
 		log.debug('[findByName]', name);
 		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
@@ -148,17 +147,19 @@ export class ActorRepo extends PostgresRepo {
 		account_id: AccountId,
 	): Promise<Array<{hub_id: HubId; actor_id: ActorId}>> {
 		const data = await this.sql<[{hub_id: HubId; actor_id: ActorId}]>`		
-			SELECT DISTINCT a.hub_id, act.actor_id FROM actors act
-			JOIN assignments a ON act.actor_id=a.actor_id AND act.account_id=${account_id}
+			SELECT DISTINCT a.hub_id, act.actor_id
+			FROM actors act
+			JOIN assignments a
+			ON act.actor_id=a.actor_id AND act.account_id=${account_id}
 		`;
 		return data;
 	}
 
-	async filterAssociatesByHub<T extends PublicActorColumn>(
+	async filterAssociatesByHub<T extends ActorColumn>(
 		hub_id: HubId,
-		columns: T[] = ACTOR_COLUMNS.public as T[],
-	): Promise<Array<Pick<PublicActor, T>>> {
-		const data = await this.sql<PublicActor[]>`
+		columns: T[],
+	): Promise<Array<Pick<ActorRecord, T>>> {
+		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
 		SELECT ${this.sql(columns.map((c) => 'act.' + c))}
 			FROM actors act
 			JOIN (

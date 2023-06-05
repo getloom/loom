@@ -11,6 +11,7 @@ import type {
 import {toPasswordKey} from '$lib/server/password';
 import {ACCOUNT_COLUMNS, type AccountColumn} from '$lib/vocab/account/accountHelpers.server';
 import {ApiError} from '$lib/server/api';
+import {ACTOR_COLUMNS} from '../actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
@@ -22,7 +23,7 @@ export class AccountRepo extends PostgresRepo {
 		columns: T[],
 	): Promise<Pick<Account, T>> {
 		const passwordKey = await toPasswordKey(password);
-		const data = await this.sql<Account[]>`
+		const data = await this.sql<Array<Pick<Account, T>>>`
 			INSERT INTO accounts (name, password, settings) VALUES (
 				${name}, ${passwordKey}, ${this.sql.json(settings as any)}
 			) RETURNING ${this.sql(columns as string[])}
@@ -41,12 +42,12 @@ export class AccountRepo extends PostgresRepo {
 			await Promise.all([
 				this.repos.space.filterByAccount(account.account_id),
 				this.repos.entity.filterDirectoriesByAccount(account.account_id),
-				this.repos.actor.filterByAccount(account.account_id),
+				this.repos.actor.filterByAccount(account.account_id, ACTOR_COLUMNS.all),
 				this.repos.hub.filterByAccount(account.account_id),
 				this.repos.role.filterByAccount(account.account_id),
 				this.repos.assignment.filterByAccount(account.account_id),
 				this.repos.policy.filterByAccount(account.account_id),
-				this.repos.actor.filterAssociatesByAccount(account.account_id),
+				this.repos.actor.filterAssociatesByAccount(account.account_id, ACTOR_COLUMNS.public),
 			]);
 
 		return {
@@ -78,7 +79,7 @@ export class AccountRepo extends PostgresRepo {
 		name: string,
 		columns: T[],
 	): Promise<Pick<Account, T> | undefined> {
-		const data = await this.sql<Account[]>`
+		const data = await this.sql<Array<Pick<Account, T>>>`
 			SELECT ${this.sql(columns as string[])}
 			FROM accounts WHERE LOWER(name) = LOWER(${name})
 		`;
@@ -90,7 +91,7 @@ export class AccountRepo extends PostgresRepo {
 		settings: ClientAccount['settings'],
 		columns: T[],
 	): Promise<Pick<Account, T>> {
-		const data = await this.sql<any[]>`
+		const data = await this.sql<Array<Pick<Account, T>>>`
 			UPDATE accounts
 			SET updated=NOW(), settings=${this.sql.json(settings as any)}
 			WHERE account_id=${account_id}
@@ -106,7 +107,7 @@ export class AccountRepo extends PostgresRepo {
 		columns: T[],
 	): Promise<Pick<Account, T>> {
 		const passwordKey = await toPasswordKey(password);
-		const data = await this.sql<any[]>`
+		const data = await this.sql<Array<Pick<Account, T>>>`
 			UPDATE accounts
 			SET updated=NOW(), password=${passwordKey}
 			WHERE account_id=${account_id}

@@ -17,6 +17,7 @@ import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
 import {ReadPoliciesService} from '$lib/vocab/policy/policyServices';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {Role} from '$lib/vocab/role/role';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const sortedPermissionNames = permissionNames.slice().sort();
 const toSortedPermissionNames = (policies: Policy[]) => policies.map((p) => p.permission).sort();
@@ -160,7 +161,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	);
 
 	//check hub actors are gone
-	assert.ok(!(await repos.actor.findByHub(hub.hub_id)));
+	assert.ok(!(await repos.actor.findByHub(hub.hub_id, ACTOR_COLUMNS.actor_id)));
 
 	//check hub spaces are gone
 	const spaceResult = await repos.space.filterByHub(hub.hub_id);

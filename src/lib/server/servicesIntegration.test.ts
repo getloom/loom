@@ -15,6 +15,7 @@ import {
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {permissions} from '$lib/vocab/policy/permissions';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 /* test_servicesIntegration */
 const test_servicesIntegration = suite<TestDbContext>('repos');
@@ -100,7 +101,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	// TODO add a service action?
 	assert.equal(
-		(await repos.actor.filterByAccount(account.account_id))
+		(await repos.actor.filterByAccount(account.account_id, ACTOR_COLUMNS.all))
 			.sort((a, b) => (a.created < b.created ? -1 : 1))
 			.slice(), // `slice` because `RowList` is not deep equal to arrays
 		[actor1, actor2],
