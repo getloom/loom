@@ -28,7 +28,7 @@
 
 <li class="assignment-item">
 	<ActorAvatar actor={assignmentActor} showIcon={false} />
-	<button class="icon-button plain-button" on:click={() => deleteAssignment()}> ✕ </button>
+	<button class="icon_button plain" on:click={() => deleteAssignment()}> ✕ </button>
 </li>
 
 <style>
@@ -37,9 +37,9 @@
 		align-items: center;
 		justify-content: space-between;
 		padding-left: var(--spacing_xl);
-		background-color: var(--tint_dark_0);
+		background-color: var(--fg_0);
 	}
 	.assignment-item:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 </style>

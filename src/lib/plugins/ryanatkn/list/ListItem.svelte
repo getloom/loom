@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -41,14 +41,14 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 >
 	<!-- TODO fix a11y -->
 	<div class="entity">
-		<div class="content markup">
+		<div class="content prose">
 			<EntityContent {entity} />
 		</div>
 		<div class="signature" style:padding="var(--spacing_sm)">
 			<ActorAvatar actor={authorActor} showName={false} />
 		</div>
 		<button
-			class="plain-button icon-button"
+			class="plain icon_button"
 			on:click={() =>
 				actions.DeleteEntities({actor: $actor.actor_id, entityIds: [$entity.entity_id]})}
 			title="remove item">✕</button
@@ -62,7 +62,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		flex-direction: column;
 	}
 	li:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.signature {
 		--icon_size: var(--icon_size_sm);
@@ -77,11 +77,11 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		width: 100%;
 	}
 	.entity:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.content {
 		flex: 1;
-		font-size: var(--font_size_xl);
+		font-size: var(--size_xl);
 		padding: 0 var(--spacing_md);
 	}
 </style>

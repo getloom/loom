@@ -68,12 +68,12 @@
 	};
 </script>
 
-<!-- TODO these centered classes -- ideally would have a single class or change the defaults,
-maybe `form.centered` should be interpreted a particular way in Felt? -->
-<div class="markup padded-xl centered">
-	<form class="centered" {...$$restProps}>
+<!-- TODO these box classes -- ideally would have a single class or change the defaults,
+maybe `form.box` should be interpreted a particular way in Felt? -->
+<div class="prose padded_xl box">
+	<form class="box" {...$$restProps}>
 		<h2>Create a new Actor</h2>
-		<fieldset class="centered">
+		<fieldset class="box">
 			<label>
 				<div class="title">name</div>
 				<input

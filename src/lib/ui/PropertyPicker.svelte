@@ -5,7 +5,7 @@
 	import type {Result} from '@feltjs/util';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import {autofocus} from '$lib/ui/actions';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
@@ -111,7 +111,7 @@
 
 <div class="field">{field}</div>
 {#if field !== 'hub_id' || hub}
-	<div class="preview markup panel" style:--icon_size="var(--icon_size_sm)">
+	<div class="preview prose panel" style:--icon_size="var(--icon_size_sm)">
 		{#if field === 'hub_id' && hub}
 			<HubAvatar {actor} {hub} />
 		{:else if value === undefined}
@@ -125,7 +125,7 @@
 {#if field === 'hub_id'}
 	<button
 		type="button"
-		on:click={() => actions.OpenDialog(toDialogData(HubPicker, {actor, done: doneWithHubPicker}))}
+		on:click={() => actions.OpenDialog(toDialogParams(HubPicker, {actor, done: doneWithHubPicker}))}
 	>
 		pick hub
 	</button>
@@ -149,7 +149,7 @@
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>
 	{:else if changed}
-		<div class="preview markup panel">
+		<div class="preview prose panel">
 			<p>
 				{#if fieldValue}<pre>{serialized}</pre>{:else}<em>(empty)</em>{/if}
 			</p>
@@ -159,7 +159,7 @@
 
 <style>
 	.field {
-		font-size: var(--font_size_lg);
+		font-size: var(--size_lg);
 		font-weight: 700;
 	}
 	.preview {

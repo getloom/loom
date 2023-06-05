@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -45,7 +45,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	>
 		<!-- TODO remove this override after implementing links -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div on:click={() => selectPost(entity)} class="entity markup formatted">
+		<div on:click={() => selectPost(entity)} class="entity prose formatted">
 			<div>
 				{#if $entity.data.name}
 					{$entity.data.name}
@@ -75,9 +75,9 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		width: 100%;
 	}
 	.entity:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
-	.markup {
+	.prose {
 		/* the bottom padding prevents chars like y and g from being cut off */
 		padding: 0 0 var(--spacing_xs) var(--spacing_md);
 	}

@@ -8,7 +8,11 @@
 
 <script lang="ts">
 	import '@feltjs/felt-ui/style.css';
+	import '@feltjs/felt-ui/theme.css';
 	import '$lib/ui/style.css';
+	import {loadTheme} from '@feltjs/felt-ui/theme.js';
+	import {DEFAULT_THEME, defaultThemes} from '@feltjs/felt-ui/themes.js';
+	import Themed from '@feltjs/felt-ui/Themed.svelte';
 	import {setDevmode} from '@feltjs/felt-ui/devmode.js';
 	import DevmodeControls from '@feltjs/felt-ui/DevmodeControls.svelte';
 	import {page} from '$app/stores';
@@ -19,9 +23,11 @@
 	import Contextmenu from '@feltjs/felt-ui/Contextmenu.svelte';
 	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
 	import {Logger} from '@feltjs/util/log.js';
-	import {toDialogData, toContextmenuParams} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 	import ContextmenuLinkEntry from '@feltjs/felt-ui/ContextmenuLinkEntry.svelte';
 	import ContextmenuTextEntry from '@feltjs/felt-ui/ContextmenuTextEntry.svelte';
+	import {writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Onboard from '$lib/ui/Onboard.svelte';
@@ -47,6 +53,7 @@
 
 	const log = new Logger('[layout]');
 
+	// Setup responsiveness for smaller touch devices (mobile).
 	let initialMobileValue = false; // TODO this hardcoded value causes mobile view to change on load -- detect for SSR via User-Agent?
 	const MOBILE_WIDTH = '50rem'; // treats anything less than 800px width as mobile
 	if (browser) {
@@ -59,22 +66,26 @@
 		mediaQuery.onchange = (e) => actions.SetMobile(e.matches);
 	}
 
+	// Setup the UI theme.
+	const loadedTheme = loadTheme();
+	// TODO hacky remove this when adding runtime theme editing
+	const loadedThemeDefaultRef =
+		loadedTheme && defaultThemes.find((t) => t.name === loadedTheme.name);
+	const theme = writable(loadedThemeDefaultRef || loadedTheme || DEFAULT_THEME);
+
 	const devmode = setDevmode();
 	const socket = toSocketStore(
 		(message) => websocketClient.handle(message.data),
 		() => actions.Ping(),
 	);
-	const ui = toUi(
-		data,
-		initialMobileValue,
-		components,
-		ContextmenuLinkEntry,
-		ContextmenuTextEntry,
-		(errorMessage) => {
-			actions.OpenDialog(toDialogData(ErrorMessage, {text: errorMessage}));
-		},
-	);
+	const ui = toUi(data, initialMobileValue, components, ContextmenuLinkEntry, ContextmenuTextEntry);
 	setUi(ui);
+
+	// When the contextmenu has an error, display the message in a dialog.
+	const contextmenuError = ui.contextmenu.error;
+	$: if ($contextmenuError) {
+		actions.OpenDialog(toDialogParams(ErrorMessage, {text: $contextmenuError}));
+	}
 
 	const actions = toActions(ui, mutations, (e) =>
 		websocketClient.find(e) ? websocketClient : httpClient.find(e) ? httpClient : null,
@@ -152,26 +163,28 @@
 
 <SocketConnection {socket} url={PUBLIC_WEBSOCKET_URL} />
 
-<div class="layout" class:mobile={$mobile} bind:clientHeight bind:clientWidth>
-	{#if guest}
-		<main>
-			<div class="main-content account column markup">
-				<AccountForm {guest} />
-			</div>
-		</main>
-	{:else if onboarding}
-		<main>
-			<div class="main-content column">
-				<Onboard />
-			</div>
-		</main>
-	{:else}
-		<slot />
-	{/if}
-	<DevmodeControls {devmode} />
-	<Dialogs {dialogs} on:close={() => actions.CloseDialog()} />
-	<Contextmenu {contextmenu} />
-</div>
+<Themed {theme}>
+	<div class="layout" class:mobile={$mobile} bind:clientHeight bind:clientWidth>
+		{#if guest}
+			<main>
+				<div class="main-content account prose">
+					<AccountForm {guest} />
+				</div>
+			</main>
+		{:else if onboarding}
+			<main>
+				<div class="main-content">
+					<Onboard />
+				</div>
+			</main>
+		{:else}
+			<slot />
+		{/if}
+		<DevmodeControls {devmode} />
+		<Dialogs {dialogs} on:close={() => actions.CloseDialog()} />
+		<Contextmenu {contextmenu} />
+	</div>
+</Themed>
 
 <style>
 	.layout {
@@ -190,6 +203,7 @@
 		flex-direction: column;
 	}
 	.main-content {
+		width: var(--width_md);
 		max-height: 100%; /* fix vertical scrolling */
 		padding: var(--spacing_xl);
 	}

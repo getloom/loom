@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import type {Space} from '$lib/vocab/space/space';
@@ -44,8 +44,8 @@
 		});
 </script>
 
-<div class="space-editor column">
-	<form class="markup" {...$$restProps}>
+<div class="space-editor width_md">
+	<form class="prose" {...$$restProps}>
 		<header>
 			<h2>Edit Space</h2>
 			<ContextInfo {actor} {hub} {space} />
@@ -74,7 +74,7 @@
 				title="delete space"
 				on:click={() =>
 					actions.OpenDialog(
-						toDialogData(DeleteSpaceForm, {
+						toDialogParams(DeleteSpaceForm, {
 							actor,
 							hub,
 							space,

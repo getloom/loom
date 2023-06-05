@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import About from '$lib/ui/About.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -9,8 +9,8 @@
 
 <button
 	type="button"
-	class="plain-button icon-button"
-	on:click={() => actions.OpenDialog(toDialogData(About, {}))}
+	class="plain icon_button"
+	on:click={() => actions.OpenDialog(toDialogParams(About, {}))}
 >
 	?
 </button>

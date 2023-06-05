@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -43,7 +43,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			<ActorAvatar actor={authorActor} showIcon={false} />
 			<small>{format($entity.created, 'MMM d, p')}</small>
 		</div>
-		<div class="markup formatted"><EntityContent {entity} /></div>
+		<div class="prose formatted"><EntityContent {entity} /></div>
 	</div>
 </li>
 
@@ -52,7 +52,11 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		align-items: flex-start;
 		padding: var(--spacing_xs);
 		/* TODO experiment with a border color instead of bg */
-		background-color: hsl(var(--hue), var(--bg_saturation), calc(var(--tint_lightness_8)));
+		background-color: hsl(var(--hue), var(--tint_saturation), 89%);
+	}
+	/* TODO hacky */
+	:global(.dark) li {
+		background-color: hsl(var(--hue), var(--tint_saturation), 11%);
 	}
 	.signature {
 		display: flex;

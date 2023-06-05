@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
@@ -26,7 +26,7 @@
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog(
-					toDialogData(
+					toDialogParams(
 						EntityEditor,
 						{actor, entity, done: () => actions.CloseDialog()},
 						{layout: 'page'},
@@ -40,7 +40,7 @@
 			<ContextmenuEntry
 				run={() =>
 					actions.OpenDialog(
-						toDialogData(ConfirmDialog, {
+						toDialogParams(ConfirmDialog, {
 							confirmed: () =>
 								actions.EraseEntities({
 									actor: $actor.actor_id,
@@ -57,7 +57,7 @@
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog(
-					toDialogData(ConfirmDialog, {
+					toDialogParams(ConfirmDialog, {
 						confirmed: () =>
 							actions.DeleteEntities({actor: $actor.actor_id, entityIds: [$entity.entity_id]}),
 						promptText: 'Delete this entity? This cannot be reversed.',

@@ -63,7 +63,7 @@
 	};
 </script>
 
-<div class="markup panel padded-xl">
+<div class="prose panel padded_xl">
 	<!-- TODO fix HubAvatar on newline-->
 	<h1 class="row">
 		Submit application to <HubAvatar {actor} {hub} showName={true} contextmenuParams={null} />
@@ -122,7 +122,7 @@
 			>
 		</form>
 	{:else}
-		<section class="panel padded-xl">
+		<section class="panel padded_xl">
 			<p>
 				Thank you for submitting! We will review your application and get back to you within a week.
 				This process takes time because we want to ensure you and our hub are a good fit.

@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Space} from '$lib/vocab/space/space';
@@ -33,7 +33,7 @@
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog(toDialogData(SpaceEditor, {actor, space, hub}, {layout: 'page'}))}
+				actions.OpenDialog(toDialogParams(SpaceEditor, {actor, space, hub}, {layout: 'page'}))}
 		>
 			Edit Space
 		</ContextmenuEntry>
@@ -41,7 +41,7 @@
 			<ContextmenuEntry
 				run={() =>
 					actions.OpenDialog(
-						toDialogData(DeleteSpaceForm, {actor, hub, space, done: () => actions.CloseDialog()}),
+						toDialogParams(DeleteSpaceForm, {actor, hub, space, done: () => actions.CloseDialog()}),
 					)}
 			>
 				Delete Space

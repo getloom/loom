@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {tick} from 'svelte';
 	import {slide} from 'svelte/transition';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -89,7 +89,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	<!-- TODO fix a11y -->
 	<div class="entity">
 		<button
-			class="plain-button icon-button"
+			class="plain icon_button"
 			on:click={toggleExpandControls}
 			title="{expandControls ? 'hide' : 'show'} list controls"
 			>{#if expandControls}&lt;{:else}>{/if}</button
@@ -99,12 +99,12 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			<!-- TODO maybe use Felt checkbox component when available-->
 			<input type="checkbox" disabled={pending} bind:checked />
 		{/if}
-		<div class="content markup">
+		<div class="content prose">
 			<EntityContent {entity} />
 		</div>
 		{#if items?.length}
 			<span style:padding="var(--spacing_sm)">{items.length}</span>
-			<button class="plain-button icon-button" on:click={toggleExpandItems}>
+			<button class="plain icon_button" on:click={toggleExpandItems}>
 				{#if expandItems}-{:else}+{/if}
 			</button>
 		{/if}
@@ -113,7 +113,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		</div>
 		{#if items?.length && (expandItems || expandControls)}
 			<div class="floating-controls">
-				<button class="plain-button icon-button" on:click={toggleExpandItems}>
+				<button class="plain icon_button" on:click={toggleExpandItems}>
 					{#if expandItems}-{:else}+{/if}
 				</button>
 			</div>
@@ -140,7 +140,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		flex-direction: column;
 	}
 	li:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.signature {
 		--icon_size: var(--icon_size_sm);
@@ -155,7 +155,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		width: 100%;
 	}
 	.entity:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.entity form input {
 		width: 50px;
@@ -171,7 +171,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	}
 	.content {
 		flex: 1;
-		font-size: var(--font_size_xl);
+		font-size: var(--size_xl);
 		padding: 0 var(--spacing_md);
 	}
 	.floating-controls {

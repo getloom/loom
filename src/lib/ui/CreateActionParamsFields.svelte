@@ -71,7 +71,7 @@
 		padding: var(--spacing_xs) 0;
 	}
 	.title {
-		font-size: var(--font_size_lg);
+		font-size: var(--size_lg);
 		font-weight: 700;
 	}
 </style>

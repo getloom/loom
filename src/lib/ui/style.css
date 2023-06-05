@@ -1,11 +1,7 @@
 /* global styles that override Felt's */
 :root {
-	--bg_hue: 24;
-	--bg_saturation: 23%;
-	--bg_lightness: 96%;
 	--luggage_size: calc(var(--icon_size_md) + var(--spacing_xs) * 2);
 	--navbar_size: calc(var(--icon_size_sm) + var(--spacing_xs) * 2);
-	--contextmenu_width: 360px;
 }
 
 html {
@@ -16,40 +12,10 @@ html {
 body {
 	height: 100%;
 	width: 100%;
-	/* TODO remove the `important` after the SvelteKit import issue between dev and prod is fixed */
-	background-color: hsl(var(--bg_hue), var(--bg_saturation), var(--bg_lightness)) !important;
 }
 
 main {
 	width: 100%;
-}
-
-/* TODO upstream to Felt? what about other simple layout helpers? */
-.row {
-	width: 100%;
-	display: flex;
-	align-items: center;
-}
-/* TODO upstream to Felt and add the other spacing sizes? */
-.spaced {
-	margin-right: var(--spacing_lg);
-}
-
-/* TODO upstream these to Felt, consider other button variants too */
-.icon-button {
-	width: var(--icon_size);
-	height: var(--icon_size);
-	min-width: var(--icon_size);
-	min-height: var(--icon_size);
-	flex-shrink: 0;
-	font-weight: 900;
-	padding: 0;
-}
-.plain-button {
-	border: none;
-	box-shadow: none;
-	--button_color: transparent;
-	--button_color_hover: var(--tint_light_5);
 }
 
 .buttons {
@@ -60,55 +26,23 @@ main {
 	flex: 1;
 }
 
-/* TODO upstream? */
-form ul {
-	width: 100%;
-}
-
-/* TODO upstream? put inside `.markup`? */
-fieldset {
-	padding: var(--spacing_xl) 0;
-	margin: var(--spacing_xl) 0;
-}
-
-/* TODO likely upstream to Felt */
-/* Formats content to wrap long strings and preserve displayed whitespace. */
-.formatted {
-	overflow: hidden;
-	/* TODO remove this line when `break-spaces` is supported by Firefox Android:
-		https://caniuse.com/mdn-css_properties_white-space_break-spaces */
-	white-space: pre-wrap;
-	white-space: break-spaces;
-}
-
-.selectable {
-	--border_width: 0;
-}
-.selectable:hover {
-	background-color: var(--button_color_hover);
-}
-.selectable:active,
-.selectable.selected {
-	/* TODO probably want `--button_color_selected` so it's different than active */
-	background-color: var(--button_color_active);
-}
-
 /* a minimal alternative to `<Message status="error">some error text</Message>` */
 .error-text {
 	font-weight: bold;
-	color: var(--error_color);
+	color: var(--color_5);
 }
 /* a minimal alternative to `<Message status="success">some success text</Message>` */
 .success-text {
 	font-weight: bold;
-	color: var(--help_color);
+	color: var(--color_2);
 }
 
-/* TODO upstream? */
-.chip {
-	font-size: var(--font_size_sm);
-	font-weight: 600;
-	padding: var(--spacing_xs4) var(--spacing_sm);
-	background-color: var(--tint_dark_1);
-	border-radius: var(--border_radius_xs);
+/* TODO figure this out compared to .selectable */
+.selectable_bg:hover,
+.selectable_bg:focus {
+	background-color: var(--bg_5);
+}
+.selectable_bg:active,
+.selectable_bg.selected {
+	background-color: var(--bg_8);
 }

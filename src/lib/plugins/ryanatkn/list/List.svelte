@@ -66,7 +66,7 @@
 		overflow: hidden; /* make the content scroll */
 	}
 	.entities {
-		max-width: var(--column_width);
+		max-width: var(--width_md);
 		overflow: auto;
 		flex: 1;
 		display: flex;

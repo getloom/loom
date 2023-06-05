@@ -15,19 +15,19 @@
 
 <div class="context-info">
 	{#if space && actor && hub}
-		<div class="row" style:font-size="var(--font_size_xl)">
+		<div class="row" style:font-size="var(--size_xl)">
 			<SpaceName {space} />
 		</div>
 	{/if}
 	{#if actor && hub}
 		<div class="row">
-			<span class="spaced">in</span>
+			<span class="spaced_hz">in</span>
 			<HubAvatar {actor} {hub} />
 		</div>
 	{/if}
 	{#if actor}
 		<div class="row">
-			<span class="spaced">as</span>
+			<span class="spaced_hz">as</span>
 			<ActorAvatar {actor} />
 		</div>
 	{/if}

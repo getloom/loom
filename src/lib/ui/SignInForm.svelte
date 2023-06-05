@@ -88,7 +88,7 @@
 				autocomplete="current-password"
 			/></label
 		>
-		<div class="centered">
+		<div class="box">
 			<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signIn}
 				>sign in</PendingButton
 			>
@@ -106,7 +106,7 @@
 		justify-content: center;
 	}
 	/* TODO make this into a utility class? */
-	.centered {
+	.box {
 		width: 100%;
 	}
 </style>

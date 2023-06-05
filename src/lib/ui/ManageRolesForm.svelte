@@ -50,7 +50,7 @@
 		});
 </script>
 
-<div class="markup padded-xl">
+<div class="prose padded_xl">
 	<h1>Manage Roles</h1>
 	<ContextInfo {actor} {hub} />
 </div>
@@ -64,7 +64,7 @@
 					no roles found
 				{/each}
 			</menu>
-			<button type="button" class="plain-button" on:click={createRole}>create a new role</button>
+			<button type="button" class="plain" on:click={createRole}>create a new role</button>
 		</div>
 		<div class="details-wrapper">
 			<RoleDetails {actor} role={selectedRole} {hub} {deleteRole} />

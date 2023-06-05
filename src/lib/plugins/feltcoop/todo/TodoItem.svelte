@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -103,15 +103,15 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		]}
 	>
 		<div class="entity markup formatted">
-			<div class="order-buttons">
+			<div class="order_buttons">
 				<button
-					class="plain-button icon-button reply"
-					title="moveUp"
+					class="plain_button icon_button reply"
+					title="move up"
 					on:click={() => moveUp(entity)}>🔼</button
 				>
 				<button
-					class="plain-button icon-button reply"
-					title="moveDown"
+					class="plain_button icon_button reply"
+					title="move down"
 					on:click={() => moveDown(entity)}>🔽</button
 				>
 			</div>
@@ -169,7 +169,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		width: 100%;
 	}
 	.entity:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.entity form input {
 		width: 50px;
@@ -178,18 +178,14 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	.items {
 		width: 100%;
 	}
-	.markup {
-		/* the bottom padding prevents chars like y and g from being cut off */
-		padding: 0 0 var(--spacing_xs) var(--spacing_md);
-	}
-	.order-buttons {
+	.order_buttons {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		line-height: 0;
 	}
-	.icon-button {
-		font-size: var(--font_size_xl);
+	.icon_button {
+		font-size: var(--size_xl);
 		display: flex;
 		align-items: center;
 		justify-content: center;

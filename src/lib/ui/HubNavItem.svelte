@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
@@ -44,7 +44,7 @@
 
 <!-- TODO can this be well abstracted via the Entity with a `link` prop? -->
 <a
-	class="hub selectable"
+	class="selectable_bg"
 	href={toHubUrl(
 		$hub.name,
 		renderDirectoryPath($selectedDirectory?.path),

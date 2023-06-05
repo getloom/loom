@@ -18,14 +18,14 @@
 {#if guest}
 	{#if view === 'sign_in'}
 		<SignInForm {...$$restProps} bind:username>
-			<div class="centered">
+			<div class="box">
 				<button on:click={() => (view = 'sign_up')}>sign up</button>
 				<HelpButton />
 			</div>
 		</SignInForm>
 	{:else if view === 'sign_up'}
 		<SignUpForm {...$$restProps} bind:username>
-			<div class="centered">
+			<div class="box">
 				<button on:click={() => (view = 'sign_in')}>sign in</button>
 				<HelpButton />
 			</div>

@@ -29,7 +29,7 @@
 	<!-- TODO extract an accessible menu component, see PRS
 	https://github.com/feltjs/felt-server/pull/362
 	and https://github.com/feltjs/felt-ui/pull/197 -->
-	<div class="nav-wrapper markup padded-xl column-sm">
+	<div class="nav-wrapper prose padded_xl width_sm">
 		<nav>
 			<h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3>
 			<h4><a href="#views" class:selected={hash === 'views'}>views</a></h4>
@@ -69,18 +69,18 @@
 			</footer>
 		</nav>
 	</div>
-	<div class="column">
-		<div class="markup padded-xl">
+	<div class="content">
+		<div class="prose padded_xl">
 			<h1 id="docs">docs</h1>
 		</div>
-		<div class="markup padded-xl">
+		<div class="prose padded_xl">
 			<h2 id="views">views</h2>
 		</div>
 		<ul>
 			{#each sortedViewTemplates as viewTemplate (viewTemplate)}
 				<li class="view-template" id={viewTemplate.name}>
-					<div class="title padded-xs">
-						<span style:font-size="var(--font_size_lg)">
+					<div class="title padded_xs">
+						<span style:font-size="var(--size_lg)">
 							{viewTemplate.icon}
 							{viewTemplate.name}
 						</span>
@@ -93,12 +93,12 @@
 							<span class="chip" title="requires instance admin permissions">admin</span>
 						{/if}
 					</div>
-					<code class="padded-xs">{viewTemplate.view}</code>
+					<code class="padded_xs">{viewTemplate.view}</code>
 				</li>
 			{/each}
 		</ul>
 		<hr />
-		<div class="markup padded-xl">
+		<div class="prose padded_xl">
 			<h2 id="models">models</h2>
 		</div>
 		<ul>
@@ -110,7 +110,7 @@
 			{/each}
 		</ul>
 		<hr />
-		<div class="markup padded-xl">
+		<div class="prose padded_xl">
 			<h2 id="actions">actions</h2>
 		</div>
 		<ul>
@@ -141,7 +141,7 @@
 				</li>
 			{/each}
 		</ul>
-		<div class="markup padded-xl">
+		<div class="prose padded_xl">
 			<menu>
 				<li><h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3></li>
 				<menu>
@@ -168,7 +168,9 @@
 		position: relative;
 		display: flex;
 	}
-	.column {
+	.content {
+		width: 100%;
+		max-width: var(--width_md);
 		position: relative;
 		overflow: auto;
 		flex: 1;
@@ -206,7 +208,7 @@
 		justify-content: space-between;
 	}
 	.name {
-		font-size: var(--font_size_lg);
+		font-size: var(--size_lg);
 		padding: var(--spacing_md);
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
@@ -223,10 +225,10 @@
 		display: flex;
 		align-items: center;
 		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.property:nth-child(2n + 1) {
-		background-color: var(--tint_dark_0);
+		background-color: var(--fg_0);
 	}
 	.property > span {
 		display: flex;

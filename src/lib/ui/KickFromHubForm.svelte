@@ -18,7 +18,7 @@
 	$: communityActors = $actorsByHubId.get($hub.hub_id);
 </script>
 
-<div class="markup padded-xl">
+<div class="prose padded_xl">
 	<h1>Kicking From Hub</h1>
 	<ContextInfo {actor} {hub} />
 </div>

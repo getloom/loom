@@ -14,7 +14,7 @@
 	const {devmode} = getApp();
 </script>
 
-<div class="entity-editor column">
+<div class="entity-editor width_md">
 	<EditEntityForm {actor} {entity} {done} />
 	{#if $devmode}
 		<hr />

@@ -56,24 +56,24 @@
 		width: 0;
 	}
 	.main-nav-panel.expanded {
-		width: var(--column_width_sm);
+		width: var(--width_sm);
 	}
 	.main-nav {
 		position: relative;
 		z-index: 2;
 		height: 100%;
-		width: var(--column_width_sm);
+		width: var(--width_sm);
 		overflow: auto;
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
 		transform-origin: top left;
-		background-color: var(--tint_light);
-		transform: translate3d(-100%, 0, 0) scale3d(1, 1, 1);
+		background-color: var(--fg_1);
+		transform: translate3d(-100%, 0, 0);
 		transition: transform var(--duration_1) ease-out;
 	}
 	.expanded .main-nav {
-		transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+		transform: translate3d(0, 0, 0);
 		transition-duration: var(--duration_2);
 	}
 	.main-nav-bg {
@@ -102,7 +102,6 @@
 		z-index: 1;
 		display: flex;
 		width: 100%;
-		background-color: var(--tint_light);
 	}
 	.luggage-placeholder {
 		width: var(--luggage_size);

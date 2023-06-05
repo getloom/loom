@@ -41,7 +41,7 @@
 	};
 </script>
 
-<div class="markup padded-xl">
+<div class="prose padded_xl">
 	<h1>{promptText}</h1>
 	<!-- TODO a11y -->
 	<div class="buttons">

@@ -2,7 +2,8 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {toDialogData, toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -76,13 +77,13 @@
 		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 	]}
 >
-	<header class="markup" style:--icon_size="var(--icon_size_sm)">
+	<header class="prose" style:--icon_size="var(--icon_size_sm)">
 		<h2>Edit Entity</h2>
 		<section>
 			<!-- TODO resembles `ContextInfo` closely -->
 			<div><code>{$entity.data.type} {$entity.entity_id}</code></div>
 			<div class="row">
-				<span class="spaced">created by</span>
+				<span class="spaced_hz">created by</span>
 				<ActorAvatar actor={authorActor} />
 			</div>
 			<div>created {format($entity.created, 'PPPPp')}</div>
@@ -123,7 +124,7 @@
 				title="erase entity"
 				on:click={() =>
 					actions.OpenDialog(
-						toDialogData(ConfirmDialog, {
+						toDialogParams(ConfirmDialog, {
 							confirmed: eraseEntity,
 							promptText: 'Erase this entity? This cannot be reversed.',
 							confirmText: 'erase entity',
@@ -136,7 +137,7 @@
 			title="delete entity"
 			on:click={() =>
 				actions.OpenDialog(
-					toDialogData(ConfirmDialog, {
+					toDialogParams(ConfirmDialog, {
 						confirmed: deleteEntity,
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',

@@ -7,10 +7,10 @@ import {
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent, type ComponentType} from 'svelte';
-import type {DialogData} from '@feltjs/felt-ui';
+import type {DialogParams} from '@feltjs/felt-ui/dialog.js';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
-import {createContextmenu, type ContextmenuStore} from '@feltjs/felt-ui';
+import {createContextmenu, type ContextmenuStore} from '@feltjs/felt-ui/contextmenu.js';
 import type ContextmenuLinkEntry from '@feltjs/felt-ui/ContextmenuLinkEntry.svelte';
 import type ContextmenuTextEntry from '@feltjs/felt-ui/ContextmenuTextEntry.svelte';
 
@@ -103,7 +103,7 @@ export interface Ui {
 	expandMainNav: Readable<boolean>;
 	expandMarquee: Readable<boolean>;
 	contextmenu: ContextmenuStore;
-	dialogs: Readable<DialogData[]>;
+	dialogs: Readable<DialogParams[]>;
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the hub
 	ephemera: Readable<EphemeraResponse | null>;
 	actorIdSelection: Readable<ActorId | null>;
@@ -127,7 +127,6 @@ export const toUi = (
 	components: {[key: string]: typeof SvelteComponent},
 	contextmenuLinkComponent: ComponentType<ContextmenuLinkEntry>,
 	contextmenuTextComponent: ComponentType<ContextmenuTextEntry>,
-	error: (message: string | undefined) => void,
 ) => {
 	const events: UiEvents = new EventEmitter();
 
@@ -362,9 +361,8 @@ export const toUi = (
 		linkComponent: contextmenuLinkComponent,
 		textComponent: contextmenuTextComponent,
 		layout,
-		error,
 	});
-	const dialogs = writable<DialogData[]>([]);
+	const dialogs = writable<DialogParams[]>([]);
 	const viewBySpace = mutable(new WeakMap<Readable<Space>, string>());
 	const ephemera = writable<EphemeraResponse | null>(null);
 

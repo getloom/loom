@@ -642,15 +642,15 @@
 		"OpenDialogParams": {
 			"$id": "/schemas/OpenDialogParams",
 			"type": "object",
-			"tsType": "DialogData",
-			"tsImport": "import type {DialogData} from \"@feltjs/felt-ui\""
+			"tsType": "DialogParams",
+			"tsImport": "import type {DialogParams} from '@feltjs/felt-ui/dialog.js'"
 		},
 		"PingParams": {"$id": "/schemas/PingParams", "type": "null"},
 		"PingResponse": {"$id": "/schemas/PingResponse", "type": "null"},
 		"Policy": {
 			"$id": "/schemas/Policy",
 			"type": "object",
-			"description": "\n\t\tPolicies are associated with Roles to describe the system Actions a Role is able to take in the system.\n\t\tPermissions are the enumeration of the those Actions and are often 1:1.\n\t\t`data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.\n\t",
+			"description": "\n\t\tPolicies are associated with Roles to describe the Actions a Role is able to take in the system.\n\t\tPermissions are the enumeration of the those Actions and are often 1:1.\n\t\t`data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.\n\t",
 			"properties": {
 				"policy_id": {"$ref": "/schemas/PolicyId"},
 				"role_id": {"$ref": "/schemas/RoleId"},

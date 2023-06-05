@@ -15,7 +15,7 @@ import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
 import type {EntityId, Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
-import type {DialogData} from '@feltjs/felt-ui';
+import type {DialogParams} from '@feltjs/felt-ui/dialog.js';
 import type {ApiResult} from '$lib/server/api';
 import type {Query} from '$lib/util/query';
 import type {
@@ -610,7 +610,7 @@ export interface CreatePolicyParams {
 }
 export interface CreatePolicyResponse {
 	/**
-	 * Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
+	 * Policies are associated with Roles to describe the Actions a Role is able to take in the system.
 	 * Permissions are the enumeration of the those Actions and are often 1:1.
 	 * `data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	 */
@@ -636,7 +636,7 @@ export interface UpdatePolicyParams {
 }
 export interface UpdatePolicyResponse {
 	/**
-	 * Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
+	 * Policies are associated with Roles to describe the Actions a Role is able to take in the system.
 	 * Permissions are the enumeration of the those Actions and are often 1:1.
 	 * `data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	 */
@@ -686,7 +686,7 @@ export type ToggleSecondaryNavParams = void;
 
 export type SetMobileParams = boolean;
 
-export type OpenDialogParams = DialogData;
+export type OpenDialogParams = DialogParams;
 
 export type CloseDialogParams = void;
 

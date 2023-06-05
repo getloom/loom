@@ -1,6 +1,6 @@
 import {randomBool} from '@feltjs/util/random.js';
 import {SvelteComponent} from 'svelte';
-import {toDialogData} from '@feltjs/felt-ui';
+import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 import {
 	randomEntityData,
@@ -291,7 +291,7 @@ export const randomActionParams: RandomActionParams = {
 		return randomBool();
 	},
 	OpenDialog: async () => {
-		return toDialogData(class SomeComponent extends SvelteComponent {}, {});
+		return toDialogParams(class SomeComponent extends SvelteComponent {}, {});
 	},
 	CloseDialog: async () => {
 		return undefined;

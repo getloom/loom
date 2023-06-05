@@ -11,7 +11,7 @@
 	$: assignments = $assignmentsByRoleId.get($role.role_id)!;
 </script>
 
-<li class="centered-hz">
+<li class="box row">
 	<span class="role-name panel">{$role.name}</span>
 	<ul class="role-members">
 		{#each assignments as assignment (assignment)}
@@ -25,7 +25,7 @@
 <style>
 	/* TODO extract some sort of reusable class/component */
 	.role-name {
-		font-size: var(--font_size_xl);
+		font-size: var(--size_xl);
 		font-weight: 600;
 		padding: var(--spacing_xs2) var(--spacing_sm);
 		margin-right: var(--spacing_md);

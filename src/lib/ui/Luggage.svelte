@@ -6,7 +6,7 @@
 
 <div class="luggage">
 	<button
-		class="icon-button plain-button"
+		class="icon_button plain"
 		title="toggle luggage"
 		aria-label="toggle luggage"
 		on:click={() => actions.ToggleMainNav()}

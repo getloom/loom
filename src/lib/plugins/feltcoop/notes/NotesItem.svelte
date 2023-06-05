@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
@@ -26,7 +26,7 @@
 		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 	]}
 >
-	<div class="markup padded-xl formatted">
+	<div class="prose padded_xl formatted">
 		<EntityContent {entity} />
 	</div>
 </li>
@@ -35,8 +35,8 @@
 	li {
 		padding: var(--spacing_sm);
 		border: var(--border_width) var(--border_style) var(--border_color);
-		max-width: var(--column_width_sm);
+		max-width: var(--width_sm);
 		margin: 10px;
-		background-color: var(--input_bg_color);
+		background-color: var(--input_bg);
 	}
 </style>

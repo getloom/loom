@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {Space} from '$lib/vocab/space/space';
@@ -43,7 +43,7 @@
 		renderDirectoryPath($directory.path),
 		toAppSearchParams(actorIndex + '', $page.url.searchParams),
 	)}
-	class="selectable"
+	class="selectable_bg"
 	class:selected
 	use:contextmenu.action={toContextmenuParams(SpaceContextmenu, {actor, hub, space})}
 	on:click={() => {

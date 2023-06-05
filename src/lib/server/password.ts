@@ -1,7 +1,8 @@
 import {randomBytes, scrypt, timingSafeEqual} from 'crypto';
 import {promisify} from 'util';
 
-import {passwordWorker} from '$lib/server/passwordWorker';
+// TODO fix
+// import {passwordWorker} from '$lib/server/passwordWorker';
 
 const SALT_SIZE = 16;
 const HASH_SIZE = 32;
@@ -16,7 +17,9 @@ const toScrypt = promisify(scrypt);
  * @returns salted and hashed password
  */
 export const toPasswordKey = async (passwordText: string): Promise<string> => {
-	return passwordWorker(passwordText)!;
+	// TODO fix
+	// return passwordWorker(passwordText)!;
+	return hashPassword(passwordText);
 };
 
 /**

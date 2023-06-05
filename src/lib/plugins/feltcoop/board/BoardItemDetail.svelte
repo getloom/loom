@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide, scale} from 'svelte/transition';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -89,9 +89,9 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 		]}
 	>
-		<div class="item markup">
+		<div class="item prose">
 			<button
-				class="icon-button plain-button inline deselectable"
+				class="icon_button plain inline deselectable"
 				class:selected={replying}
 				title="reply to @{$authorActor.name}"
 				aria-label="reply to @{$authorActor.name}"
@@ -146,7 +146,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	}
 	.item {
 		--icon_size: var(--icon_size_xs);
-		/* TODO this shouldn't be needed after upgrading Felt for .markup -> .flow  */
+		/* TODO this shouldn't be needed after upgrading Felt for .prose -> .flow  */
 		display: block;
 	}
 	.items {

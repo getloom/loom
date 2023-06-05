@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import Luggage from '$lib/ui/Luggage.svelte';
 	import MainNav from '$lib/ui/MainNav.svelte';
@@ -40,7 +40,7 @@
 			on:click={() => ($expandMarquee ? actions.ToggleSecondaryNav() : null)}
 		/>
 	{/if}
-	<div class="space column">
+	<div class="space width_md">
 		<DashboardHeader {actor} {space} {hub} />
 		<div class="content">
 			{#if actor}
@@ -90,12 +90,12 @@
 	.marquee {
 		position: relative;
 		height: 100%;
-		width: var(--column_width_sm);
+		width: var(--width_sm);
 		overflow: auto;
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
-		background-color: var(--tint_light);
+		background-color: var(--fg_1);
 	}
 	/* TODO abstract with `MainNav` at all? */
 	.marquee-bg {

@@ -51,7 +51,7 @@
 		{#if query && entities}
 			<ChatItems {actor} {entities} />
 			{#if more}
-				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
+				<PendingButton class="plain" pending={status === 'pending'} on:click={query.loadMore}
 					>load more</PendingButton
 				>
 			{/if}
@@ -70,7 +70,7 @@
 		overflow: hidden; /* make the content scroll */
 	}
 	.entities {
-		max-width: var(--column_width);
+		max-width: var(--width_md);
 		overflow: auto;
 		flex: 1;
 		display: flex;

@@ -4,7 +4,7 @@
 	import type {Result} from '@feltjs/util';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import {autofocus} from '$lib/ui/actions';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -89,7 +89,7 @@
 
 	const deleteField = () => {
 		actions.OpenDialog(
-			toDialogData(ConfirmDialog, {
+			toDialogParams(ConfirmDialog, {
 				confirmed: async () => {
 					fieldValue = undefined;
 					await save();
@@ -105,7 +105,7 @@
 </script>
 
 <div class="field">{field}</div>
-<div class="preview markup panel">
+<div class="preview prose panel">
 	{#if currentSerialized == null}
 		<em>{currentSerialized}</em>
 		<!-- TODO add a button to add/instantiate the field with some value -->
@@ -140,7 +140,7 @@
 		{#if errorMessage}
 			<Message status="error">{errorMessage}</Message>
 		{:else if changed}
-			<div class="preview markup panel">
+			<div class="preview prose panel">
 				<p>
 					{#if fieldValue}<pre>{serialized}</pre>{:else}<em>(empty)</em>{/if}
 				</p>
@@ -153,7 +153,7 @@
 
 <style>
 	.field {
-		font-size: var(--font_size_lg);
+		font-size: var(--size_lg);
 		font-weight: 700;
 	}
 	.preview {

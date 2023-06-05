@@ -2,7 +2,7 @@
 	import {PUBLIC_ADMIN_EMAIL_ADDRESS, PUBLIC_ADMIN_ICON, PUBLIC_GIT_HASH} from '$env/static/public';
 </script>
 
-<div class="markup padded-xl">
+<div class="prose padded_xl">
 	<h1>About this Instance</h1>
 	<p>Need help? Have questions, comments, concerns?</p>
 	<p>

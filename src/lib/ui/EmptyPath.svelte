@@ -33,7 +33,7 @@
 </script>
 
 <!-- TODO reusable components -->
-<div class="column-sm">
+<div class="width_sm">
 	<!-- TODO a11y -->
 	<div class="buttons">
 		<button

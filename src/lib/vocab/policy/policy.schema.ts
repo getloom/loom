@@ -11,7 +11,7 @@ export const PolicySchema = {
 	$id: '/schemas/Policy',
 	type: 'object',
 	description: `
-		Policies are associated with Roles to describe the system Actions a Role is able to take in the system.
+		Policies are associated with Roles to describe the Actions a Role is able to take in the system.
 		Permissions are the enumeration of the those Actions and are often 1:1.
 		\`data\` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
 	`,

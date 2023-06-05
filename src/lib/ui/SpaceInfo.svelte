@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Hub} from '$lib/vocab/hub/hub';
@@ -55,7 +55,7 @@
 		width: 100%;
 	}
 	.name {
-		font-size: var(--font_size_xl);
+		font-size: var(--size_xl);
 		display: flex;
 		align-items: center;
 	}

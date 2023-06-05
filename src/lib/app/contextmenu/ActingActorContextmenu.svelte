@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
 	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -24,7 +24,11 @@
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog(
-					toDialogData(CreateHubForm, {actor, done: () => actions.CloseDialog()}, {layout: 'page'}),
+					toDialogParams(
+						CreateHubForm,
+						{actor, done: () => actions.CloseDialog()},
+						{layout: 'page'},
+					),
 				)}
 		>
 			Create Hub
@@ -32,7 +36,7 @@
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog(
-					toDialogData(DeleteActorForm, {actor, done: () => actions.CloseDialog()}),
+					toDialogParams(DeleteActorForm, {actor, done: () => actions.CloseDialog()}),
 				)}
 		>
 			Delete Actor

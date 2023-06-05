@@ -72,8 +72,8 @@
 	};
 </script>
 
-<form class="panel markup padded-xl" {...$$restProps}>
-	<fieldset class="centered">
+<form class="panel prose padded_xl" {...$$restProps}>
+	<fieldset class="box">
 		<legend>change account password</legend>
 		<label>
 			<div class="title">old password</div>
@@ -109,7 +109,7 @@
 				placeholder=">"
 			/>
 		</label>
-		<p class="centered" class:error-text={!!errorMessage} class:success-text={!!successMessage}>
+		<p class="box" class:error-text={!!errorMessage} class:success-text={!!successMessage}>
 			{errorMessage || successMessage || '🔑'}
 		</p>
 		<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={updatePassword}

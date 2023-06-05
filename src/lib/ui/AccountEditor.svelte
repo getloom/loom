@@ -19,11 +19,11 @@
 </script>
 
 {#if $account}
-	<div class="account-editor column">
-		<div class="markup padded-xl">
-			<h2>Account settings</h2>
+	<div class="account-editor width_md">
+		<div class="prose box padded_xl">
+			<h2>Account</h2>
 			<section>
-				<div style:font-size="var(--font_size_xl)">{$account.name}</div>
+				<div style:font-size="var(--size_xl)">{$account.name}</div>
 				<div>created {format($account.created, 'PPPPp')}</div>
 				{#if $account.updated !== null}
 					<div>updated {format($account.updated, 'PPPPp')}</div>

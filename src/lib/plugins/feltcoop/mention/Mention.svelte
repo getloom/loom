@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {ContextmenuActionParams} from '@feltjs/felt-ui';
+	import type {ContextmenuActionParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';

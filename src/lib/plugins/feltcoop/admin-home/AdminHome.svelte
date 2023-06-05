@@ -2,14 +2,14 @@
 	import RolesList from '$lib/ui/RolesList.svelte';
 </script>
 
-<div class="padded-xl">
+<div class="padded_xl">
 	<section>
-		<div class="markup">
+		<div class="prose">
 			<h1>admin</h1>
 		</div>
 	</section>
 	<section>
-		<div class="markup">
+		<div class="prose">
 			<h2>roles</h2>
 		</div>
 		<RolesList />

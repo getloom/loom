@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -57,14 +57,12 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			<ActorAvatar actor={authorActor} showIcon={false} />
 			<div class="controls">
 				<small class="timestamp">{format($entity.created, 'MMM d, p')}</small>
-				<button
-					class="plain-button icon-button reply"
-					title="reply"
-					on:click={() => selectReply(entity)}>↳</button
+				<button class="plain icon_button reply" title="reply" on:click={() => selectReply(entity)}
+					>↳</button
 				>
 			</div>
 		</div>
-		<div class="markup">
+		<div class="prose">
 			{#if replyTie}
 				<div class="panel ellipsis">
 					{#if $repliedToEntity}
@@ -84,7 +82,11 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		align-items: flex-start;
 		padding: var(--spacing_xs);
 		/* TODO experiment with a border color instead of bg */
-		background-color: hsl(var(--hue), var(--bg_saturation), calc(var(--tint_lightness_8)));
+		background-color: hsl(var(--hue), var(--tint_saturation), 89%);
+	}
+	/* TODO hacky */
+	:global(.dark) li {
+		background-color: hsl(var(--hue), var(--tint_saturation), 11%);
 	}
 	.content {
 		flex: 1;
@@ -104,12 +106,11 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	.reply {
 		--icon_size: var(--icon_size_sm);
 	}
-	.markup {
+	.prose {
 		/* needed for letters like y j g */
 		padding-bottom: var(--spacing_xs3);
 	}
 	.panel {
-		background-color: var(--tint_dark_2);
 		padding: var(--spacing_xs);
 		margin-bottom: var(--spacing_xs);
 	}

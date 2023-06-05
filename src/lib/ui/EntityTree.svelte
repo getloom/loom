@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 	import {browser} from '$app/environment';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {Tie} from '$lib/vocab/tie/tie';
@@ -51,11 +51,11 @@
 		use:contextmenu.action={toContextmenuParams(EntityContextmenu, {actor, entity})}
 	>
 		{#if hasDestEntities}
-			<button class="icon-button" on:click={() => (expanded = !expanded)}>
+			<button class="icon_button" on:click={() => (expanded = !expanded)}>
 				{#if expanded}–{:else}+{/if}
 			</button>
 		{:else}
-			<div class="icon-button" />
+			<div class="icon_button" />
 		{/if}
 		<svelte:component this={itemComponent} {entity} />
 	</div>
@@ -78,7 +78,7 @@
 		display: flex;
 		align-items: center;
 	}
-	.icon-button {
+	.icon_button {
 		margin-right: var(--spacing_sm);
 	}
 	li {

@@ -97,7 +97,7 @@
 		{#if query && entities}
 			<ReplyChatItems {actor} {entities} {selectReply} {queryReply} />
 			{#if more}
-				<PendingButton class="plain-button" pending={status === 'pending'} on:click={query.loadMore}
+				<PendingButton class="plain" pending={status === 'pending'} on:click={query.loadMore}
 					>load more</PendingButton
 				>
 			{/if}
@@ -130,7 +130,7 @@
 		padding: var(--spacing_xs);
 	}
 	.entities {
-		max-width: var(--column_width);
+		max-width: var(--width_md);
 		overflow: auto;
 		flex: 1;
 		display: flex;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -87,7 +87,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 				{format($entity.created, 'MMM d, p')}
 			</div>
 
-			<div class="markup formatted">
+			<div class="prose formatted">
 				{#if $entity.data.type === 'Collection'}
 					<div>{$entity.data.name}</div>
 					<div><EntityContent {entity} /></div>
@@ -98,7 +98,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 
 			<div>
 				<button
-					class="icon-button plain-button"
+					class="icon_button plain"
 					title="reply to @{$authorActor.name}"
 					aria-label="reply to @{$authorActor.name}"
 					on:click={() => (replying = !replying)}>↩</button

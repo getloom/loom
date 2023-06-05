@@ -79,7 +79,7 @@
 	};
 </script>
 
-<form class="markup padded-xl" {...$$restProps}>
+<form class="prose padded_xl" {...$$restProps}>
 	{#if $$slots.header}
 		<slot name="header">
 			<h2>Create a new {entityName}</h2>

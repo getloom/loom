@@ -68,10 +68,10 @@
 	$: paramsPropertiesKeys = paramsProperties && Object.keys(paramsProperties);
 </script>
 
-<form {...$$restProps} class="padded-xl">
-	<h2>Create a system Action</h2>
+<form {...$$restProps} class="padded_xl">
+	<h2>Create an Action</h2>
 	<div class="layout">
-		<fieldset class="actions markup">
+		<fieldset class="actions prose">
 			<legend>available actions</legend>
 			{#each actionDatas as actionData (actionData)}
 				<label class="row">
@@ -82,7 +82,7 @@
 		</fieldset>
 		<div class="content">
 			{#if selectedActionData}
-				<div class="markup">
+				<div class="prose">
 					<h3>
 						<code class={selectedActionData.type}>{selectedActionData.name}</code><small
 							>{selectedActionData.type}</small
@@ -133,7 +133,7 @@
 								<td>
 									<div class="buttons">
 										<button
-											class="plain-button icon-button"
+											class="plain icon_button"
 											style:--icon_size="var(--icon_size_sm)"
 											type="button"
 											title="actions {item.actionData.name} again"
@@ -142,7 +142,7 @@
 											↪
 										</button>
 										<button
-											class="plain-button icon-button"
+											class="plain icon_button"
 											style:--icon_size="var(--icon_size_sm)"
 											type="button"
 											title="actions {item.actionData.name} again"
@@ -170,7 +170,7 @@
 
 <style>
 	form {
-		width: var(--column_width);
+		width: var(--width_md);
 	}
 	.layout {
 		display: flex;
@@ -188,7 +188,7 @@
 		flex: 1;
 	}
 	.actions {
-		/* TODO maybe take `width: 100%` off .markup? could then delete this */
+		/* TODO maybe take `width: 100%` off .prose? could then delete this */
 		width: auto;
 	}
 	.actions label {
@@ -196,14 +196,14 @@
 	}
 	/* TODO copypasted from `PropertyEditor`, maybe extract a class? `.big-text`? */
 	.field {
-		font-size: var(--font_size_lg);
+		font-size: var(--size_lg);
 		font-weight: 700;
 	}
 	.ServiceAction {
-		color: var(--blue);
+		color: var(--color_1);
 	}
 	.ClientAction {
-		color: var(--green);
+		color: var(--color_2);
 	}
 	table {
 		margin: var(--spacing_xl5) 0 var(--spacing_lg);

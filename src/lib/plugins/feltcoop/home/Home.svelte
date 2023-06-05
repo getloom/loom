@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
@@ -61,7 +61,7 @@
 
 <!--TODO extract stuff below into new component-->
 <div class="home">
-	<section class="markup padded-xl">
+	<section class="prose padded_xl">
 		<p>
 			<strong>
 				Here's our hub rules and norms!<br />
@@ -71,7 +71,7 @@
 		</p>
 	</section>
 	<section class="rules-and-norms">
-		<div class="rules markup padded-xl panel">
+		<div class="rules prose padded_xl panel">
 			<div class="header">
 				<h4>rules</h4>
 				<!--TODO how to trigger a directory freshen from result of this dialogue-->
@@ -79,7 +79,7 @@
 					on:click={() => {
 						if (rules) {
 							actions.OpenDialog(
-								toDialogData(EntityEditor, {actor, entity: rules}, {layout: 'page'}),
+								toDialogParams(EntityEditor, {actor, entity: rules}, {layout: 'page'}),
 							);
 						}
 					}}
@@ -91,14 +91,14 @@
 			</div>
 			{#if rules}<EntityContent entity={rules} />{:else}rules not found{/if}
 		</div>
-		<div class="norms markup padded-xl panel">
+		<div class="norms prose padded_xl panel">
 			<div class="header">
 				<h4>norms</h4>
 				<button
 					on:click={() => {
 						if (norms) {
 							actions.OpenDialog(
-								toDialogData(EntityEditor, {actor, entity: norms}, {layout: 'page'}),
+								toDialogParams(EntityEditor, {actor, entity: norms}, {layout: 'page'}),
 							);
 						}
 					}}

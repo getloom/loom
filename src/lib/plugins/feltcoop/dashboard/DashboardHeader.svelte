@@ -29,8 +29,8 @@
 				{hub}
 				showName={false}
 				contextmenuParams={null}
-			/><span class="title">{$hub.name}</span>{/if}{#if space}<span
-				style:font-size="var(--font_size_lg)"><SpaceIcon {space} /></span
+			/><span class="title">{$hub.name}</span>{/if}{#if space}<span style:font-size="var(--size_lg)"
+				><SpaceIcon {space} /></span
 			>
 			<span class="title">{$space?.name || ''}</span>{/if}
 	</li>
@@ -45,7 +45,7 @@
 		height: var(--navbar_size);
 		width: 100%;
 		overflow: hidden;
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.breadcrumbs {
 		--icon_size: var(--icon_size_sm);

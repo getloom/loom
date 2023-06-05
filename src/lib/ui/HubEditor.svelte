@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
@@ -19,11 +19,11 @@
 	export let done: (() => void) | undefined = undefined;
 </script>
 
-<div class="hub-editor column">
-	<form class="markup" {...$$restProps}>
+<div class="hub-editor width_md">
+	<form class="prose" {...$$restProps}>
 		<header>
 			<h2>Edit Hub</h2>
-			<p style:font-size="var(--font_size_xl)">
+			<p style:font-size="var(--size_xl)">
 				<HubAvatar {actor} {hub} />
 			</p>
 			<section>
@@ -43,7 +43,7 @@
 				title="leave hub"
 				on:click={() =>
 					actions.OpenDialog(
-						toDialogData(LeaveHubForm, {
+						toDialogParams(LeaveHubForm, {
 							actor,
 							hub,
 							done: () => {
@@ -59,7 +59,7 @@
 				title="delete hub"
 				on:click={() =>
 					actions.OpenDialog(
-						toDialogData(DeleteHubForm, {
+						toDialogParams(DeleteHubForm, {
 							actor,
 							hub,
 							done: () => {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {ContextmenuActionParams} from '@feltjs/felt-ui';
+	import type {ContextmenuActionParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import {randomHue} from '$lib/ui/color';

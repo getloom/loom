@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -31,10 +31,10 @@
 	<ActorAvatar actor={communityActor} showIcon={true} />
 	<PendingButton
 		title="kick actor"
-		class="icon-button plain-button"
+		class="icon_button plain"
 		on:click={() =>
 			actions.OpenDialog(
-				toDialogData(ConfirmDialog, {
+				toDialogParams(ConfirmDialog, {
 					confirmed: kickActorFromHub,
 					promptText: `Kick ${$communityActor.name} from ${$hub.name}? This cannot be reversed.`,
 					confirmText: 'kick them',
@@ -52,9 +52,9 @@
 		align-items: center;
 		justify-content: space-between;
 		padding-left: var(--spacing_xl);
-		background-color: var(--tint_dark_0);
+		background-color: var(--fg_0);
 	}
 	.actor-item:hover {
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 </style>

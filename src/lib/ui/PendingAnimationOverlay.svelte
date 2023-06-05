@@ -14,6 +14,6 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: var(--font_size_xl7);
+		font-size: var(--size_xl7);
 	}
 </style>

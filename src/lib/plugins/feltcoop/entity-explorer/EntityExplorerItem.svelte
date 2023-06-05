@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui';
+	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
@@ -34,7 +34,7 @@
 		border: var(--border_width) var(--border_style) var(--border_color);
 		margin: 10px;
 		padding: 10px;
-		background-color: var(--input_bg_color);
+		background-color: var(--input_bg);
 		overflow: auto;
 	}
 </style>

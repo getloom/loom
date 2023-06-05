@@ -86,7 +86,7 @@
 	};
 </script>
 
-<form class="markup padded-xl" {...$$restProps}>
+<form class="prose padded_xl" {...$$restProps}>
 	<h2>Create a new Hub</h2>
 	<ContextInfo {actor} />
 	<fieldset>
@@ -120,6 +120,6 @@
 
 <style>
 	details {
-		font-size: var(--font_size_lg);
+		font-size: var(--size_lg);
 	}
 </style>

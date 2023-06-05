@@ -1,12 +1,12 @@
 <script lang="ts">
 </script>
 
-<div class="markup padded-xl">
+<div class="prose padded_xl">
 	<h1>instance admin</h1>
 </div>
 
 <style>
-	.markup {
+	.prose {
 		min-height: 100%;
 	}
 </style>

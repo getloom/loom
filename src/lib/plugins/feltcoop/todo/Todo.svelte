@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogData} from '@feltjs/felt-ui';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import TodoItems from '$lib/plugins/feltcoop/todo/TodoItems.svelte';
@@ -122,7 +122,7 @@
 				on:click={() =>
 					$listsCollection &&
 					actions.OpenDialog(
-						toDialogData(CreateEntityForm, {
+						toDialogParams(CreateEntityForm, {
 							done: () => actions.CloseDialog(),
 							entityName: 'todo list',
 							actor,
@@ -155,7 +155,7 @@
 		overflow: hidden; /* make the content scroll */
 	}
 	.entities {
-		max-width: var(--column_width);
+		max-width: var(--width_md);
 		overflow: auto;
 		flex: 1;
 		display: flex;

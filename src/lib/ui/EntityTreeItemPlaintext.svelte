@@ -20,6 +20,6 @@
 	}
 	.content {
 		padding: 0 var(--spacing_sm);
-		font-size: var(--font_size_sm);
+		font-size: var(--size_sm);
 	}
 </style>

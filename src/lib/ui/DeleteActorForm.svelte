@@ -42,7 +42,7 @@
 	};
 </script>
 
-<form class="markup padded-xl" {...$$restProps}>
+<form class="prose padded_xl" {...$$restProps}>
 	<h2>Delete <Mention name={$actor.name} />?</h2>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>

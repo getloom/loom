@@ -2,7 +2,7 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import {type Readable, readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogData} from '@feltjs/felt-ui';
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import ForumItems from '$lib/plugins/feltcoop/forum/ForumItems.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -48,7 +48,7 @@
 				<button
 					on:click={() =>
 						actions.OpenDialog(
-							toDialogData(CreateEntityForm, {
+							toDialogParams(CreateEntityForm, {
 								done: () => actions.CloseDialog(),
 								entityName: 'post',
 								fields: {name: true, content: true},
@@ -78,7 +78,7 @@
 		overflow: hidden; /* make the content scroll */
 	}
 	.entities {
-		max-width: var(--column_width);
+		max-width: var(--width_md);
 		overflow: auto;
 		flex: 1;
 		display: flex;

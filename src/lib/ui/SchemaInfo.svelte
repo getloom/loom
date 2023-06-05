@@ -52,7 +52,7 @@
 		justify-content: space-between;
 	}
 	.title .name {
-		font-size: var(--font_size_lg);
+		font-size: var(--size_lg);
 		padding: var(--spacing_md);
 		font-family: var(--font_family_mono);
 		border-bottom-left-radius: 0;
@@ -66,17 +66,17 @@
 	.description {
 		display: flex;
 		align-items: center;
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 		padding: var(--spacing_md);
 	}
 	.property {
 		display: flex;
 		align-items: center;
 		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
-		background-color: var(--tint_dark_1);
+		background-color: var(--fg_1);
 	}
 	.property:nth-child(2n + 1) {
-		background-color: var(--tint_dark_0);
+		background-color: var(--fg_0);
 	}
 	.property .name {
 		display: flex;

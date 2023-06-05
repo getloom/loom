@@ -45,7 +45,7 @@
 	};
 </script>
 
-<form class="markup padded-xl" {...$$restProps}>
+<form class="prose padded_xl" {...$$restProps}>
 	<h2>Leave Hub?</h2>
 	<ContextInfo {actor} {hub} />
 	<label>
