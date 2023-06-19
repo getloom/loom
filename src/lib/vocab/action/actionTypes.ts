@@ -36,7 +36,7 @@ export type ServiceActionName =
 	| 'UpdateAccountPassword'
 	| 'CreateHub'
 	| 'ReadHub'
-	| 'UpdateHubSettings'
+	| 'UpdateHub'
 	| 'DeleteHub'
 	| 'InviteToHub'
 	| 'LeaveHub'
@@ -86,7 +86,7 @@ export interface ActionParamsByName {
 	UpdateAccountPassword: UpdateAccountPasswordParams;
 	CreateHub: CreateHubParams;
 	ReadHub: ReadHubParams;
-	UpdateHubSettings: UpdateHubSettingsParams;
+	UpdateHub: UpdateHubParams;
 	DeleteHub: DeleteHubParams;
 	InviteToHub: InviteToHubParams;
 	LeaveHub: LeaveHubParams;
@@ -134,7 +134,7 @@ export interface ActionResponseByName {
 	UpdateAccountPassword: UpdateAccountPasswordResponse;
 	CreateHub: CreateHubResponse;
 	ReadHub: ReadHubResponse;
-	UpdateHubSettings: UpdateHubSettingsResponse;
+	UpdateHub: UpdateHubResponse;
 	DeleteHub: DeleteHubResponse;
 	InviteToHub: InviteToHubResponse;
 	LeaveHub: LeaveHubResponse;
@@ -187,7 +187,7 @@ export interface ServiceByName {
 	DeleteActor: AuthorizedService<DeleteActorParams, DeleteActorResponseResult>;
 	ReadHub: AuthorizedService<ReadHubParams, ReadHubResponseResult>;
 	CreateHub: AuthorizedService<CreateHubParams, CreateHubResponseResult>;
-	UpdateHubSettings: AuthorizedService<UpdateHubSettingsParams, UpdateHubSettingsResponseResult>;
+	UpdateHub: AuthorizedService<UpdateHubParams, UpdateHubResponseResult>;
 	DeleteHub: AuthorizedService<DeleteHubParams, DeleteHubResponseResult>;
 	InviteToHub: AuthorizedService<InviteToHubParams, InviteToHubResponseResult>;
 	LeaveHub: AuthorizedService<LeaveHubParams, LeaveHubResponseResult>;
@@ -307,16 +307,23 @@ export interface ReadHubResponse {
 }
 export type ReadHubResponseResult = ApiResult<ReadHubResponse>;
 
-export interface UpdateHubSettingsParams {
+export interface UpdateHubParams {
 	actor: ActorId;
 	hub_id: HubId;
 	/**
 	 * A nested set of attributes on Hub. Holds all hub level settings.
 	 */
-	settings: HubSettings;
+	settings?: HubSettings;
 }
-export type UpdateHubSettingsResponse = null;
-export type UpdateHubSettingsResponseResult = ApiResult<UpdateHubSettingsResponse>;
+export interface UpdateHubResponse {
+	/**
+	 * Hubs represent the membrane around the places Actors can interact with each other or with system level data.
+	 * They have self contained governance and ownership of Spaces within them.
+	 * By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
+	 */
+	hub: Hub;
+}
+export type UpdateHubResponseResult = ApiResult<UpdateHubResponse>;
 
 export interface DeleteHubParams {
 	actor: ActorId;
@@ -711,7 +718,7 @@ export interface Actions {
 	) => Promise<UpdateAccountPasswordResponseResult>;
 	CreateHub: (params: CreateHubParams) => Promise<CreateHubResponseResult>;
 	ReadHub: (params: ReadHubParams) => Promise<ReadHubResponseResult>;
-	UpdateHubSettings: (params: UpdateHubSettingsParams) => Promise<UpdateHubSettingsResponseResult>;
+	UpdateHub: (params: UpdateHubParams) => Promise<UpdateHubResponseResult>;
 	DeleteHub: (params: DeleteHubParams) => Promise<DeleteHubResponseResult>;
 	InviteToHub: (params: InviteToHubParams) => Promise<InviteToHubResponseResult>;
 	LeaveHub: (params: LeaveHubParams) => Promise<LeaveHubResponseResult>;
@@ -778,9 +785,9 @@ export interface Mutations {
 	ReadHub: (
 		ctx: MutationContext<ReadHubParams, ReadHubResponseResult>,
 	) => Promise<ReadHubResponseResult>;
-	UpdateHubSettings: (
-		ctx: MutationContext<UpdateHubSettingsParams, UpdateHubSettingsResponseResult>,
-	) => Promise<UpdateHubSettingsResponseResult>;
+	UpdateHub: (
+		ctx: MutationContext<UpdateHubParams, UpdateHubResponseResult>,
+	) => Promise<UpdateHubResponseResult>;
 	DeleteHub: (
 		ctx: MutationContext<DeleteHubParams, DeleteHubResponseResult>,
 	) => Promise<DeleteHubResponseResult>;

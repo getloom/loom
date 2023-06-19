@@ -997,18 +997,24 @@
 			"required": ["entities"],
 			"additionalProperties": false
 		},
-		"UpdateHubSettingsParams": {
-			"$id": "/schemas/UpdateHubSettingsParams",
+		"UpdateHubParams": {
+			"$id": "/schemas/UpdateHubParams",
 			"type": "object",
 			"properties": {
 				"actor": {"$ref": "/schemas/ActorId"},
 				"hub_id": {"$ref": "/schemas/HubId"},
 				"settings": {"$ref": "/schemas/HubSettings"}
 			},
-			"required": ["actor", "hub_id", "settings"],
+			"required": ["actor", "hub_id"],
 			"additionalProperties": false
 		},
-		"UpdateHubSettingsResponse": {"$id": "/schemas/UpdateHubSettingsResponse", "type": "null"},
+		"UpdateHubResponse": {
+			"$id": "/schemas/UpdateHubResponse",
+			"type": "object",
+			"properties": {"hub": {"$ref": "/schemas/Hub"}},
+			"required": ["hub"],
+			"additionalProperties": false
+		},
 		"UpdatePolicyParams": {
 			"$id": "/schemas/UpdatePolicyParams",
 			"type": "object",

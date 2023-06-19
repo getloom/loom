@@ -13,7 +13,7 @@
 	const {actions} = getApp();
 
 	const updateHubSettings = async (updated: any) =>
-		actions.UpdateHubSettings({
+		actions.UpdateHub({
 			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			settings: updated,

@@ -5,7 +5,7 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {
 	CreateHub,
 	ReadHub,
-	UpdateHubSettings,
+	UpdateHub,
 	DeleteHub,
 	InviteToHub,
 	LeaveHub,
@@ -36,6 +36,7 @@ import {
 import {permissions} from '$lib/vocab/policy/permissions';
 import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/app/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
+import {ApiError} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
 
@@ -157,14 +158,20 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 	},
 };
 
-export const UpdateHubSettingsService: ServiceByName['UpdateHubSettings'] = {
-	action: UpdateHubSettings,
+export const UpdateHubService: ServiceByName['UpdateHub'] = {
+	action: UpdateHub,
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, settings} = params;
-		await checkPolicy(permissions.UpdateHubSettings, actor, hub_id, repos);
-		await repos.hub.updateSettings(hub_id, settings);
-		return {ok: true, status: 200, value: null, broadcast: hub_id};
+		await checkPolicy(permissions.UpdateHub, actor, hub_id, repos);
+		// TODO probably refactor `repos.hub.updateSettings` to return the updated document,
+		// as well as conditionally handle other updatable properties of `hub`
+		if (settings) {
+			await repos.hub.updateSettings(hub_id, settings);
+		}
+		const updated = await repos.hub.findById(hub_id);
+		if (!updated) throw new ApiError(404, 'no hub found');
+		return {ok: true, status: 200, value: {hub: updated}, broadcast: hub_id};
 	},
 };
 

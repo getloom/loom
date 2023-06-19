@@ -10,7 +10,7 @@ import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorMutations';
 import {
 	ReadHub,
 	CreateHub,
-	UpdateHubSettings,
+	UpdateHub,
 	DeleteHub,
 	InviteToHub,
 	LeaveHub,
@@ -56,7 +56,7 @@ export const mutations: Record<string, Mutation> = {
 	// hubMutations
 	ReadHub,
 	CreateHub,
-	UpdateHubSettings,
+	UpdateHub,
 	DeleteHub,
 	InviteToHub,
 	LeaveHub,

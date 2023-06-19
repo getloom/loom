@@ -9,7 +9,7 @@ import {
 import {
 	CreateHub,
 	ReadHub,
-	UpdateHubSettings,
+	UpdateHub,
 	DeleteHub,
 	InviteToHub,
 	LeaveHub,
@@ -58,7 +58,7 @@ export const actionDatas: ActionData[] = [
 	// hub actions
 	CreateHub,
 	ReadHub,
-	UpdateHubSettings,
+	UpdateHub,
 	DeleteHub,
 	InviteToHub,
 	LeaveHub,

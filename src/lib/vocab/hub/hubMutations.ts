@@ -36,22 +36,10 @@ export const CreateHub: Mutations['CreateHub'] = async ({invoke, ui}) => {
 	return result;
 };
 
-export const UpdateHubSettings: Mutations['UpdateHubSettings'] = async ({
-	params,
-	invoke,
-	ui: {hubById},
-}) => {
-	// optimistic update
-	const hub = hubById.get(params.hub_id)!;
-	const originalSettings = hub.get().settings;
-	hub.update(($hub) => ({
-		...$hub,
-		settings: {...$hub.settings, ...params.settings},
-	}));
+export const UpdateHub: Mutations['UpdateHub'] = async ({invoke, ui}) => {
 	const result = await invoke();
-	if (!result.ok) {
-		hub.update(($hub) => ({...$hub, settings: originalSettings}));
-	}
+	if (!result.ok) return result;
+	ui.mutate(() => stashHub(ui, result.value.hub));
 	return result;
 };
 

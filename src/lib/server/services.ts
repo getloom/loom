@@ -4,7 +4,7 @@ import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/ac
 import {
 	ReadHubService,
 	CreateHubService,
-	UpdateHubSettingsService,
+	UpdateHubService,
 	DeleteHubService,
 	InviteToHubService,
 	LeaveHubService,
@@ -66,7 +66,7 @@ export const services: Map<string, Service> = new Map(
 		// hubServices
 		ReadHubService,
 		CreateHubService,
-		UpdateHubSettingsService,
+		UpdateHubService,
 		DeleteHubService,
 		InviteToHubService,
 		LeaveHubService,

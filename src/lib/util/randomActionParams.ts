@@ -69,7 +69,7 @@ export const randomActionParams: RandomActionParams = {
 		if (!actor) ({actor} = await random.actor(account));
 		return randomHubParams(actor.actor_id);
 	},
-	UpdateHubSettings: async (random, {account, actor, hub} = {}) => {
+	UpdateHub: async (random, {account, actor, hub} = {}) => {
 		if (!actor) ({actor} = await random.actor(account));
 		if (!hub) ({hub} = await random.hub(actor, account));
 		return {

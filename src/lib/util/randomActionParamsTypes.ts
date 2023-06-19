@@ -9,7 +9,7 @@ import type {
 	UpdateAccountPasswordParams,
 	CreateHubParams,
 	ReadHubParams,
-	UpdateHubSettingsParams,
+	UpdateHubParams,
 	DeleteHubParams,
 	InviteToHubParams,
 	LeaveHubParams,
@@ -64,10 +64,7 @@ export interface RandomActionParams {
 	) => Promise<UpdateAccountPasswordParams>;
 	CreateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateHubParams>;
 	ReadHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadHubParams>;
-	UpdateHubSettings: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<UpdateHubSettingsParams>;
+	UpdateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateHubParams>;
 	DeleteHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteHubParams>;
 	InviteToHub: (
 		random: RandomVocabContext,

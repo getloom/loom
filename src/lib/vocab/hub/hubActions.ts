@@ -89,28 +89,33 @@ export const ReadHub: ServiceActionData = {
 	},
 };
 
-export const UpdateHubSettings: ServiceActionData = {
+export const UpdateHub: ServiceActionData = {
 	type: 'ServiceAction',
-	name: 'UpdateHubSettings',
+	name: 'UpdateHub',
 	broadcast: true,
 	params: {
-		$id: '/schemas/UpdateHubSettingsParams',
+		$id: '/schemas/UpdateHubParams',
 		type: 'object',
 		properties: {
 			actor: {$ref: '/schemas/ActorId'},
 			hub_id: {$ref: '/schemas/HubId'},
 			settings: {$ref: '/schemas/HubSettings'},
 		},
-		required: ['actor', 'hub_id', 'settings'],
+		required: ['actor', 'hub_id'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/UpdateHubSettingsResponse',
-		type: 'null',
+		$id: '/schemas/UpdateHubResponse',
+		type: 'object',
+		properties: {
+			hub: {$ref: '/schemas/Hub'},
+		},
+		required: ['hub'],
+		additionalProperties: false,
 	},
-	returns: 'Promise<UpdateHubSettingsResponseResult>',
+	returns: 'Promise<UpdateHubResponseResult>',
 	route: {
-		path: '/api/v1/hubs/:hub_id/settings',
+		path: '/api/v1/hubs/:hub_id',
 		method: 'POST',
 	},
 };
