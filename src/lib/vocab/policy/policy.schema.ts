@@ -11,9 +11,10 @@ export const PolicySchema = {
 	$id: '/schemas/Policy',
 	type: 'object',
 	description: `
-		Policies are associated with Roles to describe the Actions a Role is able to take in the system.
-		Permissions are the enumeration of the those Actions and are often 1:1.
-		\`data\` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
+		Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a permission
+		to describe the Actions that <Vocab name="Actor" />s with the <Vocab name="Role" /> are able to perform.
+		Permissions are often 1:1 with Actions, but they don't have to be.
+		\`data\` is a stub to support more complex governance schemes in the future.
 	`,
 	properties: {
 		policy_id: {$ref: '/schemas/PolicyId'},

@@ -102,7 +102,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 		]}
 	>
-		<div class="entity markup formatted">
+		<div class="entity prose formatted">
 			<div class="order_buttons">
 				<button
 					class="plain_button icon_button reply"
@@ -117,7 +117,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			</div>
 			<!-- TODO fix a11y -->
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div on:click={() => selectList(entity)} class="entity markup formatted">
+			<div on:click={() => selectList(entity)} class="entity prose formatted">
 				{#if hasChecked}
 					<!-- TODO checkbox not updated properly on event broadcast-->
 					<!-- TODO maybe use Felt checkbox component when available-->

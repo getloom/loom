@@ -11,12 +11,12 @@ export const EntitySchema = {
 	$id: '/schemas/Entity',
 	type: 'object',
 	description: `
-		An Entity is the core data type that represents an ActivityStreams object in the system.
+		An <Vocab name="Entity" /> is the core data type that represents an ActivityStreams object in the system.
 		Each has an "owning" space and actor that controls its governance.
-		Entities exist within a graph architecture, with Ties serving as the paths between nodes.
-		Conventionally, all entities within a given Space can be found by traversing
-		the graph starting at the directory Entity associated with the owning Space.
-		A directory is an ActivityStreams Collection referenced by each Space.
+		<Vocab name="Entity" /> objects exist within a graph architecture, with <Vocab name="Tie" /> objects serving as the edges between nodes.
+		Conventionally, all entities within a given <Vocab name="Space" /> can be found by traversing
+		the graph starting at the directory <Vocab name="Entity" /> associated with the owning <Vocab name="Space" />.
+		A directory is an ActivityStreams Collection referenced by each <Vocab name="Space" />.
 	`,
 	properties: {
 		entity_id: {$ref: '/schemas/EntityId'},

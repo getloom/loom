@@ -11,7 +11,7 @@ export const ActorRecordSchema = {
 	$id: '/schemas/ActorRecord',
 	type: 'object',
 	description: `
-		The full database record for the various Actor types.
+		The full database record for the various <Vocab name="Actor" /> types.
 	`,
 	properties: {
 		actor_id: {$ref: '/schemas/ActorId'},
@@ -25,12 +25,13 @@ export const ActorRecordSchema = {
 	},
 	required: ['actor_id', 'account_id', 'hub_id', 'type', 'name', 'icon', 'created', 'updated'],
 	additionalProperties: false,
-};
+} satisfies VocabSchema;
 
 export const ActorSchema = {
 	$id: '/schemas/Actor',
 	description: `
-	 Actors perform actions in the system. They can be of type Account, Hub, or Ghost.
+		<Vocab name="Actor" />s perform actions in the system.
+		They can be of type <code>'account'</code>, <code>'hub'</code>, or <code>'ghost'</code>.
 	`,
 	anyOf: [
 		{$ref: '/schemas/AccountActor'},
@@ -48,9 +49,9 @@ export const AccountActorSchema = {
 	$id: '/schemas/AccountActor',
 	type: 'object',
 	description: `
-		Represents a human actor logged in via an Account. They are owned and managed from the account level.
-		When an AccountActor is created, a personal Hub is also created for it and associated via 'hub_id'.
-		A reference to this personal Hub is stored in 'hub_id'.
+		Represents a human actor logged in via an <Vocab name="Account" />. They are owned and managed from the account level.
+		When an AccountActor is created, a personal <Vocab name="Hub" /> is also created for it and associated via <code>hub_id</code>.
+		A reference to this personal <Vocab name="Hub" /> is stored in <code>hub_id</code>.
 	`,
 	properties: {
 		actor_id: {$ref: '/schemas/ActorId'},
@@ -70,9 +71,9 @@ export const CommunityActorSchema = {
 	$id: '/schemas/CommunityActor',
 	type: 'object',
 	description: `
-		Represents a collective actor under the ownership of a Hub. 
-		Currently, these are only created when a new Hub is made and have no extended functionality within the system.
-		The Hub that owns it is represented by 'hub_id'.
+		Represents a collective actor under the ownership of a <Vocab name="Hub" />. 
+		Currently, these are only created when a new <Vocab name="Hub" /> is made and have no extended functionality within the system.
+		The <Vocab name="Hub" /> that owns it is represented by <code>hub_id</code>.
 	`,
 	properties: {
 		actor_id: {$ref: '/schemas/ActorId'},
@@ -92,7 +93,7 @@ export const GhostActorSchema = {
 	$id: '/schemas/GhostActor',
 	type: 'object',
 	description: `
-	 A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.	 
+	 A special system-level <Vocab name="Actor" /> that is a placeholder for deleted or otherwise unavailable <Vocab name="Actor" />s.	 
 	`,
 	properties: {
 		actor_id: {$ref: '/schemas/ActorId'},
@@ -115,7 +116,7 @@ export const PublicActorSchema = {
 	$id: '/schemas/PublicActor',
 	type: 'object',
 	description: `
-		A subset of an Actor available to all clients in a hub.
+		A subset of an <Vocab name="Actor" /> available to all clients in a <Vocab name="Hub" />.
 	`,
 	properties: {
 		actor_id: {$ref: '/schemas/ActorId'},
@@ -132,8 +133,8 @@ export const PublicActorSchema = {
 export const ClientActorSchema = {
 	$id: '/schemas/ClientActor',
 	description: `
-		The union of Actor subsets a user sees on their client,
-		including the user's AccountActors and all other hub actors as PublicActors.
+		The union of <Vocab name="Actor" /> subsets a user sees on their client,
+		including the user's <Vocab name="AccountActors" /> and all other hub actors as <Vocab name="PublicActors" />.
 	`,
 	anyOf: [{$ref: '/schemas/AccountActor'}, {$ref: '/schemas/PublicActor'}],
 } satisfies VocabSchema;

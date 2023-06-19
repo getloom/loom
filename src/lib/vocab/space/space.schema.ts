@@ -11,8 +11,8 @@ export const SpaceSchema = {
 	$id: '/schemas/Space',
 	type: 'object',
 	description: `
-	 Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
-	 The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
+	 <Vocab name="Space" />s are subdivisions within a <Vocab name="Hub" /> that hold a View and reference to an <Vocab name="Entity" /> directory.
+	 The View is used to interpret, visualize, and manipulate the <Vocab name="Entity" />s connected to the directory.
 	 Each is a Svelte component that conforms to the View interface.
  `,
 	properties: {

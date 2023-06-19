@@ -30,7 +30,7 @@ export const ClientAccountSchema = {
 	$id: '/schemas/ClientAccount',
 	type: 'object',
 	description: `
-		A client-facing subset of an Account. Excludes 'password' for security.
+		A client-facing subset of an <Vocab name="Account" />. Excludes <code>password</code> for security.
 	`,
 	properties: {
 		account_id: {$ref: '/schemas/AccountId'},
@@ -47,7 +47,7 @@ export const AccountSettingsSchema = {
 	$id: '/schemas/AccountSettings',
 	type: 'object',
 	description: `
-		A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+		A nested set of attributes on <Vocab name="Account" /> and <Vocab name="ClientAccount" />. Holds all account level settings.
 	`,
 	properties: {
 		darkmode: {type: 'boolean'},
@@ -114,7 +114,7 @@ export const ClientGuestSessionSchema = {
 	$id: '/schemas/ClientGuestSession',
 	type: 'object',
 	description: `
-		A type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.
+		A type of <Vocab name="ClientSession" />. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.
 	`,
 	properties: {
 		guest: {enum: [true]},

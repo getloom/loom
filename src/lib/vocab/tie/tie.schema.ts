@@ -11,9 +11,9 @@ export const TieSchema = {
 	$id: '/schemas/Tie',
 	type: 'object',
 	description: `
-		Ties are part of the Entity/Tie graph data system.
+		<Vocab name="Tie" />s are part of the <Vocab name="Entity" />/<Vocab name="Tie" /> graph data system.
 		Each represents a named, directional relationship between two entities.
-		A Tie specifies "the [source] has relationship of [type] with [dest]."
+		A <Vocab name="Tie" /> specifies "the [source] has relationship of [type] with [dest]."
 	`,
 	properties: {
 		tie_id: {$ref: '/schemas/TieId'},

@@ -3,6 +3,8 @@
 	import {stripStart} from '@feltjs/util/string.js';
 	import type {JSONSchema} from '@ryanatkn/json-schema-to-typescript';
 
+	import SvastText from '$lib/ui/SvastText.svelte';
+
 	export let schema: VocabSchema;
 
 	let properties: undefined | Array<[string, JSONSchema]>;
@@ -22,8 +24,8 @@
 			<small class="type">{schema.type || 'unknown'}</small>
 		</div>
 		{#if schema.description}
-			<div class="description">
-				{schema.description}
+			<div class="description prose">
+				<SvastText text={schema.description} />
 			</div>
 		{/if}
 		{#if properties}
@@ -64,8 +66,6 @@
 		font-family: var(--font_family_mono);
 	}
 	.description {
-		display: flex;
-		align-items: center;
 		background-color: var(--fg_1);
 		padding: var(--spacing_md);
 	}

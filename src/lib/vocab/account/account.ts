@@ -21,26 +21,26 @@ export interface Account {
 	name: string;
 	password: string;
 	/**
-	 * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+	 * A nested set of attributes on <Vocab name="Account" /> and <Vocab name="ClientAccount" />. Holds all account level settings.
 	 */
 	settings: AccountSettings;
 	created: Date;
 	updated: Date | null;
 }
 /**
- * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+ * A nested set of attributes on <Vocab name="Account" /> and <Vocab name="ClientAccount" />. Holds all account level settings.
  */
 export interface AccountSettings {
 	darkmode?: boolean;
 }
 /**
- * A client-facing subset of an Account. Excludes 'password' for security.
+ * A client-facing subset of an <Vocab name="Account" />. Excludes <code>password</code> for security.
  */
 export interface ClientAccount {
 	account_id: AccountId;
 	name: string;
 	/**
-	 * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+	 * A nested set of attributes on <Vocab name="Account" /> and <Vocab name="ClientAccount" />. Holds all account level settings.
 	 */
 	settings: AccountSettings;
 	created: Date;
@@ -51,7 +51,7 @@ export interface ClientAccount {
  */
 export interface ClientAccountSession {
 	/**
-	 * A client-facing subset of an Account. Excludes 'password' for security.
+	 * A client-facing subset of an <Vocab name="Account" />. Excludes <code>password</code> for security.
 	 */
 	account: ClientAccount;
 	sessionActors: AccountActor[];
@@ -65,7 +65,7 @@ export interface ClientAccountSession {
 	guest?: false;
 }
 /**
- * A type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.
+ * A type of <Vocab name="ClientSession" />. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.
  */
 export interface ClientGuestSession {
 	guest: true;

@@ -21,7 +21,7 @@
 		"AccountActor": {
 			"$id": "/schemas/AccountActor",
 			"type": "object",
-			"description": "\n\t\tRepresents a human actor logged in via an Account. They are owned and managed from the account level.\n\t\tWhen an AccountActor is created, a personal Hub is also created for it and associated via 'hub_id'.\n\t\tA reference to this personal Hub is stored in 'hub_id'.\n\t",
+			"description": "\n\t\tRepresents a human actor logged in via an <Vocab name=\"Account\" />. They are owned and managed from the account level.\n\t\tWhen an AccountActor is created, a personal <Vocab name=\"Hub\" /> is also created for it and associated via <code>hub_id</code>.\n\t\tA reference to this personal <Vocab name=\"Hub\" /> is stored in <code>hub_id</code>.\n\t",
 			"properties": {
 				"actor_id": {
 					"$ref": "/schemas/ActorId",
@@ -58,14 +58,14 @@
 		"AccountSettings": {
 			"$id": "/schemas/AccountSettings",
 			"type": "object",
-			"description": "\n\t\tA nested set of attributes on Account & ClientAccount. Holds all account level settings.\n\t",
+			"description": "\n\t\tA nested set of attributes on <Vocab name=\"Account\" /> and <Vocab name=\"ClientAccount\" />. Holds all account level settings.\n\t",
 			"properties": {"darkmode": {"type": "boolean"}},
 			"required": [],
 			"additionalProperties": false
 		},
 		"Actor": {
 			"$id": "/schemas/Actor",
-			"description": "\n\t Actors perform actions in the system. They can be of type Account, Hub, or Ghost.\n\t",
+			"description": "\n\t\t<Vocab name=\"Actor\" />s perform actions in the system.\n\t\tThey can be of type <code>'account'</code>, <code>'hub'</code>, or <code>'ghost'</code>.\n\t",
 			"anyOf": [
 				{"$ref": "/schemas/AccountActor"},
 				{"$ref": "/schemas/CommunityActor"},
@@ -81,7 +81,7 @@
 		"Assignment": {
 			"$id": "/schemas/Assignment",
 			"type": "object",
-			"description": "\n\t Describes the relationship between an Actor and Role within a given Hub.\n\t An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.\n\t When initially joining a Hub, Actors are given an Assignment to the default Role.\n\t",
+			"description": "\n\t Describes the relationship between an <Vocab name=\"Actor\" /> and <Vocab name=\"Role\" /> within a given <Vocab name=\"Hub\" />.\n\t An <Vocab name=\"Actor\" /> must have at least 1 <Vocab name=\"Assignment\" /> to be in a <Vocab name=\"Hub\" /> and see it in the nav.\n\t When initially joining a <Vocab name=\"Hub\" />, <Vocab name=\"Actor\" />s are given an <Vocab name=\"Assignment\" /> to the default <Vocab name=\"Role\" />.\n\t",
 			"properties": {
 				"assignment_id": {"$ref": "/schemas/AssignmentId"},
 				"actor_id": {"$ref": "/schemas/ActorId"},
@@ -108,7 +108,7 @@
 		"ClientAccount": {
 			"$id": "/schemas/ClientAccount",
 			"type": "object",
-			"description": "\n\t\tA client-facing subset of an Account. Excludes 'password' for security.\n\t",
+			"description": "\n\t\tA client-facing subset of an <Vocab name=\"Account\" />. Excludes <code>password</code> for security.\n\t",
 			"properties": {
 				"account_id": {"$ref": "/schemas/AccountId"},
 				"name": {"type": "string"},
@@ -155,13 +155,13 @@
 		},
 		"ClientActor": {
 			"$id": "/schemas/ClientActor",
-			"description": "\n\t\tThe union of Actor subsets a user sees on their client,\n\t\tincluding the user's AccountActors and all other hub actors as PublicActors.\n\t",
+			"description": "\n\t\tThe union of <Vocab name=\"Actor\" /> subsets a user sees on their client,\n\t\tincluding the user's <Vocab name=\"AccountActors\" /> and all other hub actors as <Vocab name=\"PublicActors\" />.\n\t",
 			"anyOf": [{"$ref": "/schemas/AccountActor"}, {"$ref": "/schemas/PublicActor"}]
 		},
 		"ClientGuestSession": {
 			"$id": "/schemas/ClientGuestSession",
 			"type": "object",
-			"description": "\n\t\tA type of ClientSession. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.\n\t",
+			"description": "\n\t\tA type of <Vocab name=\"ClientSession\" />. Loaded for un-authenticated users, it simply indicates a user is a guest to the client.\n\t",
 			"properties": {"guest": {"enum": [true]}},
 			"required": ["guest"],
 			"additionalProperties": false
@@ -174,7 +174,7 @@
 		"CommunityActor": {
 			"$id": "/schemas/CommunityActor",
 			"type": "object",
-			"description": "\n\t\tRepresents a collective actor under the ownership of a Hub. \n\t\tCurrently, these are only created when a new Hub is made and have no extended functionality within the system.\n\t\tThe Hub that owns it is represented by 'hub_id'.\n\t",
+			"description": "\n\t\tRepresents a collective actor under the ownership of a <Vocab name=\"Hub\" />. \n\t\tCurrently, these are only created when a new <Vocab name=\"Hub\" /> is made and have no extended functionality within the system.\n\t\tThe <Vocab name=\"Hub\" /> that owns it is represented by <code>hub_id</code>.\n\t",
 			"properties": {
 				"actor_id": {"$ref": "/schemas/ActorId"},
 				"account_id": {"type": "null"},
@@ -466,7 +466,7 @@
 		"Entity": {
 			"$id": "/schemas/Entity",
 			"type": "object",
-			"description": "\n\t\tAn Entity is the core data type that represents an ActivityStreams object in the system.\n\t\tEach has an \"owning\" space and actor that controls its governance.\n\t\tEntities exist within a graph architecture, with Ties serving as the paths between nodes.\n\t\tConventionally, all entities within a given Space can be found by traversing\n\t\tthe graph starting at the directory Entity associated with the owning Space.\n\t\tA directory is an ActivityStreams Collection referenced by each Space.\n\t",
+			"description": "\n\t\tAn <Vocab name=\"Entity\" /> is the core data type that represents an ActivityStreams object in the system.\n\t\tEach has an \"owning\" space and actor that controls its governance.\n\t\t<Vocab name=\"Entity\" /> objects exist within a graph architecture, with <Vocab name=\"Tie\" /> objects serving as the edges between nodes.\n\t\tConventionally, all entities within a given <Vocab name=\"Space\" /> can be found by traversing\n\t\tthe graph starting at the directory <Vocab name=\"Entity\" /> associated with the owning <Vocab name=\"Space\" />.\n\t\tA directory is an ActivityStreams Collection referenced by each <Vocab name=\"Space\" />.\n\t",
 			"properties": {
 				"entity_id": {"$ref": "/schemas/EntityId"},
 				"actor_id": {"$ref": "/schemas/ActorId"},
@@ -531,7 +531,7 @@
 		"GhostActor": {
 			"$id": "/schemas/GhostActor",
 			"type": "object",
-			"description": "\n\t A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.\t \n\t",
+			"description": "\n\t A special system-level <Vocab name=\"Actor\" /> that is a placeholder for deleted or otherwise unavailable <Vocab name=\"Actor\" />s.\t \n\t",
 			"properties": {
 				"actor_id": {"$ref": "/schemas/ActorId"},
 				"account_id": {"type": "null"},
@@ -548,7 +548,7 @@
 		"Hub": {
 			"$id": "/schemas/Hub",
 			"type": "object",
-			"description": "\n\t\tHubs represent the membrane around the places Actors can interact with each other or with system level data.\n\t\tThey have self contained governance and ownership of Spaces within them.\n\t\tBy default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.\n\t",
+			"description": "\n\t\t<Vocab name=\"Hub\" />s represent the membrane around the places <Vocab name=\"Actor\" />s can interact with each other or with system level data.\n\t\tThey have self contained governance and ownership of <Vocab name=\"Space\" />s within them.\n\t\tBy default they are hidden and undiscoverable and are only visible to a user once an <Vocab name=\"Actor\" /> has been invited in.\n\t",
 			"properties": {
 				"hub_id": {"$ref": "/schemas/HubId"},
 				"type": {"type": "string", "enum": ["community", "personal"]},
@@ -569,7 +569,7 @@
 		"HubSettings": {
 			"$id": "/schemas/HubSettings",
 			"type": "object",
-			"description": "\n\t\tA nested set of attributes on Hub. Holds all hub level settings.\n\t",
+			"description": "\n\t\tA nested set of attributes on <Vocab name=\"Hub\" />. Holds all hub level settings.\n\t",
 			"properties": {
 				"hue": {"type": "number"},
 				"defaultRoleId": {"$ref": "/schemas/RoleId"},
@@ -589,7 +589,7 @@
 		"InitialHubSettings": {
 			"$id": "/schemas/InitialHubSettings",
 			"type": "object",
-			"description": "\n\t\tA subset of HubSettings needed for defaults at the time of Hub creation.\n\t",
+			"description": "\n\t\tA subset of <Vocab name=\"HubSettings\" /> needed for defaults at the time of <Vocab name=\"Hub\" /> creation.\n\t",
 			"properties": {"hue": {"type": "number"}},
 			"required": ["hue"],
 			"additionalProperties": false
@@ -650,7 +650,7 @@
 		"Policy": {
 			"$id": "/schemas/Policy",
 			"type": "object",
-			"description": "\n\t\tPolicies are associated with Roles to describe the Actions a Role is able to take in the system.\n\t\tPermissions are the enumeration of the those Actions and are often 1:1.\n\t\t`data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.\n\t",
+			"description": "\n\t\tEach <Vocab name=\"Policy\" /> associates a <Vocab name=\"Role\" /> with a permission\n\t\tto describe the Actions that <Vocab name=\"Actor\" />s with the <Vocab name=\"Role\" /> are able to perform.\n\t\tPermissions are often 1:1 with Actions, but they don't have to be.\n\t\t`data` is a stub to support more complex governance schemes in the future.\n\t",
 			"properties": {
 				"policy_id": {"$ref": "/schemas/PolicyId"},
 				"role_id": {"$ref": "/schemas/RoleId"},
@@ -671,7 +671,7 @@
 		"PublicActor": {
 			"$id": "/schemas/PublicActor",
 			"type": "object",
-			"description": "\n\t\tA subset of an Actor available to all clients in a hub.\n\t",
+			"description": "\n\t\tA subset of an <Vocab name=\"Actor\" /> available to all clients in a <Vocab name=\"Hub\" />.\n\t",
 			"properties": {
 				"actor_id": {"$ref": "/schemas/ActorId"},
 				"type": {"type": "string", "enum": ["account", "community", "ghost"]},
@@ -835,7 +835,7 @@
 		"Role": {
 			"$id": "/schemas/Role",
 			"type": "object",
-			"description": "\n\t\tRoles are user-defined governance objects that exist within the context of a single Hub.\n\t\tThey have Policies associated with them that allow for actions to be taken within the system.\n\t\tWhen an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.\n\t",
+			"description": "\n\t\t<Vocab name=\"Role\" />s are user-defined governance objects that exist within the context of a single <Vocab name=\"Hub\" />.\n\t\tThey have <Vocab name=\"Policy\" />s associated with them that allow for actions to be taken within the system.\n\t\tWhen an <Vocab name=\"Actor\" /> has a <Vocab name=\"Role\" /> via an <Vocab name=\"Assignment\" />,\n\t\tthat actor may take any action allowed by the role's <Vocab name=\"Policy\" />s.\n\t",
 			"properties": {
 				"role_id": {"$ref": "/schemas/RoleId"},
 				"hub_id": {"$ref": "/schemas/HubId"},
@@ -893,7 +893,7 @@
 		"Space": {
 			"$id": "/schemas/Space",
 			"type": "object",
-			"description": "\n\t Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.\n\t The View is used to interpret, visualize, and manipulate the Entities connected to the directory.\n\t Each is a Svelte component that conforms to the View interface.\n ",
+			"description": "\n\t <Vocab name=\"Space\" />s are subdivisions within a <Vocab name=\"Hub\" /> that hold a View and reference to an <Vocab name=\"Entity\" /> directory.\n\t The View is used to interpret, visualize, and manipulate the <Vocab name=\"Entity\" />s connected to the directory.\n\t Each is a Svelte component that conforms to the View interface.\n ",
 			"properties": {
 				"space_id": {"$ref": "/schemas/SpaceId"},
 				"name": {"type": "string"},
@@ -925,7 +925,7 @@
 		"Tie": {
 			"$id": "/schemas/Tie",
 			"type": "object",
-			"description": "\n\t\tTies are part of the Entity/Tie graph data system.\n\t\tEach represents a named, directional relationship between two entities.\n\t\tA Tie specifies \"the [source] has relationship of [type] with [dest].\"\n\t",
+			"description": "\n\t\t<Vocab name=\"Tie\" />s are part of the <Vocab name=\"Entity\" />/<Vocab name=\"Tie\" /> graph data system.\n\t\tEach represents a named, directional relationship between two entities.\n\t\tA <Vocab name=\"Tie\" /> specifies \"the [source] has relationship of [type] with [dest].\"\n\t",
 			"properties": {
 				"tie_id": {"$ref": "/schemas/TieId"},
 				"source_id": {"$ref": "/schemas/EntityId"},

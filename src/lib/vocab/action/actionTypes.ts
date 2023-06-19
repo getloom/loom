@@ -248,12 +248,12 @@ export type SignOutResponseResult = ApiResult<SignOutResponse>;
 
 export interface UpdateAccountSettingsParams {
 	/**
-	 * A nested set of attributes on Account & ClientAccount. Holds all account level settings.
+	 * A nested set of attributes on <Vocab name="Account" /> and <Vocab name="ClientAccount" />. Holds all account level settings.
 	 */
 	settings: AccountSettings;
 }
 /**
- * A client-facing subset of an Account. Excludes 'password' for security.
+ * A client-facing subset of an <Vocab name="Account" />. Excludes <code>password</code> for security.
  */
 export type UpdateAccountSettingsResponse = ClientAccount;
 export type UpdateAccountSettingsResponseResult = ApiResult<UpdateAccountSettingsResponse>;
@@ -263,7 +263,7 @@ export interface UpdateAccountPasswordParams {
 	newPassword: string;
 }
 /**
- * A client-facing subset of an Account. Excludes 'password' for security.
+ * A client-facing subset of an <Vocab name="Account" />. Excludes <code>password</code> for security.
  */
 export type UpdateAccountPasswordResponse = ClientAccount;
 export type UpdateAccountPasswordResponseResult = ApiResult<UpdateAccountPasswordResponse>;
@@ -274,9 +274,9 @@ export interface CreateHubParams {
 }
 export interface CreateHubResponse {
 	/**
-	 * Hubs represent the membrane around the places Actors can interact with each other or with system level data.
-	 * They have self contained governance and ownership of Spaces within them.
-	 * By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
+	 * <Vocab name="Hub" />s represent the membrane around the places <Vocab name="Actor" />s can interact with each other or with system level data.
+	 * They have self contained governance and ownership of <Vocab name="Space" />s within them.
+	 * By default they are hidden and undiscoverable and are only visible to a user once an <Vocab name="Actor" /> has been invited in.
 	 */
 	hub: Hub;
 	roles: Role[];
@@ -294,9 +294,9 @@ export interface ReadHubParams {
 }
 export interface ReadHubResponse {
 	/**
-	 * Hubs represent the membrane around the places Actors can interact with each other or with system level data.
-	 * They have self contained governance and ownership of Spaces within them.
-	 * By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
+	 * <Vocab name="Hub" />s represent the membrane around the places <Vocab name="Actor" />s can interact with each other or with system level data.
+	 * They have self contained governance and ownership of <Vocab name="Space" />s within them.
+	 * By default they are hidden and undiscoverable and are only visible to a user once an <Vocab name="Actor" /> has been invited in.
 	 */
 	hub: Hub;
 	spaces: Space[];
@@ -311,15 +311,15 @@ export interface UpdateHubParams {
 	actor: ActorId;
 	hub_id: HubId;
 	/**
-	 * A nested set of attributes on Hub. Holds all hub level settings.
+	 * A nested set of attributes on <Vocab name="Hub" />. Holds all hub level settings.
 	 */
 	settings?: HubSettings;
 }
 export interface UpdateHubResponse {
 	/**
-	 * Hubs represent the membrane around the places Actors can interact with each other or with system level data.
-	 * They have self contained governance and ownership of Spaces within them.
-	 * By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
+	 * <Vocab name="Hub" />s represent the membrane around the places <Vocab name="Actor" />s can interact with each other or with system level data.
+	 * They have self contained governance and ownership of <Vocab name="Space" />s within them.
+	 * By default they are hidden and undiscoverable and are only visible to a user once an <Vocab name="Actor" /> has been invited in.
 	 */
 	hub: Hub;
 }
@@ -339,13 +339,13 @@ export interface InviteToHubParams {
 }
 export interface InviteToHubResponse {
 	/**
-	 * A subset of an Actor available to all clients in a hub.
+	 * A subset of an <Vocab name="Actor" /> available to all clients in a <Vocab name="Hub" />.
 	 */
 	actor: PublicActor;
 	/**
-	 * Describes the relationship between an Actor and Role within a given Hub.
-	 * An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
-	 * When initially joining a Hub, Actors are given an Assignment to the default Role.
+	 * Describes the relationship between an <Vocab name="Actor" /> and <Vocab name="Role" /> within a given <Vocab name="Hub" />.
+	 * An <Vocab name="Actor" /> must have at least 1 <Vocab name="Assignment" /> to be in a <Vocab name="Hub" /> and see it in the nav.
+	 * When initially joining a <Vocab name="Hub" />, <Vocab name="Actor" />s are given an <Vocab name="Assignment" /> to the default <Vocab name="Role" />.
 	 */
 	assignment: Assignment;
 }
@@ -396,9 +396,9 @@ export interface CreateAssignmentParams {
 }
 export interface CreateAssignmentResponse {
 	/**
-	 * Describes the relationship between an Actor and Role within a given Hub.
-	 * An Actor must have at least 1 Assignment to be in a Hub and see it in the nav.
-	 * When initially joining a Hub, Actors are given an Assignment to the default Role.
+	 * Describes the relationship between an <Vocab name="Actor" /> and <Vocab name="Role" /> within a given <Vocab name="Hub" />.
+	 * An <Vocab name="Actor" /> must have at least 1 <Vocab name="Assignment" /> to be in a <Vocab name="Hub" /> and see it in the nav.
+	 * When initially joining a <Vocab name="Hub" />, <Vocab name="Actor" />s are given an <Vocab name="Assignment" /> to the default <Vocab name="Role" />.
 	 */
 	assignment: Assignment;
 }
@@ -421,18 +421,18 @@ export interface CreateSpaceParams {
 }
 export interface CreateSpaceResponse {
 	/**
-	 * Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
-	 * The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
+	 * <Vocab name="Space" />s are subdivisions within a <Vocab name="Hub" /> that hold a View and reference to an <Vocab name="Entity" /> directory.
+	 * The View is used to interpret, visualize, and manipulate the <Vocab name="Entity" />s connected to the directory.
 	 * Each is a Svelte component that conforms to the View interface.
 	 */
 	space: Space;
 	/**
-	 * An Entity is the core data type that represents an ActivityStreams object in the system.
+	 * An <Vocab name="Entity" /> is the core data type that represents an ActivityStreams object in the system.
 	 * Each has an "owning" space and actor that controls its governance.
-	 * Entities exist within a graph architecture, with Ties serving as the paths between nodes.
-	 * Conventionally, all entities within a given Space can be found by traversing
-	 * the graph starting at the directory Entity associated with the owning Space.
-	 * A directory is an ActivityStreams Collection referenced by each Space.
+	 * <Vocab name="Entity" /> objects exist within a graph architecture, with <Vocab name="Tie" /> objects serving as the edges between nodes.
+	 * Conventionally, all entities within a given <Vocab name="Space" /> can be found by traversing
+	 * the graph starting at the directory <Vocab name="Entity" /> associated with the owning <Vocab name="Space" />.
+	 * A directory is an ActivityStreams Collection referenced by each <Vocab name="Space" />.
 	 */
 	directory: Directory;
 }
@@ -458,8 +458,8 @@ export interface UpdateSpaceParams {
 }
 export interface UpdateSpaceResponse {
 	/**
-	 * Spaces are subdivisions within a Hub that hold a View and reference to an Entity directory.
-	 * The View is used to interpret, visualize, and manipulate the Entities connected to the directory.
+	 * <Vocab name="Space" />s are subdivisions within a <Vocab name="Hub" /> that hold a View and reference to an <Vocab name="Entity" /> directory.
+	 * The View is used to interpret, visualize, and manipulate the <Vocab name="Entity" />s connected to the directory.
 	 * Each is a Svelte component that conforms to the View interface.
 	 */
 	space: Space;
@@ -571,9 +571,10 @@ export interface CreateRoleParams {
 }
 export interface CreateRoleResponse {
 	/**
-	 * Roles are user-defined governance objects that exist within the context of a single Hub.
-	 * They have Policies associated with them that allow for actions to be taken within the system.
-	 * When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+	 * <Vocab name="Role" />s are user-defined governance objects that exist within the context of a single <Vocab name="Hub" />.
+	 * They have <Vocab name="Policy" />s associated with them that allow for actions to be taken within the system.
+	 * When an <Vocab name="Actor" /> has a <Vocab name="Role" /> via an <Vocab name="Assignment" />,
+	 * that actor may take any action allowed by the role's <Vocab name="Policy" />s.
 	 */
 	role: Role;
 }
@@ -595,9 +596,10 @@ export interface UpdateRoleParams {
 }
 export interface UpdateRoleResponse {
 	/**
-	 * Roles are user-defined governance objects that exist within the context of a single Hub.
-	 * They have Policies associated with them that allow for actions to be taken within the system.
-	 * When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+	 * <Vocab name="Role" />s are user-defined governance objects that exist within the context of a single <Vocab name="Hub" />.
+	 * They have <Vocab name="Policy" />s associated with them that allow for actions to be taken within the system.
+	 * When an <Vocab name="Actor" /> has a <Vocab name="Role" /> via an <Vocab name="Assignment" />,
+	 * that actor may take any action allowed by the role's <Vocab name="Policy" />s.
 	 */
 	role: Role;
 }
@@ -617,9 +619,10 @@ export interface CreatePolicyParams {
 }
 export interface CreatePolicyResponse {
 	/**
-	 * Policies are associated with Roles to describe the Actions a Role is able to take in the system.
-	 * Permissions are the enumeration of the those Actions and are often 1:1.
-	 * `data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
+	 * Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a permission
+	 * to describe the Actions that <Vocab name="Actor" />s with the <Vocab name="Role" /> are able to perform.
+	 * Permissions are often 1:1 with Actions, but they don't have to be.
+	 * `data` is a stub to support more complex governance schemes in the future.
 	 */
 	policy: Policy;
 }
@@ -643,9 +646,10 @@ export interface UpdatePolicyParams {
 }
 export interface UpdatePolicyResponse {
 	/**
-	 * Policies are associated with Roles to describe the Actions a Role is able to take in the system.
-	 * Permissions are the enumeration of the those Actions and are often 1:1.
-	 * `data` is a currently-unused attribute earmarked for allowing for more complicated governance schemes.
+	 * Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a permission
+	 * to describe the Actions that <Vocab name="Actor" />s with the <Vocab name="Role" /> are able to perform.
+	 * Permissions are often 1:1 with Actions, but they don't have to be.
+	 * `data` is a stub to support more complex governance schemes in the future.
 	 */
 	policy: Policy;
 }

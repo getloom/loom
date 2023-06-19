@@ -3,6 +3,7 @@ import type {SvelteComponent} from 'svelte';
 import Dashboard from '$lib/plugins/feltcoop/dashboard/Dashboard.svelte';
 import Link from '$lib/plugins/feltcoop/link/Link.svelte';
 import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
+import Vocab from '$lib/plugins/feltcoop/vocab/Vocab.svelte';
 import Home from '$lib/plugins/feltcoop/home/Home.svelte';
 import PersonalHome from '$lib/plugins/feltcoop/personal-home/PersonalHome.svelte';
 import AdminHome from '$lib/plugins/feltcoop/admin-home/AdminHome.svelte';
@@ -27,6 +28,7 @@ export const components: Record<string, typeof SvelteComponent> = {
 	// widget components
 	Link,
 	Mention,
+	Vocab,
 	// view components
 	Home,
 	PersonalHome,

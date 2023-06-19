@@ -6,9 +6,10 @@ import type {HubId} from '$lib/vocab/hub/hub';
 export type RoleId = Flavored<number, 'RoleId'>;
 
 /**
- * Roles are user-defined governance objects that exist within the context of a single Hub.
- * They have Policies associated with them that allow for actions to be taken within the system.
- * When an Actor has a Role via an Assignment, that actor may take any action allowed by the Role's Policies.
+ * <Vocab name="Role" />s are user-defined governance objects that exist within the context of a single <Vocab name="Hub" />.
+ * They have <Vocab name="Policy" />s associated with them that allow for actions to be taken within the system.
+ * When an <Vocab name="Actor" /> has a <Vocab name="Role" /> via an <Vocab name="Assignment" />,
+ * that actor may take any action allowed by the role's <Vocab name="Policy" />s.
  */
 export interface Role {
 	role_id: RoleId;

@@ -5,9 +5,9 @@ import type {HubId} from '$lib/vocab/hub/hub';
 import type {Flavored} from '@feltjs/util';
 
 /**
- * Represents a human actor logged in via an Account. They are owned and managed from the account level.
- * When an AccountActor is created, a personal Hub is also created for it and associated via 'hub_id'.
- * A reference to this personal Hub is stored in 'hub_id'.
+ * Represents a human actor logged in via an <Vocab name="Account" />. They are owned and managed from the account level.
+ * When an AccountActor is created, a personal <Vocab name="Hub" /> is also created for it and associated via <code>hub_id</code>.
+ * A reference to this personal <Vocab name="Hub" /> is stored in <code>hub_id</code>.
  */
 export interface AccountActor {
 	actor_id: ActorId;
@@ -24,7 +24,7 @@ export type ActionActor = AccountActor | CommunityActor;
 export type ActorId = Flavored<number, 'ActorId'>;
 
 /**
- * The full database record for the various Actor types.
+ * The full database record for the various <Vocab name="Actor" /> types.
  */
 export interface ActorRecord {
 	actor_id: ActorId;
@@ -37,20 +37,21 @@ export interface ActorRecord {
 	updated: Date | null;
 }
 /**
- * Actors perform actions in the system. They can be of type Account, Hub, or Ghost.
+ * <Vocab name="Actor" />s perform actions in the system.
+ * They can be of type <code>'account'</code>, <code>'hub'</code>, or <code>'ghost'</code>.
  */
 export type Actor = AccountActor | CommunityActor | GhostActor;
 
 /**
- * The union of Actor subsets a user sees on their client,
- * including the user's AccountActors and all other hub actors as PublicActors.
+ * The union of <Vocab name="Actor" /> subsets a user sees on their client,
+ * including the user's <Vocab name="AccountActors" /> and all other hub actors as <Vocab name="PublicActors" />.
  */
 export type ClientActor = AccountActor | PublicActor;
 
 /**
- * Represents a collective actor under the ownership of a Hub.
- * Currently, these are only created when a new Hub is made and have no extended functionality within the system.
- * The Hub that owns it is represented by 'hub_id'.
+ * Represents a collective actor under the ownership of a <Vocab name="Hub" />.
+ * Currently, these are only created when a new <Vocab name="Hub" /> is made and have no extended functionality within the system.
+ * The <Vocab name="Hub" /> that owns it is represented by <code>hub_id</code>.
  */
 export interface CommunityActor {
 	actor_id: ActorId;
@@ -63,7 +64,7 @@ export interface CommunityActor {
 	updated: Date | null;
 }
 /**
- * A special system-level Actor that is a placeholder for deleted or otherwise unavailable Actors.
+ * A special system-level <Vocab name="Actor" /> that is a placeholder for deleted or otherwise unavailable <Vocab name="Actor" />s.
  */
 export interface GhostActor {
 	actor_id: ActorId;
@@ -76,7 +77,7 @@ export interface GhostActor {
 	updated: Date | null;
 }
 /**
- * A subset of an Actor available to all clients in a hub.
+ * A subset of an <Vocab name="Actor" /> available to all clients in a <Vocab name="Hub" />.
  */
 export interface PublicActor {
 	actor_id: ActorId;

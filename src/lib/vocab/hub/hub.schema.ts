@@ -11,9 +11,9 @@ export const HubSchema = {
 	$id: '/schemas/Hub',
 	type: 'object',
 	description: `
-		Hubs represent the membrane around the places Actors can interact with each other or with system level data.
-		They have self contained governance and ownership of Spaces within them.
-		By default they are hidden & undiscoverable and are only visible to a user once an Actor has been invited in.
+		<Vocab name="Hub" />s represent the membrane around the places <Vocab name="Actor" />s can interact with each other or with system level data.
+		They have self contained governance and ownership of <Vocab name="Space" />s within them.
+		By default they are hidden and undiscoverable and are only visible to a user once an <Vocab name="Actor" /> has been invited in.
 	`,
 	properties: {
 		hub_id: {$ref: '/schemas/HubId'},
@@ -31,7 +31,7 @@ export const HubSettingsSchema = {
 	$id: '/schemas/HubSettings',
 	type: 'object',
 	description: `
-		A nested set of attributes on Hub. Holds all hub level settings.
+		A nested set of attributes on <Vocab name="Hub" />. Holds all hub level settings.
 	`,
 	properties: {
 		hue: {type: 'number'},
@@ -54,7 +54,7 @@ export const InitialHubSettingsSchema = {
 	$id: '/schemas/InitialHubSettings',
 	type: 'object',
 	description: `
-		A subset of HubSettings needed for defaults at the time of Hub creation.
+		A subset of <Vocab name="HubSettings" /> needed for defaults at the time of <Vocab name="Hub" /> creation.
 	`,
 	properties: {
 		hue: {type: 'number'},
