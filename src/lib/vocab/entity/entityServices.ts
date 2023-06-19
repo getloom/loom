@@ -23,7 +23,6 @@ import {
 	checkPolicy,
 	checkEntityAccess,
 } from '$lib/vocab/policy/policyHelpers.server';
-import {permissions} from '$lib/vocab/policy/permissions';
 import {ApiError} from '$lib/server/api';
 import {Logger} from '@feltjs/util/log.js';
 
@@ -83,7 +82,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			throw new ApiError(400, 'cannot create entity with orderedItems directly');
 
 		const {hub_id} = (await repos.space.findById(space_id))!;
-		await checkPolicy(permissions.CreateEntity, actor, hub_id, repos);
+		await checkPolicy('CreateEntity', actor, hub_id, repos);
 
 		//TODO maybe construct orderedItems here
 		let entity = await repos.entity.create(actor, data, space_id, path);

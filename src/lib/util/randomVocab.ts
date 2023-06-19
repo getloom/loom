@@ -30,7 +30,7 @@ import {randomHue} from '$lib/ui/color';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
 import {randomItem} from '@feltjs/util/random.js';
-import {permissionNames} from '$lib/vocab/policy/permissions';
+import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
 import type {Repos} from '$lib/db/Repos';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};

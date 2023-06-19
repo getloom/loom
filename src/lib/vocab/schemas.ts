@@ -31,6 +31,7 @@ import {EntitySchema, EntityIdSchema} from '$lib/vocab/entity/entity.schema';
 import {TieSchema, TieIdSchema} from '$lib/vocab/tie/tie.schema';
 import {RoleSchema, RoleIdSchema} from '$lib/vocab/role/role.schema';
 import {PolicySchema, PolicyIdSchema} from '$lib/vocab/policy/policy.schema';
+import {PermissionNameSchema} from '$lib/vocab/permission/permission.schema';
 
 // Model schemas are distinct from the action schemas.
 // They're the nouns compared to the action verbs.
@@ -65,6 +66,7 @@ export const modelSchemas: VocabSchema[] = [
 	RoleIdSchema,
 	PolicySchema,
 	PolicyIdSchema,
+	PermissionNameSchema,
 ];
 
 export const actionSchemas: VocabSchema[] = actionDatas

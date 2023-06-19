@@ -5,7 +5,6 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {HUB_COLUMNS, cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
-import {permissions} from '$lib/vocab/policy/permissions';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
@@ -24,7 +23,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
-		await checkPolicy(permissions.CreateAssignment, actor, hub_id, repos);
+		await checkPolicy('CreateAssignment', actor, hub_id, repos);
 		const assignment = await createAssignment(actor_id, hub, role_id, repos);
 		log.debug('[CreateAssignment] new assignment created', assignment.assignment_id);
 		return {ok: true, status: 200, value: {assignment}, broadcast: hub_id};
@@ -45,7 +44,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 			return {ok: false, status: 404, message: 'no assignment found'};
 		}
 		const {actor_id, hub_id} = assignment;
-		await checkPolicy(permissions.DeleteAssignment, actor, hub_id, repos);
+		await checkPolicy('DeleteAssignment', actor, hub_id, repos);
 		// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
 		// const [actorResult, hubResult] = await Promise.all([
 		// 	repos.actor.findById(actor_id),

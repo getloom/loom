@@ -2,6 +2,7 @@
 
 import type {Flavored} from '@feltjs/util';
 import type {RoleId} from '$lib/vocab/role/role';
+import type {PermissionName} from '$lib/vocab/permission/permission';
 
 export type PolicyId = Flavored<number, 'PolicyId'>;
 
@@ -14,7 +15,7 @@ export type PolicyId = Flavored<number, 'PolicyId'>;
 export interface Policy {
 	policy_id: PolicyId;
 	role_id: RoleId;
-	permission: string;
+	permission: PermissionName;
 	data: {
 		[k: string]: unknown;
 	} | null;

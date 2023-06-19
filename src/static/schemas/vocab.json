@@ -645,6 +645,29 @@
 			"tsType": "DialogParams",
 			"tsImport": "import type {DialogParams} from '@feltjs/felt-ui/dialog.js'"
 		},
+		"PermissionName": {
+			"$id": "/schemas/PermissionName",
+			"type": "string",
+			"enum": [
+				"Ephemera",
+				"UpdateHub",
+				"DeleteHub",
+				"InviteToHub",
+				"KickFromHub",
+				"CreateRole",
+				"UpdateRole",
+				"DeleteRole",
+				"CreateAssignment",
+				"DeleteAssignment",
+				"CreateSpace",
+				"UpdateSpace",
+				"DeleteSpace",
+				"CreateEntity",
+				"CreatePolicy",
+				"DeletePolicy",
+				"UpdatePolicy"
+			]
+		},
 		"PingParams": {"$id": "/schemas/PingParams", "type": "null"},
 		"PingResponse": {"$id": "/schemas/PingResponse", "type": "null"},
 		"Policy": {
@@ -654,7 +677,7 @@
 			"properties": {
 				"policy_id": {"$ref": "/schemas/PolicyId"},
 				"role_id": {"$ref": "/schemas/RoleId"},
-				"permission": {"type": "string"},
+				"permission": {"$ref": "/schemas/PermissionName"},
 				"data": {"anyOf": [{"type": "object"}, {"type": "null"}]},
 				"created": {"type": "object", "instanceof": "Date"},
 				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}

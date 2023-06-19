@@ -9,7 +9,6 @@ import {
 	DeletePolicy,
 } from '$lib/vocab/policy/policyActions';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
-import {permissions} from '$lib/vocab/policy/permissions';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('policyServices') + gray(']'));
@@ -21,7 +20,7 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 		const {actor, role_id, permission} = params;
 
 		const {hub_id} = await repos.role.findById(role_id);
-		await checkPolicy(permissions.CreatePolicy, actor, hub_id, repos);
+		await checkPolicy('CreatePolicy', actor, hub_id, repos);
 
 		log.debug('creating policy', role_id, permission);
 		const policy = await repos.policy.create(role_id, permission);
@@ -51,7 +50,7 @@ export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
 		const {actor, policy_id, data} = params;
 
 		const {hub_id} = await repos.role.findByPolicy(policy_id);
-		await checkPolicy(permissions.UpdatePolicy, actor, hub_id, repos);
+		await checkPolicy('UpdatePolicy', actor, hub_id, repos);
 
 		log.debug('updating role', policy_id, data);
 		const policy = await repos.policy.update(policy_id, data);
@@ -66,7 +65,7 @@ export const DeletePolicyService: ServiceByName['DeletePolicy'] = {
 		const {actor, policy_id} = params;
 
 		const {hub_id} = await repos.role.findByPolicy(policy_id);
-		await checkPolicy(permissions.DeletePolicy, actor, hub_id, repos);
+		await checkPolicy('DeletePolicy', actor, hub_id, repos);
 
 		log.debug('deleting policy', policy_id);
 		await repos.policy.deleteById(policy_id);

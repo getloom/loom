@@ -13,7 +13,6 @@ import {
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
-import {permissions} from '$lib/vocab/policy/permissions';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
@@ -158,7 +157,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	// delete hub
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(hub.settings.defaultRoleId, permissions.DeleteHub);
+	await repos.policy.create(hub.settings.defaultRoleId, 'DeleteHub');
 	unwrap(
 		await DeleteHubService.perform({
 			...toServiceRequestMock(repos, actor1),

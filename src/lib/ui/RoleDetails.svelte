@@ -11,7 +11,7 @@
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import {permissionNames} from '$lib/vocab/policy/permissions';
+	import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
 	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes';
 
 	const {

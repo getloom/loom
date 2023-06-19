@@ -19,7 +19,7 @@ export const PolicySchema = {
 	properties: {
 		policy_id: {$ref: '/schemas/PolicyId'},
 		role_id: {$ref: '/schemas/RoleId'},
-		permission: {type: 'string'},
+		permission: {$ref: '/schemas/PermissionName'},
 		data: {anyOf: [{type: 'object'}, {type: 'null'}]},
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},

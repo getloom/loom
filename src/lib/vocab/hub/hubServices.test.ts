@@ -13,7 +13,7 @@ import {
 import {expectApiError, invite, loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
-import {permissionNames, permissions} from '$lib/vocab/policy/permissions';
+import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
 import {ReadPoliciesService} from '$lib/vocab/policy/policyServices';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {Role} from '$lib/vocab/role/role';
@@ -32,7 +32,7 @@ test_hubServices.after(teardownDb);
 test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 	const {actor, personalHub} = await random.actor();
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(personalHub.settings.defaultRoleId, permissions.DeleteHub);
+	await repos.policy.create(personalHub.settings.defaultRoleId, 'DeleteHub');
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
@@ -151,7 +151,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	const {hub} = await random.hub(actor);
 
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(hub.settings.defaultRoleId, permissions.DeleteHub);
+	await repos.policy.create(hub.settings.defaultRoleId, 'DeleteHub');
 
 	unwrap(
 		await DeleteHubService.perform({

@@ -33,7 +33,6 @@ import {
 	isCreateHubDisabled,
 	checkPolicy,
 } from '$lib/vocab/policy/policyHelpers.server';
-import {permissions} from '$lib/vocab/policy/permissions';
 import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/app/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 import {ApiError} from '$lib/server/api';
@@ -163,7 +162,7 @@ export const UpdateHubService: ServiceByName['UpdateHub'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, settings} = params;
-		await checkPolicy(permissions.UpdateHub, actor, hub_id, repos);
+		await checkPolicy('UpdateHub', actor, hub_id, repos);
 		// TODO probably refactor `repos.hub.updateSettings` to return the updated document,
 		// as well as conditionally handle other updatable properties of `hub`
 		if (settings) {
@@ -180,7 +179,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 	transaction: true,
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id} = params;
-		await checkPolicy(permissions.DeleteHub, actor, hub_id, repos);
+		await checkPolicy('DeleteHub', actor, hub_id, repos);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type);
 		if (!hub) {
@@ -206,7 +205,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 	transaction: true,
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id, name} = params;
-		await checkPolicy(permissions.InviteToHub, actor, hub_id, repos);
+		await checkPolicy('InviteToHub', actor, hub_id, repos);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type_settings);
 		if (!hub) {
@@ -269,7 +268,7 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[KickFromHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
-		await checkPolicy(permissions.KickFromHub, actor, hub_id, repos);
+		await checkPolicy('KickFromHub', actor, hub_id, repos);
 
 		await checkRemoveActor(actor_id, hub_id, repos);
 

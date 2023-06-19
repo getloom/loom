@@ -5,7 +5,8 @@ import type {
 	CreateSpaceParams,
 } from '$lib/vocab/action/actionTypes';
 import type {Policy} from '$lib/vocab/policy/policy';
-import {permissions, permissionNames, type PermissionName} from '$lib/vocab/policy/permissions';
+import type {PermissionName} from '$lib/vocab/permission/permission';
+import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
 import type {RoleId} from '$lib/vocab/role/role';
 import type {HubId, InitialHubSettings} from '$lib/vocab/hub/hub';
 import type {ActorId} from '$lib/vocab/actor/actor';
@@ -70,8 +71,10 @@ export const policyTemplateToCreatePolicyParams = (
 	permission: template.permission,
 });
 
-// TODO integrate with default space data, `$lib/vocab/space/defaultSpaces.ts`
-const allPolicies: PolicyTemplate[] = permissionNames.map((permission) => ({permission}));
+// TODO integrate with default space data, `$lib/vocab/space/defaultSpaces.ts`, will also clean up typecast
+const allPolicies: PolicyTemplate[] = (permissionNames as PermissionName[]).map((permission) => ({
+	permission,
+}));
 
 export const defaultAdminHubRoles: RoleTemplate[] = [
 	{
@@ -92,11 +95,11 @@ export const defaultCommunityHubRoles: RoleTemplate[] = [
 		name: 'Member',
 		default: true,
 		policies: [
-			{permission: permissions.Ephemera},
-			{permission: permissions.InviteToHub},
-			{permission: permissions.CreateSpace},
-			{permission: permissions.UpdateSpace},
-			{permission: permissions.CreateEntity},
+			{permission: 'Ephemera'},
+			{permission: 'InviteToHub'},
+			{permission: 'CreateSpace'},
+			{permission: 'UpdateSpace'},
+			{permission: 'CreateEntity'},
 		],
 	},
 ];
