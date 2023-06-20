@@ -5,7 +5,7 @@
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
 	import type {ClientActor} from '$lib/vocab/actor/actor';
-	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
+	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 
 	const {
 		ui: {contextmenu},

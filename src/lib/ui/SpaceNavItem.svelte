@@ -6,13 +6,12 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import {toHubUrl} from '$lib/ui/url';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
 	import {getApp} from '$lib/ui/app';
-	import SpaceContextmenu from '$lib/app/contextmenu/SpaceContextmenu.svelte';
+	import SpaceContextmenu from '$lib/ui/SpaceContextmenu.svelte';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
-	import {toAppSearchParams} from '$lib/app/url';
 
 	const {
 		actions,

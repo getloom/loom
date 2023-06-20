@@ -6,7 +6,7 @@ import {browser} from '$app/environment';
 
 import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
-import {toHubUrl, gotoUnlessActive} from '$lib/ui/url';
+import {toHubUrl, gotoUnlessActive} from '$lib/util/url';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {ClientActor} from '$lib/vocab/actor/actor';

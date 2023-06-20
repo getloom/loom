@@ -11,7 +11,7 @@ import {
 	LeaveHubService,
 } from '$lib/vocab/hub/hubServices';
 import {expectApiError, invite, loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
-import {ADMIN_HUB_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 import {policyNames} from '$lib/vocab/policy/policyHelpers';
 import {ReadPoliciesService} from '$lib/vocab/policy/policyServices';

@@ -11,7 +11,7 @@ import {
 	LeaveHub,
 	KickFromHub,
 } from '$lib/vocab/hub/hubActions';
-import {ADMIN_HUB_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
@@ -33,7 +33,7 @@ import {
 	isCreateHubDisabled,
 	checkPolicy,
 } from '$lib/vocab/policy/policyHelpers.server';
-import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/app/templates';
+import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/ui/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 import {ApiError} from '$lib/server/api';
 

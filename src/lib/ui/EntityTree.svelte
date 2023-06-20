@@ -6,7 +6,7 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {Tie} from '$lib/vocab/tie/tie';
 	import {getApp} from '$lib/ui/app';
-	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
+	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
 

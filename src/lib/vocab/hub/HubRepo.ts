@@ -4,7 +4,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
-import {ADMIN_HUB_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
 import type {ActorId, ClientActor} from '$lib/vocab/actor/actor';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {AccountId} from '$lib/vocab/account/account';

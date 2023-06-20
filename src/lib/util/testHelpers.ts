@@ -13,7 +13,7 @@ import {
 	type NonAuthorizedServiceRequest,
 } from '$lib/server/service';
 import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
-import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/util/constants';
 import type {Repos} from '$lib/db/Repos';
 import {toFailedApiResult, type FailedApiResult} from '$lib/server/api';
 import type {AccountId} from '$lib/vocab/account/account';

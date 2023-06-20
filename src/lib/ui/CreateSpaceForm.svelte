@@ -11,10 +11,9 @@
 	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {parseSpaceIcon, renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
-	import {toHubUrl} from '$lib/ui/url';
-	import {ADMIN_HUB_ID} from '$lib/app/constants';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
+	import {ADMIN_HUB_ID} from '$lib/util/constants';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import {toAppSearchParams} from '$lib/app/url';
 
 	const {
 		actions,

@@ -5,7 +5,7 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import Mention from '$lib/plugins/feltcoop/mention/Mention.svelte';
+	import Mention from '$lib/plugins/mention/Mention.svelte';
 
 	const {actions} = getApp();
 

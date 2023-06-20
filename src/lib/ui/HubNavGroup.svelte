@@ -5,7 +5,7 @@
 	import HubNavItem from '$lib/ui/HubNavItem.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
-	import ActingActorContextmenu from '$lib/app/contextmenu/ActingActorContextmenu.svelte';
+	import ActingActorContextmenu from '$lib/ui/ActingActorContextmenu.svelte';
 
 	const {
 		ui: {actorSelection, hubSelection, hubsBySessionActor, contextmenu},

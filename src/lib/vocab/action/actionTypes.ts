@@ -24,7 +24,7 @@ import type {
 	AuthorizedService,
 } from '$lib/server/service';
 import type {MutationContext} from '$lib/ui/mutation';
-import type {HubTemplate} from '$lib/app/templates';
+import type {HubTemplate} from '$lib/ui/templates';
 
 /* eslint-disable @typescript-eslint/array-type */
 

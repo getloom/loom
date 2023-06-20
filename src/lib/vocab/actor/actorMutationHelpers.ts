@@ -3,8 +3,7 @@ import {goto} from '$app/navigation';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
-import {toHubUrl} from '$lib/ui/url';
-import {toAppSearchParams} from '$lib/app/url';
+import {toHubUrl, toAppSearchParams} from '$lib/util/url';
 
 export const stashActors = (
 	{actorById, actors, sessionActors, hubIdSelectionByActorId}: WritableUi,

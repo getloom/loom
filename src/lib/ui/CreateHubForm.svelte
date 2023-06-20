@@ -10,11 +10,10 @@
 	import {getApp} from '$lib/ui/app';
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {randomHue} from '$lib/ui/color';
-	import {toHubUrl} from '$lib/ui/url';
+	import {randomHue} from '$lib/util/color';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
 	import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import {toAppSearchParams} from '$lib/app/url';
 
 	const {
 		actions,

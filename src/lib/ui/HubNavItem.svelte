@@ -7,11 +7,10 @@
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
-	import {toHubUrl} from '$lib/ui/url';
-	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
+	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
-	import {toAppSearchParams} from '$lib/app/url';
 
 	const {
 		ui: {

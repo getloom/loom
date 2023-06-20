@@ -71,7 +71,7 @@ import type {ApiResult} from '$lib/server/api';
 import type {Query} from '$lib/util/query';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';
 import type {MutationContext} from '$lib/ui/mutation';
-import type {HubTemplate} from '$lib/app/templates';
+import type {HubTemplate} from '$lib/ui/templates';
 
 /* eslint-disable @typescript-eslint/array-type */
 

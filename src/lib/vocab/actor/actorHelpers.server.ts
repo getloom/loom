@@ -1,4 +1,4 @@
-import {ADMIN_HUB_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
 import type {Repos} from '$lib/db/Repos';
 import type {Actor, ActorId} from '$lib/vocab/actor/actor';
 

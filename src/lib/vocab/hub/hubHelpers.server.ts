@@ -1,16 +1,16 @@
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';
-import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/app/constants';
+import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/util/constants';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import type {ActorId, PublicActor} from '$lib/vocab/actor/actor';
 import type {Repos} from '$lib/db/Repos';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {defaultAdminHubRoles, type RoleTemplate} from '$lib/app/templates';
+import {defaultAdminHubRoles, type RoleTemplate} from '$lib/ui/templates';
 import type {Policy} from '$lib/vocab/policy/policy';
 import {ApiError} from '$lib/server/api';
-import {randomHue} from '$lib/ui/color';
+import {randomHue} from '$lib/util/color';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
 const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));

@@ -1,8 +1,8 @@
 import {viewTemplatesByName} from '$lib/vocab/view/view';
 import type {CreateSpaceParams} from '$lib/vocab/action/actionTypes';
 import type {Hub} from '$lib/vocab/hub/hub';
-import {ADMIN_HUB_ID} from '$lib/app/constants';
-import {spaceTemplateToCreateSpaceParams} from '$lib/app/templates';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
+import {spaceTemplateToCreateSpaceParams} from '$lib/ui/templates';
 import {HOME_PATH} from '$lib/vocab/space/spaceHelpers';
 import type {ActorId} from '$lib/vocab/actor/actor';
 

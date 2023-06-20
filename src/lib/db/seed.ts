@@ -21,7 +21,7 @@ import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import {ALPHABET} from '$lib/util/randomVocab';
-import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$lib/app/templates';
+import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$lib/ui/templates';
 
 /* eslint-disable no-await-in-loop */
 

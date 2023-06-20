@@ -4,7 +4,7 @@
 
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
+	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	export let actor: Readable<AccountActor>;

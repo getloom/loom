@@ -2,7 +2,7 @@
 	import type {ContextmenuActionParams} from '@feltjs/felt-ui/contextmenu.js';
 
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
-	import {randomHue} from '$lib/ui/color';
+	import {randomHue} from '$lib/util/color';
 	import {GUEST_ACTOR_NAME} from '$lib/vocab/actor/constants';
 	import type {EntityType} from '$lib/vocab/entity/entity.schema';
 	import {getApp} from '$lib/ui/app';

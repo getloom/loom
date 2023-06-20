@@ -1,4 +1,4 @@
-import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
 
 export const CreateEntity: ServiceActionData = {

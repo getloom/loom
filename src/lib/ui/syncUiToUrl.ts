@@ -4,7 +4,7 @@ import {goto} from '$app/navigation';
 import {Logger} from '@feltjs/util/log.js';
 
 import type {AccountActor, ActorId} from '$lib/vocab/actor/actor';
-import {ACTOR_QUERY_KEY, toAppSearchParams} from '$lib/app/url';
+import {ACTOR_QUERY_KEY, toAppSearchParams} from '$lib/util/url';
 import type {Ui} from '$lib/ui/ui';
 import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 import type {SpaceId} from '$lib/vocab/space/space';

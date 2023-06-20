@@ -15,7 +15,7 @@ import {
 } from '$lib/ui/uiMutationHelpers';
 import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 import {setIfUpdated} from '$lib/util/store';
-import {toHubUrl} from '$lib/ui/url';
+import {toHubUrl} from '$lib/util/url';
 import type {Directory} from '$lib/vocab/entity/entityData';
 
 const log = new Logger('[entityMutationHelpers]');

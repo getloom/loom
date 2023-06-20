@@ -20,8 +20,8 @@ import {
 	isActorNameReserved,
 } from '$lib/vocab/actor/actorHelpers.server';
 import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
-import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/app/constants';
-import {defaultPersonalHubRoles} from '$lib/app/templates';
+import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/util/constants';
+import {defaultPersonalHubRoles} from '$lib/ui/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 
 const log = new Logger(gray('[') + blue('actorServices') + gray(']'));

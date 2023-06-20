@@ -7,8 +7,7 @@
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';
-	import {toHubUrl} from '$lib/ui/url';
-	import {toAppSearchParams} from '$lib/app/url';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
 	import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 
 	const {

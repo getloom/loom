@@ -6,7 +6,7 @@ import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import {loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
-import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/app/constants';
+import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 

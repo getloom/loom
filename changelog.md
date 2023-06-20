@@ -2,6 +2,8 @@
 
 ## 0.2.0
 
+- **break**: move `$lib/app/` modules into `$lib/ui/`
+  ([#825](https://github.com/feltjs/felt-server/pull/825))
 - **break**: rename `$lib/app/components.ts` from `$lib/app/views.ts`
   ([#733](https://github.com/feltjs/felt-server/pull/733))
 - **break**: move action-related modules to `$lib/vocab/actions/`

@@ -4,7 +4,7 @@ import {blue, gray} from '$lib/server/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
-import {GHOST_ACTOR_ID} from '$lib/app/constants';
+import {GHOST_ACTOR_ID} from '$lib/util/constants';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {SpaceId} from '$lib/vocab/space/space';
 import type {HubId} from '$lib/vocab/hub/hub';

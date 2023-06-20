@@ -39,11 +39,11 @@
 	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient';
 	import {toHttpApiClient} from '$lib/ui/HttpApiClient';
 	import {findHttpService, findWebsocketService} from '$lib/ui/services';
-	import {components} from '$lib/app/components';
-	import {mutations} from '$lib/app/mutations';
-	import AppContextmenu from '$lib/app/contextmenu/AppContextmenu.svelte';
-	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
-	import ActingActorContextmenu from '$lib/app/contextmenu/ActingActorContextmenu.svelte';
+	import {components} from '$lib/ui/components';
+	import {mutations} from '$lib/ui/mutations';
+	import AppContextmenu from '$lib/ui/AppContextmenu.svelte';
+	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
+	import ActingActorContextmenu from '$lib/ui/ActingActorContextmenu.svelte';
 	import SocketConnection from '$lib/ui/SocketConnection.svelte';
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
 	import {deserialize, deserializers} from '$lib/util/deserialize';

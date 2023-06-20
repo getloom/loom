@@ -7,7 +7,7 @@ import type {WritableUi} from '$lib/ui/ui';
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import {evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
-import {toHubUrl} from '$lib/ui/url';
+import {toHubUrl} from '$lib/util/url';
 import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {setIfUpdated} from '$lib/util/store';

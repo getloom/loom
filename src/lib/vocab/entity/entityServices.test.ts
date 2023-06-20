@@ -12,7 +12,7 @@ import {
 	UpdateEntitiesService,
 	EraseEntitiesService,
 } from '$lib/vocab/entity/entityServices';
-import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 import {validateSchema} from '$lib/util/ajv';
 
 /* test_entityServices */

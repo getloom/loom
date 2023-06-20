@@ -24,7 +24,7 @@ import {initBrowser} from '$lib/ui/init';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie, TieId} from '$lib/vocab/tie/tie';
-import {ADMIN_HUB_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
 import type {EphemeraResponse} from '$lib/vocab/action/actionTypes';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy';

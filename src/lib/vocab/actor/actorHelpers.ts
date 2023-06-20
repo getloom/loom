@@ -2,7 +2,7 @@ import {plural} from '@feltjs/util/string.js';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import type {AccountActor, ActionActor, ClientActor, Actor, ActorId} from '$lib/vocab/actor/actor';
-import {GHOST_ACTOR_ID} from '$lib/app/constants';
+import {GHOST_ACTOR_ID} from '$lib/util/constants';
 
 /**
  * Converts a actor name string to its regular form.

@@ -10,14 +10,11 @@ const files = [
 	'lib/index.ts', // same as 'lib/server/server.ts'
 
 	// exported user modules
-	'lib/app/contextmenu/ActingActorContextmenu.svelte',
-	'lib/app/contextmenu/AppContextmenu.svelte',
-	'lib/app/components.ts',
-	'lib/app/mutations.ts',
-	'lib/vocab/schemas.ts',
 	'lib/db/db.ts',
 	'lib/server/server.ts',
 	'lib/ui/AccountForm.svelte',
+	'lib/ui/ActingActorContextmenu.svelte',
+	'lib/ui/AppContextmenu.svelte',
 	'lib/ui/ErrorMessage.svelte',
 	'lib/ui/HttpApiClient.ts',
 	'lib/ui/Luggage.svelte',
@@ -27,14 +24,19 @@ const files = [
 	'lib/ui/SocketConnection.svelte',
 	'lib/ui/WebsocketApiClient.ts',
 	'lib/ui/app.ts',
+	'lib/ui/components.ts',
+	'lib/ui/mutations.ts',
 	'lib/ui/services.ts',
 	'lib/ui/socket.ts',
 	'lib/ui/style.css',
 	'lib/ui/syncUiToUrl.ts',
 	'lib/ui/ui.ts',
+	'lib/util/color.ts',
 	'lib/util/deserialize.ts',
+	'lib/util/url.ts',
 	'lib/vocab/action/actionData.ts',
 	'lib/vocab/action/actions.ts',
+	'lib/vocab/schemas.ts',
 
 	// tasks
 	'lib/db/create.task.ts',

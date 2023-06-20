@@ -15,8 +15,8 @@
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import SourceEntities from '$lib/ui/SourceEntities.svelte';
 	import DestEntities from '$lib/ui/DestEntities.svelte';
-	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
-	import EntityContextmenu from '$lib/app/contextmenu/EntityContextmenu.svelte';
+	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
+	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	export let actor: Readable<AccountActor>;

@@ -8,7 +8,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import {toHubUrl} from '$lib/ui/url';
+import {toHubUrl} from '$lib/util/url';
 import {setIfUpdated} from '$lib/util/store';
 
 export const stashSpaces = (

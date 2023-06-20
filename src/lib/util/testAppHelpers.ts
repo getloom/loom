@@ -7,7 +7,7 @@ import type {ActionParamsByName, ActionResponseByName} from '$lib/vocab/action/a
 import {toActions} from '$lib/vocab/action/actions';
 import {findHttpService} from '$lib/ui/services';
 import {installSourceMaps} from '$lib/util/testHelpers';
-import {mutations} from '$lib/app/mutations';
+import {mutations} from '$lib/ui/mutations';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 
 installSourceMaps();

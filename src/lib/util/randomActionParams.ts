@@ -16,7 +16,7 @@ import {
 	randomAccountName,
 	randomPassword,
 } from '$lib/util/randomVocab';
-import {randomHue} from '$lib/ui/color';
+import {randomHue} from '$lib/util/color';
 import type {RandomActionParams} from '$lib/util/randomActionParamsTypes';
 
 /* eslint-disable no-param-reassign */

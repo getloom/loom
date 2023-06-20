@@ -2,7 +2,7 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Tie, TieId} from '$lib/vocab/tie/tie';
-import {DEFAULT_PAGE_SIZE} from '$lib/app/constants';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 import type {EntityId} from '$lib/vocab/entity/entity';
 
 const log = new Logger('[TieRepo]');

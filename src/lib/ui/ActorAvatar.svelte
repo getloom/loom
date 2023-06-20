@@ -5,7 +5,7 @@
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import {toName, toIcon} from '$lib/vocab/entity/entityHelpers';
 	import type {ClientActor} from '$lib/vocab/actor/actor';
-	import ActorContextmenu from '$lib/app/contextmenu/ActorContextmenu.svelte';
+	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 
 	export let actor: Readable<ClientActor>;
 	export let showName = true;

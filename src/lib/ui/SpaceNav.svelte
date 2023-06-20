@@ -7,7 +7,7 @@
 	import SpaceNavItem from '$lib/ui/SpaceNavItem.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
-	import HubContextmenu from '$lib/app/contextmenu/HubContextmenu.svelte';
+	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
 
 	const {
 		ui: {contextmenu},

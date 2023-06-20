@@ -3,7 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
-import {ADMIN_HUB_ID} from '$lib/app/constants';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
 import {HUB_COLUMNS, cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
 import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';

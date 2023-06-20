@@ -26,7 +26,7 @@ import {toServiceRequestMock} from '$lib/util/testHelpers';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
-import {randomHue} from '$lib/ui/color';
+import {randomHue} from '$lib/util/color';
 import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
 import {randomItem} from '@feltjs/util/random.js';

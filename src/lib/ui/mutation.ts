@@ -6,7 +6,6 @@ export interface Mutation {
 	(ctx: MutationContext<any>): any;
 }
 
-// TODO probably belongs in `$lib/app` or add generic params
 export interface MutationContext<
 	TParams = unknown,
 	TResult extends ApiResult<unknown> | void = any,
