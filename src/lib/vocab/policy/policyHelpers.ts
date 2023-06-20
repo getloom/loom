@@ -1,5 +1,8 @@
-// These are defined here for covenience and used in the `PermissionNameSchema`.
-export const permissionNames = [
+import type {PolicyName} from '$lib/vocab/policy/policy';
+
+// These are defined here for convenient usage as data.
+// They're circularly used in the `PolicyNameSchema` to generate the `PolicyName` type.
+export const policyNames: PolicyName[] = [
 	'Ephemera',
 	'UpdateHub',
 	'DeleteHub',

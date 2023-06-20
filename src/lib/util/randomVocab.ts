@@ -27,10 +27,10 @@ import type {Role, RoleId} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {randomHue} from '$lib/ui/color';
-import type {Policy} from '$lib/vocab/policy/policy';
+import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
 import {randomItem} from '@feltjs/util/random.js';
-import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
+import {policyNames} from '$lib/vocab/policy/policyHelpers';
 import type {Repos} from '$lib/db/Repos';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
@@ -48,7 +48,7 @@ export const randomView = (): string => '<Chat />';
 export const randomEntityData = (): EntityData => ({type: 'Note', content: randomString()});
 export const randomTieType = randomString;
 export const randomRoleName = randomString;
-export const randomPermissionName = (): string => randomItem(permissionNames);
+export const randomPolicyName = (): PolicyName => randomItem(policyNames);
 export const randomAccountParams = (): SignInParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
@@ -103,11 +103,11 @@ export const randomRoleParams = (actor: ActorId, hub_id: HubId): CreateRoleParam
 export const randomPolicyParams = (
 	actor: ActorId,
 	role_id: RoleId,
-	permission?: string,
+	name?: PolicyName,
 ): CreatePolicyParams => ({
 	actor,
 	role_id,
-	permission: permission || randomPermissionName(),
+	name: name || randomPolicyName(),
 });
 
 // TODO maybe compute in relation to `RandomVocabContext`
@@ -332,7 +332,7 @@ export class RandomVocabContext {
 		hub?: Hub,
 		actor?: AccountActor,
 		account?: Account,
-		permission?: string,
+		name?: PolicyName,
 	): Promise<{
 		policy: Policy;
 		actor: AccountActor;
@@ -342,7 +342,7 @@ export class RandomVocabContext {
 		if (!account) account = await this.account();
 		if (!actor) ({actor} = await this.actor(account));
 		if (!hub) ({hub} = await this.hub(actor, account));
-		const params = randomPolicyParams(actor.actor_id, hub.settings.defaultRoleId, permission);
+		const params = randomPolicyParams(actor.actor_id, hub.settings.defaultRoleId, name);
 		const {policy} = unwrap(
 			await CreatePolicyService.perform({
 				...toServiceRequestMock(this.repos, actor),

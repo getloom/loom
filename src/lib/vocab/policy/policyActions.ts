@@ -10,9 +10,9 @@ export const CreatePolicy: ServiceActionData = {
 		properties: {
 			actor: {$ref: '/schemas/ActorId'},
 			role_id: {$ref: '/schemas/RoleId'},
-			permission: {type: 'string'},
+			name: {$ref: '/schemas/PolicyName'},
 		},
-		required: ['actor', 'role_id', 'permission'],
+		required: ['actor', 'role_id', 'name'],
 		additionalProperties: false,
 	},
 	response: {

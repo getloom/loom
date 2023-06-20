@@ -17,13 +17,13 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 	action: CreatePolicy,
 	transaction: true,
 	perform: async ({repos, params}) => {
-		const {actor, role_id, permission} = params;
+		const {actor, role_id, name} = params;
 
 		const {hub_id} = await repos.role.findById(role_id);
 		await checkPolicy('CreatePolicy', actor, hub_id, repos);
 
-		log.debug('creating policy', role_id, permission);
-		const policy = await repos.policy.create(role_id, permission);
+		log.debug('creating policy', role_id, name);
+		const policy = await repos.policy.create(role_id, name);
 		return {ok: true, status: 200, value: {policy}, broadcast: hub_id};
 	},
 };

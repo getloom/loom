@@ -12,7 +12,7 @@ import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
-import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
+import type {Policy, PolicyName, PolicyId} from '$lib/vocab/policy/policy';
 import type {EntityId, Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {DialogParams} from '@feltjs/felt-ui/dialog.js';
@@ -615,13 +615,13 @@ export type DeleteRoleResponseResult = ApiResult<DeleteRoleResponse>;
 export interface CreatePolicyParams {
 	actor: ActorId;
 	role_id: RoleId;
-	permission: string;
+	name: PolicyName;
 }
 export interface CreatePolicyResponse {
 	/**
-	 * Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a permission
+	 * Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a name
 	 * to describe the Actions that <Vocab name="Actor" />s with the <Vocab name="Role" /> are able to perform.
-	 * Permissions are often 1:1 with Actions, but they don't have to be.
+	 * Policies are often 1:1 with Actions, but they don't have to be.
 	 * `data` is a stub to support more complex governance schemes in the future.
 	 */
 	policy: Policy;
@@ -646,9 +646,9 @@ export interface UpdatePolicyParams {
 }
 export interface UpdatePolicyResponse {
 	/**
-	 * Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a permission
+	 * Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a name
 	 * to describe the Actions that <Vocab name="Actor" />s with the <Vocab name="Role" /> are able to perform.
-	 * Permissions are often 1:1 with Actions, but they don't have to be.
+	 * Policies are often 1:1 with Actions, but they don't have to be.
 	 * `data` is a stub to support more complex governance schemes in the future.
 	 */
 	policy: Policy;

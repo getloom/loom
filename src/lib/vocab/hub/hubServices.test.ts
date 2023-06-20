@@ -13,14 +13,14 @@ import {
 import {expectApiError, invite, loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
 import {ADMIN_HUB_ID} from '$lib/app/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
-import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
+import {policyNames} from '$lib/vocab/policy/policyHelpers';
 import {ReadPoliciesService} from '$lib/vocab/policy/policyServices';
 import type {Policy} from '$lib/vocab/policy/policy';
 import type {Role} from '$lib/vocab/role/role';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
-const sortedPermissionNames = permissionNames.slice().sort();
-const toSortedPermissionNames = (policies: Policy[]) => policies.map((p) => p.permission).sort();
+const sortedPolicyNames = policyNames.slice().sort();
+const toSortedPolicyNames = (policies: Policy[]) => policies.map((p) => p.name).sort();
 const toSortedRoles = (roles: Role[]) => roles.slice().sort((a, b) => a.role_id - b.role_id);
 
 /* test_hubServices */
@@ -57,15 +57,15 @@ test_hubServices('disallow deleting admin hub', async ({repos}) => {
 	);
 });
 
-test_hubServices('default admin hub role has all permissions', async ({repos}) => {
+test_hubServices('default admin hub role has all policies', async ({repos}) => {
 	const adminHub = await repos.hub.loadAdminHub();
 	assert.ok(adminHub);
 	const adminDefaultPolicies = await repos.policy.filterByRole(adminHub.settings.defaultRoleId);
 
-	assert.equal(toSortedPermissionNames(adminDefaultPolicies), sortedPermissionNames);
+	assert.equal(toSortedPolicyNames(adminDefaultPolicies), sortedPolicyNames);
 });
 
-test_hubServices('default personal hub role has all permissions', async ({repos, random}) => {
+test_hubServices('default personal hub role has all policies', async ({repos, random}) => {
 	const {actor} = await random.actor();
 
 	const personalHub = await repos.hub.findById(actor.hub_id);
@@ -74,7 +74,7 @@ test_hubServices('default personal hub role has all permissions', async ({repos,
 		personalHub.settings.defaultRoleId,
 	);
 
-	assert.equal(toSortedPermissionNames(personalDefaultPolicies), sortedPermissionNames);
+	assert.equal(toSortedPolicyNames(personalDefaultPolicies), sortedPolicyNames);
 });
 
 test_hubServices('disallow duplicate hub names', async ({repos, random}) => {
@@ -135,7 +135,7 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 			params: {actor: actor.actor_id, role_id: hubResult.roles[0].role_id},
 		}),
 	);
-	assert.equal(toSortedPermissionNames(stewardPolicyResults.policies), sortedPermissionNames);
+	assert.equal(toSortedPolicyNames(stewardPolicyResults.policies), sortedPolicyNames);
 
 	const memberPolicyResults = unwrap(
 		await ReadPoliciesService.perform({

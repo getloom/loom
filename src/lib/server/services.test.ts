@@ -120,7 +120,7 @@ for (const service of services.values()) {
 		if (action.authorize !== false && action.name !== 'CreateHub') {
 			const {actor: unauthorizedActor} = await random.actor(account);
 
-			// create a new hub without the actor, otherwise they might have permissions
+			// create a new hub without the actor, otherwise they might have roles
 			const hubData = await random.hub(undefined, account);
 			const failedParams = await randomActionParams[action.name](random, {
 				...hubData,

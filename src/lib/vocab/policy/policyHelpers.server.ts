@@ -8,18 +8,19 @@ import type {HubId} from '$lib/vocab/hub/hub';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {EntityId} from '$lib/vocab/entity/entity';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
+import type {PolicyName} from '$lib/vocab/policy/policy';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
 export const checkPolicy = async (
-	permission: string,
+	name: PolicyName,
 	actor_id: ActorId,
 	hub_id: HubId,
 	repos: Repos,
 ): Promise<void> => {
-	log.debug('checking for policies with permission for actor in hub', permission, actor_id, hub_id);
+	log.debug('checking for policies with permission for actor in hub', name, actor_id, hub_id);
 
-	const policy = await repos.policy.filterByActorHubPermission(actor_id, hub_id, permission);
+	const policy = await repos.policy.filterByActorHubPolicy(actor_id, hub_id, name);
 
 	if (policy.length === 0) {
 		log.debug('no policy present for actor in hub', actor_id, hub_id);

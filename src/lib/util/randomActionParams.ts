@@ -12,7 +12,7 @@ import {
 	randomSpaceName,
 	randomHubParams,
 	randomRoleName,
-	randomPermissionName,
+	randomPolicyName,
 	randomAccountName,
 	randomPassword,
 } from '$lib/util/randomVocab';
@@ -256,7 +256,7 @@ export const randomActionParams: RandomActionParams = {
 	CreatePolicy: async (random, {account, actor, hub, role} = {}) => {
 		if (!actor) ({actor} = await random.actor(account));
 		if (!role) ({role} = await random.role(hub, actor, account));
-		return {actor: actor.actor_id, role_id: role.role_id, permission: randomPermissionName()};
+		return {actor: actor.actor_id, role_id: role.role_id, name: randomPolicyName()};
 	},
 	ReadPolicies: async (random, {account, actor, hub, role} = {}) => {
 		if (!actor) ({actor} = await random.actor(account));

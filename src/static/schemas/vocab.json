@@ -325,9 +325,9 @@
 			"properties": {
 				"actor": {"$ref": "/schemas/ActorId"},
 				"role_id": {"$ref": "/schemas/RoleId"},
-				"permission": {"type": "string"}
+				"name": {"$ref": "/schemas/PolicyName"}
 			},
-			"required": ["actor", "role_id", "permission"],
+			"required": ["actor", "role_id", "name"],
 			"additionalProperties": false
 		},
 		"CreatePolicyResponse": {
@@ -645,8 +645,31 @@
 			"tsType": "DialogParams",
 			"tsImport": "import type {DialogParams} from '@feltjs/felt-ui/dialog.js'"
 		},
-		"PermissionName": {
-			"$id": "/schemas/PermissionName",
+		"PingParams": {"$id": "/schemas/PingParams", "type": "null"},
+		"PingResponse": {"$id": "/schemas/PingResponse", "type": "null"},
+		"Policy": {
+			"$id": "/schemas/Policy",
+			"type": "object",
+			"description": "\n\t\tEach <Vocab name=\"Policy\" /> associates a <Vocab name=\"Role\" /> with a name\n\t\tto describe the Actions that <Vocab name=\"Actor\" />s with the <Vocab name=\"Role\" /> are able to perform.\n\t\tPolicies are often 1:1 with Actions, but they don't have to be.\n\t\t`data` is a stub to support more complex governance schemes in the future.\n\t",
+			"properties": {
+				"policy_id": {"$ref": "/schemas/PolicyId"},
+				"role_id": {"$ref": "/schemas/RoleId"},
+				"name": {"$ref": "/schemas/PolicyName"},
+				"data": {"anyOf": [{"type": "object"}, {"type": "null"}]},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["policy_id", "role_id", "name", "data", "created", "updated"],
+			"additionalProperties": false
+		},
+		"PolicyId": {
+			"$id": "/schemas/PolicyId",
+			"type": "number",
+			"tsType": "Flavored<number, 'PolicyId'>",
+			"tsImport": "import {Flavored} from '@feltjs/util';"
+		},
+		"PolicyName": {
+			"$id": "/schemas/PolicyName",
 			"type": "string",
 			"enum": [
 				"Ephemera",
@@ -667,29 +690,6 @@
 				"DeletePolicy",
 				"UpdatePolicy"
 			]
-		},
-		"PingParams": {"$id": "/schemas/PingParams", "type": "null"},
-		"PingResponse": {"$id": "/schemas/PingResponse", "type": "null"},
-		"Policy": {
-			"$id": "/schemas/Policy",
-			"type": "object",
-			"description": "\n\t\tEach <Vocab name=\"Policy\" /> associates a <Vocab name=\"Role\" /> with a permission\n\t\tto describe the Actions that <Vocab name=\"Actor\" />s with the <Vocab name=\"Role\" /> are able to perform.\n\t\tPermissions are often 1:1 with Actions, but they don't have to be.\n\t\t`data` is a stub to support more complex governance schemes in the future.\n\t",
-			"properties": {
-				"policy_id": {"$ref": "/schemas/PolicyId"},
-				"role_id": {"$ref": "/schemas/RoleId"},
-				"permission": {"$ref": "/schemas/PermissionName"},
-				"data": {"anyOf": [{"type": "object"}, {"type": "null"}]},
-				"created": {"type": "object", "instanceof": "Date"},
-				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
-			},
-			"required": ["policy_id", "role_id", "permission", "data", "created", "updated"],
-			"additionalProperties": false
-		},
-		"PolicyId": {
-			"$id": "/schemas/PolicyId",
-			"type": "number",
-			"tsType": "Flavored<number, 'PolicyId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util';"
 		},
 		"PublicActor": {
 			"$id": "/schemas/PublicActor",

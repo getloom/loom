@@ -11,7 +11,7 @@
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
+	import {policyNames} from '$lib/vocab/policy/policyHelpers';
 	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes';
 
 	const {
@@ -99,11 +99,11 @@
 		{/if}
 	</section>
 	<section>
-		<h2>Permissions</h2>
+		<h2>Policies</h2>
 		{#if policies}
 			<ul class="policies">
-				{#each permissionNames as permission (permission)}
-					<PolicyItem {actor} {role} {permission} policy={policies.get(permission)} />
+				{#each policyNames as name (name)}
+					<PolicyItem {actor} {role} {name} policy={policies.get(name)} />
 				{/each}
 			</ul>
 		{:else}

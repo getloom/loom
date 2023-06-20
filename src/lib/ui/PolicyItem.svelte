@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Policy} from '$lib/vocab/policy/policy';
+	import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
 	import {getApp} from '$lib/ui/app';
 	import type {Role} from '$lib/vocab/role/role';
 
@@ -9,7 +9,7 @@
 
 	export let actor: Readable<AccountActor>;
 	export let role: Readable<Role>;
-	export let permission: string;
+	export let name: PolicyName;
 	export let policy: Readable<Policy> | undefined;
 	let pending = false;
 
@@ -31,7 +31,7 @@
 			await actions.CreatePolicy({
 				actor: $actor.actor_id,
 				role_id: $role.role_id,
-				permission,
+				name,
 			});
 		}
 		pending = false;
@@ -41,6 +41,6 @@
 <li>
 	<label class="row">
 		<input type="checkbox" disabled={pending} bind:checked />
-		{permission}
+		{name}
 	</label>
 </li>

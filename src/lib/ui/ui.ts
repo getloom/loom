@@ -264,7 +264,7 @@ export const toUi = (
 				const {role_id} = role.get();
 				for (const policy of $policies.value) {
 					if (policy.get().role_id === role_id) {
-						rolePolicies.set(policy.get().permission, policy);
+						rolePolicies.set(policy.get().name, policy);
 					}
 				}
 				map.set(role_id, rolePolicies);

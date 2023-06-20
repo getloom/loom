@@ -4,9 +4,8 @@ import type {
 	CreateRoleParams,
 	CreateSpaceParams,
 } from '$lib/vocab/action/actionTypes';
-import type {Policy} from '$lib/vocab/policy/policy';
-import type {PermissionName} from '$lib/vocab/permission/permission';
-import {permissionNames} from '$lib/vocab/permission/permissionHelpers';
+import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
+import {policyNames} from '$lib/vocab/policy/policyHelpers';
 import type {RoleId} from '$lib/vocab/role/role';
 import type {HubId, InitialHubSettings} from '$lib/vocab/hub/hub';
 import type {ActorId} from '$lib/vocab/actor/actor';
@@ -33,7 +32,7 @@ export interface RoleTemplate {
 	policies?: PolicyTemplate[];
 }
 export interface PolicyTemplate {
-	permission: PermissionName;
+	name: PolicyName;
 	data?: Policy['data'];
 }
 export type EntityTemplate = EntityData | string; // strings are inferred as `{type: 'Note', content: value}`
@@ -68,12 +67,12 @@ export const policyTemplateToCreatePolicyParams = (
 ): CreatePolicyParams => ({
 	actor,
 	role_id,
-	permission: template.permission,
+	name: template.name,
 });
 
 // TODO integrate with default space data, `$lib/vocab/space/defaultSpaces.ts`, will also clean up typecast
-const allPolicies: PolicyTemplate[] = (permissionNames as PermissionName[]).map((permission) => ({
-	permission,
+const allPolicies: PolicyTemplate[] = (policyNames as PolicyName[]).map((name) => ({
+	name,
 }));
 
 export const defaultAdminHubRoles: RoleTemplate[] = [
@@ -95,11 +94,11 @@ export const defaultCommunityHubRoles: RoleTemplate[] = [
 		name: 'Member',
 		default: true,
 		policies: [
-			{permission: 'Ephemera'},
-			{permission: 'InviteToHub'},
-			{permission: 'CreateSpace'},
-			{permission: 'UpdateSpace'},
-			{permission: 'CreateEntity'},
+			{name: 'Ephemera'},
+			{name: 'InviteToHub'},
+			{name: 'CreateSpace'},
+			{name: 'UpdateSpace'},
+			{name: 'CreateEntity'},
 		],
 	},
 ];
