@@ -13,7 +13,7 @@ is a [Node.js](https://nodejs.org/) server that you can use in many different wa
 - as an <strong>end user</strong> on an instance deployed to the web,
   communicating with people and managing information
 - as an <strong>operator user</strong> deploying an instance to the web via servers IRL,
-  doing admin and maintenance
+  doing admin and infra
 - as a <strong>dev user</strong> making a custom server using
   [the library on npm](https://www.npmjs.com/package/@feltjs/felt-server)
   via `npm i -D @feltjs/felt-server`
@@ -41,7 +41,7 @@ Learn more about [using `@feltjs/felt-server` as a library](/src/docs/library-us
 ## using `@feltjs/felt-server` as a git repo
 
 To work directly on the codebase,
-first set up [a local dev environment](/src/docs/getting-started.md), then:
+see [Getting started](/src/docs/getting-started.md), then:
 
 ```bash
 # node >=18.14

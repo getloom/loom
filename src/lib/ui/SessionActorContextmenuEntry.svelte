@@ -33,7 +33,7 @@
 </script>
 
 {#if $actorSelection === actor}
-	<li class="menu-item panel" role="none">
+	<li class="menu_item panel" role="none">
 		<div class="content">
 			<div class="icon"><ActorAvatar {actor} showName={false} /></div>
 			<div class="title"><ActorAvatar {actor} showIcon={false} /></div>

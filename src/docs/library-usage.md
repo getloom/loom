@@ -4,7 +4,7 @@
 [an npm library](https://www.npmjs.com/package/@feltjs/felt-server)
 to make custom servers.
 
-First set up [a local dev environment](/src/docs/getting-started.md).
+First, follow the [getting started](/src/docs/getting-started.md) instructions.
 
 Next install `@feltjs/felt-server` as a dev dependency:
 

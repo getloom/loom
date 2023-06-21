@@ -20,7 +20,7 @@
 <h2>Pick a Hub</h2>
 <div>
 	{#each items as hub (hub)}
-		<button on:click={() => done(hub.get().hub_id)} class="menu-item">
+		<button on:click={() => done(hub.get().hub_id)} class="menu_item">
 			<HubAvatar {actor} {hub} />
 		</button>
 	{/each}

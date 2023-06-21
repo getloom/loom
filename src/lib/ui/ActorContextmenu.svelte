@@ -7,7 +7,7 @@
 	export let actor: Readable<ClientActor>;
 </script>
 
-<li class="menu-item" role="none">
+<li class="menu_item" role="none">
 	<div class="content">
 		<div class="icon"><ActorAvatar {actor} showName={false} /></div>
 		<div class="title"><ActorAvatar {actor} showIcon={false} /></div>
