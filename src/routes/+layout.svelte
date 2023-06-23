@@ -181,7 +181,11 @@
 			<slot />
 		{/if}
 		<DevmodeControls {devmode} />
-		<Dialogs {dialogs} on:close={() => actions.CloseDialog()} />
+		<Dialogs {dialogs} on:close={() => actions.CloseDialog()} let:dialog>
+			<div class="pane width_md">
+				<svelte:component this={dialog.Component} {...dialog.props} />
+			</div>
+		</Dialogs>
 		<Contextmenu {contextmenu} />
 	</div>
 </Themed>
