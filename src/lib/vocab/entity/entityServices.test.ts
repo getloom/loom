@@ -6,7 +6,7 @@ import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {NoteEntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData';
 import {expectApiError, invite, toServiceRequestMock} from '$lib/util/testHelpers';
 import {
-	ReadEntitiesPaginatedService,
+	ReadEntitiesService,
 	DeleteEntitiesService,
 	CreateEntityService,
 	UpdateEntitiesService,
@@ -24,8 +24,8 @@ test_entityServices.after(teardownDb);
 test_entityServices('create entities with data', async ({random}) => {
 	const {space, actor, account, hub} = await random.space();
 
-	const entityData1: NoteEntityData = {type: 'Note', content: 'this is entity 1'};
-	const entityData2: NoteEntityData = {type: 'Note', content: 'entity: 2'};
+	const entityData1: NoteEntityData = {content: 'this is entity 1'};
+	const entityData2: NoteEntityData = {content: 'entity: 2'};
 	const {entity: entity1, ties: ties1} = await random.entity(
 		actor,
 		account,
@@ -58,7 +58,7 @@ test_entityServices('create entity and return it and directories', async ({repos
 	const {space, actor, account, hub} = await random.space();
 	const {space: space2} = await random.space(actor, account, hub);
 
-	const entityData = {type: 'Note', content: 'test'} as const;
+	const entityData = {content: 'test'} as const;
 	const sourceIds = [space.directory_id, space2.directory_id].sort((a, b) => a - b);
 
 	const {entities} = unwrap(
@@ -89,7 +89,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 
 	//first query on the space dir and expect an empty set
 	const {entities: filtered} = unwrap(
-		await ReadEntitiesPaginatedService.perform({
+		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {actor: actor.actor_id, source_id: space.directory_id},
 		}),
@@ -101,7 +101,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 		await Promise.all(
 			Array.from({length: DEFAULT_PAGE_SIZE + 1}, (_, i) =>
 				random.entity(actor, account, hub, space, space.directory_id, {
-					data: {type: 'Note', content: `This is note ${i}`},
+					data: {content: `This is note ${i}`},
 				}),
 			),
 		)
@@ -111,7 +111,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 
 	//test the default param returns properly
 	const {entities: filtered2} = unwrap(
-		await ReadEntitiesPaginatedService.perform({
+		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {actor: actor.actor_id, source_id: space.directory_id},
 		}),
@@ -124,7 +124,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 
 	//then do 3 queries on smaller pages
 	const {entities: filtered3} = unwrap(
-		await ReadEntitiesPaginatedService.perform({
+		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
 				actor: actor.actor_id,
@@ -137,7 +137,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	assert.is(filtered3.length, FIRST_PAGE_SIZE);
 
 	const {entities: filtered4} = unwrap(
-		await ReadEntitiesPaginatedService.perform({
+		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
 				actor: actor.actor_id,
@@ -152,7 +152,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	assert.ok(!filtered3.find((v) => v.entity_id === filtered4[0].entity_id));
 
 	const {entities: filtered5} = unwrap(
-		await ReadEntitiesPaginatedService.perform({
+		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
 				actor: actor.actor_id,
@@ -171,7 +171,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 test_entityServices('assert default as max pageSize', async ({random}) => {
 	const {space} = await random.space();
 
-	const validateParams = validateSchema(ReadEntitiesPaginatedService.action.params);
+	const validateParams = validateSchema(ReadEntitiesService.action.params);
 	assert.ok(!validateParams({source_id: space.directory_id, pageSize: DEFAULT_PAGE_SIZE + 1}));
 });
 
@@ -182,15 +182,15 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, re
 		data: {type: 'Collection', content: `grocery list`},
 	});
 	const {entity: todo1} = await random.entity(actor, account, hub, space, space.directory_id, {
-		data: {type: 'Note', content: `eggs`},
+		data: {content: `eggs`},
 		ties: [{source_id: list.entity_id}],
 	});
 	const {entity: todo2} = await random.entity(actor, account, hub, space, space.directory_id, {
-		data: {type: 'Note', content: `bread`},
+		data: {content: `bread`},
 		ties: [{source_id: list.entity_id}],
 	});
 	const {entity: todo3} = await random.entity(actor, account, hub, space, space.directory_id, {
-		data: {type: 'Note', content: `milk`},
+		data: {content: `milk`},
 		ties: [{source_id: list.entity_id}],
 	});
 	const entityIds = [todo1.entity_id, todo2.entity_id, todo3.entity_id];
@@ -223,7 +223,7 @@ test_entityServices(
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.actor_id,
-					data: {type: 'Note', content: 'note1'},
+					data: {content: 'note1'},
 					space_id: space.space_id,
 				},
 			}),
@@ -234,7 +234,7 @@ test_entityServices(
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.actor_id,
-					entities: [{entity_id: note1.entity_id, data: {type: 'Note', content: 'Note1'}}],
+					entities: [{entity_id: note1.entity_id, data: {content: 'Note1'}}],
 				},
 			}),
 		);
@@ -245,7 +245,7 @@ test_entityServices(
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.actor_id,
-					data: {type: 'Note', content: 'note2'},
+					data: {content: 'note2'},
 					space_id: commonSpace.space_id,
 				},
 			}),
@@ -256,7 +256,7 @@ test_entityServices(
 				...toServiceRequestMock(repos, actor),
 				params: {
 					actor: actor.actor_id,
-					entities: [{entity_id: note2.entity_id, data: {type: 'Note', content: 'Note2'}}],
+					entities: [{entity_id: note2.entity_id, data: {content: 'Note2'}}],
 				},
 			}),
 		);
@@ -267,7 +267,7 @@ test_entityServices(
 				...toServiceRequestMock(repos, actor2),
 				params: {
 					actor: actor2.actor_id,
-					entities: [{entity_id: note2.entity_id, data: {type: 'Note', content: 'lol'}}],
+					entities: [{entity_id: note2.entity_id, data: {content: 'lol'}}],
 				},
 			}),
 		);
@@ -279,7 +279,7 @@ test_entityServices(
 				...toServiceRequestMock(repos, actor2),
 				params: {
 					actor: actor2.actor_id,
-					entities: [{entity_id: note1.entity_id, data: {type: 'Note', content: 'lol'}}],
+					entities: [{entity_id: note1.entity_id, data: {content: 'lol'}}],
 				},
 			}),
 		);
@@ -299,7 +299,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 			...toServiceRequestMock(repos, actor),
 			params: {
 				actor: actor.actor_id,
-				entities: [{entity_id: directory.entity_id, data: {type: 'Note', content: 'test'}}],
+				entities: [{entity_id: directory.entity_id, data: {content: 'test'}}],
 			},
 		}),
 	);
@@ -379,9 +379,9 @@ test_entityServices('create and remove orderedItem entities ', async ({repos, ra
 	let {entity: collection2} = await random.entity(actor, account, hub, space, space.directory_id, {
 		data: collectionData2,
 	});
-	const entityData1: NoteEntityData = {type: 'Note', content: 'entity: 1'};
-	const entityData2: NoteEntityData = {type: 'Note', content: 'entity: 2'};
-	const entityData3: NoteEntityData = {type: 'Note', content: 'entity: 3'};
+	const entityData1: NoteEntityData = {content: 'entity: 1'};
+	const entityData2: NoteEntityData = {content: 'entity: 2'};
+	const entityData3: NoteEntityData = {content: 'entity: 3'};
 
 	const {entity: entity1} = await random.entity(actor, account, hub, space, space.directory_id, {
 		data: entityData1,

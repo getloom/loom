@@ -79,7 +79,7 @@ const updateDirectoryFreshness = (ui: WritableUi, $directory: Directory): void =
 
 // TODO possibly merge with `stashEntities` to prevent update churn
 export const stashTies = (
-	{sourceTiesByDestEntityId, destTiesBySourceEntityId, queryByKey, entityById, tieById}: WritableUi,
+	{tiesByDestId, tiesBySourceId, queryByKey, entityById, tieById}: WritableUi,
 	$ties: Tie[],
 ): void => {
 	for (const $tie of $ties) {
@@ -90,12 +90,12 @@ export const stashTies = (
 		tieById.set(tie_id, $tie);
 
 		const {source_id, dest_id} = $tie;
-		const sourceTies = lookupTies(sourceTiesByDestEntityId, dest_id);
+		const sourceTies = lookupTies(tiesByDestId, dest_id);
 		if (!sourceTies.get().value.has($tie)) {
 			sourceTies.mutate((s) => s.add($tie));
 		}
 
-		const destTies = lookupTies(destTiesBySourceEntityId, source_id);
+		const destTies = lookupTies(tiesBySourceId, source_id);
 		if (!destTies.get().value.has($tie)) {
 			destTies.mutate((d) => d.add($tie));
 		}
@@ -103,7 +103,7 @@ export const stashTies = (
 		// Update the queries.
 		const entity = entityById.get(dest_id);
 		if (entity) {
-			// TODO this lookup is wrong, but what's the best design here?
+			// TODO HACK this lookup is wrong, but what's the best design here?
 			// extract from mutation helpers into the query store?
 			// (currently there's no query store for non-paginated queries, that's a todo)
 			// the issue here is that only entities with a direct tie back to the directory
@@ -122,7 +122,7 @@ export const stashTies = (
 };
 
 export const evictTie = (
-	{sourceTiesByDestEntityId, destTiesBySourceEntityId, tieById}: WritableUi,
+	{tiesByDestId, tiesBySourceId, tieById}: WritableUi,
 	tie_id: TieId,
 ): void => {
 	const $tie = tieById.get(tie_id);
@@ -131,22 +131,22 @@ export const evictTie = (
 
 	const {dest_id, source_id} = $tie;
 
-	const sourceTies = sourceTiesByDestEntityId.get(dest_id);
+	const sourceTies = tiesByDestId.get(dest_id);
 	if (sourceTies) {
 		sourceTies.mutate((s) => {
 			s.delete($tie);
 			if (s.size === 0) {
-				sourceTiesByDestEntityId.delete(dest_id);
+				tiesByDestId.delete(dest_id);
 			}
 		});
 	}
 
-	const destTies = destTiesBySourceEntityId.get(source_id);
+	const destTies = tiesBySourceId.get(source_id);
 	if (destTies) {
 		destTies.mutate((d) => {
 			d.delete($tie);
 			if (d.size === 0) {
-				destTiesBySourceEntityId.delete(source_id);
+				tiesBySourceId.delete(source_id);
 			}
 		});
 	}
@@ -154,14 +154,8 @@ export const evictTie = (
 
 // TODO delete orphaned entities
 export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
-	const {
-		entityById,
-		tieById,
-		queryByKey,
-		freshnessByDirectoryId,
-		sourceTiesByDestEntityId,
-		destTiesBySourceEntityId,
-	} = ui;
+	const {entityById, tieById, queryByKey, freshnessByDirectoryId, tiesByDestId, tiesBySourceId} =
+		ui;
 
 	for (const entity_id of entityIds) {
 		const entity = entityById.get(entity_id)!;
@@ -172,10 +166,10 @@ export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 		// See also the TODO below.
 
 		// Evict ties for entity.
-		const sourceTies = sourceTiesByDestEntityId.get(entity_id);
+		const sourceTies = tiesByDestId.get(entity_id);
 		if (sourceTies) {
 			for (const $sourceTie of sourceTies.get().value) {
-				const ties = destTiesBySourceEntityId.get($sourceTie.source_id);
+				const ties = tiesBySourceId.get($sourceTie.source_id);
 				if (ties) {
 					const $ties = ties.get().value;
 					let mutated = false;
@@ -190,13 +184,13 @@ export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 				}
 				tieById.delete($sourceTie.tie_id);
 			}
-			sourceTiesByDestEntityId.delete(entity_id);
+			tiesByDestId.delete(entity_id);
 		}
 
-		const destTies = destTiesBySourceEntityId.get(entity_id);
+		const destTies = tiesBySourceId.get(entity_id);
 		if (destTies) {
 			for (const $destTie of destTies.get().value) {
-				const ties = sourceTiesByDestEntityId.get($destTie.dest_id);
+				const ties = tiesByDestId.get($destTie.dest_id);
 				if (ties) {
 					const $ties = ties.get().value;
 					let mutated = false;
@@ -211,7 +205,7 @@ export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 				}
 				tieById.delete($destTie.tie_id);
 			}
-			destTiesBySourceEntityId.delete(entity_id);
+			tiesBySourceId.delete(entity_id);
 		}
 
 		// TODO instead of looping through every collection here,

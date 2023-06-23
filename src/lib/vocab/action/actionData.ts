@@ -21,11 +21,9 @@ import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/spac
 import {
 	CreateEntity,
 	UpdateEntities,
-	ReadEntities,
-	QueryEntities,
 	EraseEntities,
 	DeleteEntities,
-	ReadEntitiesPaginated,
+	ReadEntities,
 	ReadEntitiesById,
 } from '$lib/vocab/entity/entityActions';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions';
@@ -78,8 +76,6 @@ export const actionDatas: ActionData[] = [
 	CreateEntity,
 	UpdateEntities,
 	ReadEntities,
-	ReadEntitiesPaginated,
-	QueryEntities,
 	EraseEntities,
 	DeleteEntities,
 	ReadEntitiesById,

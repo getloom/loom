@@ -8,15 +8,22 @@
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import EntityExplorerTie from '$lib/plugins/entity-explorer/EntityExplorerTie.svelte';
+	import EntityChip from '$lib/ui/EntityChip.svelte';
 
 	const {
-		ui: {contextmenu, actorById},
+		ui: {contextmenu, actorById, tiesBySourceId, tiesByDestId},
 	} = getApp();
 
 	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 
+	$: ({entity_id} = $entity);
+
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
+
+	$: destTies = tiesBySourceId.get(entity_id);
+	$: sourceTies = tiesByDestId.get(entity_id);
 </script>
 
 <li
@@ -25,7 +32,24 @@
 		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 	]}
 >
-	<pre>{JSON.stringify($entity, null, 2)}</pre>
+	<details>
+		<summary>
+			entity <EntityChip {entity} /><code>{JSON.stringify($entity.data)}</code>
+		</summary>
+		<pre class="panel padded_sm">{JSON.stringify($entity, null, 2)}</pre>
+	</details>
+	<div>
+		{#if $destTies}
+			{#each Array.from($destTies.value) as tie (tie)}
+				<EntityExplorerTie {actor} {tie} dest={true} />
+			{/each}
+		{/if}
+		{#if $sourceTies}
+			{#each Array.from($sourceTies.value) as tie (tie)}
+				<EntityExplorerTie {actor} {tie} source={true} />
+			{/each}
+		{/if}
+	</div>
 </li>
 
 <style>
@@ -36,5 +60,7 @@
 		padding: 10px;
 		background-color: var(--input_bg);
 		overflow: auto;
+		display: flex;
+		flex-direction: column;
 	}
 </style>

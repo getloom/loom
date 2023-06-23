@@ -1,7 +1,6 @@
 import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {
 	ReadEntities,
-	ReadEntitiesPaginated,
 	UpdateEntities,
 	CreateEntity,
 	EraseEntities,
@@ -28,26 +27,8 @@ import {Logger} from '@feltjs/util/log.js';
 
 const log = new Logger('[EntityServices]');
 
-// TODO rename to `getEntities`? `loadEntities`?
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	action: ReadEntities,
-	transaction: false,
-	perform: async ({repos, params}) => {
-		const {actor, source_id} = params;
-		const {hub_id} = await repos.space.findByEntity(source_id);
-		await checkHubAccess(actor, hub_id, repos);
-
-		const ties = await repos.tie.filterBySourceId(source_id);
-		//TODO stop filtering directory until we fix entity indexing by space_id
-		const entityIds = toTieEntityIds(ties);
-		entityIds.delete(source_id);
-		const {entities} = await repos.entity.filterByIds(Array.from(entityIds));
-		return {ok: true, status: 200, value: {entities, ties}};
-	},
-};
-
-export const ReadEntitiesPaginatedService: ServiceByName['ReadEntitiesPaginated'] = {
-	action: ReadEntitiesPaginated,
 	transaction: false,
 	perform: async ({repos, params}) => {
 		const {actor, source_id, pageSize, pageKey, related} = params;

@@ -37,7 +37,7 @@ for (const actionData of actionDatas.values()) {
 		}
 
 		// TODO can't make remote calls yet -- either use `node-fetch` or mock
-		if (actionData.type !== 'ClientAction' || actionData.name === 'QueryEntities') {
+		if (actionData.type !== 'ClientAction') {
 			return;
 		}
 

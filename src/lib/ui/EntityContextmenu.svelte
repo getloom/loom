@@ -10,6 +10,7 @@
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
+	import EntityChip from '$lib/ui/EntityChip.svelte';
 
 	export let entity: Readable<Entity>;
 	export let actor: Readable<AccountActor>;
@@ -22,6 +23,7 @@
 		<UnicodeIcon icon="~" />
 	</svelte:fragment>
 	Entity {#if $entity.data.type}<code><small>{$entity.data.type}</small></code>{/if}
+	<EntityChip {entity} />
 	<svelte:fragment slot="menu">
 		<ContextmenuEntry
 			run={() =>

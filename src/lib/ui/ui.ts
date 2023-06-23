@@ -28,7 +28,7 @@ import {ADMIN_HUB_ID} from '$lib/util/constants';
 import type {EphemeraResponse} from '$lib/vocab/action/actionTypes';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
-import type {PaginatedQueryStore, Query} from '$lib/util/query';
+import type {QueryStore, Query} from '$lib/util/query';
 
 if (browser) initBrowser();
 
@@ -41,6 +41,7 @@ export const setUi = (store: Ui): Ui => {
 	return store;
 };
 
+// TODO either add `stashed_ties`, add ties to the payload of `stashed_entities`, or rethink this pattern
 export type UiEvents = EventEmitter<{stashed_entities: [Array<Readable<Entity>>]}>;
 
 export interface UiBatch {
@@ -91,9 +92,9 @@ export interface Ui {
 	assignmentsByRoleId: Readable<Map<RoleId, Assignment[]>>;
 	policiesByRoleId: Readable<Map<RoleId, Map<string, Readable<Policy>>>>;
 	queryByKey: Map<number, Query>;
-	paginatedQueryByKey: Map<number, PaginatedQueryStore>;
-	sourceTiesByDestEntityId: Map<EntityId, Mutable<Set<Tie>>>;
-	destTiesBySourceEntityId: Map<EntityId, Mutable<Set<Tie>>>;
+	paginatedQueryByKey: Map<number, QueryStore>;
+	tiesByDestId: Map<EntityId, Mutable<Set<Tie>>>;
+	tiesBySourceId: Map<EntityId, Mutable<Set<Tie>>>;
 	hubsBySessionActor: Readable<Map<Readable<AccountActor>, Array<Readable<Hub>>>>;
 	adminActors: Readable<Set<Readable<ClientActor>>>;
 	// view state
@@ -337,9 +338,9 @@ export const toUi = (
 	const entityById: Map<EntityId, Writable<Entity>> = new Map();
 	const tieById: Map<TieId, Tie> = new Map();
 	const queryByKey: Map<number, Query> = new Map();
-	const paginatedQueryByKey: Map<number, PaginatedQueryStore> = new Map();
-	const sourceTiesByDestEntityId: Map<EntityId, Mutable<Set<Tie>>> = new Map();
-	const destTiesBySourceEntityId: Map<EntityId, Mutable<Set<Tie>>> = new Map();
+	const paginatedQueryByKey: Map<number, QueryStore> = new Map();
+	const tiesByDestId: Map<EntityId, Mutable<Set<Tie>>> = new Map();
+	const tiesBySourceId: Map<EntityId, Mutable<Set<Tie>>> = new Map();
 
 	const lastSeenByDirectoryId: Map<EntityId, Writable<number> | null> = new Map();
 	const freshnessByDirectoryId: Map<EntityId, Readable<boolean>> = new Map();
@@ -398,8 +399,8 @@ export const toUi = (
 		policiesByRoleId,
 		queryByKey,
 		paginatedQueryByKey,
-		sourceTiesByDestEntityId,
-		destTiesBySourceEntityId,
+		tiesByDestId,
+		tiesBySourceId,
 		hubsBySessionActor,
 		adminActors,
 		// view state

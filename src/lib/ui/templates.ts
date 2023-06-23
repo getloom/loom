@@ -35,7 +35,8 @@ export interface PolicyTemplate {
 	name: PolicyName;
 	data?: Policy['data'];
 }
-export type EntityTemplate = EntityData | string; // strings are inferred as `{type: 'Note', content: value}`
+// TODO maybe this should include ties/path/etc
+export type EntityTemplate = EntityData | string; // strings are inferred as `{content: value}`
 
 export const spaceTemplateToCreateSpaceParams = (
 	template: SpaceTemplate,

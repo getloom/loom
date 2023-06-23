@@ -2,17 +2,18 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
-	import EntityChip from '$lib/ui/EntityChip.svelte';
 
 	export let entity: Readable<Entity>;
+
+	// TODO contextmenu?
 </script>
 
-<EntityChip {entity} />
-{#if $entity.data}<pre class="content ellipsis">{JSON.stringify($entity.data)}</pre>{/if}
+<code class="entity_chip">{$entity.path || $entity.entity_id}</code>
 
 <style>
-	.content {
-		padding: 0 var(--spacing_sm);
+	.entity_chip {
+		font-weight: 600;
 		font-size: var(--size_sm);
+		padding: var(--spacing_xs4);
 	}
 </style>

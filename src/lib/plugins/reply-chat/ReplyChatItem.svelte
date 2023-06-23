@@ -16,7 +16,7 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
-		ui: {contextmenu, actorById, entityById, sourceTiesByDestEntityId},
+		ui: {contextmenu, actorById, entityById, tiesByDestId},
 	} = getApp();
 
 	export let actor: Readable<AccountActor>;
@@ -26,7 +26,7 @@
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
-	$: sourceTiesSet = sourceTiesByDestEntityId.get($entity.entity_id);
+	$: sourceTiesSet = tiesByDestId.get($entity.entity_id);
 	$: replyTie =
 		$sourceTiesSet?.value && Array.from($sourceTiesSet.value).find((t) => t.type === 'HasReply');
 

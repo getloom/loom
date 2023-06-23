@@ -3,6 +3,7 @@
 	import {tick} from 'svelte';
 	import {slide} from 'svelte/transition';
 	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {browser} from '$app/environment';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -11,7 +12,6 @@
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 	import ListControls from './ListControls.svelte';
 	import ClearCheckedButton from './ClearCheckedButton.svelte';
 	import {getSpaceContext} from '$lib/vocab/view/view';
@@ -20,22 +20,24 @@
 	const {actor} = getSpaceContext();
 
 	const {
-		ui: {contextmenu, actorById, destTiesBySourceEntityId, entityById},
+		ui: {contextmenu, actorById},
 		actions,
+		socket,
+		createQuery,
 	} = getApp();
 
 	export let entity: Readable<Entity>;
 
 	let pending = false;
 
-	$: destTies = lookupTies(destTiesBySourceEntityId, $entity.entity_id);
-
-	$: items = Array.from($destTies.value).reduce((acc, tie) => {
-		if (tie.type === 'HasItem') {
-			acc.push(entityById.get(tie.dest_id)!);
-		}
-		return acc;
-	}, [] as Array<Readable<Entity>>);
+	$: shouldLoadEntities = browser && $socket.open;
+	$: query = shouldLoadEntities
+		? createQuery({
+				actor: $actor.actor_id,
+				source_id: $entity.entity_id,
+		  })
+		: null;
+	$: items = query?.entities;
 
 	$: ({checked} = $entity.data);
 
@@ -80,7 +82,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 <li
 	transition:slide|local
 	class:expandItems
-	style="--hue: {hue}"
+	style:--hue={hue}
 	use:contextmenu.action={[
 		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
 		toContextmenuParams(EntityContextmenu, {actor, entity}),
@@ -102,8 +104,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<div class="content prose">
 			<EntityContent {entity} />
 		</div>
-		{#if items?.length}
-			<span style:padding="var(--spacing_sm)">{items.length}</span>
+		{#if $items?.value.length}
+			<span style:padding="var(--spacing_sm)">{$items.value.length}</span>
 			<button class="plain icon_button" on:click={toggleExpandItems}>
 				{#if expandItems}-{:else}+{/if}
 			</button>
@@ -111,7 +113,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<div class="signature" style:padding="var(--spacing_sm)">
 			<ActorAvatar actor={authorActor} showName={false} />
 		</div>
-		{#if items?.length && (expandItems || expandControls)}
+		{#if $items?.value.length && (expandItems || expandControls)}
 			<div class="floating-controls">
 				<button class="plain icon_button" on:click={toggleExpandItems}>
 					{#if expandItems}-{:else}+{/if}
@@ -122,10 +124,10 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	{#if expandControls}
 		<ListControls list={entity} bind:listInputEl />
 	{/if}
-	{#if expandItems && items?.length}
+	{#if expandItems && $items?.value.length}
 		<div class="items" transition:slide|local>
 			<ul class="panel">
-				{#each items as item (item)}
+				{#each $items.value as item (item)}
 					<svelte:self entity={item} />
 				{/each}
 			</ul>

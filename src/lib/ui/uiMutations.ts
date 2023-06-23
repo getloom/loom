@@ -45,8 +45,8 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 		spaceIdSelectionByHubId,
 		entityById,
 		queryByKey,
-		sourceTiesByDestEntityId,
-		destTiesBySourceEntityId,
+		tiesByDestId,
+		tiesBySourceId,
 		lastSeenByDirectoryId,
 		freshnessByDirectoryId,
 		freshnessByHubId,
@@ -98,8 +98,8 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	entityById.clear();
 	queryByKey.clear();
-	sourceTiesByDestEntityId.clear();
-	destTiesBySourceEntityId.clear();
+	tiesByDestId.clear();
+	tiesBySourceId.clear();
 
 	lastSeenByDirectoryId.clear();
 	freshnessByDirectoryId.clear();

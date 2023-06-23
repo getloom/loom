@@ -46,3 +46,7 @@ main {
 .selectable_bg.selected {
 	background-color: var(--bg_8);
 }
+
+.select_none {
+	user-select: none;
+}

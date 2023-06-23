@@ -20,3 +20,9 @@
 		<TodoItem {actor} {parentList} {entity} {space} {selectedList} {selectList} />
 	{/each}
 </ul>
+
+<style>
+	ul {
+		padding: var(--spacing_xs);
+	}
+</style>

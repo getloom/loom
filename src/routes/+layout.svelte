@@ -48,6 +48,7 @@
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
 	import {deserialize, deserializers} from '$lib/util/deserialize';
 	import type {ClientSession} from '$lib/vocab/account/account';
+	import {createQuery} from '$lib/util/query';
 
 	export let data: ClientSession; // TODO should be `LayoutServerLoad`, right? but doesn't typecheck if so
 
@@ -116,7 +117,13 @@
 	// The http client is needed for cookie-related calls like `SignIn` and `SignOut`.
 	const httpClient = toHttpApiClient(findHttpService, deserialize(deserializers));
 
-	const app = setApp({ui, actions, devmode, socket});
+	const app = setApp({
+		ui,
+		actions,
+		devmode,
+		socket,
+		createQuery: createQuery.bind(null, ui, actions),
+	});
 	if (browser) {
 		(window as any).app = app;
 		Object.assign(window, app);

@@ -2,7 +2,6 @@
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {slide} from 'svelte/transition';
 
 	import ReplyChatItems from '$lib/plugins/reply-chat/ReplyChatItems.svelte';
@@ -12,27 +11,30 @@
 	import Mention from '$lib/plugins/mention/Mention.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
-	import {createPaginatedQuery} from '$lib/util/query';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space} = getSpaceContext();
 
-	const {actions, socket, ui} = getApp();
-	const {actorById, entityById} = ui;
+	const {
+		actions,
+		socket,
+		ui: {actorById, entityById},
+		createQuery,
+	} = getApp();
 
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
 
 	$: query = shouldLoadEntities
-		? createPaginatedQuery(ui, actions, {
+		? createQuery({
 				actor: $actor.actor_id,
+				// TODO array of query descriptors? e.g. `source_id: $space.directory_id,`
+				// path: '/thread',
 				source_id: $space.directory_id,
 				related: 'dest',
 		  })
 		: null;
-
-	$: status = $query?.status;
-	$: more = $query?.more;
 	$: entities = query?.entities;
 
 	const createEntity = async () => {
@@ -46,7 +48,7 @@
 		await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			data: {type: 'Note', content},
+			data: {content},
 			ties,
 		});
 		selectedReply = null;
@@ -96,16 +98,12 @@
 	<div class="entities">
 		{#if query && entities}
 			<ReplyChatItems {actor} {entities} {selectReply} {queryReply} />
-			{#if more}
-				<PendingButton class="plain" pending={status === 'pending'} on:click={query.loadMore}
-					>load more</PendingButton
-				>
-			{/if}
+			<LoadMoreButton {query} />
 		{:else}
 			<PendingAnimation />
 		{/if}
 	</div>
-	{#if selectedReply && $selectedReplyActor && status === 'success'}
+	{#if selectedReply && $selectedReplyActor}
 		<div class="replying" transition:slide|local>
 			replying to <Mention name={$selectedReplyActor.name} />
 		</div>

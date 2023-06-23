@@ -9,7 +9,7 @@ export type EntityData =
 	| OrderedCollectionEntityData;
 
 export interface BaseEntityData {
-	type: string;
+	type?: string;
 	content?: string;
 	name?: string;
 	checked?: boolean;
@@ -22,7 +22,7 @@ export interface DirectoryEntityData extends BaseEntityData {
 }
 
 export interface NoteEntityData extends BaseEntityData {
-	type: 'Note';
+	type?: 'Note' | undefined;
 	content: string;
 }
 

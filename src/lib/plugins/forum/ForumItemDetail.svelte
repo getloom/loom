@@ -16,7 +16,7 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 
 	const {
-		ui: {contextmenu, actorById, destTiesBySourceEntityId, entityById},
+		ui: {contextmenu, actorById, tiesBySourceId, entityById},
 		actions,
 	} = getApp();
 
@@ -24,7 +24,7 @@
 	export let actor: Readable<AccountActor>;
 	export let space: Readable<Space>;
 
-	$: destTies = lookupTies(destTiesBySourceEntityId, $entity.entity_id);
+	$: destTies = lookupTies(tiesBySourceId, $entity.entity_id);
 
 	$: items = Array.from($destTies.value).reduce((acc, tie) => {
 		if (tie.type === 'HasItem') {
@@ -41,12 +41,6 @@
 	let replying = false;
 	let text = '';
 
-	const renderEntity = (entity: Entity): boolean => {
-		const type = entity.data.type;
-		//1) Only render Collections or Notes
-		if (!(type === 'Collection' || type === 'Note')) return false;
-		return true;
-	};
 	const createEntity = async () => {
 		const content = text.trim(); // TODO parse to trim? regularize step?
 		if (!content) return;
@@ -55,7 +49,7 @@
 		await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			data: {type: 'Note', content},
+			data: {content},
 			ties: [{source_id: $entity.entity_id}],
 		});
 		text = '';
@@ -73,57 +67,55 @@
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
 And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
-{#if renderEntity($entity)}
-	<li
-		style="--hue: {hue}"
-		use:contextmenu.action={[
-			toContextmenuParams(EntityContextmenu, {actor, entity}),
-			toContextmenuParams(ActorContextmenu, {actor: authorActor}),
-		]}
-	>
-		<div class="wrapper">
-			<div class="signature">
-				<ActorAvatar actor={authorActor} />
-				{format($entity.created, 'MMM d, p')}
-			</div>
-
-			<div class="prose formatted">
-				{#if $entity.data.type === 'Collection'}
-					<div>{$entity.data.name}</div>
-					<div><EntityContent {entity} /></div>
-				{:else}
-					<EntityContent {entity} />
-				{/if}
-			</div>
-
-			<div>
-				<button
-					class="icon_button plain"
-					title="reply to @{$authorActor.name}"
-					aria-label="reply to @{$authorActor.name}"
-					on:click={() => (replying = !replying)}>↩</button
-				>
-				{#if replying}
-					<textarea
-						placeholder="> replying to @{$authorActor.name}"
-						on:keydown={onKeydown}
-						bind:value={text}
-						bind:this={replyInputEl}
-					/>
-				{/if}
-			</div>
+<li
+	style="--hue: {hue}"
+	use:contextmenu.action={[
+		toContextmenuParams(EntityContextmenu, {actor, entity}),
+		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
+	]}
+>
+	<div class="wrapper">
+		<div class="signature">
+			<ActorAvatar actor={authorActor} />
+			{format($entity.created, 'MMM d, p')}
 		</div>
-		{#if items.length}
-			<div class="items">
-				<ul class="panel">
-					{#each items as item (item)}
-						<svelte:self entity={item} {space} {actor} />
-					{/each}
-				</ul>
-			</div>
-		{/if}
-	</li>
-{/if}
+
+		<div class="prose formatted">
+			{#if $entity.data.type === 'Collection'}
+				<div>{$entity.data.name}</div>
+				<div><EntityContent {entity} /></div>
+			{:else}
+				<EntityContent {entity} />
+			{/if}
+		</div>
+
+		<div>
+			<button
+				class="icon_button plain"
+				title="reply to @{$authorActor.name}"
+				aria-label="reply to @{$authorActor.name}"
+				on:click={() => (replying = !replying)}>↩</button
+			>
+			{#if replying}
+				<textarea
+					placeholder="> replying to @{$authorActor.name}"
+					on:keydown={onKeydown}
+					bind:value={text}
+					bind:this={replyInputEl}
+				/>
+			{/if}
+		</div>
+	</div>
+	{#if items.length}
+		<div class="items">
+			<ul class="panel">
+				{#each items as item (item)}
+					<svelte:self entity={item} {space} {actor} />
+				{/each}
+			</ul>
+		</div>
+	{/if}
+</li>
 
 <style>
 	.wrapper {

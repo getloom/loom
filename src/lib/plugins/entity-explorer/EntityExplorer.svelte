@@ -1,16 +1,12 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {readable, writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import EntityExplorerItems from '$lib/plugins/entity-explorer/EntityExplorerItems.svelte';
-	import EntityTree from '$lib/ui/EntityTree.svelte';
+	import EntityTrees from '$lib/ui/EntityTrees.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {Tie} from '$lib/vocab/tie/tie';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
-	import EntityTreeItemPlaintext from '$lib/ui/EntityTreeItemPlaintext.svelte';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space} = getSpaceContext();
 
@@ -18,74 +14,81 @@
 		actions,
 		socket,
 		ui: {entityById},
+		createQuery,
 	} = getApp();
-
-	// TODO use pageKey
-	let entities2: Readable<Array<Readable<Entity>>>;
-	let ties2: Readable<Array<Readable<Tie>>>;
-
-	$: shouldLoadEntities && loadEntities2();
-	const loadEntities2 = async () => {
-		const result = await actions.ReadEntitiesPaginated({
-			actor: $actor.actor_id,
-			source_id: $space.directory_id,
-		});
-		if (result.ok) {
-			// TODO refactor using a query interface (with data, status)
-			entities2 = writable(result.value.entities.map((e) => entityById.get(e.entity_id)!));
-			ties2 = writable(result.value.ties.map((t) => writable(t)));
-		}
-	};
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
+		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+	$: entities = query?.entities;
+
+	// TODO persist this state, maybe in the queryparams/URL path or `viewBySpace`
+
+	// TODO consider an "add view" button with a menu to select any view that then goes into a tab
+	let selectedView: 'explorer' | 'tree' = 'tree';
+
+	$: directory = entityById.get($space.directory_id);
+
+	$: queries = query ? [query] : []; // TODO rethink this
 </script>
 
-<div class="entity-explorer">
+<div class="entity_explorer">
 	<button type="button" on:click={() => actions.ViewSpace({space_id: $space.space_id, view: null})}>
 		Close EntityExplorer
 	</button>
-	<div class="tree">
-		{#if entities2}
-			<ul>
-				{#each $entities2 as entity (entity)}
-					<EntityTree {actor} {entity} ties={ties2} itemComponent={EntityTreeItemPlaintext} />
-				{/each}
-			</ul>
-		{:else}
-			<PendingAnimation />
-		{/if}
+	<div class="buttons">
+		<button
+			class="deselectable"
+			class:selected={selectedView === 'explorer'}
+			on:click={() => (selectedView = 'explorer')}>explorer</button
+		>
+		<button
+			class="deselectable"
+			class:selected={selectedView === 'tree'}
+			on:click={() => (selectedView = 'tree')}>tree</button
+		>
 	</div>
-	<div class="entities">
-		{#if entities && $queryStatus === 'success'}
-			<EntityExplorerItems {actor} {entities} />
-		{:else}
-			<PendingAnimation />
+	<div class="content">
+		{#if selectedView === 'explorer'}
+			<div class="entities">
+				{#if query && entities}
+					<EntityExplorerItems {actor} {entities} />
+					<LoadMoreButton {query} />
+				{:else}
+					<PendingAnimation />
+				{/if}
+			</div>
+		{/if}
+		{#if selectedView === 'tree'}
+			{#if query && directory && entities}
+				<EntityTrees {actor} entity={directory} bind:queries />
+				<LoadMoreButton {query} />
+			{:else}
+				<PendingAnimation />
+			{/if}
 		{/if}
 	</div>
 </div>
 
 <style>
-	.entity-explorer {
+	.entity_explorer {
 		display: flex;
 		flex-direction: column;
+		height: 100%;
+	}
+	.content {
+		flex: 1;
+		width: 100%;
+		overflow: auto;
 	}
 	.entities {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		overflow: auto;
-	}
-	.tree ul {
-		display: flex;
 	}
 </style>

@@ -170,19 +170,7 @@ export const randomActionParams: RandomActionParams = {
 	ReadEntities: async (random, {account, actor, hub, space} = {}) => {
 		if (!actor) ({actor} = await random.actor(account));
 		if (!space) ({space} = await random.space(actor, account, hub));
-		return {actor: actor.actor_id, source_id: space.directory_id};
-	},
-	ReadEntitiesPaginated: async (random, {account, actor, hub, space} = {}) => {
-		if (!actor) ({actor} = await random.actor(account));
-		if (!space) ({space} = await random.space(actor, account, hub));
 		return {actor: actor.actor_id, source_id: space.directory_id, related: 'both'};
-	},
-	QueryEntities: async (random, {account, actor, hub} = {}) => {
-		if (!actor) ({actor} = await random.actor(account));
-		return {
-			actor: actor.actor_id,
-			source_id: (await random.space(actor, account, hub)).space.directory_id,
-		};
 	},
 	ReadEntitiesById: async (random, {account, actor, hub, space} = {}) => {
 		if (!actor) ({actor} = await random.actor(account));

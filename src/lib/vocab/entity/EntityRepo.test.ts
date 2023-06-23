@@ -36,7 +36,7 @@ test__EntityRepo('create and delete entities', async ({repos, random}) => {
 });
 
 test__EntityRepo('find entity by id', async ({repos, random}) => {
-	const data = {type: 'Note', content: '1'} as const;
+	const data = {content: '1'} as const;
 	const {entity} = await random.entity(undefined, undefined, undefined, undefined, undefined, {
 		data,
 	});
@@ -67,7 +67,7 @@ test__EntityRepo('entites return sorted by descending id', async ({repos, random
 });
 
 test__EntityRepo('erase entities', async ({repos, random}) => {
-	const data = {type: 'Note', content: '1'} as const;
+	const data = {type: 'Collection', content: '1'} as const;
 	const {entity} = await random.entity(undefined, undefined, undefined, undefined, undefined, {
 		data,
 	});

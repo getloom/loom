@@ -17,7 +17,6 @@ import type {EntityId, Entity} from '$lib/vocab/entity/entity';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {DialogParams} from '@feltjs/felt-ui/dialog.js';
 import type {ApiResult} from '$lib/server/api';
-import type {Query} from '$lib/util/query';
 import type {
 	NonAuthenticatedService,
 	NonAuthorizedService,
@@ -52,7 +51,6 @@ export type ServiceActionName =
 	| 'CreateEntity'
 	| 'UpdateEntities'
 	| 'ReadEntities'
-	| 'ReadEntitiesPaginated'
 	| 'EraseEntities'
 	| 'DeleteEntities'
 	| 'ReadEntitiesById'
@@ -68,7 +66,6 @@ export type ServiceActionName =
 	| 'Ephemera';
 
 export type ClientActionName =
-	| 'QueryEntities'
 	| 'SetSession'
 	| 'ToggleMainNav'
 	| 'ToggleSecondaryNav'
@@ -102,8 +99,6 @@ export interface ActionParamsByName {
 	CreateEntity: CreateEntityParams;
 	UpdateEntities: UpdateEntitiesParams;
 	ReadEntities: ReadEntitiesParams;
-	ReadEntitiesPaginated: ReadEntitiesPaginatedParams;
-	QueryEntities: QueryEntitiesParams;
 	EraseEntities: EraseEntitiesParams;
 	DeleteEntities: DeleteEntitiesParams;
 	ReadEntitiesById: ReadEntitiesByIdParams;
@@ -150,7 +145,6 @@ export interface ActionResponseByName {
 	CreateEntity: CreateEntityResponse;
 	UpdateEntities: UpdateEntitiesResponse;
 	ReadEntities: ReadEntitiesResponse;
-	ReadEntitiesPaginated: ReadEntitiesPaginatedResponse;
 	EraseEntities: EraseEntitiesResponse;
 	DeleteEntities: DeleteEntitiesResponse;
 	ReadEntitiesById: ReadEntitiesByIdResponse;
@@ -199,10 +193,6 @@ export interface ServiceByName {
 	UpdateSpace: AuthorizedService<UpdateSpaceParams, UpdateSpaceResponseResult>;
 	DeleteSpace: AuthorizedService<DeleteSpaceParams, DeleteSpaceResponseResult>;
 	ReadEntities: AuthorizedService<ReadEntitiesParams, ReadEntitiesResponseResult>;
-	ReadEntitiesPaginated: AuthorizedService<
-		ReadEntitiesPaginatedParams,
-		ReadEntitiesPaginatedResponseResult
-	>;
 	CreateEntity: AuthorizedService<CreateEntityParams, CreateEntityResponseResult>;
 	UpdateEntities: AuthorizedService<UpdateEntitiesParams, UpdateEntitiesResponseResult>;
 	EraseEntities: AuthorizedService<EraseEntitiesParams, EraseEntitiesResponseResult>;
@@ -511,30 +501,15 @@ export type UpdateEntitiesResponseResult = ApiResult<UpdateEntitiesResponse>;
 export interface ReadEntitiesParams {
 	actor: ActorId;
 	source_id: EntityId;
+	pageSize?: number;
+	pageKey?: number;
+	related?: 'source' | 'dest' | 'both';
 }
 export interface ReadEntitiesResponse {
 	entities: Entity[];
 	ties: Tie[];
 }
 export type ReadEntitiesResponseResult = ApiResult<ReadEntitiesResponse>;
-
-export interface ReadEntitiesPaginatedParams {
-	actor: ActorId;
-	source_id: EntityId;
-	pageSize?: number;
-	pageKey?: number;
-	related?: 'source' | 'dest' | 'both';
-}
-export interface ReadEntitiesPaginatedResponse {
-	entities: Entity[];
-	ties: Tie[];
-}
-export type ReadEntitiesPaginatedResponseResult = ApiResult<ReadEntitiesPaginatedResponse>;
-
-export interface QueryEntitiesParams {
-	actor: ActorId;
-	source_id: EntityId;
-}
 
 export interface EraseEntitiesParams {
 	actor: ActorId;
@@ -740,10 +715,6 @@ export interface Actions {
 	CreateEntity: (params: CreateEntityParams) => Promise<CreateEntityResponseResult>;
 	UpdateEntities: (params: UpdateEntitiesParams) => Promise<UpdateEntitiesResponseResult>;
 	ReadEntities: (params: ReadEntitiesParams) => Promise<ReadEntitiesResponseResult>;
-	ReadEntitiesPaginated: (
-		params: ReadEntitiesPaginatedParams,
-	) => Promise<ReadEntitiesPaginatedResponseResult>;
-	QueryEntities: (params: QueryEntitiesParams) => Query;
 	EraseEntities: (params: EraseEntitiesParams) => Promise<EraseEntitiesResponseResult>;
 	DeleteEntities: (params: DeleteEntitiesParams) => Promise<DeleteEntitiesResponseResult>;
 	ReadEntitiesById: (params: ReadEntitiesByIdParams) => Promise<ReadEntitiesByIdResponseResult>;
@@ -837,10 +808,6 @@ export interface Mutations {
 	ReadEntities: (
 		ctx: MutationContext<ReadEntitiesParams, ReadEntitiesResponseResult>,
 	) => Promise<ReadEntitiesResponseResult>;
-	ReadEntitiesPaginated: (
-		ctx: MutationContext<ReadEntitiesPaginatedParams, ReadEntitiesPaginatedResponseResult>,
-	) => Promise<ReadEntitiesPaginatedResponseResult>;
-	QueryEntities: (ctx: MutationContext<QueryEntitiesParams, void>) => Query;
 	EraseEntities: (
 		ctx: MutationContext<EraseEntitiesParams, EraseEntitiesResponseResult>,
 	) => Promise<EraseEntitiesResponseResult>;

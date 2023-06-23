@@ -10,10 +10,10 @@
 	export let entity: Readable<Entity>;
 
 	const {
-		ui: {sourceTiesByDestEntityId, entityById},
+		ui: {tiesByDestId, entityById},
 	} = getApp();
 
-	$: sourceTiesSet = sourceTiesByDestEntityId.get($entity.entity_id);
+	$: sourceTiesSet = tiesByDestId.get($entity.entity_id);
 	$: sourceTies = $sourceTiesSet?.value && Array.from($sourceTiesSet.value);
 	$: sourceEntities = sourceTies?.map((t) => entityById.get(t.source_id)!);
 </script>

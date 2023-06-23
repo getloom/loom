@@ -1,5 +1,3 @@
-import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
-
 import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityMutationHelpers';
 
@@ -42,17 +40,6 @@ export const DeleteEntities: Mutations['DeleteEntities'] = async ({invoke, ui}) 
 	return result;
 };
 
-export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, ui}) => {
-	const result = await invoke();
-	if (!result.ok) return result;
-	const {ties, entities} = result.value;
-	ui.mutate(() => {
-		stashEntities(ui, entities);
-		stashTies(ui, ties);
-	});
-	return result;
-};
-
 export const ReadEntitiesById: Mutations['ReadEntitiesById'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
@@ -63,7 +50,7 @@ export const ReadEntitiesById: Mutations['ReadEntitiesById'] = async ({invoke, u
 	return result;
 };
 
-export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async ({invoke, ui}) => {
+export const ReadEntities: Mutations['ReadEntities'] = async ({invoke, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {ties, entities} = result.value;
@@ -72,35 +59,4 @@ export const ReadEntitiesPaginated: Mutations['ReadEntitiesPaginated'] = async (
 		stashTies(ui, ties);
 	});
 	return result;
-};
-
-export const QueryEntities: Mutations['QueryEntities'] = ({ui: {queryByKey}, actions, params}) => {
-	let query = queryByKey.get(params.source_id);
-	if (!query) {
-		queryByKey.set(
-			params.source_id,
-			(query = {
-				data: mutable(new Set()),
-				status: writable('pending'),
-				error: writable(null),
-			}),
-		);
-		void actions.ReadEntities(params).then(
-			(result) => {
-				if (!query) return;
-				if (result.ok) {
-					query.status.set('success');
-				} else {
-					query.status.set('failure');
-					query.error.set(result.message);
-				}
-			},
-			() => {
-				if (!query) return;
-				query.status.set('failure');
-				query.error.set('unknown error');
-			},
-		);
-	}
-	return query;
 };

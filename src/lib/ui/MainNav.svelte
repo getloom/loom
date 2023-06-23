@@ -25,15 +25,15 @@
 {#if $expandMainNav}
 	<div
 		aria-hidden
-		class="main-nav-bg"
+		class="main_nav_bg"
 		on:click={() => ($expandMainNav ? actions.ToggleMainNav() : null)}
 	/>
 {/if}
-<div class="main-nav-panel" class:expanded={$expandMainNav} style="--hue: {hue}">
-	<div class="main-nav">
+<div class="main_nav_panel" class:expanded={$expandMainNav} style="--hue: {hue}">
+	<div class="main_nav">
 		<div class="header">
-			<div class="luggage-placeholder" />
-			<div class="explorer-button">
+			<div class="luggage_placeholder" />
+			<div class="explorer_button">
 				<ActorAvatar actor={selectedActor} />
 			</div>
 		</div>
@@ -52,13 +52,15 @@
 </div>
 
 <style>
-	.main-nav-panel {
+	.main_nav_panel {
 		width: 0;
+		transition: width var(--duration_1) ease-out;
 	}
-	.main-nav-panel.expanded {
+	.main_nav_panel.expanded {
 		width: var(--width_sm);
+		transition-duration: var(--duration_2);
 	}
-	.main-nav {
+	.main_nav {
 		position: relative;
 		z-index: 2;
 		height: 100%;
@@ -68,15 +70,15 @@
 		flex-direction: column;
 		flex-shrink: 0;
 		transform-origin: top left;
-		background-color: var(--fg_1);
+		background-color: var(--bg);
 		transform: translate3d(-100%, 0, 0);
 		transition: transform var(--duration_1) ease-out;
 	}
-	.expanded .main-nav {
+	.expanded .main_nav {
 		transform: translate3d(0, 0, 0);
 		transition-duration: var(--duration_2);
 	}
-	.main-nav-bg {
+	.main_nav_bg {
 		z-index: 2;
 		display: none;
 		position: fixed;
@@ -84,36 +86,38 @@
 		/* TODO from felt */
 		background-color: rgba(0, 0, 0, 0.4);
 	}
-	:global(.mobile) .main-nav {
+	:global(.mobile) .main_nav {
 		position: fixed;
 		left: 0;
 		top: 0;
 	}
-	:global(.mobile) .main-nav-bg {
+	:global(.mobile) .main_nav_bg {
 		display: block;
 		animation: fade-in var(--duration_3) ease-out;
 	}
-	:global(.mobile) .main-nav-panel.expanded {
+	:global(.mobile) .main_nav_panel.expanded {
 		width: 0;
 	}
 	.header {
+		background-color: var(--fg_1);
 		position: sticky;
 		top: 0;
 		z-index: 1;
 		display: flex;
 		width: 100%;
 	}
-	.luggage-placeholder {
+	.luggage_placeholder {
 		width: var(--luggage_size);
 		height: var(--navbar_size);
 		flex-shrink: 0;
 	}
 	.explorer {
+		background-color: var(--fg_1);
 		display: flex;
 		flex: 1;
 		align-items: flex-start;
 	}
-	.explorer-button {
+	.explorer_button {
 		--icon_size: var(--icon_size_sm);
 		justify-content: flex-start;
 		display: flex;

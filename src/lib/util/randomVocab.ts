@@ -45,7 +45,7 @@ export const randomSpacePath = randomString;
 export const randomSpaceIcon = (): string => '🥥';
 export const randomSpaceName = randomString;
 export const randomView = (): string => '<Chat />';
-export const randomEntityData = (): EntityData => ({type: 'Note', content: randomString()});
+export const randomEntityData = (): EntityData => ({content: randomString()});
 export const randomTieType = randomString;
 export const randomRoleName = randomString;
 export const randomPolicyName = (): PolicyName => randomItem(policyNames);

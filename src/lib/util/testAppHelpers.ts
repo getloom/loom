@@ -9,6 +9,7 @@ import {findHttpService} from '$lib/ui/services';
 import {installSourceMaps} from '$lib/util/testHelpers';
 import {mutations} from '$lib/ui/mutations';
 import {deserialize, deserializers} from '$lib/util/deserialize';
+import {createQuery} from '$lib/util/query';
 
 installSourceMaps();
 
@@ -22,13 +23,15 @@ export const setupApp = async (context: TestAppContext): Promise<void> => {
 		findHttpService,
 		deserialize(deserializers),
 	);
+	const actions = toActions(ui, mutations, () => httpApiClient);
 	context.app = {
 		ui,
-		actions: toActions(ui, mutations, () => httpApiClient),
+		actions,
 		devmode: writable(false),
 		// TODO refactor this so the socket isn't an app dependency,
 		// instead the socket should only exist for the websocket client
 		socket: null as any,
+		createQuery: createQuery.bind(null, ui, actions),
 	};
 };
 

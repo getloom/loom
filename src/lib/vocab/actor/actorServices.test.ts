@@ -116,7 +116,7 @@ test__actorService('delete a actor and properly clean up', async ({repos, random
 		otherHub,
 		otherSpace,
 		undefined,
-		{data: {type: 'Note', content: otherContent}},
+		{data: {content: otherContent}},
 	);
 	assert.is(otherEntity.data.content, otherContent);
 

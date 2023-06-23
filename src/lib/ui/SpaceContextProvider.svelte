@@ -6,6 +6,7 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {setSpaceContext} from '$lib/vocab/view/view';
 	import {getApp} from '$lib/ui/app';
+	import type {Directory} from '$lib/vocab/entity/entityData';
 
 	/**
 	 * `SpaceContext` sets a non-reactive object (`spaceContext`) in the Svelte component context
@@ -27,7 +28,7 @@
 		actor,
 		hub,
 		space,
-		directory: entityById.get($space.directory_id)!,
+		directory: entityById.get($space.directory_id) as Readable<Directory>,
 	};
 	setSpaceContext(spaceContext);
 
@@ -43,7 +44,7 @@
 	}
 	$: if (spaceContext.space !== space) {
 		spaceContext.space = space;
-		spaceContext.directory = entityById.get($space.directory_id)!;
+		spaceContext.directory = entityById.get($space.directory_id) as Readable<Directory>;
 		count++;
 	}
 </script>

@@ -1,31 +1,27 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {readable} from '@feltcoop/svelte-gettable-stores';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import NotesItems from '$lib/plugins/notes/NotesItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space} = getSpaceContext();
 
-	const {actions, socket} = getApp();
+	const {actions, socket, createQuery} = getApp();
 
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
+		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+	$: entities = query?.entities;
 
 	const createEntity = async () => {
 		const content = text.trim(); // TODO parse to trim? regularize step?
@@ -34,7 +30,7 @@
 		await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			data: {type: 'Note', content},
+			data: {content},
 			ties: [{source_id: $space.directory_id}],
 		});
 		text = '';
@@ -48,8 +44,9 @@
 <div class="notes">
 	<TextInput {actor} on:submit={onSubmit} bind:value={text} placeholder="> note" />
 	<div class="entities">
-		{#if entities && $queryStatus === 'success'}
+		{#if query && entities}
 			<NotesItems {actor} {entities} />
+			<LoadMoreButton {query} />
 		{:else}
 			<PendingAnimation />
 		{/if}

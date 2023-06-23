@@ -24,8 +24,6 @@ import {
 	EraseEntities,
 	DeleteEntities,
 	ReadEntities,
-	ReadEntitiesPaginated,
-	QueryEntities,
 	ReadEntitiesById,
 } from '$lib/vocab/entity/entityMutations';
 import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/roleMutations';
@@ -74,8 +72,6 @@ export const mutations: Record<string, Mutation> = {
 	EraseEntities,
 	DeleteEntities,
 	ReadEntities,
-	ReadEntitiesPaginated,
-	QueryEntities,
 	ReadEntitiesById,
 	// roleMutations
 	CreateRole,

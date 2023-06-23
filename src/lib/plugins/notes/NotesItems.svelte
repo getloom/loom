@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Mutable, Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import NotesItem from '$lib/plugins/notes/NotesItem.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 
 	export let actor: Readable<AccountActor>;
-	export let entities: Readable<Array<Readable<Entity>>>;
+	export let entities: Mutable<Array<Readable<Entity>>>;
 
-	$: notes = $entities.slice().reverse(); // TODO definitely not this
+	$: notes = $entities.value.slice().reverse(); // TODO customizable sorting
 </script>
 
 <ul>

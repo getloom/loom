@@ -9,11 +9,10 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import RolesList from '$lib/ui/RolesList.svelte';
-	import {transformQueryDataToArray} from '$lib/util/query';
 
 	const {actor, space} = getSpaceContext();
 
-	const {socket, actions} = getApp();
+	const {socket, actions, createQuery} = getApp();
 
 	const DEFAULT_RULES = `<ol><li>No tolerance for any sort of hate and discrimination such as racism, sexism, ableism, transphobia, etc.</li><li>No spamming</li><li>If there is a conflict, please report issues to community leaders</li></ol>`;
 	const DEFAULT_NORMS = `<p>some thoughts about our community’s vibes that aren’t rules, but still worth thinking about</p><ol><li>We welcome nerdiness :)</li><li>We strive to learn from each other.</li><li>We encourage everyone to participate in moderation.</li></ol>`;
@@ -21,22 +20,18 @@
 	$: shouldLoadEntities = browser && $socket.open;
 
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
+		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	$: querySuccess = $queryStatus === 'success';
+	$: entities = query?.entities;
 
-	let entities: Readable<Array<Readable<Entity>>> | undefined;
 	let rules: Readable<Entity> | undefined;
 	let norms: Readable<Entity> | undefined;
 
-	$: entities = $queryData?.value && transformQueryDataToArray(queryData!);
-	$: rules = entities && $entities?.find((e) => e.get().data.name === 'rules');
-	$: norms = entities && $entities?.find((e) => e.get().data.name === 'norms');
+	$: rules = $entities?.value.find((e) => e.get().data.name === 'rules');
+	$: norms = $entities?.value.find((e) => e.get().data.name === 'norms');
 
 	const createEntity = async (text: string, name: string) => {
 		const content = text.trim(); // TODO parse to trim? regularize step?
@@ -50,12 +45,10 @@
 		});
 	};
 
-	$: if ($entities && querySuccess) {
-		if (!$rules && !$norms) {
-			//TODO initialize these with hub, not user actor
-			void createEntity(DEFAULT_RULES, 'rules');
-			void createEntity(DEFAULT_NORMS, 'norms');
-		}
+	$: if ($entities && !$rules && !$norms) {
+		//TODO initialize these with hub, not user actor
+		void createEntity(DEFAULT_RULES, 'rules');
+		void createEntity(DEFAULT_NORMS, 'norms');
 	}
 </script>
 

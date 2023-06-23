@@ -1,31 +1,27 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	import ChatItems from '$lib/plugins/chat/ChatItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import TextInput from '$lib/ui/TextInput.svelte';
-	import {createPaginatedQuery} from '$lib/util/query';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space} = getSpaceContext();
 
-	const {ui, actions, socket} = getApp();
+	const {actions, socket, createQuery} = getApp();
 
 	let text = '';
 
 	$: shouldLoadEntities = browser && $socket.open;
 
 	$: query = shouldLoadEntities
-		? createPaginatedQuery(ui, actions, {
+		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-
-	$: status = $query?.status;
-	$: more = $query?.more;
 	$: entities = query?.entities;
 
 	const createEntity = async () => {
@@ -35,7 +31,7 @@
 		await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			data: {type: 'Note', content},
+			data: {content},
 			ties: [{source_id: $space.directory_id}],
 		});
 		text = '';
@@ -50,11 +46,7 @@
 	<div class="entities">
 		{#if query && entities}
 			<ChatItems {actor} {entities} />
-			{#if more}
-				<PendingButton class="plain" pending={status === 'pending'} on:click={query.loadMore}
-					>load more</PendingButton
-				>
-			{/if}
+			<LoadMoreButton {query} />
 		{:else}
 			<PendingAnimation />
 		{/if}

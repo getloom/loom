@@ -1,15 +1,14 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ListItems from './ListItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 	import ListControls from './ListControls.svelte';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
-	const {actor, space} = getSpaceContext();
+	const {actor, space, directory} = getSpaceContext();
 
 	export let layoutDirection = 'column'; // is a `flex-direction` property
 	export let itemsDirection = 'column'; // is a `flex-direction` property
@@ -18,24 +17,16 @@
 	// TODO select multiple, act on groups of selected items
 	// TODO collapse button?
 
-	const {
-		actions,
-		socket,
-		ui: {entityById},
-	} = getApp();
+	const {socket, createQuery} = getApp();
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
+		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: directory = entityById.get($space.directory_id);
-	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+	$: entities = query?.entities;
 
 	let listInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
 </script>
@@ -47,11 +38,10 @@
 >
 	<div class="entities">
 		<!-- TODO handle failures here-->
-		{#if entities && $queryStatus === 'success'}
-			{#if directory}
-				<ListControls list={directory} bind:listInputEl />
-			{/if}
+		{#if query && entities}
+			<ListControls list={directory} bind:listInputEl />
 			<ListItems {entities} />
+			<LoadMoreButton {query} />
 		{:else}
 			<PendingAnimation />
 		{/if}

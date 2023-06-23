@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {type Readable, readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
 	import ForumItems from '$lib/plugins/forum/ForumItems.svelte';
@@ -9,24 +9,21 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space, hub} = getSpaceContext();
 
-	const {actions, socket} = getApp();
+	const {actions, socket, createQuery} = getApp();
 
 	//TODO once QueryEntities interface is in place this should initialize a "posts" collection
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
+		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)));
+	$: entities = query?.entities;
 
 	//TODO this should be readable
 	let selectedPost: Readable<Entity> | null = null as any;
@@ -42,8 +39,9 @@
 
 <div class="forum">
 	<div class="entities">
-		{#if entities && $queryStatus === 'success'}
+		{#if query && entities}
 			<ForumItems {entities} {space} {actor} {selectedPost} {selectPost} />
+			<LoadMoreButton {query} />
 			{#if !selectedPost}
 				<button
 					on:click={() =>
@@ -62,7 +60,7 @@
 				</button>
 			{/if}
 			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt-server/pull/514#discussion_r998626893 -->
-			<!-- {:else if $queryStatus === 'failure'}
+			<!-- {:else if status === 'failure'}
 				<Message status="error">{$queryError.message}</Message> -->
 		{:else}
 			<PendingAnimation />

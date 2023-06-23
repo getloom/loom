@@ -18,6 +18,7 @@
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import EntityChip from '$lib/ui/EntityChip.svelte';
 
 	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
@@ -81,7 +82,7 @@
 		<h2>Edit Entity</h2>
 		<section>
 			<!-- TODO resembles `ContextInfo` closely -->
-			<div><code>{$entity.data.type} {$entity.entity_id}</code></div>
+			<div><code>{$entity.data.type}</code> <EntityChip {entity} /></div>
 			<div class="row">
 				<span class="spaced_hz">created by</span>
 				<ActorAvatar actor={authorActor} />
@@ -168,3 +169,15 @@
 	<SourceEntities {actor} {entity} />
 	<DestEntities {actor} {entity} />
 </form>
+
+<style>
+	/* TODO figure this out more generally, these styles shouldn't be needed --
+	should we be using `.prose` instead? */
+	fieldset {
+		padding: var(--spacing_xl3) 0;
+		margin-top: var(--spacing_xl);
+	}
+	legend {
+		margin-bottom: 0;
+	}
+</style>

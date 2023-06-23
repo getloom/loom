@@ -16,6 +16,7 @@ export const RESERVED_ACTOR_NAMES = new Set([
 	'about',
 	'admin',
 	'api',
+	'data',
 	'docs',
 	'ghost',
 	'schemas',

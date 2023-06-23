@@ -25,8 +25,6 @@ import type {
 	CreateEntityParams,
 	UpdateEntitiesParams,
 	ReadEntitiesParams,
-	ReadEntitiesPaginatedParams,
-	QueryEntitiesParams,
 	EraseEntitiesParams,
 	DeleteEntitiesParams,
 	ReadEntitiesByIdParams,
@@ -116,14 +114,6 @@ export interface RandomActionParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<ReadEntitiesParams>;
-	ReadEntitiesPaginated: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<ReadEntitiesPaginatedParams>;
-	QueryEntities: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<QueryEntitiesParams>;
 	EraseEntities: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

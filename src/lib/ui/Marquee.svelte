@@ -20,28 +20,38 @@
 	$: communityActors = $actorsByHubId.get($hub.hub_id);
 </script>
 
-{#if communityActors}
-	<MarqueeNav {space} {communityActors} />
+<div class="marquee">
+	{#if communityActors}
+		<MarqueeNav {space} {communityActors} />
 
-	<!-- TODO display other meta info about the hub -->
-	{#if $expandMarquee}
-		<section>
-			<ul>
-				<!-- TODO probably want these to be sorted so the selected actor is always first -->
-				{#each communityActors as actor (actor)}
-					<MemberItem {actor} />
-				{/each}
-			</ul>
-		</section>
-		{#if $devmode}
+		<!-- TODO display other meta info about the hub -->
+		{#if $expandMarquee}
 			<section>
-				<menu>
-					<li><a href="/docs">/docs</a></li>
-				</menu>
+				<ul>
+					<!-- TODO probably want these to be sorted so the selected actor is always first -->
+					{#each communityActors as actor (actor)}
+						<MemberItem {actor} />
+					{/each}
+				</ul>
 			</section>
-			<section>
-				<SocketConnectionControls {socket} />
-			</section>
+			{#if $devmode}
+				<section>
+					<menu>
+						<li><a href="/docs">/docs</a></li>
+					</menu>
+				</section>
+				<section>
+					<SocketConnectionControls {socket} />
+				</section>
+			{/if}
 		{/if}
 	{/if}
-{/if}
+</div>
+
+<style>
+	.marquee {
+		width: 100%;
+		height: 100%;
+		background-color: var(--fg_1);
+	}
+</style>

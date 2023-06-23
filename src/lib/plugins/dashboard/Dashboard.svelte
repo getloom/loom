@@ -36,7 +36,7 @@
 	{#if $expandMarquee}
 		<div
 			aria-hidden
-			class="marquee-bg"
+			class="marquee_bg"
 			on:click={() => ($expandMarquee ? actions.ToggleSecondaryNav() : null)}
 		/>
 	{/if}
@@ -61,7 +61,7 @@
 	</div>
 	<!-- TODO extract to some shared abstractions with the `Luggage` probably -->
 	{#if $expandMarquee && hub && space}
-		<div class="marquee">
+		<div class="marquee_wrapper">
 			<Marquee {hub} {space} />
 		</div>
 	{/if}
@@ -87,7 +87,7 @@
 	}
 	/* TODO handle properly for mobile */
 	/* TODO better name? */
-	.marquee {
+	.marquee_wrapper {
 		position: relative;
 		height: 100%;
 		width: var(--width_sm);
@@ -95,10 +95,10 @@
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
-		background-color: var(--fg_1);
+		background-color: var(--bg);
 	}
 	/* TODO abstract with `MainNav` at all? */
-	.marquee-bg {
+	.marquee_bg {
 		z-index: 3;
 		display: none;
 		position: fixed;
@@ -106,13 +106,13 @@
 		/* TODO from felt */
 		background-color: rgba(0, 0, 0, 0.4);
 	}
-	:global(.mobile) .marquee {
+	:global(.mobile) .marquee_wrapper {
 		z-index: 3;
 		position: fixed;
 		right: 0;
 		top: 0;
 	}
-	:global(.mobile) .marquee-bg {
+	:global(.mobile) .marquee_bg {
 		display: block;
 		animation: fade-in var(--duration_3) ease-out;
 	}

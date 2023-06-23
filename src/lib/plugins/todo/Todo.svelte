@@ -1,50 +1,78 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
-	import TextInput from '$lib/ui/TextInput.svelte';
 	import TodoItems from '$lib/plugins/todo/TodoItems.svelte';
 	import {getApp} from '$lib/ui/app';
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 	import {getSpaceContext} from '$lib/vocab/view/view';
-	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
-	import {transformQueryDataToArray} from '$lib/util/query';
 	import {lookupOrderedItems} from '$lib/vocab/entity/entityHelpers';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
+	import type {ActorId} from '$lib/vocab/actor/actor';
+	import type {SpaceId} from '$lib/vocab/space/space';
+	import TextInput from '$lib/ui/TextInput.svelte';
 
-	const {actor, space, hub} = getSpaceContext();
+	const {actor, space, directory} = getSpaceContext();
 
-	const {actions, socket, ui} = getApp();
-
-	const {destTiesBySourceEntityId, entityById} = ui;
+	const {actions, socket, ui, createQuery} = getApp();
+	const {entityById} = ui;
 
 	$: shouldLoadEntities = browser && $socket.open;
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
+		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
 		  })
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	$: querySuccess = $queryStatus === 'success';
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$: entities = $queryData?.value && transformQueryDataToArray(queryData!);
+	$: entities = query?.entities;
 
-	let listsCollection: Readable<Entity> | undefined;
-	$: listsCollection = entities && $entities!.find((e) => e.get().data.name === 'lists');
+	$: listsPath = $directory.path + '/lists';
+	$: listsCollection = $entities?.value.find((e) => e.get().path === listsPath);
 
-	$: if ($entities && $queryStatus === 'success') {
-		if (!$listsCollection) {
-			//TODO initialize these with hub, not user actor
-			void initListsCollection();
-		}
+	$: ({space_id, directory_id} = $space);
+	$: ({actor_id} = $actor);
+
+	$: if ($entities?.value.length && !listsCollection) {
+		void initListsCollection(space_id, directory_id, actor_id, listsPath);
 	}
+	const initListsCollection = async (
+		space_id: SpaceId,
+		directory_id: EntityId,
+		actor: ActorId,
+		path: string,
+	) => {
+		await actions.CreateEntity({
+			space_id,
+			actor,
+			path,
+			data: {type: 'OrderedCollection', orderedItems: []},
+			ties: [{source_id: directory_id}],
+		});
+	};
 
-	$: lists = $listsCollection && lookupOrderedItems($listsCollection, ui);
-
-	let text = '';
+	// TODO extract this pattern from 2 places, into the query system?
+	let orderedEntities: Array<Readable<Entity>> | null = null;
+	$: orderedItems = $listsCollection?.data.orderedItems;
+	$: orderedItems && void loadOrderedEntities(orderedItems, $actor.actor_id);
+	const loadOrderedEntities = async (
+		orderedItems: EntityId[],
+		actor_id: ActorId,
+	): Promise<void> => {
+		let entityIdsToLoad: EntityId[] | null = null;
+		for (const entity_id of orderedItems) {
+			if (!entityById.has(entity_id)) {
+				(entityIdsToLoad || (entityIdsToLoad = [])).push(entity_id);
+			}
+		}
+		if (entityIdsToLoad) {
+			await actions.ReadEntitiesById({actor: actor_id, entityIds: entityIdsToLoad});
+		}
+		if ($listsCollection) {
+			orderedEntities = lookupOrderedItems($listsCollection, ui);
+		}
+	};
 
 	let selectedList: Readable<Entity> | null = null as any;
 	const selectList = (list: Readable<Entity>) => {
@@ -56,94 +84,50 @@
 		}
 	};
 
-	const initListsCollection = async () => {
-		//TODO init with hub actor not user actor
+	let newTodoContent = '';
+	let newTodoContentEl: HTMLTextAreaElement | undefined;
+	let creating = false;
+	const createList = async () => {
+		if (!$listsCollection) return;
+		if (!newTodoContent) {
+			newTodoContentEl?.focus();
+			return;
+		}
+		creating = true;
 		await actions.CreateEntity({
+			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			actor: $actor.actor_id,
-			data: {type: 'OrderedCollection', name: 'lists', orderedItems: []},
-			ties: [{source_id: $space.directory_id}],
+			data: {type: 'OrderedCollection', orderedItems: [], content: newTodoContent},
+			ties: [{source_id: $listsCollection.entity_id}],
 		});
-	};
-
-	const createEntity = async () => {
-		const content = text.trim(); // TODO parse to trim? regularize step?
-		if (!content || !selectedList) return;
-
-		//TODO better error handling
-		await actions.CreateEntity({
-			space_id: $space.space_id,
-			actor: $actor.actor_id,
-			data: {type: 'Note', content, checked: false},
-			ties: [{source_id: $selectedList!.entity_id}],
-		});
-		text = '';
-	};
-	const onSubmit = async () => {
-		await createEntity();
-	};
-
-	const clearDone = async () => {
-		if (!selectedList) return;
-		const destTies = destTiesBySourceEntityId.get($selectedList!.entity_id);
-		const items =
-			destTies &&
-			Array.from(destTies.get().value).reduce((acc, tie) => {
-				if (tie.type === 'HasItem') {
-					const entity = entityById.get(tie.dest_id)!;
-					if (entity.get().data.checked) {
-						acc.push(entity);
-					}
-				}
-				return acc;
-			}, [] as Array<Readable<Entity>>);
-		if (!items?.length) return;
-		const entityIds = items.map((i) => i.get().entity_id);
-		await actions.DeleteEntities({
-			actor: $actor.actor_id,
-			entityIds,
-		});
+		creating = false;
 	};
 </script>
 
 <div class="todo">
-	<div class="entities">
-		<!-- TODO handle failures here-->
-		{#if listsCollection && $listsCollection && querySuccess && lists}
-			<TodoItems
+	<!-- TODO handle failures here-->
+	{#if query && listsCollection && $listsCollection && orderedEntities}
+		<TodoItems
+			{actor}
+			parentList={listsCollection}
+			entities={orderedEntities}
+			{space}
+			{selectedList}
+			{selectList}
+		/>
+		<LoadMoreButton {query} />
+		<div class="row">
+			<TextInput
 				{actor}
-				parentList={listsCollection}
-				entities={lists}
-				{space}
-				{selectedList}
-				{selectList}
+				bind:value={newTodoContent}
+				bind:el={newTodoContentEl}
+				autofocus={true}
+				placeholder="> new todo list"
 			/>
-			<button
-				on:click={() =>
-					$listsCollection &&
-					actions.OpenDialog(
-						toDialogParams(CreateEntityForm, {
-							done: () => actions.CloseDialog(),
-							entityName: 'todo list',
-							actor,
-							hub,
-							space,
-							type: 'OrderedCollection',
-							ties: [{source_id: $listsCollection.entity_id}],
-						}),
-					)}
-			>
-				+ Create List
-			</button>
-		{:else}
-			<PendingAnimation />
-		{/if}
-	</div>
-	{#if selectedList}
-		<div class="selected-tools">
-			<TextInput {actor} placeholder="> new todo" on:submit={onSubmit} bind:value={text} />
-			<button on:click={clearDone}>Clear Done</button>
+			<PendingButton pending={creating} on:click={createList}>create new list</PendingButton>
 		</div>
+	{:else}
+		<PendingAnimation />
 	{/if}
 </div>
 
@@ -151,22 +135,5 @@
 	.todo {
 		display: flex;
 		flex-direction: column;
-		flex: 1;
-		overflow: hidden; /* make the content scroll */
-	}
-	.entities {
-		max-width: var(--width_md);
-		overflow: auto;
-		flex: 1;
-		display: flex;
-		/* makes scrolling start at the bottom */
-		flex-direction: column;
-	}
-	.selected-tools {
-		display: flex;
-	}
-	/* TODO remove this hack when the layout is more mature */
-	.selected-tools > :global(*:first-child) {
-		flex: 1;
 	}
 </style>

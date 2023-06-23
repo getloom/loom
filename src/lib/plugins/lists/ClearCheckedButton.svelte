@@ -11,12 +11,12 @@
 
 	const {
 		actions,
-		ui: {destTiesBySourceEntityId, entityById},
+		ui: {tiesBySourceId, entityById},
 	} = getApp();
 
 	export let list: Readable<Entity>;
 
-	$: destTies = destTiesBySourceEntityId.get($list.entity_id);
+	$: destTies = tiesBySourceId.get($list.entity_id);
 	$: items =
 		$destTies &&
 		Array.from($destTies.value).reduce((acc, tie) => {

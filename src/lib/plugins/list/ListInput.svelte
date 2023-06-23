@@ -26,7 +26,7 @@
 		await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			data: {type: 'Note', content},
+			data: {content},
 			ties: [{source_id: $list.entity_id}],
 		});
 		text = '';

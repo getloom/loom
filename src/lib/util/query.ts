@@ -5,14 +5,12 @@ import {
 	type Mutable,
 	type Readable,
 	type Writable,
-	readable,
 } from '@feltcoop/svelte-gettable-stores';
 
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Actions} from '$lib/vocab/action/actionTypes';
 import type {Ui} from '$lib/ui/ui';
 import type {ActorId} from '$lib/vocab/actor/actor';
-import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
 
 export interface Query {
 	data: Mutable<Set<Writable<Entity>>>;
@@ -22,19 +20,22 @@ export interface Query {
 
 export interface QueryParams {
 	actor: ActorId;
+	// TODO array of these? `query: [{source_id: s}, {path: '/thread'}]`
 	source_id: EntityId;
+	path?: string;
 	related?: 'dest' | 'source' | 'both';
 }
 
-export interface PaginatedQueryState {
+export interface QueryState {
 	status: AsyncStatus;
 	error: string | null;
 	more: boolean;
 }
 
-export interface PaginatedQueryStore extends Readable<PaginatedQueryState> {
+export interface QueryStore extends Readable<QueryState> {
 	loadMore: () => Promise<void>;
 	dispose: () => void;
+	params: QueryParams;
 	entities: Mutable<Array<Readable<Entity>>>;
 	// ties: Mutable<Tie[]>; // TODO probably include these
 }
@@ -46,20 +47,23 @@ export interface QueryMatchEntity {
 	(entity: Readable<Entity>, params: QueryParams, ui: Ui): boolean;
 }
 
-export const createPaginatedQuery = (
+export const createQuery = (
 	ui: Ui,
 	actions: Actions,
 	params: QueryParams,
-	addEntity: QueryAddEntity = addEntitySortedByCreated,
+	reversed = false,
+	addEntity: QueryAddEntity = reversed
+		? addEntitySortedByCreatedReversed
+		: addEntitySortedByCreated,
 	matchEntity: QueryMatchEntity = matchEntityBySourceId,
-): PaginatedQueryStore => {
+): QueryStore => {
 	// TODO the key should be something like `params.actor + '__ ' + params.source_id`
 	// but we currently don't handle queries per actor in the mutation layer.
 	const key = params.source_id;
 	const {paginatedQueryByKey} = ui;
 	let query = paginatedQueryByKey.get(key);
 	if (query) return query;
-	query = toPaginatedQuery(ui, actions, params, key, addEntity, matchEntity);
+	query = toPaginatedQuery(ui, actions, params, key, reversed, addEntity, matchEntity);
 	paginatedQueryByKey.set(key, query);
 	return query;
 };
@@ -69,10 +73,11 @@ const toPaginatedQuery = (
 	actions: Actions,
 	params: QueryParams,
 	key: number,
+	reversed: boolean,
 	addEntity: QueryAddEntity,
 	matchEntity: QueryMatchEntity,
-): PaginatedQueryStore => {
-	const {subscribe, update, get} = writable<PaginatedQueryState>({
+): QueryStore => {
+	const {subscribe, update, get} = writable<QueryState>({
 		status: 'initial',
 		error: null,
 		more: true,
@@ -84,7 +89,7 @@ const toPaginatedQuery = (
 
 	const load = async (pageKey?: number): Promise<void> => {
 		const finalParams = pageKey === undefined ? params : {...params, pageKey};
-		loading = actions.ReadEntitiesPaginated(finalParams).then(
+		loading = actions.ReadEntities(finalParams).then(
 			(result) => {
 				update(($v) => {
 					const updated = {...$v};
@@ -113,19 +118,34 @@ const toPaginatedQuery = (
 
 	const loadMore = async (): Promise<void> => {
 		if (loading) return loading;
-		const oldestEntity = entities.get().value[0];
-		return load(oldestEntity?.get().entity_id);
+		const $entities = entities.get().value;
+		const oldest = reversed ? $entities[$entities.length - 1] : $entities[0];
+		return load(oldest?.get().entity_id);
 	};
 
 	// Listen to app events to add entities.
 	const onEntitiesAdded = (addedEntities: Array<Readable<Entity>>) => {
 		let mutated = false;
-		for (const entity of addedEntities) {
+		const add = (entity: Readable<Entity>) => {
 			if (matchEntity(entity, params, ui)) {
+				// TODO HACK should this be a set? and then have sorted array projections?
+				if (entities.get().value.includes(entity)) {
+					return;
+				}
 				addEntity(entity, entities.get().value);
 				mutated = true;
 			}
+		};
+		if (reversed) {
+			for (let i = addedEntities.length - 1; i >= 0; i--) {
+				add(addedEntities[i]);
+			}
+		} else {
+			for (const entity of addedEntities) {
+				add(entity);
+			}
 		}
+
 		if (mutated) entities.mutate();
 	};
 	ui.events.on('stashed_entities', onEntitiesAdded);
@@ -143,43 +163,66 @@ const toPaginatedQuery = (
 	// TODO add an option to create the query without loading it immediately
 	void load();
 
-	return {subscribe, get, loadMore, dispose, entities};
+	return {subscribe, get, loadMore, dispose, params, entities};
 };
 
-// TODO extract the logic so it can be used with other comparisons than `created` with the latest at the end
-const addEntitySortedByCreated: QueryAddEntity = (entity, entities) => {
-	const {created} = entity.get();
-	const maxIndex = entities.length - 1;
-	let index = maxIndex;
-	while (index !== -1) {
-		if (entities[index].get().created > created) {
-			index--;
+export interface CompareEntities {
+	(a: Entity, b: Entity): boolean;
+}
+
+export const toQueryAddEntity =
+	(reversed: boolean, compare: CompareEntities): QueryAddEntity =>
+	(entity, entities) => {
+		const $entity = entity.get();
+		const maxIndex = entities.length - 1;
+		let index: number;
+		if (reversed) {
+			// insert starting from the beginning
+			index = 0;
+			while (index <= maxIndex) {
+				if (!compare(entities[index].get(), $entity)) {
+					index++;
+					// console.log(`index`, index);
+				} else {
+					break;
+				}
+			}
 		} else {
-			break;
+			// insert starting from the end
+			index = maxIndex;
+			while (index !== -1) {
+				if (compare(entities[index].get(), $entity)) {
+					index--;
+					// console.log(`index`, index);
+				} else {
+					break;
+				}
+			}
 		}
-	}
-	if (index === maxIndex) {
-		entities.push(entity);
-	} else if (index === -1) {
-		entities.unshift(entity);
-	} else {
-		entities.splice(index + 1, 0, entity);
-	}
-};
+		// console.log(`final index`, index);
+		if (index > maxIndex) {
+			entities.push(entity);
+		} else if (index <= 0) {
+			entities.unshift(entity);
+		} else {
+			entities.splice(index + 1, 0, entity);
+		}
+	};
+
+export const addEntitySortedByCreated = toQueryAddEntity(false, (a, b) => a.created > b.created);
+export const addEntitySortedByCreatedReversed = toQueryAddEntity(
+	true,
+	(a, b) => a.created < b.created,
+);
 
 const matchEntityBySourceId: QueryMatchEntity = (entity, params, ui) => {
-	const ties = ui.sourceTiesByDestEntityId.get(entity.get().entity_id)?.get().value;
+	const ties = ui.tiesByDestId.get(entity.get().entity_id)?.get().value;
 	if (!ties) return false;
+	const {source_id} = params;
 	for (const tie of ties) {
-		if (tie.source_id === params.source_id) {
+		if (tie.source_id === source_id) {
 			return true;
 		}
 	}
 	return false;
-};
-
-export const transformQueryDataToArray = (
-	data: Mutable<Set<Writable<Entity>>>,
-): Readable<Array<Readable<Entity>>> => {
-	return readable(sortEntitiesByCreated(Array.from(data.get().value)));
 };

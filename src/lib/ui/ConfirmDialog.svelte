@@ -3,6 +3,7 @@
 	import Message from '@feltjs/felt-ui/Message.svelte';
 
 	import {getApp} from '$lib/ui/app';
+	import {onMount} from 'svelte';
 
 	const {actions} = getApp();
 
@@ -39,13 +40,20 @@
 			actions.CloseDialog();
 		}
 	};
+
+	let cancelButtonEl: HTMLButtonElement;
+	onMount(() => {
+		cancelButtonEl.focus();
+	});
 </script>
 
-<div class="prose padded_xl">
-	<h1>{promptText}</h1>
+<div class="padded_xl">
+	<div class="prose">
+		<h1>{promptText}</h1>
+	</div>
 	<!-- TODO a11y -->
 	<div class="buttons">
-		<button on:click={close}>{cancelText}</button>
+		<button on:click={close} bind:this={cancelButtonEl}>{cancelText}</button>
 		<PendingButton {pending} on:click={confirm}>{confirmText}</PendingButton>
 	</div>
 	{#if errorMessage}

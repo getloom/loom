@@ -705,16 +705,6 @@
 			"required": ["actor_id", "type", "name", "created"],
 			"additionalProperties": false
 		},
-		"QueryEntitiesResponse": {
-			"$id": "/schemas/QueryEntitiesResponse",
-			"type": "object",
-			"properties": {
-				"actor": {"$ref": "/schemas/ActorId"},
-				"source_id": {"$ref": "/schemas/EntityId"}
-			},
-			"required": ["actor", "source_id"],
-			"additionalProperties": false
-		},
 		"ReadEntitiesByIdParams": {
 			"$id": "/schemas/ReadEntitiesByIdParams",
 			"type": "object",
@@ -732,8 +722,8 @@
 			"required": ["entities"],
 			"additionalProperties": false
 		},
-		"ReadEntitiesPaginatedParams": {
-			"$id": "/schemas/ReadEntitiesPaginatedParams",
+		"ReadEntitiesParams": {
+			"$id": "/schemas/ReadEntitiesParams",
 			"type": "object",
 			"properties": {
 				"actor": {"$ref": "/schemas/ActorId"},
@@ -741,26 +731,6 @@
 				"pageSize": {"type": "number", "maximum": 20},
 				"pageKey": {"type": "number"},
 				"related": {"type": "string", "enum": ["source", "dest", "both"]}
-			},
-			"required": ["actor", "source_id"],
-			"additionalProperties": false
-		},
-		"ReadEntitiesPaginatedResponse": {
-			"$id": "/schemas/ReadEntitiesPaginatedResponse",
-			"type": "object",
-			"properties": {
-				"entities": {"type": "array", "items": {"$ref": "/schemas/Entity"}},
-				"ties": {"type": "array", "items": {"$ref": "/schemas/Tie"}}
-			},
-			"required": ["entities", "ties"],
-			"additionalProperties": false
-		},
-		"ReadEntitiesParams": {
-			"$id": "/schemas/ReadEntitiesParams",
-			"type": "object",
-			"properties": {
-				"actor": {"$ref": "/schemas/ActorId"},
-				"source_id": {"$ref": "/schemas/EntityId"}
 			},
 			"required": ["actor", "source_id"],
 			"additionalProperties": false

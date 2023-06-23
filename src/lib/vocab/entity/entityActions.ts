@@ -1,5 +1,5 @@
 import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
-import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
+import type {ServiceActionData} from '$lib/vocab/action/action';
 
 export const CreateEntity: ServiceActionData = {
 	type: 'ServiceAction',
@@ -117,7 +117,11 @@ export const ReadEntities: ServiceActionData = {
 		type: 'object',
 		properties: {
 			actor: {$ref: '/schemas/ActorId'},
+			// TODO make this optional, figure out query params pattern
 			source_id: {$ref: '/schemas/EntityId'},
+			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
+			pageKey: {type: 'number'},
+			related: {type: 'string', enum: ['source', 'dest', 'both']},
 		},
 		required: ['actor', 'source_id'],
 		additionalProperties: false,
@@ -134,56 +138,36 @@ export const ReadEntities: ServiceActionData = {
 	},
 	returns: 'Promise<ReadEntitiesResponseResult>',
 	route: {
-		path: '/api/v1/entities/source/:source_id',
+		path: '/api/v1/entities',
 		method: 'GET',
 	},
 };
 
-export const QueryEntities: ClientActionData = {
-	type: 'ClientAction',
-	name: 'QueryEntities',
-	params: {
-		$id: '/schemas/QueryEntitiesResponse',
-		type: 'object',
-		properties: {
-			actor: {$ref: '/schemas/ActorId'},
-			source_id: {$ref: '/schemas/EntityId'},
-		},
-		required: ['actor', 'source_id'],
-		additionalProperties: false,
-	},
-	returns: 'Query',
-};
-
-export const ReadEntitiesPaginated: ServiceActionData = {
+export const ReadEntitiesById: ServiceActionData = {
 	type: 'ServiceAction',
-	name: 'ReadEntitiesPaginated',
+	name: 'ReadEntitiesById',
 	params: {
-		$id: '/schemas/ReadEntitiesPaginatedParams',
+		$id: '/schemas/ReadEntitiesByIdParams',
 		type: 'object',
 		properties: {
 			actor: {$ref: '/schemas/ActorId'},
-			source_id: {$ref: '/schemas/EntityId'},
-			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
-			pageKey: {type: 'number'},
-			related: {type: 'string', enum: ['source', 'dest', 'both']},
+			entityIds: {type: 'array', items: {$ref: '/schemas/EntityId'}},
 		},
-		required: ['actor', 'source_id'],
+		required: ['actor', 'entityIds'],
 		additionalProperties: false,
 	},
 	response: {
-		$id: '/schemas/ReadEntitiesPaginatedResponse',
+		$id: '/schemas/ReadEntitiesByIdResponse',
 		type: 'object',
 		properties: {
 			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
-			ties: {type: 'array', items: {$ref: '/schemas/Tie'}},
 		},
-		required: ['entities', 'ties'],
+		required: ['entities'],
 		additionalProperties: false,
 	},
-	returns: 'Promise<ReadEntitiesPaginatedResponseResult>',
+	returns: 'Promise<ReadEntitiesByIdResponseResult>',
 	route: {
-		path: '/api/v1/entities/source/:source_id/paginated',
+		path: '/api/v1/entities/ids',
 		method: 'GET',
 	},
 };
@@ -255,34 +239,5 @@ export const DeleteEntities: ServiceActionData = {
 	route: {
 		path: '/api/v1/entities/delete',
 		method: 'DELETE',
-	},
-};
-
-export const ReadEntitiesById: ServiceActionData = {
-	type: 'ServiceAction',
-	name: 'ReadEntitiesById',
-	params: {
-		$id: '/schemas/ReadEntitiesByIdParams',
-		type: 'object',
-		properties: {
-			actor: {$ref: '/schemas/ActorId'},
-			entityIds: {type: 'array', items: {$ref: '/schemas/EntityId'}},
-		},
-		required: ['actor', 'entityIds'],
-		additionalProperties: false,
-	},
-	response: {
-		$id: '/schemas/ReadEntitiesByIdResponse',
-		type: 'object',
-		properties: {
-			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
-		},
-		required: ['entities'],
-		additionalProperties: false,
-	},
-	returns: 'Promise<ReadEntitiesByIdResponseResult>',
-	route: {
-		path: '/api/v1/entities/ids',
-		method: 'GET',
 	},
 };

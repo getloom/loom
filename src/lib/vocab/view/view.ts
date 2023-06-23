@@ -7,7 +7,7 @@ import type {Space} from '$lib/vocab/space/space';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {AccountActor} from '$lib/vocab/actor/actor';
 import {parseSvast} from '$lib/util/parseSvast';
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Directory} from '$lib/vocab//entity/entityData';
 
 export type ViewData = Root;
 
@@ -95,7 +95,7 @@ export interface SpaceContext {
 	actor: Readable<AccountActor>;
 	hub: Readable<Hub>;
 	space: Readable<Space>;
-	directory: Readable<Entity>;
+	directory: Readable<Directory>;
 }
 
 const KEY = Symbol('SpaceContext');

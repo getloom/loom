@@ -1,55 +1,44 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {readable, type Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import BoardItems from '$lib/plugins/board/BoardItems.svelte';
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
-	import {sortEntitiesByCreated} from '$lib/vocab/entity/entityHelpers';
-	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space, hub} = getSpaceContext();
 
-	const {actions, socket, ui} = getApp();
+	const {
+		actions,
+		socket,
+		ui: {entityById},
+		createQuery,
+	} = getApp();
 
-	const {entityById, sourceTiesByDestEntityId} = ui;
+	// export let thread = '/thread'; // TODO use instead of directory_id
 
 	$: shouldLoadEntities = browser && $socket.open;
-	//TODO once QueryEntities interface is in place this should load & initialize a "thread" collection
-	$: thread = entityById.get($space.directory_id)!;
+	// TODO create `./thread` - $directory.path collection
+	$: threadEntity = entityById.get($space.directory_id)!;
 	$: query = shouldLoadEntities
-		? actions.QueryEntities({
-				actor: $actor.actor_id,
-				source_id: $space.directory_id,
-		  })
+		? createQuery(
+				{
+					actor: $actor.actor_id,
+					source_id: $space.directory_id,
+					// TODO implement query by path
+					// path: $directory.path + '/thread',
+				},
+				true,
+		  )
 		: null;
-	$: queryData = query?.data;
-	$: queryStatus = query?.status;
-	// TODO the `readable` is a temporary hack until we finalize cached query result patterns
-	$queryData && readable(sortEntitiesByCreated(Array.from($queryData.value)).reverse());
-
-	$: entities =
-		$queryData &&
-		readable(
-			sortEntitiesByCreated(
-				Array.from($queryData.value).reduce((acc, ent) => {
-					const sourceTies = lookupTies(sourceTiesByDestEntityId, ent.get().entity_id);
-					const isReply = Array.from(sourceTies.get().value).find((tie) => tie.type === 'HasReply');
-					if (!isReply) {
-						acc.unshift(ent);
-					}
-					return acc;
-				}, [] as Array<Readable<Entity>>),
-			).reverse(),
-		);
+	$: entities = query?.entities;
 </script>
 
 <div class="board">
 	<div class="entities">
-		{#if entities && $queryStatus === 'success'}
+		{#if query && entities}
 			<CreateEntityForm
 				done={() => actions.CloseDialog()}
 				entityName="post"
@@ -58,12 +47,16 @@
 				{hub}
 				{space}
 			>
-				<svelte:fragment slot="content_title">post</svelte:fragment>
+				<svelte:fragment slot="content_title"
+					><div />
+					<!-- empty --></svelte:fragment
+				>
 				<svelte:fragment slot="error"><span style:display="none" /></svelte:fragment>
 			</CreateEntityForm>
-			<BoardItems {entities} {space} {actor} {thread} />
+			<BoardItems {entities} {space} {actor} thread={threadEntity} />
+			<LoadMoreButton {query} />
 			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt-server/pull/514#discussion_r998626893 -->
-			<!-- {:else if $queryStatus === 'failure'}
+			<!-- {:else if status === 'failure'}
 				<Message status="error">{$queryError.message}</Message> -->
 		{:else}
 			<PendingAnimation />
