@@ -139,6 +139,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		align-items: center;
 		--icon_size: var(--icon_size_xs);
 		justify-content: space-between;
+		margin-bottom: var(--spacing_lg);
 	}
 	.items {
 		width: 100%;

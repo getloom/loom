@@ -36,7 +36,7 @@
 <style>
 	.text_input {
 		display: flex;
-		flex: 1;
+		width: 100%;
 		padding: var(--spacing_xs);
 	}
 	textarea {
