@@ -33,7 +33,17 @@ export const apiServer = new ApiServer({
 	services,
 });
 
-apiServer.init().catch((err) => {
-	log.error('server.init() failed', err);
-	throw err;
-});
+apiServer
+	.init()
+	.then(() => {
+		if (process.argv.includes('--check')) {
+			log.info('check: server started successfully');
+			server.close(() => {
+				log.info('check: server closed successfully');
+			});
+		}
+	})
+	.catch((err) => {
+		log.error('server.init() failed', err);
+		throw err;
+	});
