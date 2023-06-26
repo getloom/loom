@@ -50,6 +50,7 @@ export const toHttpServiceMiddleware =
 
 		const validateParams = validateSchema<any>(service.action.params);
 		if (!validateParams(params)) {
+			log.error(params);
 			// TODO handle multiple errors instead of just the first
 			log.error('failed to validate params', params, validateParams.errors);
 			const validationError = validateParams.errors![0];

@@ -3,7 +3,9 @@ import type {Readable} from '@feltcoop/svelte-gettable-stores';
 import {GUEST_ACTOR_NAME} from '$lib/vocab/actor/constants';
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Ui} from '$lib/ui/ui';
-import {browser} from '$app/environment';
+import {Logger} from '@feltjs/util/log.js';
+
+const log = new Logger('[entityHeler]');
 
 export const toName = (entity: null | undefined | {name?: string}): string =>
 	entity?.name ?? GUEST_ACTOR_NAME;
@@ -68,7 +70,7 @@ export const lookupOrderedItems = (entity: Entity, ui: Ui): Array<Readable<Entit
 		if (entity) {
 			entities.push(entity);
 		} else {
-			if (browser) console.warn('missing entity_id', entity_id); // eslint-disable-line no-console
+			log.warn('missing entity_id', entity_id);
 		}
 	}
 	return entities;

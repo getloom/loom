@@ -50,6 +50,8 @@ export const task: Task = {
 			mv ${artifactFilename} ${deployDirname}/;
 			cd ${deployDirname};
 			tar -xf ${artifactFilename};
+			echo 'stopping old deploy'
+			pm2 stop default
 			echo 'npm ci';
 			npm ci;
 			cd ~;
