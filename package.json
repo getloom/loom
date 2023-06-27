@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@feltcoop/svelte-gettable-stores": "^0.2.0",
-    "@feltjs/felt-ui": "^0.59.0",
+    "@feltjs/felt-ui": "^0.60.2",
     "@feltjs/util": "^0.8.0",
     "@polka/send-type": "^0.5.2",
     "ajv": "^8.12.0",
