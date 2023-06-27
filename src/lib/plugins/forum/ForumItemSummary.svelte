@@ -43,7 +43,6 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	]}
 >
 	<!-- TODO remove this override after implementing links -->
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<a {href} class="prose formatted">
 		<div class="content">
 			{#if $entity.data.name}

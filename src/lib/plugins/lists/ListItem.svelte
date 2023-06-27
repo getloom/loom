@@ -78,7 +78,6 @@
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
 And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <li
 	transition:slide|local
 	class:expandItems

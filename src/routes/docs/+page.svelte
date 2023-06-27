@@ -16,11 +16,11 @@
 	// TODO display plugins
 	// TODO display source code links to views and actions and such
 
-	$: sortedActionDatas = actionDatas.slice().sort((a, b) => a.name.localeCompare(b.name));
-	$: sortedModelSchemas = modelSchemas.slice().sort((a, b) => a.$id.localeCompare(b.$id));
-	$: sortedViewTemplates = viewTemplates.slice().sort((a, b) => a.name.localeCompare(b.name));
+	const sortedActionDatas = actionDatas.slice().sort((a, b) => a.name.localeCompare(b.name));
+	const sortedModelSchemas = modelSchemas.slice().sort((a, b) => a.$id.localeCompare(b.$id));
+	const sortedViewTemplates = viewTemplates.slice().sort((a, b) => a.name.localeCompare(b.name));
 
-	$: schemaNames = sortedModelSchemas.map((s) => parseSchemaName(s.$id));
+	const schemaNames = sortedModelSchemas.map((s) => parseSchemaName(s.$id));
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
