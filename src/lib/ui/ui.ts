@@ -28,7 +28,7 @@ import {ADMIN_HUB_ID} from '$lib/util/constants';
 import type {EphemeraResponse} from '$lib/vocab/action/actionTypes';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
-import type {QueryStore, Query} from '$lib/util/query';
+import type {QueryStore} from '$lib/util/query';
 
 if (browser) initBrowser();
 
@@ -91,8 +91,7 @@ export interface Ui {
 	rolesByHubId: Readable<Map<HubId, Array<Readable<Role>>>>;
 	assignmentsByRoleId: Readable<Map<RoleId, Assignment[]>>;
 	policiesByRoleId: Readable<Map<RoleId, Map<string, Readable<Policy>>>>;
-	queryByKey: Map<number, Query>;
-	paginatedQueryByKey: Map<number, QueryStore>;
+	queryByKey: Map<number, QueryStore>;
 	tiesByDestId: Map<EntityId, Mutable<Set<Tie>>>;
 	tiesBySourceId: Map<EntityId, Mutable<Set<Tie>>>;
 	hubsBySessionActor: Readable<Map<Readable<AccountActor>, Array<Readable<Hub>>>>;
@@ -337,8 +336,7 @@ export const toUi = (
 
 	const entityById: Map<EntityId, Writable<Entity>> = new Map();
 	const tieById: Map<TieId, Tie> = new Map();
-	const queryByKey: Map<number, Query> = new Map();
-	const paginatedQueryByKey: Map<number, QueryStore> = new Map();
+	const queryByKey: Map<number, QueryStore> = new Map();
 	const tiesByDestId: Map<EntityId, Mutable<Set<Tie>>> = new Map();
 	const tiesBySourceId: Map<EntityId, Mutable<Set<Tie>>> = new Map();
 
@@ -398,7 +396,6 @@ export const toUi = (
 		assignmentsByRoleId,
 		policiesByRoleId,
 		queryByKey,
-		paginatedQueryByKey,
 		tiesByDestId,
 		tiesBySourceId,
 		hubsBySessionActor,

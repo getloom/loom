@@ -60,11 +60,11 @@ export const createQuery = (
 	// TODO the key should be something like `params.actor + '__ ' + params.source_id`
 	// but we currently don't handle queries per actor in the mutation layer.
 	const key = params.source_id;
-	const {paginatedQueryByKey} = ui;
-	let query = paginatedQueryByKey.get(key);
+	const {queryByKey} = ui;
+	let query = queryByKey.get(key);
 	if (query) return query;
 	query = toPaginatedQuery(ui, actions, params, key, reversed, addEntity, matchEntity);
-	paginatedQueryByKey.set(key, query);
+	queryByKey.set(key, query);
 	return query;
 };
 
@@ -155,7 +155,7 @@ const toPaginatedQuery = (
 	// We don't want automatic disposal on unsubscribe,
 	// because we want to keep queries alive independent of the current UI.
 	const dispose = () => {
-		ui.paginatedQueryByKey.delete(key);
+		ui.queryByKey.delete(key);
 		ui.events.off('stashed_entities', onEntitiesAdded);
 		entities.mutate(($v) => ($v.length = 0)); // this is probably unnecessary
 	};

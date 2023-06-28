@@ -1,5 +1,4 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
-import {Logger} from '@feltjs/util/log.js';
 import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
@@ -17,8 +16,6 @@ import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 import {setIfUpdated} from '$lib/util/store';
 import {toHubUrl} from '$lib/util/url';
 import type {Directory} from '$lib/vocab/entity/entityData';
-
-const log = new Logger('[entityMutationHelpers]');
 
 export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 	const {entityById, spaceSelection, hubById} = ui;
@@ -79,7 +76,7 @@ const updateDirectoryFreshness = (ui: WritableUi, $directory: Directory): void =
 
 // TODO possibly merge with `stashEntities` to prevent update churn
 export const stashTies = (
-	{tiesByDestId, tiesBySourceId, queryByKey, entityById, tieById}: WritableUi,
+	{tiesByDestId, tiesBySourceId, tieById}: WritableUi,
 	$ties: Tie[],
 ): void => {
 	for (const $tie of $ties) {
@@ -98,25 +95,6 @@ export const stashTies = (
 		const destTies = lookupTies(tiesBySourceId, source_id);
 		if (!destTies.get().value.has($tie)) {
 			destTies.mutate((d) => d.add($tie));
-		}
-
-		// Update the queries.
-		const entity = entityById.get(dest_id);
-		if (entity) {
-			// TODO HACK this lookup is wrong, but what's the best design here?
-			// extract from mutation helpers into the query store?
-			// (currently there's no query store for non-paginated queries, that's a todo)
-			// the issue here is that only entities with a direct tie back to the directory
-			// provided to the query get stored, not the whole entity return set
-			const query = queryByKey.get(source_id);
-			if (query) {
-				if (!query.data.get().value.has(entity)) {
-					query.data.mutate((q) => q.add(entity));
-				}
-			}
-		} else {
-			// TODO what should we do here? may not be a problem depending on query patterns
-			log.warn('stashing tie with unknown dest entity', dest_id);
 		}
 	}
 };
@@ -154,11 +132,9 @@ export const evictTie = (
 
 // TODO delete orphaned entities
 export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
-	const {entityById, tieById, queryByKey, freshnessByDirectoryId, tiesByDestId, tiesBySourceId} =
-		ui;
+	const {entityById, tieById, freshnessByDirectoryId, tiesByDestId, tiesBySourceId} = ui;
 
 	for (const entity_id of entityIds) {
-		const entity = entityById.get(entity_id)!;
 		entityById.delete(entity_id);
 		freshnessByDirectoryId.delete(entity_id);
 
@@ -213,14 +189,6 @@ export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 		// or alternatively the logic of `evictTiesForEntity`
 		// could be integrated in this function instead of being extracted.
 		// See also the TODO above.
-
-		// Update the queries.
-		for (const query of queryByKey.values()) {
-			if (query.data.get().value.has(entity)) {
-				query.data.mutate((q) => q.delete(entity));
-			}
-		}
-		queryByKey.delete(entity_id);
 
 		// TODO
 		// if (evicted) {
