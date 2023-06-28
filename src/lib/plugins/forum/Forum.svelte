@@ -12,6 +12,7 @@
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 	import ForumDetail from './ForumDetail.svelte';
+	import {parseSpacePageParams} from '$lib/util/url';
 
 	const {actor, space, hub} = getSpaceContext();
 
@@ -54,31 +55,10 @@
 		selecting = false;
 	};
 
-	$: shouldLoadEntities && void syncFromPageParams($page.params);
-	// TODO refactor
-	interface PathParams {
-		space?: string;
-		path?: string;
+	$: if (shouldLoadEntities) {
+		const entity_id = parseSpacePageParams($page.params);
+		if (entity_id) void selectPostById(entity_id);
 	}
-	const syncFromPageParams = async (params: PathParams): Promise<void> => {
-		if (!params.space) {
-			// TODO show error?
-			return;
-		}
-		if (params.path) {
-			//
-			const parts = params.path!.split('/');
-			if (parts.length > 1) {
-				// TODO handle multiple parts
-			}
-			const parsed = Number(parts[0]);
-			if (!parsed) {
-				// TODO handle failed parsing
-			} else {
-				await selectPostById(parsed);
-			}
-		}
-	};
 </script>
 
 <div class="forum">

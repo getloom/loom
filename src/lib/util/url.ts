@@ -3,6 +3,8 @@ import {base} from '$app/paths';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
+import type {EntityId} from '$lib/vocab/entity/entity';
+
 export type SearchParams<TKey extends string = string> = Record<TKey, string | null | undefined>;
 
 /**
@@ -77,3 +79,13 @@ export const toAppSearchParams = (
 	mergeSearchParams(searchParams, {
 		[ACTOR_QUERY_KEY]: actorIndex,
 	});
+
+// TODO handle multiple parts including `entity.path`
+// if (parts.length > 1) {}
+export const parseSpacePageParams = (params: {space?: string; path?: string}): EntityId | null => {
+	if (!params.space || !params.path) return null;
+	const parts = params.path.split('/');
+	const parsed = Number(parts[0]);
+	if (parsed) return parsed;
+	return null;
+};
