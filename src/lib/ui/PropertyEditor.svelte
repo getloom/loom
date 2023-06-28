@@ -80,13 +80,6 @@
 		}
 	};
 
-	const onKeydown = async (e: KeyboardEvent) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault();
-			await save();
-		}
-	};
-
 	const deleteField = () => {
 		actions.OpenDialog(
 			toDialogParams(ConfirmDialog, {
@@ -122,7 +115,6 @@
 			bind:value={fieldValue}
 			use:autofocus
 			disabled={pending}
-			on:keydown={onKeydown}
 		/>
 		{#if changed}
 			<!-- TODO a11y -->
