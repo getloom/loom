@@ -47,7 +47,7 @@
 	href={toHubUrl(
 		$hub.name,
 		renderDirectoryPath($selectedDirectory?.path),
-		toAppSearchParams(actorIndex + '', $page.url.searchParams),
+		toAppSearchParams(actorIndex, $page.url.searchParams),
 	)}
 	class:selected
 	class:actor={isActorHomeHub}

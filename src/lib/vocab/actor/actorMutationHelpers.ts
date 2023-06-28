@@ -80,7 +80,7 @@ export const evictActor = (ui: WritableUi, actorToEvict: Writable<ClientActor>):
 					toHubUrl(
 						nextSelectedActor.get().name || '',
 						null,
-						toAppSearchParams(nextSelectedActorIndex ? nextSelectedActorIndex + '' : null),
+						toAppSearchParams(nextSelectedActorIndex),
 					),
 					{replaceState: true},
 				),

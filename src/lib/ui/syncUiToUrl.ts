@@ -1,16 +1,11 @@
-import type {Readable, Writable} from '@feltcoop/svelte-gettable-stores';
-import {browser} from '$app/environment';
-import {goto} from '$app/navigation';
-import {Logger} from '@feltjs/util/log.js';
+import type {Writable} from '@feltcoop/svelte-gettable-stores';
 
-import type {AccountActor, ActorId} from '$lib/vocab/actor/actor';
-import {ACTOR_QUERY_KEY, toAppSearchParams} from '$lib/util/url';
+import type {ActorId} from '$lib/vocab/actor/actor';
+import {ACTOR_QUERY_KEY} from '$lib/util/url';
 import type {Ui} from '$lib/ui/ui';
 import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 import type {SpaceId} from '$lib/vocab/space/space';
 import type {HubId} from '$lib/vocab/hub/hub';
-
-const log = new Logger('[syncUiToUrl]');
 
 // TODO instead doing a `select` action on startup, initialize with correct values
 
@@ -27,24 +22,11 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 		entityById,
 	} = ui;
 
-	const rawActorIndex = url.searchParams.get(ACTOR_QUERY_KEY);
-	const actorIndex = rawActorIndex ? Number(rawActorIndex) : null;
-	const actor: Readable<AccountActor> | null =
-		actorIndex === null ? null : sessionActors.get().value[actorIndex];
-	if (!actor) {
-		if (browser) {
-			const fallbackActorIndex = 0;
-			const targetUrl =
-				url.pathname + '?' + toAppSearchParams(fallbackActorIndex + '', url.searchParams);
-			if (targetUrl !== url.pathname + url.search) {
-				log.warn(
-					`failed to find actor at index ${actorIndex}; falling back to index ${fallbackActorIndex}`,
-				);
-				void goto(targetUrl, {replaceState: true});
-				return; // exit early; this function re-runs from the `goto` call with the updated `$page`
-			}
-		}
-	} else if (actorIndex !== actorIndexSelection.get()) {
+	const actorIndex = Number(url.searchParams.get(ACTOR_QUERY_KEY)) || 0;
+	// TODO should we handle missing actors differently than just falling back to the first? maybe redirect?
+	const actor = sessionActors.get().value[actorIndex] || sessionActors.get().value[0];
+
+	if (actorIndex !== actorIndexSelection.get()) {
 		selectActor(ui, actor.get().actor_id);
 	} // else already selected
 

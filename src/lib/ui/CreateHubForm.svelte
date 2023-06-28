@@ -65,10 +65,7 @@
 				toHubUrl(
 					result.value.hub.name,
 					null,
-					toAppSearchParams(
-						$sessionActorIndexById.get($actor.actor_id) + '',
-						$page.url.searchParams,
-					),
+					toAppSearchParams($sessionActorIndexById.get($actor.actor_id), $page.url.searchParams),
 				),
 			);
 			done?.();

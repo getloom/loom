@@ -71,10 +71,7 @@
 				toHubUrl(
 					$hub.name,
 					renderDirectoryPath(result.value.directory.path),
-					toAppSearchParams(
-						$sessionActorIndexById.get($actor.actor_id) + '',
-						$page.url.searchParams,
-					),
+					toAppSearchParams($sessionActorIndexById.get($actor.actor_id), $page.url.searchParams),
 				),
 			);
 			done?.();

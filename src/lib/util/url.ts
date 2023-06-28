@@ -14,7 +14,7 @@ export type SearchParams<TKey extends string = string> = Record<TKey, string | n
  * @returns The base-prefixed url string
  */
 export const toUrl = (pathname: string, search: string | URLSearchParams): string =>
-	base + pathname + (typeof search === 'string' ? search : '?' + search);
+	base + pathname + (typeof search === 'string' ? search : search.size === 0 ? '' : '?' + search);
 
 /**
  * Constructs a url string from a hub and nullable path.
@@ -73,12 +73,17 @@ export const gotoUnlessActive = (
 export const ACTOR_QUERY_KEY = 'actor';
 
 export const toAppSearchParams = (
-	actorIndex: string | null,
+	actorIndex: string | number | null | undefined,
 	searchParams = get(page).url.searchParams,
-): URLSearchParams =>
-	mergeSearchParams(searchParams, {
-		[ACTOR_QUERY_KEY]: actorIndex,
-	});
+): URLSearchParams => {
+	const actor =
+		actorIndex === 0 || actorIndex === '0' // omit the actor index unless it differs from the default
+			? null
+			: typeof actorIndex === 'number'
+			? actorIndex + ''
+			: actorIndex;
+	return mergeSearchParams(searchParams, {[ACTOR_QUERY_KEY]: actor});
+};
 
 // TODO handle multiple parts including `entity.path`
 // if (parts.length > 1) {}

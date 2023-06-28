@@ -48,7 +48,7 @@
 					result.value.hubs[0].name,
 					null,
 					toAppSearchParams(
-						$sessionActorIndexById.get(result.value.actors[0].actor_id) + '',
+						$sessionActorIndexById.get(result.value.actors[0].actor_id),
 						$page.url.searchParams,
 					),
 				),

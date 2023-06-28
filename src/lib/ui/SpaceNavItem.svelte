@@ -40,7 +40,7 @@
 	href={toHubUrl(
 		$hub.name,
 		renderDirectoryPath($directory.path),
-		toAppSearchParams(actorIndex + '', $page.url.searchParams),
+		toAppSearchParams(actorIndex, $page.url.searchParams),
 	)}
 	class="selectable_bg"
 	class:selected
