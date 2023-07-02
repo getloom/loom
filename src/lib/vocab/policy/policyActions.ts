@@ -55,8 +55,8 @@ export const ReadPolicies: ServiceActionData = {
 	},
 	returns: 'Promise<ReadPoliciesResponseResult>',
 	route: {
-		path: '/api/v1/hub/policies',
-		method: 'GET',
+		path: '/api/v1/hub/policies/query',
+		method: 'POST',
 	},
 };
 

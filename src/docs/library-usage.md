@@ -1,4 +1,4 @@
-## using `@felt-server` as a library
+## using felt-server as a library
 
 `@feltjs/felt-server` can be installed as
 [an npm library](https://www.npmjs.com/package/@feltjs/felt-server)

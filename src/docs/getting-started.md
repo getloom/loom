@@ -9,6 +9,9 @@
 Looking for instructions for how to use this project as a library?
 See [library-usage](./library-usage.md).
 
+Problems? We track [open issues](https://github.com/feltjs/felt-server) on GitHub
+and [known issues](/src/docs/known-issues.md) in the docs.
+
 ## Overview
 
 `@feltjs/felt-server` depends on the following core technologies:

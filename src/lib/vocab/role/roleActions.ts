@@ -55,8 +55,8 @@ export const ReadRoles: ServiceActionData = {
 	},
 	returns: 'Promise<ReadRolesResponseResult>',
 	route: {
-		path: '/api/v1/hub/roles',
-		method: 'GET',
+		path: '/api/v1/hub/roles/query',
+		method: 'POST',
 	},
 };
 

@@ -138,8 +138,8 @@ export const ReadEntities: ServiceActionData = {
 	},
 	returns: 'Promise<ReadEntitiesResponseResult>',
 	route: {
-		path: '/api/v1/entities',
-		method: 'GET',
+		path: '/api/v1/entities/query',
+		method: 'POST',
 	},
 };
 
@@ -168,7 +168,7 @@ export const ReadEntitiesById: ServiceActionData = {
 	returns: 'Promise<ReadEntitiesByIdResponseResult>',
 	route: {
 		path: '/api/v1/entities/ids',
-		method: 'GET',
+		method: 'POST',
 	},
 };
 

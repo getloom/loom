@@ -84,8 +84,8 @@ export const ReadHub: ServiceActionData = {
 	},
 	returns: 'Promise<ReadHubResponseResult>',
 	route: {
-		path: '/api/v1/hubs/:hub_id',
-		method: 'GET',
+		path: '/api/v1/hubs/:hub_id/query',
+		method: 'POST',
 	},
 };
 
