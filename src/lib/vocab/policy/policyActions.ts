@@ -26,7 +26,7 @@ export const CreatePolicy: ServiceActionData = {
 	},
 	returns: 'Promise<CreatePolicyResponseResult>',
 	route: {
-		path: '/api/v1/hub/policies',
+		path: '/api/v1/hub/roles/:role_id/policies',
 		method: 'POST',
 	},
 };
@@ -55,7 +55,7 @@ export const ReadPolicies: ServiceActionData = {
 	},
 	returns: 'Promise<ReadPoliciesResponseResult>',
 	route: {
-		path: '/api/v1/hub/policies/query',
+		path: '/api/v1/hub/roles/:role_id/policies/query',
 		method: 'POST',
 	},
 };

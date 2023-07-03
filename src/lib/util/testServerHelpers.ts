@@ -8,6 +8,15 @@ import {services} from '$lib/server/services';
 import {installSourceMaps, log} from '$lib/util/testHelpers';
 import {Broadcast} from '$lib/server/Broadcast';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
+import type {AccountActor} from '$lib/vocab/actor/actor';
+import {
+	randomAccountParams,
+	randomActorParams,
+	type RandomTestAccount,
+} from '$lib/util/randomVocab';
+import {SignInService, SignUpService} from '$lib/vocab/account/accountServices';
+import type {CreateAccountActorResponse, SignUpResponse} from '$lib/vocab/action/actionTypes';
+import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 
 installSourceMaps();
 
@@ -20,7 +29,7 @@ installSourceMaps();
 // maybe refactor to use the Felt obtainable helper --
 // but how can we do that without an error-prone timeout?
 
-const TEST_PORT = 3003;
+export const TEST_PORT = 3003;
 
 export interface TestServerContext extends TestDbContext {
 	server: ApiServer;
@@ -50,4 +59,52 @@ export const teardownServer = async (context: TestServerContext): Promise<void> 
 		log.error('error closing server', err);
 	}
 	await teardownDb(context);
+};
+
+export const initHttp = async (): Promise<{
+	auth: string;
+	account: RandomTestAccount;
+	actor: AccountActor;
+}> => {
+	const signUpRoute = SignUpService.action.route;
+	const accountParams = randomAccountParams();
+	const accountActorParams = randomActorParams();
+	const res1 = await fetch(`http://localhost:${TEST_PORT}${signUpRoute.path}`, {
+		method: signUpRoute.method,
+		headers: {'content-type': 'application/json'},
+		body: JSON.stringify(accountParams),
+	});
+
+	const auth = res1.headers.get('set-cookie');
+	if (!auth) {
+		throw Error('cookie auth was not set appropriatly');
+	}
+	const data1 = (await res1.json()) as SignUpResponse;
+	const account = data1.session.account as RandomTestAccount;
+	account.__testPlaintextPassword = accountParams.password;
+
+	const signInRoute = SignInService.action.route;
+	await fetch(`http://localhost:${TEST_PORT}${signInRoute.path}`, {
+		method: signInRoute.method,
+		headers: {
+			'content-type': 'application/json',
+		},
+		body: JSON.stringify(accountParams),
+	});
+
+	const creatActorRoute = CreateAccountActorService.action.route;
+	const res3 = await fetch(`http://localhost:${TEST_PORT}${creatActorRoute.path}`, {
+		method: creatActorRoute.method,
+		headers: {
+			'content-type': 'application/json',
+			Cookie: `${auth}`,
+			Accept: 'application/json',
+		},
+		body: JSON.stringify(accountActorParams),
+	});
+
+	const data2 = (await res3.json()) as CreateAccountActorResponse;
+	const actor = data2.actors[0] as AccountActor;
+
+	return {auth, account, actor};
 };
