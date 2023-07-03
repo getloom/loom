@@ -50,7 +50,7 @@
 </script>
 
 {#if checkedCount}
-	<div transition:slide|local class="wrapper">
+	<div transition:slide class="wrapper">
 		<button on:click={clearDone}>remove {checkedCount} checked item{plural(checkedCount)}</button>
 	</div>
 {/if}

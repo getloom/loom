@@ -10,8 +10,6 @@
 	import '@feltjs/felt-ui/style.css';
 	import '@feltjs/felt-ui/theme.css';
 	import '$lib/ui/style.css';
-	import {loadTheme} from '@feltjs/felt-ui/theme.js';
-	import {DEFAULT_THEME, defaultThemes} from '@feltjs/felt-ui/themes.js';
 	import Themed from '@feltjs/felt-ui/Themed.svelte';
 	import {setDevmode} from '@feltjs/felt-ui/devmode.js';
 	import DevmodeControls from '@feltjs/felt-ui/DevmodeControls.svelte';
@@ -27,7 +25,6 @@
 	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 	import ContextmenuLinkEntry from '@feltjs/felt-ui/ContextmenuLinkEntry.svelte';
 	import ContextmenuTextEntry from '@feltjs/felt-ui/ContextmenuTextEntry.svelte';
-	import {writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Onboard from '$lib/ui/Onboard.svelte';
@@ -66,13 +63,6 @@
 		initialMobileValue = mediaQuery.matches;
 		mediaQuery.onchange = (e) => actions.SetMobile(e.matches);
 	}
-
-	// Setup the UI theme.
-	const loadedTheme = loadTheme();
-	// TODO hacky remove this when adding runtime theme editing
-	const loadedThemeDefaultRef =
-		loadedTheme && defaultThemes.find((t) => t.name === loadedTheme.name);
-	const theme = writable(loadedThemeDefaultRef || loadedTheme || DEFAULT_THEME);
 
 	const devmode = setDevmode();
 	const socket = toSocketStore(
@@ -162,15 +152,11 @@
 	]}
 />
 
-<svelte:head>
-	<link rel="shortcut icon" href="/favicon.png" />
-</svelte:head>
-
 <svelte:window on:keydown|capture={onWindowKeydown} />
 
 <SocketConnection {socket} url={PUBLIC_WEBSOCKET_URL} />
 
-<Themed {theme}>
+<Themed>
 	<div class="layout" class:mobile={$mobile} bind:clientHeight bind:clientWidth>
 		{#if guest}
 			<main>

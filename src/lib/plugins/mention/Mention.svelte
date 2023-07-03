@@ -13,6 +13,8 @@
 	const {actor} = getSpaceContext();
 
 	export let name: string;
+	// TODO this eslint hack shouldn't be necessary, introduced with Svelte 4 and seems like the TS plugin's fault, if it doesn't get solved, maybe disable the rule
+	/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
 	export let contextmenuParams: ContextmenuActionParams | null | undefined = undefined;
 	export let inline = true;
 

@@ -166,7 +166,7 @@
 	role="treeitem"
 	aria-selected={hasOrderedItems ? selected : undefined}
 	aria-expanded={hasOrderedItems ? selected : undefined}
-	transition:slide|local
+	transition:slide
 >
 	<div class="entity">
 		<div class="row">
@@ -213,7 +213,7 @@
 		</div>
 	</div>
 	{#if orderedEntities && selected}
-		<div class="items" transition:slide|local>
+		<div class="items" transition:slide>
 			<ul class="panel">
 				{#each orderedEntities as item (item)}
 					<svelte:self

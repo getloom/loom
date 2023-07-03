@@ -12,7 +12,7 @@
 	$: defaultRole = $role.role_id === defaultRoleId;
 </script>
 
-<li in:slide|local>
+<li in:slide>
 	<button type="button" on:click={() => selectRole(role)} class="selectable" class:selected>
 		{$role.name}
 		{#if defaultRole}<span title="this is the default role">⭐</span>{/if}

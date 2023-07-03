@@ -10,7 +10,7 @@
 </script>
 
 {#if more}
-	<div class="load_more_button" out:slide|local>
+	<div class="load_more_button" out:slide>
 		<PendingButton class="plain" pending={status === 'pending'} on:click={query.loadMore}>
 			load more
 		</PendingButton>

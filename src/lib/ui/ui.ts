@@ -60,7 +60,7 @@ export interface Ui {
 
 	// TODO instead of eagerly loading these components,
 	// this should be an interface to lazy-load UI components
-	components: {[key: string]: typeof SvelteComponent};
+	components: {[key: string]: typeof SvelteComponent<any>};
 
 	// TODO should the mutable flat arrays be sets instead? or mutable maps from id to store?
 	// if the latter, we'd need to change the
@@ -124,7 +124,7 @@ export type WritableUi = ReturnType<typeof toUi>;
 export const toUi = (
 	$session: ClientSession,
 	initialMobile: boolean,
-	components: {[key: string]: typeof SvelteComponent},
+	components: {[key: string]: typeof SvelteComponent<any>},
 	contextmenuLinkComponent: ComponentType<ContextmenuLinkEntry>,
 	contextmenuTextComponent: ComponentType<ContextmenuTextEntry>,
 ) => {

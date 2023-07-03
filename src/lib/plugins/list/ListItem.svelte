@@ -31,7 +31,7 @@
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
 And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
 <li
-	transition:slide|local
+	transition:slide
 	style="--hue: {hue}"
 	use:contextmenu.action={[
 		toContextmenuParams(ActorContextmenu, {actor: authorActor}),

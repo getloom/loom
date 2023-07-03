@@ -22,7 +22,7 @@ import Lists from '$lib/plugins/lists/Lists.svelte';
 
 // TODO import these dynamically instead of statically like this
 
-export const components: Record<string, typeof SvelteComponent> = {
+export const components: Record<string, typeof SvelteComponent<any>> = {
 	// layout components
 	Dashboard,
 	// widget components

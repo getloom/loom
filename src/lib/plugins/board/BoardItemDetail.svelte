@@ -74,8 +74,8 @@
 
 <li
 	style="--hue: {hue}"
-	in:slide|local
-	out:scale|local
+	in:slide
+	out:scale
 	use:contextmenu.action={[
 		toContextmenuParams(EntityContextmenu, {actor, entity}),
 		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
@@ -95,7 +95,7 @@
 	</div>
 	{#if replying}
 		<!-- TODO wrapping with a div makes the animation less janky, but still not great -->
-		<div transition:slide|local class="reply-input panel">
+		<div transition:slide class="reply-input panel">
 			<ActorAvatar {actor} />
 			<textarea
 				placeholder="> replying to @{$authorActor.name}"

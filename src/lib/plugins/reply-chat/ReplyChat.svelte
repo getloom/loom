@@ -104,7 +104,7 @@
 		{/if}
 	</div>
 	{#if selectedReply && $selectedReplyActor}
-		<div class="replying" transition:slide|local>
+		<div class="replying" transition:slide>
 			replying to <Mention name={$selectedReplyActor.name} />
 		</div>
 	{/if}

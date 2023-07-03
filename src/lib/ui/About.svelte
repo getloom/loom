@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {PUBLIC_ADMIN_EMAIL_ADDRESS, PUBLIC_ADMIN_ICON, PUBLIC_GIT_HASH} from '$env/static/public';
+	import {VERSION as SVELTEKIT_VERSION} from '@sveltejs/kit';
 </script>
 
 <div class="prose padded_xl">
@@ -19,6 +20,18 @@
 			rel="noreferrer"
 		>
 			{PUBLIC_GIT_HASH}
+		</a>
+	</p>
+	<p class="title">
+		🧡
+		<a href="https://kit.svelte.dev/" target="_blank" rel="noreferrer">SvelteKit</a>
+		version
+		<a
+			href="https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%40{SVELTEKIT_VERSION}"
+			target="_blank"
+			rel="noreferrer"
+		>
+			{SVELTEKIT_VERSION}
 		</a>
 	</p>
 </div>

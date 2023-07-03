@@ -79,7 +79,7 @@
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
 And then ActorContextmenu would be only for *session* actors? `SessionActorContextmenu` -->
 <li
-	transition:slide|local
+	transition:slide
 	class:expandItems
 	style:--hue={hue}
 	use:contextmenu.action={[
@@ -124,7 +124,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<ListControls list={entity} bind:listInputEl />
 	{/if}
 	{#if expandItems && $items?.value.length}
-		<div class="items" transition:slide|local>
+		<div class="items" transition:slide>
 			<ul class="panel">
 				{#each $items.value as item (item)}
 					<svelte:self entity={item} />

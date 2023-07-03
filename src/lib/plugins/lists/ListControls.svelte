@@ -9,7 +9,7 @@
 	export let listInputEl: HTMLTextAreaElement | undefined = undefined;
 </script>
 
-<div class="list-controls" transition:slide|local>
+<div class="list-controls" transition:slide>
 	<slot />
 	<ListInput {list} bind:el={listInputEl} />
 </div>
