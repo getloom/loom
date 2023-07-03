@@ -72,7 +72,7 @@ export const policyTemplateToCreatePolicyParams = (
 });
 
 // TODO integrate with default space data, `$lib/vocab/space/defaultSpaces.ts`, will also clean up typecast
-const allPolicies: PolicyTemplate[] = (policyNames as PolicyName[]).map((name) => ({
+const allPolicies: PolicyTemplate[] = policyNames.map((name) => ({
 	name,
 }));
 
@@ -95,11 +95,11 @@ export const defaultCommunityHubRoles: RoleTemplate[] = [
 		name: 'Member',
 		default: true,
 		policies: [
-			{name: 'Ephemera'},
-			{name: 'InviteToHub'},
-			{name: 'CreateSpace'},
-			{name: 'UpdateSpace'},
-			{name: 'CreateEntity'},
+			{name: 'ephemera'},
+			{name: 'invite_to_hub'},
+			{name: 'create_space'},
+			{name: 'update_space'},
+			{name: 'create_entity'},
 		],
 	},
 ];

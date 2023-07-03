@@ -23,7 +23,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
-		await checkPolicy('CreateAssignment', actor, hub_id, repos);
+		await checkPolicy('create_assignment', actor, hub_id, repos);
 		const assignment = await createAssignment(actor_id, hub, role_id, repos);
 		log.debug('[CreateAssignment] new assignment created', assignment.assignment_id);
 		return {ok: true, status: 200, value: {assignment}, broadcast: hub_id};
@@ -44,7 +44,7 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 			return {ok: false, status: 404, message: 'no assignment found'};
 		}
 		const {actor_id, hub_id} = assignment;
-		await checkPolicy('DeleteAssignment', actor, hub_id, repos);
+		await checkPolicy('delete_assignment', actor, hub_id, repos);
 		// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
 		// const [actorResult, hubResult] = await Promise.all([
 		// 	repos.actor.findById(actor_id),

@@ -32,7 +32,7 @@ test_hubServices.after(teardownDb);
 test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 	const {actor, personalHub} = await random.actor();
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(personalHub.settings.defaultRoleId, 'DeleteHub');
+	await repos.policy.create(personalHub.settings.defaultRoleId, 'delete_hub');
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
@@ -151,7 +151,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 	const {hub} = await random.hub(actor);
 
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(hub.settings.defaultRoleId, 'DeleteHub');
+	await repos.policy.create(hub.settings.defaultRoleId, 'delete_hub');
 
 	unwrap(
 		await DeleteHubService.perform({

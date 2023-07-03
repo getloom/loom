@@ -13,7 +13,7 @@ export const CreateRoleService: ServiceByName['CreateRole'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {hub_id, name, actor} = params;
-		await checkPolicy('CreateRole', actor, hub_id, repos);
+		await checkPolicy('create_role', actor, hub_id, repos);
 		log.debug('creating hub role', hub_id, name);
 		const role = await repos.role.create(hub_id, name);
 		return {ok: true, status: 200, value: {role}, broadcast: hub_id};
@@ -40,7 +40,7 @@ export const UpdateRoleService: ServiceByName['UpdateRole'] = {
 		log.debug('updating role', role_id, name);
 		const hub = await repos.hub.findByRole(role_id, HUB_COLUMNS.hub_id);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
-		await checkPolicy('UpdateRole', actor, hub.hub_id, repos);
+		await checkPolicy('update_role', actor, hub.hub_id, repos);
 		const role = await repos.role.update(role_id, name);
 		return {ok: true, status: 200, value: {role}, broadcast: hub.hub_id};
 	},
@@ -54,7 +54,7 @@ export const DeleteRoleService: ServiceByName['DeleteRole'] = {
 		log.debug('deleting role', role_id);
 		const hub = await repos.hub.findByRole(role_id, HUB_COLUMNS.hub_id_settings);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
-		await checkPolicy('DeleteRole', actor, hub.hub_id, repos);
+		await checkPolicy('delete_role', actor, hub.hub_id, repos);
 
 		if (hub.settings.defaultRoleId === role_id) {
 			return {ok: false, status: 405, message: 'deleting the default role is not allowed'};

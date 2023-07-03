@@ -6,23 +6,23 @@ import type {RoleId} from '$lib/vocab/role/role';
 export type PolicyId = Flavored<number, 'PolicyId'>;
 
 export type PolicyName =
-	| 'Ephemera'
-	| 'UpdateHub'
-	| 'DeleteHub'
-	| 'InviteToHub'
-	| 'KickFromHub'
-	| 'CreateRole'
-	| 'UpdateRole'
-	| 'DeleteRole'
-	| 'CreateAssignment'
-	| 'DeleteAssignment'
-	| 'CreateSpace'
-	| 'UpdateSpace'
-	| 'DeleteSpace'
-	| 'CreateEntity'
-	| 'CreatePolicy'
-	| 'DeletePolicy'
-	| 'UpdatePolicy';
+	| 'ephemera'
+	| 'update_hub'
+	| 'delete_hub'
+	| 'invite_to_hub'
+	| 'kick_from_hub'
+	| 'create_role'
+	| 'update_role'
+	| 'delete_role'
+	| 'create_assignment'
+	| 'delete_assignment'
+	| 'create_space'
+	| 'update_space'
+	| 'delete_space'
+	| 'create_entity'
+	| 'create_policy'
+	| 'delete_policy'
+	| 'update_policy';
 
 /**
  * Each <Vocab name="Policy" /> associates a <Vocab name="Role" /> with a name

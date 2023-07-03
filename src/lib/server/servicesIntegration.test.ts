@@ -157,7 +157,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	// delete hub
 	//TODO hack to allow for authorization; remove on init default impl
-	await repos.policy.create(hub.settings.defaultRoleId, 'DeleteHub');
+	await repos.policy.create(hub.settings.defaultRoleId, 'delete_hub');
 	unwrap(
 		await DeleteHubService.perform({
 			...toServiceRequestMock(repos, actor1),

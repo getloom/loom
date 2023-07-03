@@ -63,7 +63,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			throw new ApiError(400, 'cannot create entity with orderedItems directly');
 
 		const {hub_id} = (await repos.space.findById(space_id))!;
-		await checkPolicy('CreateEntity', actor, hub_id, repos);
+		await checkPolicy('create_entity', actor, hub_id, repos);
 
 		//TODO maybe construct orderedItems here
 		let entity = await repos.entity.create(actor, data, space_id, path);

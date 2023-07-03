@@ -162,7 +162,7 @@ export const UpdateHubService: ServiceByName['UpdateHub'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, settings} = params;
-		await checkPolicy('UpdateHub', actor, hub_id, repos);
+		await checkPolicy('update_hub', actor, hub_id, repos);
 		// TODO probably refactor `repos.hub.updateSettings` to return the updated document,
 		// as well as conditionally handle other updatable properties of `hub`
 		if (settings) {
@@ -179,7 +179,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 	transaction: true,
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id} = params;
-		await checkPolicy('DeleteHub', actor, hub_id, repos);
+		await checkPolicy('delete_hub', actor, hub_id, repos);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type);
 		if (!hub) {
@@ -205,7 +205,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 	transaction: true,
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id, name} = params;
-		await checkPolicy('InviteToHub', actor, hub_id, repos);
+		await checkPolicy('invite_to_hub', actor, hub_id, repos);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type_settings);
 		if (!hub) {
@@ -268,7 +268,7 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[KickFromHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
-		await checkPolicy('KickFromHub', actor, hub_id, repos);
+		await checkPolicy('kick_from_hub', actor, hub_id, repos);
 
 		await checkRemoveActor(actor_id, hub_id, repos);
 

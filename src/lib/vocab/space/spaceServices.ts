@@ -40,7 +40,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
 
-		await checkPolicy('CreateSpace', actor, hub_id, repos);
+		await checkPolicy('create_space', actor, hub_id, repos);
 
 		const {space, directory} = await createSpace(params, repos);
 
@@ -58,7 +58,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
 
-		await checkPolicy('UpdateSpace', actor, space.hub_id, repos);
+		await checkPolicy('update_space', actor, space.hub_id, repos);
 		const updatedSpace = await repos.space.update(space_id, partial);
 		return {ok: true, status: 200, value: {space: updatedSpace}, broadcast: space.hub_id};
 	},
@@ -85,7 +85,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 			return {ok: false, status: 405, message: 'cannot delete home space'};
 		}
 
-		await checkPolicy('DeleteSpace', params.actor, space.hub_id, repos);
+		await checkPolicy('delete_space', params.actor, space.hub_id, repos);
 
 		await repos.space.deleteById(params.space_id);
 
