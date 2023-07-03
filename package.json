@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@feltjs/eslint-config": "^0.3.0",
+    "@feltjs/felt-mural": "^0.1.1",
     "@feltjs/gro": "^0.78.0",
     "@ryanatkn/json-schema-to-typescript": "^11.1.5",
     "@sveltejs/adapter-node": "^1.2.4",
@@ -42,7 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "eslint": "^8.43.0",
-    "eslint-plugin-svelte": "^2.31.1",
+    "eslint-plugin-svelte": "^2.32.2",
     "eventemitter3": "^5.0.1",
     "prettier": "^2.8.8",
     "prettier-plugin-svelte": "^2.10.1",

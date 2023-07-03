@@ -283,7 +283,7 @@ const SEED_BY_VIEW_NAME: Record<string, (ctx: SeedContext) => Promise<void>> = {
 		);
 		await generateEntities(ctx, ['eggs', 'milk', 'bread'], list.entities[0].entity_id);
 	},
-	Whiteboard: async () => {
+	Mural: async () => {
 		// empty
 	},
 };

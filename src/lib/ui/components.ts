@@ -14,7 +14,7 @@ import Board from '$lib/plugins/board/Board.svelte';
 import Forum from '$lib/plugins/forum/Forum.svelte';
 import Notes from '$lib/plugins/notes/Notes.svelte';
 import Iframe from '$lib/plugins/iframe/Iframe.svelte';
-import Whiteboard from '$lib/plugins/whiteboard/Whiteboard.svelte';
+import Mural from '$lib/plugins/mural/Mural.svelte';
 import EntityExplorer from '$lib/plugins/entity-explorer/EntityExplorer.svelte';
 import Todo from '$lib/plugins/todo/Todo.svelte';
 import List from '$lib/plugins/list/List.svelte';
@@ -40,7 +40,7 @@ export const components: Record<string, typeof SvelteComponent> = {
 	Forum,
 	Notes,
 	Iframe,
-	Whiteboard,
+	Mural,
 	EntityExplorer,
 	Todo,
 	List,
