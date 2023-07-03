@@ -20,6 +20,7 @@
 		height: var(--icon_size);
 		width: var(--icon_size);
 		flex-shrink: 0;
+		-webkit-user-select: none;
 		user-select: none;
 	}
 	span.entity-icon {
