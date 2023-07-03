@@ -3,6 +3,7 @@
 	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import {page} from '$app/stores';
 
 	import TodoItems from '$lib/plugins/todo/TodoItems.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -13,8 +14,9 @@
 	import type {ActorId} from '$lib/vocab/actor/actor';
 	import type {SpaceId} from '$lib/vocab/space/space';
 	import TextInput from '$lib/ui/TextInput.svelte';
+	import {parseSpacePageParams} from '$lib/util/url';
 
-	const {actor, space, directory} = getSpaceContext();
+	const {actor, space, directory, hub} = getSpaceContext();
 
 	const {actions, socket, ui, createQuery} = getApp();
 	const {entityById} = ui;
@@ -74,14 +76,9 @@
 		}
 	};
 
-	let selectedList: Readable<Entity> | null = null as any;
-	const selectList = (list: Readable<Entity>) => {
-		if (list.get().data.type !== 'OrderedCollection') return;
-		if (selectedList === list) {
-			selectedList = null;
-		} else {
-			selectedList = list;
-		}
+	let selectedList: Readable<Entity> | null = null;
+	const selectList = (list: Readable<Entity> | null) => {
+		selectedList = list;
 	};
 
 	let newTodoContent = '';
@@ -102,6 +99,27 @@
 		});
 		creating = false;
 	};
+
+	// TODO refactor this after the next query system iteration
+	const selectListById = async (entity_id: EntityId): Promise<void> => {
+		let found = entityById.get(entity_id);
+		if (found) {
+			selectedList = found;
+			return;
+		}
+		selectedList = null;
+		await actions.ReadEntitiesById({actor: $actor.actor_id, entityIds: [entity_id]});
+		found = entityById.get(entity_id);
+		if (found) {
+			selectedList = found;
+		}
+		// TODO show error or handle
+	};
+
+	$: if (shouldLoadEntities) {
+		const entity_id = parseSpacePageParams($page.params);
+		if (entity_id) void selectListById(entity_id);
+	}
 </script>
 
 <div class="todo">
@@ -112,6 +130,7 @@
 			parentList={listsCollection}
 			entities={orderedEntities}
 			{space}
+			{hub}
 			{selectedList}
 			{selectList}
 		/>

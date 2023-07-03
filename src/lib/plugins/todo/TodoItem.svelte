@@ -2,6 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 	import {slide} from 'svelte/transition';
+	import {page} from '$app/stores';
 
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -15,6 +16,10 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
 	import {lookupOrderedItems} from '$lib/vocab/entity/entityHelpers';
 	import TextInput from '$lib/ui/TextInput.svelte';
+	import type {Hub} from '$lib/vocab/hub/hub';
+	import {toHubUrl} from '$lib/util/url';
+	import {swallow} from '@feltjs/util';
+	import {goto} from '$app/navigation';
 
 	const {ui, actions} = getApp();
 	const {contextmenu, actorById, entityById} = ui;
@@ -23,8 +28,9 @@
 	export let entity: Readable<Entity>;
 	export let parentList: Readable<Entity>;
 	export let space: Readable<Space>;
+	export let hub: Readable<Hub>;
 	export let selectedList: Readable<Entity> | null;
-	export let selectList: (list: Readable<Entity>) => void;
+	export let selectList: (list: Readable<Entity> | null) => void;
 
 	$: selected = selectedList ? selectedList === entity : false;
 	let pending = false;
@@ -139,11 +145,15 @@
 		});
 	};
 
-	$: ordered = !!orderedItems;
+	$: hasOrderedItems = !!orderedItems;
 	$: first = $parentList.data.orderedItems![0] === $entity.entity_id;
 	$: last = $parentList.data.orderedItems!.at(-1) === $entity.entity_id;
 	$: enableMoveUp = !first;
 	$: enableMoveDown = !last;
+
+	$: href = hasOrderedItems
+		? toHubUrl($hub.name, '/' + $space.name + '/' + $entity.entity_id, $page.url.search)
+		: undefined;
 </script>
 
 <li
@@ -154,8 +164,8 @@
 	]}
 	class:selected
 	role="treeitem"
-	aria-selected={ordered ? selected : undefined}
-	aria-expanded={ordered ? selected : undefined}
+	aria-selected={hasOrderedItems ? selected : undefined}
+	aria-expanded={hasOrderedItems ? selected : undefined}
 	transition:slide|local
 >
 	<div class="entity">
@@ -178,16 +188,22 @@
 				<!-- TODO checkbox not updated properly on event broadcast-->
 				<input type="checkbox" disabled={pending} bind:checked />
 			{/if}
-			{#if ordered}
-				<button
-					class="plain text formatted prose deselectable"
+			{#if hasOrderedItems}
+				<a
+					{href}
+					class="text formatted prose plain buttonlike selectable deselectable"
 					class:selected
-					on:click={ordered ? () => selectList(entity) : undefined}
+					on:click={selected
+						? (e) => {
+								swallow(e);
+								void goto(toHubUrl($hub.name, '/' + $space.name, $page.url.search));
+						  }
+						: undefined}
 				>
 					<EntityContent {entity} />
-				</button>
+				</a>
 			{:else}
-				<div class="text formtted prse">
+				<div class="text formtted prose">
 					<EntityContent {entity} />
 				</div>
 			{/if}
@@ -205,6 +221,7 @@
 						parentList={entity}
 						entity={item}
 						{space}
+						{hub}
 						{selectedList}
 						{selectList}
 					/>
@@ -250,7 +267,7 @@
 	.content {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: stretch;
 		width: 100%;
 	}
 	.items {
@@ -263,10 +280,7 @@
 	.text {
 		padding-left: var(--spacing_lg);
 		flex: 1;
-	}
-	button.text {
-		justify-content: flex-start;
-		font-weight: 400;
+		align-items: center;
 	}
 	.controls {
 		display: flex;
