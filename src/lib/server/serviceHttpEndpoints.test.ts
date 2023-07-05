@@ -8,18 +8,18 @@ import type {ServiceMethod} from '$lib/server/service';
 import {services} from '$lib/server/services';
 import {randomActionParams} from '$lib/util/randomActionParams';
 
-/* test__ApiServer */
-const test__ApiServer = suite<TestServerContext>('ApiServer');
+/* test__serviceHttpEndpoints */
+const test__serviceHttpEndpoints = suite<TestServerContext>('serviceHttpEndpoints');
 
-test__ApiServer.before(setupServer);
-test__ApiServer.after(teardownServer);
+test__serviceHttpEndpoints.before(setupServer);
+test__serviceHttpEndpoints.after(teardownServer);
 
 for (const service of services.values()) {
 	const {action} = service;
 	const path = action.route.path as string;
 	const method = action.route.method as ServiceMethod;
 
-	test__ApiServer(`perform service ${action.name}`, async ({random}) => {
+	test__serviceHttpEndpoints(`perform service ${action.name}`, async ({random}) => {
 		const {auth, account, actor} = await initHttp();
 
 		//we skip these actions, since they are done as part of test spinup and teardown
@@ -35,21 +35,19 @@ for (const service of services.values()) {
 			const url = `http://localhost:${TEST_PORT}${suffix}`;
 			const body = method === 'GET' || method === 'HEAD' ? null : JSON.stringify(params || {});
 
-			if (action.name === 'ReadRoles' || action.name === 'ReadPolicies') {
-				const res = await fetch(url, {
-					method,
-					headers: {
-						'content-type': 'application/json',
-						Cookie: auth,
-						Accept: 'application/json',
-					},
-					body,
-				});
-				assert.ok(res.ok);
-			}
+			const res = await fetch(url, {
+				method,
+				headers: {
+					'content-type': 'application/json',
+					Cookie: auth,
+					Accept: 'application/json',
+				},
+				body,
+			});
+			assert.ok(res.ok);
 		}
 	});
 }
 
-test__ApiServer.run();
-/* test__ApiServer */
+test__serviceHttpEndpoints.run();
+/* test__serviceHttpEndpoints */
