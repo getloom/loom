@@ -95,12 +95,7 @@ const toPaginatedQuery = (
 					const updated = {...$v};
 					if (result.ok) {
 						updated.status = 'success';
-						// TODO Should we infer less than `pageSize` means no more?
-						// Or is that a faulty assumption in rare corner cases?
-						// Doing so would prevent the rare empty load, but it seems more prone to errors.
-						if (result.value.entities.length === 0 && result.value.ties.length === 0) {
-							updated.more = false;
-						}
+						updated.more = result.value.more;
 					} else {
 						updated.status = 'failure';
 						updated.error = result.message;

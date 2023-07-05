@@ -508,6 +508,7 @@ export interface ReadEntitiesParams {
 export interface ReadEntitiesResponse {
 	entities: Entity[];
 	ties: Tie[];
+	more: boolean;
 }
 export type ReadEntitiesResponseResult = ApiResult<ReadEntitiesResponse>;
 

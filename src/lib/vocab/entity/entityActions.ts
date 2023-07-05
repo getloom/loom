@@ -132,8 +132,9 @@ export const ReadEntities: ServiceActionData = {
 		properties: {
 			entities: {type: 'array', items: {$ref: '/schemas/Entity'}},
 			ties: {type: 'array', items: {$ref: '/schemas/Tie'}},
+			more: {type: 'boolean'},
 		},
-		required: ['entities', 'ties'],
+		required: ['entities', 'ties', 'more'],
 		additionalProperties: false,
 	},
 	returns: 'Promise<ReadEntitiesResponseResult>',

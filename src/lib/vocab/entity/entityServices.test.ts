@@ -88,7 +88,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	const {space, actor, account, hub} = await random.space();
 
 	//first query on the space dir and expect an empty set
-	const {entities: filtered} = unwrap(
+	const {entities: filtered, more: more1} = unwrap(
 		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {actor: actor.actor_id, source_id: space.directory_id},
@@ -96,6 +96,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	);
 
 	assert.is(filtered.length, 0);
+	assert.ok(!more1);
 
 	const entities = (
 		await Promise.all(
@@ -110,7 +111,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 		.sort((a, b) => b.entity_id - a.entity_id);
 
 	//test the default param returns properly
-	const {entities: filtered2} = unwrap(
+	const {entities: filtered2, more: more2} = unwrap(
 		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {actor: actor.actor_id, source_id: space.directory_id},
@@ -118,12 +119,13 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	);
 	assert.is(filtered2.length, DEFAULT_PAGE_SIZE);
 	assert.equal(filtered2.slice(), entities.slice(0, -1));
+	assert.ok(more2);
 
 	const FIRST_PAGE_SIZE = Math.floor(DEFAULT_PAGE_SIZE / 2);
 	const SECOND_PAGE_SIZE = Math.ceil(DEFAULT_PAGE_SIZE / 2);
 
 	//then do 3 queries on smaller pages
-	const {entities: filtered3} = unwrap(
+	const {entities: filtered3, more: more3} = unwrap(
 		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -135,8 +137,9 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	);
 
 	assert.is(filtered3.length, FIRST_PAGE_SIZE);
+	assert.ok(more3);
 
-	const {entities: filtered4} = unwrap(
+	const {entities: filtered4, more: more4} = unwrap(
 		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -150,8 +153,9 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 
 	assert.is(filtered4.length, SECOND_PAGE_SIZE);
 	assert.ok(!filtered3.find((v) => v.entity_id === filtered4[0].entity_id));
+	assert.ok(more4);
 
-	const {entities: filtered5} = unwrap(
+	const {entities: filtered5, more: more5} = unwrap(
 		await ReadEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -163,6 +167,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 		}),
 	);
 	assert.is(filtered5.length, 1);
+	assert.ok(!more5);
 
 	assert.equal(filtered3.concat(filtered4).concat(filtered5), entities);
 });

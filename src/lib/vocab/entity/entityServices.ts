@@ -24,6 +24,7 @@ import {
 } from '$lib/vocab/policy/policyHelpers.server';
 import {ApiError} from '$lib/server/api';
 import {Logger} from '@feltjs/util/log.js';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 
 const log = new Logger('[EntityServices]');
 
@@ -31,12 +32,16 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	action: ReadEntities,
 	transaction: false,
 	perform: async ({repos, params}) => {
-		const {actor, source_id, pageSize, pageKey, related} = params;
+		const {actor, source_id, pageSize = DEFAULT_PAGE_SIZE, pageKey, related} = params;
 		log.debug('checking pagiated entities for ', source_id);
 		const {hub_id} = await repos.space.findByEntity(source_id);
 		await checkHubAccess(actor, hub_id, repos);
 
-		const pageTies = await repos.tie.filterBySourceIdPaginated(source_id, pageSize, pageKey);
+		const extraPageSize = pageSize + 1;
+		const pageTies = await repos.tie.filterBySourceIdPaginated(source_id, extraPageSize, pageKey);
+		const more = pageSize < pageTies.length;
+		if (more) pageTies.pop();
+
 		let relatedTies: Tie[] | null = null;
 		if (related && pageTies.length) {
 			const pageEntityIds = pageTies.map((t) => t.dest_id);
@@ -48,7 +53,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 		const entityIds = toTieEntityIds(pageTies);
 		entityIds.delete(source_id);
 		const {entities} = await repos.entity.filterByIds(Array.from(entityIds));
-		return {ok: true, status: 200, value: {entities, ties}};
+		return {ok: true, status: 200, value: {entities, ties, more}};
 	},
 };
 
