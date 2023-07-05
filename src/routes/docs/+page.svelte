@@ -120,6 +120,13 @@
 						<code class="name">{actionData.name}</code>
 						<small class="type">{actionData.type}</small>
 					</div>
+					{#if actionData.type !== 'ClientAction'}
+						<div class="property">
+							<span>endpoint</span>
+							<span>{actionData.route.method}</span>
+							<span>{actionData.route.path}</span>
+						</div>
+					{/if}
 					<div class="property">
 						<span>params</span>
 						<!-- TODO display the generated type string instead of the schema,

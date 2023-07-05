@@ -21,7 +21,15 @@
 			{#if schema.$id}
 				<code class="name">{stripStart(schema.$id, '/schemas/')}</code>
 			{/if}
-			<small class="type">{schema.type || 'unknown'}</small>
+			{#if schema.$ref}
+				<small class="type">
+					<a href="#{stripStart(schema.$ref, '/schemas/')}">
+						{stripStart(schema.$ref, '/schemas/')}
+					</a>
+				</small>
+			{:else}
+				<small class="type">{schema.type || 'unknown'}</small>
+			{/if}
 		</div>
 		{#if schema.description}
 			<div class="description prose">
