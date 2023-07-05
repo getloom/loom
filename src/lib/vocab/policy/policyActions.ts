@@ -26,7 +26,7 @@ export const CreatePolicy: ServiceActionData = {
 	},
 	returns: 'Promise<CreatePolicyResponseResult>',
 	route: {
-		path: '/api/v1/hub/roles/:role_id/policies',
+		path: '/api/v1/policies',
 		method: 'POST',
 	},
 };
@@ -55,7 +55,7 @@ export const ReadPolicies: ServiceActionData = {
 	},
 	returns: 'Promise<ReadPoliciesResponseResult>',
 	route: {
-		path: '/api/v1/hub/roles/:role_id/policies/query',
+		path: '/api/v1/roles/:role_id/policies/query',
 		method: 'POST',
 	},
 };
@@ -86,7 +86,7 @@ export const UpdatePolicy: ServiceActionData = {
 	},
 	returns: 'Promise<UpdatePolicyResponseResult>',
 	route: {
-		path: '/api/v1/hub/policies/:policy_id',
+		path: '/api/v1/policies/:policy_id',
 		method: 'POST',
 	},
 };
@@ -111,7 +111,7 @@ export const DeletePolicy: ServiceActionData = {
 	},
 	returns: 'Promise<DeletePolicyResponseResult>',
 	route: {
-		path: '/api/v1/hub/policies',
+		path: '/api/v1/policies/:policy_id',
 		method: 'DELETE',
 	},
 };

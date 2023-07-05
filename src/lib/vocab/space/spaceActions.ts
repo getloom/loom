@@ -34,7 +34,7 @@ export const CreateSpace: ServiceActionData = {
 	},
 	returns: 'Promise<CreateSpaceResponseResult>',
 	route: {
-		path: '/api/v1/hubs/:hub_id/spaces',
+		path: '/api/v1/spaces',
 		method: 'POST',
 	},
 };

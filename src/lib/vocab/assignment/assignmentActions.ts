@@ -52,7 +52,7 @@ export const DeleteAssignment: ServiceActionData = {
 	},
 	returns: 'Promise<DeleteAssignmentResponseResult>',
 	route: {
-		path: '/api/v1/assignments',
+		path: '/api/v1/assignments/:assignment_id',
 		method: 'DELETE',
 	},
 };

@@ -26,7 +26,7 @@ export const CreateRole: ServiceActionData = {
 	},
 	returns: 'Promise<CreateRoleResponseResult>',
 	route: {
-		path: '/api/v1/hub/roles',
+		path: '/api/v1/roles',
 		method: 'POST',
 	},
 };
@@ -55,7 +55,7 @@ export const ReadRoles: ServiceActionData = {
 	},
 	returns: 'Promise<ReadRolesResponseResult>',
 	route: {
-		path: '/api/v1/hub/:hub_id/roles/query',
+		path: '/api/v1/hubs/:hub_id/roles/query',
 		method: 'POST',
 	},
 };
@@ -86,7 +86,7 @@ export const UpdateRole: ServiceActionData = {
 	},
 	returns: 'Promise<UpdateRoleResponseResult>',
 	route: {
-		path: '/api/v1/hub/roles/:role_id',
+		path: '/api/v1/roles/:role_id',
 		method: 'POST',
 	},
 };
@@ -111,7 +111,7 @@ export const DeleteRole: ServiceActionData = {
 	},
 	returns: 'Promise<DeleteRoleResponseResult>',
 	route: {
-		path: '/api/v1/hub/roles',
+		path: '/api/v1/roles/:role_id',
 		method: 'DELETE',
 	},
 };
