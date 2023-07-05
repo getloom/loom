@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {VocabSchema} from '@feltjs/gro';
-	import {stripStart} from '@feltjs/util/string.js';
 	import type {JSONSchema} from '@ryanatkn/json-schema-to-typescript';
 
 	import SvastText from '$lib/ui/SvastText.svelte';
+	import {toSchemaName} from '$lib/util/schema';
 
 	export let schema: VocabSchema;
 
@@ -19,17 +19,20 @@
 	{:else}
 		<div class="title">
 			{#if schema.$id}
-				<code class="name">{stripStart(schema.$id, '/schemas/')}</code>
+				<code class="name">{toSchemaName(schema.$id)}</code>
 			{/if}
-			{#if schema.$ref}
-				<small class="type">
-					<a href="#{stripStart(schema.$ref, '/schemas/')}">
-						{stripStart(schema.$ref, '/schemas/')}
-					</a>
-				</small>
-			{:else}
-				<small class="type">{schema.type || 'unknown'}</small>
-			{/if}
+			<small class="type">
+				{#if schema.$ref}
+					{@const name = toSchemaName(schema.$ref)}
+					<a href="#{name}">{name}</a>
+				{:else if schema.type}
+					{schema.type}
+				{:else if schema.anyOf}
+					union
+				{:else}
+					unknown
+				{/if}
+			</small>
 		</div>
 		{#if schema.description}
 			<div class="description prose">

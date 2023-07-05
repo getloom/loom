@@ -1,11 +1,13 @@
 <script lang="ts">
 	import {page} from '$app/stores';
-	import {parseSchemaName} from '@feltjs/gro/dist/utils/schema.js';
 
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
 	import {actionDatas} from '$lib/vocab/action/actionData';
 	import {modelSchemas} from '$lib/vocab/schemas';
 	import {viewTemplates} from '$lib/vocab/view/view';
+	import ActionInfo from '$lib/ui/ActionInfo.svelte';
+	import ViewInfo from '$lib/ui/ViewInfo.svelte';
+	import {toSchemaName} from '$lib/util/schema';
 
 	const title = 'docs';
 
@@ -20,7 +22,7 @@
 	const sortedModelSchemas = modelSchemas.slice().sort((a, b) => a.$id.localeCompare(b.$id));
 	const sortedViewTemplates = viewTemplates.slice().sort((a, b) => a.name.localeCompare(b.name));
 
-	const schemaNames = sortedModelSchemas.map((s) => parseSchemaName(s.$id));
+	const schemaNames = sortedModelSchemas.map((s) => toSchemaName(s.$id));
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
@@ -72,29 +74,18 @@
 	<div class="content">
 		<div class="prose padded_xl">
 			<h1 id="docs">docs</h1>
+			<aside>
+				documentation is a work in progress, thank you for your patience 💚 see also <a
+					href="https://github.com/feltjs/felt-server">the repo's readme</a
+				>
+			</aside>
 		</div>
 		<div class="prose padded_xl">
 			<h2 id="views">views</h2>
 		</div>
 		<ul>
-			{#each sortedViewTemplates as viewTemplate (viewTemplate)}
-				<li class="view-template" id={viewTemplate.name}>
-					<div class="title padded_xs">
-						<span style:font-size="var(--size_lg)">
-							{viewTemplate.icon}
-							{viewTemplate.name}
-						</span>
-						{#if viewTemplate.creatable !== false}
-							<span class="chip" title="users can create this view in normal circumstances"
-								>creatable</span
-							>
-						{/if}
-						{#if viewTemplate.admin}
-							<span class="chip" title="requires instance admin permissions">admin</span>
-						{/if}
-					</div>
-					<code class="padded_xs">{viewTemplate.view}</code>
-				</li>
+			{#each sortedViewTemplates as view}
+				<ViewInfo {view} />
 			{/each}
 		</ul>
 		<hr />
@@ -102,7 +93,7 @@
 			<h2 id="models">models</h2>
 		</div>
 		<ul>
-			{#each sortedModelSchemas as schema, i (schema)}
+			{#each sortedModelSchemas as schema, i}
 				{@const name = schemaNames[i]}
 				<li id={name}>
 					<SchemaInfo {schema} />
@@ -114,57 +105,10 @@
 			<h2 id="actions">actions</h2>
 		</div>
 		<ul>
-			{#each sortedActionDatas as actionData (actionData.name)}
-				<li id={actionData.name}>
-					<div class="title">
-						<code class="name">{actionData.name}</code>
-						<small class="type">{actionData.type}</small>
-					</div>
-					{#if actionData.type !== 'ClientAction'}
-						<div class="property">
-							<span>endpoint</span>
-							<span>{actionData.route.method}</span>
-							<span>{actionData.route.path}</span>
-						</div>
-					{/if}
-					<div class="property">
-						<span>params</span>
-						<!-- TODO display the generated type string instead of the schema,
-						probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
-						<pre>{JSON.stringify(actionData.params, null, 2)}</pre>
-					</div>
-					{#if actionData.type !== 'ClientAction'}
-						<div class="property">
-							<span>response</span>
-							<!-- TODO display the generated type string instead of the schema,
-							probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
-							<pre>{JSON.stringify(actionData.response, null, 2)}</pre>
-						</div>
-					{/if}
-					<div class="property">
-						<span>returns</span>
-						<pre>{actionData.returns}</pre>
-					</div>
-				</li>
+			{#each sortedActionDatas as action}
+				<ActionInfo {action} />
 			{/each}
 		</ul>
-		<div class="prose padded_xl">
-			<menu>
-				<li><h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3></li>
-				<menu>
-					<li>
-						<h4>
-							<a href="#models" class:selected={hash === 'models'}>models</a>
-						</h4>
-					</li>
-					<li>
-						<h4>
-							<a href="#actions" class:selected={hash === 'actions'}>actions</a>
-						</h4>
-					</li>
-				</menu>
-			</menu>
-		</div>
 	</div>
 </div>
 
@@ -209,36 +153,7 @@
 			margin-bottom: var(--spacing_xl3);
 		}
 	}
-	.title {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.name {
-		font-size: var(--size_lg);
-		padding: var(--spacing_md);
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
-	}
-	.type {
-		padding: var(--spacing_lg);
-		background: none;
-		font-family: var(--font_family_mono);
-	}
 	menu {
 		margin-bottom: var(--spacing_lg);
-	}
-	.property {
-		display: flex;
-		align-items: center;
-		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
-		background-color: var(--fg_1);
-	}
-	.property:nth-child(2n + 1) {
-		background-color: var(--fg_0);
-	}
-	.property > span {
-		display: flex;
-		width: 100px;
 	}
 </style>

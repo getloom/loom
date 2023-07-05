@@ -25,9 +25,13 @@ export interface ViewTemplate {
  * The views available for users to create in a hub, in order of appearance.
  */
 export const viewTemplates: ViewTemplate[] = [
+	// special system views:
 	{name: 'Home', view: '<Home />', icon: '🏠', creatable: false},
 	{name: 'PersonalHome', view: '<PersonalHome />', icon: '🏠', creatable: false},
 	{name: 'AdminHome', view: '<AdminHome />', icon: '🏠', creatable: false, admin: true},
+	{name: 'InstanceAdmin', view: '<InstanceAdmin />', icon: '🪄', creatable: false, admin: true},
+	{name: 'EntityExplorer', view: '<EntityExplorer />', icon: '✏️', creatable: false},
+	// normal views:
 	{name: 'Chat', view: '<Chat />', icon: '🗨'},
 	{name: 'ReplyChat', view: '<ReplyChat />', icon: '↳'},
 	{name: 'Board', view: '<Board />', icon: '📋'},
@@ -35,11 +39,9 @@ export const viewTemplates: ViewTemplate[] = [
 	{name: 'Notes', view: '<Notes />', icon: '🏷'},
 	{name: 'Iframe', view: '<Iframe />', icon: '💻'}, // TODO does this need a default `src`?
 	{name: 'Mural', view: '<Mural />', icon: '🎨'},
-	{name: 'EntityExplorer', view: '<EntityExplorer />', icon: '✏️', creatable: false},
 	{name: 'Todo', view: '<Todo />', icon: '🗒'},
 	{name: 'List', view: '<List />', icon: '🪜'},
 	{name: 'Lists', view: '<Lists />', icon: '🔨'},
-	{name: 'InstanceAdmin', view: '<InstanceAdmin />', icon: '🪄', admin: true},
 ];
 export const viewTemplatesByName: Map<string, ViewTemplate> = new Map(
 	viewTemplates.map((t) => [t.name, t]),
