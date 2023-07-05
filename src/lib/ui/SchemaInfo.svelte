@@ -4,6 +4,7 @@
 
 	import SvastText from '$lib/ui/SvastText.svelte';
 	import {toSchemaName} from '$lib/util/schema';
+	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 
 	export let schema: VocabSchema;
 
@@ -24,7 +25,11 @@
 			<small class="type">
 				{#if schema.$ref}
 					{@const name = toSchemaName(schema.$ref)}
-					<a href="#{name}">{name}</a>
+					{#if name}
+						<Vocab {name} />
+					{:else}
+						unknown
+					{/if}
 				{:else if schema.type}
 					{schema.type}
 				{:else if schema.anyOf}
