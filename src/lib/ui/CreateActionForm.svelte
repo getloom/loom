@@ -118,54 +118,58 @@
 					>save action</PendingButton
 				> -->
 					{#if errorMessage}
-						<div class="error-message">
+						<div class="error_message">
 							<Message status="error">{errorMessage}</Message>
 						</div>
 					{/if}
 				</div>
 			{/if}
 			{#if actionHistory.length}
-				<!-- TODO extract table component with sortable headings -->
-				<table class="panel">
-					<thead><th>action</th><th>time</th><th /><th>props</th><th>error</th></thead>
-					<tbody>
-						{#each actionHistory as item (item)}
-							<tr>
-								<td><code class={item.actionData.type}>{item.name}</code></td>
-								<td>{Math.round(item.elapsed)}ms</td>
-								<td>
-									<div class="buttons">
-										<button
-											class="plain icon_button"
-											style:--icon_size="var(--icon_size_sm)"
-											type="button"
-											title="actions {item.actionData.name} again"
-											on:click={() => actionsEvent(item.actionData, item.params)}
-										>
-											↪
-										</button>
-										<button
-											class="plain icon_button"
-											style:--icon_size="var(--icon_size_sm)"
-											type="button"
-											title="actions {item.actionData.name} again"
-											on:click={() => (actionHistory = actionHistory.filter((d) => d !== item))}
-										>
-											✕
-										</button>
-									</div>
-								</td>
-								<td><code class="ellipsis">{JSON.stringify(item.params)}</code></td>
-								<td
-									>{#if item.error}<small class="error-text ellipsis" title={item.error}
-											>{item.error}</small
-										>{/if}</td
-								>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-				<button type="button" on:click={() => (actionHistory = [])}>clear history</button>
+				<div class="action_history">
+					<button type="button" class="plain" on:click={() => (actionHistory = [])}
+						>clear history</button
+					>
+					<!-- TODO extract table component with sortable headings -->
+					<table class="panel">
+						<thead><th>action</th><th>time</th><th /><th>props</th><th>error</th></thead>
+						<tbody>
+							{#each actionHistory as item (item)}
+								<tr>
+									<td><code class={item.actionData.type}>{item.name}</code></td>
+									<td>{Math.round(item.elapsed)}ms</td>
+									<td>
+										<div class="buttons">
+											<button
+												class="plain icon_button"
+												style:--icon_size="var(--icon_size_sm)"
+												type="button"
+												title="perform {item.actionData.name} again"
+												on:click={() => actionsEvent(item.actionData, item.params)}
+											>
+												↪
+											</button>
+											<button
+												class="plain icon_button"
+												style:--icon_size="var(--icon_size_sm)"
+												type="button"
+												title="remove history item"
+												on:click={() => (actionHistory = actionHistory.filter((d) => d !== item))}
+											>
+												✕
+											</button>
+										</div>
+									</td>
+									<td><code class="ellipsis">{JSON.stringify(item.params)}</code></td>
+									<td
+										>{#if item.error}<small class="error-text ellipsis" title={item.error}
+												>{item.error}</small
+											>{/if}</td
+									>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
 			{/if}
 		</div>
 	</div>
@@ -189,6 +193,7 @@
 		top: 0;
 		padding-left: var(--spacing_xl3);
 		flex: 1;
+		overflow: hidden;
 	}
 	.actions {
 		/* TODO maybe take `width: 100%` off .prose? could then delete this */
@@ -208,9 +213,6 @@
 	.ClientAction {
 		color: var(--color_2);
 	}
-	table {
-		margin: var(--spacing_xl5) 0 var(--spacing_lg);
-	}
 	th,
 	td {
 		padding: 0 var(--spacing_xs);
@@ -222,11 +224,15 @@
 	.params {
 		margin-bottom: var(--spacing_lg);
 	}
-	.error-message {
+	.error_message {
 		margin-top: var(--spacing_lg);
 	}
 	.error-text,
 	code.ellipsis {
 		max-width: 150px;
+	}
+	.action_history {
+		overflow: auto;
+		width: 100%;
 	}
 </style>
