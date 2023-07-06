@@ -4,4 +4,4 @@
  * @param $id
  * @returns schema name
  */
-export const toSchemaName = ($id: string): string | null => $id.substring(9);
+export const toSchemaName = ($id: string): string => $id.substring(9);

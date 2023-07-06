@@ -12,7 +12,7 @@
 	$: properties = schema.properties && Array.from(Object.entries(schema.properties));
 </script>
 
-<div>
+<div class="schema_info">
 	{#if typeof schema === 'boolean'}
 		<div class="title">
 			<code class="name">{schema}</code>
@@ -25,11 +25,7 @@
 			<small class="type">
 				{#if schema.$ref}
 					{@const name = toSchemaName(schema.$ref)}
-					{#if name}
-						<Vocab {name} />
-					{:else}
-						unknown
-					{/if}
+					<Vocab {name} />
 				{:else if schema.type}
 					{schema.type}
 				{:else if schema.anyOf}

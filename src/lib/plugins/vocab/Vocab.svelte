@@ -11,9 +11,26 @@
 		ui: {contextmenu},
 	} = getApp();
 
+	/**
+	 * The vocabulary item name. Currently supports models and actions.
+	 */
 	export let name: string;
+
+	/**
+	 * Optionally specify if the link should be displayed as selected,
+	 * like if the hash fragment matches.
+	 */
+	export let selected = false;
+
+	/**
+	 * Optionally specify if the text should be wrapped in a `<code>` element.
+	 */
+	export let plain = false;
 </script>
 
-<a use:contextmenu.action={toContextmenuParams(VocabContextmenu, {name})} href="{base}/docs#{name}"
-	><code><slot>{name}</slot></code></a
+<a
+	href="{base}/docs#{name}"
+	class:selected
+	use:contextmenu.action={toContextmenuParams(VocabContextmenu, {name})}
+	>{#if plain}<slot>{name}</slot>{:else}<code><slot>{name}</slot></code>{/if}</a
 >

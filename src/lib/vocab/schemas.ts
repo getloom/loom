@@ -1,5 +1,6 @@
 import type {VocabSchema} from '@feltjs/gro';
 
+import {toSchemaName} from '$lib/util/schema';
 import {actionDatas} from '$lib/vocab/action/actionData';
 import {
 	AccountSchema,
@@ -68,11 +69,12 @@ export const modelSchemas: VocabSchema[] = [
 	PolicyNameSchema,
 ];
 
-export const actionSchemas: VocabSchema[] = actionDatas
-	.flatMap((actionData) => [
-		actionData.params,
-		'response' in actionData ? actionData.response : (null as any),
-	])
-	.filter(Boolean);
+export const actionSchemas: VocabSchema[] = actionDatas.reduce((schemas, actionData) => {
+	if (actionData.params) schemas.push(actionData.params);
+	if ('response' in actionData) schemas.push(actionData.response);
+	return schemas;
+}, [] as VocabSchema[]);
 
 export const schemas = modelSchemas.concat(actionSchemas);
+
+export const schemasByName = new Map(schemas.map((s) => [toSchemaName(s.$id), s]));

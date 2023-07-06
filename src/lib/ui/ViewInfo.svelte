@@ -4,7 +4,7 @@
 	export let view: ViewTemplate;
 </script>
 
-<li class="view-template" id={view.name}>
+<div class="view_info">
 	<div class="title padded_xs">
 		<span style:font-size="var(--size_lg)">
 			{view.icon}
@@ -22,14 +22,9 @@
 		</span>
 	</div>
 	<code class="padded_xs">{view.view}</code>
-</li>
+</div>
 
 <style>
-	li {
-		display: flex;
-		flex-direction: column;
-		padding: var(--spacing_xl3) 0;
-	}
 	.title {
 		display: flex;
 		align-items: center;

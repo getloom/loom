@@ -8,6 +8,7 @@
 	import ActionInfo from '$lib/ui/ActionInfo.svelte';
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';
 	import {toSchemaName} from '$lib/util/schema';
+	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 
 	const title = 'docs';
 
@@ -36,7 +37,7 @@
 			<h3><a href="#docs" class:selected={hash === 'docs'}>docs</a></h3>
 			<h4><a href="#views" class:selected={hash === 'views'}>views</a></h4>
 			<menu>
-				{#each sortedViewTemplates as viewTemplate (viewTemplate)}
+				{#each sortedViewTemplates as viewTemplate}
 					<li>
 						<a href="#{viewTemplate.name}" class:selected={hash === viewTemplate.name}
 							>{viewTemplate.name}</a
@@ -46,20 +47,17 @@
 			</menu>
 			<h4><a href="#models" class:selected={hash === 'models'}>models</a></h4>
 			<menu>
-				{#each sortedModelSchemas as schema, i (schema)}
-					{@const name = schemaNames[i]}
+				{#each schemaNames as name}
 					<li>
-						<a href="#{name}" class:selected={hash === name}>{name}</a>
+						<Vocab {name} selected={hash === name} plain={true} />
 					</li>
 				{/each}
 			</menu>
 			<h4><a href="#actions" class:selected={hash === 'actions'}>actions</a></h4>
 			<menu>
-				{#each sortedActionDatas as actionData (actionData.name)}
+				{#each sortedActionDatas as { name } (name)}
 					<li>
-						<a href="#{actionData.name}" class:selected={hash === actionData.name}
-							>{actionData.name}</a
-						>
+						<Vocab {name} selected={hash === name} plain={true} />
 					</li>
 				{/each}
 			</menu>
@@ -85,7 +83,9 @@
 		</div>
 		<ul>
 			{#each sortedViewTemplates as view}
-				<ViewInfo {view} />
+				<li id={view.name}>
+					<ViewInfo {view} />
+				</li>
 			{/each}
 		</ul>
 		<hr />
@@ -106,7 +106,9 @@
 		</div>
 		<ul>
 			{#each sortedActionDatas as action}
-				<ActionInfo {action} />
+				<li id={action.name}>
+					<ActionInfo {action} />
+				</li>
 			{/each}
 		</ul>
 	</div>

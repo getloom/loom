@@ -4,19 +4,28 @@
 
 	import {getApp} from '$lib/ui/app';
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
-	import {modelSchemas} from '$lib/vocab/schemas';
-	import {toSchemaName} from '$lib/util/schema';
+	import {schemasByName} from '$lib/vocab/schemas';
+	import {actionDataByName} from '$lib/vocab/action/actionData';
+	import ActionInfo from '$lib/ui/ActionInfo.svelte';
 
 	export let name: string;
 
 	const {actions} = getApp();
 
-	// TODO cache a map by name
-	$: schema = modelSchemas.find((s) => toSchemaName(s.$id) === name);
+	$: schema = schemasByName.get(name);
+	$: action = actionDataByName.get(name);
+
+	const run = (): void => {
+		if (schema) {
+			actions.OpenDialog(toDialogParams(SchemaInfo, {schema}));
+		} else if (action) {
+			actions.OpenDialog(toDialogParams(ActionInfo, {action}));
+		}
+	};
 </script>
 
-{#if schema}
-	<ContextmenuEntry run={() => schema && actions.OpenDialog(toDialogParams(SchemaInfo, {schema}))}>
+{#if schema || action}
+	<ContextmenuEntry {run}>
 		More about <code>{name}</code>
 		<svelte:fragment slot="icon">?</svelte:fragment>
 	</ContextmenuEntry>

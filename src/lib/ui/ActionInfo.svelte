@@ -1,12 +1,40 @@
 <script lang="ts">
+	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+
 	import type {ActionData} from '$lib/vocab/action/action';
+	import CreateActionForm from '$lib/ui/CreateActionForm.svelte';
+	import {getApp} from '$lib/ui/app';
+
+	const {
+		actions,
+		ui: {actorSelection},
+	} = getApp();
+
+	$: selectedActor = $actorSelection;
 
 	export let action: ActionData;
 </script>
 
-<li id={action.name}>
+<div class="action_info">
 	<div class="title">
-		<code class="name">{action.name}</code>
+		<div class="row">
+			<code class="name">{action.name}</code>
+			<button
+				type="button"
+				class="plain"
+				on:click={() => {
+					if (selectedActor) {
+						actions.OpenDialog(
+							toDialogParams(
+								CreateActionForm,
+								{actor: selectedActor, selectedActionData: action},
+								{layout: 'page'},
+							),
+						);
+					}
+				}}>create</button
+			>
+		</div>
 		<small class="type">{action.type}</small>
 	</div>
 	{#if action.type !== 'ClientAction'}
@@ -34,14 +62,9 @@
 		<span>returns</span>
 		<pre>{action.returns}</pre>
 	</div>
-</li>
+</div>
 
 <style>
-	li {
-		display: flex;
-		flex-direction: column;
-		padding: var(--spacing_xl3) 0;
-	}
 	.title {
 		display: flex;
 		align-items: center;

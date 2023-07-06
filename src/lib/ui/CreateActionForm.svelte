@@ -12,6 +12,7 @@
 	const {actions} = getApp();
 
 	export let actor: Readable<AccountActor>;
+	export let selectedActionData: ActionData | undefined = undefined;
 	export let done: (() => void) | undefined = undefined;
 
 	let pending = false;
@@ -60,8 +61,6 @@
 		actionHistory = [d].concat(actionHistory); // TODO granularly update `responded`/`elapsed` updates so we see it immediately, maybe track `status` and `error` even
 	};
 
-	let selectedActionData: ActionData | undefined;
-
 	$: selectedActionData, (formParams = null); // TODO should this be needed?
 
 	$: paramsProperties = selectedActionData?.params?.properties;
@@ -69,7 +68,9 @@
 </script>
 
 <form {...$$restProps} class="padded_xl">
-	<h2>Create an Action</h2>
+	<div class="prose">
+		<h2>Create an Action</h2>
+	</div>
 	<div class="layout">
 		<fieldset class="actions prose">
 			<legend>available actions</legend>
@@ -108,7 +109,9 @@
 						{pending}
 						disabled={pending}
 					>
-						actions <code class={selectedActionData.type}>{selectedActionData.name}</code>
+						perform action&nbsp;<code class={selectedActionData.type}
+							>{selectedActionData.name}</code
+						>
 					</PendingButton>
 					<!-- TODO implement saving actions like any other data to a path/entity -->
 					<!-- <PendingButton on:click={save} pending={savePending} disabled={pending}

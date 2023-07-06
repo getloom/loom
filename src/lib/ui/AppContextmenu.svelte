@@ -9,14 +9,11 @@
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
 	import About from '$lib/ui/About.svelte';
 	import Settings from '$lib/ui/Settings.svelte';
-	import CreateActionForm from '$lib/ui/CreateActionForm.svelte';
 
 	const {
 		actions,
-		ui: {session, sessionActors, actorSelection},
+		ui: {session, sessionActors},
 	} = getApp();
-
-	$: selectedActor = $actorSelection;
 </script>
 
 {#if $session.guest}
@@ -53,27 +50,6 @@
 				</svelte:fragment>
 				Create Actor
 			</ContextmenuEntry>
-			{#if selectedActor}
-				<ContextmenuSubmenu>
-					<svelte:fragment slot="icon">
-						<UnicodeIcon icon="*" />
-					</svelte:fragment>
-					Advanced
-					<svelte:fragment slot="menu">
-						<ContextmenuEntry
-							run={() => {
-								if (selectedActor) {
-									actions.OpenDialog(
-										toDialogParams(CreateActionForm, {actor: selectedActor}, {layout: 'page'}),
-									);
-								}
-							}}
-						>
-							Create an Action
-						</ContextmenuEntry>
-					</svelte:fragment>
-				</ContextmenuSubmenu>
-			{/if}
 			<ContextmenuEntry run={() => actions.OpenDialog(toDialogParams(Settings, {}))}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="$" />
