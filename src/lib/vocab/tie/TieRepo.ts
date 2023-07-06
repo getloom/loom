@@ -84,6 +84,7 @@ export class TieRepo extends PostgresRepo {
 	async filterRelatedByEntityId(
 		entityIds: number[],
 		related: 'dest' | 'source' | 'both',
+		pageSize = DEFAULT_PAGE_SIZE * 3, // TODO hack just to avoid crashing the server
 	): Promise<Tie[]> {
 		log.debug(`finding tie related of entites`, entityIds, related);
 		const ties = await this.sql<Tie[]>`
@@ -96,7 +97,8 @@ export class TieRepo extends PostgresRepo {
 			}
 			${related === 'both' ? this.sql` OR ` : this.sql``}
 			${related === 'source' || related === 'both' ? this.sql`t.source_id IN ${entityIds}` : this.sql``}
-			;`;
+			LIMIT ${pageSize}
+		;`;
 		log.debug('directory ties', ties);
 		return ties;
 	}
