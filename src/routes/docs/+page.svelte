@@ -19,9 +19,14 @@
 	// TODO display plugins
 	// TODO display source code links to views and actions and such
 
-	const sortedActionDatas = actionDatas.slice().sort((a, b) => a.name.localeCompare(b.name));
 	const sortedModelSchemas = modelSchemas.slice().sort((a, b) => a.$id.localeCompare(b.$id));
 	const sortedViewTemplates = viewTemplates.slice().sort((a, b) => a.name.localeCompare(b.name));
+	const clientActions = actionDatas
+		.filter((a) => a.type === 'ClientAction')
+		.sort((a, b) => a.name.localeCompare(b.name));
+	const serviceActions = actionDatas
+		.filter((a) => a.type === 'ServiceAction')
+		.sort((a, b) => a.name.localeCompare(b.name));
 
 	const schemaNames = sortedModelSchemas.map((s) => toSchemaName(s.$id));
 </script>
@@ -53,9 +58,21 @@
 					</li>
 				{/each}
 			</menu>
-			<h4><a href="#actions" class:selected={hash === 'actions'}>actions</a></h4>
+			<h4>
+				<a href="#service_actions" class:selected={hash === 'service_actions'}>service actions</a>
+			</h4>
 			<menu>
-				{#each sortedActionDatas as { name } (name)}
+				{#each serviceActions as { name } (name)}
+					<li>
+						<Vocab {name} selected={hash === name} plain={true} />
+					</li>
+				{/each}
+			</menu>
+			<h4>
+				<a href="#client_actions" class:selected={hash === 'client_actions'}>client actions</a>
+			</h4>
+			<menu>
+				{#each clientActions as { name } (name)}
 					<li>
 						<Vocab {name} selected={hash === name} plain={true} />
 					</li>
@@ -102,10 +119,20 @@
 		</ul>
 		<hr />
 		<div class="prose padded_xl">
-			<h2 id="actions">actions</h2>
+			<h2 id="service_actions">service actions</h2>
 		</div>
 		<ul>
-			{#each sortedActionDatas as action}
+			{#each serviceActions as action}
+				<li id={action.name}>
+					<ActionInfo {action} />
+				</li>
+			{/each}
+		</ul>
+		<div class="prose padded_xl">
+			<h2 id="client_actions">client actions</h2>
+		</div>
+		<ul>
+			{#each clientActions as action}
 				<li id={action.name}>
 					<ActionInfo {action} />
 				</li>

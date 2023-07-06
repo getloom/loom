@@ -46,6 +46,7 @@ import {
 	ClearFreshness,
 } from '$lib/ui/uiActions';
 
+// TODO awkwardly named, but what's better?
 export const actionDatas: ActionData[] = [
 	// account actions
 	SignUp,

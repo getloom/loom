@@ -12,6 +12,9 @@ export const ACTOR_COLUMNS = {
 	account_id: ['account_id'],
 } satisfies Record<string, ActorColumn[]>;
 
+/**
+ * These also reserve hub names because each hub creates an actor of the same name.
+ */
 export const RESERVED_ACTOR_NAMES = new Set([
 	'about',
 	'admin',
@@ -19,6 +22,7 @@ export const RESERVED_ACTOR_NAMES = new Set([
 	'data',
 	'docs',
 	'ghost',
+	'home',
 	'schemas',
 	'vocab',
 ]);
