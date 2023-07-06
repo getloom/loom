@@ -1,6 +1,7 @@
 import polka from 'polka';
 import {createServer} from 'http';
 import {WebSocketServer} from 'ws';
+import * as assert from 'uvu/assert';
 
 import {ApiServer} from '$lib/server/ApiServer';
 import {Websockets} from '$lib/server/Websockets';
@@ -14,8 +15,8 @@ import {
 	randomActorParams,
 	type RandomTestAccount,
 } from '$lib/util/randomVocab';
-import {SignInService, SignUpService} from '$lib/vocab/account/accountServices';
-import type {CreateAccountActorResponse, SignUpResponse} from '$lib/vocab/action/actionTypes';
+import {SignUpService} from '$lib/vocab/account/accountServices';
+import type {SignUpResponse} from '$lib/vocab/action/actionTypes';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 
 installSourceMaps();
@@ -61,50 +62,49 @@ export const teardownServer = async (context: TestServerContext): Promise<void> 
 	await teardownDb(context);
 };
 
-export const initHttp = async (): Promise<{
+export interface TestHttpSession {
 	auth: string;
 	account: RandomTestAccount;
 	actor: AccountActor;
-}> => {
+}
+
+// Creates a new account, actor, signs in, and returns the session.
+// Any actions can be performed
+export const initHttpSession = async (): Promise<TestHttpSession> => {
 	const signUpRoute = SignUpService.action.route;
 	const accountParams = randomAccountParams();
 	const accountActorParams = randomActorParams();
-	const res1 = await fetch(`http://localhost:${TEST_PORT}${signUpRoute.path}`, {
+
+	const signUpRes = await fetch(`http://localhost:${TEST_PORT}${signUpRoute.path}`, {
 		method: signUpRoute.method,
-		headers: {'content-type': 'application/json'},
+		headers: {'content-type': 'application/json', accept: 'application/json'},
 		body: JSON.stringify(accountParams),
 	});
+	assert.ok(signUpRes.ok);
 
-	const auth = res1.headers.get('set-cookie');
+	const auth = signUpRes.headers.get('set-cookie');
 	if (!auth) {
-		throw Error('cookie auth was not set appropriatly');
+		throw Error('cookie auth was not set correctly');
 	}
-	const data1 = (await res1.json()) as SignUpResponse;
-	const account = data1.session.account as RandomTestAccount;
+
+	const signUpData: SignUpResponse = await signUpRes.json();
+	const account = signUpData.session.account as RandomTestAccount;
+	// This makes the unencrypted password available for tests,
+	// so things like `SignIn` can be tested with existing accounts.
 	account.__testPlaintextPassword = accountParams.password;
 
-	const signInRoute = SignInService.action.route;
-	await fetch(`http://localhost:${TEST_PORT}${signInRoute.path}`, {
-		method: signInRoute.method,
-		headers: {
-			'content-type': 'application/json',
-		},
-		body: JSON.stringify(accountParams),
-	});
-
 	const creatActorRoute = CreateAccountActorService.action.route;
-	const res3 = await fetch(`http://localhost:${TEST_PORT}${creatActorRoute.path}`, {
+	const createActorRes = await fetch(`http://localhost:${TEST_PORT}${creatActorRoute.path}`, {
 		method: creatActorRoute.method,
 		headers: {
 			'content-type': 'application/json',
-			Cookie: `${auth}`,
-			Accept: 'application/json',
+			accept: 'application/json',
+			cookie: `${auth}`,
 		},
 		body: JSON.stringify(accountActorParams),
 	});
-
-	const data2 = (await res3.json()) as CreateAccountActorResponse;
-	const actor = data2.actors[0] as AccountActor;
+	assert.ok(createActorRes.ok);
+	const {actor} = await createActorRes.json();
 
 	return {auth, account, actor};
 };
