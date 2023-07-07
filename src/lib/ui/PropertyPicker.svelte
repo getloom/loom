@@ -1,22 +1,21 @@
 <script lang="ts">
+	import {slide} from 'svelte/transition';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Message from '@feltjs/felt-ui/Message.svelte';
 	import {identity} from '@feltjs/util/function.js';
 	import type {Result} from '@feltjs/util';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {afterUpdate} from 'svelte';
+	import {createEventDispatcher} from 'svelte';
 	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 
-	import {autofocus} from '$lib/ui/actions';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
 	import HubPicker from '$lib/ui/HubPicker.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import type {HubId} from '$lib/vocab/hub/hub';
 
 	// TODO have an API to click-to-pick for even string values (with a button for more) for things like strings (like actor names, space names, etc, from templates or random)
 	// TODO pick hub and the others
 	// TODO optional properties
+
+	const dispatch = createEventDispatcher<{pick: TValue | undefined}>(); // eslint-disable-line @typescript-eslint/no-redundant-type-constituents
 
 	const {
 		actions,
@@ -25,137 +24,81 @@
 
 	type TValue = $$Generic;
 
+	type ParsedValue = Result<{value: TValue}, {message: string}>;
+	interface ParseValue {
+		(serialized: string): ParsedValue;
+	}
+
 	export let actor: Readable<AccountActor>;
-	export let value: TValue;
+	export let value: TValue; // TODO is not reactive, only the initial value is used because otherwise failed parsing clobbers the input value, how to fix?
 	export let field: string;
-	export let update:
-		| ((updated: TValue, field: string) => void | Promise<Result<unknown, {message: string}>>)
-		| null = null;
-	export let parse: (serialized: string) => Result<{value: TValue}, {message: string}> = (
-		serialized,
-	) => ({ok: true, value: serialized as any}); // TODO consider extracting an `ok` helper
+	export let parse: ParseValue | undefined = undefined;
 	export let serialize: (value: TValue, print?: boolean) => string = identity as any; // TODO type
 
-	let fieldValue: any; // initialized by `reset`
-	let serialized: string | undefined;
-	$: {
-		const parsed = parse(fieldValue);
-		if (parsed.ok) {
-			serialized = serialize(parsed.value, true);
-			errorMessage = null;
-		} else {
-			serialized = '';
-			errorMessage = parsed.message;
-		}
+	// TODO refactor these
+	const parseString: (raw: string) => Result<{value: string}, {message: string}> = (raw) => {
+		return {ok: true, value: typeof raw === 'string' ? raw : raw + ''};
+	};
+	const parseId: (raw: string) => Result<{value: number}, {message: string}> = (raw) => {
+		const value = Number(raw);
+		return Number.isNaN(value) || value < 1
+			? {ok: false, message: 'value is not a valid id'}
+			: {ok: true, value};
+	};
+	// TODO very hacky, need to use schema info
+	$: finalParse = (parse ?? field.endsWith('_id') ? parseId : parseString) as ParseValue;
+
+	let fieldValue = serialize(value);
+	let parsed: ParsedValue;
+	$: parsed = finalParse(fieldValue);
+	$: parsedValue = parsed.ok ? parsed.value : undefined;
+	$: serialized = parsed.ok ? serialize(parsed.value as any, true) : '';
+	$: errorMessage = parsed.ok ? null : parsed.message;
+	let lastParsedValue: TValue | undefined = value; // eslint-disable-line @typescript-eslint/no-redundant-type-constituents
+	$: lastParsedValue = value;
+	let changed = false;
+	$: if (parsedValue !== lastParsedValue) {
+		changed = true;
+		lastParsedValue = parsedValue;
+		dispatch('pick', parsedValue);
 	}
-	let pending = false;
-	let fieldValueEl: HTMLTextAreaElement;
-	let shouldFocusEl = false;
-	let errorMessage: string | null = null;
 
-	const reset = () => {
-		fieldValue = serialize(value);
-	};
-	reset();
-
-	afterUpdate(() => {
-		if (shouldFocusEl) {
-			shouldFocusEl = false;
-			fieldValueEl.focus(); // in case it somehow stopped editing in between
-		}
-	});
-
-	const save = (): void | Promise<void> => {
-		if (!update) return;
-		errorMessage = null;
-		const parsed = parse(fieldValue);
-		if (!parsed.ok) {
-			errorMessage = parsed.message;
-			return;
-		}
-		const updating = update(parsed.value, field);
-		if (updating && 'then' in updating) {
-			pending = true;
-			return updating.then((result) => {
-				pending = false;
-				if (!result.ok) {
-					errorMessage = result.message;
-				}
-			});
-		}
-	};
-
-	const onKeydown = async (e: KeyboardEvent) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault();
-			await save();
-		}
-	};
-
-	$: currentSerialized = serialize(value, true);
-	$: changed = serialized !== currentSerialized;
-
-	// picker dialog
-	// optional
-
-	const doneWithHubPicker = async (hub_id: HubId) => {
-		fieldValue = hub_id;
-		await save();
+	const doneWithPicker = async (value: any) => {
+		fieldValue = value;
 		actions.CloseDialog();
 	};
 
-	// TODO everything referencing `hub_id` is a hack, this component should be generic
-
-	$: hub = field === 'hub_id' ? hubById.get(value as any) : null;
+	// TODO everything referencing `hub_id` and hubs is a hack, this component should be generic
+	$: hub = field === 'hub_id' && parsedValue ? hubById.get(parsedValue as any) : null;
 </script>
 
 <div class="field">{field}</div>
-{#if field !== 'hub_id' || hub}
-	<div class="preview prose panel" style:--icon_size="var(--icon_size_sm)">
-		{#if field === 'hub_id' && hub}
-			<HubAvatar {actor} {hub} />
-		{:else if value === undefined}
-			<em>undefined</em>
-			<!-- TODO add a button to add/instantiate the field with some value -->
-		{:else}
-			<pre>{currentSerialized}</pre>
-		{/if}
-	</div>
-{/if}
-{#if field === 'hub_id'}
-	<button
-		type="button"
-		on:click={() => actions.OpenDialog(toDialogParams(HubPicker, {actor, done: doneWithHubPicker}))}
-	>
-		pick hub
-	</button>
-{:else}
-	<textarea
-		placeholder="> value"
-		bind:this={fieldValueEl}
-		bind:value={fieldValue}
-		use:autofocus
-		disabled={pending}
-		on:keydown={onKeydown}
-	/>
-	{#if changed}
-		<div class="buttons">
-			<button type="button" on:click={reset}> reset </button>
-			<PendingButton on:click={save} {pending} disabled={pending || !!errorMessage}>
-				save
-			</PendingButton>
-		</div>
+<div class="preview panel" style:--icon_size="var(--icon_size_sm)">
+	{#if field === 'hub_id' && hub}
+		<HubAvatar {actor} {hub} />
+	{:else if parsedValue === undefined}
+		<em>undefined</em>
+		<!-- TODO add a button to add/instantiate the field with some value -->
+	{:else}
+		<pre>{serialized}</pre>
 	{/if}
-	{#if errorMessage}
-		<Message status="error">{errorMessage}</Message>
-	{:else if changed}
-		<div class="preview prose panel">
-			<p>
-				{#if fieldValue}<pre>{serialized}</pre>{:else}<em>(empty)</em>{/if}
-			</p>
-		</div>
+</div>
+<!-- TODO use an `input` for certain kinds of values -- need a generic system that can be configured -->
+<textarea placeholder="> value" bind:value={fieldValue} />
+<div class="row">
+	{#if field === 'hub_id'}
+		<button
+			type="button"
+			on:click={() => actions.OpenDialog(toDialogParams(HubPicker, {actor, done: doneWithPicker}))}
+			class="spaced_hz"
+		>
+			pick hub
+		</button>
 	{/if}
-{/if}
+	{#if errorMessage && changed}
+		<div transition:slide class="error_text">{errorMessage}</div>
+	{/if}
+</div>
 
 <style>
 	.field {
@@ -165,10 +108,13 @@
 	.preview {
 		overflow: auto;
 		padding: var(--spacing_sm);
+		display: flex;
+		align-items: center;
+		height: 48px; /* TODO this is a hack, can't use `--icon_size` because it's being set above */
 	}
 	textarea {
 		/* TODO customize this for different values */
-		height: 120px;
+		height: var(--input_height);
 	}
 	pre {
 		white-space: pre-wrap;

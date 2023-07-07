@@ -38,7 +38,7 @@
 			<HubSettingsHue {actor} {hub} />
 		</fieldset>
 		<fieldset>
-			<legend class="error-text">danger zone</legend>
+			<legend class="error_text">danger zone</legend>
 			<button
 				title="leave hub"
 				on:click={() =>

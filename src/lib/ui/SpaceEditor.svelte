@@ -69,7 +69,7 @@
 			<PropertyEditor value={$space.view} field="view" update={updateSpace} />
 		</fieldset>
 		<fieldset>
-			<legend class="error-text">danger zone</legend>
+			<legend class="error_text">danger zone</legend>
 			<button
 				title="delete space"
 				on:click={() =>

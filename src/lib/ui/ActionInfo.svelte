@@ -32,8 +32,10 @@
 							),
 						);
 					}
-				}}>create</button
+				}}
 			>
+				create
+			</button>
 		</div>
 		<small class="type">{action.type}</small>
 	</div>

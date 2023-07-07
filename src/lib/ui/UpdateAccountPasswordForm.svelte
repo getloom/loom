@@ -109,7 +109,7 @@
 				placeholder=">"
 			/>
 		</label>
-		<p class="box" class:error-text={!!errorMessage} class:success-text={!!successMessage}>
+		<p class="box" class:error_text={!!errorMessage} class:success-text={!!successMessage}>
 			{errorMessage || successMessage || '🔑'}
 		</p>
 		<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={updatePassword}

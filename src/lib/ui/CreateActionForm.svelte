@@ -1,37 +1,35 @@
 <script lang="ts">
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import Message from '@feltjs/felt-ui/Message.svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import {writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import CreateActionParamsFields from '$lib/ui/CreateActionParamsFields.svelte';
 	import {actionDatas} from '$lib/vocab/action/actionData';
 	import type {ActionData} from '$lib/vocab/action/action';
+	import ActionHistory, {type ActionHistoryItem} from '$lib/ui/ActionHistory.svelte';
 
 	const {actions} = getApp();
 
 	export let actor: Readable<AccountActor>;
-	export let selectedActionData: ActionData | undefined = undefined;
+	export let selectedActionData: ActionData | undefined = undefined; // TODO not reactive, see below
 	export let done: (() => void) | undefined = undefined;
 
 	let pending = false;
 	let errorMessage: string | null = null;
 
+	// TODO this is a hack due to a quirk in the dialog system -- `Dialogs` is rerendering when the dialogs list changes,
+	// causing stale props to be send to any other open dialogs when one is opened --
+	// it's possible a tweak in `Dialogs` can fix the updating behavior,
+	// but the deeper problem is that opening dialogs programmatically like this breaks normal Svelte behaviors
+	let selectedActionDataHack = selectedActionData;
+
 	let formParams: any = null;
 
-	let actionHistory: ActionHistoryItem[] = [];
-	interface ActionHistoryItem {
-		name: string;
-		params: any; // TODO ?
-		actionData: ActionData;
-		created: number;
-		responded: number;
-		elapsed: number;
-		error: string | null;
-	}
+	const actionHistory: Writable<ActionHistoryItem[]> = writable([]);
 
-	const actionsEvent = async (actionData: ActionData, params: any): Promise<void> => {
+	const performAction = async (actionData: ActionData, params: any): Promise<void> => {
 		if (pending) return;
 		// TODO confirmation dialog!
 		formParams = params; // depending on where the action is actionHistory, the form params may not match, but we want to load the form with whatever was just sent for UX purposes
@@ -58,12 +56,12 @@
 		}
 		d.responded = performance.now();
 		d.elapsed = d.responded - d.created;
-		actionHistory = [d].concat(actionHistory); // TODO granularly update `responded`/`elapsed` updates so we see it immediately, maybe track `status` and `error` even
+		$actionHistory = [d].concat($actionHistory); // TODO granularly update `responded`/`elapsed` updates so we see it immediately, maybe track `status` and `error` even
 	};
 
-	$: selectedActionData, (formParams = null); // TODO should this be needed?
+	$: selectedActionDataHack, (formParams = null); // TODO should this be needed?
 
-	$: paramsProperties = selectedActionData?.params?.properties;
+	$: paramsProperties = selectedActionDataHack?.params?.properties;
 	$: paramsPropertiesKeys = paramsProperties && Object.keys(paramsProperties);
 </script>
 
@@ -76,41 +74,44 @@
 			<legend>available actions</legend>
 			{#each actionDatas as actionData (actionData)}
 				<label class="row">
-					<input type="radio" bind:group={selectedActionData} value={actionData} />
+					<input type="radio" bind:group={selectedActionDataHack} value={actionData} />
 					<code class={actionData.type}>{actionData.name}</code>
 				</label>
 			{/each}
 		</fieldset>
 		<div class="content">
-			{#if selectedActionData}
+			{#if selectedActionDataHack}
 				<div class="prose">
 					<h3>
-						<code class={selectedActionData.type}>{selectedActionData.name}</code><small
-							>{selectedActionData.type}</small
+						<code class={selectedActionDataHack.type}>{selectedActionDataHack.name}</code><small
+							>{selectedActionDataHack.type}</small
 						>
 					</h3>
 				</div>
-				<div class="params-wrapper">
+				<div class="spaced">
 					{#if paramsPropertiesKeys?.length}
 						<fieldset>
 							<legend>params</legend>
 							<code class="params"><pre>{JSON.stringify(formParams, null, 2)}</pre></code>
 							<CreateActionParamsFields
 								{actor}
-								actionData={selectedActionData}
+								actionData={selectedActionDataHack}
 								bind:params={formParams}
 							/>
 						</fieldset>
 					{/if}
+				</div>
+				<div class="spaced">
 					<!-- TODO `style="width: 100%"` is a hack -->
 					<PendingButton
-						on:click={() => selectedActionData && actionsEvent(selectedActionData, formParams)}
+						on:click={() =>
+							selectedActionDataHack && performAction(selectedActionDataHack, formParams)}
 						style="width: 100%"
 						{pending}
 						disabled={pending}
 					>
-						perform action&nbsp;<code class={selectedActionData.type}
-							>{selectedActionData.name}</code
+						perform action&nbsp;<code class={selectedActionDataHack.type}
+							>{selectedActionDataHack.name}</code
 						>
 					</PendingButton>
 					<!-- TODO implement saving actions like any other data to a path/entity -->
@@ -124,53 +125,12 @@
 					{/if}
 				</div>
 			{/if}
-			{#if actionHistory.length}
-				<div class="action_history">
-					<button type="button" class="plain" on:click={() => (actionHistory = [])}
-						>clear history</button
-					>
-					<!-- TODO extract table component with sortable headings -->
-					<table class="panel">
-						<thead><th>action</th><th>time</th><th /><th>props</th><th>error</th></thead>
-						<tbody>
-							{#each actionHistory as item (item)}
-								<tr>
-									<td><code class={item.actionData.type}>{item.name}</code></td>
-									<td>{Math.round(item.elapsed)}ms</td>
-									<td>
-										<div class="buttons">
-											<button
-												class="plain icon_button"
-												style:--icon_size="var(--icon_size_sm)"
-												type="button"
-												title="perform {item.actionData.name} again"
-												on:click={() => actionsEvent(item.actionData, item.params)}
-											>
-												↪
-											</button>
-											<button
-												class="plain icon_button"
-												style:--icon_size="var(--icon_size_sm)"
-												type="button"
-												title="remove history item"
-												on:click={() => (actionHistory = actionHistory.filter((d) => d !== item))}
-											>
-												✕
-											</button>
-										</div>
-									</td>
-									<td><code class="ellipsis">{JSON.stringify(item.params)}</code></td>
-									<td
-										>{#if item.error}<small class="error-text ellipsis" title={item.error}
-												>{item.error}</small
-											>{/if}</td
-									>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				</div>
-			{/if}
+			<ActionHistory
+				{actionHistory}
+				on:perform={(e) => performAction(e.detail.actionData, e.detail.params)}
+				on:remove={(e) => ($actionHistory = $actionHistory.filter((d) => d !== e.detail))}
+				on:clear={() => ($actionHistory = [])}
+			/>
 		</div>
 	</div>
 </form>
@@ -213,26 +173,10 @@
 	.ClientAction {
 		color: var(--color_2);
 	}
-	th,
-	td {
-		padding: 0 var(--spacing_xs);
-	}
-	/* TODO these are messy */
-	.params-wrapper {
-		margin: var(--spacing_xl3) 0;
-	}
 	.params {
 		margin-bottom: var(--spacing_lg);
 	}
 	.error_message {
 		margin-top: var(--spacing_lg);
-	}
-	.error-text,
-	code.ellipsis {
-		max-width: 150px;
-	}
-	.action_history {
-		overflow: auto;
-		width: 100%;
 	}
 </style>

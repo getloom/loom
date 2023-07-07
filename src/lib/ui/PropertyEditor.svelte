@@ -27,22 +27,17 @@
 	export let serialize: (value: TValue, print?: boolean) => string = identity as any; // TODO type
 	export let deletable = false;
 
-	let editing = false;
-
 	let fieldValue: any; // initialized by `reset`
 	let serialized: string | undefined;
-	$: parsed = parse(fieldValue);
-	$: if (parsed.ok) {
-		serialized = serialize(parsed.value, true);
-		errorMessage = null;
-	} else {
-		serialized = '';
-		errorMessage = parsed.message;
-	}
+	let editing = false;
 	let pending = false;
 	let fieldValueEl: HTMLTextAreaElement;
 	let shouldFocusEl = false;
 	let errorMessage: string | null = null;
+
+	$: parsed = parse(fieldValue);
+	$: serialized = parsed.ok ? serialize(parsed.value, true) : '';
+	$: errorMessage = parsed.ok ? null : parsed.message;
 
 	const reset = () => {
 		fieldValue = serialize(value);

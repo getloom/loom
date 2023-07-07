@@ -58,7 +58,7 @@
 					{actor}
 					value={params?.[key]}
 					field={key}
-					update={(value) => updateParam(key, value)}
+					on:pick={(e) => updateParam(key, e.detail)}
 				/>
 			{/if}
 		</div>
@@ -68,7 +68,7 @@
 <style>
 	/* TODO copypasted from `PropertyPicker`, maybe extract a class? `.big-text`? */
 	.field {
-		padding: var(--spacing_xs) 0;
+		padding: var(--spacing_md) 0;
 	}
 	.title {
 		font-size: var(--size_lg);

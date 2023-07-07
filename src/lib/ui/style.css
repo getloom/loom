@@ -27,7 +27,7 @@ main {
 }
 
 /* a minimal alternative to `<Message status="error">some error text</Message>` */
-.error-text {
+.error_text {
 	font-weight: bold;
 	color: var(--color_5);
 }

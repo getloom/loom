@@ -57,7 +57,7 @@
 		{#if homeSpace}
 			<CreateEntityForm {actor} {hub} space={homeSpace} />
 		{:else}
-			<span class="error-text">[error: expected a space]</span>
+			<span class="error_text">[error: expected a space]</span>
 		{/if}
 	{/if}
 </div>
