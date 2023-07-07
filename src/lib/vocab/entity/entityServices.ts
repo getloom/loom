@@ -32,13 +32,18 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	action: ReadEntities,
 	transaction: false,
 	perform: async ({repos, params}) => {
-		const {actor, source_id, pageSize = DEFAULT_PAGE_SIZE, pageKey, related} = params;
+		const {actor, source_id, pageSize = DEFAULT_PAGE_SIZE, pageKey, related, orderBy} = params;
 		log.debug('checking pagiated entities for ', source_id);
 		const {hub_id} = await repos.space.findByEntity(source_id);
 		await checkHubAccess(actor, hub_id, repos);
 
 		const extraPageSize = pageSize + 1;
-		const pageTies = await repos.tie.filterBySourceIdPaginated(source_id, extraPageSize, pageKey);
+		const pageTies = await repos.tie.filterBySourceIdPaginated(
+			source_id,
+			extraPageSize,
+			pageKey,
+			orderBy,
+		);
 		const more = pageSize < pageTies.length;
 		if (more) pageTies.pop();
 
@@ -52,7 +57,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 		//TODO stop filtering directory until we fix entity indexing by space_id
 		const entityIds = toTieEntityIds(pageTies);
 		entityIds.delete(source_id);
-		const {entities} = await repos.entity.filterByIds(Array.from(entityIds));
+		const {entities} = await repos.entity.filterByIds(Array.from(entityIds), orderBy);
 		return {ok: true, status: 200, value: {entities, ties, more}};
 	},
 };

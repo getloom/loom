@@ -730,7 +730,8 @@
 				"source_id": {"$ref": "/schemas/EntityId"},
 				"pageSize": {"type": "number", "maximum": 20},
 				"pageKey": {"type": "number"},
-				"related": {"type": "string", "enum": ["source", "dest", "both"]}
+				"related": {"type": "string", "enum": ["source", "dest", "both"]},
+				"orderBy": {"type": "string", "enum": ["newest", "oldest"]}
 			},
 			"required": ["actor", "source_id"],
 			"additionalProperties": false

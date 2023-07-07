@@ -17,10 +17,14 @@
 	$: shouldLoadEntities = browser && $socket.open;
 
 	$: query = shouldLoadEntities
-		? createQuery({
-				actor: $actor.actor_id,
-				source_id: $space.directory_id,
-		  })
+		? createQuery(
+				{
+					actor: $actor.actor_id,
+					source_id: $space.directory_id,
+					orderBy: 'oldest',
+				},
+				true,
+		  )
 		: null;
 	$: entities = query?.entities;
 

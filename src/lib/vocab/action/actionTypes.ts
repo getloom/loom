@@ -504,6 +504,7 @@ export interface ReadEntitiesParams {
 	pageSize?: number;
 	pageKey?: number;
 	related?: 'source' | 'dest' | 'both';
+	orderBy?: 'newest' | 'oldest';
 }
 export interface ReadEntitiesResponse {
 	entities: Entity[];

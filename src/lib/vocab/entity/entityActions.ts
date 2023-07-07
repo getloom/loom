@@ -122,6 +122,7 @@ export const ReadEntities: ServiceActionData = {
 			pageSize: {type: 'number', maximum: DEFAULT_PAGE_SIZE},
 			pageKey: {type: 'number'},
 			related: {type: 'string', enum: ['source', 'dest', 'both']},
+			orderBy: {type: 'string', enum: ['newest', 'oldest']},
 		},
 		required: ['actor', 'source_id'],
 		additionalProperties: false,

@@ -62,14 +62,19 @@ export class TieRepo extends PostgresRepo {
 		source_id: EntityId,
 		pageSize = DEFAULT_PAGE_SIZE,
 		pageKey?: number,
+		orderBy: 'newest' | 'oldest' = 'newest',
 	): Promise<Tie[]> {
 		log.debug(`paginated query of tie dests`, source_id, pageKey, pageSize);
 		const ties = await this.sql<Tie[]>`
 			SELECT t.tie_id, t.source_id, t.dest_id, t.type, t.created
-			FROM ties t WHERE source_id=${source_id} ${
-			pageKey ? this.sql`AND dest_id < ${pageKey}` : this.sql``
-		} 
-			ORDER BY dest_id DESC LIMIT ${pageSize};
+			FROM ties t WHERE source_id=${source_id} 
+			${
+				pageKey
+					? this.sql`AND dest_id 
+						${orderBy === 'newest' ? this.sql`<` : this.sql`>`} ${pageKey}`
+					: this.sql``
+			} 
+			ORDER BY dest_id ${orderBy === 'newest' ? this.sql`DESC` : this.sql`ASC`} LIMIT ${pageSize};
 		`;
 		log.debug('directory ties', ties);
 		return ties;

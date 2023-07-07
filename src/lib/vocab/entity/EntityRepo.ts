@@ -55,13 +55,14 @@ export class EntityRepo extends PostgresRepo {
 	// TODO remove the `message`, handle count mismatch similar to `findById` calls, maybe returning an array of the missing ids with `ok: false`
 	async filterByIds(
 		entityIds: EntityId[],
+		orderBy: 'newest' | 'oldest' = 'newest',
 	): Promise<{entities: Entity[]; missing: null | EntityId[]}> {
 		if (entityIds.length === 0) return {entities: [], missing: null};
 		log.debug('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
 			SELECT entity_id, space_id, path, data, actor_id, created, updated 
 			FROM entities WHERE entity_id IN ${this.sql(entityIds)}
-			ORDER BY entity_id DESC
+			ORDER BY entity_id ${orderBy === 'newest' ? this.sql`DESC` : this.sql`ASC`}
 		`;
 		const missing =
 			entities.length === entityIds.length

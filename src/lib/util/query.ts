@@ -24,6 +24,7 @@ export interface QueryParams {
 	source_id: EntityId;
 	path?: string;
 	related?: 'dest' | 'source' | 'both';
+	orderBy?: 'newest' | 'oldest';
 }
 
 export interface QueryState {
@@ -77,6 +78,7 @@ const toPaginatedQuery = (
 	addEntity: QueryAddEntity,
 	matchEntity: QueryMatchEntity,
 ): QueryStore => {
+	const orderBy = params.orderBy ?? 'newest';
 	const {subscribe, update, get} = writable<QueryState>({
 		status: 'initial',
 		error: null,
@@ -114,7 +116,14 @@ const toPaginatedQuery = (
 	const loadMore = async (): Promise<void> => {
 		if (loading) return loading;
 		const $entities = entities.get().value;
-		const oldest = reversed ? $entities[$entities.length - 1] : $entities[0];
+		const oldest =
+			orderBy === 'newest'
+				? reversed
+					? $entities[$entities.length - 1]
+					: $entities[0]
+				: reversed
+				? $entities[0]
+				: $entities[$entities.length - 1];
 		return load(oldest?.get().entity_id);
 	};
 
