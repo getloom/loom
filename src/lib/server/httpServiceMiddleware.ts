@@ -17,23 +17,24 @@ export const toHttpServiceMiddleware =
 	async (req, res) => {
 		const {body: reqBody, params: reqParams} = req;
 
-		// TODO hack -- remove when `id`s are changed to strings
-		// (and maybe support numbers in params with a better pattern?)
-		for (const paramName in req.params) {
-			if (paramName.endsWith('_id')) {
-				req.params[paramName] = Number(req.params[paramName]) as any;
-			}
-		}
-
-		// Check each of `req.params` and ensure that they're
-		// either absent from `req.body` or their values match exactly.
-		// This is a nececssary check to ensure users don't get surprising results.
-		// Our HTTP API supports duplicating the route params in the body
-		// for convenience and consistency with the websocket API.
+		// The HTTP API requires duplicating any route params in the body
+		// for consistency with the websocket API.
+		// We don't want the confusion of maintaining two schemas,
+		// where properties are optional in the HTTP body but required in the websocket payload.
+		// This checks each of `req.params` and ensures that they match the body value exactly.
+		// This ensures users don't get surprising results
+		// if they make an error constructing the path+body.
+		// We are only able to do this because we only support POST, not GET, for routes with params,
+		// due to the complexity of getting query data serialized and deserialized.
 		if (reqBody) {
 			for (const paramName in reqParams) {
 				if (paramName in reqBody) {
-					if (reqParams[paramName] !== reqBody[paramName]) {
+					const bodyValue = reqBody[paramName];
+					// Route params are always strings, and we can infer the correct type from the body version.
+					const p = reqParams[paramName];
+					const t = typeof bodyValue;
+					const paramValue = t === 'number' ? Number(p) : t === 'boolean' ? Boolean(p) : p;
+					if (paramValue !== bodyValue) {
 						return send(res, 400, {
 							message: `route param '${paramName}' mismatches the request body value`,
 						});
@@ -42,11 +43,7 @@ export const toHttpServiceMiddleware =
 			}
 		}
 
-		if (!service.action.params || !service.action.response) {
-			return send(res, 500, {message: 'unimplemented service schema'});
-		}
-
-		const params = service.action.params.type === 'null' ? null : {...reqBody, ...reqParams};
+		const params = service.action.params.type === 'null' ? null : reqBody; // see the comment above
 
 		const validateParams = validateSchema<any>(service.action.params);
 		if (!validateParams(params)) {

@@ -55,7 +55,7 @@ export const ReadPolicies: ServiceActionData = {
 	},
 	returns: 'Promise<ReadPoliciesResponseResult>',
 	route: {
-		path: '/api/v1/roles/:role_id/policies/query',
+		path: '/api/v1/policies/query',
 		method: 'POST',
 	},
 };

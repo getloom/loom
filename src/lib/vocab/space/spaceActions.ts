@@ -71,7 +71,7 @@ export const ReadSpaces: ServiceActionData = {
 	},
 	returns: 'Promise<ReadSpacesResponseResult>',
 	route: {
-		path: '/api/v1/hubs/:hub_id/spaces/query',
+		path: '/api/v1/spaces/query',
 		method: 'POST',
 	},
 };

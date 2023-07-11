@@ -23,11 +23,11 @@ import type {
 	UpdateSpaceParams,
 	DeleteSpaceParams,
 	CreateEntityParams,
-	UpdateEntitiesParams,
 	ReadEntitiesParams,
+	ReadEntitiesByIdParams,
+	UpdateEntitiesParams,
 	EraseEntitiesParams,
 	DeleteEntitiesParams,
-	ReadEntitiesByIdParams,
 	CreateRoleParams,
 	ReadRolesParams,
 	UpdateRoleParams,
@@ -106,14 +106,18 @@ export interface RandomActionParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<CreateEntityParams>;
-	UpdateEntities: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<UpdateEntitiesParams>;
 	ReadEntities: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<ReadEntitiesParams>;
+	ReadEntitiesById: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<ReadEntitiesByIdParams>;
+	UpdateEntities: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<UpdateEntitiesParams>;
 	EraseEntities: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
@@ -122,10 +126,6 @@ export interface RandomActionParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<DeleteEntitiesParams>;
-	ReadEntitiesById: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<ReadEntitiesByIdParams>;
 	CreateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateRoleParams>;
 	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
 	UpdateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateRoleParams>;

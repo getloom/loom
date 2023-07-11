@@ -46,7 +46,9 @@ import {
 	ClearFreshness,
 } from '$lib/ui/uiActions';
 
-// TODO awkwardly named, but what's better?
+// TODO awkwardly named, but what's better? `actions` is overloaded with the client's interface to them,
+// maybe `Definition` is better than `Data`?
+
 export const actionDatas: ActionData[] = [
 	// account actions
 	SignUp,
@@ -75,11 +77,11 @@ export const actionDatas: ActionData[] = [
 	DeleteSpace,
 	// entity actions
 	CreateEntity,
-	UpdateEntities,
 	ReadEntities,
+	ReadEntitiesById,
+	UpdateEntities,
 	EraseEntities,
 	DeleteEntities,
-	ReadEntitiesById,
 	// role actions
 	CreateRole,
 	ReadRoles,

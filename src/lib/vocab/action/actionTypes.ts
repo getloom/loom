@@ -49,11 +49,11 @@ export type ServiceActionName =
 	| 'UpdateSpace'
 	| 'DeleteSpace'
 	| 'CreateEntity'
-	| 'UpdateEntities'
 	| 'ReadEntities'
+	| 'ReadEntitiesById'
+	| 'UpdateEntities'
 	| 'EraseEntities'
 	| 'DeleteEntities'
-	| 'ReadEntitiesById'
 	| 'CreateRole'
 	| 'ReadRoles'
 	| 'UpdateRole'
@@ -97,11 +97,11 @@ export interface ActionParamsByName {
 	UpdateSpace: UpdateSpaceParams;
 	DeleteSpace: DeleteSpaceParams;
 	CreateEntity: CreateEntityParams;
-	UpdateEntities: UpdateEntitiesParams;
 	ReadEntities: ReadEntitiesParams;
+	ReadEntitiesById: ReadEntitiesByIdParams;
+	UpdateEntities: UpdateEntitiesParams;
 	EraseEntities: EraseEntitiesParams;
 	DeleteEntities: DeleteEntitiesParams;
-	ReadEntitiesById: ReadEntitiesByIdParams;
 	CreateRole: CreateRoleParams;
 	ReadRoles: ReadRolesParams;
 	UpdateRole: UpdateRoleParams;
@@ -143,11 +143,11 @@ export interface ActionResponseByName {
 	UpdateSpace: UpdateSpaceResponse;
 	DeleteSpace: DeleteSpaceResponse;
 	CreateEntity: CreateEntityResponse;
-	UpdateEntities: UpdateEntitiesResponse;
 	ReadEntities: ReadEntitiesResponse;
+	ReadEntitiesById: ReadEntitiesByIdResponse;
+	UpdateEntities: UpdateEntitiesResponse;
 	EraseEntities: EraseEntitiesResponse;
 	DeleteEntities: DeleteEntitiesResponse;
-	ReadEntitiesById: ReadEntitiesByIdResponse;
 	CreateRole: CreateRoleResponse;
 	ReadRoles: ReadRolesResponse;
 	UpdateRole: UpdateRoleResponse;
@@ -193,11 +193,11 @@ export interface ServiceByName {
 	UpdateSpace: AuthorizedService<UpdateSpaceParams, UpdateSpaceResponseResult>;
 	DeleteSpace: AuthorizedService<DeleteSpaceParams, DeleteSpaceResponseResult>;
 	ReadEntities: AuthorizedService<ReadEntitiesParams, ReadEntitiesResponseResult>;
+	ReadEntitiesById: AuthorizedService<ReadEntitiesByIdParams, ReadEntitiesByIdResponseResult>;
 	CreateEntity: AuthorizedService<CreateEntityParams, CreateEntityResponseResult>;
 	UpdateEntities: AuthorizedService<UpdateEntitiesParams, UpdateEntitiesResponseResult>;
 	EraseEntities: AuthorizedService<EraseEntitiesParams, EraseEntitiesResponseResult>;
 	DeleteEntities: AuthorizedService<DeleteEntitiesParams, DeleteEntitiesResponseResult>;
-	ReadEntitiesById: AuthorizedService<ReadEntitiesByIdParams, ReadEntitiesByIdResponseResult>;
 	CreateRole: AuthorizedService<CreateRoleParams, CreateRoleResponseResult>;
 	ReadRoles: AuthorizedService<ReadRolesParams, ReadRolesResponseResult>;
 	UpdateRole: AuthorizedService<UpdateRoleParams, UpdateRoleResponseResult>;
@@ -485,19 +485,6 @@ export interface CreateEntityResponse {
 }
 export type CreateEntityResponseResult = ApiResult<CreateEntityResponse>;
 
-export interface UpdateEntitiesParams {
-	actor: ActorId;
-	entities: {
-		entity_id: EntityId;
-		data?: EntityData;
-		path?: string | null;
-	}[];
-}
-export interface UpdateEntitiesResponse {
-	entities: Entity[];
-}
-export type UpdateEntitiesResponseResult = ApiResult<UpdateEntitiesResponse>;
-
 export interface ReadEntitiesParams {
 	actor: ActorId;
 	source_id: EntityId;
@@ -512,6 +499,28 @@ export interface ReadEntitiesResponse {
 	more: boolean;
 }
 export type ReadEntitiesResponseResult = ApiResult<ReadEntitiesResponse>;
+
+export interface ReadEntitiesByIdParams {
+	actor: ActorId;
+	entityIds: EntityId[];
+}
+export interface ReadEntitiesByIdResponse {
+	entities: Entity[];
+}
+export type ReadEntitiesByIdResponseResult = ApiResult<ReadEntitiesByIdResponse>;
+
+export interface UpdateEntitiesParams {
+	actor: ActorId;
+	entities: {
+		entity_id: EntityId;
+		data?: EntityData;
+		path?: string | null;
+	}[];
+}
+export interface UpdateEntitiesResponse {
+	entities: Entity[];
+}
+export type UpdateEntitiesResponseResult = ApiResult<UpdateEntitiesResponse>;
 
 export interface EraseEntitiesParams {
 	actor: ActorId;
@@ -531,15 +540,6 @@ export interface DeleteEntitiesResponse {
 	deleted: EntityId[];
 }
 export type DeleteEntitiesResponseResult = ApiResult<DeleteEntitiesResponse>;
-
-export interface ReadEntitiesByIdParams {
-	actor: ActorId;
-	entityIds: EntityId[];
-}
-export interface ReadEntitiesByIdResponse {
-	entities: Entity[];
-}
-export type ReadEntitiesByIdResponseResult = ApiResult<ReadEntitiesByIdResponse>;
 
 export interface CreateRoleParams {
 	actor: ActorId;
@@ -715,11 +715,11 @@ export interface Actions {
 	UpdateSpace: (params: UpdateSpaceParams) => Promise<UpdateSpaceResponseResult>;
 	DeleteSpace: (params: DeleteSpaceParams) => Promise<DeleteSpaceResponseResult>;
 	CreateEntity: (params: CreateEntityParams) => Promise<CreateEntityResponseResult>;
-	UpdateEntities: (params: UpdateEntitiesParams) => Promise<UpdateEntitiesResponseResult>;
 	ReadEntities: (params: ReadEntitiesParams) => Promise<ReadEntitiesResponseResult>;
+	ReadEntitiesById: (params: ReadEntitiesByIdParams) => Promise<ReadEntitiesByIdResponseResult>;
+	UpdateEntities: (params: UpdateEntitiesParams) => Promise<UpdateEntitiesResponseResult>;
 	EraseEntities: (params: EraseEntitiesParams) => Promise<EraseEntitiesResponseResult>;
 	DeleteEntities: (params: DeleteEntitiesParams) => Promise<DeleteEntitiesResponseResult>;
-	ReadEntitiesById: (params: ReadEntitiesByIdParams) => Promise<ReadEntitiesByIdResponseResult>;
 	CreateRole: (params: CreateRoleParams) => Promise<CreateRoleResponseResult>;
 	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
 	UpdateRole: (params: UpdateRoleParams) => Promise<UpdateRoleResponseResult>;
@@ -804,21 +804,21 @@ export interface Mutations {
 	CreateEntity: (
 		ctx: MutationContext<CreateEntityParams, CreateEntityResponseResult>,
 	) => Promise<CreateEntityResponseResult>;
-	UpdateEntities: (
-		ctx: MutationContext<UpdateEntitiesParams, UpdateEntitiesResponseResult>,
-	) => Promise<UpdateEntitiesResponseResult>;
 	ReadEntities: (
 		ctx: MutationContext<ReadEntitiesParams, ReadEntitiesResponseResult>,
 	) => Promise<ReadEntitiesResponseResult>;
+	ReadEntitiesById: (
+		ctx: MutationContext<ReadEntitiesByIdParams, ReadEntitiesByIdResponseResult>,
+	) => Promise<ReadEntitiesByIdResponseResult>;
+	UpdateEntities: (
+		ctx: MutationContext<UpdateEntitiesParams, UpdateEntitiesResponseResult>,
+	) => Promise<UpdateEntitiesResponseResult>;
 	EraseEntities: (
 		ctx: MutationContext<EraseEntitiesParams, EraseEntitiesResponseResult>,
 	) => Promise<EraseEntitiesResponseResult>;
 	DeleteEntities: (
 		ctx: MutationContext<DeleteEntitiesParams, DeleteEntitiesResponseResult>,
 	) => Promise<DeleteEntitiesResponseResult>;
-	ReadEntitiesById: (
-		ctx: MutationContext<ReadEntitiesByIdParams, ReadEntitiesByIdResponseResult>,
-	) => Promise<ReadEntitiesByIdResponseResult>;
 	CreateRole: (
 		ctx: MutationContext<CreateRoleParams, CreateRoleResponseResult>,
 	) => Promise<CreateRoleResponseResult>;

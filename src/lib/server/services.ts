@@ -16,11 +16,11 @@ import {
 } from '$lib/vocab/assignment/assignmentServices';
 import {
 	ReadEntitiesService,
+	ReadEntitiesByIdService,
 	CreateEntityService,
 	UpdateEntitiesService,
 	EraseEntitiesService,
 	DeleteEntitiesService,
-	ReadEntitiesByIdService,
 } from '$lib/vocab/entity/entityServices';
 import {
 	ReadSpacesService,
@@ -80,11 +80,11 @@ export const services: Map<string, Service> = new Map(
 		DeleteSpaceService,
 		// entityServices
 		ReadEntitiesService,
+		ReadEntitiesByIdService,
 		CreateEntityService,
 		UpdateEntitiesService,
 		EraseEntitiesService,
 		DeleteEntitiesService,
-		ReadEntitiesByIdService,
 		// roleServices
 		CreateRoleService,
 		ReadRolesService,
