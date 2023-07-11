@@ -35,12 +35,11 @@ export const apiServer = new ApiServer({
 
 apiServer
 	.init()
-	.then(() => {
+	.then(async () => {
 		if (process.argv.includes('--check')) {
 			log.info('check: server started successfully');
-			server.close(() => {
-				log.info('check: server closed successfully');
-			});
+			await apiServer.close();
+			log.info('check: server closed successfully');
 		}
 	})
 	.catch((err) => {

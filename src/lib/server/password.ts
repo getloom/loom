@@ -1,33 +1,41 @@
-import {randomBytes, scrypt, timingSafeEqual} from 'crypto';
+import {randomBytes, scrypt as scryptSync, timingSafeEqual} from 'crypto';
 import {promisify} from 'util';
 
-// TODO fix
-// import {passwordWorker} from '$lib/server/passwordWorker';
+import {createPasswordHasherWorker} from '$lib/server/passwordWorker';
 
 const SALT_SIZE = 16;
 const HASH_SIZE = 32;
 
-const toScrypt = promisify(scrypt);
+const scrypt = promisify(scryptSync);
+
+export interface PasswordHasher {
+	/**
+	 * Calls `toPasswordKey in the worker pool.
+	 */
+	encrypt: (passwordText: string) => Promise<string>;
+	/**
+	 * Calls `verifyPassword in the worker pool.
+	 */
+	verify: (passwordText: string, passwordKey: string) => Promise<boolean>;
+	/**
+	 * Exits the worker pool.
+	 */
+	close: () => Promise<void>;
+}
+
+/**
+ * Returns a password helper object backed by a worker pool.
+ * Use `close` to free the resources.
+ */
+export const createPasswordHasher = (): PasswordHasher => createPasswordHasherWorker(); // this is a circular dependency that breaks without the function wrapper
 
 /**
  * Returns the string `salt:hash` to be stored in the database.
  * The returned key can be compared to a password attempt with `verifyPassword`.
- * Calls `hashPassword` internally in a worker.
  * @param passwordText - plain text password
  * @returns salted and hashed password
  */
 export const toPasswordKey = async (passwordText: string): Promise<string> => {
-	// TODO fix
-	// return passwordWorker(passwordText)!;
-	return hashPassword(passwordText);
-};
-
-/**
- * Same as `toPasswordKey` but does the work on the current thread.
- * @param passwordText - plain text password
- * @returns salted and hashed password
- */
-export const hashPassword = async (passwordText: string): Promise<string> => {
 	const salt = randomBytes(SALT_SIZE).toString('hex');
 	const hash = (await toHash(passwordText, salt)).toString('hex');
 	return `${salt}:${hash}`;
@@ -48,4 +56,4 @@ export const verifyPassword = async (
 };
 
 const toHash = (passwordText: string, salt: string): Promise<Buffer> =>
-	toScrypt(passwordText, salt, HASH_SIZE) as any;
+	scrypt(passwordText, salt, HASH_SIZE) as any;

@@ -16,6 +16,7 @@ import {toWebsocketServiceMiddleware} from '$lib/server/websocketServiceMiddlewa
 import type {CookieSessionRequest} from '$lib/session/sessionCookie';
 import type {IBroadcast} from '$lib/server/Broadcast';
 import type {AccountId} from '$lib/vocab/account/account';
+import {createPasswordHasher, type PasswordHasher} from '$lib/server/password';
 
 const log = new Logger([blue('[ApiServer]')]);
 
@@ -30,6 +31,7 @@ export interface Options {
 	port: number;
 	db: Database;
 	services: Map<string, Service>;
+	passwordHasher?: PasswordHasher;
 }
 
 export class ApiServer {
@@ -40,12 +42,14 @@ export class ApiServer {
 	readonly port: number;
 	readonly db: Database;
 	readonly services: Map<string, Service>;
+	readonly passwordHasher: PasswordHasher;
 
 	constructor(options: Options) {
 		this.server = options.server;
 		this.app = options.app;
 		this.websockets = options.websockets;
 		this.broadcast = options.broadcast;
+		this.passwordHasher = options.passwordHasher || createPasswordHasher();
 		this.port = options.port;
 		this.db = options.db;
 		this.services = options.services;
@@ -121,10 +125,11 @@ export class ApiServer {
 		this.websockets.off('open', this.onWebsocketOpen);
 		this.websockets.off('close', this.onWebsocketClose);
 		await Promise.all([
+			promisify(this.app.server.close).call(this.app.server),
 			this.websockets.close(),
 			this.broadcast.close(),
 			this.db.close(),
-			promisify(this.app.server.close).call(this.app.server),
+			this.passwordHasher.close(),
 		]);
 	}
 

@@ -10,6 +10,7 @@ import type {Result} from '@feltjs/util';
 import type {ErrorResponse} from '$lib/util/error';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {IBroadcastApi} from '$lib/server/Broadcast';
+import type {PasswordHasher} from '$lib/server/password';
 
 export type BroadcastAudience = HubId | HubId[]; // TODO expand to `| {audience: BroadcastAudience; data: T}`
 
@@ -110,6 +111,7 @@ export interface NonAuthenticatedServiceRequest<TParams = any> {
 	params: TParams;
 	session: ISessionApi;
 	broadcast: IBroadcastApi;
+	passwordHasher: PasswordHasher;
 }
 export interface NonAuthorizedServiceRequest<TParams = any>
 	extends NonAuthenticatedServiceRequest<TParams> {
@@ -127,6 +129,7 @@ export function toServiceRequest<TParams = any>(
 	actor: undefined,
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
+	passwordHasher: PasswordHasher,
 ): NonAuthenticatedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -135,6 +138,7 @@ export function toServiceRequest<TParams = any>(
 	actor: undefined,
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
+	passwordHasher: PasswordHasher,
 ): NonAuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -143,6 +147,7 @@ export function toServiceRequest<TParams = any>(
 	actor: ActionActor,
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
+	passwordHasher: PasswordHasher,
 ): AuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -151,8 +156,9 @@ export function toServiceRequest<TParams = any>(
 	actor: ActionActor | undefined,
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
+	passwordHasher: PasswordHasher,
 ): ServiceRequest {
-	const req: NonAuthenticatedServiceRequest = {repos, params, session, broadcast};
+	const req: NonAuthenticatedServiceRequest = {repos, params, session, broadcast, passwordHasher};
 	// TODO this is a bit hacky -- it may be preferred to have 3 different versions of `toServiceRequest` instead
 	if (account_id) {
 		(req as NonAuthorizedServiceRequest).account_id = account_id;

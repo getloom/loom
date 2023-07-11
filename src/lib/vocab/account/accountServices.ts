@@ -11,7 +11,6 @@ import {
 } from '$lib/vocab/account/accountActions';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
 import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
-import {verifyPassword} from '$lib/server/password';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
@@ -22,7 +21,7 @@ const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 export const SignUpService: ServiceByName['SignUp'] = {
 	action: SignUp,
 	transaction: true,
-	perform: async ({repos, params, session}) => {
+	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
 		const usernameErrorMessage = checkAccountName(username);
 		if (usernameErrorMessage) {
@@ -48,6 +47,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 		}
 
 		const account = await repos.account.create(
+			passwordHasher,
 			username,
 			params.password,
 			toDefaultAccountSettings(),
@@ -65,7 +65,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 export const SignInService: ServiceByName['SignIn'] = {
 	action: SignIn,
 	transaction: true,
-	perform: async ({repos, params, session}) => {
+	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
 		const usernameErrorMessage = checkAccountName(username);
 		if (usernameErrorMessage) {
@@ -73,7 +73,7 @@ export const SignInService: ServiceByName['SignIn'] = {
 		}
 
 		const account = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id_password);
-		if (!account || !(await verifyPassword(params.password, account.password))) {
+		if (!account || !(await passwordHasher.verify(params.password, account.password))) {
 			return {ok: false, status: 400, message: 'invalid username or password'};
 		}
 
@@ -111,17 +111,22 @@ export const UpdateAccountSettingsService: ServiceByName['UpdateAccountSettings'
 export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'] = {
 	action: UpdateAccountPassword,
 	transaction: true,
-	perform: async ({repos, account_id, params}) => {
+	perform: async ({repos, account_id, params, passwordHasher}) => {
 		const account = await repos.account.findById(account_id, ACCOUNT_COLUMNS.password);
 		if (!account) {
-			return {ok: false, status: 404, message: 'account does not exist'};
+			// The `account_id` is authenticated but maybe the account was deleted.
+			// Database failures are expected to throw errors, not hit this path.
+			return {ok: false, status: 404, message: 'no account found'};
 		}
 
-		if (!(await verifyPassword(params.oldPassword, account.password))) {
+		if (!(await passwordHasher.verify(params.oldPassword, account.password))) {
+			// This info-leaking error message is ok because the user is already authenticated
+			// to the account, so there's no need to hide its existence with a generic error.
 			return {ok: false, status: 400, message: 'incorrect password'};
 		}
 
 		const updatedAccount = await repos.account.updatePassword(
+			passwordHasher,
 			account_id,
 			params.newPassword,
 			ACCOUNT_COLUMNS.client,

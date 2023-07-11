@@ -28,6 +28,7 @@ import {ALPHABET} from '$lib/util/randomVocab';
 import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$lib/ui/templates';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
+import {createPasswordHasher} from '$lib/server/password';
 
 /* eslint-disable no-await-in-loop */
 
@@ -35,6 +36,9 @@ const log = new Logger([cyan('[seed]')]);
 
 export const seed = async (db: Database, much = false): Promise<void> => {
 	const {sql, repos} = db;
+
+	// resource setup
+	const passwordHasher = createPasswordHasher();
 
 	log.debug('adding initial dataset to database');
 
@@ -65,6 +69,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const actors: AccountActor[] = [];
 	for (const accountParams of accountsParams) {
 		const account = await repos.account.create(
+			passwordHasher,
 			accountParams.username,
 			accountParams.password,
 			toDefaultAccountSettings(),
@@ -137,6 +142,9 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		if (much) await createMuchSpaces(toMainAccountServiceRequest, hub, nextActor);
 		await createDefaultEntities(toMainAccountServiceRequest, spaces, nextActor, repos);
 	}
+
+	// resource teardown
+	await passwordHasher.close();
 };
 
 const createDefaultEntities = async (

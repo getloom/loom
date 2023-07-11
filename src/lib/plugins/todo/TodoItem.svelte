@@ -3,6 +3,7 @@
 	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 	import {slide} from 'svelte/transition';
 	import {page} from '$app/stores';
+	import {swallow} from '@feltjs/util/dom.js';
 
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -18,7 +19,6 @@
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import {toHubUrl} from '$lib/util/url';
-	import {swallow} from '@feltjs/util';
 	import {goto} from '$app/navigation';
 
 	const {ui, actions} = getApp();

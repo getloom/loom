@@ -72,6 +72,7 @@ export const toHttpServiceMiddleware =
 				actor!, // TODO try to remove these non-null assertions without loosening type safety, is tricky
 				new SessionApi(req, res),
 				server.broadcast,
+				server.passwordHasher,
 			),
 			log,
 		);

@@ -22,7 +22,7 @@ import {CreateHubService} from '$lib/vocab/hub/hubServices';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {passwordHasherMock, toServiceRequestMock} from '$lib/util/testHelpers';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import {CreateRoleService} from '$lib/vocab/role/roleServices';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
@@ -131,6 +131,7 @@ export class RandomVocabContext {
 
 	async account(params = randomAccountParams()): Promise<RandomTestAccount> {
 		const account = (await this.repos.account.create(
+			passwordHasherMock,
 			params.username,
 			params.password,
 			toDefaultAccountSettings(),

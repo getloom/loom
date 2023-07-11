@@ -22,6 +22,7 @@ import type {HubId} from '$lib/vocab/hub/hub';
 import {InviteToHubService} from '$lib/vocab/hub/hubServices';
 import type {InviteToHubResponse} from '$lib/vocab/action/actionTypes';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {toPasswordKey, type PasswordHasher, verifyPassword} from '$lib/server/password';
 
 export const log = new Logger('[test]');
 export const logError = new Logger('[test]', undefined, {...Logger, level: 'off'});
@@ -42,6 +43,7 @@ export function toServiceRequestMock(
 	session?: SessionApiMock,
 	account_id?: undefined,
 	broadcast?: IBroadcast,
+	passwordHasher?: PasswordHasher,
 ): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
@@ -49,6 +51,7 @@ export function toServiceRequestMock(
 	session?: SessionApiMock,
 	account_id?: AccountId,
 	broadcast?: IBroadcast,
+	passwordHasher?: PasswordHasher,
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
@@ -56,6 +59,7 @@ export function toServiceRequestMock(
 	session?: SessionApiMock,
 	account_id?: AccountId,
 	broadcast?: IBroadcast,
+	passwordHasher?: PasswordHasher,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
 export function toServiceRequestMock(
 	repos: Repos,
@@ -63,6 +67,7 @@ export function toServiceRequestMock(
 	session = new SessionApiMock(), // some tests need to reuse the same mock session
 	account_id = actor?.account_id || undefined,
 	broadcast: IBroadcast = new BroadcastMock(),
+	passwordHasher = passwordHasherMock,
 ): OmitStrict<ServiceRequest, 'params'> {
 	const {params: _, ...rest} = toServiceRequest(
 		repos,
@@ -71,9 +76,19 @@ export function toServiceRequestMock(
 		actor!,
 		session,
 		broadcast,
+		passwordHasher,
 	);
 	return rest;
 }
+
+/**
+ * Creates a `PasswordHasher` that runs on the main thread and doesn't need teardown.
+ */
+export const passwordHasherMock: PasswordHasher = {
+	encrypt: toPasswordKey,
+	verify: verifyPassword,
+	close: async () => undefined,
+};
 
 export const loadAdminActor = async (repos: Repos): Promise<AccountActor> => {
 	const assignments = await repos.assignment.filterByHub(ADMIN_HUB_ID);

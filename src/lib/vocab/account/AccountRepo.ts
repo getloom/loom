@@ -8,21 +8,22 @@ import type {
 	ClientAccount,
 	ClientAccountSession,
 } from '$lib/vocab/account/account';
-import {toPasswordKey} from '$lib/server/password';
 import {ACCOUNT_COLUMNS, type AccountColumn} from '$lib/vocab/account/accountHelpers.server';
 import {ApiError} from '$lib/server/api';
 import {ACTOR_COLUMNS} from '../actor/actorHelpers.server';
+import type {PasswordHasher} from '$lib/server/password';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 
 export class AccountRepo extends PostgresRepo {
 	async create<T extends AccountColumn>(
+		passwordHasher: PasswordHasher,
 		name: string,
 		password: string,
 		settings: Account['settings'],
 		columns: T[],
 	): Promise<Pick<Account, T>> {
-		const passwordKey = await toPasswordKey(password);
+		const passwordKey = await passwordHasher.encrypt(password);
 		const data = await this.sql<Array<Pick<Account, T>>>`
 			INSERT INTO accounts (name, password, settings) VALUES (
 				${name}, ${passwordKey}, ${this.sql.json(settings as any)}
@@ -102,11 +103,12 @@ export class AccountRepo extends PostgresRepo {
 	}
 
 	async updatePassword<T extends AccountColumn>(
+		passwordHasher: PasswordHasher,
 		account_id: AccountId,
 		password: string,
 		columns: T[],
 	): Promise<Pick<Account, T>> {
-		const passwordKey = await toPasswordKey(password);
+		const passwordKey = await passwordHasher.encrypt(password);
 		const data = await this.sql<Array<Pick<Account, T>>>`
 			UPDATE accounts
 			SET updated=NOW(), password=${passwordKey}
