@@ -1,6 +1,6 @@
 # Data Model
 
-This document provides a layout of Felt's core SQL database tables:
+This document describes felt-server's SQL database tables:
 
 ```mermaid
     classDiagram
@@ -13,6 +13,6 @@ This document provides a layout of Felt's core SQL database tables:
         Roles <|-- Policies
         Hubs <|-- Spaces
         Spaces <|-- Entities
+        Entities <|-- Entities
         Entities <|-- Ties
-        Ties <|-- Entities
 ```
