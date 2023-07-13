@@ -30,7 +30,7 @@ see [`src/docs/managing-production.md`](/src/docs/managing-production.md).
   - https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-22-04
 - Felt depends on the database [PostgreSQL](https://www.postgresql.org).
   The project's scripts are currently configured to install it on the same VPS as your server.
-  See the [database README](/src/lib/db/README.md) for more.
+  See the [database README](/src/docs/database.md) for more.
 
 ### Set environment variables
 

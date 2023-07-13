@@ -2,7 +2,7 @@
   "name": "@feltjs/felt-server",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "server for Felt, a tool for building and maintaining communities 💚",
+  "description": "a programmable platform for hobbyists and human-scale communities 💚",
   "author": {
     "name": "Felt.coop",
     "email": "team@felt.social",

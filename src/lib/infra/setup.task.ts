@@ -125,7 +125,7 @@ export const task: Task<Args> = {
 			//
 			//
 			// Install Postgres:
-			// More details at src/lib/db/README.md and https://www.postgresql.org/download/linux/ubuntu/
+			// More details at src/docs/database.md and https://www.postgresql.org/download/linux/ubuntu/
 			logSequence('Installing Postgres...') +
 				`sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list;';
 				curl -L https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -;

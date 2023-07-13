@@ -3,7 +3,7 @@
 # `@feltjs/felt-server`
 
 > server for [Felt](https://github.com/feltjs/felt),
-> a tool for building and maintaining communities 💚
+> a programmable platform for hobbyists and human-scale communities 💚
 
 > **work in progress**: pre-alpha
 
@@ -20,12 +20,18 @@ is a [Node.js](https://nodejs.org/) server that you can use in many different wa
 - as a <strong>dev user</strong> downloading or forking this repo with git,
   adding or changing anything you wish
 
-## getting started developing
+## getting started
 
-For more, see [Getting started](/src/docs/getting-started.md) and
-[Contributing](/contributing.md)
+To learn about the project, see [felt.dev/about](https://felt.dev/about).
 
-For build & deployment docs, see the [Infra README](/src/lib/infra/README.md)
+To play with the code, seee [Getting started](/src/docs/getting-started.md) and
+[Contributing](/contributing.md).
+
+To deploy [`@feltjs/felt-server`](https://github.com/feltjs/felt-server) to production,
+see [`src/docs/deploying-production.md`](/src/docs/deploying-production.md).
+
+To manage a production instance,
+see [`src/docs/managing-production.md`](/src/docs/managing-production.md).
 
 ## using `@feltjs/felt-server` as a library
 
