@@ -46,6 +46,36 @@ To redeploy:
 gro deploy
 ```
 
+## Test production locally
+
+To test production locally, first update the environment variables
+in `.env.production` to your local machine's values:
+
+```bash
+PUBLIC_DEPLOY_SERVER_HOST=localhost
+PUBLIC_API_SERVER_PORT=3000
+# notice this is ws://, not wss://, and the same port as above
+PUBLIC_WEBSOCKET_URL=ws://localhost:3000/ws
+PGDATABASE=felt
+PGUSER=postgres
+PGPASSWORD=password
+```
+
+> The production build listens on http, not https,
+> because we deploy to servers with Nginx in front of the Node server.
+> This makes it easy to test production locally without dealing with certificates.
+
+Then build and run the server:
+
+```bash
+gro build
+node dist/server/lib/server/server.js
+```
+
+Then browse to `${PUBLIC_DEPLOY_SERVER_HOST}:${PUBLIC_API_SERVER_PORT}`,
+like `localhost:3000` with the above settings.
+The server also logs where it's listening to the console.
+
 ## Manually upgrading cloud instances
 
 If upgrading your underlying cloud OS,

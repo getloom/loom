@@ -99,7 +99,10 @@ export class ApiServer {
 			} catch (err) {
 				throw Error(`Failed to import SvelteKit adapter-node handler from ${importPath} -- ${err}`);
 			}
-			this.app.use(handler);
+			// TODO this is a hack to work around Polka 0.5.2's tiered middleware, should be `this.app.use(handler)`
+			this.app.use((req, res, next) =>
+				req.url.startsWith('/api/') ? next() : handler(req, res, next),
+			);
 		}
 
 		// Websockets
