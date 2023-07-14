@@ -24,14 +24,14 @@ is a [Node.js](https://nodejs.org/) server that you can use in many different wa
 
 To learn about the project, see [felt.dev/about](https://felt.dev/about).
 
-To play with the code, seee [Getting started](/src/docs/getting-started.md) and
+To play with the code, see [Getting started](/src/docs/getting-started.md) and
 [Contributing](/contributing.md).
 
 To deploy [`@feltjs/felt-server`](https://github.com/feltjs/felt-server) to production,
-see [`src/docs/deploying-production.md`](/src/docs/deploying-production.md).
+see [Deploying production](/src/docs/deploying-production.md).
 
 To manage a production instance,
-see [`src/docs/managing-production.md`](/src/docs/managing-production.md).
+see [Managing production](/src/docs/managing-production.md).
 
 ## using `@feltjs/felt-server` as a library
 
@@ -58,18 +58,19 @@ npm run dev
 
 # browse to localhost:5173 or whatever it says
 
-# you can also run `gro dev` with Gro installed globally: npm i -g @feltjs/gro
-gro dev # args are forwarded to `svelte-kit` like `npm run dev`
+# you can also run `gro dev` with Gro installed globally:
+npm i -g @feltjs/gro
 gro # print available tasks
+gro dev # args are forwarded to `vite` like `npm run dev`
 
 npm test
 # or
 gro test
 ```
 
-> learn more [about Gro](https://github.com/feltjs/gro),
-> [getting started with `@feltjs/felt-server`](/src/docs/getting-started.md),
-> and [contributing](/contributing.md)
+> learn more about [Gro](https://github.com/feltjs/gro),
+> [SvelteKit](https://kit.svelte.dev/), and
+> [Vite](https://vitejs.dev/)
 
 ## credits 🐢<sub>🐢</sub><sub><sub>🐢</sub></sub>
 

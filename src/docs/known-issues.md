@@ -66,6 +66,8 @@ we can to minimize the harmful effects of choices like this.
 
 Mitigations we've implemented:
 
+- Our contextmenu does not open on elements that allow clipboard pasting
+  like inputs, textareas, and contenteditables.
 - To bypass our contextmenu on a device with a keyboard, hold the Shift key.
 - To bypass our contextmenu on a touch device, like to select text,
   tap one extra time before your longpress.
