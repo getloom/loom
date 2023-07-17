@@ -51,8 +51,9 @@ We take two things very seriously, in no particular order:
 1. giving our users a powerful and customizable UX
 2. aligning with the web platform and not breaking its standard behaviors
 
-Part of our answer for 1) includes a custom contextmenu.
-Like Google Docs, when you right-click or longpress on the page,
+Part of our answer for 1) includes
+[a custom contextmenu](https://ui.felt.dev/library/Contextmenu).
+Like Google Docs, when you right-click or tap-and-hold (aka longpress) on the page,
 you'll see options and actions specific to our application for your current context.
 
 This is a powerful UX pattern, but it violates 2).
@@ -71,7 +72,13 @@ Mitigations we've implemented:
 - To bypass our contextmenu on a device with a keyboard, hold the Shift key.
 - To bypass our contextmenu on a touch device, like to select text,
   tap one extra time before your longpress.
-  Double-tap-and-hold should behave the same as tap-and-hold on standard web pages.
-- When you open our contextmenu on a link,
-  you'll see the link again in the menu, and that link has the default browser contextmenu behavior,
-  so it becomes a two-step process to access the original functionality in the case of links.
+  This means double-tap-and-hold should behave the same as tap-and-hold on standard web pages.
+- Triggering the contextmenu inside of our contextmenu shows your system contextmenu.
+  This means you can either double-right-click or longpress twice
+  to access your system contextmenu as an alternative to holding Shift or double-tap-and-hold,
+  However a caveat is that the target of your action will be some element inside our contextmenu,
+  so to select text or access a link's system contextmenu on a touch device,
+  you must use double-tap-and-hold.
+  When you open our contextmenu on a link,
+  you'll see the link again in the menu under your pointer by default,
+  so to access your system's functionality on links, tap-and-hold twice.
