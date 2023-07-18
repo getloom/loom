@@ -48,7 +48,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 
 		// Handle directories.
 		//TODO this check is not type safe, we should fix that
-		if ('directory' in $entity.data) {
+		if ($entity.data.directory) {
 			// TODO maybe invert this and listen for `'stashed_entities'` instead of calling this helper directly?
 			ui.afterMutation(() => updateDirectoryFreshness(ui, $entity as Directory));
 		}

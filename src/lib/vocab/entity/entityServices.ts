@@ -1,3 +1,6 @@
+import {dequal} from 'dequal';
+import {Logger} from '@feltjs/util/log.js';
+
 import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {
 	ReadEntities,
@@ -23,7 +26,6 @@ import {
 	checkEntityAccess,
 } from '$lib/vocab/policy/policyHelpers.server';
 import {ApiError} from '$lib/server/api';
-import {Logger} from '@feltjs/util/log.js';
 import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 
 const log = new Logger('[EntityServices]');
@@ -124,16 +126,20 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 			params.entities.map(async (doc) => {
 				const {entity_id, data} = doc;
 
+				const entity = await repos.entity.findById(entity_id);
+				if (!entity) throw new ApiError(404, 'no entity found');
+
 				//TODO revist this, should data drive ties or vice versa?
-				if (data && 'orderedItems' in data) {
-					const newOrderedItems =
-						data.orderedItems && Array.from(new Set(data.orderedItems)).sort((a, b) => a - b);
-					const entity = await repos.entity.findById(entity_id);
-					const oldOrderedItems =
-						entity?.data.orderedItems &&
-						Array.from(new Set(entity.data.orderedItems)).sort((a, b) => a - b);
-					if (newOrderedItems?.toString() !== oldOrderedItems?.toString())
-						throw new ApiError(400, 'cannot update entity with orderedItems directly');
+				if (data) {
+					if (entity.data.directory) {
+						throw new ApiError(405, 'cannot update directory data');
+					}
+					if (data.directory) {
+						throw new ApiError(405, 'cannot change an entity to a directory');
+					}
+					if (!dequal(new Set(data.orderedItems), new Set(entity.data.orderedItems))) {
+						throw new ApiError(405, 'cannot update entity orderedItems directly');
+					}
 				}
 
 				await checkEntityOwnership(actor, [entity_id], repos);

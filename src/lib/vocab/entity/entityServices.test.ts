@@ -299,7 +299,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 
 	// Disallow changing the directory's type
 	await expectApiError(
-		403,
+		405,
 		UpdateEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -311,7 +311,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 
 	// Disallow removing `data.directory`
 	await expectApiError(
-		403,
+		405,
 		UpdateEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {
@@ -323,7 +323,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 
 	// Disallow changing `data.directory`
 	await expectApiError(
-		403,
+		405,
 		UpdateEntitiesService.perform({
 			...toServiceRequestMock(repos, actor),
 			params: {

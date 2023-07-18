@@ -14,6 +14,10 @@ export interface BaseEntityData {
 	name?: string;
 	checked?: boolean;
 	orderedItems?: EntityId[];
+	directory?: true;
+	formerType?: string;
+	deleted?: string;
+	previousType?: string;
 }
 
 export interface DirectoryEntityData extends BaseEntityData {
@@ -39,7 +43,7 @@ export interface CollectionEntityData extends BaseEntityData {
 export interface TombstoneEntityData extends BaseEntityData {
 	type: 'Tombstone';
 	formerType: string;
-	deleted: Date;
+	deleted: string;
 	previousType: string;
 }
 
