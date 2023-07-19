@@ -14,7 +14,7 @@ is a [Node.js](https://nodejs.org/) server that you can use in many different wa
   communicating with people and managing information
 - as an <strong>operator user</strong> deploying an instance to the web via servers IRL,
   doing admin and infra
-- as a <strong>dev user</strong> making a custom server using
+- (coming soon) as a <strong>dev user</strong> making a custom server using
   [the library on npm](https://www.npmjs.com/package/@feltjs/felt-server)
   via `npm i -D @feltjs/felt-server`
 - as a <strong>dev user</strong> downloading or forking this repo with git,
@@ -23,15 +23,20 @@ is a [Node.js](https://nodejs.org/) server that you can use in many different wa
 ## getting started
 
 To learn about the project, see [felt.dev/about](https://felt.dev/about).
+We'll link to a video introduction with the alpha announcement.
 
 To play with the code, see [Getting started](/src/docs/getting-started.md) and
 [Contributing](/contributing.md).
+Work-in-progress docs are
+[here on GitHub](https://github.com/feltjs/felt-server/blob/main/src/docs),
+including our
+[known issues](https://github.com/feltjs/felt-server/blob/main/src/docs/known-issues.md).
 
-To deploy [`@feltjs/felt-server`](https://github.com/feltjs/felt-server) to production,
-see [Deploying production](/src/docs/deploying-production.md).
+To deploy to production, see [Deploying production](/src/docs/deploying-production.md)
+and [Managing production](/src/docs/managing-production.md).
 
-To manage a production instance,
-see [Managing production](/src/docs/managing-production.md).
+The server has integrated reference docs, which we'll link after the alpha announcement.
+We also publish [our vocabulary as a JSON Schema](/src/static/schemas/vocab.json).
 
 ## using `@feltjs/felt-server` as a library
 

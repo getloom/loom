@@ -1,5 +1,5 @@
 {
-	"$id": "https://app.felt.dev/schemas/vocab.json",
+	"$id": "https://hub.felt.dev/schemas/vocab.json",
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "@feltjs/felt-server vocab",
 	"$defs": {
