@@ -8,6 +8,7 @@ but we're open to feedback in our other dev community spaces and by email.
 - [Not using SvelteKit's server-side data loading](#not-using-sveltekits-server-side-data-loading)
 - [Using HTTP `POST` instead of `GET` for endpoints with params](#using-http-post-instead-of-get-for-endpoints-with-params)
 - [Overriding the contextmenu breaks web platform expectations](#overriding-the-contextmenu-breaks-web-platform-expectations)
+- [Multi-actor systems are more complex](#multi-actor-systems-are-more-complex)
 
 ## Not using SvelteKit's server-side data loading
 
@@ -82,3 +83,16 @@ Mitigations we've implemented:
   When you open our contextmenu on a link,
   you'll see the link again in the menu under your pointer by default,
   so to access your system's functionality on links, tap-and-hold twice.
+
+## Multi-actor systems are more complex
+
+Felt was designed from the beginning to support multiple users, or actors, for each account.
+This is a useful and powerful concept to integrate with a social app,
+and it helps support strong privacy mechanics with good UX.
+We're also excited to explore novel actor types with shared or automated control,
+like bot actors and group actors.
+
+This power brings complexity, and currently,
+end-users of felt-server are exposed to this concept and have no options for a simpler experience.
+Fortunately, our system is being designed to support a fully customizable UI,
+so when it's ready, you'll be able to hide or disable this complexity completely.
