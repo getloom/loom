@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Message from '@feltjs/felt-ui/Message.svelte';
 	import {identity} from '@feltjs/util/function.js';
-	import type {Result} from '@feltjs/util';
+	import type {Result} from '@feltjs/util/result.js';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
 	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';

@@ -4,7 +4,7 @@ export const TieIdSchema = {
 	$id: '/schemas/TieId',
 	type: 'number',
 	tsType: "Flavored<number, 'TieId'>",
-	tsImport: "import {Flavored} from '@feltjs/util';",
+	tsImport: "import {Flavored} from '@feltjs/util/types.js';",
 } satisfies VocabSchema;
 
 export const TieSchema = {

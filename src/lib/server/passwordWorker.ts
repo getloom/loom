@@ -1,8 +1,8 @@
 import {Worker, isMainThread, parentPort} from 'worker_threads';
 import {fileURLToPath} from 'url';
+import {UnreachableError} from '@feltjs/util/error.js';
 
 import {toPasswordKey, verifyPassword, type PasswordHasher} from '$lib/server/password';
-import {UnreachableError} from '@feltjs/util';
 
 // TODO make more generic and reusable, with configurable pooling
 

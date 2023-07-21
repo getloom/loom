@@ -4,7 +4,7 @@ export const ActorIdSchema = {
 	$id: '/schemas/ActorId',
 	type: 'number',
 	tsType: "Flavored<number, 'ActorId'>",
-	tsImport: "import {Flavored} from '@feltjs/util';",
+	tsImport: "import {Flavored} from '@feltjs/util/types.js';",
 } satisfies VocabSchema;
 
 export const ActorRecordSchema = {

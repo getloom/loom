@@ -1,4 +1,4 @@
-import type {Assignable} from '@feltjs/util';
+import type {Assignable} from '@feltjs/util/types.js';
 import {Logger} from '@feltjs/util/log.js';
 
 import {blue, gray} from '$lib/server/colors';

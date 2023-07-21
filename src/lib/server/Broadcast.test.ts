@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltjs/util';
+import {unwrap} from '@feltjs/util/result.js';
 
 import type {TestServerContext} from '$lib/util/testServerHelpers';
 import {

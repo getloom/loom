@@ -1,4 +1,4 @@
-import type {Result} from '@feltjs/util';
+import type {Result} from '@feltjs/util/result.js';
 import {toGraphemeCount} from '@feltjs/util/string.js';
 
 import type {Entity} from '$lib/vocab/entity/entity';

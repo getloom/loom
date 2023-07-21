@@ -1,6 +1,7 @@
 import sourcemapSupport from 'source-map-support';
 import {Logger} from '@feltjs/util/log.js';
-import {unwrap, type OmitStrict} from '@feltjs/util';
+import type {OmitStrict} from '@feltjs/util/types.js';
+import {unwrap} from '@feltjs/util/result.js';
 import * as assert from 'uvu/assert';
 
 import {SessionApiMock} from '$lib/session/SessionApiMock';

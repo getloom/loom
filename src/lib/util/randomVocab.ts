@@ -1,4 +1,4 @@
-import {unwrap} from '@feltjs/util';
+import {unwrap} from '@feltjs/util/result.js';
 
 import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Hub, HubId} from '$lib/vocab/hub/hub';

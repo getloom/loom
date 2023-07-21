@@ -2,7 +2,7 @@
 	import {slide} from 'svelte/transition';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {identity} from '@feltjs/util/function.js';
-	import type {Result} from '@feltjs/util';
+	import type {Result} from '@feltjs/util/result.js';
 	import {createEventDispatcher} from 'svelte';
 	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
 

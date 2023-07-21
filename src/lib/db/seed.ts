@@ -1,4 +1,4 @@
-import {unwrap} from '@feltjs/util';
+import {unwrap} from '@feltjs/util/result.js';
 import {Logger} from '@feltjs/util/log.js';
 import {traverse} from '@feltjs/util/object.js';
 import {randomItem} from '@feltjs/util/random.js';

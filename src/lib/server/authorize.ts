@@ -1,4 +1,4 @@
-import {OK, type Result} from '@feltjs/util';
+import {OK, type Result} from '@feltjs/util/result.js';
 
 import type {Service} from '$lib/server/service';
 import type {ErrorResponse} from '$lib/util/error';
