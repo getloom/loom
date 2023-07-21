@@ -2,13 +2,12 @@
 
 # `@feltjs/felt-server`
 
-> server for [Felt](https://github.com/feltjs/felt),
 > a programmable platform for hobbyists and human-scale communities 💚
+> [@feltjs](https://github.com/feltjs)
 
 > **work in progress**: pre-alpha
 
-[`@feltjs/felt-server`](https://www.npmjs.com/package/@feltjs/felt-server)
-is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
+felt-server is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
 
 - as an <strong>end user</strong> on an instance deployed to the web,
   communicating with people and managing information
