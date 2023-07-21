@@ -2,6 +2,7 @@ import type {Result} from '@feltjs/util';
 import {toGraphemeCount} from '@feltjs/util/string.js';
 
 import type {Entity} from '$lib/vocab/entity/entity';
+import type {Space} from '$lib/vocab/space/space';
 
 export const ICON_MISSING_ERROR = 'please add an icon, any character including emoji';
 export const ICON_TOO_LONG_ERROR = 'icon must be exactly 1 character';
@@ -19,7 +20,8 @@ export const parseSpaceIcon = (value: string): Result<{value: string}, {message:
 	return {ok: true, value};
 };
 
-export const HOME_PATH = '/home';
+export const HOME_NAME = 'home';
+export const HOME_PATH = `/${HOME_NAME}`;
 
 export const parseDirectoryPath = (urlPath: string): string =>
 	urlPath === '/' ? HOME_PATH : urlPath;
@@ -27,8 +29,9 @@ export const parseDirectoryPath = (urlPath: string): string =>
 export const renderDirectoryPath = (path: string | null | undefined): string | null | undefined =>
 	path === HOME_PATH ? '/' : path;
 
-// TODO use `Directory` after merging #724
 // TODO these are weird, they depend on only the directory but answer questions about the space
-export const isHomeSpace = (directory: Entity): boolean => directory.path === HOME_PATH;
+export const isHomeDirectory = (directory: Entity): boolean => directory.path === HOME_PATH;
 
-export const canDeleteSpace = (directory: Entity): boolean => !isHomeSpace(directory);
+export const canDeleteSpace = (directory: Entity): boolean => !isHomeDirectory(directory);
+
+export const isHomeSpace = (space: Space): boolean => space.name === HOME_NAME;

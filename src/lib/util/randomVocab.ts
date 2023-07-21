@@ -41,7 +41,6 @@ export const randomAccountName = (): string => randomString() + '@email.com';
 export const randomPassword = randomString;
 export const randomActorName = randomString;
 export const randomCommunnityName = randomString;
-export const randomSpacePath = randomString;
 export const randomSpaceIcon = (): string => '🥥';
 export const randomSpaceName = randomString;
 export const randomView = (): string => '<Chat />';
@@ -80,7 +79,6 @@ export const randomSpaceParams = (
 	hub_id,
 	view: view ?? randomView(),
 	name: randomSpaceName(),
-	path: randomSpacePath(),
 	icon: randomSpaceIcon(),
 });
 export const randomEntityParams = (

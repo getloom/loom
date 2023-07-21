@@ -31,17 +31,6 @@
 			space_id: $space.space_id,
 			[field]: updated,
 		});
-
-	const updateDirectoryPath = async (updated: any) =>
-		actions.UpdateEntities({
-			actor: $actor.actor_id,
-			entities: [
-				{
-					entity_id: $directory.entity_id,
-					path: updated,
-				},
-			],
-		});
 </script>
 
 <div class="space-editor width_md">
@@ -54,12 +43,12 @@
 				{#if $space.updated !== null}
 					<p>updated {format($space.updated, 'PPPPp')}</p>
 				{/if}
+				<p>path: {$directory.path}</p>
 			</section>
 		</header>
 		<fieldset>
 			<legend>properties</legend>
 			<PropertyEditor value={$space.name} field="name" update={updateSpace} />
-			<PropertyEditor value={$directory.path} field="path" update={updateDirectoryPath} />
 			<PropertyEditor
 				value={$space.icon}
 				field="icon"

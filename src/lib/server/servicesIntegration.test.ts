@@ -7,7 +7,7 @@ import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
 import {ReadHubService, DeleteHubService} from '$lib/vocab/hub/hubServices';
 import {DeleteSpaceService, ReadSpacesService} from '$lib/vocab/space/spaceServices';
 import {ReadEntitiesService} from '$lib/vocab/entity/entityServices';
-import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
 import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
@@ -129,7 +129,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	// delete spaces except the home space
 	for (const space of filteredSpaces) {
 		const directory = (await repos.entity.findById(space.directory_id))!; // eslint-disable-line no-await-in-loop
-		if (!isHomeSpace(directory)) {
+		if (!isHomeDirectory(directory)) {
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({

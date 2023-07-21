@@ -38,8 +38,16 @@ export class EntityRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	async findByPath(hub_id: HubId, path: string): Promise<Entity | undefined> {
-		log.debug('[findByPath]', hub_id, path);
+	/**
+	 * Finds the directory in a given hub with the given path.
+	 * If it returns nothing, no other directories in the hub share that path.
+	 *
+	 * @param hub_id - the hub to search for directories
+	 * @param path - the path to match
+	 * @returns the matching directory, if any
+	 */
+	async findDirectoryByHubPath(hub_id: HubId, path: string): Promise<Entity | undefined> {
+		log.debug('[directoryByHubPath]', hub_id, path);
 		const data = await this.sql<Entity[]>`
 			SELECT e.entity_id, e.space_id, e.path, e.data, e.actor_id, e.created, e.updated
 			FROM spaces s
@@ -47,7 +55,25 @@ export class EntityRepo extends PostgresRepo {
 			ON s.directory_id=e.entity_id AND e.path=${path}
 			WHERE s.hub_id=${hub_id}
 		`;
-		log.debug('[findByPath] result', data);
+		log.debug('[directoryByHubPath] result', data);
+		return data[0];
+	}
+
+	/**
+	 * Finds any entities in a given space that might also have the given path.
+	 * If it returns nothing, no other entities in the space share that path.
+	 * @param space_id - the space to search for entities
+	 * @param path - the path to match
+	 * @returns the matching entity, if any
+	 */
+	async findBySpacePath(space_id: SpaceId, path: string): Promise<Entity | undefined> {
+		log.debug('[findBySpacePath]', space_id, path);
+		const data = await this.sql<Entity[]>`
+			SELECT e.entity_id, e.space_id, e.path, e.data, e.actor_id, e.created, e.updated
+			FROM entities e			
+			WHERE e.space_id=${space_id} AND e.path=${path}
+		`;
+		log.debug('[findBySpacePath] result', data);
 		return data[0];
 	}
 

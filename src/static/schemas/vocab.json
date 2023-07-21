@@ -362,11 +362,10 @@
 				"actor": {"$ref": "/schemas/ActorId"},
 				"hub_id": {"$ref": "/schemas/HubId"},
 				"name": {"type": "string"},
-				"path": {"type": "string"},
 				"icon": {"type": "string"},
 				"view": {"type": "string"}
 			},
-			"required": ["actor", "hub_id", "name", "path", "icon", "view"],
+			"required": ["actor", "hub_id", "name", "icon", "view"],
 			"additionalProperties": false
 		},
 		"CreateSpaceResponse": {
@@ -1053,7 +1052,6 @@
 				"actor": {"$ref": "/schemas/ActorId"},
 				"space_id": {"$ref": "/schemas/SpaceId"},
 				"name": {"type": "string"},
-				"path": {"type": "string"},
 				"icon": {"type": "string"},
 				"view": {"type": "string"}
 			},

@@ -16,7 +16,7 @@
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import {parseSpacePageParams} from '$lib/util/url';
 
-	const {actor, space, directory, hub} = getSpaceContext();
+	const {actor, space, hub} = getSpaceContext();
 
 	const {actions, socket, ui, createQuery} = getApp();
 	const {entityById} = ui;
@@ -30,13 +30,13 @@
 		: null;
 	$: entities = query?.entities;
 
-	$: listsPath = $directory.path + '/lists';
+	const listsPath = '/lists';
 	$: listsCollection = $entities?.value.find((e) => e.get().path === listsPath);
 
 	$: ({space_id, directory_id} = $space);
 	$: ({actor_id} = $actor);
 
-	$: if ($entities?.value.length && !listsCollection) {
+	$: if ($query?.status === 'success' && !listsCollection) {
 		void initListsCollection(space_id, directory_id, actor_id, listsPath);
 	}
 	const initListsCollection = async (

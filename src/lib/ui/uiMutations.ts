@@ -8,7 +8,7 @@ import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
 import {toHubUrl, gotoUnlessActive} from '$lib/util/url';
 import {deserialize, deserializers} from '$lib/util/deserialize';
-import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
 import type {ClientActor} from '$lib/vocab/actor/actor';
 import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
 import type {ClientSession} from '$lib/vocab/account/account';
@@ -88,7 +88,8 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 						spaceIdSelectionByHubId.getJson()?.find((v) => v[0] === $hub.hub_id)?.[1] ||
 							$session.spaces.find(
 								(s) =>
-									s.hub_id === $hub.hub_id && isHomeSpace(entityById.get(s.directory_id)!.get()),
+									s.hub_id === $hub.hub_id &&
+									isHomeDirectory(entityById.get(s.directory_id)!.get()),
 							)?.space_id ||
 							null,
 				  ]),

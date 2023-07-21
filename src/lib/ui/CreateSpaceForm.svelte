@@ -59,7 +59,6 @@
 			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			name,
-			path: `/${name}`,
 			icon: iconResult.value,
 			view: selectedViewTemplate.view,
 		});

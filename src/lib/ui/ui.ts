@@ -21,7 +21,7 @@ import type {ClientAccount, ClientSession} from '$lib/vocab/account/account';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import {initBrowser} from '$lib/ui/init';
-import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
 import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
 import type {Tie, TieId} from '$lib/vocab/tie/tie';
 import {ADMIN_HUB_ID} from '$lib/util/constants';
@@ -184,9 +184,9 @@ export const toUi = (
 				hubSpaces.sort((_a, _b) => {
 					const a = _a.get();
 					const b = _b.get();
-					return isHomeSpace(entityById.get(a.directory_id)!.get())
+					return isHomeDirectory(entityById.get(a.directory_id)!.get())
 						? -1
-						: isHomeSpace(entityById.get(b.directory_id)!.get())
+						: isHomeDirectory(entityById.get(b.directory_id)!.get())
 						? 1
 						: a.name < b.name
 						? -1

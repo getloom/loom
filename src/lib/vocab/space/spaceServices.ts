@@ -3,11 +3,12 @@ import {Logger} from '@feltjs/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions';
-import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
+import {canDeleteSpace, isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
 import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {createSpace} from '$lib/vocab/space/spaceHelpers.server';
+import {ApiError} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 
@@ -35,8 +36,6 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	action: CreateSpace,
 	transaction: true,
-	// TODO security: verify the `account_id` has permission to modify this space
-	// TODO verify `params.actor_id` is  one of the `account_id`'s actors
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
 
@@ -52,6 +51,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 	action: UpdateSpace,
 	transaction: true,
 	perform: async ({repos, params}) => {
+		log.debug('[updateSpace] updating space');
 		const {space_id, actor, ...partial} = params;
 		const space = await repos.space.findById(space_id);
 		if (!space) {
@@ -59,6 +59,25 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 		}
 
 		await checkPolicy('update_space', actor, space.hub_id, repos);
+
+		if (isHomeSpace(space)) {
+			throw new ApiError(405, 'cannot update home space');
+		}
+
+		//TODO MULTIPLE add lowercasing to name/path
+		if (partial.name) {
+			const path = `/${partial.name}`;
+			log.debug('[updateSpace] validating space path uniqueness');
+			const existingDirectoryWithPath = await repos.entity.findDirectoryByHubPath(
+				space.hub_id,
+				path,
+			);
+			if (existingDirectoryWithPath) {
+				throw new ApiError(409, 'a space with that path already exists');
+			}
+			await repos.entity.update(space.directory_id, undefined, path);
+		}
+
 		const updatedSpace = await repos.space.update(space_id, partial);
 		return {ok: true, status: 200, value: {space: updatedSpace}, broadcast: space.hub_id};
 	},

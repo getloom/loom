@@ -20,7 +20,6 @@ export interface HubTemplate {
 }
 export interface SpaceTemplate {
 	name: string;
-	path?: string;
 	view: string;
 	icon?: string;
 	entities?: EntityTemplate[];
@@ -46,7 +45,6 @@ export const spaceTemplateToCreateSpaceParams = (
 	actor,
 	hub_id,
 	name: template.name,
-	path: template.path ?? '/' + template.name,
 	icon: template.icon ?? '?',
 	view: template.view,
 });

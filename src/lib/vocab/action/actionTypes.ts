@@ -405,7 +405,6 @@ export interface CreateSpaceParams {
 	actor: ActorId;
 	hub_id: HubId;
 	name: string;
-	path: string;
 	icon: string;
 	view: string;
 }
@@ -442,7 +441,6 @@ export interface UpdateSpaceParams {
 	actor: ActorId;
 	space_id: SpaceId;
 	name?: string;
-	path?: string;
 	icon?: string;
 	view?: string;
 }

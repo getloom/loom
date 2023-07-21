@@ -7,7 +7,7 @@ import type {WritableUi} from '$lib/ui/ui';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
 import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
-import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
 import {toHubUrl} from '$lib/util/url';
 import {setIfUpdated} from '$lib/util/store';
 
@@ -74,7 +74,7 @@ export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>
 				const homeSpace = spacesByHubId
 					.get()
 					.get(hub_id)!
-					.find((s) => isHomeSpace(entityById.get(s.get().directory_id)!.get()))!;
+					.find((s) => isHomeDirectory(entityById.get(s.get().directory_id)!.get()))!;
 				spaceIdSelectionByHubId.mutate((s) => s.set(hub_id, homeSpace.get().space_id));
 			}
 		}

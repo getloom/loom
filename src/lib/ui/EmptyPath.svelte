@@ -7,7 +7,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import {getApp} from '$lib/ui/app';
-	import {isHomeSpace} from '$lib/vocab/space/spaceHelpers';
+	import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
 
 	// TODO problem here is that some of these `SpacePath`s are actually `EntityPath`s off the root space, refactor with Path stuff
 	type PathType = 'SpacePath' | 'EntityPath';
@@ -25,7 +25,7 @@
 		toPathType($page.params.space || '') === 'EntityPath' ? 'entity' : 'space';
 
 	$: spaces = $spacesByHubId.get($hub.hub_id);
-	$: homeSpace = spaces?.find((s) => isHomeSpace(entityById.get(s.get().directory_id)!.get()));
+	$: homeSpace = spaces?.find((s) => isHomeDirectory(entityById.get(s.get().directory_id)!.get()));
 
 	$: spaceParam = $page.params.space || '';
 	$: pathType = toPathType(spaceParam);

@@ -29,10 +29,11 @@ export const createSpace = async (
 	params: CreateSpaceParams,
 	repos: Repos,
 ): Promise<CreateSpaceResponse> => {
-	const {hub_id, name, view, path, icon} = params;
-	// TODO run this same logic when a space path is updated
+	const {hub_id, name, view, icon} = params;
+	//TODO MULTIPLE add lowercasing to name/path
+	const path = `/${name}`;
 	log.debug('[createSpace] validating space path uniqueness');
-	const existingDirectoryWithPath = await repos.entity.findByPath(hub_id, path);
+	const existingDirectoryWithPath = await repos.entity.findDirectoryByHubPath(hub_id, path);
 	if (existingDirectoryWithPath) {
 		throw new ApiError(409, 'a space with that path already exists');
 	}

@@ -282,7 +282,7 @@ const SEED_BY_VIEW_NAME: Record<string, (ctx: SeedContext) => Promise<void>> = {
 			ctx,
 			{type: 'OrderedCollection', orderedItems: []},
 			undefined,
-			ctx.directory.path + '/lists',
+			'/lists',
 		);
 		const list = await generateEntity(
 			ctx,
@@ -328,7 +328,6 @@ const createMuchSpaces = async (
 					actor: actor.actor_id,
 					hub_id: hub.hub_id,
 					name,
-					path: '/' + name,
 					view: view.view,
 					icon: view.icon,
 				},

@@ -74,6 +74,15 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		if (data.orderedItems?.length)
 			throw new ApiError(400, 'cannot create entity with orderedItems directly');
 
+		if (path) {
+			//TODO MULTIPLE add lowercasing to path
+			log.debug('[createEntity] validating space path uniqueness');
+			const existingEntityWithPath = await repos.entity.findBySpacePath(space_id, path);
+			if (existingEntityWithPath) {
+				throw new ApiError(409, 'an entity with that path in this space already exists');
+			}
+		}
+
 		const {hub_id} = (await repos.space.findById(space_id))!;
 		await checkPolicy('create_entity', actor, hub_id, repos);
 
@@ -146,9 +155,18 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 
 				const path = scrubEntityPath(doc.path);
 
-				if (typeof path === 'string') {
+				if (path) {
+					//TODO MULTIPLE add lowercasing to path
+					if (entity.data.directory) {
+						throw new ApiError(405, 'cannot update directory path');
+					}
+					log.debug('[updateEntity] validating entity path');
 					const errorMessage = checkEntityPath(path);
 					if (errorMessage) throw new ApiError(400, errorMessage);
+					const existingEntityWithPath = await repos.entity.findBySpacePath(entity.space_id, path);
+					if (existingEntityWithPath) {
+						throw new ApiError(409, 'an entity with that path already exists in this space ');
+					}
 				}
 
 				return repos.entity.update(entity_id, data, path);
