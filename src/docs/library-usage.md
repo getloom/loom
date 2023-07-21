@@ -1,5 +1,7 @@
 ## using felt-server as a library
 
+> support for this coming soon - it's published to npm but not yet usable
+
 `@feltjs/felt-server` can be installed as
 [an npm library](https://www.npmjs.com/package/@feltjs/felt-server)
 to make custom servers.

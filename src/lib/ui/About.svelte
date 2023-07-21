@@ -1,4 +1,5 @@
 <script lang="ts">
+	import {base} from '$app/paths';
 	import {PUBLIC_ADMIN_EMAIL_ADDRESS, PUBLIC_ADMIN_ICON, PUBLIC_GIT_HASH} from '$env/static/public';
 	import {VERSION as SVELTEKIT_VERSION} from '@sveltejs/kit';
 </script>
@@ -6,10 +7,16 @@
 <div class="prose padded_xl">
 	<h1>About this Instance</h1>
 	<p>Need help? Have questions, comments, concerns?</p>
-	<p>
-		Email the admin at <a href="mailto:{PUBLIC_ADMIN_EMAIL_ADDRESS}">{PUBLIC_ADMIN_EMAIL_ADDRESS}</a
-		>
-	</p>
+	<ul>
+		<li>
+			See <a href="{base}/docs">the docs</a>
+		</li>
+		<li>
+			Email the admin at <a href="mailto:{PUBLIC_ADMIN_EMAIL_ADDRESS}"
+				>{PUBLIC_ADMIN_EMAIL_ADDRESS}</a
+			>
+		</li>
+	</ul>
 	<p class="title">
 		{PUBLIC_ADMIN_ICON}
 		<a href="https://github.com/feltjs/felt-server" target="_blank" rel="noreferrer">felt-server</a>

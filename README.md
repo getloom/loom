@@ -15,7 +15,6 @@ felt-server is a [Node.js](https://nodejs.org/) server that you can use in many 
   doing admin and infra
 - (coming soon) as a <strong>dev user</strong> making a custom server using
   [the library on npm](https://www.npmjs.com/package/@feltjs/felt-server)
-  via `npm i -D @feltjs/felt-server`
 - as a <strong>dev user</strong> downloading or forking this repo with git,
   adding or changing anything you wish
 
@@ -38,6 +37,8 @@ The server has integrated reference docs, which we'll link after the alpha annou
 We also publish [our vocabulary as a JSON Schema](/src/static/schemas/vocab.json).
 
 ## using `@feltjs/felt-server` as a library
+
+> support for this coming soon - it's published to npm but not yet usable
 
 [`@feltjs/felt-server`](https://www.npmjs.com/package/@feltjs/felt-server)
 can be installed as a library on npm to make custom servers:

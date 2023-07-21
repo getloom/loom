@@ -63,7 +63,6 @@
 	.title {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 	}
 	.title .name {
 		font-size: var(--size_lg);
