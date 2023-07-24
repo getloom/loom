@@ -4,6 +4,7 @@
 	import type {ActionData} from '$lib/vocab/action/action';
 	import CreateActionForm from '$lib/ui/CreateActionForm.svelte';
 	import {getApp} from '$lib/ui/app';
+	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
 
 	const {
 		actions,
@@ -17,27 +18,25 @@
 
 <div class="action_info">
 	<div class="title">
-		<div class="row">
-			<code class="name">{action.name}</code>
-			<button
-				type="button"
-				class="plain"
-				on:click={() => {
-					if (selectedActor) {
-						actions.OpenDialog(
-							toDialogParams(
-								CreateActionForm,
-								{actor: selectedActor, selectedActionData: action},
-								{layout: 'page'},
-							),
-						);
-					}
-				}}
-			>
-				create
-			</button>
-		</div>
+		<code class="name">{action.name}</code>
 		<small class="type">{action.type}</small>
+		<button
+			type="button"
+			class="plain"
+			on:click={() => {
+				if (selectedActor) {
+					actions.OpenDialog(
+						toDialogParams(
+							CreateActionForm,
+							{actor: selectedActor, selectedActionData: action},
+							{layout: 'page'},
+						),
+					);
+				}
+			}}
+		>
+			create
+		</button>
 	</div>
 	{#if action.type !== 'ClientAction'}
 		<div class="property">
@@ -50,14 +49,18 @@
 		<span>params</span>
 		<!-- TODO display the generated type string instead of the schema,
     probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
-		<pre>{JSON.stringify(action.params, null, 2)}</pre>
+		{#if action.params}
+			<SchemaInfo schema={action.params} />
+		{:else}
+			<code>null</code>
+		{/if}
 	</div>
 	{#if action.type !== 'ClientAction'}
 		<div class="property">
 			<span>response</span>
 			<!-- TODO display the generated type string instead of the schema,
       probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
-			<pre>{JSON.stringify(action.response, null, 2)}</pre>
+			<SchemaInfo schema={action.response} />
 		</div>
 	{/if}
 	<div class="property">
@@ -67,31 +70,27 @@
 </div>
 
 <style>
+	.action_info {
+		background-color: var(--fg_1);
+	}
 	.title {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 	}
 	.name {
 		font-size: var(--size_lg);
 		padding: var(--spacing_md);
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
+		background-color: initial;
 	}
 	.type {
 		padding: var(--spacing_lg);
-		background: none;
 		font-family: var(--font_family_mono);
 	}
 	.property {
 		display: flex;
 		align-items: center;
 		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
-		background-color: var(--fg_1);
 		overflow: auto;
-	}
-	.property:nth-child(2n + 1) {
-		background-color: var(--fg_0);
 	}
 	.property > span {
 		display: flex;

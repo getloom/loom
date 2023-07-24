@@ -74,7 +74,7 @@
 
 <form class="panel prose padded_xl" {...$$restProps}>
 	<fieldset class="box">
-		<legend>change account password</legend>
+		<legend class="width_full text_align_center">change account password</legend>
 		<label>
 			<div class="title">old password</div>
 			<input
