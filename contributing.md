@@ -14,7 +14,7 @@ We plan to publish a public roadmap and discuss increasingly more in public.
 For now please feel free to
 [open issues](https://github.com/feltjs/felt-server/issues) on GitHub,
 and for private feedback email [team@felt.social](mailto:team@felt.social).
-See also the [known issues](/src/docs/known-issues.md).
+See also the [known issues](https://docs.felt.dev/#known-issues).
 
 [Pull requests](https://github.com/feltjs/felt-server/pulls)
 are welcome for straightforward fixes and improvements,
@@ -22,7 +22,7 @@ but when there's non-obvious design choices or other ambiguities,
 please open an [issue](https://github.com/feltjs/felt-server/issues)
 to work out the details with the maintainers.
 
-To develop, see [Getting started](/src/docs/getting-started.md)
+To develop, see [Getting started](https://docs.felt.dev/#getting-started)
 
 Felt is governed by a
 [Temporary Benevolent Dictator (TBD)](https://github.com/feltjs/felt/blob/main/GOVERNANCE.md),

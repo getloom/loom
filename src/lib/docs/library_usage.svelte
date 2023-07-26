@@ -1,0 +1,31 @@
+<script lang="ts">
+	import {base} from '$app/paths';
+
+	import CodeExample from '$lib/ui/CodeExample.svelte';
+</script>
+
+<div class="prose">
+	<h2>Using felt-server as a library</h2>
+	<blockquote>support for this coming soon - it's published to npm but not yet usable</blockquote>
+	<p>
+		<code>@feltjs/felt-server</code> can be installed as
+		<a href="https://www.npmjs.com/package/@feltjs/felt-server">an npm library</a>
+		to make custom servers.
+	</p>
+	<p>
+		First, follow the <a href="{base}/getting-started">getting started</a> instructions.
+	</p>
+	<p>Next install felt-server as a dev dependency:</p>
+	<CodeExample code="npm i -D @feltjs/felt-server" />
+	<p>
+		See the available modules at <a
+			href="https://github.com/feltjs/felt-server/tree/main/src/gro.config.ts"
+			><code>/src/gro.config.ts</code></a
+		>
+	</p>
+	<p>
+		For more, see the <a href="https://github.com/feltjs/felt-server"
+			><code>@feltjs/felt-server</code> docs on GitHub</a
+		>.
+	</p>
+</div>

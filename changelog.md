@@ -10,6 +10,8 @@
   ([#807](https://github.com/feltjs/felt-server/pull/807))
 - publish migration files
   ([#591](https://github.com/feltjs/felt-server/pull/591))
+- publish `$lib/Docs.svelte`
+  ([#591](https://github.com/feltjs/felt-server/pull/591))
 
 ## 0.1.0
 

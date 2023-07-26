@@ -9,8 +9,9 @@ const NODE_LIBRARY_BUILD_NAME = 'library';
 const files = [
 	'lib/index.ts', // same as 'lib/server/server.ts'
 
-	// exported user modules
+	// TypeScript and Svelte and modules
 	'lib/db/db.ts',
+	'lib/docs/Docs.svelte',
 	'lib/server/server.ts',
 	'lib/ui/AccountForm.svelte',
 	'lib/ui/ActingActorContextmenu.svelte',

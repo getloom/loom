@@ -45,6 +45,7 @@
     "eslint": "^8.44.0",
     "eslint-plugin-svelte": "^2.32.2",
     "eventemitter3": "^5.0.1",
+    "mermaid": "^10.2.4",
     "prettier": "^2.8.8",
     "prettier-plugin-svelte": "^2.10.1",
     "source-map-support": "^0.5.21",

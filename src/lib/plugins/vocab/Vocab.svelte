@@ -29,7 +29,7 @@
 </script>
 
 <a
-	href="{base}/docs#{name}"
+	href="{base}/docs/vocab#{name}"
 	class:selected
 	use:contextmenu.action={toContextmenuParams(VocabContextmenu, {name})}
 	>{#if plain}<slot>{name}</slot>{:else}<code><slot>{name}</slot></code>{/if}</a

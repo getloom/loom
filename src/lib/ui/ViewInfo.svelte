@@ -10,7 +10,7 @@
 			{view.icon}
 			{view.name}
 		</span>
-		<span>
+		<span class="tags">
 			{#if view.creatable !== false}
 				<span class="chip" title="users can create this view in normal circumstances"
 					>creatable</span
@@ -28,5 +28,9 @@
 	.title {
 		display: flex;
 		align-items: center;
+		margin-bottom: var(--spacing_md);
+	}
+	.tags {
+		margin-left: var(--spacing_md);
 	}
 </style>

@@ -18,8 +18,10 @@
 
 <div class="action_info">
 	<div class="title">
-		<code class="name">{action.name}</code>
-		<small class="type">{action.type}</small>
+		<div>
+			<span class="name">{action.name}</span>
+			<small class="type">{action.type}</small>
+		</div>
 		<button
 			type="button"
 			class="plain"
@@ -40,13 +42,13 @@
 	</div>
 	{#if action.type !== 'ClientAction'}
 		<div class="property">
-			<span>path</span>
+			<span class="name">path</span>
 			<span>{action.route.method}</span>
 			<span>{action.route.path}</span>
 		</div>
 	{/if}
 	<div class="property">
-		<span>params</span>
+		<span class="name">params</span>
 		<!-- TODO display the generated type string instead of the schema,
     probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
 		{#if action.params}
@@ -57,14 +59,14 @@
 	</div>
 	{#if action.type !== 'ClientAction'}
 		<div class="property">
-			<span>response</span>
+			<span class="name">response</span>
 			<!-- TODO display the generated type string instead of the schema,
       probably by generating a sibling file to `actions.ts` like `eventTypeStrings.ts` -->
 			<SchemaInfo schema={action.response} />
 		</div>
 	{/if}
 	<div class="property">
-		<span>returns</span>
+		<span class="name">returns</span>
 		<pre>{action.returns}</pre>
 	</div>
 </div>
@@ -72,15 +74,20 @@
 <style>
 	.action_info {
 		background-color: var(--fg_1);
+		border-radius: var(--border_radius_sm);
+		width: 100%;
 	}
 	.title {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
+	}
+	.title .name {
+		font-size: var(--size_lg);
 	}
 	.name {
-		font-size: var(--size_lg);
 		padding: var(--spacing_md);
-		background-color: initial;
+		font-family: var(--font_family_mono);
 	}
 	.type {
 		padding: var(--spacing_lg);
@@ -88,6 +95,7 @@
 	}
 	.property {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
 		overflow: auto;

@@ -65,7 +65,7 @@ export const initAdminHub = async (
 
 	// The admin hub doesn't exist, so this is a freshly installed instance!
 	// We need to set up the admin hub and its actor.
-	// For more see /src/docs/admin.md
+	// For more see /src/lib/docs/admin.md
 
 	// Create the hub.
 	const hub = await repos.hub.create(

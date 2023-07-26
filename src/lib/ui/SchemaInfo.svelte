@@ -15,12 +15,12 @@
 <div class="schema_info">
 	{#if typeof schema === 'boolean'}
 		<div class="title">
-			<code class="name">{schema}</code>
+			<span class="name">{schema}</span>
 		</div>
 	{:else}
 		<div class="title">
 			{#if schema.$id}
-				<code class="name">{toSchemaName(schema.$id)}</code>
+				<span class="name">{toSchemaName(schema.$id)}</span>
 			{/if}
 			<small class="type">
 				{#if schema.$ref}
@@ -62,17 +62,19 @@
 <style>
 	.schema_info {
 		background-color: var(--fg_1);
+		border-radius: var(--border_radius_sm);
 		flex: 1;
 	}
 	.title {
 		display: flex;
 		align-items: center;
 	}
-	.name {
+	.title .name {
 		font-size: var(--size_lg);
+	}
+	.name {
 		padding: var(--spacing_md);
 		font-family: var(--font_family_mono);
-		background-color: initial;
 	}
 	.type {
 		padding: var(--spacing_lg);
@@ -84,7 +86,6 @@
 	.property {
 		display: flex;
 		align-items: center;
-		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
 	}
 	.property .name {
 		display: flex;
