@@ -27,7 +27,7 @@
 	export let serialize: (value: TValue, print?: boolean) => string = identity as any; // TODO type
 	export let deletable = false;
 
-	let fieldValue: any; // initialized by `reset`
+	let fieldValue: any = serialize(value); // TODO type is off
 	let serialized: string | undefined;
 	let editing = false;
 	let pending = false;
@@ -40,9 +40,16 @@
 	$: errorMessage = parsed.ok ? null : parsed.message;
 
 	const reset = () => {
-		fieldValue = serialize(value);
+		actions.OpenDialog(
+			toDialogParams(ConfirmDialog, {
+				confirmed: () => {
+					fieldValue = serialize(value);
+				},
+				promptText: `Are you sure you want to reset "${field}"? Your changes will be lost.`,
+				confirmText: 'discard changes',
+			}),
+		);
 	};
-	reset();
 
 	const edit = () => {
 		editing = true;
