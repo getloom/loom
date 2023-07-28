@@ -28,7 +28,7 @@
 	export let actor: Readable<AccountActor>;
 	export let space: Readable<Space>;
 
-	$: shouldLoadEntities = browser && $socket.open;
+	$: shouldLoadEntities = browser && $socket?.open; // TODO @multiple hoist this logic and use correct client automatically
 	$: query = shouldLoadEntities
 		? createQuery(
 				{

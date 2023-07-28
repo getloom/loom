@@ -9,7 +9,7 @@ import type {QueryAddEntity, QueryMatchEntity, QueryParams, QueryStore} from '$l
 export interface App {
 	ui: Ui;
 	actions: Actions;
-	socket: SocketStore;
+	socket?: SocketStore;
 	devmode: SvelteWritable<boolean>;
 	createQuery: CreateAppQuery;
 }

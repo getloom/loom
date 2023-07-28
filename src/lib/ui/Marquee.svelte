@@ -40,9 +40,11 @@
 						<li><a href="/docs">/docs</a></li>
 					</menu>
 				</section>
-				<section>
-					<SocketConnectionControls {socket} />
-				</section>
+				{#if socket}
+					<section>
+						<SocketConnectionControls {socket} />
+					</section>
+				{/if}
 			{/if}
 		{/if}
 	{/if}

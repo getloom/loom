@@ -14,7 +14,7 @@
 
 	const {socket, createQuery} = getApp();
 
-	$: shouldLoadEntities = browser && $socket.open;
+	$: shouldLoadEntities = browser && $socket?.open; // TODO @multiple hoist this logic and use correct client automatically
 	$: query = shouldLoadEntities
 		? createQuery({
 				actor: $actor.actor_id,

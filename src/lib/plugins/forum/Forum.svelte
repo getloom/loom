@@ -24,7 +24,7 @@
 	} = getApp();
 
 	// TODO use the "./threads" path from the directory, initialize as necessary
-	$: shouldLoadEntities = browser && $socket.open;
+	$: shouldLoadEntities = browser && $socket?.open; // TODO @multiple hoist this logic and use correct client automatically
 	$: query = shouldLoadEntities
 		? createQuery({
 				actor: $actor.actor_id,

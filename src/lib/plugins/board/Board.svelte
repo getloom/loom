@@ -19,7 +19,7 @@
 
 	// export let thread = '/thread'; // TODO use instead of directory_id
 
-	$: shouldLoadEntities = browser && $socket.open;
+	$: shouldLoadEntities = browser && $socket?.open; // TODO @multiple hoist this logic and use correct client automatically
 	// TODO create `./thread` - $directory.path collection
 	$: threadEntity = entityById.get($space.directory_id)!;
 	$: query = shouldLoadEntities

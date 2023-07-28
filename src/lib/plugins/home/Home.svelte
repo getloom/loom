@@ -17,7 +17,7 @@
 	const DEFAULT_RULES = `<ol><li>No tolerance for any sort of hate and discrimination such as racism, sexism, ableism, transphobia, etc.</li><li>No spamming</li><li>If there is a conflict, please report issues to community leaders</li></ol>`;
 	const DEFAULT_NORMS = `<p>some thoughts about our community’s vibes that aren’t rules, but still worth thinking about</p><ol><li>We welcome nerdiness :)</li><li>We strive to learn from each other.</li><li>We encourage everyone to participate in moderation.</li></ol>`;
 
-	$: shouldLoadEntities = browser && $socket.open;
+	$: shouldLoadEntities = browser && $socket?.open; // TODO @multiple hoist this logic and use correct client automatically
 
 	$: query = shouldLoadEntities
 		? createQuery({
