@@ -2,6 +2,10 @@
 	import {base} from '$app/paths';
 
 	import Mermaid from '$lib/ui/Mermaid.svelte';
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -13,12 +17,12 @@
 	</blockquote>
 	<p>
 		Looking for instructions for how to use this project as a library? See <a
-			href="{base}/docs/guide/dev/library-usage">library-usage</a
+			href="{base}{path}/guide/dev/library-usage">library-usage</a
 		>.
 	</p>
 	<p>
 		Problems? We track <a href="https://github.com/feltjs/felt-server">open issues</a> on GitHub and
-		<a href="{base}/known-issues">known issues</a> in the docs.
+		<a href="{base}{path}/guide/user/known-issues">known issues</a> in the docs.
 	</p>
 	<h3>Overview</h3>
 
@@ -44,7 +48,7 @@
 flowchart
 	subgraph db
 		P[(postgres)]
-		click P "${base}/docs/guide/dev/data-model"
+		click P "${base}{path}/guide/dev/data-model"
 	end
 	subgraph Node backend
 		S[Services] -- function calls --> R[Repos]
@@ -62,7 +66,7 @@ flowchart
 
 	<h3>Setup</h3>
 	<p>
-		Set up <a href="{base}/setup-dev-environment">a local dev environment</a>.
+		Set up <a href="{base}{path}/guide/dev/setup-dev-environment">a local dev environment</a>.
 	</p>
 
 	<h3>Developing</h3>
@@ -83,9 +87,12 @@ flowchart
 	<h4><code>gro format</code></h4>
 	<p>
 		Gro integrates formatting with <a href="https://github.com/prettier/prettier">Prettier</a>.
-		<a href="/.github/workflows/check.yml">This project's CI</a> runs <code>gro check</code> which
-		runs <code>gro format --check</code> which fails if any files are unformatted. You can manually
-		format the project with <code>gro format</code>, and if you're using VSCode,
+		<a href="https://github.com/feltjs/felt-server/blob/main/.github/workflows/check.yml"
+			>This project's CI</a
+		>
+		runs <code>gro check</code> which runs <code>gro format --check</code> which fails if any files
+		are unformatted. You can manually format the project with <code>gro format</code>, and if you're
+		using VSCode,
 		<a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode"
 			>the Prettier extension</a
 		>
@@ -103,8 +110,10 @@ flowchart
 		<code>gro gen</code> when things change.
 	</p>
 	<p>
-		<a href="/.github/workflows/check.yml">This project's CI</a> runs <code>gro check</code> which
-		runs
+		<a href="https://github.com/feltjs/felt-server/blob/main/.github/workflows/check.yml"
+			>This project's CI</a
+		>
+		runs <code>gro check</code> which runs
 		<code>gro gen --check</code>
 		which fails if any generated files have changed, to help ensure that the committed files remain in
 		sync.
@@ -135,11 +144,13 @@ flowchart
 	<h3>Deploying</h3>
 	<p>
 		To deploy a self-hosted instance to production, see the instructions at
-		<a href="{base}/deploying-production"><code>src/docs/deploying-production.md</code></a>.
+		<a href="{base}{path}/guide/admin/deploying-production"
+			><code>guide/admin/deploying-production</code></a
+		>.
 	</p>
 	<p>
-		To manage a production instance, see <a href="{base}/managing-production"
-			><code>src/docs/managing-production.md</code></a
+		To manage a production instance, see <a href="{base}{path}/guide/admin/managing-production"
+			><code>guide/admin/managing-production</code></a
 		>.
 	</p>
 </div>

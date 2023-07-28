@@ -2,6 +2,10 @@
 	import {base} from '$app/paths';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -13,7 +17,7 @@
 		to make custom servers.
 	</p>
 	<p>
-		First, follow the <a href="{base}/getting-started">getting started</a> instructions.
+		First, follow the <a href="{base}{path}/guide/admin/getting-started">getting started</a> instructions.
 	</p>
 	<p>Next install felt-server as a dev dependency:</p>
 	<CodeExample code="npm i -D @feltjs/felt-server" />

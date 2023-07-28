@@ -1,5 +1,11 @@
 # changelog
 
+## 0.2.1
+
+- change `$lib/Docs.svelte` to accept a base `path` prop
+  that defaults to the current behavior, `/docs`
+  ([#884](https://github.com/feltjs/felt-server/pull/884))
+
 ## 0.2.0
 
 - **break**: move `$lib/app/` modules into `$lib/ui/`

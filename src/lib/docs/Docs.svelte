@@ -3,13 +3,20 @@
 	import {base} from '$app/paths';
 	import {stripStart} from '@feltjs/util/string.js';
 	import Breadcrumbs from '@feltjs/felt-ui/Breadcrumbs.svelte';
+	import {writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {actionDatas} from '$lib/vocab/action/actionData';
 	import {modelSchemas} from '$lib/vocab/schemas';
 	import {viewTemplates} from '$lib/vocab/view/view';
 	import {toSchemaName} from '$lib/util/schema';
 	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
-	import {guideItemsBySlug, userGuideItems, adminGuideItems, devGuideItems} from '$lib/docs/guide';
+	import {
+		guideItemsBySlug,
+		userGuideItems,
+		adminGuideItems,
+		devGuideItems,
+		setDocsSettings,
+	} from '$lib/docs/docs';
 	import DocsContent from '$lib/docs/DocsContent.svelte';
 	import DocsGuideContent from '$lib/docs/DocsGuideContent.svelte';
 	import DocsGuideUserContent from '$lib/docs/DocsGuideUserContent.svelte';
@@ -17,6 +24,11 @@
 	import DocsGuideDevContent from '$lib/docs/DocsGuideDevContent.svelte';
 	import DocsVocabContent from '$lib/docs/DocsVocabContent.svelte';
 	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
+
+	export let path = '/docs';
+
+	const docsSettings = setDocsSettings(writable({path}));
+	$: if ($docsSettings.path !== path) $docsSettings = {path};
 
 	// TODO improve how this component interacts with SvelteKit routing --
 	// it's designed like this so it can be imported as a library component and keep the user's routing simple
@@ -39,27 +51,34 @@
 
 	const schemaNames = sortedModelSchemas.map((s) => toSchemaName(s.$id));
 
+	$: path_guide = path + '/guide';
+	$: path_guide_user = path + '/guide/user';
+	$: path_guide_admin = path + '/guide/admin';
+	$: path_guide_dev = path + '/guide/dev';
+	$: path_vocab = path + '/vocab';
+
 	$: title =
-		basePathname === '/docs/guide'
+		basePathname === path_guide
 			? 'felt guide'
-			: basePathname === '/docs/guide/user'
+			: basePathname === path_guide_user
 			? 'felt user guide'
-			: basePathname === '/docs/guide/admin'
+			: basePathname === path_guide_admin
 			? 'felt admin guide'
-			: basePathname === '/docs/guide/dev'
+			: basePathname === path_guide_dev
 			? 'felt dev guide'
-			: basePathname === '/docs/vocab'
+			: basePathname === path_vocab
 			? 'felt vocab docs'
 			: 'felt docs';
 
-	$: showGuideContent = basePathname.startsWith('/docs/guide');
-	$: showVocabContent = basePathname.startsWith('/docs/vocab');
+	$: showGuideContent = basePathname.startsWith(path_guide);
+	$: showVocabContent = basePathname.startsWith(path_vocab);
 
-	const toGuideSlug = (p: string): string | null => {
-		if (!p.startsWith('/docs/guide/')) return null;
-		return stripStart(p, '/docs/guide/');
+	const toGuideSlug = (p: string, path: string): string | null => {
+		const guidePrefix = path + '/guide/';
+		if (!p.startsWith(guidePrefix)) return null;
+		return stripStart(p, guidePrefix);
 	};
-	$: guideSlug = toGuideSlug(basePathname);
+	$: guideSlug = toGuideSlug(basePathname, path);
 	$: selectedGuideItem = guideSlug ? guideItemsBySlug.get(guideSlug) : null;
 </script>
 
@@ -71,10 +90,10 @@
 	and https://github.com/feltjs/felt-ui/pull/197 -->
 	<div class="nav-wrapper prose padded_xl width_sm">
 		<nav>
-			<h2><a href="{base}/docs" class:selected={basePathname === '/docs'}>docs</a></h2>
-			<h3><a href="{base}/docs/guide" class:selected={showGuideContent}>guide</a></h3>
+			<h2><a href="{base}{path}" class:selected={basePathname === path}>docs</a></h2>
+			<h3><a href="{base}{path}/guide" class:selected={showGuideContent}>guide</a></h3>
 			<h4>
-				<a href="{base}/docs/guide/user" class:selected={basePathname === '/docs/guide/user'}>
+				<a href="{base}{path}/guide/user" class:selected={basePathname === path_guide_user}>
 					user
 				</a>
 			</h4>
@@ -84,14 +103,14 @@
 						<li>
 							<a
 								class:selected={guideItem === selectedGuideItem}
-								href="{base}/docs/guide/{guideItem.slug}">{guideItem.name}</a
+								href="{base}{path}/guide/{guideItem.slug}">{guideItem.name}</a
 							>
 						</li>
 					{/each}
 				</ol>
 			{/if}
 			<h4>
-				<a href="{base}/docs/guide/admin" class:selected={basePathname === '/docs/guide/admin'}>
+				<a href="{base}{path}/guide/admin" class:selected={basePathname === path_guide_admin}>
 					admin
 				</a>
 			</h4>
@@ -101,16 +120,14 @@
 						<li>
 							<a
 								class:selected={guideItem === selectedGuideItem}
-								href="{base}/docs/guide/{guideItem.slug}">{guideItem.name}</a
+								href="{base}{path}/guide/{guideItem.slug}">{guideItem.name}</a
 							>
 						</li>
 					{/each}
 				</ol>
 			{/if}
 			<h4>
-				<a href="{base}/docs/guide/dev" class:selected={basePathname === '/docs/guide/dev'}>
-					dev
-				</a>
+				<a href="{base}{path}/guide/dev" class:selected={basePathname === path_guide_dev}> dev </a>
 			</h4>
 			{#if showGuideContent}
 				<ol>
@@ -118,16 +135,16 @@
 						<li>
 							<a
 								class:selected={guideItem === selectedGuideItem}
-								href="{base}/docs/guide/{guideItem.slug}">{guideItem.name}</a
+								href="{base}{path}/guide/{guideItem.slug}">{guideItem.name}</a
 							>
 						</li>
 					{/each}
 				</ol>
 			{/if}
 
-			<h3><a href="{base}/docs/vocab#vocab" class:selected={showVocabContent}>vocab</a></h3>
+			<h3><a href="{base}{path}/vocab#vocab" class:selected={showVocabContent}>vocab</a></h3>
 			{#if showVocabContent}
-				<h4><a href="{base}/docs/vocab/#views" class:selected={hash === 'views'}>views</a></h4>
+				<h4><a href="{base}{path}/vocab/#views" class:selected={hash === 'views'}>views</a></h4>
 				<menu>
 					{#each sortedViewTemplates as viewTemplate}
 						<li>
@@ -137,7 +154,7 @@
 						</li>
 					{/each}
 				</menu>
-				<h4><a href="{base}/docs/vocab/#models" class:selected={hash === 'models'}>models</a></h4>
+				<h4><a href="{base}{path}/vocab/#models" class:selected={hash === 'models'}>models</a></h4>
 				<menu>
 					{#each schemaNames as name}
 						<li>
@@ -146,7 +163,7 @@
 					{/each}
 				</menu>
 				<h4>
-					<a href="{base}/docs/vocab/#service_actions" class:selected={hash === 'service_actions'}
+					<a href="{base}{path}/vocab/#service_actions" class:selected={hash === 'service_actions'}
 						>service actions</a
 					>
 				</h4>
@@ -158,7 +175,7 @@
 					{/each}
 				</menu>
 				<h4>
-					<a href="{base}/docs/vocab/#client_actions" class:selected={hash === 'client_actions'}
+					<a href="{base}{path}/vocab/#client_actions" class:selected={hash === 'client_actions'}
 						>client actions</a
 					>
 				</h4>
@@ -182,20 +199,20 @@
 	</div>
 	<div class="content">
 		<slot>
-			{#if basePathname === '/docs'}
+			{#if basePathname === path}
 				<div class="prose">
 					<h1>Docs</h1>
 				</div>
 				<DocsContent />
-			{:else if basePathname === '/docs/guide'}
+			{:else if basePathname === path_guide}
 				<DocsGuideContent />
-			{:else if basePathname === '/docs/guide/user'}
+			{:else if basePathname === path_guide_user}
 				<DocsGuideUserContent />
-			{:else if basePathname === '/docs/guide/admin'}
+			{:else if basePathname === path_guide_admin}
 				<DocsGuideAdminContent />
-			{:else if basePathname === '/docs/guide/dev'}
+			{:else if basePathname === path_guide_dev}
 				<DocsGuideDevContent />
-			{:else if basePathname === '/docs/vocab'}
+			{:else if basePathname === path_vocab}
 				<DocsVocabContent
 					{sortedViewTemplates}
 					{sortedModelSchemas}
@@ -204,15 +221,15 @@
 					{schemaNames}
 				/>
 			{:else if selectedGuideItem}
-				{#if basePathname.startsWith('/docs/guide/user/')}
+				{#if basePathname.startsWith(path_guide_user + '/')}
 					<DocsGuideUserContent
 						><svelte:component this={selectedGuideItem.component} /></DocsGuideUserContent
 					>
-				{:else if basePathname.startsWith('/docs/guide/admin/')}
+				{:else if basePathname.startsWith(path_guide_admin + '/')}
 					<DocsGuideAdminContent
 						><svelte:component this={selectedGuideItem.component} /></DocsGuideAdminContent
 					>
-				{:else if basePathname.startsWith('/docs/guide/dev/')}
+				{:else if basePathname.startsWith(path_guide_dev + '/')}
 					<DocsGuideDevContent
 						><svelte:component this={selectedGuideItem.component} /></DocsGuideDevContent
 					>

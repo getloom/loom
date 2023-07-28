@@ -1,5 +1,10 @@
 <script lang="ts">
 	import {base} from '$app/paths';
+
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -12,14 +17,14 @@
 		Account actors are created by users and have an <code>account_id</code> and a
 		<code>hub_id</code>
 		that points to their
-		<a href="{base}/docs/guide/admin/hub-types"><code>'personal'</code> hub</a>. They can be created
-		and deleted as desired. They act as a privacy and security shield to protect account identity;
-		when you join a hub, you join as one of your actors, and your account information is never
-		visible to other users.
+		<a href="{base}{path}/guide/admin/hub-types"><code>'personal'</code> hub</a>. They can be
+		created and deleted as desired. They act as a privacy and security shield to protect account
+		identity; when you join a hub, you join as one of your actors, and your account information is
+		never visible to other users.
 	</p>
 	<h3><code>'community'</code> actors</h3>
 	<p>
-		One community actor is created for every <a href="{base}/docs/guide/admin/hub-types"
+		One community actor is created for every <a href="{base}{path}/guide/admin/hub-types"
 			><code>'community'</code> hub</a
 		>
 		and have a

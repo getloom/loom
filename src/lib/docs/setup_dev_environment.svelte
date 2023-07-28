@@ -2,6 +2,10 @@
 	import {base} from '$app/paths';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -49,7 +53,7 @@ npm i # install dependencies`}
 	<p>
 		<code>@feltjs/felt-server</code> requires <a href="https://www.postgresql.org/">Postgres</a> >=
 		15. For details about felt-server's database implementation, see
-		<a href="{base}/data-model">the data model docs</a>.
+		<a href="{base}{path}/guide/dev/data-model">the data model docs</a>.
 	</p>
 	<p>
 		<code>@feltjs/felt-server</code> defaults to user <code>postgres</code> with password

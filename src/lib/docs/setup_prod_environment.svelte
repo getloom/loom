@@ -1,5 +1,10 @@
 <script lang="ts">
 	import {base} from '$app/paths';
+
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -12,15 +17,17 @@
 	</p>
 	<p>
 		To learn more about <code>@feltjs/felt-server</code>, see
-		<a href="{base}/getting-started">src/docs/getting-started.md</a>.
+		<a href="{base}{path}/guide/admin/getting-started">guide/admin/getting-started</a>.
 	</p>
 	<p>
 		To deploy a self-hosted instance to production, see the instructions at
-		<a href="{base}/deploying-production"><code>src/docs/deploying-production.md</code></a>.
+		<a href="{base}{path}/guide/admin/deploying-production"
+			><code>guide/admin/deploying-production</code></a
+		>.
 	</p>
 	<p>
-		To manage a production instance, see <a href="{base}/managing-production"
-			><code>src/docs/managing-production.md</code></a
+		To manage a production instance, see <a href="{base}{path}/guide/admin/managing-production"
+			><code>guide/admin/managing-production</code></a
 		>.
 	</p>
 	<h3>Setting up a server</h3>
@@ -75,7 +82,7 @@
 		<li>
 			Felt depends on the database <a href="https://www.postgresql.org/">PostgreSQL</a>. The
 			project's scripts are currently configured to install it on the same VPS as your server. See
-			<a href="{base}/database">the database docs</a> for more.
+			<a href="{base}{path}/guide/admin/database">the database docs</a> for more.
 		</li>
 	</ul>
 
@@ -111,6 +118,6 @@
 
 	<p>
 		To continue deploying a self-hosted instance to production, see
-		<a href="{base}/deploying-production">/deploying-production</a>
+		<a href="{base}{path}/guide/admin/deploying-production">guide/admin/deploying-production</a>
 	</p>
 </div>

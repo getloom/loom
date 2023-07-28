@@ -2,6 +2,10 @@
 	import {base} from '$app/paths';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -13,7 +17,9 @@
 	</p>
 	<p>
 		To deploy a self-hosted instance to production, see the instructions at
-		<a href="{base}/deploying-production"><code>src/docs/deploying-production.md</code></a>.
+		<a href="{base}{path}/guide/admin/deploying-production"
+			><code>guide/admin/deploying-production</code></a
+		>.
 	</p>
 
 	<h3>Log into the instance</h3>

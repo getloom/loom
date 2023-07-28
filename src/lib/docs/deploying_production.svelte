@@ -2,6 +2,10 @@
 	import {base} from '$app/paths';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -13,11 +17,11 @@
 	</p>
 	<p>
 		To learn more about <code>@feltjs/felt-server</code>, see
-		<a href="{base}/getting-started">src/docs/getting-started.md</a>.
+		<a href="{base}{path}/guide/admin/getting-started">guide/admin/getting-started</a>.
 	</p>
 	<p>
-		To manage a production instance, see <a href="{base}/managing-production"
-			>src/docs/managing-production.md</a
+		To manage a production instance, see <a href="{base}{path}/guide/admin/managing-production"
+			>guide/admin/managing-production</a
 		>.
 	</p>
 	<p>
@@ -38,7 +42,7 @@ npm i -g @feltjs/gro`}
 	<h3>Deploy</h3>
 
 	<p>
-		To self-host on a VPS, first <a href="{base}/setup-prod-environment"
+		To self-host on a VPS, first <a href="{base}{path}/guide/admin/setup-prod-environment"
 			>set up a production environment</a
 		>.
 	</p>
@@ -117,8 +121,8 @@ node dist/server/lib/server/server.js`}
 
 	<h3>Managing production</h3>
 	<p>
-		To manage a production instance, see <a href="{base}/managing-production"
-			><code>src/docs/managing-production.md</code></a
+		To manage a production instance, see <a href="{base}{path}/guide/admin/managing-production"
+			><code>guide/admin/managing-production</code></a
 		>.
 	</p>
 </div>

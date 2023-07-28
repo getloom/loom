@@ -2,9 +2,14 @@
 	import {base} from '$app/paths';
 	import {page} from '$app/stores';
 
+	import {getDocsSettings} from '$lib/docs/docs';
+
 	type GuideName = 'user' | 'admin' | 'dev';
 
 	export let guide: GuideName;
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 
 	const icons: Record<GuideName, string> = {
 		user: '🎭',
@@ -13,7 +18,7 @@
 	};
 
 	$: icon = icons[guide];
-	$: href = `${base}/docs/guide/${guide}`;
+	$: href = `${base}${path}/guide/${guide}`;
 	$: ({pathname} = $page.url);
 	$: selected = href === pathname;
 </script>

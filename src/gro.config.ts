@@ -11,6 +11,7 @@ const files = [
 
 	// TypeScript and Svelte and modules
 	'lib/db/db.ts',
+	'lib/docs/docs.ts',
 	'lib/docs/Docs.svelte',
 	'lib/server/server.ts',
 	'lib/ui/AccountForm.svelte',

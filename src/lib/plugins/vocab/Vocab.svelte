@@ -4,6 +4,10 @@
 
 	import VocabContextmenu from '$lib/ui/VocabContextmenu.svelte';
 	import {getApp} from '$lib/ui/app';
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: path = $docsSettings?.path || '/docs';
 
 	// Like a `Mention` but for the Felt vocabulary.
 
@@ -29,7 +33,7 @@
 </script>
 
 <a
-	href="{base}/docs/vocab#{name}"
+	href="{base}{path}/vocab#{name}"
 	class:selected
 	use:contextmenu.action={toContextmenuParams(VocabContextmenu, {name})}
 	>{#if plain}<slot>{name}</slot>{:else}<code><slot>{name}</slot></code>{/if}</a

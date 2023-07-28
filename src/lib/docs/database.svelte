@@ -1,6 +1,4 @@
 <script lang="ts">
-	import {base} from '$app/paths';
-
 	import CodeExample from '$lib/ui/CodeExample.svelte';
 </script>
 
@@ -28,8 +26,8 @@
 		>. See <a href="https://github.com/porsager/postgres#readme">its README</a> to learn more.
 	</p>
 	<p>
-		At the moment, the server <a href="{base}/postgres.ts">defaults to connecting</a> to the
-		database with the following values, prioritizing
+		At the moment, the server defaults to connecting to the database with the following values,
+		prioritizing
 		<a href="https://vitejs.dev/guide/env-and-mode.html#env-variables">environment variables</a> if they're
 		defined:
 	</p>
@@ -59,9 +57,10 @@ create database felt; # notice the semicolon
 	<h3>Creating migrations</h3>
 	<p>
 		Felt server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its DB migrations.
-		Migration files are located in the <a href="{base}/migrations">migrations</a> directory. To
-		create a new migration file use the <code>ley new</code> command (see Ley's docs for more
-		details) Use <code>gro lib/db/migrate</code> to run migrations.
+		Migration files are located in the
+		<a href="https://github.com/feltjs/felt-server/tree/main/src/lib/db/migrations">migrations</a>
+		directory. To create a new migration file use the <code>ley new</code> command (see Ley's docs
+		for more details) Use <code>gro lib/db/migrate</code> to run migrations.
 	</p>
 	<h3>Creating backups</h3>
 	<p>Using the following command one can quickly take backups of the <code>felt</code> database.</p>

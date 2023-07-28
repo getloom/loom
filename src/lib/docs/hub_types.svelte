@@ -1,5 +1,10 @@
 <script lang="ts">
 	import {base} from '$app/paths';
+
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -25,7 +30,7 @@
 	<ul>
 		<li>
 			a personal hub is created automatically for every <a
-				href="{base}/docs/guide/admin/actor-types"
+				href="{base}{path}/guide/admin/actor-types"
 				><code>'account'</code>
 				actor</a
 			>, and this is the only way they're created

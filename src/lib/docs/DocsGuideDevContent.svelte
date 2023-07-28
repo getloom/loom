@@ -2,7 +2,10 @@
 	import {base} from '$app/paths';
 
 	import DocsGuideLink from '$lib/docs/DocsGuideLink.svelte';
-	import {devGuideItems} from '$lib/docs/guide';
+	import {devGuideItems, getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div>
@@ -17,7 +20,7 @@
 			<p>These docs are a work in progress. Thank you for your patience!</p>
 			<menu>
 				{#each devGuideItems as item}
-					<li><a href="{base}/docs/guide/{item.slug}">{item.name}</a></li>
+					<li><a href="{base}{path}/guide/{item.slug}">{item.name}</a></li>
 				{/each}
 			</menu>
 		</div>

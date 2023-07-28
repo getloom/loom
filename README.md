@@ -28,7 +28,7 @@ To play with the code, see [Getting started](https://docs.felt.dev/#getting-star
 Work-in-progress docs are
 [here on GitHub](/src/lib/docs),
 including our
-[known issues](https://github.com/feltjs/felt-server/blob/main/src/lib/docs/known-issues.md).
+[known issues](https://docs.felt.dev/guide/user/known-issues).
 
 To deploy to production, see [Deploying production](https://docs.felt.dev/#deploying-production)
 and [Managing production](https://docs.felt.dev/#managing-production).

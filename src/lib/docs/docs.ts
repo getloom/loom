@@ -1,4 +1,5 @@
-import type {SvelteComponent} from 'svelte';
+import {getContext, setContext, type SvelteComponent} from 'svelte';
+import type {Writable} from '@feltcoop/svelte-gettable-stores';
 
 import actor_types from '$lib/docs/actor_types.svelte';
 import admin from '$lib/docs/admin.svelte';
@@ -100,3 +101,11 @@ export const devGuideItems: GuideItem[] = [
 export const guideItems = userGuideItems.concat(adminGuideItems, devGuideItems);
 
 export const guideItemsBySlug = new Map(guideItems.map((g) => [g.slug, g]));
+
+export interface DocsSettings {
+	path: string;
+}
+const KEY = Symbol('DocsSettings');
+export const getDocsSettings = (): Writable<DocsSettings> => getContext(KEY);
+export const setDocsSettings = (ctx: Writable<DocsSettings>): Writable<DocsSettings> =>
+	setContext(KEY, ctx);

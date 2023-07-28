@@ -3,6 +3,10 @@
 
 	import Mermaid from '$lib/ui/Mermaid.svelte';
 	import CodeExample from '$lib/ui/CodeExample.svelte';
+	import {getDocsSettings} from '$lib/docs/docs';
+
+	const docsSettings = getDocsSettings();
+	$: ({path} = $docsSettings);
 </script>
 
 <div class="prose">
@@ -46,8 +50,8 @@ const adminActor = {'{'}
 	/>
 
 	<blockquote>
-		learn more about <a href="{base}/hub-types">hub types</a> and
-		<a href="{base}/actor-types">actor types</a>
+		learn more about <a href="{base}{path}/guide/admin/hub-types">hub types</a> and
+		<a href="{base}{path}/guide/admin/actor-types">actor types</a>
 	</blockquote>
 
 	<h3>Control and ownership diagram</h3>
