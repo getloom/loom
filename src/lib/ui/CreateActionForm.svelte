@@ -106,7 +106,7 @@
 					<PendingButton
 						on:click={() =>
 							selectedActionDataHack && performAction(selectedActionDataHack, formParams)}
-						style="width: 100%"
+						attrs={{style: 'width: 100%'}}
 						{pending}
 						disabled={pending}
 					>

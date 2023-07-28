@@ -65,7 +65,6 @@ const parseSvastText = (node: Text): SvelteChild => {
 	let firstChar: string;
 	let restStr: string;
 	let lastChar: string;
-	// eslint-disable-next-line @typescript-eslint/prefer-for-of
 	for (let i = 0; i < words.length; i++) {
 		word = words[i];
 		if (MATCH_WHITESPACE.test(word)) {

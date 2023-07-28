@@ -31,7 +31,7 @@
 	<ActorAvatar actor={communityActor} showIcon={true} />
 	<PendingButton
 		title="kick actor"
-		class="icon_button plain"
+		attrs={{class: 'icon_button plain'}}
 		on:click={() =>
 			actions.OpenDialog(
 				toDialogParams(ConfirmDialog, {

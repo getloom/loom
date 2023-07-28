@@ -1,7 +1,9 @@
 # changelog
 
-## 0.2.1
+## 0.3.0
 
+- **break**: upgrade deps `@feltjs/felt-ui@0.64.0` and `@feltjs/util@0.9.0`
+  ([#889](https://github.com/feltjs/felt-server/pull/889))
 - export `$lib/util/query.ts` and `$lib/docs/guide.ts`
   ([#884](https://github.com/feltjs/felt-server/pull/884),
   [#885](https://github.com/feltjs/felt-server/pull/885))
