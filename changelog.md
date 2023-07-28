@@ -2,6 +2,9 @@
 
 ## 0.2.1
 
+- export `$lib/util/query.ts` and `$lib/docs/guide.ts`
+  ([#884](https://github.com/feltjs/felt-server/pull/884),
+  [#885](https://github.com/feltjs/felt-server/pull/885))
 - change `$lib/Docs.svelte` to accept a base `path` prop
   that defaults to the current behavior, `/docs`
   ([#884](https://github.com/feltjs/felt-server/pull/884))

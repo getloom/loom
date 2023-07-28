@@ -35,6 +35,7 @@ const files = [
 	'lib/ui/ui.ts',
 	'lib/util/color.ts',
 	'lib/util/deserialize.ts',
+	'lib/util/query.ts',
 	'lib/util/url.ts',
 	'lib/vocab/action/actionData.ts',
 	'lib/vocab/action/actions.ts',
