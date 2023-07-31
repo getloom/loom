@@ -9,7 +9,7 @@
 	import {getApp} from '$lib/ui/app';
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {lookupOrderedItems} from '$lib/vocab/entity/entityHelpers';
+	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 	import type {ActorId} from '$lib/vocab/actor/actor';
 	import type {SpaceId} from '$lib/vocab/space/space';
@@ -30,6 +30,7 @@
 		: null;
 	$: entities = query?.entities;
 
+	//TODO refactor once query by path is in place
 	const listsPath = '/lists';
 	$: listsCollection = $entities?.value.find((e) => e.get().path === listsPath);
 
@@ -57,23 +58,9 @@
 	// TODO extract this pattern from 2 places, into the query system?
 	let orderedEntities: Array<Readable<Entity>> | null = null;
 	$: orderedItems = $listsCollection?.data.orderedItems;
-	$: orderedItems && void loadOrderedEntities(orderedItems, $actor.actor_id);
-	const loadOrderedEntities = async (
-		orderedItems: EntityId[],
-		actor_id: ActorId,
-	): Promise<void> => {
-		let entityIdsToLoad: EntityId[] | null = null;
-		for (const entity_id of orderedItems) {
-			if (!entityById.has(entity_id)) {
-				(entityIdsToLoad || (entityIdsToLoad = [])).push(entity_id);
-			}
-		}
-		if (entityIdsToLoad) {
-			await actions.ReadEntitiesById({actor: actor_id, entityIds: entityIdsToLoad});
-		}
-		if ($listsCollection) {
-			orderedEntities = lookupOrderedItems($listsCollection, ui);
-		}
+	$: orderedItems && void assignOrderedEntities();
+	const assignOrderedEntities = async (): Promise<void> => {
+		orderedEntities = await loadOrderedEntities($listsCollection!, $actor.actor_id, ui, actions);
 	};
 
 	let selectedList: Readable<Entity> | null = null;

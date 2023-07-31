@@ -45,7 +45,7 @@
 		});
 	};
 
-	$: if ($entities && !$rules && !$norms) {
+	$: if ($query?.status === 'success' && !$rules && !$norms) {
 		//TODO initialize these with hub, not user actor
 		void createEntity(DEFAULT_RULES, 'rules');
 		void createEntity(DEFAULT_NORMS, 'norms');

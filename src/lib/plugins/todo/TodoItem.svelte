@@ -13,16 +13,16 @@
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountActor, ActorId} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
-	import {lookupOrderedItems} from '$lib/vocab/entity/entityHelpers';
+	import {loadOrderedEntities, moveDown, moveUp} from '$lib/vocab/entity/entityHelpers';
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import {toHubUrl} from '$lib/util/url';
 	import {goto} from '$app/navigation';
 
 	const {ui, actions} = getApp();
-	const {contextmenu, actorById, entityById} = ui;
+	const {contextmenu, actorById} = ui;
 
 	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
@@ -38,21 +38,9 @@
 	// TODO extract this pattern from 2 places, into the query system?
 	let orderedEntities: Array<Readable<Entity>> | null = null;
 	$: orderedItems = $entity.data.orderedItems;
-	$: selected && orderedItems && void loadOrderedEntities(orderedItems, $actor.actor_id);
-	const loadOrderedEntities = async (
-		orderedItems: EntityId[],
-		actor_id: ActorId,
-	): Promise<void> => {
-		let entityIdsToLoad: EntityId[] | null = null;
-		for (const entity_id of orderedItems) {
-			if (!entityById.has(entity_id)) {
-				(entityIdsToLoad || (entityIdsToLoad = [])).push(entity_id);
-			}
-		}
-		if (entityIdsToLoad) {
-			await actions.ReadEntitiesById({actor: actor_id, entityIds: entityIdsToLoad});
-		}
-		orderedEntities = lookupOrderedItems($entity, ui);
+	$: selected && orderedItems && void assignOrderedEntities();
+	const assignOrderedEntities = async (): Promise<void> => {
+		orderedEntities = await loadOrderedEntities($entity!, $actor.actor_id, ui, actions);
 	};
 
 	$: ({checked} = $entity.data);
@@ -77,40 +65,6 @@
 		await actions.UpdateEntities({
 			actor: $actor.actor_id,
 			entities: [{entity_id: $entity.entity_id, data: {...$entity.data, checked}}],
-		});
-		pending = false;
-	};
-
-	const moveUp = async (item: Readable<Entity>) => {
-		const itemId = item.get().entity_id;
-		const index = $parentList.data.orderedItems!.findIndex((f) => f === itemId);
-		if (index === 0) return;
-		$parentList.data.orderedItems!.splice(
-			index - 1,
-			0,
-			$parentList.data.orderedItems!.splice(index, 1)[0],
-		);
-		pending = true;
-		await actions.UpdateEntities({
-			actor: $actor.actor_id,
-			entities: [{entity_id: $parentList.entity_id, data: {...$parentList.data}}],
-		});
-		pending = false;
-	};
-
-	const moveDown = async (item: Readable<Entity>) => {
-		const itemId = item.get().entity_id;
-		const index = $parentList.data.orderedItems!.findIndex((f) => f === itemId);
-		if (index === $parentList.data.orderedItems!.length - 1) return;
-		$parentList.data.orderedItems!.splice(
-			index + 1,
-			0,
-			$parentList.data.orderedItems!.splice(index, 1)[0],
-		);
-		pending = true;
-		await actions.UpdateEntities({
-			actor: $actor.actor_id,
-			entities: [{entity_id: $parentList.entity_id, data: {...$parentList.data}}],
 		});
 		pending = false;
 	};
@@ -147,7 +101,8 @@
 
 	$: hasOrderedItems = !!orderedItems;
 	$: first = $parentList.data.orderedItems![0] === $entity.entity_id;
-	$: last = $parentList.data.orderedItems!.at(-1) === $entity.entity_id;
+	$: last =
+		$parentList.data.orderedItems![$parentList.data.orderedItems!.length - 1] === $entity.entity_id;
 	$: enableMoveUp = !first;
 	$: enableMoveDown = !last;
 
@@ -173,13 +128,13 @@
 			<button
 				class="plain icon_button"
 				title="move up"
-				on:click={() => moveUp(entity)}
+				on:click={() => moveUp(entity, parentList, $actor.actor_id, actions)}
 				disabled={!enableMoveUp}>↑</button
 			>
 			<button
 				class="plain icon_button"
 				title="move down"
-				on:click={() => moveDown(entity)}
+				on:click={() => moveDown(entity, parentList, $actor.actor_id, actions)}
 				disabled={!enableMoveDown}>↓</button
 			>
 		</div>

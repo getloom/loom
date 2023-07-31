@@ -78,7 +78,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			//TODO MULTIPLE add lowercasing to path
 			log.debug('[createEntity] validating space path uniqueness');
 			const existingEntityWithPath = await repos.entity.findBySpacePath(space_id, path);
-			if (existingEntityWithPath) {
+			if (existingEntityWithPath && !existingEntityWithPath.data.directory) {
 				throw new ApiError(409, 'an entity with that path in this space already exists');
 			}
 		}

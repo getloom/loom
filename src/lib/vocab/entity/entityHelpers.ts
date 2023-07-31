@@ -1,9 +1,11 @@
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import {GUEST_ACTOR_NAME} from '$lib/vocab/actor/constants';
-import type {Entity} from '$lib/vocab/entity/entity';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 import type {Ui} from '$lib/ui/ui';
 import {Logger} from '@feltjs/util/log.js';
+import type {Actions} from '$lib/vocab/action/actionTypes';
+import type {ActorId} from '$lib/vocab/actor/actor';
 
 const log = new Logger('[entityHeler]');
 
@@ -74,4 +76,81 @@ export const lookupOrderedItems = (entity: Entity, ui: Ui): Array<Readable<Entit
 		}
 	}
 	return entities;
+};
+
+/**
+ * Moves an item up (towards zero index) inside the orderedCollection array of the containing entity
+ * @param item
+ * @param parent
+ * @param actor_id
+ * @param actions
+ */
+export const moveUp = async (
+	item: Readable<Entity>,
+	parent: Readable<Entity>,
+	actor_id: ActorId,
+	actions: Actions,
+): Promise<void> => {
+	const itemId = item.get().entity_id;
+	const index = parent.get().data.orderedItems!.findIndex((f) => f === itemId);
+	if (index === 0) return;
+	parent
+		.get()
+		.data.orderedItems!.splice(index - 1, 0, parent.get().data.orderedItems!.splice(index, 1)[0]);
+	await actions.UpdateEntities({
+		actor: actor_id,
+		entities: [{entity_id: parent.get().entity_id, data: {...parent.get().data}}],
+	});
+};
+
+/**
+ * Moves an item down (towards n index) inside the orderedCollection array of the containing entity
+ * @param item
+ * @param parent
+ * @param actor_id
+ * @param actions
+ */
+export const moveDown = async (
+	item: Readable<Entity>,
+	parent: Readable<Entity>,
+	actor_id: ActorId,
+	actions: Actions,
+): Promise<void> => {
+	const itemId = item.get().entity_id;
+	const index = parent.get().data.orderedItems!.findIndex((f) => f === itemId);
+	if (index === parent.get().data.orderedItems!.length - 1) return;
+	parent
+		.get()
+		.data.orderedItems!.splice(index + 1, 0, parent.get().data.orderedItems!.splice(index, 1)[0]);
+	await actions.UpdateEntities({
+		actor: actor_id,
+		entities: [{entity_id: parent.get().entity_id, data: {...parent.get().data}}],
+	});
+};
+
+/**
+ * Loads entities in the orderedItems of the parentList
+ * @param parentList
+ * @param orderedItems
+ * @param actor_id
+ * @returns an array of entity stores referenced by the parentList's orderedItems attribute, or null
+ */
+export const loadOrderedEntities = async (
+	list: Entity,
+	actor_id: ActorId,
+	ui: Ui,
+	actions: Actions,
+): Promise<Array<Readable<Entity>> | null> => {
+	let entityIdsToLoad: EntityId[] | null = null; // TODO use query helper
+	const orderedItems = list.data.orderedItems;
+	if (!orderedItems) return null;
+	for (const entity_id of orderedItems) {
+		if (!ui.entityById.has(entity_id)) {
+			(entityIdsToLoad || (entityIdsToLoad = [])).push(entity_id);
+		}
+	}
+	if (entityIdsToLoad) {
+		await actions.ReadEntitiesById({actor: actor_id, entityIds: entityIdsToLoad});
+	}
+	return lookupOrderedItems(list, ui);
 };

@@ -3,7 +3,6 @@
 	import {tick} from 'svelte';
 	import {slide} from 'svelte/transition';
 	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
-	import {browser} from '$app/environment';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -16,28 +15,17 @@
 	import ClearCheckedButton from './ClearCheckedButton.svelte';
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import {loadOrderedEntities, moveDown, moveUp} from '$lib/vocab/entity/entityHelpers';
 
 	const {actor} = getSpaceContext();
 
-	const {
-		ui: {contextmenu, actorById},
-		actions,
-		socket,
-		createQuery,
-	} = getApp();
+	const {ui, actions} = getApp();
+	const {contextmenu, actorById} = ui;
 
 	export let entity: Readable<Entity>;
+	export let parentList: Readable<Entity>;
 
 	let pending = false;
-
-	$: shouldLoadEntities = browser && $socket?.open; // TODO @multiple hoist this logic and use correct client automatically
-	$: query = shouldLoadEntities
-		? createQuery({
-				actor: $actor.actor_id,
-				source_id: $entity.entity_id,
-		  })
-		: null;
-	$: items = query?.entities;
 
 	$: ({checked} = $entity.data);
 
@@ -74,6 +62,20 @@
 	const toggleExpandItems = () => {
 		expandItems = !expandItems;
 	};
+
+	// TODO extract this pattern from 2 places, into the query system?
+	let orderedEntities: Array<Readable<Entity>> | null = null;
+	$: orderedItems = $entity?.data.orderedItems;
+	$: orderedItems && void assignOrderedEntities();
+	const assignOrderedEntities = async (): Promise<void> => {
+		orderedEntities = await loadOrderedEntities($entity!, $actor.actor_id, ui, actions);
+	};
+
+	$: first = $parentList.data.orderedItems![0] === $entity.entity_id;
+	$: last =
+		$parentList.data.orderedItems![$parentList.data.orderedItems!.length - 1] === $entity.entity_id;
+	$: enableMoveUp = !first || !pending;
+	$: enableMoveDown = !last || !pending;
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
@@ -103,8 +105,20 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<div class="content prose">
 			<EntityContent {entity} />
 		</div>
-		{#if $items?.value.length}
-			<span style:padding="var(--spacing_sm)">{$items.value.length}</span>
+		<button
+			class="plain icon_button"
+			title="move up"
+			on:click={() => moveUp(entity, parentList, $actor.actor_id, actions)}
+			disabled={!enableMoveUp}>↑</button
+		>
+		<button
+			class="plain icon_button"
+			title="move down"
+			on:click={() => moveDown(entity, parentList, $actor.actor_id, actions)}
+			disabled={!enableMoveDown}>↓</button
+		>
+		{#if orderedEntities}
+			<span style:padding="var(--spacing_sm)">{orderedEntities.length}</span>
 			<button class="plain icon_button" on:click={toggleExpandItems}>
 				{#if expandItems}-{:else}+{/if}
 			</button>
@@ -112,7 +126,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<div class="signature" style:padding="var(--spacing_sm)">
 			<ActorAvatar actor={authorActor} showName={false} />
 		</div>
-		{#if $items?.value.length && (expandItems || expandControls)}
+		{#if orderedEntities?.length && (expandItems || expandControls)}
 			<div class="floating-controls">
 				<button class="plain icon_button" on:click={toggleExpandItems}>
 					{#if expandItems}-{:else}+{/if}
@@ -123,11 +137,11 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	{#if expandControls}
 		<ListControls list={entity} bind:listInputEl />
 	{/if}
-	{#if expandItems && $items?.value.length}
+	{#if expandItems && orderedEntities?.length}
 		<div class="items" transition:slide>
 			<ul class="panel">
-				{#each $items.value as item (item)}
-					<svelte:self entity={item} />
+				{#each orderedEntities as item (item)}
+					<svelte:self entity={item} parentList={entity} />
 				{/each}
 			</ul>
 		</div>
