@@ -40,7 +40,7 @@ export const userGuideItems: GuideItem[] = [
 export const adminGuideItems: GuideItem[] = [
 	{
 		name: 'getting started',
-		slug: 'user/getting-started',
+		slug: 'admin/getting-started',
 		component: getting_started,
 	},
 	{

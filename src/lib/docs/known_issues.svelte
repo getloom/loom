@@ -45,7 +45,7 @@
 	<p>
 		The main reason we don't use SvelteKit's builtin data loading is that our protocol was designed
 		to work with both websockets and HTTP, and the added complexity of SSR with full data loading
-		was too much for us to consider until things stabilized.
+		was too much for us to consider until things stabilize.
 	</p>
 	<p>
 		We expect to have the best of both worlds when the work is done: our server will be able to

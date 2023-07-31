@@ -1,5 +1,10 @@
 # changelog
 
+## 0.4.0
+
+- **break**: rename `$lib/docs.ts` from `$lib/guide.ts`
+  ([#884](https://github.com/feltjs/felt-server/pull/884))
+
 ## 0.3.0
 
 - **break**: upgrade deps `@feltjs/felt-ui@0.64.0` and `@feltjs/util@0.9.0`
