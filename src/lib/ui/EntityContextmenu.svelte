@@ -7,6 +7,7 @@
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import {getApp} from '$lib/ui/app';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
+	import EditEntityContentForm from '$lib/ui/EditEntityContentForm.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -29,13 +30,27 @@
 			run={() =>
 				actions.OpenDialog(
 					toDialogParams(
-						EntityEditor,
+						EditEntityContentForm,
 						{actor, entity, done: () => actions.CloseDialog()},
 						{layout: 'page'},
 					),
 				)}
 		>
 			Edit Entity
+			<svelte:fragment slot="icon">></svelte:fragment>
+		</ContextmenuEntry>
+		<ContextmenuEntry
+			run={() =>
+				actions.OpenDialog(
+					toDialogParams(
+						EntityEditor,
+						{actor, entity, done: () => actions.CloseDialog()},
+						{layout: 'page'},
+					),
+				)}
+		>
+			More details
+			<svelte:fragment slot="icon">?</svelte:fragment>
 		</ContextmenuEntry>
 		<!-- TODO add confirmation dialogs to both delete and erase actions -->
 		{#if $entity.data.type !== 'Tombstone'}

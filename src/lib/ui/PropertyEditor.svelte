@@ -1,4 +1,5 @@
 <script lang="ts">
+	import {slide} from 'svelte/transition';
 	import Message from '@feltjs/felt-ui/Message.svelte';
 	import {identity} from '@feltjs/util/function.js';
 	import type {Result} from '@feltjs/util/result.js';
@@ -26,10 +27,11 @@
 	) => ({ok: true, value: serialized as any}); // TODO consider extracting an `ok` helper
 	export let serialize: (value: TValue, print?: boolean) => string = identity as any; // TODO type
 	export let deletable = false;
+	export let minimal = false;
 
 	let fieldValue: any = serialize(value); // TODO type is off
 	let serialized: string | undefined;
-	let editing = false;
+	export let editing = false;
 	let pending = false;
 	let fieldValueEl: HTMLTextAreaElement;
 	let shouldFocusEl = false;
@@ -99,7 +101,7 @@
 	$: changed = serialized !== currentSerialized;
 </script>
 
-<div class="field">{field}</div>
+<div class="field"><slot name="field">{field}</slot></div>
 <div class="preview prose panel">
 	{#if currentSerialized == null}
 		<em>{currentSerialized}</em>
@@ -109,39 +111,46 @@
 	{/if}
 </div>
 {#if update}
+	{#if !minimal}
+		<button type="button" on:click={editing ? stopEditing : edit}>
+			{#if editing}cancel{:else}edit{/if}
+		</button>
+	{/if}
 	{#if editing}
-		<button type="button" on:click={stopEditing}>cancel</button>
-		<textarea
-			placeholder="> value"
-			bind:this={fieldValueEl}
-			bind:value={fieldValue}
-			use:autofocus
-			disabled={pending}
-		/>
-		{#if changed}
-			<!-- TODO a11y -->
-			<div class="buttons">
-				<button type="button" on:click={reset}> reset </button>
-				<PendingButton on:click={save} {pending} disabled={pending || !!errorMessage}>
-					save
+		<div transition:slide>
+			<textarea
+				placeholder="> value"
+				bind:this={fieldValueEl}
+				bind:value={fieldValue}
+				use:autofocus
+				disabled={pending}
+			/>
+			{#if changed}
+				<!-- TODO a11y -->
+				<div transition:slide>
+					<div class="buttons">
+						<button type="button" on:click={reset}> reset </button>
+						<PendingButton on:click={save} {pending} disabled={pending || !!errorMessage}>
+							save
+						</PendingButton>
+					</div>
+					{#if !errorMessage}
+						<div class="preview prose panel">
+							<p>
+								{#if fieldValue}<pre>{serialized}</pre>{:else}<em>(empty)</em>{/if}
+							</p>
+						</div>
+					{/if}
+				</div>
+			{:else if deletable && fieldValue !== undefined}
+				<PendingButton on:click={deleteField} {pending} disabled={pending || !!errorMessage}>
+					delete property '{field}'
 				</PendingButton>
-			</div>
-		{:else if deletable && fieldValue !== undefined}
-			<PendingButton on:click={deleteField} {pending} disabled={pending || !!errorMessage}>
-				delete property '{field}'
-			</PendingButton>
-		{/if}
-		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
-		{:else if changed}
-			<div class="preview prose panel">
-				<p>
-					{#if fieldValue}<pre>{serialized}</pre>{:else}<em>(empty)</em>{/if}
-				</p>
-			</div>
-		{/if}
-	{:else}
-		<button type="button" on:click={edit}>edit</button>
+			{/if}
+			{#if errorMessage}
+				<Message status="error">{errorMessage}</Message>
+			{/if}
+		</div>
 	{/if}
 {/if}
 
