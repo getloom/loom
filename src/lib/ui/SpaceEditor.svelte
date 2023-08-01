@@ -22,6 +22,7 @@
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 
 	$: directory = entityById.get($space.directory_id)!;
 
@@ -34,7 +35,7 @@
 </script>
 
 <div class="space-editor width_md">
-	<form class="prose" {...$$restProps}>
+	<form class="prose" {...attrs}>
 		<header>
 			<h2>Edit Space</h2>
 			<ContextInfo {actor} {hub} {space} />

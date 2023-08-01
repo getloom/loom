@@ -14,7 +14,7 @@
 	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;
 	export let done: (() => void) | undefined = undefined;
-	export let formAttrs: any = undefined;
+	export let attrs: any = undefined;
 
 	const {
 		actions,
@@ -34,7 +34,7 @@
 </script>
 
 <form
-	{...formAttrs}
+	{...attrs}
 	use:contextmenu.action={[
 		toContextmenuParams(EntityContextmenu, {actor, entity}),
 		toContextmenuParams(ActorContextmenu, {actor: authorActor}),

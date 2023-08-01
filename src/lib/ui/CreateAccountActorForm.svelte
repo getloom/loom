@@ -16,6 +16,7 @@
 	} = getApp();
 
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 
 	let name = '';
 	let status: AsyncStatus = 'initial'; // TODO refactor
@@ -70,7 +71,7 @@
 <!-- TODO these box classes -- ideally would have a single class or change the defaults,
 maybe `form.box` should be interpreted a particular way in Felt? -->
 <div class="prose padded_xl box">
-	<form class="box" {...$$restProps}>
+	<form class="box" {...attrs}>
 		<h2>Create a new Actor</h2>
 		<fieldset class="box">
 			<label>

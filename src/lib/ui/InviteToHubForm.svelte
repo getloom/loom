@@ -16,6 +16,7 @@
 	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 
 	let name = '';
 	let status: AsyncStatus = 'initial'; // TODO refactor
@@ -54,7 +55,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...$$restProps}>
+<form class="prose padded_xl" {...attrs}>
 	<h2>Invite to Hub</h2>
 	<ContextInfo {actor} {hub} />
 	<fieldset>

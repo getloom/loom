@@ -15,6 +15,7 @@
 	const {hub, directory} = getSpaceContext();
 
 	export let href: string;
+	export let attrs: any = undefined;
 
 	$: networkRelative = isNetworkRelativePath(href);
 	$: hubRelative = isHubRelativePath(href);
@@ -40,5 +41,4 @@
 	// $: prefetch = external ? undefined : (true as const);
 </script>
 
-{#if valid}<a {...$$restProps} href={finalHref} {rel} {target} on:click><slot /></a>{:else}<slot
-	/>{/if}
+{#if valid}<a {...attrs} href={finalHref} {rel} {target} on:click><slot /></a>{:else}<slot />{/if}

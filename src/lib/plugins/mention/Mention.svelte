@@ -23,15 +23,16 @@
 	$: mentionedActor = Array.from($actors.value).find((p) => p.get().name === name);
 </script>
 
-<span class="mention" class:inline>
-	{#if mentionedActor && hub && $mentionedActor?.type === 'community'}
-		<HubAvatar {actor} {hub} {contextmenuParams} {inline}>@</HubAvatar>
-	{:else if mentionedActor}
-		<ActorAvatar actor={mentionedActor} {contextmenuParams} {inline}>@</ActorAvatar>
-	{:else}
-		@{name}
-	{/if}
-</span>
+<span class="mention" class:inline
+	>{#if mentionedActor && hub && $mentionedActor?.type === 'community'}<HubAvatar
+			{actor}
+			{hub}
+			{contextmenuParams}
+			{inline}>@</HubAvatar
+		>{:else if mentionedActor}<ActorAvatar actor={mentionedActor} {contextmenuParams} {inline}
+			>@</ActorAvatar
+		>{:else}@{name}{/if}</span
+>
 
 <style>
 	.mention {

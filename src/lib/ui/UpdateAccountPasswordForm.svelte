@@ -7,6 +7,8 @@
 
 	const {actions} = getApp();
 
+	export let attrs: any = undefined;
+
 	let oldPassword = '';
 	let newPassword = '';
 	let newPassword2 = '';
@@ -72,7 +74,7 @@
 	};
 </script>
 
-<form class="panel prose padded_xl" {...$$restProps}>
+<form class="panel prose padded_xl" {...attrs}>
 	<fieldset class="box">
 		<legend class="width_full text_align_center">change account password</legend>
 		<label>

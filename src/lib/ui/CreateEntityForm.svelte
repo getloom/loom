@@ -24,6 +24,7 @@
 	export let type = 'Collection';
 	export let ties: CreateEntityParams['ties'] | undefined = undefined;
 	export let fields: {name?: boolean; content?: boolean} = {content: true}; // TODO add customization like display names for each field
+	export let attrs: any = undefined;
 
 	$: finalTies = ties ?? [{source_id: $space.directory_id}];
 	let name = '';
@@ -79,7 +80,7 @@
 	};
 </script>
 
-<form class="padded_xl" {...$$restProps}>
+<form class="padded_xl" {...attrs}>
 	{#if $$slots.header}
 		<slot name="header">
 			<h2>Create a new {entityName}</h2>

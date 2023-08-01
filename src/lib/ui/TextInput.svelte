@@ -10,8 +10,10 @@
 
 	export let actor: Readable<AccountActor>;
 	export let value = '';
+	export let placeholder: string | undefined = undefined;
 	export let el: HTMLTextAreaElement | undefined = undefined;
 	export let autofocus = false;
+	export let attrs: any = undefined;
 
 	const onKeydown = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
@@ -25,11 +27,12 @@
 <div class="text_input">
 	<ActorAvatar {actor} showName={false} />
 	<textarea
+		{placeholder}
 		on:keydown={onKeydown}
 		bind:value
-		{...$$restProps}
 		bind:this={el}
 		use:finalAutofocusAction
+		{...attrs}
 	/>
 </div>
 

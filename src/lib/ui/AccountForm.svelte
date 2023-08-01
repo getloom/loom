@@ -7,24 +7,23 @@
 	import HelpButton from '$lib/ui/HelpButton.svelte';
 
 	export let guest: boolean;
+	export let attrs: any = undefined;
 
 	let username = dev ? 'a@a.a' : ''; // share the username between the SignIn and SignUp forms for better UX
 
 	let view: 'sign_in' | 'sign_up' = 'sign_in'; // TODO likely add "forgot_password"
-
-	$: restProps = $$restProps as any; // TODO type hack, ideally this line doesn't exist
 </script>
 
 {#if guest}
 	{#if view === 'sign_in'}
-		<SignInForm {...$$restProps} bind:username>
+		<SignInForm {...attrs} bind:username>
 			<div class="box">
 				<button on:click={() => (view = 'sign_up')}>sign up</button>
 				<HelpButton />
 			</div>
 		</SignInForm>
 	{:else if view === 'sign_up'}
-		<SignUpForm {...$$restProps} bind:username>
+		<SignUpForm {...attrs} bind:username>
 			<div class="box">
 				<button on:click={() => (view = 'sign_in')}>sign in</button>
 				<HelpButton />
@@ -32,5 +31,5 @@
 		</SignUpForm>
 	{/if}
 {:else}
-	<SignOutForm {...restProps} />
+	<SignOutForm {...attrs} />
 {/if}

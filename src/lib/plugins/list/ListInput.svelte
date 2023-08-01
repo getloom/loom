@@ -37,9 +37,9 @@
 </script>
 
 <TextInput
-	style="height: var(--input_height)"
-	{actor}
 	placeholder=">"
+	attrs={{style: 'height: var(--input_height)'}}
+	{actor}
 	on:submit={onSubmit}
 	bind:value={text}
 	bind:el

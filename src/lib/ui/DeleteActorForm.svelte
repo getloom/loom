@@ -12,6 +12,7 @@
 	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 	export let pending = false;
+	export let attrs: any = undefined;
 
 	let errorMessage: string | undefined;
 	let lockText = '';
@@ -42,7 +43,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...$$restProps}>
+<form class="prose padded_xl" {...attrs}>
 	<h2>Delete <Mention name={$actor.name} />?</h2>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>

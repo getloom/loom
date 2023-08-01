@@ -15,6 +15,7 @@
 	export let actor: Readable<AccountActor>;
 	export let selectedActionData: ActionData | undefined = undefined; // TODO not reactive, see below
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 
 	let pending = false;
 	let errorMessage: string | null = null;
@@ -65,7 +66,7 @@
 	$: paramsPropertiesKeys = paramsProperties && Object.keys(paramsProperties);
 </script>
 
-<form {...$$restProps} class="padded_xl">
+<form {...attrs} class="padded_xl">
 	<div class="prose">
 		<h2>Create an Action</h2>
 	</div>

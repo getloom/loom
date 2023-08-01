@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let icon: string;
 	export let title: string | undefined = undefined;
+	export let iconAttrs: any = undefined;
 </script>
 
-<div {title} aria-label={title} {...$$restProps}>{icon}</div>
+<div {title} aria-label={title} {...iconAttrs}>{icon}</div>
 
 <style>
 	div {

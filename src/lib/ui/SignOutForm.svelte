@@ -11,6 +11,8 @@
 		ui: {session},
 	} = getApp();
 
+	export let attrs: any = undefined;
+
 	let account: ClientAccount | undefined;
 	$: account = $session.guest ? undefined : $session.account;
 
@@ -31,7 +33,7 @@
 	};
 </script>
 
-<form {...$$restProps}>
+<form {...attrs}>
 	<PendingButton pending={!!submitting} on:click={signOut} {disabled}>sign out</PendingButton>
 	{#if errorMessage}
 		<Message status="error">{errorMessage}</Message>

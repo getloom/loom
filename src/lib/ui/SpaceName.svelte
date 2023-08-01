@@ -7,7 +7,7 @@
 </script>
 
 <!-- TODO better API to set icon font size? -->
-<SpaceIcon {space} style="font-size: var(--size_lg)" />
+<SpaceIcon {space} iconAttrs={{style: 'font-size: var(--size_lg)'}} />
 <span>{$space.name} </span>
 
 <style>

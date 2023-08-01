@@ -12,6 +12,8 @@
 	const {actions} = getApp();
 
 	export let username = '';
+	export let attrs: any = undefined;
+
 	let password = '';
 	let password2 = '';
 	let usernameEl: HTMLInputElement;
@@ -73,7 +75,7 @@
 </script>
 
 <HeroIcon />
-<form {...$$restProps}>
+<form {...attrs}>
 	<fieldset>
 		<label>
 			<div class="title">email</div>

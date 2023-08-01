@@ -82,11 +82,6 @@ export const adminGuideItems: GuideItem[] = [
 
 export const devGuideItems: GuideItem[] = [
 	{
-		name: 'data model',
-		slug: 'dev/data-model',
-		component: data_model,
-	},
-	{
 		name: 'library usage',
 		slug: 'dev/library-usage',
 		component: library_usage,
@@ -95,6 +90,11 @@ export const devGuideItems: GuideItem[] = [
 		name: 'setup dev environment',
 		slug: 'dev/setup-dev-environment',
 		component: setup_dev_environment,
+	},
+	{
+		name: 'data model',
+		slug: 'dev/data-model',
+		component: data_model,
 	},
 ];
 

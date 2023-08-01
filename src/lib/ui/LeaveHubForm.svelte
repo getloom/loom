@@ -13,6 +13,7 @@
 	export let hub: Readable<Hub>;
 	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 
 	let errorMessage: string | undefined;
 	let pending = false;
@@ -45,7 +46,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...$$restProps}>
+<form class="prose padded_xl" {...attrs}>
 	<h2>Leave Hub?</h2>
 	<ContextInfo {actor} {hub} />
 	<label>

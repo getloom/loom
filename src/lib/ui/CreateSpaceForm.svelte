@@ -24,6 +24,7 @@
 	export let hub: Readable<Hub>;
 	export let initialName = ''; // TODO consider exporting `name` instead and delete this
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 
 	$: admin = $hub.hub_id === ADMIN_HUB_ID && $adminActors.has(actor);
 	$: creatableViewTemplates = toCreatableViewTemplates(admin);
@@ -87,7 +88,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...$$restProps}>
+<form class="prose padded_xl" {...attrs}>
 	<h2>Create a new Space</h2>
 	<ContextInfo {actor} {hub} />
 	<fieldset>

@@ -16,6 +16,7 @@
 	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
 	export let pending = false;
+	export let attrs: any = undefined;
 
 	let errorMessage: string | undefined;
 	let lockText = '';
@@ -47,7 +48,7 @@
 </script>
 
 <div class="prose padded_xl">
-	<form {...$$restProps}>
+	<form {...attrs}>
 		<h2>Delete Space?</h2>
 		<ContextInfo {actor} {hub} {space} />
 		{#if errorMessage}

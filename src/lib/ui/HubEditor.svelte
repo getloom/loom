@@ -17,10 +17,11 @@
 	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 </script>
 
 <div class="hub-editor width_md">
-	<form class="prose" {...$$restProps}>
+	<form class="prose" {...attrs}>
 		<header>
 			<h2>Edit Hub</h2>
 			<p style:font-size="var(--size_xl)">

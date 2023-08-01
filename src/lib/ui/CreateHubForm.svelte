@@ -22,6 +22,7 @@
 
 	export let actor: Readable<AccountActor>;
 	export let done: (() => void) | undefined = undefined;
+	export let attrs: any = undefined;
 
 	let name = '';
 
@@ -82,7 +83,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...$$restProps}>
+<form class="prose padded_xl" {...attrs}>
 	<h2>Create a new Hub</h2>
 	<ContextInfo {actor} />
 	<fieldset>
