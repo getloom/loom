@@ -1,5 +1,10 @@
 # changelog
 
+## 0.4.1
+
+- improve `$lib/Docs.svelte`, adding slots `header` and `footer` and improving nav styles
+  ([#892](https://github.com/feltjs/felt-server/pull/892))
+
 ## 0.4.0
 
 - **break**: rename `$lib/docs.ts` from `$lib/guide.ts`

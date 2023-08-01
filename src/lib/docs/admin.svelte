@@ -50,8 +50,8 @@ const adminActor = {'{'}
 	/>
 
 	<blockquote>
-		learn more about <a href="{base}{path}/guide/admin/hub-types">hub types</a> and
-		<a href="{base}{path}/guide/admin/actor-types">actor types</a>
+		learn more about <a href="{base}{path}/guide/user/hub-types">hub types</a> and
+		<a href="{base}{path}/guide/user/actor-types">actor types</a>
 	</blockquote>
 
 	<h3>Control and ownership diagram</h3>

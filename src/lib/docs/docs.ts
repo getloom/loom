@@ -31,6 +31,16 @@ export const userGuideItems: GuideItem[] = [
 		component: introduction,
 	},
 	{
+		name: 'hub types',
+		slug: 'user/hub-types',
+		component: hub_types,
+	},
+	{
+		name: 'actor types',
+		slug: 'user/actor-types',
+		component: actor_types,
+	},
+	{
 		name: 'known issues',
 		slug: 'user/known-issues',
 		component: known_issues,
@@ -47,16 +57,6 @@ export const adminGuideItems: GuideItem[] = [
 		name: 'admin',
 		slug: 'admin/admin',
 		component: admin,
-	},
-	{
-		name: 'actor types',
-		slug: 'admin/actor-types',
-		component: actor_types,
-	},
-	{
-		name: 'hub types',
-		slug: 'admin/hub-types',
-		component: hub_types,
 	},
 	{
 		name: 'database',

@@ -30,7 +30,7 @@
 	<ul>
 		<li>
 			a personal hub is created automatically for every <a
-				href="{base}{path}/guide/admin/actor-types"
+				href="{base}{path}/guide/user/actor-types"
 				><code>'account'</code>
 				actor</a
 			>, and this is the only way they're created

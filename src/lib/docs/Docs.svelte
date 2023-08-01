@@ -2,7 +2,6 @@
 	import {page} from '$app/stores';
 	import {base} from '$app/paths';
 	import {stripStart} from '@feltjs/util/string.js';
-	import Breadcrumbs from '@feltjs/felt-ui/Breadcrumbs.svelte';
 	import {writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {actionDatas} from '$lib/vocab/action/actionData';
@@ -33,8 +32,7 @@
 	// TODO improve how this component interacts with SvelteKit routing --
 	// it's designed like this so it can be imported as a library component and keep the user's routing simple
 
-	$: ({pathname} = $page.url);
-	$: basePathname = stripStart(pathname, base);
+	$: pathname = stripStart($page.url.pathname, base);
 
 	$: hash = $page.url.hash.substring(1);
 
@@ -58,27 +56,27 @@
 	$: path_vocab = path + '/vocab';
 
 	$: title =
-		basePathname === path_guide
+		pathname === path_guide
 			? 'felt guide'
-			: basePathname === path_guide_user
+			: pathname === path_guide_user
 			? 'felt user guide'
-			: basePathname === path_guide_admin
+			: pathname === path_guide_admin
 			? 'felt admin guide'
-			: basePathname === path_guide_dev
+			: pathname === path_guide_dev
 			? 'felt dev guide'
-			: basePathname === path_vocab
+			: pathname === path_vocab
 			? 'felt vocab docs'
 			: 'felt docs';
 
-	$: showGuideContent = basePathname.startsWith(path_guide);
-	$: showVocabContent = basePathname.startsWith(path_vocab);
+	$: showGuideContent = pathname.startsWith(path_guide);
+	$: showVocabContent = pathname.startsWith(path_vocab);
 
 	const toGuideSlug = (p: string, path: string): string | null => {
 		const guidePrefix = path + '/guide/';
 		if (!p.startsWith(guidePrefix)) return null;
 		return stripStart(p, guidePrefix);
 	};
-	$: guideSlug = toGuideSlug(basePathname, path);
+	$: guideSlug = toGuideSlug(pathname, path);
 	$: selectedGuideItem = guideSlug ? guideItemsBySlug.get(guideSlug) : null;
 </script>
 
@@ -88,12 +86,13 @@
 	<!-- TODO extract an accessible menu component, see PRS
 	https://github.com/feltjs/felt-server/pull/362
 	and https://github.com/feltjs/felt-ui/pull/197 -->
-	<div class="nav-wrapper prose padded_xl width_sm">
+	<div class="sidebar padded_xl width_sm">
+		<slot name="header"><header>@feltjs/felt-server</header></slot>
 		<nav>
-			<h2><a href="{base}{path}" class:selected={basePathname === path}>docs</a></h2>
-			<h3><a href="{base}{path}/guide" class:selected={showGuideContent}>guide</a></h3>
+			<h2><a href="{base}{path}" class:selected={pathname === path}>docs</a></h2>
+			<h3><a href="{base}{path_guide}" class:selected={showGuideContent}>guide</a></h3>
 			<h4>
-				<a href="{base}{path}/guide/user" class:selected={basePathname === path_guide_user}>
+				<a href="{base}{path_guide_user}" class:selected={pathname.startsWith(path_guide_user)}>
 					user
 				</a>
 			</h4>
@@ -103,14 +102,14 @@
 						<li>
 							<a
 								class:selected={guideItem === selectedGuideItem}
-								href="{base}{path}/guide/{guideItem.slug}">{guideItem.name}</a
+								href="{base}{path_guide}/{guideItem.slug}">{guideItem.name}</a
 							>
 						</li>
 					{/each}
 				</ol>
 			{/if}
 			<h4>
-				<a href="{base}{path}/guide/admin" class:selected={basePathname === path_guide_admin}>
+				<a href="{base}{path_guide_admin}" class:selected={pathname.startsWith(path_guide_admin)}>
 					admin
 				</a>
 			</h4>
@@ -120,14 +119,16 @@
 						<li>
 							<a
 								class:selected={guideItem === selectedGuideItem}
-								href="{base}{path}/guide/{guideItem.slug}">{guideItem.name}</a
+								href="{base}{path_guide}/{guideItem.slug}">{guideItem.name}</a
 							>
 						</li>
 					{/each}
 				</ol>
 			{/if}
 			<h4>
-				<a href="{base}{path}/guide/dev" class:selected={basePathname === path_guide_dev}> dev </a>
+				<a href="{base}{path_guide_dev}" class:selected={pathname.startsWith(path_guide_dev)}>
+					dev
+				</a>
 			</h4>
 			{#if showGuideContent}
 				<ol>
@@ -135,16 +136,16 @@
 						<li>
 							<a
 								class:selected={guideItem === selectedGuideItem}
-								href="{base}{path}/guide/{guideItem.slug}">{guideItem.name}</a
+								href="{base}{path_guide}/{guideItem.slug}">{guideItem.name}</a
 							>
 						</li>
 					{/each}
 				</ol>
 			{/if}
 
-			<h3><a href="{base}{path}/vocab#vocab" class:selected={showVocabContent}>vocab</a></h3>
+			<h3><a href="{base}{path_vocab}#vocab" class:selected={showVocabContent}>vocab</a></h3>
 			{#if showVocabContent}
-				<h4><a href="{base}{path}/vocab/#views" class:selected={hash === 'views'}>views</a></h4>
+				<h4><a href="{base}{path_vocab}#views" class:selected={hash === 'views'}>views</a></h4>
 				<menu>
 					{#each sortedViewTemplates as viewTemplate}
 						<li>
@@ -154,7 +155,7 @@
 						</li>
 					{/each}
 				</menu>
-				<h4><a href="{base}{path}/vocab/#models" class:selected={hash === 'models'}>models</a></h4>
+				<h4><a href="{base}{path_vocab}#models" class:selected={hash === 'models'}>models</a></h4>
 				<menu>
 					{#each schemaNames as name}
 						<li>
@@ -163,7 +164,7 @@
 					{/each}
 				</menu>
 				<h4>
-					<a href="{base}{path}/vocab/#service_actions" class:selected={hash === 'service_actions'}
+					<a href="{base}{path_vocab}#service_actions" class:selected={hash === 'service_actions'}
 						>service actions</a
 					>
 				</h4>
@@ -175,7 +176,7 @@
 					{/each}
 				</menu>
 				<h4>
-					<a href="{base}{path}/vocab/#client_actions" class:selected={hash === 'client_actions'}
+					<a href="{base}{path_vocab}#client_actions" class:selected={hash === 'client_actions'}
 						>client actions</a
 					>
 				</h4>
@@ -187,32 +188,39 @@
 					{/each}
 				</menu>
 			{/if}
-			<footer>
-				<Breadcrumbs>💚</Breadcrumbs>
-				<div class="links">
-					<a href="https://github.com/feltjs/felt-server">GitHub</a>∙<a
-						href="https://npmjs.com/@feltjs/felt-server">npm</a
-					>∙<a href="https://www.felt.dev">felt.dev</a>
-				</div>
-			</footer>
 		</nav>
+		<footer>
+			<slot name="footer">
+				<div class="prose">
+					<p class="text_align_center width_full" style:margin-top="var(--spacing_sm)">
+						<a href="{base}/">back home</a>
+					</p>
+					<div class="text_align_center">@feltjs/felt-server</div>
+					<div class="links">
+						<a href="https://github.com/feltjs/felt-server">GitHub</a>∙<a
+							href="https://npmjs.com/@feltjs/felt-server">npm</a
+						>∙<a href="https://www.felt.dev">felt.dev</a>
+					</div>
+				</div>
+			</slot>
+		</footer>
 	</div>
 	<div class="content">
 		<slot>
-			{#if basePathname === path}
+			{#if pathname === path}
 				<div class="prose">
 					<h1>Docs</h1>
 				</div>
 				<DocsContent />
-			{:else if basePathname === path_guide}
+			{:else if pathname === path_guide}
 				<DocsGuideContent />
-			{:else if basePathname === path_guide_user}
+			{:else if pathname === path_guide_user}
 				<DocsGuideUserContent />
-			{:else if basePathname === path_guide_admin}
+			{:else if pathname === path_guide_admin}
 				<DocsGuideAdminContent />
-			{:else if basePathname === path_guide_dev}
+			{:else if pathname === path_guide_dev}
 				<DocsGuideDevContent />
-			{:else if basePathname === path_vocab}
+			{:else if pathname === path_vocab}
 				<DocsVocabContent
 					{sortedViewTemplates}
 					{sortedModelSchemas}
@@ -221,15 +229,15 @@
 					{schemaNames}
 				/>
 			{:else if selectedGuideItem}
-				{#if basePathname.startsWith(path_guide_user + '/')}
+				{#if pathname.startsWith(path_guide_user + '/')}
 					<DocsGuideUserContent
 						><svelte:component this={selectedGuideItem.component} /></DocsGuideUserContent
 					>
-				{:else if basePathname.startsWith(path_guide_admin + '/')}
+				{:else if pathname.startsWith(path_guide_admin + '/')}
 					<DocsGuideAdminContent
 						><svelte:component this={selectedGuideItem.component} /></DocsGuideAdminContent
 					>
-				{:else if basePathname.startsWith(path_guide_dev + '/')}
+				{:else if pathname.startsWith(path_guide_dev + '/')}
 					<DocsGuideDevContent
 						><svelte:component this={selectedGuideItem.component} /></DocsGuideDevContent
 					>
@@ -263,22 +271,39 @@
 		flex-direction: column;
 		padding: var(--spacing_xl3) 0;
 	}
-	nav li {
-		padding: 0;
-	}
-	.nav-wrapper {
+	.sidebar {
 		height: 100%;
 		overflow: auto;
 	}
-	nav {
-		position: sticky;
-		top: 0;
-		right: 0;
+	header {
+		margin-bottom: var(--spacing_md);
 		padding: var(--spacing_sm);
+	}
+	nav {
 		flex-direction: column;
 	}
+	nav li {
+		padding: 0;
+	}
+	nav a,
+	/* TODO hacky, gets the `Vocab` */
+	nav :global(a) {
+		border-radius: var(--border_radius_xs);
+		padding: var(--spacing_xs3) var(--spacing_sm);
+	}
+	nav h3 a {
+		padding: var(--spacing_xs2) var(--spacing_sm);
+	}
+	nav h2 a {
+		padding: var(--spacing_xs) var(--spacing_sm);
+	}
+	nav a.selected,
+	/* TODO hacky, gets the `Vocab` */
+	nav :global(a.selected) {
+		background-color: var(--fg_1);
+	}
 	@media (max-width: 1500px) {
-		.nav-wrapper {
+		.sidebar {
 			position: relative;
 			transform: none;
 			margin-bottom: var(--spacing_xl3);
@@ -296,10 +321,12 @@
 		align-items: center;
 		background-color: var(--fg_1);
 		border-radius: var(--border_radius_sm);
-		padding: var(--spacing_md);
+		padding: var(--spacing_sm);
 		margin: var(--spacing_xl5) 0;
 	}
-	footer .links {
+	.links {
+		display: flex;
+		justify-content: center;
 		margin: var(--spacing_sm) 0;
 	}
 	footer a {
