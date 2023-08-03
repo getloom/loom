@@ -1,18 +1,25 @@
 <script lang="ts">
-	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
-	import type {ViewTemplate} from '$lib/vocab/view/view';
 	import type {VocabSchema} from '@feltjs/gro';
+	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
+	import {base} from '$app/paths';
 
+	import type {ViewTemplate} from '$lib/vocab/view/view';
+	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
 	import ActionInfo from '$lib/ui/ActionInfo.svelte';
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';
-	import {base} from '$app/paths';
+	import {onscreen} from '$lib/util/onscreen';
 
 	export let sortedViewTemplates: ViewTemplate[];
 	export let sortedModelSchemas: VocabSchema[];
 	export let serviceActions: ServiceActionData[];
 	export let clientActions: ClientActionData[];
 	export let schemaNames: string[];
+
+	/**
+	 * Optionally specify if the link should be displayed as selected via a set of matching names.
+	 */
+	export let selections: Mutable<Set<string>> | undefined = undefined;
 </script>
 
 <div class="prose padded_xl">
@@ -21,9 +28,10 @@
 		The felt-server vocabulary is published as a <a href="https://json-schema.org/">JSON Schema</a>
 		on
 		<a href="https://github.com/feltjs/felt-server/blob/main/src/static/schemas/vocab.json"
-			>on GitHub</a
+			>GitHub</a
 		>
-		and on this website at <a href="{base}/schemas/vocab.json">{base}/schemas/vocab.json</a>.
+		and on this website at
+		<a href="{base}/schemas/vocab.json" download>{base}/schemas/vocab.json</a>.
 	</aside>
 </div>
 <div class="prose padded_xl">
@@ -31,7 +39,13 @@
 </div>
 <ul>
 	{#each sortedViewTemplates as view}
-		<li id={view.name}>
+		<li
+			id={view.name}
+			class="view panel"
+			use:onscreen={(intersecting) => {
+				selections?.mutate((v) => (intersecting ? v.add(view.name) : v.delete(view.name)));
+			}}
+		>
 			<ViewInfo {view} />
 		</li>
 	{/each}
@@ -43,7 +57,12 @@
 <ul>
 	{#each sortedModelSchemas as schema, i}
 		{@const name = schemaNames[i]}
-		<li id={name}>
+		<li
+			id={name}
+			use:onscreen={(intersecting) => {
+				selections?.mutate((v) => (intersecting ? v.add(name) : v.delete(name)));
+			}}
+		>
 			<SchemaInfo {schema} />
 		</li>
 	{/each}
@@ -54,7 +73,12 @@
 </div>
 <ul>
 	{#each serviceActions as action}
-		<li id={action.name}>
+		<li
+			id={action.name}
+			use:onscreen={(intersecting) => {
+				selections?.mutate((v) => (intersecting ? v.add(action.name) : v.delete(action.name)));
+			}}
+		>
 			<ActionInfo {action} />
 		</li>
 	{/each}
@@ -64,7 +88,12 @@
 </div>
 <ul>
 	{#each clientActions as action}
-		<li id={action.name}>
+		<li
+			id={action.name}
+			use:onscreen={(intersecting) => {
+				selections?.mutate((v) => (intersecting ? v.add(action.name) : v.delete(action.name)));
+			}}
+		>
 			<ActionInfo {action} />
 		</li>
 	{/each}
@@ -75,5 +104,9 @@
 		display: flex;
 		flex-direction: column;
 		padding: var(--spacing_xl3) 0;
+	}
+	.view {
+		padding: var(--spacing_lg);
+		margin-bottom: var(--spacing_xl4);
 	}
 </style>

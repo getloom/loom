@@ -2,7 +2,7 @@
 	import {page} from '$app/stores';
 	import {base} from '$app/paths';
 	import {stripStart} from '@feltjs/util/string.js';
-	import {writable} from '@feltcoop/svelte-gettable-stores';
+	import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {actionDatas} from '$lib/vocab/action/actionData';
 	import {modelSchemas} from '$lib/vocab/schemas';
@@ -34,8 +34,6 @@
 
 	$: pathname = stripStart($page.url.pathname, base);
 
-	$: hash = $page.url.hash.substring(1);
-
 	// TODO display source code links to views and actions and such
 
 	const sortedModelSchemas = modelSchemas.slice().sort((a, b) => a.$id.localeCompare(b.$id));
@@ -48,6 +46,28 @@
 		.sort((a, b) => a.name.localeCompare(b.name)) as ServiceActionData[];
 
 	const schemaNames = sortedModelSchemas.map((s) => toSchemaName(s.$id));
+
+	const viewNames = new Set(sortedViewTemplates.map((a) => a.name));
+	const schemaNamesSet = new Set(schemaNames); // TODO move to sets from the above array
+	const clientActionNames = new Set(clientActions.map((a) => a.name));
+	const serviceActionNames = new Set(serviceActions.map((a) => a.name));
+
+	type VocabCategory = 'views' | 'models' | 'service_actions' | 'client_actions';
+	const namesByCategory: Map<VocabCategory, Set<string>> = new Map([
+		['views', viewNames],
+		['models', schemaNamesSet],
+		['client_actions', clientActionNames],
+		['service_actions', serviceActionNames],
+	]);
+	const isCategoryOnscreen = (c: VocabCategory, $vocabOnscreen: Set<string>): boolean => {
+		const names = namesByCategory.get(c)!;
+		for (const v of $vocabOnscreen) {
+			if (names.has(v)) {
+				return true;
+			}
+		}
+		return false;
+	};
 
 	$: path_guide = path + '/guide';
 	$: path_guide_user = path + '/guide/user';
@@ -78,6 +98,8 @@
 	};
 	$: guideSlug = toGuideSlug(pathname, path);
 	$: selectedGuideItem = guideSlug ? guideItemsBySlug.get(guideSlug) : null;
+
+	const vocabOnscreen = mutable(new Set<string>()); // set of vocab names onscreen via IntersectionObserver
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
@@ -145,45 +167,57 @@
 
 			<h3><a href="{base}{path_vocab}#vocab" class:selected={showVocabContent}>vocab</a></h3>
 			{#if showVocabContent}
-				<h4><a href="{base}{path_vocab}#views" class:selected={hash === 'views'}>views</a></h4>
+				<h4>
+					<a
+						href="{base}{path_vocab}#views"
+						class:selected={isCategoryOnscreen('views', $vocabOnscreen.value)}>views</a
+					>
+				</h4>
 				<menu>
-					{#each sortedViewTemplates as viewTemplate}
+					{#each sortedViewTemplates as { name }}
 						<li>
-							<a href="#{viewTemplate.name}" class:selected={hash === viewTemplate.name}
-								>{viewTemplate.name}</a
-							>
-						</li>
-					{/each}
-				</menu>
-				<h4><a href="{base}{path_vocab}#models" class:selected={hash === 'models'}>models</a></h4>
-				<menu>
-					{#each schemaNames as name}
-						<li>
-							<Vocab {name} selected={hash === name} plain={true} />
+							<Vocab {name} plain={true} selections={vocabOnscreen} />
 						</li>
 					{/each}
 				</menu>
 				<h4>
-					<a href="{base}{path_vocab}#service_actions" class:selected={hash === 'service_actions'}
+					<a
+						href="{base}{path_vocab}#models"
+						class:selected={isCategoryOnscreen('models', $vocabOnscreen.value)}>models</a
+					>
+				</h4>
+				<menu>
+					{#each schemaNames as name}
+						<li>
+							<Vocab {name} plain={true} selections={vocabOnscreen} />
+						</li>
+					{/each}
+				</menu>
+				<h4>
+					<a
+						href="{base}{path_vocab}#service_actions"
+						class:selected={isCategoryOnscreen('service_actions', $vocabOnscreen.value)}
 						>service actions</a
 					>
 				</h4>
 				<menu>
 					{#each serviceActions as { name } (name)}
 						<li>
-							<Vocab {name} selected={hash === name} plain={true} />
+							<Vocab {name} plain={true} selections={vocabOnscreen} />
 						</li>
 					{/each}
 				</menu>
 				<h4>
-					<a href="{base}{path_vocab}#client_actions" class:selected={hash === 'client_actions'}
+					<a
+						href="{base}{path_vocab}#client_actions"
+						class:selected={isCategoryOnscreen('client_actions', $vocabOnscreen.value)}
 						>client actions</a
 					>
 				</h4>
 				<menu>
 					{#each clientActions as { name } (name)}
 						<li>
-							<Vocab {name} selected={hash === name} plain={true} />
+							<Vocab {name} plain={true} selections={vocabOnscreen} />
 						</li>
 					{/each}
 				</menu>
@@ -206,6 +240,10 @@
 		</footer>
 	</div>
 	<div class="content">
+		<!--
+			TODO this is hacky routing but IDK how to better integrate with SvelteKit
+			for this usecase mounting Docs from a library to handle multiple routes
+		-->
 		<slot>
 			{#if pathname === path}
 				<div class="prose">
@@ -227,6 +265,7 @@
 					{serviceActions}
 					{clientActions}
 					{schemaNames}
+					selections={vocabOnscreen}
 				/>
 			{:else if selectedGuideItem}
 				{#if pathname.startsWith(path_guide_user + '/')}
@@ -285,11 +324,13 @@
 	nav li {
 		padding: 0;
 	}
-	nav a,
 	/* TODO hacky, gets the `Vocab` */
 	nav :global(a) {
 		border-radius: var(--border_radius_xs);
 		padding: var(--spacing_xs3) var(--spacing_sm);
+	}
+	nav :global(a:not(:hover)) {
+		--text_decoration_selected: none;
 	}
 	nav h3 a {
 		padding: var(--spacing_xs2) var(--spacing_sm);
@@ -297,7 +338,6 @@
 	nav h2 a {
 		padding: var(--spacing_xs) var(--spacing_sm);
 	}
-	nav a.selected,
 	/* TODO hacky, gets the `Vocab` */
 	nav :global(a.selected) {
 		background-color: var(--fg_1);

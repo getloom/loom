@@ -7,6 +7,8 @@
 	import {schemasByName} from '$lib/vocab/schemas';
 	import {actionDataByName} from '$lib/vocab/action/actionData';
 	import ActionInfo from '$lib/ui/ActionInfo.svelte';
+	import ViewInfo from '$lib/ui/ViewInfo.svelte';
+	import {viewTemplatesByName} from '$lib/vocab/view/view';
 
 	export let name: string;
 
@@ -14,17 +16,20 @@
 
 	$: schema = schemasByName.get(name);
 	$: action = actionDataByName.get(name);
+	$: view = viewTemplatesByName.get(name);
 
 	const run = (): void => {
 		if (schema) {
 			actions.OpenDialog(toDialogParams(SchemaInfo, {schema}));
 		} else if (action) {
 			actions.OpenDialog(toDialogParams(ActionInfo, {action}));
+		} else if (view) {
+			actions.OpenDialog(toDialogParams(ViewInfo, {view}));
 		}
 	};
 </script>
 
-{#if schema || action}
+{#if schema || action || view}
 	<ContextmenuEntry {run}>
 		More about <code>{name}</code>
 		<svelte:fragment slot="icon">?</svelte:fragment>

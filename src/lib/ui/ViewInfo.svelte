@@ -8,7 +8,7 @@
 	<div class="title padded_xs">
 		<span style:font-size="var(--size_lg)">
 			{view.icon}
-			{view.name}
+			<span class="name">{view.name}</span>
 		</span>
 		<span class="tags">
 			{#if view.creatable !== false}
@@ -29,6 +29,10 @@
 		display: flex;
 		align-items: center;
 		margin-bottom: var(--spacing_md);
+		font-size: var(--font_size_lg);
+	}
+	.name {
+		font-family: var(--font_family_mono);
 	}
 	.tags {
 		margin-left: var(--spacing_md);
