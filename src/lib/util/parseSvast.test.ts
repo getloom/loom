@@ -265,6 +265,44 @@ test__parseSvast('parses a word in backticks', async () => {
 	});
 });
 
+test__parseSvast('parses a word in asterisks', async () => {
+	const parsed = parseSvast({
+		value: '*bold*',
+		generatePositions: false,
+	});
+	assert.equal(parsed, {
+		type: 'root',
+		children: [
+			{
+				type: 'svelteElement',
+				tagName: 'strong',
+				properties: [],
+				selfClosing: false,
+				children: [{type: 'text', value: 'bold'}],
+			},
+		],
+	});
+});
+
+test__parseSvast('parses a word in italics', async () => {
+	const parsed = parseSvast({
+		value: '_italics_',
+		generatePositions: false,
+	});
+	assert.equal(parsed, {
+		type: 'root',
+		children: [
+			{
+				type: 'svelteElement',
+				tagName: 'em',
+				properties: [],
+				selfClosing: false,
+				children: [{type: 'text', value: 'italics'}],
+			},
+		],
+	});
+});
+
 // TODO rewrite `parseSvelteText` to handle this test
 // test__parseSvast('parses a phrase in backticks', async () => {
 // 	const parsed = parseSvast({

@@ -52,6 +52,10 @@ export const toCreatableViewTemplates = (
 	templates: ViewTemplate[] = viewTemplates,
 ): ViewTemplate[] => templates.filter((v) => v.creatable !== false && (!v.admin || admin));
 
+/**
+ * This provides security for the strategy we use to mount HTML elements from user input.
+ * Allowing things like `onclick` here would enable an XSS attack.
+ */
 export const DEFAULT_ALLOWED_HTML_ATTRIBUTES = new Set([
 	'class',
 	// TODO handle external links (href/src/srcset) differently from internal ones,
@@ -80,13 +84,19 @@ export const toViewProps = (
 	let props: Record<string, any> | undefined;
 	if ('properties' in view) {
 		for (const prop of view.properties) {
-			const v = prop.value[0];
-			if (
-				v?.type === 'text' &&
-				// Allow all component props but allowlist element attributes.
-				(view.type === 'svelteComponent' || allowedHtmlAttributes.has(prop.name))
-			) {
-				(props || (props = {}))[prop.name] = v.value;
+			const {value} = prop;
+			// Allow all component props but allowlist element attributes.
+			// Importantly this means component props can cause security and privacy vulnerabilities
+			// depending on their usage by the component.
+			if (view.type === 'svelteComponent' || allowedHtmlAttributes.has(prop.name)) {
+				let str = '';
+				for (const v of value) {
+					if (v.type !== 'text') break;
+					str += v.value;
+				}
+				if (str) {
+					(props || (props = Object.create(null)))[prop.name] = str;
+				}
 			}
 		}
 	}

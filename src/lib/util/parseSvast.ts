@@ -115,6 +115,32 @@ const parseSvastText = (node: Text): SvelteChild => {
 					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
 				],
 			});
+		} else if (firstChar === '*' && lastChar === '*') {
+			// `strong` tags
+			flushPlainText();
+			(children || (children = [])).push({
+				[ADDED_BY_FELT as any]: true,
+				type: 'svelteElement',
+				tagName: 'strong',
+				properties: [],
+				selfClosing: false,
+				children: [
+					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
+				],
+			});
+		} else if (firstChar === '_' && lastChar === '_') {
+			// `em` tags
+			flushPlainText();
+			(children || (children = [])).push({
+				[ADDED_BY_FELT as any]: true,
+				type: 'svelteElement',
+				tagName: 'em',
+				properties: [],
+				selfClosing: false,
+				children: [
+					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
+				],
+			});
 		} else if (firstChar === '@' && !checkActorName((restStr = word.substring(1)))) {
 			// `@actor` mentions
 			flushPlainText();
