@@ -1,5 +1,12 @@
 # changelog
 
+## 0.4.2
+
+- improve docs scrolling feedback
+  ([#894](https://github.com/feltjs/felt-server/pull/894))
+- use `@fuz-dev/intersect` dependency
+  ([#897](https://github.com/feltjs/felt-server/pull/897))
+
 ## 0.4.1
 
 - improve `$lib/Docs.svelte`, adding slots `header` and `footer` and improving nav styles
