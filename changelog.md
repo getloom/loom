@@ -1,5 +1,10 @@
 # changelog
 
+## 0.4.3
+
+- improve docs links
+  ([#899](https://github.com/feltjs/felt-server/pull/899))
+
 ## 0.4.2
 
 - improve docs scrolling feedback
