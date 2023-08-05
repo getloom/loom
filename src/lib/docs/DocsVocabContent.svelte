@@ -2,13 +2,13 @@
 	import type {VocabSchema} from '@feltjs/gro';
 	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
 	import {base} from '$app/paths';
+	import {intersect} from '@fuz.dev/intersect';
 
 	import type {ViewTemplate} from '$lib/vocab/view/view';
 	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
 	import ActionInfo from '$lib/ui/ActionInfo.svelte';
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';
-	import {onscreen} from '$lib/util/onscreen';
 
 	export let sortedViewTemplates: ViewTemplate[];
 	export let sortedModelSchemas: VocabSchema[];
@@ -42,7 +42,7 @@
 		<li
 			id={view.name}
 			class="view panel"
-			use:onscreen={(intersecting) => {
+			use:intersect={(intersecting) => {
 				selections?.mutate((v) => (intersecting ? v.add(view.name) : v.delete(view.name)));
 			}}
 		>
@@ -59,7 +59,7 @@
 		{@const name = schemaNames[i]}
 		<li
 			id={name}
-			use:onscreen={(intersecting) => {
+			use:intersect={(intersecting) => {
 				selections?.mutate((v) => (intersecting ? v.add(name) : v.delete(name)));
 			}}
 		>
@@ -75,7 +75,7 @@
 	{#each serviceActions as action}
 		<li
 			id={action.name}
-			use:onscreen={(intersecting) => {
+			use:intersect={(intersecting) => {
 				selections?.mutate((v) => (intersecting ? v.add(action.name) : v.delete(action.name)));
 			}}
 		>
@@ -90,7 +90,7 @@
 	{#each clientActions as action}
 		<li
 			id={action.name}
-			use:onscreen={(intersecting) => {
+			use:intersect={(intersecting) => {
 				selections?.mutate((v) => (intersecting ? v.add(action.name) : v.delete(action.name)));
 			}}
 		>
