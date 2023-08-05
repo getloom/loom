@@ -25,8 +25,8 @@
 	</p>
 	<p>
 		Admins are superusers, which means they have full control over the instance. (it's possible
-		we'll develop features to restrict admin powers, but that's speculative) Admins access their
-		powers through the same web frontend as the rest of the app.
+		we'll develop features to restrict admin powers) Admins access their powers through the normal
+		web frontend.
 	</p>
 	<p>
 		For efficiency and ergonomics, the admin hub and admin actor are both hardcoded to have id <code

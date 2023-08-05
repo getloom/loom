@@ -11,8 +11,8 @@
     Actors <|-- Hubs
     Hubs <|-- Actors
     Hubs <|-- Roles
-    Roles <|-- Assigments
-    Actors <|-- Assigments
+    Roles <|-- Assignments
+    Actors <|-- Assignments
     Roles <|-- Policies
     Hubs <|-- Spaces
     Spaces <|-- Entities
