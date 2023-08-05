@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 
-	import DocsGuideLink from '$lib/docs/DocsGuideLink.svelte';
+	import DocsGuideLinks from '$lib/docs/DocsGuideLinks.svelte';
 	import {devGuideItems, getDocsSettings} from '$lib/docs/docs';
 
 	const docsSettings = getDocsSettings();
@@ -12,7 +12,7 @@
 	<div class="prose">
 		<h1>Dev guide</h1>
 	</div>
-	<DocsGuideLink guide="dev" />
+	<DocsGuideLinks />
 	<br />
 	<slot>
 		<div class="prose">
