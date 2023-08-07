@@ -125,7 +125,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		);
 
 		// Create the hub actor and its assignment
-		const hubActor = await repos.actor.createCommunityActor(hub.name, hub_id);
+		const hubActor = await repos.actor.createHubActor(hub.name, hub_id);
 		const hubActorAssignment = await repos.assignment.create(
 			hubActor.actor_id,
 			hub_id,

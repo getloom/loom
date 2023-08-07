@@ -26,14 +26,14 @@ export class ActorRepo extends PostgresRepo {
 		return actor;
 	}
 
-	async createCommunityActor(name: string, hub_id: HubId): Promise<PublicActor> {
+	async createHubActor(name: string, hub_id: HubId): Promise<PublicActor> {
 		const data = await this.sql<PublicActor[]>`
 			INSERT INTO actors (type, name, hub_id) VALUES (
 				'community', ${name}, ${hub_id}
 			) RETURNING ${this.sql(ACTOR_COLUMNS.public)}
 		`;
 		const actor = data[0];
-		log.debug('[createCommunityActor] created actor', actor);
+		log.debug('[createHubActor] created actor', actor);
 		return actor;
 	}
 

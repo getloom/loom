@@ -68,7 +68,7 @@
 			"description": "\n\t\t<Vocab name=\"Actor\" />s perform actions in the system.\n\t\tThey can be of type <code>'account'</code>, <code>'hub'</code>, or <code>'ghost'</code>.\n\t",
 			"anyOf": [
 				{"$ref": "/schemas/AccountActor"},
-				{"$ref": "/schemas/CommunityActor"},
+				{"$ref": "/schemas/HubActor"},
 				{"$ref": "/schemas/GhostActor"}
 			]
 		},
@@ -170,23 +170,6 @@
 			"$id": "/schemas/ClientSession",
 			"description": "\n\t\tThe session data loaded on each page for authenticated and unauthenticated users.\n\t",
 			"anyOf": [{"$ref": "/schemas/ClientAccountSession"}, {"$ref": "/schemas/ClientGuestSession"}]
-		},
-		"CommunityActor": {
-			"$id": "/schemas/CommunityActor",
-			"type": "object",
-			"description": "\n\t\tRepresents a collective actor under the ownership of a <Vocab name=\"Hub\" />. \n\t\tCurrently, these are only created when a new <Vocab name=\"Hub\" /> is made and have no extended functionality within the system.\n\t\tThe <Vocab name=\"Hub\" /> that owns it is represented by <code>hub_id</code>.\n\t",
-			"properties": {
-				"actor_id": {"$ref": "/schemas/ActorId"},
-				"account_id": {"type": "null"},
-				"hub_id": {"$ref": "/schemas/HubId"},
-				"type": {"type": "string", "enum": ["community"]},
-				"name": {"type": "string"},
-				"icon": {"type": "string"},
-				"created": {"type": "object", "instanceof": "Date"},
-				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
-			},
-			"required": ["actor_id", "hub_id", "type", "name", "created", "updated"],
-			"additionalProperties": false
 		},
 		"CreateAccountActorParams": {
 			"$id": "/schemas/CreateAccountActorParams",
@@ -557,6 +540,23 @@
 				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
 			},
 			"required": ["hub_id", "type", "name", "settings", "created", "updated"],
+			"additionalProperties": false
+		},
+		"HubActor": {
+			"$id": "/schemas/HubActor",
+			"type": "object",
+			"description": "\n\t\tRepresents a collective actor under the ownership of a <Vocab name=\"Hub\" />. \n\t\tCurrently, these are only created when a new <Vocab name=\"Hub\" /> is made and have no extended functionality within the system.\n\t\tThe <Vocab name=\"Hub\" /> that owns it is represented by <code>hub_id</code>.\n\t",
+			"properties": {
+				"actor_id": {"$ref": "/schemas/ActorId"},
+				"account_id": {"type": "null"},
+				"hub_id": {"$ref": "/schemas/HubId"},
+				"type": {"type": "string", "enum": ["community"]},
+				"name": {"type": "string"},
+				"icon": {"type": "string"},
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
+			},
+			"required": ["actor_id", "hub_id", "type", "name", "created", "updated"],
 			"additionalProperties": false
 		},
 		"HubId": {

@@ -8,7 +8,7 @@ import {
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
 import {expectApiError, toServiceRequestMock} from '$lib/util/testHelpers';
-import type {CommunityActor} from '$lib/vocab/actor/actor';
+import type {HubActor} from '$lib/vocab/actor/actor';
 
 /* test__assignmentServices */
 const test__assignmentServices = suite<TestDbContext>('assignmentServices');
@@ -84,7 +84,7 @@ test__assignmentServices('fail to delete a personal assignment', async ({repos, 
 
 test__assignmentServices('fail to delete a hub actor assignment', async ({repos, random}) => {
 	const {hub, actor, actors, assignments} = await random.hub();
-	const communityActor = actors.find((p) => p.type === 'community') as CommunityActor;
+	const communityActor = actors.find((p) => p.type === 'community') as HubActor;
 	const assignment = assignments.find(
 		(a) => a.actor_id === communityActor.actor_id && a.hub_id === hub.hub_id,
 	)!;

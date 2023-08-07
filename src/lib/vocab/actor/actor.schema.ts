@@ -35,14 +35,14 @@ export const ActorSchema = {
 	`,
 	anyOf: [
 		{$ref: '/schemas/AccountActor'},
-		{$ref: '/schemas/CommunityActor'},
+		{$ref: '/schemas/HubActor'},
 		{$ref: '/schemas/GhostActor'},
 	],
 } satisfies VocabSchema;
 
 export const ActionActorSchema = {
 	$id: '/schemas/ActionActor',
-	anyOf: [{$ref: '/schemas/AccountActor'}, {$ref: '/schemas/CommunityActor'}],
+	anyOf: [{$ref: '/schemas/AccountActor'}, {$ref: '/schemas/HubActor'}],
 } satisfies VocabSchema;
 
 export const AccountActorSchema = {
@@ -67,8 +67,8 @@ export const AccountActorSchema = {
 	additionalProperties: false,
 } satisfies VocabSchema;
 
-export const CommunityActorSchema = {
-	$id: '/schemas/CommunityActor',
+export const HubActorSchema = {
+	$id: '/schemas/HubActor',
 	type: 'object',
 	description: `
 		Represents a collective actor under the ownership of a <Vocab name="Hub" />. 

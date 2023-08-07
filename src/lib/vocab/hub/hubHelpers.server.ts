@@ -75,7 +75,7 @@ export const initAdminHub = async (
 	);
 
 	// Create the hub actor.
-	const actor = await repos.actor.createCommunityActor(hub.name, hub.hub_id);
+	const actor = await repos.actor.createHubActor(hub.name, hub.hub_id);
 
 	// Init
 	const {roles, policies, assignments} = await initTemplateGovernanceForHub(

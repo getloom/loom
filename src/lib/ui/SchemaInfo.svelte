@@ -10,6 +10,10 @@
 
 	let properties: undefined | Array<[string, JSONSchema]>;
 	$: properties = schema.properties && Array.from(Object.entries(schema.properties));
+
+	$: ({$id: id, $ref: ref, type, anyOf, description, required} = schema);
+
+	$: name = id && toSchemaName(id);
 </script>
 
 <div class="schema_info">
@@ -19,25 +23,24 @@
 		</div>
 	{:else}
 		<div class="title">
-			{#if schema.$id}
-				<span class="name">{toSchemaName(schema.$id)}</span>
+			{#if name}
+				<span class="name">{name}</span>
 			{/if}
 			<small class="type">
-				{#if schema.$ref}
-					{@const name = toSchemaName(schema.$ref)}
-					<Vocab {name} />
-				{:else if schema.type}
-					{schema.type}
-				{:else if schema.anyOf}
+				{#if ref}
+					<Vocab name={toSchemaName(ref)} />
+				{:else if type}
+					{type}
+				{:else if anyOf}
 					union
 				{:else}
 					unknown
 				{/if}
 			</small>
 		</div>
-		{#if schema.description}
+		{#if description}
 			<div class="description prose">
-				<SvastText text={schema.description} />
+				<SvastText text={description} />
 			</div>
 		{/if}
 		{#if properties}
@@ -46,7 +49,7 @@
 					<span class="name">{propertyName}</span>
 					<small class="required">
 						<!-- TODO cache this on a viewmodel? -->
-						{#if Array.isArray(schema.required) && schema.required.includes(propertyName)}
+						{#if Array.isArray(required) && required.includes(propertyName)}
 							<!-- leave blank? -->
 						{:else}
 							<span title="{propertyName} is optional">?</span>
@@ -56,6 +59,13 @@
 				</div>
 			{/each}
 		{/if}
+		{#if anyOf}
+			<div class="union">
+				{#each anyOf as unionSchema}
+					<svelte:self schema={unionSchema} />
+				{/each}
+			</div>
+		{/if}
 	{/if}
 </div>
 
@@ -64,6 +74,7 @@
 		background-color: var(--fg_1);
 		border-radius: var(--border_radius_sm);
 		flex: 1;
+		padding: var(--spacing_xs4);
 	}
 	.title {
 		display: flex;
@@ -86,6 +97,7 @@
 	.property {
 		display: flex;
 		align-items: center;
+		padding: var(--spacing_xs4);
 	}
 	.property .name {
 		display: flex;
@@ -94,5 +106,13 @@
 	.required {
 		display: flex;
 		width: 30px;
+	}
+	.union {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		padding: 0 var(--spacing_sm) var(--spacing_sm) var(--spacing_sm);
+		gap: var(--spacing_sm);
 	}
 </style>

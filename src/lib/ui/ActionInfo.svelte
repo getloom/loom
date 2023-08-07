@@ -42,9 +42,8 @@
 	</div>
 	{#if action.type !== 'ClientAction'}
 		<div class="property">
-			<span class="name">path</span>
-			<span>{action.route.method}</span>
-			<span>{action.route.path}</span>
+			<div class="name">path</div>
+			<div class="endpoint panel padded_md">{action.route.method} {action.route.path}</div>
 		</div>
 	{/if}
 	<div class="property">
@@ -100,8 +99,12 @@
 		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
 		overflow: auto;
 	}
-	.property > span {
+	.property .name {
 		display: flex;
 		width: 100px;
+	}
+	.property .endpoint {
+		display: flex;
+		flex: 1;
 	}
 </style>

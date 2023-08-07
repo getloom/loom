@@ -19,7 +19,7 @@ export interface AccountActor {
 	created: Date;
 	updated: Date | null;
 }
-export type ActionActor = AccountActor | CommunityActor;
+export type ActionActor = AccountActor | HubActor;
 
 export type ActorId = Flavored<number, 'ActorId'>;
 
@@ -40,7 +40,7 @@ export interface ActorRecord {
  * <Vocab name="Actor" />s perform actions in the system.
  * They can be of type <code>'account'</code>, <code>'hub'</code>, or <code>'ghost'</code>.
  */
-export type Actor = AccountActor | CommunityActor | GhostActor;
+export type Actor = AccountActor | HubActor | GhostActor;
 
 /**
  * The union of <Vocab name="Actor" /> subsets a user sees on their client,
@@ -49,21 +49,6 @@ export type Actor = AccountActor | CommunityActor | GhostActor;
 export type ClientActor = AccountActor | PublicActor;
 
 /**
- * Represents a collective actor under the ownership of a <Vocab name="Hub" />.
- * Currently, these are only created when a new <Vocab name="Hub" /> is made and have no extended functionality within the system.
- * The <Vocab name="Hub" /> that owns it is represented by <code>hub_id</code>.
- */
-export interface CommunityActor {
-	actor_id: ActorId;
-	account_id?: null;
-	hub_id: HubId;
-	type: 'community';
-	name: string;
-	icon?: string;
-	created: Date;
-	updated: Date | null;
-}
-/**
  * A special system-level <Vocab name="Actor" /> that is a placeholder for deleted or otherwise unavailable <Vocab name="Actor" />s.
  */
 export interface GhostActor {
@@ -71,6 +56,21 @@ export interface GhostActor {
 	account_id?: null;
 	hub_id?: null;
 	type: 'ghost';
+	name: string;
+	icon?: string;
+	created: Date;
+	updated: Date | null;
+}
+/**
+ * Represents a collective actor under the ownership of a <Vocab name="Hub" />.
+ * Currently, these are only created when a new <Vocab name="Hub" /> is made and have no extended functionality within the system.
+ * The <Vocab name="Hub" /> that owns it is represented by <code>hub_id</code>.
+ */
+export interface HubActor {
+	actor_id: ActorId;
+	account_id?: null;
+	hub_id: HubId;
+	type: 'community';
 	name: string;
 	icon?: string;
 	created: Date;
