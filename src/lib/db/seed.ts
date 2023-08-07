@@ -267,12 +267,28 @@ const SEED_BY_VIEW_NAME: Record<string, (ctx: SeedContext) => Promise<void>> = {
 		await generateEntities(ctx, ['a'], r2[1].entities[0].entity_id);
 	},
 	Notes: async (ctx) => {
-		await generateEntities(ctx, [
-			'We have no guarantee about the future\nbut we exist in the hope of something better.\n- The 14th Dalai Lama',
-		]);
+		const notes = await generateEntity(
+			ctx,
+			{type: 'OrderedCollection', orderedItems: []},
+			undefined,
+			'/notes',
+		);
+		await generateEntities(
+			ctx,
+			[
+				'We have no guarantee about the future\nbut we exist in the hope of something better.\n- The 14th Dalai Lama',
+			],
+			notes.entities[0].entity_id,
+		);
 	},
 	List: async (ctx) => {
-		await generateEntities(ctx, ['a', 'b', 'c']);
+		const list = await generateEntity(
+			ctx,
+			{type: 'OrderedCollection', orderedItems: []},
+			undefined,
+			'/list',
+		);
+		await generateEntities(ctx, ['a', 'b', 'c'], list.entities[0].entity_id);
 	},
 	Lists: async (ctx) => {
 		const lists = await generateEntity(
