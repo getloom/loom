@@ -25,11 +25,9 @@
 <div class="prose padded_xl">
 	<h1 id="vocab">vocab</h1>
 	<aside>
-		The felt-server vocabulary is published as a <a href="https://json-schema.org/">JSON Schema</a>
+		The felt vocabulary is published as a <a href="https://json-schema.org/">JSON Schema</a>
 		on
-		<a href="https://github.com/feltjs/felt-server/blob/main/src/static/schemas/vocab.json"
-			>GitHub</a
-		>
+		<a href="https://github.com/feltjs/felt/blob/main/src/static/schemas/vocab.json">GitHub</a>
 		and on this website at
 		<a href="{base}/schemas/vocab.json" download>{base}/schemas/vocab.json</a>.
 	</aside>

@@ -16,7 +16,7 @@ import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
 // TODO security considerations, mainly that signup leaks account name existence
-// https://github.com/feltjs/felt-server/pull/525#discussion_r1002323512
+// https://github.com/feltjs/felt/pull/525#discussion_r1002323512
 
 export const SignUpService: ServiceByName['SignUp'] = {
 	action: SignUp,

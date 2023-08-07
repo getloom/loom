@@ -1,6 +1,6 @@
 // TODO copypasted from polka@next, can't use the module because of a routing bug
 // where params are added for routes that don't declare them when there's overlap
-// https://github.com/feltjs/felt-server/pull/859
+// https://github.com/feltjs/felt/pull/859
 
 /* eslint-disable @typescript-eslint/ban-types */
 

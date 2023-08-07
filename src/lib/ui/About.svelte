@@ -19,10 +19,10 @@
 	</ul>
 	<p class="title">
 		{PUBLIC_ADMIN_ICON}
-		<a href="https://github.com/feltjs/felt-server" target="_blank" rel="noreferrer">felt-server</a>
+		<a href="https://github.com/feltjs/felt" target="_blank" rel="noreferrer">felt</a>
 		version
 		<a
-			href="https://github.com/feltjs/felt-server/commit/{PUBLIC_GIT_HASH}"
+			href="https://github.com/feltjs/felt/commit/{PUBLIC_GIT_HASH}"
 			target="_blank"
 			rel="noreferrer"
 		>

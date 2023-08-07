@@ -106,10 +106,10 @@
 
 <div class="wrapper">
 	<!-- TODO extract an accessible menu component, see PRS
-	https://github.com/feltjs/felt-server/pull/362
+	https://github.com/feltjs/felt/pull/362
 	and https://github.com/feltjs/felt-ui/pull/197 -->
 	<div class="sidebar padded_xl width_sm">
-		<slot name="header"><header>@feltjs/felt-server</header></slot>
+		<slot name="header"><header>@feltjs/felt</header></slot>
 		<nav>
 			<h2><a href="{base}{path}" class:selected={pathname === path}>docs</a></h2>
 			<h3><a href="{base}{path_guide}" class:selected={showGuideContent}>guide</a></h3>
@@ -229,9 +229,9 @@
 					<p class="text_align_center width_full" style:margin-top="var(--spacing_sm)">
 						<a href="{base}/">back home</a>
 					</p>
-					<div class="text_align_center">@feltjs/felt-server</div>
+					<div class="text_align_center">@feltjs/felt</div>
 					<div class="links">
-						<a href="https://github.com/feltjs/felt-server">GitHub</a>∙<a
+						<a href="https://github.com/feltjs/felt">GitHub</a>∙<a
 							href="https://npmjs.com/@feltjs/felt-server">npm</a
 						>∙<a href="https://www.felt.dev">felt.dev</a>
 					</div>

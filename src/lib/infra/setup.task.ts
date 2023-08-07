@@ -18,7 +18,7 @@ const Args = z
 type Args = z.infer<typeof Args>;
 
 export const task: Task<Args> = {
-	summary: 'setup a clean server to prepare for a felt-server deploy',
+	summary: 'setup a clean server to prepare for a felt deploy',
 	production: true,
 	Args,
 	run: async ({log, args: {dry}, invokeTask}) => {
@@ -39,8 +39,8 @@ export const task: Task<Args> = {
 		const PGUSER = fromEnv('PGUSER');
 		const PGPASSWORD = fromEnv('PGPASSWORD');
 
-		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt-server.conf';
-		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt-server.conf';
+		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt.conf';
+		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt.conf';
 
 		const nginxConfig = toNginxConfig(PUBLIC_DEPLOY_SERVER_HOST, apiServerHost);
 

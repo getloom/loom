@@ -4,7 +4,7 @@
 
 <div class="prose">
 	<h2>Data model</h2>
-	<p>felt-server's SQL database tables:</p>
+	<p>felt's SQL database tables:</p>
 	<Mermaid
 		content={`classDiagram
     Accounts <|-- Actors

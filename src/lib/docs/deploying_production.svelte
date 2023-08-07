@@ -9,14 +9,14 @@
 </script>
 
 <div class="prose">
-	<h2>Deploying felt-server to production</h2>
+	<h2>Deploying felt to production</h2>
 	<p>
-		This document describes how to deploy a new instance of <a
-			href="https://github.com/feltjs/felt-server"><code>@feltjs/felt-server</code></a
+		This document describes how to deploy a new instance of <a href="https://github.com/feltjs/felt"
+			><code>@feltjs/felt</code></a
 		> to the internet.
 	</p>
 	<p>
-		To learn more about <code>@feltjs/felt-server</code>, see
+		To learn more about <code>@feltjs/felt</code>, see
 		<a href="{base}{path}/guide/admin/getting-started">guide/admin/getting-started</a>.
 	</p>
 	<p>
@@ -25,7 +25,7 @@
 		>.
 	</p>
 	<p>
-		To deploy an instance of <code>@feltjs/felt-server</code>, these docs assume a
+		To deploy an instance of <code>@feltjs/felt</code>, these docs assume a
 		<a href="https://en.wikipedia.org/wiki/Virtual_private_server">VPS</a>, which you can obtain
 		through a cloud provider. They can also be adapted for local use and alternative deployments,
 		but some details will differ.
@@ -35,7 +35,7 @@
 		installed globally:
 	</p>
 	<CodeExample
-		code={`git clone https://github.com/feltjs/felt-server
+		code={`git clone https://github.com/feltjs/felt
 npm i -g @feltjs/gro`}
 	/>
 
@@ -115,7 +115,7 @@ node dist/server/lib/server/server.js`}
 			> to get a copy of the DB from your lid server instance
 		</li>
 		<li>Copy that dump from lid to new server & restore it</li>
-		<li>Deploy the latest <code>@feltjs/felt-server</code> code to your new server</li>
+		<li>Deploy the latest <code>@feltjs/felt</code> code to your new server</li>
 		<li>Restart</li>
 	</ol>
 

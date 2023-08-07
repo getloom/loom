@@ -58,7 +58,7 @@ create database felt; # notice the semicolon
 	<p>
 		Felt server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its DB migrations.
 		Migration files are located in the
-		<a href="https://github.com/feltjs/felt-server/tree/main/src/lib/db/migrations">migrations</a>
+		<a href="https://github.com/feltjs/felt/tree/main/src/lib/db/migrations">migrations</a>
 		directory. To create a new migration file use the <code>ley new</code> command (see Ley's docs
 		for more details) Use <code>gro lib/db/migrate</code> to run migrations.
 	</p>

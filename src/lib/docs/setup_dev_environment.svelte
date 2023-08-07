@@ -13,8 +13,8 @@
 	<p>This walks through setting up a development environment for Felt.coop projects.</p>
 	<p>**1. Git**</p>
 	<p>
-		<code>@feltjs/felt-server</code>'s git repo is on GitHub:
-		<a href="https://github.com/feltjs/felt-server.git">github.com/feltjs/felt-server.git</a>
+		<code>@feltjs/felt</code>'s git repo is on GitHub:
+		<a href="https://github.com/feltjs/felt.git">github.com/feltjs/felt.git</a>
 	</p>
 	<p>Configure git:</p>
 	<CodeExample
@@ -30,7 +30,7 @@ git config --global core.pager 'less -x1,5'`}
 
 	<p>**2. NodeJS**</p>
 	<p>
-		<code>@feltjs/felt-server</code> requires <a href="https://nodejs.org/">NodeJS</a> ^18.14. Our
+		<code>@feltjs/felt</code> requires <a href="https://nodejs.org/">NodeJS</a> ^18.14. Our
 		recommended Node version manager is
 		<a href="https://github.com/Schniz/fnm"><code>fnm</code></a>, which is roughly equivalent to
 		<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> with improved performance.
@@ -41,22 +41,22 @@ git config --global core.pager 'less -x1,5'`}
 	</p>
 	<CodeExample code={`fnm install 18  # installs and sets to default`} />
 	<p>
-		Now that we have git and Node installed, clone the <code>@feltjs/felt-server</code> repo and
-		install with <code>npm</code>:
+		Now that we have git and Node installed, clone the <code>@feltjs/felt</code> repo and install
+		with <code>npm</code>:
 	</p>
 	<CodeExample
-		code={`git clone https://github.com/feltjs/felt-server
-cd felt-server
+		code={`git clone https://github.com/feltjs/felt
+cd felt
 npm i # install dependencies`}
 	/>
 	<p>**3. Postgres**</p>
 	<p>
-		<code>@feltjs/felt-server</code> requires <a href="https://www.postgresql.org/">Postgres</a> >=
-		15. For details about felt-server's database implementation, see
+		<code>@feltjs/felt</code> requires <a href="https://www.postgresql.org/">Postgres</a> >= 15. For
+		details about felt's database implementation, see
 		<a href="{base}{path}/guide/dev/data-model">the data model docs</a>.
 	</p>
 	<p>
-		<code>@feltjs/felt-server</code> defaults to user <code>postgres</code> with password
+		<code>@feltjs/felt</code> defaults to user <code>postgres</code> with password
 		<code>password</code>
 		and database
 		<code>felt</code>. To set up its database with the expected defaults:

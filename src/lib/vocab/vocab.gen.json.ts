@@ -13,7 +13,7 @@ export const gen: Gen = async () => {
 	const schema = bundleSchemas(
 		schemas,
 		'https://hub.felt.dev/schemas/vocab.json',
-		'@feltjs/felt-server vocab',
+		'@feltjs/felt vocab',
 	);
 	return {
 		filename: '../../static/schemas/vocab.json',

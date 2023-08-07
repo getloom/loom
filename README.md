@@ -1,13 +1,13 @@
 [<img src="src/static/felt.png" align="right" width="192" height="178">](https://felt.dev)
 
-# `@feltjs/felt-server`
+# `@feltjs/felt`
 
 > a programmable platform for hobbyists and human-scale communities 💚
 > [@feltjs](https://github.com/feltjs)
 
 > **work in progress**: pre-alpha
 
-felt-server is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
+felt is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
 
 - as an <strong>end user</strong> on an instance deployed to the web,
   communicating with people and managing information
@@ -52,7 +52,7 @@ npm i -D @feltjs/felt-server # see the available modules at `/src/gro.config.ts`
 Learn more about
 [using `@feltjs/felt-server` as a library](https://docs.felt.dev/server/guide/dev/library-usage).
 
-## using `@feltjs/felt-server` as a git repo
+## using `@feltjs/felt` as a git repo
 
 To work directly on the codebase,
 see [Getting started](https://docs.felt.dev/server/guide/admin/getting-started), then:

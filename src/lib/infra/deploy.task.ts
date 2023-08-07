@@ -7,7 +7,7 @@ import {ENV_FILE_BASE, ENV_FILE_PROD, fromEnv} from '$lib/server/env';
 import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
 
 export const task: Task = {
-	summary: 'deploy felt-server to production',
+	summary: 'deploy felt to production',
 	production: true,
 	run: async ({log, invokeTask}) => {
 		//build the actual tar deployment artifact

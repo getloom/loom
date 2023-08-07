@@ -12,11 +12,11 @@
 
 	<p>
 		This document describes how to set up a production environment for deploying an instance of <a
-			href="https://github.com/feltjs/felt-server"><code>@feltjs/felt-server</code></a
+			href="https://github.com/feltjs/felt"><code>@feltjs/felt</code></a
 		>.
 	</p>
 	<p>
-		To learn more about <code>@feltjs/felt-server</code>, see
+		To learn more about <code>@feltjs/felt</code>, see
 		<a href="{base}{path}/guide/admin/getting-started">guide/admin/getting-started</a>.
 	</p>
 	<p>
@@ -89,7 +89,7 @@
 	<h4>Set environment variables</h4>
 	<p>
 		Open <code>.env.production</code> and set all of the values. See also
-		<a href="https://github.com/feltjs/felt-server/tree/main/src/lib/infra/.env.production.default"
+		<a href="https://github.com/feltjs/felt/tree/main/src/lib/infra/.env.production.default"
 			>src/lib/infra/.env.production.default</a
 		>:
 	</p>
