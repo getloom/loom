@@ -3,6 +3,7 @@
 ## 0.4.5
 
 - fix docs style
+  ([commit](https://github.com/feltjs/felt/commit/05abe4bf4e30bfbba20a2398db1ec332ae477106))
 
 ## 0.4.4
 
