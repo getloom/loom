@@ -1,5 +1,9 @@
 # changelog
 
+## 0.4.5
+
+- fix docs style
+
 ## 0.4.4
 
 - fix docs links

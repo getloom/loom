@@ -308,7 +308,6 @@
 	li {
 		display: flex;
 		flex-direction: column;
-		margin: var(--spacing_xl3) 0;
 	}
 	.sidebar {
 		height: 100%;
