@@ -14,7 +14,7 @@ We plan to publish a public roadmap and discuss increasingly more in public.
 For now please feel free to
 [open issues](https://github.com/feltjs/felt/issues) on GitHub,
 and for private feedback email [team@felt.social](mailto:team@felt.social).
-See also the [known issues](https://docs.felt.dev/server/guide/user/known-issues).
+See also the [known issues](https://www.felt.dev/docs/guide/user/known-issues).
 
 [Pull requests](https://github.com/feltjs/felt/pulls)
 are welcome for straightforward fixes and improvements,

@@ -24,16 +24,16 @@ To learn about the project, see [felt.dev/about](https://felt.dev/about).
 We'll link to a video introduction with the alpha announcement.
 
 To play with the code, see
-[Getting started](https://docs.felt.dev/server/guide/admin/getting-started) and
+[Getting started](https://www.felt.dev/docs/guide/admin/getting-started) and
 [Contributing](/contributing.md).
 Work-in-progress docs are
 [here on GitHub](/src/lib/docs),
 including our
-[known issues](https://docs.felt.dev/server/guide/user/known-issues).
+[known issues](https://www.felt.dev/docs/guide/user/known-issues).
 
 To deploy to production, see
-[Deploying production](https://docs.felt.dev/server/guide/admin/deploying-production)
-and [Managing production](https://docs.felt.dev/server/guide/admin/managing-production).
+[Deploying production](https://www.felt.dev/docs/guide/admin/deploying-production)
+and [Managing production](https://www.felt.dev/docs/guide/admin/managing-production).
 
 The server has integrated reference docs, which we'll link after the alpha announcement.
 We also publish [our vocabulary as a JSON Schema](/src/static/schemas/vocab.json).
@@ -50,12 +50,12 @@ npm i -D @feltjs/felt-server # see the available modules at `/src/gro.config.ts`
 ```
 
 Learn more about
-[using `@feltjs/felt-server` as a library](https://docs.felt.dev/server/guide/dev/library-usage).
+[using `@feltjs/felt-server` as a library](https://www.felt.dev/docs/guide/dev/library-usage).
 
 ## using `@feltjs/felt` as a git repo
 
 To work directly on the codebase,
-see [Getting started](https://docs.felt.dev/server/guide/admin/getting-started), then:
+see [Getting started](https://www.felt.dev/docs/guide/admin/getting-started), then:
 
 ```bash
 # node >=18.14

@@ -1,5 +1,12 @@
 # changelog
 
+## 0.4.4
+
+- fix docs links
+  ([#902](https://github.com/feltjs/felt/pull/902))
+- improve docs rendering
+  ([#900](https://github.com/feltjs/felt/pull/900))
+
 ## 0.4.3
 
 - improve docs links
