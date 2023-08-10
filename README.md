@@ -26,8 +26,8 @@ We'll link to a video introduction with the alpha announcement.
 To play with the code, see
 [Getting started](https://www.felt.dev/docs/guide/admin/getting-started) and
 [Contributing](/contributing.md).
-Work-in-progress docs are
-[here on GitHub](/src/lib/docs),
+Docs are a work-in-progress at
+[felt.dev/docs](https://www.felt.dev/docs),
 including our
 [known issues](https://www.felt.dev/docs/guide/user/known-issues).
 
