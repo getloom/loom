@@ -13,8 +13,8 @@
 	<p>This walks through setting up a development environment for Felt.coop projects.</p>
 	<p>**1. Git**</p>
 	<p>
-		<code>@feltjs/felt</code>'s git repo is on GitHub:
-		<a href="https://github.com/feltjs/felt.git">github.com/feltjs/felt.git</a>
+		<code>@feltjs/felt</code>'s code is on GitHub:
+		<a href="https://github.com/feltjs/felt">github.com/feltjs/felt</a>
 	</p>
 	<p>Configure git:</p>
 	<CodeExample
