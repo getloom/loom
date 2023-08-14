@@ -154,3 +154,6 @@ export const loadOrderedEntities = async (
 	}
 	return lookupOrderedItems(list, ui);
 };
+
+// TODO this just solves a small UI need - maybe expand to the entire vocabulary? generate if so
+export type EntityType = 'Actor' | 'Hub';
