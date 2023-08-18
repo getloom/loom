@@ -8,7 +8,7 @@
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {autofocus} from '$lib/ui/actions';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	const {actions} = getApp();
@@ -71,7 +71,7 @@
 			/></label
 		>
 		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
+			<Alert status="error">{errorMessage}</Alert>
 		{/if}
 		<PendingButton on:click={invite} pending={status === 'pending'}>invite</PendingButton>
 	</fieldset>

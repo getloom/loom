@@ -26,12 +26,12 @@ main {
 	flex: 1;
 }
 
-/* a minimal alternative to `<Message status="error">some error text</Message>` */
+/* a minimal alternative to `<Alert status="error">some error text</Alert>` */
 .error_text {
 	font-weight: bold;
 	color: var(--color_5);
 }
-/* a minimal alternative to `<Message status="success">some success text</Message>` */
+/* a minimal alternative to `<Alert status="success">some success text</Alert>` */
 .success-text {
 	font-weight: bold;
 	color: var(--color_2);

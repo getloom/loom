@@ -57,7 +57,7 @@
 			<LoadMoreButton {query} />
 			<!-- TODO handle query failures and add retry button, see https://github.com/feltjs/felt/pull/514#discussion_r998626893 -->
 			<!-- {:else if status === 'failure'}
-				<Message status="error">{$queryError.message}</Message> -->
+				<Alert status="error">{$queryError.message}</Alert> -->
 		{:else}
 			<PendingAnimation />
 		{/if}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {AsyncStatus} from '@feltjs/util/async.js';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
@@ -115,7 +115,7 @@
 		{/if}
 		<slot name="error" {errorMessage}>
 			{#if errorMessage}
-				<Message status="error">{errorMessage}</Message>
+				<Alert status="error">{errorMessage}</Alert>
 			{/if}
 		</slot>
 		<PendingButton on:click={create} pending={status === 'pending'}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
@@ -57,6 +57,6 @@
 		delete hub
 	</PendingButton>
 	{#if errorMessage}
-		<Message status="error">{errorMessage}</Message>
+		<Alert status="error">{errorMessage}</Alert>
 	{/if}
 </form>

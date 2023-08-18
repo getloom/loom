@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import HueInput from '@feltjs/felt-ui/HueInput.svelte';
 	import {goto} from '$app/navigation';
@@ -99,7 +99,7 @@
 		</label>
 		<PendingButton on:click={create} {pending}>create hub</PendingButton>
 		{#if errorMessage}
-			<Message status="error">{errorMessage}</Message>
+			<Alert status="error">{errorMessage}</Alert>
 		{/if}
 	</fieldset>
 	{#if name}

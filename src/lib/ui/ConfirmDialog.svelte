@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import {onMount} from 'svelte';
@@ -57,6 +57,6 @@
 		<PendingButton {pending} on:click={confirm}>{confirmText}</PendingButton>
 	</div>
 	{#if errorMessage}
-		<Message status="error">{errorMessage}</Message>
+		<Alert status="error">{errorMessage}</Alert>
 	{/if}
 </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
@@ -46,7 +46,7 @@
 <form class="prose padded_xl" {...attrs}>
 	<h2>Delete <Mention name={$actor.name} />?</h2>
 	{#if errorMessage}
-		<Message status="error">{errorMessage}</Message>
+		<Alert status="error">{errorMessage}</Alert>
 	{/if}
 	<input
 		type="text"

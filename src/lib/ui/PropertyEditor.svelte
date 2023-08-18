@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {slide} from 'svelte/transition';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import {identity} from '@feltjs/util/function.js';
 	import type {Result} from '@feltjs/util/result.js';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
@@ -148,7 +148,7 @@
 				</PendingButton>
 			{/if}
 			{#if errorMessage}
-				<Message status="error">{errorMessage}</Message>
+				<Alert status="error">{errorMessage}</Alert>
 			{/if}
 		</div>
 	{/if}

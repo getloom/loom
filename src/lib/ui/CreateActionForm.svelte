@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import {writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app';
@@ -121,7 +121,7 @@
 				> -->
 					{#if errorMessage}
 						<div class="error_message">
-							<Message status="error">{errorMessage}</Message>
+							<Alert status="error">{errorMessage}</Alert>
 						</div>
 					{/if}
 				</div>

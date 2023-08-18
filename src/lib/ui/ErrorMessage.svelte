@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 
 	import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error';
 
@@ -9,5 +9,5 @@
 </script>
 
 <div class="prose padded_xl">
-	<Message status="error">Error: {errorMessage}</Message>
+	<Alert status="error">Error: {errorMessage}</Alert>
 </div>

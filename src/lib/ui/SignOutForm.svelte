@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import type {SignOutResponseResult} from '$lib/vocab/action/actionTypes';
 
 	import type {ClientAccount} from '$lib/vocab/account/account';
@@ -36,7 +36,7 @@
 <form {...attrs}>
 	<PendingButton pending={!!submitting} on:click={signOut} {disabled}>sign out</PendingButton>
 	{#if errorMessage}
-		<Message status="error">{errorMessage}</Message>
+		<Alert status="error">{errorMessage}</Alert>
 	{/if}
 </form>
 

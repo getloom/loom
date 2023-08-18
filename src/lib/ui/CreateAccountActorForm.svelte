@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {AsyncStatus} from '@feltjs/util/async.js';
-	import Message from '@feltjs/felt-ui/Message.svelte';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
@@ -86,10 +86,10 @@ maybe `form.box` should be interpreted a particular way in Felt? -->
 				/></label
 			>
 			{#if errorMessage}
-				<Message status="error">{errorMessage}</Message>
+				<Alert status="error">{errorMessage}</Alert>
 			{/if}
 			<PendingButton on:click={create} pending={status === 'pending'}>create actor</PendingButton>
 		</fieldset>
-		<Message icon="‼">your actor names are visible to people in the hubs you join</Message>
+		<Alert icon="‼">your actor names are visible to people in the hubs you join</Alert>
 	</form>
 </div>
