@@ -1,5 +1,10 @@
 # changelog
 
+## 0.4.6
+
+- remove `Vocab` contextmenu temporarily
+  ([#909](https://github.com/feltjs/felt/pull/909))
+
 ## 0.4.5
 
 - fix docs style
