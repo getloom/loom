@@ -1,20 +1,13 @@
 <script lang="ts">
 	import {base} from '$app/paths';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
 	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
 
-	import VocabContextmenu from '$lib/ui/VocabContextmenu.svelte';
-	import {getApp} from '$lib/ui/app';
 	import {getDocsSettings} from '$lib/docs/docs';
 
 	const docsSettings = getDocsSettings();
 	$: path = $docsSettings?.path || '/docs';
 
 	// Like a `Mention` but for the Felt vocabulary.
-
-	const {
-		ui: {contextmenu},
-	} = getApp();
 
 	/**
 	 * The vocabulary item name. Currently supports models and actions.
@@ -40,9 +33,9 @@
 	$: finalSelected = selected ?? $selections?.value.has(name);
 </script>
 
-<a
-	href="{base}{path}/vocab#{name}"
-	class:selected={finalSelected}
+<!-- TODO contextmenu is currently disabled because `VocabContextmenu` loads the entire vocab for the root payload
 	use:contextmenu.action={toContextmenuParams(VocabContextmenu, {name})}
+-->
+<a href="{base}{path}/vocab#{name}" class:selected={finalSelected}
 	>{#if plain}<slot>{name}</slot>{:else}<code><slot>{name}</slot></code>{/if}</a
 >
