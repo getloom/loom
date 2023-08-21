@@ -8,7 +8,8 @@ To keep our development speed up,
 but we are planning to develop open community-driven processes soon.
 Our code is open source, so we publish it as we write it,
 and [the license](LICENSE) is permissive, so you can do whatever you wish with the code.
-See Felt's [GOVERNANCE.md](https://github.com/feltjs/felt/blob/main/GOVERNANCE.md)
+See also our [GOVERNANCE.md](GOVERNANCE.md)
+and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 We plan to publish a public roadmap and discuss increasingly more in public.
 For now please feel free to
@@ -25,5 +26,5 @@ to work out the details with the maintainers.
 To develop, see [Getting started](https://felt.dev/docs/guide/admin/getting-started)
 
 Felt is governed by a
-[Temporary Benevolent Dictator (TBD)](https://github.com/feltjs/felt/blob/main/GOVERNANCE.md),
+[Temporary Benevolent Dictator (TBD)](GOVERNANCE.md),
 [@feltjs](https://github.com/feltjs).
