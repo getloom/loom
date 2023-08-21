@@ -35,7 +35,7 @@ test__parseSvast('parses a normal SVAST', async () => {
 
 test__parseSvast('parses https:// links', async () => {
 	const parsed = parseSvast({
-		value: 'https://felt.dev/some-link',
+		value: 'https://felt.dev/some_hub',
 		generatePositions: false,
 	});
 	assert.equal(parsed, {
@@ -48,13 +48,13 @@ test__parseSvast('parses https:// links', async () => {
 					{
 						type: 'svelteProperty',
 						name: 'href',
-						value: [{type: 'text', value: 'https://felt.dev/some-link'}],
+						value: [{type: 'text', value: 'https://felt.dev/some_hub'}],
 						modifiers: [],
 						shorthand: 'none',
 					},
 				],
 				selfClosing: false,
-				children: [{type: 'text', value: 'https://felt.dev/some-link'}],
+				children: [{type: 'text', value: 'https://felt.dev/some_hub'}],
 			},
 		],
 	});
@@ -62,7 +62,7 @@ test__parseSvast('parses https:// links', async () => {
 
 test__parseSvast('parses http:// links', async () => {
 	const parsed = parseSvast({
-		value: 'http://felt.dev/some-link',
+		value: 'http://felt.dev/some_hub',
 		generatePositions: false,
 	});
 	assert.equal(parsed, {
@@ -75,13 +75,13 @@ test__parseSvast('parses http:// links', async () => {
 					{
 						type: 'svelteProperty',
 						name: 'href',
-						value: [{type: 'text', value: 'http://felt.dev/some-link'}],
+						value: [{type: 'text', value: 'http://felt.dev/some_hub'}],
 						modifiers: [],
 						shorthand: 'none',
 					},
 				],
 				selfClosing: false,
-				children: [{type: 'text', value: 'http://felt.dev/some-link'}],
+				children: [{type: 'text', value: 'http://felt.dev/some_hub'}],
 			},
 		],
 	});
@@ -89,7 +89,7 @@ test__parseSvast('parses http:// links', async () => {
 
 test__parseSvast('parses absolute links', async () => {
 	const parsed = parseSvast({
-		value: '/felt/some-link',
+		value: '/felt/some_hub',
 		generatePositions: false,
 	});
 	assert.equal(parsed, {
@@ -102,13 +102,13 @@ test__parseSvast('parses absolute links', async () => {
 					{
 						type: 'svelteProperty',
 						name: 'href',
-						value: [{type: 'text', value: '/felt/some-link'}],
+						value: [{type: 'text', value: '/felt/some_hub'}],
 						modifiers: [],
 						shorthand: 'none',
 					},
 				],
 				selfClosing: false,
-				children: [{type: 'text', value: '/felt/some-link'}],
+				children: [{type: 'text', value: '/felt/some_hub'}],
 			},
 		],
 	});
@@ -116,7 +116,7 @@ test__parseSvast('parses absolute links', async () => {
 
 test__parseSvast('parses relative links', async () => {
 	const parsed = parseSvast({
-		value: './some-path/some-link',
+		value: './some_path/some_link',
 		generatePositions: false,
 	});
 	assert.equal(parsed, {
@@ -129,13 +129,13 @@ test__parseSvast('parses relative links', async () => {
 					{
 						type: 'svelteProperty',
 						name: 'href',
-						value: [{type: 'text', value: './some-path/some-link'}],
+						value: [{type: 'text', value: './some_path/some_link'}],
 						modifiers: [],
 						shorthand: 'none',
 					},
 				],
 				selfClosing: false,
-				children: [{type: 'text', value: './some-path/some-link'}],
+				children: [{type: 'text', value: './some_path/some_link'}],
 			},
 		],
 	});
@@ -221,7 +221,7 @@ test__parseSvast('parses a SVAST with links and preserves whitespace', async () 
 
 test__parseSvast('does not parse https:// links in properties', async () => {
 	const parsed = parseSvast({
-		value: '<a href="https://felt.dev/some-link" />',
+		value: '<a href="https://felt.dev/some_hub" />',
 		generatePositions: false,
 	});
 	assert.equal(parsed, {
@@ -234,7 +234,7 @@ test__parseSvast('does not parse https:// links in properties', async () => {
 					{
 						type: 'svelteProperty',
 						name: 'href',
-						value: [{type: 'text', value: 'https://felt.dev/some-link'}],
+						value: [{type: 'text', value: 'https://felt.dev/some_hub'}],
 						modifiers: [],
 						shorthand: 'none',
 					},

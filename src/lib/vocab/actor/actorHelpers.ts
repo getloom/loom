@@ -12,10 +12,12 @@ import {GHOST_ACTOR_ID} from '$lib/util/constants';
  */
 export const scrubActorName = (name: string): string => name.trim();
 
-export const ACTOR_NAME_CHARACTER_MATCHER = /^[a-z\d-]+$/iu;
-// TODO maybe add these to the schema? problem is ajv will return less friendly errors from service calls
-const ACTOR_NAME_MAX_LENGTH = 39; // same as github
-const ACTOR_NAME_MIN_LENGTH = 3;
+/**
+ * Same restrictions as Mastodon.
+ */
+export const ACTOR_NAME_CHARACTER_MATCHER = /^[a-z\d_]+$/iu;
+const ACTOR_NAME_MAX_LENGTH = 30;
+const ACTOR_NAME_MIN_LENGTH = 1;
 
 /**
  * Checks if a actor name is valid.
@@ -33,16 +35,16 @@ export const checkActorName = (name: string): string | null => {
 		)}`;
 	}
 	if (!ACTOR_NAME_CHARACTER_MATCHER.test(name)) {
-		return 'name must contain only letters, numbers, and hyphens';
+		return 'name must contain only letters, numbers, and underscores';
 	}
-	if (name.includes('--')) {
-		return 'name must not contain consecutive hyphens';
+	if (name.includes('__')) {
+		return 'name must not contain consecutive underscores';
 	}
-	if (name.startsWith('-')) {
-		return 'name must not start with a hyphen';
+	if (name[0] === '_') {
+		return 'name must not start with a underscore';
 	}
-	if (name.endsWith('-')) {
-		return 'name must not end with a hyphen';
+	if (name[name.length - 1] === '_') {
+		return 'name must not end with a underscore';
 	}
 	return null;
 };
