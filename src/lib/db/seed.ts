@@ -18,7 +18,7 @@ import type {
 import type {AccountActor} from '$lib/vocab/actor/actor';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
-import {CreateHubService} from '$lib/vocab/hub/hubServices';
+import {CreateHubService, UpdateHubService} from '$lib/vocab/hub/hubServices';
 import {toServiceRequestMock} from '$lib/util/testHelpers';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
@@ -29,6 +29,7 @@ import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$
 import type {Directory} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
 import {createPasswordHasher} from '$lib/server/password';
+import {ADMIN_HUB_ID} from '$lib/util/constants';
 
 /* eslint-disable no-await-in-loop */
 
@@ -143,6 +144,21 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		await createDefaultEntities(toMainAccountServiceRequest, spaces, nextActor, repos);
 	}
 
+	const adminHub = await repos.hub.loadAdminHub()!;
+	if (!adminHub) {
+		throw Error('no admin hub created while seeding db');
+	}
+	await UpdateHubService.perform({
+		...toMainAccountServiceRequest(),
+		params: {
+			actor: mainActorCreator.actor_id,
+			hub_id: ADMIN_HUB_ID,
+			settings: {
+				...adminHub.settings,
+				instance: {...adminHub.settings.instance, minPasswordLength: 1},
+			},
+		},
+	});
 	// resource teardown
 	await passwordHasher.close();
 };

@@ -31,6 +31,7 @@ export interface HubSettings {
 		allowedAccountNames?: string[];
 		disableCreateHub?: boolean;
 		defaultHubIds?: HubId[];
+		minPasswordLength?: number;
 	};
 }
 /**

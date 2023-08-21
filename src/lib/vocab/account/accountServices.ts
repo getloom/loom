@@ -10,7 +10,11 @@ import {
 	UpdateAccountPassword,
 } from '$lib/vocab/account/accountActions';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
-import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
+import {
+	checkAccountName,
+	checkPasswordStrength,
+	scrubAccountName,
+} from '$lib/vocab/account/accountHelpers';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
@@ -43,6 +47,12 @@ export const SignUpService: ServiceByName['SignUp'] = {
 				if (!allowedAccountNames.includes(username.toLowerCase())) {
 					return {ok: false, status: 400, message: 'cannot create account'};
 				}
+			}
+
+			const minPasswordLength = adminHub!.settings.instance?.minPasswordLength;
+			const passwordErrorMessage = checkPasswordStrength(params.password, minPasswordLength);
+			if (passwordErrorMessage) {
+				return {ok: false, status: 400, message: passwordErrorMessage};
 			}
 		}
 
@@ -117,6 +127,16 @@ export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'
 			// The `account_id` is authenticated but maybe the account was deleted.
 			// Database failures are expected to throw errors, not hit this path.
 			return {ok: false, status: 404, message: 'no account found'};
+		}
+
+		if (await repos.hub.hasAdminHub()) {
+			const adminHub = await repos.hub.loadAdminHub(HUB_COLUMNS.settings);
+
+			const minPasswordLength = adminHub!.settings.instance?.minPasswordLength;
+			const passwordErrorMessage = checkPasswordStrength(params.newPassword, minPasswordLength);
+			if (passwordErrorMessage) {
+				return {ok: false, status: 400, message: passwordErrorMessage};
+			}
 		}
 
 		if (!(await passwordHasher.verify(params.oldPassword, account.password))) {

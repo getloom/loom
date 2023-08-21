@@ -42,6 +42,7 @@ export const HubSettingsSchema = {
 				allowedAccountNames: {type: 'array', items: {type: 'string'}},
 				disableCreateHub: {type: 'boolean'},
 				defaultHubIds: {type: 'array', items: {$ref: '/schemas/HubId'}},
+				minPasswordLength: {type: 'number'},
 			},
 			additionalProperties: false,
 		},

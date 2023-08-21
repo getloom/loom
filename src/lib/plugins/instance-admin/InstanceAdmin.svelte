@@ -53,6 +53,14 @@
 				parse={parseJson}
 				serialize={serializeJson}
 			/>
+			<PropertyEditor
+				value={instanceSettings?.minPasswordLength}
+				field="minPasswordLength"
+				update={updateHubSetting}
+				deletable={true}
+				parse={parseJson}
+				serialize={serializeJson}
+			/>
 		</fieldset>
 	{/if}
 </div>
