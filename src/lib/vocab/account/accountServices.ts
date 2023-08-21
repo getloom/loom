@@ -16,6 +16,7 @@ import {
 	scrubAccountName,
 } from '$lib/vocab/account/accountHelpers';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
+import {assertApiError} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
@@ -27,10 +28,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 	transaction: true,
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
-		const usernameErrorMessage = checkAccountName(username);
-		if (usernameErrorMessage) {
-			return {ok: false, status: 400, message: usernameErrorMessage};
-		}
+		assertApiError(checkAccountName(username));
 
 		const existingAccount = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id);
 		if (existingAccount) {
@@ -50,10 +48,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			}
 
 			const minPasswordLength = adminHub!.settings.instance?.minPasswordLength;
-			const passwordErrorMessage = checkPasswordStrength(params.password, minPasswordLength);
-			if (passwordErrorMessage) {
-				return {ok: false, status: 400, message: passwordErrorMessage};
-			}
+			assertApiError(checkPasswordStrength(params.password, minPasswordLength));
 		}
 
 		const account = await repos.account.create(
@@ -77,10 +72,7 @@ export const SignInService: ServiceByName['SignIn'] = {
 	transaction: true,
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
-		const usernameErrorMessage = checkAccountName(username);
-		if (usernameErrorMessage) {
-			return {ok: false, status: 400, message: usernameErrorMessage};
-		}
+		assertApiError(checkAccountName(username));
 
 		const account = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id_password);
 		if (!account || !(await passwordHasher.verify(params.password, account.password))) {
@@ -129,15 +121,10 @@ export const UpdateAccountPasswordService: ServiceByName['UpdateAccountPassword'
 			return {ok: false, status: 404, message: 'no account found'};
 		}
 
-		if (await repos.hub.hasAdminHub()) {
-			const adminHub = await repos.hub.loadAdminHub(HUB_COLUMNS.settings);
-
-			const minPasswordLength = adminHub!.settings.instance?.minPasswordLength;
-			const passwordErrorMessage = checkPasswordStrength(params.newPassword, minPasswordLength);
-			if (passwordErrorMessage) {
-				return {ok: false, status: 400, message: passwordErrorMessage};
-			}
-		}
+		const adminHub = (await repos.hub.loadAdminHub(HUB_COLUMNS.settings))!;
+		assertApiError(
+			checkPasswordStrength(params.newPassword, adminHub.settings.instance?.minPasswordLength),
+		);
 
 		if (!(await passwordHasher.verify(params.oldPassword, account.password))) {
 			// This info-leaking error message is ok because the user is already authenticated

@@ -8,6 +8,10 @@ export class ApiError extends Error {
 	}
 }
 
+export const assertApiError = (errorMessage: string | null): void => {
+	if (errorMessage) throw new ApiError(400, errorMessage);
+};
+
 export type ApiResult<TValue = any> = Result<
 	{status: number; value: TValue},
 	{status: number} & ErrorResponse

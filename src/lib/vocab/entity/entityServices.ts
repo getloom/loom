@@ -25,7 +25,7 @@ import {
 	checkPolicy,
 	checkEntityAccess,
 } from '$lib/vocab/policy/policyHelpers.server';
-import {ApiError} from '$lib/server/api';
+import {ApiError, assertApiError} from '$lib/server/api';
 import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 
 const log = new Logger('[EntityServices]');
@@ -161,8 +161,7 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 						throw new ApiError(405, 'cannot update directory path');
 					}
 					log.debug('[updateEntity] validating entity path');
-					const errorMessage = checkEntityPath(path);
-					if (errorMessage) throw new ApiError(400, errorMessage);
+					assertApiError(checkEntityPath(path));
 					const existingEntityWithPath = await repos.entity.findBySpacePath(entity.space_id, path);
 					if (existingEntityWithPath) {
 						throw new ApiError(409, 'an entity with that path already exists in this space ');

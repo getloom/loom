@@ -35,7 +35,7 @@ import {
 } from '$lib/vocab/policy/policyHelpers.server';
 import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/ui/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
-import {ApiError} from '$lib/server/api';
+import {ApiError, assertApiError} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
 
@@ -87,10 +87,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 	perform: async ({repos, params: {actor, template}, account_id, broadcast}) => {
 		log.debug('creating hub account_id', account_id);
 		const name = scrubActorName(template.name);
-		const nameErrorMessage = checkActorName(name);
-		if (nameErrorMessage) {
-			return {ok: false, status: 400, message: nameErrorMessage};
-		}
+		assertApiError(checkActorName(name));
 
 		if (isActorNameReserved(name)) {
 			return {ok: false, status: 409, message: 'a hub with that name is not allowed'};

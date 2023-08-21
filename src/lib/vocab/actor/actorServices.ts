@@ -23,6 +23,7 @@ import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/util/constants';
 import {defaultPersonalHubRoles} from '$lib/ui/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
+import {assertApiError} from '$lib/server/api';
 
 const log = new Logger(gray('[') + blue('actorServices') + gray(']'));
 
@@ -35,10 +36,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 	perform: async ({repos, params, account_id}) => {
 		log.debug('[CreateAccountActor] creating actor', params.name);
 		const name = scrubActorName(params.name);
-		const nameErrorMessage = checkActorName(name);
-		if (nameErrorMessage) {
-			return {ok: false, status: 400, message: nameErrorMessage};
-		}
+		assertApiError(checkActorName(name));
 
 		if (isActorNameReserved(name)) {
 			return {ok: false, status: 409, message: 'a actor with that name is not allowed'};
