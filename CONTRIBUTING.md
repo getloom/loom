@@ -7,7 +7,7 @@ To keep our development speed up,
 [@feltjs](https://github.com/feltjs) makes most decisions in private,
 but we are planning to develop open community-driven processes soon.
 Our code is open source, so we publish it as we write it,
-and [the license](LICENSE) is permissive, so you can do whatever you wish with the code.
+and [the license](LICENSE) is permissive, so you can do whatever you wish with it.
 See also our [GOVERNANCE.md](GOVERNANCE.md)
 and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
@@ -26,5 +26,5 @@ to work out the details with the maintainers.
 To develop, see [Getting started](https://felt.dev/docs/guide/admin/getting-started)
 
 Felt is governed by a
-[Temporary Benevolent Dictator (TBD)](GOVERNANCE.md),
-[@feltjs](https://github.com/feltjs).
+[Temporary Benevolent Dictator (TBD)](GOVERNANCE.md)
+under [@feltcoop](https://github.com/feltcoop).
