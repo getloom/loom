@@ -47,7 +47,7 @@ export class ActorRepo extends PostgresRepo {
 	}
 
 	async deleteById(actor_id: ActorId): Promise<void> {
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			DELETE FROM actors
 			WHERE actor_id=${actor_id}
 		`;

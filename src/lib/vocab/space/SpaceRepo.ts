@@ -74,7 +74,7 @@ export class SpaceRepo extends PostgresRepo {
 
 	async deleteById(space_id: SpaceId): Promise<void> {
 		log.debug('[deleteById]', space_id);
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			DELETE FROM spaces WHERE space_id=${space_id}
 		`;
 		if (!data.count) throw Error('no space found');

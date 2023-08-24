@@ -135,7 +135,7 @@ export class EntityRepo extends PostgresRepo {
 	//This function is an idempotent soft delete, that leaves behind a Tombstone entity per Activity-Streams spec
 	async eraseByIds(entityIds: EntityId[]): Promise<Entity[]> {
 		log.debug('[eraseById]', entityIds);
-		const data = await this.sql<any[]>`
+		const data = await this.sql<Entity[]>`
 			UPDATE entities
 			SET updated=NOW(), data = jsonb_build_object('type','Tombstone','formerType',data->>'type','deleted',NOW())
 			WHERE entity_id IN ${this.sql(entityIds)} AND NOT (data @> '{"type":"Tombstone"}'::jsonb)
@@ -148,7 +148,7 @@ export class EntityRepo extends PostgresRepo {
 	//This function actually deletes the records in the DB
 	async deleteByIds(entityIds: EntityId[]): Promise<Entity[]> {
 		log.debug('[deleteByIds]', entityIds);
-		const data = await this.sql<any[]>`
+		const data = await this.sql<Entity[]>`
 			DELETE FROM entities
 			WHERE entity_id IN ${this.sql(entityIds)}
 			RETURNING *
@@ -165,7 +165,7 @@ export class EntityRepo extends PostgresRepo {
 	// `jsonb_set` or  `jsonb_set_lax` with `'delete_key'` maybe
 	async attributeToGhostByActor(actor_id: ActorId): Promise<number> {
 		log.debug('[ghost]', actor_id);
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			UPDATE entities
 			SET updated=NOW(), actor_id=${GHOST_ACTOR_ID}
 			WHERE actor_id=${actor_id};

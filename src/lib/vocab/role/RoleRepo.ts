@@ -60,7 +60,7 @@ export class RoleRepo extends PostgresRepo {
 
 	async deleteById(role_id: RoleId): Promise<void> {
 		log.debug('[deleteById]', role_id);
-		const result = await this.sql<any[]>`
+		const result = await this.sql`
 			DELETE FROM roles WHERE role_id=${role_id}
 		`;
 		if (!result.count) throw Error('no role found');

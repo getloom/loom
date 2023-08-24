@@ -61,7 +61,7 @@ export class PolicyRepo extends PostgresRepo {
 
 	async deleteById(policy_id: PolicyId): Promise<void> {
 		log.debug('[deleteById]', policy_id);
-		const result = await this.sql<any[]>`
+		const result = await this.sql`
 			DELETE FROM policies WHERE policy_id=${policy_id}
 		`;
 		if (!result.count) throw Error('no policy found');

@@ -113,7 +113,7 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	async deleteById(assignment_id: AssignmentId): Promise<void> {
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			DELETE FROM assignments 
 			WHERE assignment_id=${assignment_id}
 		`;
@@ -121,7 +121,7 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	async deleteByActor(actor_id: ActorId): Promise<number> {
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			DELETE FROM assignments
 			WHERE actor_id=${actor_id}
 		`;
@@ -129,7 +129,7 @@ export class AssignmentRepo extends PostgresRepo {
 	}
 
 	async deleteByActorAndHub(actor_id: ActorId, hub_id: HubId): Promise<number> {
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			DELETE FROM assignments 
 			WHERE ${actor_id}=actor_id AND ${hub_id}=hub_id
 		`;

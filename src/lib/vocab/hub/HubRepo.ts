@@ -105,7 +105,7 @@ export class HubRepo extends PostgresRepo {
 	}
 
 	async updateSettings(hub_id: HubId, settings: Hub['settings']): Promise<void> {
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			UPDATE hubs
 			SET updated=NOW(), settings=${this.sql.json(settings as any)}
 			WHERE hub_id=${hub_id}
@@ -115,7 +115,7 @@ export class HubRepo extends PostgresRepo {
 
 	async deleteById(hub_id: HubId): Promise<void> {
 		log.debug('[deleteById]', hub_id);
-		const data = await this.sql<any[]>`
+		const data = await this.sql`
 			DELETE FROM hubs
 			WHERE hub_id=${hub_id}
 		`;
