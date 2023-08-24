@@ -9,11 +9,15 @@
 		ui: {rolesByHubId, assignmentsByRoleId},
 	} = getApp();
 
-	$: roles = $rolesByHubId.get($hub.hub_id)!;
+	$: roles = $rolesByHubId.get($hub.hub_id);
 </script>
 
 <ul>
-	{#each roles as role (role)}
-		<RoleItem {role} {assignmentsByRoleId} />
-	{/each}
+	{#if roles}
+		{#each roles as role (role)}
+			<RoleItem {role} {assignmentsByRoleId} />
+		{/each}
+	{:else}
+		<span>no roles found</span>
+	{/if}
 </ul>

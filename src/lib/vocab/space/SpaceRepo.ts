@@ -108,4 +108,11 @@ export class SpaceRepo extends PostgresRepo {
 		if (!data.length) throw Error('no space found');
 		return data;
 	}
+
+	async deleteByHub(hub_id: HubId): Promise<number> {
+		const data = await this.sql`
+			DELETE FROM spaces WHERE hub_id=${hub_id}
+		`;
+		return data.count;
+	}
 }

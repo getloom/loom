@@ -189,6 +189,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 		if (hub.hub_id === ADMIN_HUB_ID) {
 			return {ok: false, status: 405, message: 'cannot delete admin hub'};
 		}
+		await repos.space.deleteByHub(hub_id);
 		await repos.hub.deleteById(hub_id);
 
 		await broadcast.deleteHub(hub_id);
