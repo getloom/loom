@@ -14,7 +14,7 @@
 	export let sortedModelSchemas: VocabSchema[];
 	export let serviceActions: ServiceActionData[];
 	export let clientActions: ClientActionData[];
-	export let schemaNames: string[];
+	export let modelNames: string[];
 
 	/**
 	 * Optionally specify if the link should be displayed as selected via a set of matching names.
@@ -54,7 +54,7 @@
 </div>
 <ul>
 	{#each sortedModelSchemas as schema, i}
-		{@const name = schemaNames[i]}
+		{@const name = modelNames[i]}
 		<li
 			id={name}
 			use:intersect={(intersecting) => {

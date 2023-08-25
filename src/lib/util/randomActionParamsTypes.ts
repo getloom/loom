@@ -2,110 +2,121 @@
 
 import type {RandomVocab, RandomVocabContext} from '$lib/util/randomVocab';
 import type {
-	SignUpParams,
-	SignInParams,
-	SignOutParams,
-	UpdateAccountSettingsParams,
-	UpdateAccountPasswordParams,
-	CreateHubParams,
-	ReadHubParams,
-	UpdateHubParams,
-	DeleteHubParams,
-	InviteToHubParams,
-	LeaveHubParams,
-	KickFromHubParams,
+	ClearFreshnessParams,
+	CloseDialogParams,
 	CreateAccountActorParams,
-	DeleteActorParams,
 	CreateAssignmentParams,
-	DeleteAssignmentParams,
-	CreateSpaceParams,
-	ReadSpacesParams,
-	UpdateSpaceParams,
-	DeleteSpaceParams,
 	CreateEntityParams,
+	CreateHubParams,
+	CreatePolicyParams,
+	CreateRoleParams,
+	CreateSpaceParams,
+	DeleteActorParams,
+	DeleteAssignmentParams,
+	DeleteEntitiesParams,
+	DeleteHubParams,
+	DeletePolicyParams,
+	DeleteRoleParams,
+	DeleteSpaceParams,
+	EphemeraParams,
+	EraseEntitiesParams,
+	InviteToHubParams,
+	KickFromHubParams,
+	LeaveHubParams,
+	OpenDialogParams,
+	PingParams,
 	ReadEntitiesParams,
 	ReadEntitiesByIdParams,
-	UpdateEntitiesParams,
-	EraseEntitiesParams,
-	DeleteEntitiesParams,
-	CreateRoleParams,
-	ReadRolesParams,
-	UpdateRoleParams,
-	DeleteRoleParams,
-	CreatePolicyParams,
+	ReadHubParams,
 	ReadPoliciesParams,
-	UpdatePolicyParams,
-	DeletePolicyParams,
-	PingParams,
-	EphemeraParams,
+	ReadRolesParams,
+	ReadSpacesParams,
+	SetMobileParams,
 	SetSessionParams,
+	SignInParams,
+	SignOutParams,
+	SignUpParams,
 	ToggleMainNavParams,
 	ToggleSecondaryNavParams,
-	SetMobileParams,
-	OpenDialogParams,
-	CloseDialogParams,
+	UpdateAccountPasswordParams,
+	UpdateAccountSettingsParams,
+	UpdateEntitiesParams,
+	UpdateHubParams,
+	UpdatePolicyParams,
+	UpdateRoleParams,
+	UpdateSpaceParams,
 	ViewSpaceParams,
-	ClearFreshnessParams,
 } from '$lib/vocab/action/actionTypes';
 
 export interface RandomActionParams {
-	SignUp: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignUpParams>;
-	SignIn: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignInParams>;
-	SignOut: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignOutParams>;
-	UpdateAccountSettings: (
+	ClearFreshness: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<UpdateAccountSettingsParams>;
-	UpdateAccountPassword: (
+	) => Promise<ClearFreshnessParams>;
+	CloseDialog: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<UpdateAccountPasswordParams>;
-	CreateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateHubParams>;
-	ReadHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadHubParams>;
-	UpdateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateHubParams>;
-	DeleteHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteHubParams>;
-	InviteToHub: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<InviteToHubParams>;
-	LeaveHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<LeaveHubParams>;
-	KickFromHub: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<KickFromHubParams>;
+	) => Promise<CloseDialogParams>;
 	CreateAccountActor: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<CreateAccountActorParams>;
-	DeleteActor: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<DeleteActorParams>;
 	CreateAssignment: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<CreateAssignmentParams>;
-	DeleteAssignment: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<DeleteAssignmentParams>;
-	CreateSpace: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<CreateSpaceParams>;
-	ReadSpaces: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadSpacesParams>;
-	UpdateSpace: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<UpdateSpaceParams>;
-	DeleteSpace: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<DeleteSpaceParams>;
 	CreateEntity: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<CreateEntityParams>;
+	CreateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateHubParams>;
+	CreatePolicy: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<CreatePolicyParams>;
+	CreateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateRoleParams>;
+	CreateSpace: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<CreateSpaceParams>;
+	DeleteActor: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<DeleteActorParams>;
+	DeleteAssignment: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<DeleteAssignmentParams>;
+	DeleteEntities: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<DeleteEntitiesParams>;
+	DeleteHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteHubParams>;
+	DeletePolicy: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<DeletePolicyParams>;
+	DeleteRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteRoleParams>;
+	DeleteSpace: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<DeleteSpaceParams>;
+	Ephemera: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<EphemeraParams>;
+	EraseEntities: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<EraseEntitiesParams>;
+	InviteToHub: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<InviteToHubParams>;
+	KickFromHub: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<KickFromHubParams>;
+	LeaveHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<LeaveHubParams>;
+	OpenDialog: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<OpenDialogParams>;
+	Ping: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<PingParams>;
 	ReadEntities: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
@@ -114,41 +125,18 @@ export interface RandomActionParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<ReadEntitiesByIdParams>;
-	UpdateEntities: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<UpdateEntitiesParams>;
-	EraseEntities: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<EraseEntitiesParams>;
-	DeleteEntities: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<DeleteEntitiesParams>;
-	CreateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateRoleParams>;
-	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
-	UpdateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateRoleParams>;
-	DeleteRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<DeleteRoleParams>;
-	CreatePolicy: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<CreatePolicyParams>;
+	ReadHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadHubParams>;
 	ReadPolicies: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<ReadPoliciesParams>;
-	UpdatePolicy: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<UpdatePolicyParams>;
-	DeletePolicy: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<DeletePolicyParams>;
-	Ping: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<PingParams>;
-	Ephemera: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<EphemeraParams>;
+	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
+	ReadSpaces: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadSpacesParams>;
+	SetMobile: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetMobileParams>;
 	SetSession: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetSessionParams>;
+	SignIn: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignInParams>;
+	SignOut: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignOutParams>;
+	SignUp: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignUpParams>;
 	ToggleMainNav: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
@@ -157,17 +145,29 @@ export interface RandomActionParams {
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
 	) => Promise<ToggleSecondaryNavParams>;
-	SetMobile: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetMobileParams>;
-	OpenDialog: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<OpenDialogParams>;
-	CloseDialog: (
+	UpdateAccountPassword: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,
-	) => Promise<CloseDialogParams>;
+	) => Promise<UpdateAccountPasswordParams>;
+	UpdateAccountSettings: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<UpdateAccountSettingsParams>;
+	UpdateEntities: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<UpdateEntitiesParams>;
+	UpdateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateHubParams>;
+	UpdatePolicy: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<UpdatePolicyParams>;
+	UpdateRole: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<UpdateRoleParams>;
+	UpdateSpace: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<UpdateSpaceParams>;
 	ViewSpace: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ViewSpaceParams>;
-	ClearFreshness: (
-		random: RandomVocabContext,
-		randomVocab?: RandomVocab,
-	) => Promise<ClearFreshnessParams>;
 }
 
 // generated by src/lib/util/randomActionParamsTypes.gen.ts

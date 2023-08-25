@@ -9,10 +9,11 @@
 	import ActionInfo from '$lib/ui/ActionInfo.svelte';
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';
 	import {viewTemplatesByName} from '$lib/vocab/view/view';
+	import type {VocabName} from '$lib/vocab/vocab';
 
 	// TODO this is currently unused because it causes the entire vocab to be loaded with the root payload
 
-	export let name: string;
+	export let name: VocabName;
 
 	const {actions} = getApp();
 

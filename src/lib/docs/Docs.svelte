@@ -4,10 +4,6 @@
 	import {stripStart} from '@feltjs/util/string.js';
 	import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
 
-	import {actionDatas} from '$lib/vocab/action/actionData';
-	import {modelSchemas} from '$lib/vocab/schemas';
-	import {viewTemplates} from '$lib/vocab/view/view';
-	import {toSchemaName} from '$lib/util/schema';
 	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 	import {
 		guideItemsBySlug,
@@ -22,7 +18,16 @@
 	import DocsGuideAdminContent from '$lib/docs/DocsGuideAdminContent.svelte';
 	import DocsGuideDevContent from '$lib/docs/DocsGuideDevContent.svelte';
 	import DocsVocabContent from '$lib/docs/DocsVocabContent.svelte';
-	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
+	import {
+		clientActions,
+		namesByCategory,
+		serviceActions,
+		sortedModelSchemas,
+		sortedViewTemplates,
+		type VocabCategory,
+	} from '$lib/vocab/data';
+	import type {VocabName} from '$lib/vocab/vocab';
+	import {modelNames} from '$lib/vocab/metadata';
 
 	export let path = '/docs';
 
@@ -36,30 +41,9 @@
 
 	// TODO display source code links to views and actions and such
 
-	const sortedModelSchemas = modelSchemas.slice().sort((a, b) => a.$id.localeCompare(b.$id));
-	const sortedViewTemplates = viewTemplates.slice().sort((a, b) => a.name.localeCompare(b.name));
-	const clientActions = actionDatas
-		.filter((a) => a.type === 'ClientAction')
-		.sort((a, b) => a.name.localeCompare(b.name)) as ClientActionData[];
-	const serviceActions = actionDatas
-		.filter((a) => a.type === 'ServiceAction')
-		.sort((a, b) => a.name.localeCompare(b.name)) as ServiceActionData[];
+	const vocabOnscreen = mutable(new Set<VocabName>()); // set of vocab names onscreen via IntersectionObserver
 
-	const schemaNames = sortedModelSchemas.map((s) => toSchemaName(s.$id));
-
-	const viewNames = new Set(sortedViewTemplates.map((a) => a.name));
-	const schemaNamesSet = new Set(schemaNames); // TODO move to sets from the above array
-	const clientActionNames = new Set(clientActions.map((a) => a.name));
-	const serviceActionNames = new Set(serviceActions.map((a) => a.name));
-
-	type VocabCategory = 'views' | 'models' | 'service_actions' | 'client_actions';
-	const namesByCategory: Map<VocabCategory, Set<string>> = new Map([
-		['views', viewNames],
-		['models', schemaNamesSet],
-		['client_actions', clientActionNames],
-		['service_actions', serviceActionNames],
-	]);
-	const isCategoryOnscreen = (c: VocabCategory, $vocabOnscreen: Set<string>): boolean => {
+	const isCategoryOnscreen = (c: VocabCategory, $vocabOnscreen: Set<VocabName>): boolean => {
 		const names = namesByCategory.get(c)!;
 		for (const v of $vocabOnscreen) {
 			if (names.has(v)) {
@@ -98,8 +82,6 @@
 	};
 	$: guideSlug = toGuideSlug(pathname, path);
 	$: selectedGuideItem = guideSlug ? guideItemsBySlug.get(guideSlug) : null;
-
-	const vocabOnscreen = mutable(new Set<string>()); // set of vocab names onscreen via IntersectionObserver
 </script>
 
 <svelte:head><title>{title}</title></svelte:head>
@@ -187,7 +169,7 @@
 					>
 				</h4>
 				<menu>
-					{#each schemaNames as name}
+					{#each modelNames as name}
 						<li>
 							<Vocab {name} plain={true} selections={vocabOnscreen} />
 						</li>
@@ -264,7 +246,7 @@
 					{sortedModelSchemas}
 					{serviceActions}
 					{clientActions}
-					{schemaNames}
+					{modelNames}
 					selections={vocabOnscreen}
 				/>
 			{:else if selectedGuideItem}

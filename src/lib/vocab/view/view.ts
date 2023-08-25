@@ -8,13 +8,15 @@ import type {Hub} from '$lib/vocab/hub/hub';
 import type {AccountActor} from '$lib/vocab/actor/actor';
 import {parseSvast} from '$lib/util/parseSvast';
 import type {Directory} from '$lib/vocab//entity/entityData';
+import type {VocabName} from '$lib/vocab/vocab';
 
 export type ViewData = Root;
 
 export type ViewNode = Root | SvelteChild; // TODO does this technically need to include `Node`?
 
+// TODO make this a schema
 export interface ViewTemplate {
-	name: string;
+	name: VocabName;
 	view: string;
 	icon: string;
 	creatable?: boolean; // defaults to `true`

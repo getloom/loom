@@ -3,6 +3,7 @@
 	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getDocsSettings} from '$lib/docs/docs';
+	import type {VocabName} from '$lib/vocab/vocab';
 
 	const docsSettings = getDocsSettings();
 	$: path = $docsSettings?.path || '/docs';
@@ -12,7 +13,7 @@
 	/**
 	 * The vocabulary item name. Currently supports models and actions.
 	 */
-	export let name: string;
+	export let name: VocabName;
 
 	/**
 	 * Optionally specify if the link should be displayed as selected,
@@ -23,7 +24,7 @@
 	/**
 	 * Optionally specify if the link should be displayed as selected via a set of matching names.
 	 */
-	export let selections: Mutable<Set<string>> | undefined = undefined;
+	export let selections: Mutable<Set<VocabName>> | undefined = undefined;
 
 	/**
 	 * Optionally specify if the text should be wrapped in a `<code>` element.

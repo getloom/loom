@@ -12,7 +12,7 @@ export const gen: Gen = async () => {
 	// TODO make these options configurable
 	const schema = bundleSchemas(
 		schemas,
-		'https://hub.felt.dev/schemas/vocab.json',
+		'https://www.felt.dev/schemas/vocab.json',
 		'@feltjs/felt vocab',
 	);
 	return {

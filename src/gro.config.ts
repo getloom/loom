@@ -39,7 +39,10 @@ const files = [
 	'lib/util/url.ts',
 	'lib/vocab/action/actionData.ts',
 	'lib/vocab/action/actions.ts',
+	'lib/vocab/data.ts',
+	'lib/vocab/metadata.ts',
 	'lib/vocab/schemas.ts',
+	'lib/vocab/vocab.ts',
 
 	// tasks
 	'lib/db/create.task.ts',
