@@ -11,7 +11,7 @@
 <div class="prose">
 	<h2>Development setup</h2>
 	<p>This walks through setting up a development environment for Felt.coop projects.</p>
-	<p>**1. Git**</p>
+	<h3>1. Git</h3>
 	<p>
 		<code>@feltjs/felt</code>'s code is on GitHub:
 		<a href="https://github.com/feltjs/felt">github.com/feltjs/felt</a>
@@ -28,9 +28,9 @@ git config --global color.ui auto
 git config --global core.pager 'less -x1,5'`}
 	/>
 
-	<p>**2. NodeJS**</p>
+	<h3>2. NodeJS</h3>
 	<p>
-		<code>@feltjs/felt</code> requires <a href="https://nodejs.org/">NodeJS</a> ^18.14. Our
+		<code>@feltjs/felt</code> requires <a href="https://nodejs.org/">NodeJS</a> >=20.5. Our
 		recommended Node version manager is
 		<a href="https://github.com/Schniz/fnm"><code>fnm</code></a>, which is roughly equivalent to
 		<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> with improved performance.
@@ -39,7 +39,11 @@ git config --global core.pager 'less -x1,5'`}
 		See the <a href="https://github.com/Schniz/fnm/"><code>fnm</code> installation instructions</a>,
 		then:
 	</p>
-	<CodeExample code={`fnm install 18  # installs and sets to default`} />
+	<CodeExample
+		code={`fnm install 20
+fnm use 20
+fnm default 20`}
+	/>
 	<p>
 		Now that we have git and Node installed, clone the <code>@feltjs/felt</code> repo and install
 		with <code>npm</code>:
@@ -49,7 +53,18 @@ git config --global core.pager 'less -x1,5'`}
 cd felt
 npm i # install dependencies`}
 	/>
-	<p>**3. Postgres**</p>
+	<p>Install any desired global dependencies:</p>
+	<CodeExample code={`npm i -g @feltjs/gro @changesets/cli`} />
+	<p>To upgrade an existing installation:</p>
+	<CodeExample
+		code={`fnm install 20
+fnm use 20
+fnm default 20
+fnm ls # view the status of your installed versions
+fnm uninstall X # remove any old versions you no longer want
+npm i -g @feltjs/gro @changesets/cli # reinstall global dependencies`}
+	/>
+	<h3>3. Postgres</h3>
 	<p>
 		<code>@feltjs/felt</code> requires <a href="https://www.postgresql.org/">Postgres</a> >= 15. For
 		details about felt's database implementation, see
@@ -81,7 +96,7 @@ gro dev
 gro test
 gro # print available tasks`}
 	/>
-	<p>**4. VSCode**</p>
+	<h3>4. VSCode</h3>
 	<p>
 		We use <a href="https://code.visualstudio.com/">VSCode</a> for its Svelte and extension support.
 	</p>

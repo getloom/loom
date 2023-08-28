@@ -33,7 +33,7 @@ export const task: Task<Args> = {
 			? PUBLIC_API_SERVER_HOSTNAME + ':' + PUBLIC_API_SERVER_PORT
 			: PUBLIC_API_SERVER_HOSTNAME;
 		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
-		const NODE_VERSION = '18.14';
+		const NODE_VERSION = '20';
 		const POSTGRES_VERSION = '15';
 		const PGDATABASE = fromEnv('PGDATABASE');
 		const PGUSER = fromEnv('PGUSER');
