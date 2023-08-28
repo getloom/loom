@@ -91,10 +91,10 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			log.debug('created actor', actor);
 			actors.push(actor);
 			await createDefaultEntities(
+				repos,
 				() => ({...toAccountServiceRequest(), actor}),
 				created.spaces,
 				() => actor,
-				repos,
 			);
 		}
 	}
@@ -141,7 +141,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			}
 		}
 		if (much) await createMuchSpaces(toMainAccountServiceRequest, hub, nextActor);
-		await createDefaultEntities(toMainAccountServiceRequest, spaces, nextActor, repos);
+		await createDefaultEntities(repos, toMainAccountServiceRequest, spaces, nextActor);
 	}
 
 	const adminHub = await repos.hub.loadAdminHub()!;
@@ -164,10 +164,10 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 };
 
 const createDefaultEntities = async (
+	repos: Repos,
 	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
 	spaces: Space[],
 	nextActor: () => AccountActor,
-	repos: Repos,
 ) => {
 	for (const space of spaces) {
 		const viewName = findFirstComponentName(parseView(space.view));

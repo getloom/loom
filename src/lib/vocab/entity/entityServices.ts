@@ -37,7 +37,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 		const {actor, source_id, pageSize = DEFAULT_PAGE_SIZE, pageKey, related, orderBy} = params;
 		log.debug('checking pagiated entities for ', source_id);
 		const {hub_id} = await repos.space.findByEntity(source_id);
-		await checkHubAccess(actor, hub_id, repos);
+		await checkHubAccess(repos, actor, hub_id);
 
 		const extraPageSize = pageSize + 1;
 		const pageTies = await repos.tie.filterBySourceIdPaginated(
@@ -84,7 +84,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		}
 
 		const {hub_id} = (await repos.space.findById(space_id))!;
-		await checkPolicy('create_entity', actor, hub_id, repos);
+		await checkPolicy(repos, 'create_entity', actor, hub_id);
 
 		//TODO maybe construct orderedItems here
 		let entity = await repos.entity.create(actor, data, space_id, path);
@@ -151,7 +151,7 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 					}
 				}
 
-				await checkEntityOwnership(actor, [entity_id], repos);
+				await checkEntityOwnership(repos, actor, [entity_id]);
 
 				const path = scrubEntityPath(doc.path);
 
@@ -188,7 +188,7 @@ export const EraseEntitiesService: ServiceByName['EraseEntities'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, entityIds} = params;
-		await checkEntityOwnership(actor, entityIds, repos);
+		await checkEntityOwnership(repos, actor, entityIds);
 
 		const entities = await repos.entity.eraseByIds(entityIds);
 
@@ -205,7 +205,7 @@ export const DeleteEntitiesService: ServiceByName['DeleteEntities'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, entityIds} = params;
-		await checkEntityOwnership(actor, entityIds, repos);
+		await checkEntityOwnership(repos, actor, entityIds);
 
 		const collections = await checkRemoveOrderedItems(repos, entityIds);
 
@@ -233,7 +233,7 @@ export const ReadEntitiesByIdService: ServiceByName['ReadEntitiesById'] = {
 		//TODO make this batchable; need an answer to potential multiHubAccess & rejection question
 		const {actor, entityIds} = params;
 
-		await checkEntityAccess(actor, entityIds, repos);
+		await checkEntityAccess(repos, actor, entityIds);
 
 		const {entities, missing} = await repos.entity.filterByIds(entityIds);
 		if (!missing) {

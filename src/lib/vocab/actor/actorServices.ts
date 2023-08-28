@@ -72,7 +72,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 		);
 
 		// Create the default spaces.
-		const {spaces, directories} = await createSpaces(toDefaultSpaces(actor.actor_id, hub), repos);
+		const {spaces, directories} = await createSpaces(repos, toDefaultSpaces(actor.actor_id, hub));
 
 		// If the admin hub was created, create the admin spaces and the actor's assignment.
 		// This is a separate step because we need to create the admin hub before any others
@@ -98,8 +98,8 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 
 			// Create the admin community's default spaces.
 			const defaultAdminSpaces = await createSpaces(
-				toDefaultAdminSpaces(actor.actor_id, adminHub),
 				repos,
+				toDefaultAdminSpaces(actor.actor_id, adminHub),
 			);
 			spaces.push(...defaultAdminSpaces.spaces);
 			directories.push(...defaultAdminSpaces.directories);
@@ -115,7 +115,7 @@ export const CreateAccountActorService: ServiceByName['CreateAccountActor'] = {
 				await Promise.all(
 					defaultHubs.map(async (hub) => {
 						const role_id = hub.settings.defaultRoleId;
-						const assignment = await createAssignment(actor.actor_id, hub, role_id, repos);
+						const assignment = await createAssignment(repos, actor.actor_id, hub, role_id);
 						assignments.push(assignment);
 						hubs.push(hub);
 						const {hubActors, hubRoles, hubPolicies, hubSpaces, hubDirectories} =
@@ -156,10 +156,10 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 		if (actorData.type === 'community') {
 			return {ok: false, status: 400, message: 'cannot delete hub actors'};
 		}
-		if (await isActorAdmin(actor_id, repos)) {
+		if (await isActorAdmin(repos, actor_id)) {
 			return {ok: false, status: 400, message: 'cannot delete admin actors'};
 		}
-		if (actor !== actor_id && !(await isActorAdmin(actor, repos))) {
+		if (actor !== actor_id && !(await isActorAdmin(repos, actor))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 		// deleting is allowed, and a lot of things need to happen. some of the order is sensitive:
@@ -175,7 +175,7 @@ export const DeleteActorService: ServiceByName['DeleteActor'] = {
 
 		// clean the hubs the actor is joined to, and assemble the broadcast audience
 		const joinedHubIds = hubs.map((h) => h.hub_id).filter((h) => h !== actorData.hub_id);
-		const removedHubIds = await cleanOrphanHubs(joinedHubIds, repos);
+		const removedHubIds = await cleanOrphanHubs(repos, joinedHubIds);
 		const broadcastHubIds = removedHubIds
 			? joinedHubIds.filter((h) => !removedHubIds.includes(h))
 			: joinedHubIds;

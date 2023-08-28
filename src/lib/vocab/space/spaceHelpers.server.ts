@@ -11,14 +11,14 @@ const log = new Logger(gray('[') + blue('spaceHelpers.server') + gray(']'));
 
 //TODO change CreateSpace action to batched & refactor this away?
 export const createSpaces = async (
-	serviceParams: CreateSpaceParams[],
 	repos: Repos,
+	serviceParams: CreateSpaceParams[],
 ): Promise<{spaces: Space[]; directories: Directory[]}> => {
 	const spaces: Space[] = [];
 	const directories: Directory[] = [];
 	// TODO can this be safely batched? at what concurrency? or maybe make a batched repo method?
 	for (const params of serviceParams) {
-		const {space, directory} = await createSpace(params, repos); // eslint-disable-line no-await-in-loop
+		const {space, directory} = await createSpace(repos, params); // eslint-disable-line no-await-in-loop
 		spaces.push(space);
 		directories.push(directory);
 	}
@@ -26,8 +26,8 @@ export const createSpaces = async (
 };
 
 export const createSpace = async (
-	params: CreateSpaceParams,
 	repos: Repos,
+	params: CreateSpaceParams,
 ): Promise<CreateSpaceResponse> => {
 	const {hub_id, name, view, icon} = params;
 	//TODO MULTIPLE add lowercasing to name/path

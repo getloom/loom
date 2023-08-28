@@ -11,10 +11,10 @@ import type {RoleId} from '$lib/vocab/role/role';
 const log = new Logger(gray('[') + blue('assignmentHelpers.server') + gray(']'));
 
 export const createAssignment = async (
+	repos: Repos,
 	actor_id: ActorId,
 	hub: Pick<Hub, 'hub_id' | 'type'>,
 	role_id: RoleId,
-	repos: Repos,
 ): Promise<Assignment> => {
 	const {hub_id} = hub;
 	log.debug('creating assingment for', actor_id, hub_id, role_id);

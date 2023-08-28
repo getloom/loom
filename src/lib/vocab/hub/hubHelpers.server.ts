@@ -32,7 +32,7 @@ export const HUB_COLUMNS = {
  * @param hubIds
  * @param repos
  */
-export const cleanOrphanHubs = async (hubIds: HubId[], repos: Repos): Promise<null | HubId[]> => {
+export const cleanOrphanHubs = async (repos: Repos, hubIds: HubId[]): Promise<null | HubId[]> => {
 	let deleted: HubId[] | null = null;
 	for (const hub_id of hubIds) {
 		// eslint-disable-next-line no-await-in-loop
@@ -153,9 +153,9 @@ export const initTemplateGovernanceForHub = async (
 };
 
 export const checkRemoveActor = async (
+	repos: Repos,
 	actor_id: ActorId,
 	hub_id: HubId,
-	repos: Repos,
 ): Promise<void> => {
 	if (!(await repos.assignment.isActorInHub(actor_id, hub_id))) {
 		throw new ApiError(400, 'actor is not in the hub');

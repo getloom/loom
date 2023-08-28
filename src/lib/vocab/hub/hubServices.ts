@@ -55,7 +55,7 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
 
-		await checkHubAccess(actor, hub_id, repos);
+		await checkHubAccess(repos, actor, hub_id);
 
 		const [spaces, roles, assignments] = await Promise.all([
 			repos.space.filterByHub(hub_id),
@@ -101,7 +101,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		}
 
 		// Check for instance settings OR admin actor
-		if ((await isCreateHubDisabled(repos)) && !(await isActorAdmin(actor, repos))) {
+		if ((await isCreateHubDisabled(repos)) && !(await isActorAdmin(repos, actor))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 
@@ -135,7 +135,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		const createSpacesParams = template.spaces?.length
 			? template.spaces.map((s) => spaceTemplateToCreateSpaceParams(s, actor, hub_id))
 			: toDefaultSpaces(actor, hub);
-		const {spaces, directories} = await createSpaces(createSpacesParams, repos);
+		const {spaces, directories} = await createSpaces(repos, createSpacesParams);
 
 		await broadcast.createHub(hub_id, account_id, actor);
 
@@ -160,7 +160,7 @@ export const UpdateHubService: ServiceByName['UpdateHub'] = {
 	transaction: true,
 	perform: async ({repos, params}) => {
 		const {actor, hub_id, settings} = params;
-		await checkPolicy('update_hub', actor, hub_id, repos);
+		await checkPolicy(repos, 'update_hub', actor, hub_id);
 		// TODO probably refactor `repos.hub.updateSettings` to return the updated document,
 		// as well as conditionally handle other updatable properties of `hub`
 		if (settings) {
@@ -177,7 +177,7 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 	transaction: true,
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id} = params;
-		await checkPolicy('delete_hub', actor, hub_id, repos);
+		await checkPolicy(repos, 'delete_hub', actor, hub_id);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type);
 		if (!hub) {
@@ -203,7 +203,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 	transaction: true,
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, hub_id, name} = params;
-		await checkPolicy('invite_to_hub', actor, hub_id, repos);
+		await checkPolicy(repos, 'invite_to_hub', actor, hub_id);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type_settings);
 		if (!hub) {
@@ -220,10 +220,10 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 		}
 
 		const assignment = await createAssignment(
+			repos,
 			actorToInvite.actor_id,
 			hub,
 			hub.settings.defaultRoleId,
-			repos,
 		);
 
 		await broadcast.addActor(hub_id, accountIdToInvite, actorToInvite.actor_id);
@@ -243,11 +243,11 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 
-		await checkRemoveActor(actor_id, hub_id, repos);
+		await checkRemoveActor(repos, actor_id, hub_id);
 
 		await repos.assignment.deleteByActorAndHub(actor_id, hub_id);
 
-		await cleanOrphanHubs([hub_id], repos);
+		await cleanOrphanHubs(repos, [hub_id]);
 
 		const actorToLeave = await repos.actor.findById(actor_id, ACTOR_COLUMNS.account_id);
 		if (!actorToLeave) {
@@ -266,13 +266,13 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	perform: async ({repos, params, broadcast}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[KickFromHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
-		await checkPolicy('kick_from_hub', actor, hub_id, repos);
+		await checkPolicy(repos, 'kick_from_hub', actor, hub_id);
 
-		await checkRemoveActor(actor_id, hub_id, repos);
+		await checkRemoveActor(repos, actor_id, hub_id);
 
 		await repos.assignment.deleteByActorAndHub(actor_id, hub_id);
 
-		await cleanOrphanHubs([hub_id], repos);
+		await cleanOrphanHubs(repos, [hub_id]);
 
 		const actorToKick = await repos.actor.findById(actor_id, ACTOR_COLUMNS.account_id);
 		if (!actorToKick) {

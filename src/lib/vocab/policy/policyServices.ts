@@ -20,7 +20,7 @@ export const CreatePolicyService: ServiceByName['CreatePolicy'] = {
 		const {actor, role_id, name} = params;
 
 		const {hub_id} = await repos.role.findById(role_id);
-		await checkPolicy('create_policy', actor, hub_id, repos);
+		await checkPolicy(repos, 'create_policy', actor, hub_id);
 
 		log.debug('creating policy', role_id, name);
 		const policy = await repos.policy.create(role_id, name);
@@ -35,7 +35,7 @@ export const ReadPoliciesService: ServiceByName['ReadPolicies'] = {
 		const {actor, role_id} = params;
 		const hub = await repos.hub.findByRole(role_id, HUB_COLUMNS.hub_id);
 		if (!hub) return {ok: false, status: 404, message: 'no hub found'};
-		await checkHubAccess(actor, hub.hub_id, repos);
+		await checkHubAccess(repos, actor, hub.hub_id);
 
 		log.debug('retrieving policies for role', role_id);
 		const policies = await repos.policy.filterByRole(role_id);
@@ -50,7 +50,7 @@ export const UpdatePolicyService: ServiceByName['UpdatePolicy'] = {
 		const {actor, policy_id, data} = params;
 
 		const {hub_id} = await repos.role.findByPolicy(policy_id);
-		await checkPolicy('update_policy', actor, hub_id, repos);
+		await checkPolicy(repos, 'update_policy', actor, hub_id);
 
 		log.debug('updating role', policy_id, data);
 		const policy = await repos.policy.update(policy_id, data);
@@ -65,7 +65,7 @@ export const DeletePolicyService: ServiceByName['DeletePolicy'] = {
 		const {actor, policy_id} = params;
 
 		const {hub_id} = await repos.role.findByPolicy(policy_id);
-		await checkPolicy('delete_policy', actor, hub_id, repos);
+		await checkPolicy(repos, 'delete_policy', actor, hub_id);
 
 		log.debug('deleting policy', policy_id);
 		await repos.policy.deleteById(policy_id);

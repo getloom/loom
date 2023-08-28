@@ -41,6 +41,7 @@ git config --global core.pager 'less -x1,5'`}
 	</p>
 	<CodeExample
 		code={`fnm install 20
+# run these lines if you already had fnm:
 fnm use 20
 fnm default 20`}
 	/>

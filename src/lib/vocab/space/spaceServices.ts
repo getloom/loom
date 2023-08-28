@@ -20,7 +20,7 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 		const {actor, hub_id} = params;
 		log.debug('[ReadSpaces] retrieving spaces for hub', hub_id);
 
-		await checkHubAccess(actor, hub_id, repos);
+		await checkHubAccess(repos, actor, hub_id);
 
 		const spaces = await repos.space.filterByHub(hub_id);
 
@@ -39,9 +39,9 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	perform: async ({repos, params}) => {
 		const {actor, hub_id} = params;
 
-		await checkPolicy('create_space', actor, hub_id, repos);
+		await checkPolicy(repos, 'create_space', actor, hub_id);
 
-		const {space, directory} = await createSpace(params, repos);
+		const {space, directory} = await createSpace(repos, params);
 
 		return {ok: true, status: 200, value: {space, directory}, broadcast: hub_id};
 	},
@@ -58,7 +58,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
 
-		await checkPolicy('update_space', actor, space.hub_id, repos);
+		await checkPolicy(repos, 'update_space', actor, space.hub_id);
 
 		if (isHomeSpace(space)) {
 			throw new ApiError(405, 'cannot update home space');
@@ -104,7 +104,7 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 			return {ok: false, status: 405, message: 'cannot delete home space'};
 		}
 
-		await checkPolicy('delete_space', params.actor, space.hub_id, repos);
+		await checkPolicy(repos, 'delete_space', params.actor, space.hub_id);
 
 		await repos.space.deleteById(params.space_id);
 
