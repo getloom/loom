@@ -41,11 +41,16 @@ export const cleanOrphanHubs = async (hubIds: HubId[], repos: Repos): Promise<nu
 		);
 		if (accountActorAssignmentsCount === 0) {
 			log.debug('no assignments found for hub, cleaning up', hub_id);
-			await repos.hub.deleteById(hub_id); // eslint-disable-line no-await-in-loop
+			await deleteHub(repos, hub_id); // eslint-disable-line no-await-in-loop
 			(deleted || (deleted = [])).push(hub_id);
 		}
 	}
 	return deleted;
+};
+
+export const deleteHub = async (repos: Repos, hubId: HubId): Promise<void> => {
+	await repos.space.deleteByHub(hubId);
+	await repos.hub.deleteById(hubId);
 };
 
 export const initAdminHub = async (
