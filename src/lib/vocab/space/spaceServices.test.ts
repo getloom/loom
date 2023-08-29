@@ -4,7 +4,7 @@ import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {DeleteSpaceService} from '$lib/vocab/space/spaceServices';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {toServiceRequestFake} from '$lib/util/testHelpers';
 
 /* test__spaceServices */
 const test__spaceServices = suite<TestDbContext>('spaceServices');
@@ -26,7 +26,7 @@ test__spaceServices('delete a space in multiple hubs', async ({repos, random}) =
 
 	unwrap(
 		await DeleteSpaceService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, space_id: space.space_id},
 		}),
 	);

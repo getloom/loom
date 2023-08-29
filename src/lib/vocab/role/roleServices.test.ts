@@ -2,7 +2,7 @@ import {suite} from 'uvu';
 import {unwrap, unwrapError} from '@feltjs/util/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {toServiceRequestFake} from '$lib/util/testHelpers';
 import {DeleteRoleService} from '$lib/vocab/role/roleServices';
 
 /* test_roleServices */
@@ -18,7 +18,7 @@ test_roleServices('unable to delete default roles in communites', async ({repos,
 
 	unwrapError(
 		await DeleteRoleService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, role_id: hub.settings.defaultRoleId},
 		}),
 		'deleting the default role is not allowed',
@@ -26,7 +26,7 @@ test_roleServices('unable to delete default roles in communites', async ({repos,
 
 	unwrap(
 		await DeleteRoleService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, role_id: secondRole.role_id},
 		}),
 		'delete a non-default role',

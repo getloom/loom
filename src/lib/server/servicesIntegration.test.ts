@@ -12,7 +12,7 @@ import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {toServiceRequestFake} from '$lib/util/testHelpers';
 import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
@@ -44,7 +44,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	// join the hub with the second actor
 	const {assignment} = unwrap(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, actor1), // add `actor2` with `actor1`
+			...toServiceRequestFake(repos, actor1), // add `actor2` with `actor1`
 			params: {
 				actor: actor1.actor_id,
 				hub_id: hub.hub_id,
@@ -73,7 +73,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	const {entities: filteredEntities} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(repos, actor2),
+			...toServiceRequestFake(repos, actor2),
 			params: {actor: actor2.actor_id, source_id: space.directory_id},
 		}),
 	);
@@ -81,7 +81,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	const {spaces: filteredSpaces} = unwrap(
 		await ReadSpacesService.perform({
-			...toServiceRequestMock(repos, actor2),
+			...toServiceRequestFake(repos, actor2),
 			params: {actor: actor2.actor_id, hub_id: hub.hub_id},
 		}),
 	);
@@ -89,7 +89,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 
 	const {hub: foundHub} = unwrap(
 		await ReadHubService.perform({
-			...toServiceRequestMock(repos, actor2),
+			...toServiceRequestFake(repos, actor2),
 			params: {actor: actor2.actor_id, hub_id: hub.hub_id},
 		}),
 	);
@@ -133,7 +133,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
-					...toServiceRequestMock(repos, actor1),
+					...toServiceRequestFake(repos, actor1),
 					params: {actor: actor1.actor_id, space_id: space.space_id},
 				}),
 			);
@@ -145,7 +145,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, actor1),
+			...toServiceRequestFake(repos, actor1),
 			params: {
 				actor: actor1.actor_id,
 				assignment_id: assignment.assignment_id,
@@ -160,12 +160,12 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	await repos.policy.create(hub.settings.defaultRoleId, 'delete_hub');
 	unwrap(
 		await DeleteHubService.perform({
-			...toServiceRequestMock(repos, actor1),
+			...toServiceRequestFake(repos, actor1),
 			params: {actor: actor1.actor_id, hub_id: hub.hub_id},
 		}),
 	);
 	const readHubResult = await ReadHubService.perform({
-		...toServiceRequestMock(repos, actor1),
+		...toServiceRequestFake(repos, actor1),
 		params: {actor: actor1.actor_id, hub_id: hub.hub_id},
 	});
 	assert.is(readHubResult.status, 404);

@@ -6,7 +6,7 @@ import type {AccountId} from '$lib/vocab/account/account';
 /**
  * A no-op alternative to `Broadcast` for testing purposes.
  */
-export class BroadcastMock implements IBroadcast {
+export class BroadcastFake implements IBroadcast {
 	async createHub(): Promise<void> {
 		// no-op
 	}

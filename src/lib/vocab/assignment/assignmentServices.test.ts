@@ -7,7 +7,7 @@ import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
 } from '$lib/vocab/assignment/assignmentServices';
-import {expectApiError, toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, toServiceRequestFake} from '$lib/util/testHelpers';
 import type {HubActor} from '$lib/vocab/actor/actor';
 
 /* test__assignmentServices */
@@ -21,7 +21,7 @@ test__assignmentServices('disallow creating duplicate assignments', async ({repo
 	await expectApiError(
 		409,
 		CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				hub_id: hub.hub_id,
@@ -39,7 +39,7 @@ test__assignmentServices(
 		await expectApiError(
 			403,
 			CreateAssignmentService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: {
 					actor: actor.actor_id,
 					hub_id: personalHub.hub_id,
@@ -58,7 +58,7 @@ test__assignmentServices('delete an assignment in a hub', async ({repos, random}
 	)!;
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				assignment_id: assignment.assignment_id,
@@ -72,7 +72,7 @@ test__assignmentServices('fail to delete a personal assignment', async ({repos, 
 	const {actor, assignment} = await random.actor();
 	unwrapError(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				assignment_id: assignment.assignment_id,
@@ -90,7 +90,7 @@ test__assignmentServices('fail to delete a hub actor assignment', async ({repos,
 	)!;
 	unwrapError(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: communityActor.actor_id,
 				assignment_id: assignment.assignment_id,
@@ -110,7 +110,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 	const {actor: actor2} = await random.actor();
 	const {assignment: assignment2} = unwrap(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, actor1),
+			...toServiceRequestFake(repos, actor1),
 			params: {
 				actor: actor1.actor_id,
 				actor_id: actor2.actor_id,
@@ -124,7 +124,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 	//Delete 1 account member, the hub still exists
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, actor1),
+			...toServiceRequestFake(repos, actor1),
 			params: {
 				actor: actor1.actor_id,
 				assignment_id: assignment2.assignment_id,
@@ -137,7 +137,7 @@ test__assignmentServices('delete orphaned hubs on last member leaving', async ({
 	//Delete last account member, the hub is deleted
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, actor1),
+			...toServiceRequestFake(repos, actor1),
 			params: {
 				actor: actor1.actor_id,
 				assignment_id: assignment.assignment_id,

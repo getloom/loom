@@ -4,7 +4,7 @@ import {unwrap} from '@feltjs/util/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {NoteEntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData';
-import {expectApiError, invite, toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, invite, toServiceRequestFake} from '$lib/util/testHelpers';
 import {
 	ReadEntitiesService,
 	DeleteEntitiesService,
@@ -63,7 +63,7 @@ test_entityServices('create entity and return it and directories', async ({repos
 
 	const {entities} = unwrap(
 		await CreateEntityService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				space_id: space.space_id,
@@ -90,7 +90,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	//first query on the space dir and expect an empty set
 	const {entities: filtered, more: more1} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, source_id: space.directory_id},
 		}),
 	);
@@ -113,7 +113,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	//test the default param returns properly
 	const {entities: filtered2, more: more2} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, source_id: space.directory_id},
 		}),
 	);
@@ -127,7 +127,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 	//then do 3 queries on smaller pages
 	const {entities: filtered3, more: more3} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				source_id: space.directory_id,
@@ -141,7 +141,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 
 	const {entities: filtered4, more: more4} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				source_id: space.directory_id,
@@ -157,7 +157,7 @@ test_entityServices('read paginated entities by source_id', async ({repos, rando
 
 	const {entities: filtered5, more: more5} = unwrap(
 		await ReadEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				source_id: space.directory_id,
@@ -205,7 +205,7 @@ test_entityServices('deleting entities and cleaning orphans', async ({random, re
 	//delete the collection
 	unwrap(
 		await DeleteEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, entityIds: [list.entity_id]},
 		}),
 	);
@@ -225,7 +225,7 @@ test_entityServices(
 		//case 1, actor === actor in regular space | allowed
 		const note1 = unwrap(
 			await CreateEntityService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: {
 					actor: actor.actor_id,
 					data: {content: 'note1'},
@@ -236,7 +236,7 @@ test_entityServices(
 
 		unwrap(
 			await UpdateEntitiesService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: {
 					actor: actor.actor_id,
 					entities: [{entity_id: note1.entity_id, data: {content: 'Note1'}}],
@@ -247,7 +247,7 @@ test_entityServices(
 		//case 2, actor === actor in common space | allowed
 		const note2 = unwrap(
 			await CreateEntityService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: {
 					actor: actor.actor_id,
 					data: {content: 'note2'},
@@ -258,7 +258,7 @@ test_entityServices(
 
 		unwrap(
 			await UpdateEntitiesService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: {
 					actor: actor.actor_id,
 					entities: [{entity_id: note2.entity_id, data: {content: 'Note2'}}],
@@ -269,7 +269,7 @@ test_entityServices(
 		//case 3, actor !== actor in common space | allowed
 		unwrap(
 			await UpdateEntitiesService.perform({
-				...toServiceRequestMock(repos, actor2),
+				...toServiceRequestFake(repos, actor2),
 				params: {
 					actor: actor2.actor_id,
 					entities: [{entity_id: note2.entity_id, data: {content: 'lol'}}],
@@ -281,7 +281,7 @@ test_entityServices(
 		await expectApiError(
 			403,
 			UpdateEntitiesService.perform({
-				...toServiceRequestMock(repos, actor2),
+				...toServiceRequestFake(repos, actor2),
 				params: {
 					actor: actor2.actor_id,
 					entities: [{entity_id: note1.entity_id, data: {content: 'lol'}}],
@@ -301,7 +301,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	await expectApiError(
 		405,
 		UpdateEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entities: [{entity_id: directory.entity_id, data: {content: 'test'}}],
@@ -313,7 +313,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	await expectApiError(
 		405,
 		UpdateEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entities: [{entity_id: directory.entity_id, data: {type: 'Collection'}}],
@@ -325,7 +325,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	await expectApiError(
 		405,
 		UpdateEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entities: [
@@ -339,7 +339,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	await expectApiError(
 		403,
 		DeleteEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entityIds: [directory.entity_id],
@@ -351,7 +351,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	await expectApiError(
 		403,
 		EraseEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entityIds: [directory.entity_id],
@@ -427,7 +427,7 @@ test_entityServices('create and remove orderedItem entities ', async ({repos, ra
 	//delete 2nd note; collection should have orderedItem length 2
 	const {entities: e1} = unwrap(
 		await DeleteEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entityIds: [entity2.entity_id],
@@ -445,7 +445,7 @@ test_entityServices('create and remove orderedItem entities ', async ({repos, ra
 	//delete 1 collection; entities should still be present & in other collection
 	unwrap(
 		await DeleteEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entityIds: [collection2.entity_id],
@@ -459,7 +459,7 @@ test_entityServices('create and remove orderedItem entities ', async ({repos, ra
 	//delete 2nd collection; entities should be gone now
 	unwrap(
 		await DeleteEntitiesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				entityIds: [collection1.entity_id],

@@ -5,7 +5,7 @@ import * as assert from 'uvu/assert';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices';
 import {randomActionParams} from '$lib/util/randomActionParams';
-import {loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
+import {loadAdminActor, toServiceRequestFake} from '$lib/util/testHelpers';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
@@ -23,7 +23,7 @@ test__actorService('create a actor & test name collisions', async ({repos, rando
 	const account = await random.account();
 
 	const toServiceRequest = () => ({
-		...toServiceRequestMock(repos, undefined, undefined, account.account_id),
+		...toServiceRequestFake(repos, undefined, undefined, account.account_id),
 		params,
 	});
 
@@ -48,7 +48,7 @@ test__actorService('ghost actor has the expected name and id', async ({repos, ra
 	// First create an account actor, which ensures the ghost actor has been initialized.
 	unwrap(
 		await CreateAccountActorService.perform({
-			...toServiceRequestMock(repos, undefined, undefined, (await random.account()).account_id),
+			...toServiceRequestFake(repos, undefined, undefined, (await random.account()).account_id),
 			params: await randomActionParams.CreateAccountActor(random),
 		}),
 	);
@@ -100,7 +100,7 @@ test__actorService('delete a actor and properly clean up', async ({repos, random
 	// TODO could be simplified with `random.assignment()`
 	unwrap(
 		await CreateAssignmentService.perform({
-			...toServiceRequestMock(repos, otherActor),
+			...toServiceRequestFake(repos, otherActor),
 			params: {
 				actor: otherActor.actor_id,
 				hub_id: otherHub.hub_id,
@@ -124,7 +124,7 @@ test__actorService('delete a actor and properly clean up', async ({repos, random
 
 	unwrap(
 		await DeleteActorService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, actor_id: actor.actor_id},
 		}),
 	);
@@ -146,7 +146,7 @@ test__actorService('actors cannot delete other actors', async ({repos, random}) 
 
 	unwrapError(
 		await DeleteActorService.perform({
-			...toServiceRequestMock(repos, actor1),
+			...toServiceRequestFake(repos, actor1),
 			params: {actor: actor1.actor_id, actor_id: actor2.actor_id},
 		}),
 	);
@@ -163,7 +163,7 @@ test__actorService(
 
 		unwrap(
 			await DeleteActorService.perform({
-				...toServiceRequestMock(repos, adminActor),
+				...toServiceRequestFake(repos, adminActor),
 				params: {actor: adminActor.actor_id, actor_id: actor.actor_id},
 			}),
 		);
@@ -178,7 +178,7 @@ test__actorService('actors cannot delete actors in the admin hub', async ({repos
 	assert.is(
 		unwrapError(
 			await DeleteActorService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: {actor: actor.actor_id, actor_id: adminActor.actor_id},
 			}),
 		).status,

@@ -10,7 +10,7 @@ import {
 	KickFromHubService,
 	LeaveHubService,
 } from '$lib/vocab/hub/hubServices';
-import {expectApiError, invite, loadAdminActor, toServiceRequestMock} from '$lib/util/testHelpers';
+import {expectApiError, invite, loadAdminActor, toServiceRequestFake} from '$lib/util/testHelpers';
 import {ADMIN_HUB_ID} from '$lib/util/constants';
 import {ReadRolesService} from '$lib/vocab/role/roleServices';
 import {policyNames} from '$lib/vocab/policy/policyHelpers';
@@ -36,7 +36,7 @@ test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: {actor: actor.actor_id, hub_id: actor.hub_id},
 			}),
 		).status,
@@ -49,7 +49,7 @@ test_hubServices('disallow deleting admin hub', async ({repos}) => {
 	assert.is(
 		unwrapError(
 			await DeleteHubService.perform({
-				...toServiceRequestMock(repos, adminActor),
+				...toServiceRequestFake(repos, adminActor),
 				params: {actor: adminActor.actor_id, hub_id: ADMIN_HUB_ID},
 			}),
 		).status,
@@ -82,18 +82,18 @@ test_hubServices('disallow duplicate hub names', async ({repos, random}) => {
 
 	const params = randomHubParams(actor.actor_id);
 	params.template.name += 'Aa';
-	unwrap(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}));
+	unwrap(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}));
 
 	params.template.name = params.template.name.toLowerCase();
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}))
+		unwrapError(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
 			.status,
 		409,
 	);
 
 	params.template.name = params.template.name.toUpperCase();
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}))
+		unwrapError(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
 			.status,
 		409,
 	);
@@ -105,7 +105,7 @@ test_hubServices('disallow reserved hub names', async ({repos, random}) => {
 	const params = randomHubParams(actor.actor_id);
 	params.template.name = 'docs';
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}))
+		unwrapError(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
 			.status,
 		409,
 	);
@@ -116,12 +116,12 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 
 	const params = randomHubParams(actor.actor_id);
 	const hubResult = unwrap(
-		await CreateHubService.perform({...toServiceRequestMock(repos, actor), params}),
+		await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}),
 	);
 
 	const roleResult = unwrap(
 		await ReadRolesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, hub_id: hubResult.hub.hub_id},
 		}),
 	);
@@ -131,7 +131,7 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 
 	const stewardPolicyResults = unwrap(
 		await ReadPoliciesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, role_id: hubResult.roles[0].role_id},
 		}),
 	);
@@ -139,7 +139,7 @@ test_hubServices('new hubs have default template roles & policies', async ({repo
 
 	const memberPolicyResults = unwrap(
 		await ReadPoliciesService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, role_id: hubResult.roles[1].role_id},
 		}),
 	);
@@ -155,7 +155,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 
 	unwrap(
 		await DeleteHubService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, hub_id: hub.hub_id},
 		}),
 	);
@@ -195,7 +195,7 @@ test_hubServices(
 
 		unwrapError(
 			await CreateHubService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: randomHubParams(actor.actor_id),
 			}),
 		);
@@ -204,7 +204,7 @@ test_hubServices(
 
 		unwrap(
 			await CreateHubService.perform({
-				...toServiceRequestMock(repos, actor),
+				...toServiceRequestFake(repos, actor),
 				params: randomHubParams(adminActor.actor_id),
 			}),
 		);
@@ -244,7 +244,7 @@ test_hubServices('LeaveHub removes all assignments for the actor', async ({repos
 	assert.ok(await repos.assignment.isActorInHub(actor.actor_id, hub.hub_id));
 	unwrap(
 		await LeaveHubService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				hub_id: hub.hub_id,
@@ -263,7 +263,7 @@ test_hubServices('fail LeaveHub when the actor has no assignments', async ({repo
 	await expectApiError(
 		400,
 		LeaveHubService.perform({
-			...toServiceRequestMock(repos, actor),
+			...toServiceRequestFake(repos, actor),
 			params: {
 				actor: actor.actor_id,
 				hub_id: hub.hub_id,
@@ -280,7 +280,7 @@ test_hubServices('KickFromHub removes all assignments for the actor', async ({re
 	assert.ok(await repos.assignment.isActorInHub(actor.actor_id, hub.hub_id));
 	unwrap(
 		await KickFromHubService.perform({
-			...toServiceRequestMock(repos, communityActor),
+			...toServiceRequestFake(repos, communityActor),
 			params: {
 				actor: communityActor.actor_id,
 				hub_id: hub.hub_id,
@@ -298,7 +298,7 @@ test_hubServices('fail KickFromHub when the actor has no assignments', async ({r
 	await expectApiError(
 		400,
 		KickFromHubService.perform({
-			...toServiceRequestMock(repos, communityActor),
+			...toServiceRequestFake(repos, communityActor),
 			params: {
 				actor: communityActor.actor_id,
 				hub_id: hub.hub_id,
@@ -316,7 +316,7 @@ test_hubServices('fail Admin LeaveHub if last actor', async ({repos}) => {
 	await expectApiError(
 		405,
 		LeaveHubService.perform({
-			...toServiceRequestMock(repos, adminActor),
+			...toServiceRequestFake(repos, adminActor),
 			params: {
 				actor: adminActor.actor_id,
 				hub_id: adminHub.hub_id,
@@ -334,7 +334,7 @@ test_hubServices('fail KickFromHub if last actor', async ({repos}) => {
 	await expectApiError(
 		405,
 		KickFromHubService.perform({
-			...toServiceRequestMock(repos, adminActor),
+			...toServiceRequestFake(repos, adminActor),
 			params: {
 				actor: adminActor.actor_id,
 				hub_id: adminHub.hub_id,

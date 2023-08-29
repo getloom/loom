@@ -5,7 +5,7 @@ import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {authorize} from '$lib/server/authorize';
 import type {AuthorizedService} from '$lib/server/service';
 
-const MockAuthorizedService = {action: {authenticate: true, authorize: true}} as AuthorizedService;
+const FakeAuthorizedService = {action: {authenticate: true, authorize: true}} as AuthorizedService;
 
 /* test__authorize */
 const test__authorize = suite<TestDbContext>('services');
@@ -16,7 +16,7 @@ test__authorize.after(teardownDb);
 test__authorize("authorizes an account's actor", async ({repos, random}) => {
 	const {actor, account} = await random.actor();
 	unwrap(
-		await authorize(MockAuthorizedService, repos, account.account_id, {
+		await authorize(FakeAuthorizedService, repos, account.account_id, {
 			actor: actor.actor_id,
 			name: 'test_authorize_success',
 		}),
@@ -27,7 +27,7 @@ test__authorize('actor cannot be imactorted', async ({repos, random}) => {
 	const account = await random.account();
 	const {actor} = await random.actor();
 	unwrapError(
-		await authorize(MockAuthorizedService, repos, account.account_id, {
+		await authorize(FakeAuthorizedService, repos, account.account_id, {
 			actor: actor.actor_id,
 			name: 'test_authorize_failure',
 		}),
@@ -37,7 +37,7 @@ test__authorize('actor cannot be imactorted', async ({repos, random}) => {
 test__authorize('actor is required for authorized services', async ({repos, random}) => {
 	const account = await random.account();
 	unwrapError(
-		await authorize(MockAuthorizedService, repos, account.account_id, {
+		await authorize(FakeAuthorizedService, repos, account.account_id, {
 			name: 'test_authorize_failure',
 		}),
 	);

@@ -9,7 +9,7 @@ import {
 	KickFromHubService,
 	LeaveHubService,
 } from '$lib/vocab/hub/hubServices';
-import {invite, toServiceRequestMock} from '$lib/util/testHelpers';
+import {invite, toServiceRequestFake} from '$lib/util/testHelpers';
 import {randomHubParams} from '$lib/util/randomVocab';
 import {setupDb, teardownDb} from '$lib/util/testDbHelpers';
 import {Broadcast} from '$lib/server/Broadcast';
@@ -17,7 +17,7 @@ import {Broadcast} from '$lib/server/Broadcast';
 // These tests use bracket notation to access private fields with typesafety:
 /* eslint-disable @typescript-eslint/dot-notation */
 
-type WebsocketMock = any;
+type WebsocketFake = any;
 
 /* test__broadcast */
 const test__broadcast = suite<TestServerContext>('broadcast');
@@ -27,7 +27,7 @@ test__broadcast.after(teardownDb);
 
 test__broadcast('open first socket', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket: WebsocketMock = 'socket1';
+	const socket: WebsocketFake = 'socket1';
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
 	const ace = (await random.actor(a)).actor;
@@ -52,8 +52,8 @@ test__broadcast('open first socket', async ({repos, random}) => {
 
 test__broadcast('open two sockets with one account', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket1: WebsocketMock = 'socket1';
-	const socket2: WebsocketMock = 'socket2';
+	const socket1: WebsocketFake = 'socket1';
+	const socket2: WebsocketFake = 'socket2';
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
 	const ace = (await random.actor(a)).actor;
@@ -79,11 +79,11 @@ test__broadcast('open two sockets with one account', async ({repos, random}) => 
 
 test__broadcast('connect multiple sockets from multiple accounts', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket1: WebsocketMock = 'socket1';
-	const socket2: WebsocketMock = 'socket2';
-	const socket3: WebsocketMock = 'socket3';
-	const socket4: WebsocketMock = 'socket4';
-	const socket5: WebsocketMock = 'socket5';
+	const socket1: WebsocketFake = 'socket1';
+	const socket2: WebsocketFake = 'socket2';
+	const socket3: WebsocketFake = 'socket3';
+	const socket4: WebsocketFake = 'socket4';
+	const socket5: WebsocketFake = 'socket5';
 
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
@@ -138,11 +138,11 @@ test__broadcast('connect multiple sockets from multiple accounts', async ({repos
 
 test__broadcast('close last socket for an account', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket1: WebsocketMock = 'socket1';
-	const socket2: WebsocketMock = 'socket2';
-	const socket3: WebsocketMock = 'socket3';
-	const socket4: WebsocketMock = 'socket4';
-	const socket5: WebsocketMock = 'socket5';
+	const socket1: WebsocketFake = 'socket1';
+	const socket2: WebsocketFake = 'socket2';
+	const socket3: WebsocketFake = 'socket3';
+	const socket4: WebsocketFake = 'socket4';
+	const socket5: WebsocketFake = 'socket5';
 
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
@@ -198,11 +198,11 @@ test__broadcast('close last socket for an account', async ({repos, random}) => {
 
 test__broadcast('close one of two sockets for an account', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket1: WebsocketMock = 'socket1';
-	const socket2: WebsocketMock = 'socket2';
-	const socket3: WebsocketMock = 'socket3';
-	const socket4: WebsocketMock = 'socket4';
-	const socket5: WebsocketMock = 'socket5';
+	const socket1: WebsocketFake = 'socket1';
+	const socket2: WebsocketFake = 'socket2';
+	const socket3: WebsocketFake = 'socket3';
+	const socket4: WebsocketFake = 'socket4';
+	const socket5: WebsocketFake = 'socket5';
 
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
@@ -252,11 +252,11 @@ test__broadcast('close one of two sockets for an account', async ({repos, random
 
 test__broadcast('close all open sockets', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket1: WebsocketMock = 'socket1';
-	const socket2: WebsocketMock = 'socket2';
-	const socket3: WebsocketMock = 'socket3';
-	const socket4: WebsocketMock = 'socket4';
-	const socket5: WebsocketMock = 'socket5';
+	const socket1: WebsocketFake = 'socket1';
+	const socket2: WebsocketFake = 'socket2';
+	const socket3: WebsocketFake = 'socket3';
+	const socket4: WebsocketFake = 'socket4';
+	const socket5: WebsocketFake = 'socket5';
 
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
@@ -298,11 +298,11 @@ test__broadcast(
 	'with multiple open sockets, create a hub and add an actor to it',
 	async ({repos, random}) => {
 		const broadcast = new Broadcast(repos);
-		const socket1: WebsocketMock = 'socket1';
-		const socket2: WebsocketMock = 'socket2';
-		const socket3: WebsocketMock = 'socket3';
-		const socket4: WebsocketMock = 'socket4';
-		const socket5: WebsocketMock = 'socket5';
+		const socket1: WebsocketFake = 'socket1';
+		const socket2: WebsocketFake = 'socket2';
+		const socket3: WebsocketFake = 'socket3';
+		const socket4: WebsocketFake = 'socket4';
+		const socket5: WebsocketFake = 'socket5';
 
 		const a = await random.account();
 		const al = (await random.actor(a)).actor;
@@ -331,7 +331,7 @@ test__broadcast(
 
 		const {hub: demo} = unwrap(
 			await CreateHubService.perform({
-				...toServiceRequestMock(repos, al, undefined, undefined, broadcast),
+				...toServiceRequestFake(repos, al, undefined, undefined, broadcast),
 				params: randomHubParams(al.actor_id),
 			}),
 		);
@@ -392,11 +392,11 @@ test__broadcast(
 
 test__broadcast('with multiple open sockets, remove and kick actors', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket1: WebsocketMock = 'socket1';
-	const socket2: WebsocketMock = 'socket2';
-	const socket3: WebsocketMock = 'socket3';
-	const socket4: WebsocketMock = 'socket4';
-	const socket5: WebsocketMock = 'socket5';
+	const socket1: WebsocketFake = 'socket1';
+	const socket2: WebsocketFake = 'socket2';
+	const socket3: WebsocketFake = 'socket3';
+	const socket4: WebsocketFake = 'socket4';
+	const socket5: WebsocketFake = 'socket5';
 
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
@@ -425,7 +425,7 @@ test__broadcast('with multiple open sockets, remove and kick actors', async ({re
 
 	unwrap(
 		await KickFromHubService.perform({
-			...toServiceRequestMock(repos, al, undefined, undefined, broadcast),
+			...toServiceRequestFake(repos, al, undefined, undefined, broadcast),
 			params: {actor: al.actor_id, actor_id: zoe.actor_id, hub_id: prod.hub_id},
 		}),
 	);
@@ -443,7 +443,7 @@ test__broadcast('with multiple open sockets, remove and kick actors', async ({re
 
 	unwrap(
 		await LeaveHubService.perform({
-			...toServiceRequestMock(repos, zed, undefined, undefined, broadcast),
+			...toServiceRequestFake(repos, zed, undefined, undefined, broadcast),
 			params: {actor: zed.actor_id, actor_id: zed.actor_id, hub_id: prod.hub_id},
 		}),
 	);
@@ -461,11 +461,11 @@ test__broadcast('with multiple open sockets, remove and kick actors', async ({re
 
 test__broadcast('with multiple open sockets, delete a hub', async ({repos, random}) => {
 	const broadcast = new Broadcast(repos);
-	const socket1: WebsocketMock = 'socket1';
-	const socket2: WebsocketMock = 'socket2';
-	const socket3: WebsocketMock = 'socket3';
-	const socket4: WebsocketMock = 'socket4';
-	const socket5: WebsocketMock = 'socket5';
+	const socket1: WebsocketFake = 'socket1';
+	const socket2: WebsocketFake = 'socket2';
+	const socket3: WebsocketFake = 'socket3';
+	const socket4: WebsocketFake = 'socket4';
+	const socket5: WebsocketFake = 'socket5';
 
 	const a = await random.account();
 	const al = (await random.actor(a)).actor;
@@ -494,7 +494,7 @@ test__broadcast('with multiple open sockets, delete a hub', async ({repos, rando
 
 	unwrap(
 		await DeleteHubService.perform({
-			...toServiceRequestMock(repos, al, undefined, undefined, broadcast),
+			...toServiceRequestFake(repos, al, undefined, undefined, broadcast),
 			params: {actor: al.actor_id, hub_id: prod.hub_id},
 		}),
 	);

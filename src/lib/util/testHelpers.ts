@@ -4,8 +4,8 @@ import type {OmitStrict} from '@feltjs/util/types.js';
 import {unwrap} from '@feltjs/util/result.js';
 import * as assert from 'uvu/assert';
 
-import {SessionApiMock} from '$lib/session/SessionApiMock';
-import {BroadcastMock} from '$lib/server/BroadcastMock';
+import {SessionApiFake} from '$lib/session/SessionApiFake';
+import {BroadcastFake} from '$lib/server/BroadcastFake';
 import {
 	toServiceRequest,
 	type AuthorizedServiceRequest,
@@ -38,37 +38,37 @@ export const installSourceMaps = (): void => {
 	});
 };
 
-export function toServiceRequestMock(
+export function toServiceRequestFake(
 	repos: Repos,
 	actor?: undefined,
-	session?: SessionApiMock,
+	session?: SessionApiFake,
 	account_id?: undefined,
 	broadcast?: IBroadcast,
 	passwordHasher?: PasswordHasher,
 ): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
-export function toServiceRequestMock(
+export function toServiceRequestFake(
 	repos: Repos,
 	actor?: undefined,
-	session?: SessionApiMock,
+	session?: SessionApiFake,
 	account_id?: AccountId,
 	broadcast?: IBroadcast,
 	passwordHasher?: PasswordHasher,
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
-export function toServiceRequestMock(
+export function toServiceRequestFake(
 	repos: Repos,
 	actor: ActionActor,
-	session?: SessionApiMock,
+	session?: SessionApiFake,
 	account_id?: AccountId,
 	broadcast?: IBroadcast,
 	passwordHasher?: PasswordHasher,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
-export function toServiceRequestMock(
+export function toServiceRequestFake(
 	repos: Repos,
 	actor?: ActionActor,
-	session = new SessionApiMock(), // some tests need to reuse the same mock session
+	session = new SessionApiFake(), // some tests need to reuse the same fake session
 	account_id = actor?.account_id || undefined,
-	broadcast: IBroadcast = new BroadcastMock(),
-	passwordHasher = passwordHasherMock,
+	broadcast: IBroadcast = new BroadcastFake(),
+	passwordHasher = passwordHasherFake,
 ): OmitStrict<ServiceRequest, 'params'> {
 	const {params: _, ...rest} = toServiceRequest(
 		repos,
@@ -85,7 +85,7 @@ export function toServiceRequestMock(
 /**
  * Creates a `PasswordHasher` that runs on the main thread and doesn't need teardown.
  */
-export const passwordHasherMock: PasswordHasher = {
+export const passwordHasherFake: PasswordHasher = {
 	encrypt: toPasswordKey,
 	verify: verifyPassword,
 	close: async () => undefined,
@@ -141,7 +141,7 @@ export const invite = async (
 ): Promise<InviteToHubResponse> =>
 	unwrap(
 		await InviteToHubService.perform({
-			...toServiceRequestMock(repos, actor, undefined, undefined, broadcast),
+			...toServiceRequestFake(repos, actor, undefined, undefined, broadcast),
 			params: {actor: actor.actor_id, hub_id, name: invitedActorName},
 		}),
 	);

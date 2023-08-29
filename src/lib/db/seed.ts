@@ -19,7 +19,7 @@ import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService, UpdateHubService} from '$lib/vocab/hub/hubServices';
-import {toServiceRequestMock} from '$lib/util/testHelpers';
+import {toServiceRequestFake} from '$lib/util/testHelpers';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices';
 import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
@@ -79,7 +79,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		log.debug('created account', account);
 		accounts.push(account);
 		const toAccountServiceRequest = (actor?: ActionActor) =>
-			toServiceRequestMock(repos, actor as any, undefined, account.account_id);
+			toServiceRequestFake(repos, actor as any, undefined, account.account_id);
 		for (const actorName of actorsParams[account.name]) {
 			const created = unwrap(
 				await CreateAccountActorService.perform({
@@ -100,7 +100,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	}
 
 	const mainActorCreator = actors[0] as AccountActor;
-	const toMainAccountServiceRequest = () => toServiceRequestMock(repos, mainActorCreator);
+	const toMainAccountServiceRequest = () => toServiceRequestFake(repos, mainActorCreator);
 	const otherActors = actors.slice(1);
 	const nextActor = toNext(actors);
 
@@ -165,7 +165,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 
 const createDefaultEntities = async (
 	repos: Repos,
-	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
+	toServiceRequest: () => ReturnType<typeof toServiceRequestFake>,
 	spaces: Space[],
 	nextActor: () => AccountActor,
 ) => {
@@ -242,7 +242,7 @@ const hubTemplates: HubTemplate[] = [
 ];
 
 interface SeedContext {
-	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>;
+	toServiceRequest: () => ReturnType<typeof toServiceRequestFake>;
 	nextActor: () => AccountActor;
 	space: Space;
 	directory: Directory;
@@ -356,7 +356,7 @@ const findFirstComponentName = (view: ViewData): string | undefined => {
 const MUCH_SPACE_COUNT = 100;
 
 const createMuchSpaces = async (
-	toServiceRequest: () => ReturnType<typeof toServiceRequestMock>,
+	toServiceRequest: () => ReturnType<typeof toServiceRequestFake>,
 	hub: Hub,
 	nextActor: () => AccountActor,
 ) => {

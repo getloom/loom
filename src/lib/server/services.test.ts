@@ -3,11 +3,11 @@ import * as assert from 'uvu/assert';
 
 import {red} from '$lib/server/colors';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {log, toServiceRequestMock} from '$lib/util/testHelpers';
+import {log, toServiceRequestFake} from '$lib/util/testHelpers';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {services} from '$lib/server/services';
 import {randomActionParams} from '$lib/util/randomActionParams';
-import {SessionApiMock} from '$lib/session/SessionApiMock';
+import {SessionApiFake} from '$lib/session/SessionApiFake';
 import {toFailedApiResult} from '$lib/server/api';
 
 /* test__serviceDefinitions */
@@ -76,7 +76,7 @@ const test__services = suite<TestDbContext>('services');
 test__services.before(setupDb);
 test__services.after(teardownDb);
 
-const session = new SessionApiMock(); // reuse the session so it tests SignIn sequentially
+const session = new SessionApiFake(); // reuse the session so it tests SignIn sequentially
 
 for (const service of services.values()) {
 	const {action} = service;
@@ -92,7 +92,7 @@ for (const service of services.values()) {
 			);
 		}
 		const result = await service.perform({
-			...toServiceRequestMock(
+			...toServiceRequestFake(
 				repos,
 				action.authorize === false ? undefined! : actor,
 				session,
@@ -135,7 +135,7 @@ for (const service of services.values()) {
 			let failedResult;
 			try {
 				failedResult = await service.perform({
-					...toServiceRequestMock(repos, unauthorizedActor, session, account.account_id),
+					...toServiceRequestFake(repos, unauthorizedActor, session, account.account_id),
 					params: failedParams,
 				});
 			} catch (err) {

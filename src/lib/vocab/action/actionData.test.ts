@@ -36,7 +36,7 @@ for (const actionData of actionDatas.values()) {
 			throw Error(`Expected actionData to have a schema: ${actionData.name}`);
 		}
 
-		// TODO can't make remote calls yet -- either use `node-fetch` or mock
+		// TODO can't make remote calls yet -- either use `node-fetch` or fake
 		if (actionData.type !== 'ClientAction') {
 			return;
 		}
@@ -55,7 +55,7 @@ for (const actionData of actionDatas.values()) {
 				assert.ok(result !== undefined);
 			}
 		} else {
-			// TODO can't make remote calls yet -- need to use either `node-fetch` or mock
+			// TODO can't make remote calls yet -- need to use either `node-fetch` or fake
 			// if (!result.ok) {
 			// 	log.error(`action failed: ${actionData.name}`, result);
 			// } else if (!validateSchema(actionData.response!)(result.value)) {
