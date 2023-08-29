@@ -29,11 +29,7 @@ import {
 	toDefaultHubSettings,
 } from '$lib/vocab/hub/hubHelpers.server';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
-import {
-	checkHubAccess,
-	isCreateHubDisabled,
-	checkPolicy,
-} from '$lib/vocab/policy/policyHelpers.server';
+import {isCreateHubDisabled} from '$lib/vocab/policy/policyHelpers.server';
 import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/ui/templates';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 import {ApiError, assertApiError} from '$lib/server/api';
@@ -44,8 +40,8 @@ const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
 export const ReadHubService: ServiceByName['ReadHub'] = {
 	action: ReadHub,
 	transaction: false,
-	perform: async ({repos, params, account_id}) => {
-		const {actor, hub_id} = params;
+	perform: async ({repos, params, account_id, checkHubAccess}) => {
+		const {hub_id} = params;
 
 		log.debug('[ReadHub] account', account_id); // TODO logging
 		log.debug('[ReadHub] hub', hub_id);
@@ -55,7 +51,7 @@ export const ReadHubService: ServiceByName['ReadHub'] = {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
 
-		await checkHubAccess(repos, actor, hub_id);
+		await checkHubAccess(hub_id);
 
 		const [spaces, roles, assignments] = await Promise.all([
 			repos.space.filterByHub(hub_id),
@@ -158,9 +154,9 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 export const UpdateHubService: ServiceByName['UpdateHub'] = {
 	action: UpdateHub,
 	transaction: true,
-	perform: async ({repos, params}) => {
-		const {actor, hub_id, settings} = params;
-		await checkPolicy(repos, 'update_hub', actor, hub_id);
+	perform: async ({repos, params, checkPolicy}) => {
+		const {hub_id, settings} = params;
+		await checkPolicy('update_hub', hub_id);
 		// TODO probably refactor `repos.hub.updateSettings` to return the updated document,
 		// as well as conditionally handle other updatable properties of `hub`
 		if (settings) {
@@ -175,9 +171,9 @@ export const UpdateHubService: ServiceByName['UpdateHub'] = {
 export const DeleteHubService: ServiceByName['DeleteHub'] = {
 	action: DeleteHub,
 	transaction: true,
-	perform: async ({repos, params, broadcast}) => {
-		const {actor, hub_id} = params;
-		await checkPolicy(repos, 'delete_hub', actor, hub_id);
+	perform: async ({repos, params, broadcast, checkPolicy}) => {
+		const {hub_id} = params;
+		await checkPolicy('delete_hub', hub_id);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type);
 		if (!hub) {
@@ -201,9 +197,9 @@ export const DeleteHubService: ServiceByName['DeleteHub'] = {
 export const InviteToHubService: ServiceByName['InviteToHub'] = {
 	action: InviteToHub,
 	transaction: true,
-	perform: async ({repos, params, broadcast}) => {
-		const {actor, hub_id, name} = params;
-		await checkPolicy(repos, 'invite_to_hub', actor, hub_id);
+	perform: async ({repos, params, broadcast, checkPolicy}) => {
+		const {hub_id, name} = params;
+		await checkPolicy('invite_to_hub', hub_id);
 
 		const hub = await repos.hub.findById(hub_id, HUB_COLUMNS.hub_id_type_settings);
 		if (!hub) {
@@ -263,10 +259,10 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	action: KickFromHub,
 	transaction: true,
-	perform: async ({repos, params, broadcast}) => {
+	perform: async ({repos, params, broadcast, checkPolicy}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[KickFromHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
-		await checkPolicy(repos, 'kick_from_hub', actor, hub_id);
+		await checkPolicy('kick_from_hub', hub_id);
 
 		await checkRemoveActor(repos, actor_id, hub_id);
 

@@ -11,7 +11,6 @@ const Args = z
 	.object({
 		dry: z
 			.boolean({description: 'log the generated script instead of executing it'})
-			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
 			.default(false),
 	})
 	.strict();

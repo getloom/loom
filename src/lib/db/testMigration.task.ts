@@ -7,11 +7,9 @@ const Args = z
 	.object({
 		checkpoint: z
 			.boolean({description: 'if `true`, does not run the `count` number of final migrations'})
-			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
 			.default(false),
 		count: z
 			.number({description: 'number of migrations being tested; rarely might need more than 1'})
-			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
 			.default(1),
 	})
 	.strict();

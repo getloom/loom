@@ -15,7 +15,7 @@ import type {
 	CreateEntityResponse,
 	SignInParams,
 } from '$lib/vocab/action/actionTypes';
-import type {AccountActor} from '$lib/vocab/actor/actor';
+import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService, UpdateHubService} from '$lib/vocab/hub/hubServices';
@@ -78,8 +78,8 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		);
 		log.debug('created account', account);
 		accounts.push(account);
-		const toAccountServiceRequest = () =>
-			toServiceRequestMock(repos, undefined, undefined, account.account_id);
+		const toAccountServiceRequest = (actor?: ActionActor) =>
+			toServiceRequestMock(repos, actor as any, undefined, account.account_id);
 		for (const actorName of actorsParams[account.name]) {
 			const created = unwrap(
 				await CreateAccountActorService.perform({
@@ -92,7 +92,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			actors.push(actor);
 			await createDefaultEntities(
 				repos,
-				() => ({...toAccountServiceRequest(), actor}),
+				() => toAccountServiceRequest(actor) as any,
 				created.spaces,
 				() => actor,
 			);

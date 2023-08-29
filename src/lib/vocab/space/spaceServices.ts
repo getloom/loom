@@ -6,7 +6,6 @@ import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/spac
 import {canDeleteSpace, isHomeSpace} from '$lib/vocab/space/spaceHelpers';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
-import {checkHubAccess, checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {createSpace} from '$lib/vocab/space/spaceHelpers.server';
 import {ApiError} from '$lib/server/api';
 
@@ -16,11 +15,11 @@ const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 	action: ReadSpaces,
 	transaction: false,
-	perform: async ({repos, params}) => {
-		const {actor, hub_id} = params;
+	perform: async ({repos, params, checkHubAccess}) => {
+		const {hub_id} = params;
 		log.debug('[ReadSpaces] retrieving spaces for hub', hub_id);
 
-		await checkHubAccess(repos, actor, hub_id);
+		await checkHubAccess(hub_id);
 
 		const spaces = await repos.space.filterByHub(hub_id);
 
@@ -36,10 +35,10 @@ export const ReadSpacesService: ServiceByName['ReadSpaces'] = {
 export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 	action: CreateSpace,
 	transaction: true,
-	perform: async ({repos, params}) => {
-		const {actor, hub_id} = params;
+	perform: async ({repos, params, checkPolicy}) => {
+		const {hub_id} = params;
 
-		await checkPolicy(repos, 'create_space', actor, hub_id);
+		await checkPolicy('create_space', hub_id);
 
 		const {space, directory} = await createSpace(repos, params);
 
@@ -50,7 +49,7 @@ export const CreateSpaceService: ServiceByName['CreateSpace'] = {
 export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 	action: UpdateSpace,
 	transaction: true,
-	perform: async ({repos, params}) => {
+	perform: async ({repos, params, checkPolicy}) => {
 		log.debug('[updateSpace] updating space');
 		const {space_id, actor, ...partial} = params;
 		const space = await repos.space.findById(space_id);
@@ -58,7 +57,7 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
 
-		await checkPolicy(repos, 'update_space', actor, space.hub_id);
+		await checkPolicy('update_space', space.hub_id);
 
 		if (isHomeSpace(space)) {
 			throw new ApiError(405, 'cannot update home space');
@@ -87,11 +86,12 @@ export const UpdateSpaceService: ServiceByName['UpdateSpace'] = {
 export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 	action: DeleteSpace,
 	transaction: true,
-	perform: async ({repos, params}) => {
-		log.debug('[DeleteSpace] deleting space with id:', params.space_id);
+	perform: async ({repos, params, checkPolicy}) => {
+		const {space_id} = params;
+		log.debug('[DeleteSpace] deleting space with id:', space_id);
 
 		// Check that the space can be deleted.
-		const space = await repos.space.findById(params.space_id);
+		const space = await repos.space.findById(space_id);
 		if (!space) {
 			return {ok: false, status: 404, message: 'no space found'};
 		}
@@ -104,9 +104,9 @@ export const DeleteSpaceService: ServiceByName['DeleteSpace'] = {
 			return {ok: false, status: 405, message: 'cannot delete home space'};
 		}
 
-		await checkPolicy(repos, 'delete_space', params.actor, space.hub_id);
+		await checkPolicy('delete_space', space.hub_id);
 
-		await repos.space.deleteById(params.space_id);
+		await repos.space.deleteById(space_id);
 
 		await cleanOrphanedEntities(repos);
 

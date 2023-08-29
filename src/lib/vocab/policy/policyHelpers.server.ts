@@ -12,10 +12,10 @@ import type {PolicyName} from '$lib/vocab/policy/policy';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 
-export const checkPolicy = async (
+export const checkPolicyForActor = async (
 	repos: Repos,
-	name: PolicyName,
 	actor_id: ActorId,
+	name: PolicyName,
 	hub_id: HubId,
 ): Promise<void> => {
 	log.debug('checking for policies with permission for actor in hub', name, actor_id, hub_id);
@@ -29,7 +29,7 @@ export const checkPolicy = async (
 };
 
 //TODO should we be bypassing policy system like this?
-export const checkHubAccess = async (
+export const checkHubAccessForActor = async (
 	repos: Repos,
 	actor_id: ActorId,
 	hub_id: HubId,

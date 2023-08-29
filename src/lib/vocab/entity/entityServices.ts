@@ -19,12 +19,7 @@ import {
 	cleanOrphanedEntities,
 	updateDirectories,
 } from '$lib/vocab/entity/entityHelpers.server';
-import {
-	checkHubAccess,
-	checkEntityOwnership,
-	checkPolicy,
-	checkEntityAccess,
-} from '$lib/vocab/policy/policyHelpers.server';
+import {checkEntityOwnership, checkEntityAccess} from '$lib/vocab/policy/policyHelpers.server';
 import {ApiError, assertApiError} from '$lib/server/api';
 import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 
@@ -33,11 +28,11 @@ const log = new Logger('[EntityServices]');
 export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	action: ReadEntities,
 	transaction: false,
-	perform: async ({repos, params}) => {
-		const {actor, source_id, pageSize = DEFAULT_PAGE_SIZE, pageKey, related, orderBy} = params;
+	perform: async ({repos, params, checkHubAccess}) => {
+		const {source_id, pageSize = DEFAULT_PAGE_SIZE, pageKey, related, orderBy} = params;
 		log.debug('checking pagiated entities for ', source_id);
 		const {hub_id} = await repos.space.findByEntity(source_id);
-		await checkHubAccess(repos, actor, hub_id);
+		await checkHubAccess(hub_id);
 
 		const extraPageSize = pageSize + 1;
 		const pageTies = await repos.tie.filterBySourceIdPaginated(
@@ -67,7 +62,7 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	action: CreateEntity,
 	transaction: true,
-	perform: async ({repos, params}) => {
+	perform: async ({repos, params, checkPolicy}) => {
 		const {actor, data, space_id, path} = params;
 
 		//TODO revist this, should data drive ties or vice versa?
@@ -84,7 +79,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		}
 
 		const {hub_id} = (await repos.space.findById(space_id))!;
-		await checkPolicy(repos, 'create_entity', actor, hub_id);
+		await checkPolicy('create_entity', hub_id);
 
 		//TODO maybe construct orderedItems here
 		let entity = await repos.entity.create(actor, data, space_id, path);

@@ -6,10 +6,7 @@ import {seed} from '$lib/db/seed';
 
 const Args = z
 	.object({
-		much: z
-			.boolean({description: 'seed a lot instead of a little'})
-			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
-			.default(false),
+		much: z.boolean({description: 'seed a lot instead of a little'}).default(false),
 	})
 	.strict();
 type Args = z.infer<typeof Args>;

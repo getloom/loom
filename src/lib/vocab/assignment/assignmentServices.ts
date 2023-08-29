@@ -5,7 +5,6 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
 import {ADMIN_HUB_ID} from '$lib/util/constants';
 import {HUB_COLUMNS, cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
-import {checkPolicy} from '$lib/vocab/policy/policyHelpers.server';
 import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
 
@@ -15,7 +14,7 @@ const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 	action: CreateAssignment,
 	transaction: true,
-	perform: async ({repos, params}) => {
+	perform: async ({repos, params, checkPolicy}) => {
 		const {actor, hub_id, actor_id, role_id} = params;
 		log.debug('[CreateAssignment] creating assignment for actor & role', actor_id, role_id);
 		log.debug('[CreateAssignment] checking policy', actor, hub_id);
@@ -23,7 +22,7 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
-		await checkPolicy(repos, 'create_assignment', actor, hub_id);
+		await checkPolicy('create_assignment', hub_id);
 		const assignment = await createAssignment(repos, actor_id, hub, role_id);
 		log.debug('[CreateAssignment] new assignment created', assignment.assignment_id);
 		return {ok: true, status: 200, value: {assignment}, broadcast: hub_id};
@@ -36,15 +35,15 @@ export const CreateAssignmentService: ServiceByName['CreateAssignment'] = {
 export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 	action: DeleteAssignment,
 	transaction: true,
-	perform: async ({repos, params}) => {
-		const {actor, assignment_id} = params;
+	perform: async ({repos, params, checkPolicy}) => {
+		const {assignment_id} = params;
 		log.debug('[DeleteAssignment] deleting assignment ', assignment_id);
 		const assignment = await repos.assignment.findById(assignment_id);
 		if (!assignment) {
 			return {ok: false, status: 404, message: 'no assignment found'};
 		}
 		const {actor_id, hub_id} = assignment;
-		await checkPolicy(repos, 'delete_assignment', actor, hub_id);
+		await checkPolicy('delete_assignment', hub_id);
 		// TODO why can't this be parallelized? seems to be a bug in `postgres` but failed to reproduce in an isolated case
 		// const [actorResult, hubResult] = await Promise.all([
 		// 	repos.actor.findById(actor_id),

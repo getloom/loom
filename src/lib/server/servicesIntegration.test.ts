@@ -133,7 +133,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 			unwrap(
 				// eslint-disable-next-line no-await-in-loop
 				await DeleteSpaceService.perform({
-					...toServiceRequestMock(repos, actor2),
+					...toServiceRequestMock(repos, actor1),
 					params: {actor: actor1.actor_id, space_id: space.space_id},
 				}),
 			);
@@ -145,7 +145,7 @@ test_servicesIntegration('services integration test', async ({repos, random}) =>
 	assert.is((await repos.assignment.filterByHub(hub.hub_id)).length, 3);
 	unwrap(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, actor2),
+			...toServiceRequestMock(repos, actor1),
 			params: {
 				actor: actor1.actor_id,
 				assignment_id: assignment.assignment_id,

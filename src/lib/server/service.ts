@@ -11,6 +11,8 @@ import type {ErrorResponse} from '$lib/util/error';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {IBroadcastApi} from '$lib/server/Broadcast';
 import type {PasswordHasher} from '$lib/server/password';
+import type {PolicyName} from '$lib/vocab/policy/policy';
+import {checkHubAccessForActor, checkPolicyForActor} from '$lib/vocab/policy/policyHelpers.server';
 
 export type BroadcastAudience = HubId | HubId[]; // TODO expand to `| {audience: BroadcastAudience; data: T}`
 
@@ -120,6 +122,8 @@ export interface NonAuthorizedServiceRequest<TParams = any>
 export interface AuthorizedServiceRequest<TParams = any>
 	extends NonAuthorizedServiceRequest<TParams> {
 	actor: ActionActor;
+	checkPolicy: (name: PolicyName, hub_id: HubId) => Promise<void>;
+	checkHubAccess: (hub_id: HubId) => Promise<void>;
 }
 
 export function toServiceRequest<TParams = any>(
@@ -159,10 +163,29 @@ export function toServiceRequest<TParams = any>(
 	passwordHasher: PasswordHasher,
 ): ServiceRequest {
 	const req: NonAuthenticatedServiceRequest = {repos, params, session, broadcast, passwordHasher};
-	// TODO this is a bit hacky -- it may be preferred to have 3 different versions of `toServiceRequest` instead
+
 	if (account_id) {
+		// NonAuthorizedServiceRequest or AuthorizedServiceRequest
 		(req as NonAuthorizedServiceRequest).account_id = account_id;
-		if (actor) (req as AuthorizedServiceRequest).actor = actor;
+		if (actor) {
+			// AuthorizedServiceRequest
+			(req as AuthorizedServiceRequest).actor = actor;
+			// TODO consider a `CheckApi` like `SessionApi` to group these helpers, if we add a 3rd,
+			// or consider merging `checkHubAccess` into `checkPolicy` if that makes sense
+			(req as AuthorizedServiceRequest).checkPolicy = checkPolicyForActor.bind(
+				null,
+				repos,
+				actor.actor_id,
+			);
+			(req as AuthorizedServiceRequest).checkHubAccess = checkHubAccessForActor.bind(
+				null,
+				repos,
+				actor.actor_id,
+			);
+		}
+	} else {
+		// NonAuthenticatedServiceRequest
+		if (actor) throw Error('invalid service request');
 	}
 	return req;
 }

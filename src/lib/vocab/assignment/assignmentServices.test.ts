@@ -90,9 +90,9 @@ test__assignmentServices('fail to delete a hub actor assignment', async ({repos,
 	)!;
 	unwrapError(
 		await DeleteAssignmentService.perform({
-			...toServiceRequestMock(repos, communityActor),
+			...toServiceRequestMock(repos, actor),
 			params: {
-				actor: actor.actor_id,
+				actor: communityActor.actor_id,
 				assignment_id: assignment.assignment_id,
 			},
 		}),

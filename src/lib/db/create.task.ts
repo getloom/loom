@@ -5,18 +5,9 @@ import {obtainDb} from '$lib/db/obtainDb';
 
 const Args = z
 	.object({
-		seed: z
-			.boolean({description: ''})
-			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
-			.default(true),
-		'no-seed': z
-			.boolean({description: 'opt out of seeding'})
-			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
-			.default(false),
-		much: z
-			.boolean({description: 'seed a lot instead of a little'})
-			.optional() // TODO behavior differs now with zod, because of `default` this does nothing
-			.default(false),
+		seed: z.boolean({description: ''}).default(true),
+		'no-seed': z.boolean({description: 'opt out of seeding'}).default(false),
+		much: z.boolean({description: 'seed a lot instead of a little'}).default(false),
 	})
 	.strict();
 type Args = z.infer<typeof Args>;
