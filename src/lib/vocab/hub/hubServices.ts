@@ -231,7 +231,7 @@ export const InviteToHubService: ServiceByName['InviteToHub'] = {
 export const LeaveHubService: ServiceByName['LeaveHub'] = {
 	action: LeaveHub,
 	transaction: true,
-	perform: async ({repos, params, broadcast}) => {
+	perform: async ({repos, params, broadcast, afterResponse}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[LeaveHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
 
@@ -250,7 +250,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 			return {ok: false, status: 404, message: 'no actor found'};
 		}
 
-		await broadcast.removeActor(hub_id, actorToLeave.account_id, actor_id);
+		afterResponse(() => broadcast.removeActor(hub_id, actorToLeave.account_id, actor_id));
 
 		return {ok: true, status: 200, value: null, broadcast: hub_id};
 	},
@@ -259,7 +259,7 @@ export const LeaveHubService: ServiceByName['LeaveHub'] = {
 export const KickFromHubService: ServiceByName['KickFromHub'] = {
 	action: KickFromHub,
 	transaction: true,
-	perform: async ({repos, params, broadcast, checkPolicy}) => {
+	perform: async ({repos, params, broadcast, checkPolicy, afterResponse}) => {
 		const {actor, actor_id, hub_id} = params;
 		log.debug('[KickFromHub] removing all assignments for actor in hub', actor, actor_id, hub_id);
 		await checkPolicy('kick_from_hub', hub_id);
@@ -275,7 +275,7 @@ export const KickFromHubService: ServiceByName['KickFromHub'] = {
 			return {ok: false, status: 404, message: 'no actor found'};
 		}
 
-		await broadcast.removeActor(hub_id, actorToKick.account_id, actor_id);
+		afterResponse(() => broadcast.removeActor(hub_id, actorToKick.account_id, actor_id));
 
 		return {ok: true, status: 200, value: null, broadcast: hub_id};
 	},

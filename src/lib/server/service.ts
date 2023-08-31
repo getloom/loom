@@ -106,7 +106,7 @@ export interface AuthorizedService<
 
 export type ServiceRequest =
 	| NonAuthenticatedServiceRequest
-	| NonAuthenticatedServiceRequest
+	| NonAuthorizedServiceRequest
 	| AuthorizedServiceRequest;
 export interface NonAuthenticatedServiceRequest<TParams = any> {
 	repos: Repos;
@@ -114,6 +114,7 @@ export interface NonAuthenticatedServiceRequest<TParams = any> {
 	session: ISessionApi;
 	broadcast: IBroadcastApi;
 	passwordHasher: PasswordHasher;
+	afterResponse: AfterResponse;
 }
 export interface NonAuthorizedServiceRequest<TParams = any>
 	extends NonAuthenticatedServiceRequest<TParams> {
@@ -134,6 +135,7 @@ export function toServiceRequest<TParams = any>(
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
 	passwordHasher: PasswordHasher,
+	afterResponse: AfterResponse,
 ): NonAuthenticatedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -143,6 +145,7 @@ export function toServiceRequest<TParams = any>(
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
 	passwordHasher: PasswordHasher,
+	afterResponse: AfterResponse,
 ): NonAuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -152,6 +155,7 @@ export function toServiceRequest<TParams = any>(
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
 	passwordHasher: PasswordHasher,
+	afterResponse: AfterResponse,
 ): AuthorizedServiceRequest<TParams>;
 export function toServiceRequest<TParams = any>(
 	repos: Repos,
@@ -161,9 +165,16 @@ export function toServiceRequest<TParams = any>(
 	session: ISessionApi,
 	broadcast: IBroadcastApi,
 	passwordHasher: PasswordHasher,
+	afterResponse: AfterResponse,
 ): ServiceRequest {
-	const req: NonAuthenticatedServiceRequest = {repos, params, session, broadcast, passwordHasher};
-
+	const req: NonAuthenticatedServiceRequest = {
+		repos,
+		params,
+		session,
+		broadcast,
+		passwordHasher,
+		afterResponse,
+	};
 	if (account_id) {
 		// NonAuthorizedServiceRequest or AuthorizedServiceRequest
 		(req as NonAuthorizedServiceRequest).account_id = account_id;
@@ -189,3 +200,18 @@ export function toServiceRequest<TParams = any>(
 	}
 	return req;
 }
+
+export interface AfterResponse {
+	(cb: AfterResponseCallback): void;
+}
+export interface AfterResponseCallback {
+	(): void | Promise<void>;
+}
+
+export const flushAfterResponseCallbacks = async (
+	afterResponseCallbacks: AfterResponseCallback[],
+): Promise<void> => {
+	for (const cb of afterResponseCallbacks) {
+		await cb(); // eslint-disable-line no-await-in-loop
+	}
+};

@@ -3,6 +3,7 @@ import {Logger} from '@feltjs/util/log.js';
 import type {OmitStrict} from '@feltjs/util/types.js';
 import {unwrap} from '@feltjs/util/result.js';
 import * as assert from 'uvu/assert';
+import {noop} from '@feltjs/util/function.js';
 
 import {SessionApiFake} from '$lib/session/SessionApiFake';
 import {BroadcastFake} from '$lib/server/BroadcastFake';
@@ -12,6 +13,7 @@ import {
 	type ServiceRequest,
 	type NonAuthenticatedServiceRequest,
 	type NonAuthorizedServiceRequest,
+	type AfterResponse,
 } from '$lib/server/service';
 import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
 import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/util/constants';
@@ -45,6 +47,7 @@ export function toServiceRequestFake(
 	account_id?: undefined,
 	broadcast?: IBroadcast,
 	passwordHasher?: PasswordHasher,
+	afterResponse?: AfterResponse,
 ): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
 export function toServiceRequestFake(
 	repos: Repos,
@@ -53,6 +56,7 @@ export function toServiceRequestFake(
 	account_id?: AccountId,
 	broadcast?: IBroadcast,
 	passwordHasher?: PasswordHasher,
+	afterResponse?: AfterResponse,
 ): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
 export function toServiceRequestFake(
 	repos: Repos,
@@ -61,6 +65,7 @@ export function toServiceRequestFake(
 	account_id?: AccountId,
 	broadcast?: IBroadcast,
 	passwordHasher?: PasswordHasher,
+	afterResponse?: AfterResponse,
 ): OmitStrict<AuthorizedServiceRequest, 'params'>;
 export function toServiceRequestFake(
 	repos: Repos,
@@ -69,6 +74,7 @@ export function toServiceRequestFake(
 	account_id = actor?.account_id || undefined,
 	broadcast: IBroadcast = new BroadcastFake(),
 	passwordHasher = passwordHasherFake,
+	afterResponse = noop,
 ): OmitStrict<ServiceRequest, 'params'> {
 	const {params: _, ...rest} = toServiceRequest(
 		repos,
@@ -78,6 +84,7 @@ export function toServiceRequestFake(
 		session,
 		broadcast,
 		passwordHasher,
+		afterResponse,
 	);
 	return rest;
 }

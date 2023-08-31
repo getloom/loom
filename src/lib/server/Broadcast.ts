@@ -28,7 +28,7 @@ export interface IBroadcast extends IBroadcastApi {
 		params: any,
 		audience: BroadcastAudience,
 		excludedSocket?: WebSocket,
-	) => void;
+	) => Promise<void>;
 	close: () => void;
 	openSocket: (socket: WebSocket, account_id: AccountId) => Promise<void>;
 	closeSocket: (socket: WebSocket, account_id: AccountId) => Promise<void>;
@@ -49,13 +49,13 @@ export class Broadcast implements IBroadcast {
 		this.actorIdsByAccountByHub.clear();
 	}
 
-	send(
+	async send(
 		service: Service,
 		result: ApiResult,
 		params: any,
 		audience: BroadcastAudience,
 		excludedSocket?: WebSocket,
-	): void {
+	): Promise<void> {
 		const message: BroadcastMessage = {
 			type: 'broadcast',
 			method: service.action.name,
@@ -229,30 +229,26 @@ export class Broadcast implements IBroadcast {
 
 	async removeActor(hub_id: HubId, account_id: AccountId, actor_id: ActorId): Promise<void> {
 		const hubActorIdsByAccount = this.actorIdsByAccountByHub.get(hub_id);
-		if (hubActorIdsByAccount) {
-			const accountHubActorIds = hubActorIdsByAccount.get(account_id);
-			if (accountHubActorIds?.delete(actor_id)) {
-				// did we remove the last actor for this account from the hub? if so the account no longer has access
-				if (accountHubActorIds.size === 0) {
-					this.hubIdsByAccount.get(account_id)?.delete(hub_id); // no need to cleanup empty collections here, is synced with sockets
-					hubActorIdsByAccount.delete(account_id);
-					// did we remove the last actor from the hub?
-					// if so delete the hub from caches, otherwise update the hub's caches
-					if (hubActorIdsByAccount.size === 0) {
-						this.actorIdsByAccountByHub.delete(hub_id);
-						this.socketsByHub.delete(hub_id);
-					} else {
-						const accountSockets = this.socketsByAccount.get(account_id);
-						if (accountSockets) {
-							for (const accountSocket of accountSockets) {
-								const hubSockets = this.socketsByHub.get(hub_id);
-								if (hubSockets) {
-									hubSockets.delete(accountSocket);
-									if (hubSockets.size === 0) {
-										this.socketsByHub.delete(hub_id);
-									}
-								}
-							}
+		if (!hubActorIdsByAccount) return;
+		const accountHubActorIds = hubActorIdsByAccount.get(account_id);
+		// did we remove the last actor for this account from the hub? if so the account no longer has access
+		if (!(accountHubActorIds?.delete(actor_id) && accountHubActorIds.size === 0)) return;
+		this.hubIdsByAccount.get(account_id)?.delete(hub_id); // no need to cleanup empty collections here, is synced with sockets
+		hubActorIdsByAccount.delete(account_id);
+		// did we remove the last actor from the hub?
+		// if so delete the hub from caches, otherwise update the hub's caches
+		if (hubActorIdsByAccount.size === 0) {
+			this.actorIdsByAccountByHub.delete(hub_id);
+			this.socketsByHub.delete(hub_id);
+		} else {
+			const accountSockets = this.socketsByAccount.get(account_id);
+			if (accountSockets) {
+				for (const accountSocket of accountSockets) {
+					const hubSockets = this.socketsByHub.get(hub_id);
+					if (hubSockets) {
+						hubSockets.delete(accountSocket);
+						if (hubSockets.size === 0) {
+							this.socketsByHub.delete(hub_id);
 						}
 					}
 				}

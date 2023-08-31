@@ -12,6 +12,8 @@ import {
 	toServiceRequest,
 	type ServiceResult,
 	toApiResult,
+	type AfterResponseCallback,
+	flushAfterResponseCallbacks,
 } from '$lib/server/service';
 import type {ApiResult} from '$lib/server/api';
 import type {AccountId} from '$lib/vocab/account/account';
@@ -61,6 +63,8 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 			return;
 		}
 
+		let afterResponseCallbacks: AfterResponseCallback[] | null = null;
+
 		let result: ServiceResult;
 
 		//TODO parse/scrub params alongside validation
@@ -93,6 +97,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 						session,
 						server.broadcast,
 						server.passwordHasher,
+						(cb) => (afterResponseCallbacks || (afterResponseCallbacks = [])).push(cb),
 					),
 					log,
 				); // TODO try to avoid the non-null assertions, looks tricky
@@ -135,6 +140,8 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 
 		checkBroadcastAudience(service, result.broadcast, log);
 		if (result.broadcast && service.action.broadcast) {
-			server.broadcast.send(service, apiResult, params, result.broadcast, socket);
+			await server.broadcast.send(service, apiResult, params, result.broadcast, socket);
 		}
+
+		if (afterResponseCallbacks) await flushAfterResponseCallbacks(afterResponseCallbacks);
 	};

@@ -13,6 +13,7 @@ import {invite, toServiceRequestFake} from '$lib/util/testHelpers';
 import {randomHubParams} from '$lib/util/randomVocab';
 import {setupDb, teardownDb} from '$lib/util/testDbHelpers';
 import {Broadcast} from '$lib/server/Broadcast';
+import {flushAfterResponseCallbacks, type AfterResponseCallback} from '$lib/server/service';
 
 // These tests use bracket notation to access private fields with typesafety:
 /* eslint-disable @typescript-eslint/dot-notation */
@@ -423,12 +424,19 @@ test__broadcast('with multiple open sockets, remove and kick actors', async ({re
 	await broadcast.openSocket(socket4, z.account_id);
 	await broadcast.openSocket(socket5, z.account_id);
 
+	let afterResponseCallbacks: AfterResponseCallback[] | null = null;
+
 	unwrap(
 		await KickFromHubService.perform({
-			...toServiceRequestFake(repos, al, undefined, undefined, broadcast),
+			...toServiceRequestFake(repos, al, undefined, undefined, broadcast, undefined, (cb) =>
+				(afterResponseCallbacks || (afterResponseCallbacks = [])).push(cb),
+			),
 			params: {actor: al.actor_id, actor_id: zoe.actor_id, hub_id: prod.hub_id},
 		}),
 	);
+
+	assert.is(afterResponseCallbacks!.length, 1);
+	await flushAfterResponseCallbacks(afterResponseCallbacks!);
 
 	assert.is(broadcast['socketsByAccount'].size, 3);
 	assert.is(broadcast['socketsByHub'].size, 8);
@@ -441,12 +449,18 @@ test__broadcast('with multiple open sockets, remove and kick actors', async ({re
 	assert.is(broadcast['actorIdsByAccountByHub'].get(prod.hub_id)!.get(b.account_id)!.size, 1);
 	assert.is(broadcast['actorIdsByAccountByHub'].get(prod.hub_id)!.get(z.account_id)!.size, 1);
 
+	afterResponseCallbacks = null;
 	unwrap(
 		await LeaveHubService.perform({
-			...toServiceRequestFake(repos, zed, undefined, undefined, broadcast),
+			...toServiceRequestFake(repos, zed, undefined, undefined, broadcast, undefined, (cb) =>
+				(afterResponseCallbacks || (afterResponseCallbacks = [])).push(cb),
+			),
 			params: {actor: zed.actor_id, actor_id: zed.actor_id, hub_id: prod.hub_id},
 		}),
 	);
+
+	assert.is(afterResponseCallbacks!.length, 1);
+	await flushAfterResponseCallbacks(afterResponseCallbacks!);
 
 	assert.is(broadcast['socketsByAccount'].size, 3);
 	assert.is(broadcast['socketsByHub'].size, 8);

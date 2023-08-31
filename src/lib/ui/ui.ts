@@ -48,9 +48,11 @@ export interface UiBatch {
 	(cb: () => void): void;
 }
 
-export type AfterMutationCallback = () => void;
 export interface AfterMutation {
 	(cb: AfterMutationCallback): void;
+}
+export interface AfterMutationCallback {
+	(): void;
 }
 
 export interface Ui {
@@ -145,7 +147,7 @@ export const toUi = (
 	};
 	// TODO we probably want to add a way to let cbs register a key
 	// so they can override each other (e.g. so there's only ever a single navigation)
-	const afterMutation = (cb: AfterMutationCallback) => {
+	const afterMutation: AfterMutation = (cb: AfterMutationCallback) => {
 		afterMutationCallbacks.push(cb);
 	};
 

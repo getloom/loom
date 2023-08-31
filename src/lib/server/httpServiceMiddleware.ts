@@ -3,7 +3,14 @@ import {Logger} from '@feltjs/util/log.js';
 
 import {red, blue, gray} from '$lib/server/colors';
 import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer';
-import {type Service, toServiceRequest, performService, toApiResult} from '$lib/server/service';
+import {
+	type Service,
+	toServiceRequest,
+	performService,
+	toApiResult,
+	type AfterResponseCallback,
+	flushAfterResponseCallbacks,
+} from '$lib/server/service';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
@@ -60,6 +67,8 @@ export const toHttpServiceMiddleware =
 		}
 		const actor = authorizeResult.value?.actor;
 
+		let afterResponseCallbacks: AfterResponseCallback[] | null = null;
+
 		const result = await performService(
 			service,
 			toServiceRequest(
@@ -70,6 +79,7 @@ export const toHttpServiceMiddleware =
 				new SessionApi(req, res),
 				server.broadcast,
 				server.passwordHasher,
+				(cb) => (afterResponseCallbacks || (afterResponseCallbacks = [])).push(cb),
 			),
 			log,
 		);
@@ -97,6 +107,8 @@ export const toHttpServiceMiddleware =
 
 		checkBroadcastAudience(service, result.broadcast, log);
 		if (result.broadcast && service.action.broadcast) {
-			server.broadcast.send(service, toApiResult(result), params, result.broadcast);
+			await server.broadcast.send(service, toApiResult(result), params, result.broadcast);
 		}
+
+		if (afterResponseCallbacks) await flushAfterResponseCallbacks(afterResponseCallbacks);
 	};

@@ -23,7 +23,7 @@ export class BroadcastFake implements IBroadcast {
 		// no-op
 	}
 
-	send(): void {
+	async send(): Promise<void> {
 		// no-op
 	}
 
