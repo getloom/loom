@@ -56,7 +56,7 @@ export const setLastSeen = (ui: WritableUi, directory_id: EntityId, time = Date.
 };
 
 export const updateLastSeen = (ui: WritableUi, directory_id: EntityId, time = Date.now()): void => {
-	const {lastSeenByDirectoryId, entityById, spaceById} = ui;
+	const {lastSeenByDirectoryId, entityById} = ui;
 
 	const lastSeen = lastSeenByDirectoryId.get(directory_id);
 	if (lastSeen && lastSeen.get() >= time) return;
@@ -69,10 +69,6 @@ export const updateLastSeen = (ui: WritableUi, directory_id: EntityId, time = Da
 	const directory = entityById.get(directory_id) as Readable<Directory> | undefined;
 
 	if (directory) {
-		upsertFreshnessByHubId(
-			ui,
-			//TODO add directory field to space & vice versa to avoid this mess below
-			spaceById.get(directory.get().space_id)!.get().hub_id,
-		);
+		upsertFreshnessByHubId(ui, directory.get().hub_id);
 	}
 };

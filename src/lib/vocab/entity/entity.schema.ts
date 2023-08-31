@@ -22,6 +22,8 @@ export const EntitySchema = {
 		entity_id: {$ref: '/schemas/EntityId'},
 		actor_id: {$ref: '/schemas/ActorId'},
 		space_id: {$ref: '/schemas/SpaceId'},
+		directory_id: {$ref: '/schemas/EntityId'},
+		hub_id: {$ref: '/schemas/HubId'},
 		path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 		data: {
 			type: 'object',
@@ -31,6 +33,16 @@ export const EntitySchema = {
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
-	required: ['entity_id', 'actor_id', 'space_id', 'path', 'data', 'created', 'updated'],
+	required: [
+		'entity_id',
+		'actor_id',
+		'space_id',
+		'directory_id',
+		'hub_id',
+		'path',
+		'data',
+		'created',
+		'updated',
+	],
 	additionalProperties: false,
 } satisfies VocabSchema;

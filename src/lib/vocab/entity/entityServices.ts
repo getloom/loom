@@ -78,11 +78,11 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			}
 		}
 
-		const {hub_id} = (await repos.space.findById(space_id))!;
+		const {hub_id, directory_id} = (await repos.space.findById(space_id))!;
 		await checkPolicy('create_entity', hub_id);
 
 		//TODO maybe construct orderedItems here
-		let entity = await repos.entity.create(actor, data, space_id, path);
+		let entity = await repos.entity.create(actor, space_id, hub_id, data, directory_id, path);
 
 		const entities = [entity];
 

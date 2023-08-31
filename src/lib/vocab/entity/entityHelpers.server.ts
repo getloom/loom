@@ -11,7 +11,17 @@ const log = new Logger(gray('[') + blue('entityHelpers.server') + gray(']'));
 
 export type EntityColumn = keyof Entity;
 export const ENTITY_COLUMNS = {
-	all: ['entity_id', 'space_id', 'path', 'data', 'actor_id', 'created', 'updated'],
+	all: [
+		'entity_id',
+		'space_id',
+		'directory_id',
+		'hub_id',
+		'path',
+		'data',
+		'actor_id',
+		'created',
+		'updated',
+	],
 	entity_id: ['entity_id'],
 } satisfies Record<string, EntityColumn[]>;
 
@@ -47,9 +57,7 @@ export const updateDirectories = async (
 	const updatedDirectories = await Promise.all(
 		directoryIds.map(async (directoryId) => repos.entity.update(directoryId) as Promise<Directory>),
 	);
-	const hubIds = (await repos.hub.filterBySpaces(updatedDirectories.map((d) => d.space_id))).map(
-		(h) => h.hub_id,
-	);
+	const hubIds = updatedDirectories.map((d) => d.hub_id);
 
 	// TODO add a bulk repo method (see this comment in multiple places)
 	return {updatedDirectories, hubIds};

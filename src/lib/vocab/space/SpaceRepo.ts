@@ -42,18 +42,32 @@ export class SpaceRepo extends PostgresRepo {
 		return data;
 	}
 
-	async create(
-		name: string,
-		view: string,
-		icon: string,
-		hub_id: HubId,
-		directory_id: EntityId,
-	): Promise<Space> {
+	/**
+	 * The space's directory is not yet created at this point,
+	 * so it only returns the `space_id` and expects `init` to be called in the same transaction.
+	 */
+	async create(name: string, icon: string, view: string, hub_id: HubId): Promise<Space> {
 		const data = await this.sql<Space[]>`
-			INSERT INTO spaces (name, icon, view, hub_id, directory_id) VALUES (
-				${name},${icon},${view},${hub_id}, ${directory_id}
-			) RETURNING *
+			INSERT INTO spaces (name, icon, view, hub_id) VALUES (
+				${name}, ${icon}, ${view}, ${hub_id}
+			) RETURNING space_id
 		`;
+		return data[0];
+	}
+
+	/**
+	 * Sets the directory for a newly created space.
+	 * To create a space, first call `create` and then `init` in the same transaction.
+	 */
+	async init(space_id: SpaceId, directory_id: EntityId): Promise<Space> {
+		log.debug(`updating data for space: ${space_id}`);
+		const data = await this.sql<Space[]>`
+			UPDATE spaces
+			SET updated=NOW(), directory_id=${directory_id}
+			WHERE space_id=${space_id}
+			RETURNING *
+		`;
+		if (!data.count) throw Error('no space found');
 		return data[0];
 	}
 
@@ -65,7 +79,7 @@ export class SpaceRepo extends PostgresRepo {
 		const data = await this.sql<Space[]>`
 			UPDATE spaces
 			SET updated=NOW(), ${this.sql(partial as any, ...Object.keys(partial))}
-			WHERE space_id= ${space_id}
+			WHERE space_id=${space_id}
 			RETURNING *
 		`;
 		if (!data.count) throw Error('no space found');

@@ -16,23 +16,29 @@ const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 export class EntityRepo extends PostgresRepo {
 	async create(
 		actor_id: ActorId,
+		space_id: SpaceId,
+		hub_id: HubId,
 		data: EntityData,
-		space_id: SpaceId | null,
+		directory_id: EntityId | null = null,
 		path: string | null = null,
 	): Promise<Entity> {
+		if (directory_id === null && !data.directory) {
+			throw Error('missing directory_id or data.directory');
+		}
 		log.debug('[createEntity]', actor_id);
 		const entity = await this.sql<Entity[]>`
-			INSERT INTO entities (actor_id, space_id, path, data) VALUES (
-				${actor_id}, ${space_id}, ${path}, ${this.sql.json(data as any)}
+			INSERT INTO entities (actor_id, space_id, directory_id, hub_id, path, data) VALUES (
+				${actor_id}, ${space_id}, ${
+			directory_id ?? this.sql.unsafe("currval('items_item_id_seq')")
+		}, ${hub_id}, ${path}, ${this.sql.json(data as any)}
 			) RETURNING *
 		`;
-		// log.debug('create entity', data);
 		return entity[0];
 	}
 
 	async findById(entity_id: EntityId): Promise<Entity | undefined> {
 		const data = await this.sql<Entity[]>`
-			SELECT entity_id, space_id, path, data, actor_id, created, updated
+			SELECT entity_id, actor_id, space_id, directory_id, hub_id, path, data, created, updated
 			FROM entities WHERE entity_id=${entity_id}
 		`;
 		return data[0];
@@ -47,15 +53,13 @@ export class EntityRepo extends PostgresRepo {
 	 * @returns the matching directory, if any
 	 */
 	async findDirectoryByHubPath(hub_id: HubId, path: string): Promise<Entity | undefined> {
-		log.debug('[directoryByHubPath]', hub_id, path);
+		log.debug('[findDirectoryByHubPath]', hub_id, path);
 		const data = await this.sql<Entity[]>`
-			SELECT e.entity_id, e.space_id, e.path, e.data, e.actor_id, e.created, e.updated
-			FROM spaces s
-			JOIN entities e
-			ON s.directory_id=e.entity_id AND e.path=${path}
-			WHERE s.hub_id=${hub_id}
+			SELECT entity_id, actor_id, space_id, directory_id, hub_id, path, data, created, updated
+			FROM entities
+			WHERE entity_id=directory_id AND hub_id=${hub_id} AND path=${path}
 		`;
-		log.debug('[directoryByHubPath] result', data);
+		log.debug('[findDirectoryByHubPath] result', data);
 		return data[0];
 	}
 
@@ -69,9 +73,9 @@ export class EntityRepo extends PostgresRepo {
 	async findBySpacePath(space_id: SpaceId, path: string): Promise<Entity | undefined> {
 		log.debug('[findBySpacePath]', space_id, path);
 		const data = await this.sql<Entity[]>`
-			SELECT e.entity_id, e.space_id, e.path, e.data, e.actor_id, e.created, e.updated
-			FROM entities e			
-			WHERE e.space_id=${space_id} AND e.path=${path}
+			SELECT entity_id, actor_id, space_id, directory_id, hub_id, path, data, created, updated
+			FROM entities
+			WHERE space_id=${space_id} AND path=${path}
 		`;
 		log.debug('[findBySpacePath] result', data);
 		return data[0];
@@ -86,7 +90,7 @@ export class EntityRepo extends PostgresRepo {
 		if (entityIds.length === 0) return {entities: [], missing: null};
 		log.debug('[filterByIds]', entityIds);
 		const entities = await this.sql<Entity[]>`
-			SELECT entity_id, space_id, path, data, actor_id, created, updated 
+			SELECT entity_id, actor_id, space_id, directory_id, hub_id, path, data, created, updated 
 			FROM entities WHERE entity_id IN ${this.sql(entityIds)}
 			ORDER BY entity_id ${orderBy === 'newest' ? this.sql`DESC` : this.sql`ASC`}
 		`;
@@ -99,15 +103,12 @@ export class EntityRepo extends PostgresRepo {
 
 	async filterDirectoriesByAccount(account_id: AccountId): Promise<Directory[]> {
 		const data = await this.sql<Directory[]>`
-			SELECT entity_id, data, actor_id, created, updated, space_id, path
+			SELECT e.entity_id, e.actor_id, e.space_id, e.directory_id, e.hub_id, e.path, e.data, e.created, e.updated
 			FROM entities e JOIN (
-				SELECT DISTINCT s.directory_id FROM spaces s
-				JOIN (
-					SELECT DISTINCT a.hub_id FROM actors p
-					JOIN assignments a ON p.actor_id=a.actor_id AND p.account_id=${account_id}
-				) c ON s.hub_id=c.hub_id
-			) es
-			ON e.entity_id=es.directory_id
+				SELECT DISTINCT a.hub_id FROM actors p
+				JOIN assignments a ON p.actor_id=a.actor_id AND p.account_id=${account_id}
+			) c ON c.hub_id=e.hub_id
+			WHERE entity_id=directory_id AND e.hub_id=c.hub_id
 		`;
 		return data;
 	}
@@ -116,14 +117,12 @@ export class EntityRepo extends PostgresRepo {
 		entity_id: EntityId,
 		data?: EntityData,
 		path?: string | null | undefined, // value is nullable in the db
-		space_id?: SpaceId,
 	): Promise<Entity> {
 		log.debug('[update]', entity_id);
 		const _data = await this.sql<Entity[]>`
 			UPDATE entities SET
 				${data ? this.sql`data=${this.sql.json(data as any)},` : this.sql``}
 				${path !== undefined ? this.sql`path=${path},` : this.sql``}
-				${space_id ? this.sql`space_id=${space_id},` : this.sql``}
 				updated=NOW()
 			WHERE entity_id=${entity_id}
 			RETURNING *
@@ -213,12 +212,9 @@ export class EntityRepo extends PostgresRepo {
 
 	async filterDirectoriesByHub(hub_id: HubId): Promise<Directory[]> {
 		const data = await this.sql<Directory[]>`
-			SELECT entity_id, data, actor_id, created, updated, space_id, path
-			FROM entities e JOIN (
-				SELECT DISTINCT s.directory_id FROM spaces s
-				WHERE s.hub_id=${hub_id}
-			) es
-			ON e.entity_id=es.directory_id
+			SELECT entity_id, actor_id, space_id, directory_id, hub_id, path, data, created, updated
+			FROM entities
+			WHERE hub_id=${hub_id}
 		`;
 		return data;
 	}

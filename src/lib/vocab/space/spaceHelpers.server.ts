@@ -44,32 +44,20 @@ export const createSpace = async (
 	}
 
 	log.debug('[CreateSpace] initializing directory for space');
-	const uninitializedDirectory = (await repos.entity.create(
+
+	log.debug('[CreateSpace] creating space for hub', hub_id);
+	const {space_id} = await repos.space.create(name, icon, view, hub_id);
+
+	const directory = (await repos.entity.create(
 		hubActor.actor_id,
-		{
-			type: 'Collection',
-			directory: true,
-		},
+		space_id,
+		hub_id,
+		{type: 'Collection', directory: true},
 		null,
 		path,
 	)) as Directory;
 
-	log.debug('[CreateSpace] creating space for hub', hub_id);
-	const space = await repos.space.create(
-		name,
-		view,
-		icon,
-		hub_id,
-		uninitializedDirectory.entity_id,
-	);
-
-	// set `uninitializedDirectory.space_id` now that the space has been created
-	const directory = (await repos.entity.update(
-		uninitializedDirectory.entity_id,
-		undefined,
-		undefined,
-		space.space_id,
-	)) as Directory;
+	const space = await repos.space.init(space_id, directory.directory_id);
 
 	return {space, directory};
 };
