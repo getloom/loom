@@ -52,7 +52,7 @@ export class HubRepo extends PostgresRepo {
 		log.debug('[findByName]', name);
 		const data = await this.sql<Hub[]>`
 			SELECT ${this.sql(columns as string[])}
-			FROM hubs WHERE LOWER(name) = LOWER(${name})
+			FROM hubs WHERE LOWER(name)=${name.toLowerCase()}
 		`;
 		return data[0];
 	}

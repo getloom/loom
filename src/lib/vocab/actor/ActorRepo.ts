@@ -138,7 +138,7 @@ export class ActorRepo extends PostgresRepo {
 		log.debug('[findByName]', name);
 		const data = await this.sql<Array<Pick<ActorRecord, T>>>`
 			SELECT ${this.sql(columns as string[])}
-			FROM actors WHERE LOWER(name) = LOWER(${name})
+			FROM actors WHERE LOWER(name)=${name.toLowerCase()}
 		`;
 		return data[0];
 	}

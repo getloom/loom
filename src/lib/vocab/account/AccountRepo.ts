@@ -82,7 +82,7 @@ export class AccountRepo extends PostgresRepo {
 	): Promise<Pick<Account, T> | undefined> {
 		const data = await this.sql<Array<Pick<Account, T>>>`
 			SELECT ${this.sql(columns as string[])}
-			FROM accounts WHERE LOWER(name) = LOWER(${name})
+			FROM accounts WHERE LOWER(name)=${name.toLowerCase()}
 		`;
 		return data[0];
 	}
