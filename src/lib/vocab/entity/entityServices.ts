@@ -12,7 +12,7 @@ import {
 } from '$lib/vocab/entity/entityActions';
 import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
 import type {Tie} from '$lib/vocab/tie/tie';
-import {checkEntityPath, scrubEntityPath} from '$lib/vocab/entity/entityHelpers';
+import {checkEntityPath, isDirectory, scrubEntityPath} from '$lib/vocab/entity/entityHelpers';
 import {
 	checkAddOrderedItem,
 	checkRemoveOrderedItems,
@@ -73,7 +73,7 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 			//TODO MULTIPLE add lowercasing to path
 			log.debug('[createEntity] validating space path uniqueness');
 			const existingEntityWithPath = await repos.entity.findBySpacePath(space_id, path);
-			if (existingEntityWithPath && !existingEntityWithPath.data.directory) {
+			if (existingEntityWithPath && !isDirectory(existingEntityWithPath)) {
 				throw new ApiError(409, 'an entity with that path in this space already exists');
 			}
 		}
@@ -132,14 +132,12 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 
 				const entity = await repos.entity.findById(entity_id);
 				if (!entity) throw new ApiError(404, 'no entity found');
+				const entityIsDirectory = isDirectory(entity);
 
 				//TODO revist this, should data drive ties or vice versa?
 				if (data) {
-					if (entity.data.directory) {
+					if (entityIsDirectory) {
 						throw new ApiError(405, 'cannot update directory data');
-					}
-					if (data.directory) {
-						throw new ApiError(405, 'cannot change an entity to a directory');
 					}
 					if (!dequal(new Set(data.orderedItems), new Set(entity.data.orderedItems))) {
 						throw new ApiError(405, 'cannot update entity orderedItems directly');
@@ -152,7 +150,7 @@ export const UpdateEntitiesService: ServiceByName['UpdateEntities'] = {
 
 				if (path) {
 					//TODO MULTIPLE add lowercasing to path
-					if (entity.data.directory) {
+					if (entityIsDirectory) {
 						throw new ApiError(405, 'cannot update directory path');
 					}
 					log.debug('[updateEntity] validating entity path');

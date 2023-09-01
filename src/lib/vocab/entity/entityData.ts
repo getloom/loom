@@ -1,12 +1,11 @@
 import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 
 export type EntityData =
-	| DirectoryEntityData
-	| NoteEntityData
-	| ArticleEntityData
+	| BaseEntityData
 	| CollectionEntityData
-	| TombstoneEntityData
-	| OrderedCollectionEntityData;
+	| OrderedCollectionEntityData
+	| NoteEntityData
+	| TombstoneEntityData;
 
 export interface BaseEntityData {
 	type?: string;
@@ -14,30 +13,23 @@ export interface BaseEntityData {
 	name?: string;
 	checked?: boolean;
 	orderedItems?: EntityId[];
-	directory?: true;
 	formerType?: string;
 	deleted?: string;
 	previousType?: string;
 }
 
-export interface DirectoryEntityData extends BaseEntityData {
+export interface CollectionEntityData extends BaseEntityData {
 	type: 'Collection';
-	directory: true;
+}
+
+export interface OrderedCollectionEntityData extends BaseEntityData {
+	type: 'OrderedCollection';
+	orderedItems: EntityId[];
 }
 
 export interface NoteEntityData extends BaseEntityData {
 	type?: 'Note' | undefined;
 	content: string;
-}
-
-export interface ArticleEntityData extends BaseEntityData {
-	type: 'Article';
-	content: string;
-	name: string;
-}
-
-export interface CollectionEntityData extends BaseEntityData {
-	type: 'Collection';
 }
 
 export interface TombstoneEntityData extends BaseEntityData {
@@ -47,12 +39,8 @@ export interface TombstoneEntityData extends BaseEntityData {
 	previousType: string;
 }
 
+// TODO move to a schema
 export interface Directory extends Entity {
 	path: string; // directories always have a `path`, can't be `null`
-	data: DirectoryEntityData;
-}
-
-export interface OrderedCollectionEntityData extends BaseEntityData {
-	type: 'OrderedCollection';
-	orderedItems: EntityId[];
+	data: CollectionEntityData;
 }

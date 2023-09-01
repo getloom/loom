@@ -52,7 +52,7 @@ export const createSpace = async (
 		hubActor.actor_id,
 		space_id,
 		hub_id,
-		{type: 'Collection', directory: true},
+		{type: 'Collection'},
 		null,
 		path,
 	)) as Directory;

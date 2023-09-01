@@ -3,7 +3,7 @@ import * as assert from 'uvu/assert';
 import {unwrap} from '@feltjs/util/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {NoteEntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData';
+import type {EntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData';
 import {expectApiError, invite, toServiceRequestFake} from '$lib/util/testHelpers';
 import {
 	ReadEntitiesService,
@@ -14,6 +14,7 @@ import {
 } from '$lib/vocab/entity/entityServices';
 import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
 import {validateSchema} from '$lib/util/ajv';
+import {isDirectory} from '$lib/vocab/entity/entityHelpers';
 
 /* test_entityServices */
 const test_entityServices = suite<TestDbContext>('hubRepo');
@@ -24,8 +25,8 @@ test_entityServices.after(teardownDb);
 test_entityServices('create entities with data', async ({random}) => {
 	const {space, actor, account, hub} = await random.space();
 
-	const entityData1: NoteEntityData = {content: 'this is entity 1'};
-	const entityData2: NoteEntityData = {content: 'entity: 2'};
+	const entityData1: EntityData = {content: 'this is entity 1'};
+	const entityData2: EntityData = {content: 'entity: 2'};
 	const {entity: entity1, ties: ties1} = await random.entity(
 		actor,
 		account,
@@ -295,7 +296,7 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 	const {directory, actor} = await random.space();
 
 	assert.is(directory.data.type, 'Collection');
-	assert.ok(directory.data.directory);
+	assert.ok(isDirectory(directory));
 
 	// Disallow changing the directory's type
 	await expectApiError(
@@ -305,32 +306,6 @@ test_entityServices('disallow mutating directory', async ({repos, random}) => {
 			params: {
 				actor: actor.actor_id,
 				entities: [{entity_id: directory.entity_id, data: {content: 'test'}}],
-			},
-		}),
-	);
-
-	// Disallow removing `data.directory`
-	await expectApiError(
-		405,
-		UpdateEntitiesService.perform({
-			...toServiceRequestFake(repos, actor),
-			params: {
-				actor: actor.actor_id,
-				entities: [{entity_id: directory.entity_id, data: {type: 'Collection'}}],
-			},
-		}),
-	);
-
-	// Disallow changing `data.directory`
-	await expectApiError(
-		405,
-		UpdateEntitiesService.perform({
-			...toServiceRequestFake(repos, actor),
-			params: {
-				actor: actor.actor_id,
-				entities: [
-					{entity_id: directory.entity_id, data: {type: 'Collection', directory: false as any}},
-				],
 			},
 		}),
 	);
@@ -384,9 +359,9 @@ test_entityServices('create and remove orderedItem entities ', async ({repos, ra
 	let {entity: collection2} = await random.entity(actor, account, hub, space, space.directory_id, {
 		data: collectionData2,
 	});
-	const entityData1: NoteEntityData = {content: 'entity: 1'};
-	const entityData2: NoteEntityData = {content: 'entity: 2'};
-	const entityData3: NoteEntityData = {content: 'entity: 3'};
+	const entityData1: EntityData = {content: 'entity: 1'};
+	const entityData2: EntityData = {content: 'entity: 2'};
+	const entityData3: EntityData = {content: 'entity: 3'};
 
 	const {entity: entity1} = await random.entity(actor, account, hub, space, space.directory_id, {
 		data: entityData1,

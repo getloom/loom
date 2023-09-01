@@ -40,7 +40,7 @@
 		await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			data: {type: 'Article', content, name},
+			data: {content, name},
 			ties: [{source_id: $space.directory_id}],
 		});
 	};

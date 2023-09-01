@@ -16,6 +16,7 @@ import {lookupTies} from '$lib/vocab/tie/tieHelpers';
 import {setIfUpdated} from '$lib/util/store';
 import {toHubUrl} from '$lib/util/url';
 import type {Directory} from '$lib/vocab/entity/entityData';
+import {isDirectory} from '$lib/vocab/entity/entityHelpers';
 
 export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 	const {entityById, spaceSelection, hubById} = ui;
@@ -48,7 +49,7 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 
 		// Handle directories.
 		//TODO this check is not type safe, we should fix that
-		if ($entity.data.directory) {
+		if (isDirectory($entity)) {
 			// TODO maybe invert this and listen for `'stashed_entities'` instead of calling this helper directly?
 			ui.afterMutation(() => updateDirectoryFreshness(ui, $entity as Directory));
 		}

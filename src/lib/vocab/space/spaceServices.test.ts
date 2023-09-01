@@ -5,6 +5,7 @@ import * as assert from 'uvu/assert';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {DeleteSpaceService} from '$lib/vocab/space/spaceServices';
 import {toServiceRequestFake} from '$lib/util/testHelpers';
+import {isDirectory} from '$lib/vocab/entity/entityHelpers';
 
 /* test__spaceServices */
 const test__spaceServices = suite<TestDbContext>('spaceServices');
@@ -17,7 +18,7 @@ test__spaceServices(
 	async ({random}) => {
 		const {space, directory} = await random.space();
 		assert.is(space.space_id, directory.space_id);
-		assert.is(directory.data.directory, true);
+		assert.ok(isDirectory(directory));
 	},
 );
 

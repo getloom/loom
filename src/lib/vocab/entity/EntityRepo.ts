@@ -14,6 +14,15 @@ import {ENTITY_COLUMNS, type EntityColumn} from '$lib/vocab/entity/entityHelpers
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 
 export class EntityRepo extends PostgresRepo {
+	/**
+	 * Creates an entity.
+	 * @param actor_id
+	 * @param space_id
+	 * @param hub_id
+	 * @param data
+	 * @param directory_id - When `null`, creates a directory, so `entity_id === directory_id`.
+	 * @param path
+	 */
 	async create(
 		actor_id: ActorId,
 		space_id: SpaceId,
@@ -22,9 +31,6 @@ export class EntityRepo extends PostgresRepo {
 		directory_id: EntityId | null = null,
 		path: string | null = null,
 	): Promise<Entity> {
-		if (directory_id === null && !data.directory) {
-			throw Error('missing directory_id or data.directory');
-		}
 		log.debug('[createEntity]', actor_id);
 		const entity = await this.sql<Entity[]>`
 			INSERT INTO entities (actor_id, space_id, directory_id, hub_id, path, data) VALUES (
@@ -178,7 +184,7 @@ export class EntityRepo extends PostgresRepo {
 			SELECT entity_id FROM entities e
 			LEFT JOIN ties t
 			ON e.entity_id = t.dest_id
-			WHERE NOT (e.data ? 'directory') AND t.dest_id IS NULL;
+			WHERE NOT (e.entity_id=e.directory_id) AND t.dest_id IS NULL;
 		`;
 		return data;
 	}
@@ -204,7 +210,7 @@ export class EntityRepo extends PostgresRepo {
 				SELECT DISTINCT tie_id, source_id, dest_id, type, created FROM paths
 			) as tdest
 			ON e.entity_id = tdest.source_id
-			WHERE data ? 'directory';
+			WHERE e.entity_id=e.directory_id;
 		`;
 		log.debug('all directories pointing at entity', entity_id, directories);
 		return directories;

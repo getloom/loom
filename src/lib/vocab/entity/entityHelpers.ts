@@ -6,8 +6,12 @@ import type {Ui} from '$lib/ui/ui';
 import {Logger} from '@feltjs/util/log.js';
 import type {Actions} from '$lib/vocab/action/actionTypes';
 import type {ActorId} from '$lib/vocab/actor/actor';
+import type {Directory} from '$lib/vocab/entity/entityData';
 
 const log = new Logger('[entityHeler]');
+
+export const isDirectory = (entity: Entity): entity is Directory =>
+	entity.entity_id === entity.directory_id;
 
 export const toName = (entity: null | undefined | {name?: string}): string =>
 	entity?.name ?? GUEST_ACTOR_NAME;
