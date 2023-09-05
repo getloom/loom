@@ -5,7 +5,7 @@
 
 	import {getApp} from '$lib/ui/app';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import Mention from '$lib/plugins/mention/Mention.svelte';
+	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 
 	const {actions} = getApp();
 
@@ -44,7 +44,7 @@
 </script>
 
 <form class="prose padded_xl" {...attrs}>
-	<h2>Delete <Mention name={$actor.name} />?</h2>
+	<h2>Delete <ActorAvatar {actor} inline={true} />?</h2>
 	{#if errorMessage}
 		<Alert status="error">{errorMessage}</Alert>
 	{/if}

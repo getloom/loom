@@ -10,6 +10,7 @@
 		ui: {actors, hubs},
 	} = getApp();
 
+	//TODO do we need spaceContext or would layoutContext work here for widgets?
 	const {actor} = getSpaceContext();
 
 	export let name: string;

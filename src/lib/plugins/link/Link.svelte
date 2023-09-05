@@ -12,6 +12,7 @@
 	} from '$lib/util/fuz';
 	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
 
+	//TODO do we need spaceContext or would layoutContext work here for widgets?
 	const {hub, directory} = getSpaceContext();
 
 	export let href: string;
