@@ -7,7 +7,10 @@ export default {
 	compilerOptions: {immutable: true},
 	vitePlugin: {inspector: true}, // docs: https://github.com/sveltejs/vite-plugin-svelte/blob/main/docs/inspector.md
 	kit: {
-		adapter: node({precompress: true}),
+		adapter: node({
+			precompress: true,
+			polyfill: false,
+		}),
 		files: {assets: 'src/static'},
 	},
 };
