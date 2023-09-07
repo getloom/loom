@@ -156,7 +156,7 @@ export class RandomVocabContext {
 			spaces,
 		} = unwrap(
 			await CreateAccountActorService.perform({
-				...toServiceRequestFake(this.repos, undefined, undefined, account.account_id),
+				...toServiceRequestFake(this.repos, undefined, account.account_id),
 				params: {name: randomActorParams().name},
 			}),
 		);

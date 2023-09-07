@@ -23,7 +23,7 @@ test__actorService('create a actor & test name collisions', async ({repos, rando
 	const account = await random.account();
 
 	const toServiceRequest = () => ({
-		...toServiceRequestFake(repos, undefined, undefined, account.account_id),
+		...toServiceRequestFake(repos, undefined, account.account_id),
 		params,
 	});
 
@@ -48,7 +48,7 @@ test__actorService('ghost actor has the expected name and id', async ({repos, ra
 	// First create an account actor, which ensures the ghost actor has been initialized.
 	unwrap(
 		await CreateAccountActorService.perform({
-			...toServiceRequestFake(repos, undefined, undefined, (await random.account()).account_id),
+			...toServiceRequestFake(repos, undefined, (await random.account()).account_id),
 			params: await randomActionParams.CreateAccountActor(random),
 		}),
 	);

@@ -4,6 +4,7 @@ import {traverse} from '@feltjs/util/object.js';
 import {randomItem} from '@feltjs/util/random.js';
 import {magenta} from 'kleur/colors';
 import {toNext} from '@feltjs/util/array.js';
+import type {OmitStrict} from '@feltjs/util/types.js';
 
 import {cyan} from '$lib/server/colors';
 import type {Database} from '$lib/db/Database';
@@ -15,7 +16,7 @@ import type {
 	CreateEntityResponse,
 	SignInParams,
 } from '$lib/vocab/action/actionTypes';
-import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
+import type {AccountActor} from '$lib/vocab/actor/actor';
 import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
 import {CreateHubService, UpdateHubService} from '$lib/vocab/hub/hubServices';
@@ -30,6 +31,7 @@ import type {Directory} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
 import {createPasswordHasher} from '$lib/server/password';
 import {ADMIN_HUB_ID} from '$lib/util/constants';
+import type {AuthorizedServiceRequest} from '$lib/server/service';
 
 /* eslint-disable no-await-in-loop */
 
@@ -78,12 +80,10 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		);
 		log.debug('created account', account);
 		accounts.push(account);
-		const toAccountServiceRequest = (actor?: ActionActor) =>
-			toServiceRequestFake(repos, actor as any, undefined, account.account_id);
 		for (const actorName of actorsParams[account.name]) {
 			const created = unwrap(
 				await CreateAccountActorService.perform({
-					...toAccountServiceRequest(),
+					...toServiceRequestFake(repos, undefined, account.account_id),
 					params: {name: actorName},
 				}),
 			);
@@ -92,7 +92,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			actors.push(actor);
 			await createDefaultEntities(
 				repos,
-				() => toAccountServiceRequest(actor) as any,
+				() => toServiceRequestFake(repos, actor, account.account_id),
 				created.spaces,
 				() => actor,
 			);
@@ -165,7 +165,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 
 const createDefaultEntities = async (
 	repos: Repos,
-	toServiceRequest: () => ReturnType<typeof toServiceRequestFake>,
+	toServiceRequest: () => OmitStrict<AuthorizedServiceRequest, 'params'>,
 	spaces: Space[],
 	nextActor: () => AccountActor,
 ) => {
@@ -242,7 +242,7 @@ const hubTemplates: HubTemplate[] = [
 ];
 
 interface SeedContext {
-	toServiceRequest: () => ReturnType<typeof toServiceRequestFake>;
+	toServiceRequest: () => OmitStrict<AuthorizedServiceRequest, 'params'>;
 	nextActor: () => AccountActor;
 	space: Space;
 	directory: Directory;
@@ -356,7 +356,7 @@ const findFirstComponentName = (view: ViewData): string | undefined => {
 const MUCH_SPACE_COUNT = 100;
 
 const createMuchSpaces = async (
-	toServiceRequest: () => ReturnType<typeof toServiceRequestFake>,
+	toServiceRequest: () => OmitStrict<AuthorizedServiceRequest<any>, 'params'>,
 	hub: Hub,
 	nextActor: () => AccountActor,
 ) => {

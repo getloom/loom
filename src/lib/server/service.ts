@@ -104,102 +104,121 @@ export interface AuthorizedService<
 	perform: (serviceRequest: AuthorizedServiceRequest<TParams>) => Promise<TResult>;
 }
 
-export type ServiceRequest =
-	| NonAuthenticatedServiceRequest
-	| NonAuthorizedServiceRequest
-	| AuthorizedServiceRequest;
-export interface NonAuthenticatedServiceRequest<TParams = any> {
+export type ServiceRequest<TParams = any> =
+	| NonAuthenticatedServiceRequest<TParams>
+	| NonAuthorizedServiceRequest<TParams>
+	| AuthorizedServiceRequest<TParams>;
+export interface BaseServiceRequest<TParams = any> {
 	repos: Repos;
 	params: TParams;
+	account_id: AccountId | undefined;
+	actor: ActionActor | undefined;
 	session: ISessionApi;
 	broadcast: IBroadcastApi;
 	passwordHasher: PasswordHasher;
 	afterResponse: AfterResponse;
+	checkPolicy: CheckPolicy | undefined;
+	checkHubAccess: CheckHubAccess | undefined;
 }
-export interface NonAuthorizedServiceRequest<TParams = any>
-	extends NonAuthenticatedServiceRequest<TParams> {
+export interface NonAuthenticatedServiceRequest<TParams = any> extends BaseServiceRequest<TParams> {
+	account_id: undefined;
+	actor: undefined;
+	checkPolicy: undefined;
+	checkHubAccess: undefined;
+}
+export interface NonAuthorizedServiceRequest<TParams = any> extends BaseServiceRequest<TParams> {
 	account_id: AccountId;
+	actor: undefined;
+	checkPolicy: undefined;
+	checkHubAccess: undefined;
 }
-export interface AuthorizedServiceRequest<TParams = any>
-	extends NonAuthorizedServiceRequest<TParams> {
+export interface AuthorizedServiceRequest<TParams = any> extends BaseServiceRequest<TParams> {
+	account_id: AccountId;
 	actor: ActionActor;
-	checkPolicy: (name: PolicyName, hub_id: HubId) => Promise<void>;
-	checkHubAccess: (hub_id: HubId) => Promise<void>;
+	checkPolicy: CheckPolicy;
+	checkHubAccess: CheckHubAccess;
 }
 
-export function toServiceRequest<TParams = any>(
-	repos: Repos,
-	params: TParams,
-	account_id: undefined,
-	actor: undefined,
-	session: ISessionApi,
-	broadcast: IBroadcastApi,
-	passwordHasher: PasswordHasher,
-	afterResponse: AfterResponse,
-): NonAuthenticatedServiceRequest<TParams>;
-export function toServiceRequest<TParams = any>(
-	repos: Repos,
-	params: TParams,
-	account_id: AccountId,
-	actor: undefined,
-	session: ISessionApi,
-	broadcast: IBroadcastApi,
-	passwordHasher: PasswordHasher,
-	afterResponse: AfterResponse,
-): NonAuthorizedServiceRequest<TParams>;
-export function toServiceRequest<TParams = any>(
-	repos: Repos,
-	params: TParams,
-	account_id: AccountId,
-	actor: ActionActor,
-	session: ISessionApi,
-	broadcast: IBroadcastApi,
-	passwordHasher: PasswordHasher,
-	afterResponse: AfterResponse,
-): AuthorizedServiceRequest<TParams>;
-export function toServiceRequest<TParams = any>(
-	repos: Repos,
-	params: TParams,
-	account_id: AccountId | undefined,
-	actor: ActionActor | undefined,
-	session: ISessionApi,
-	broadcast: IBroadcastApi,
-	passwordHasher: PasswordHasher,
-	afterResponse: AfterResponse,
-): ServiceRequest {
-	const req: NonAuthenticatedServiceRequest = {
+export interface CheckPolicy {
+	(name: PolicyName, hub_id: HubId): Promise<void>;
+}
+
+export interface CheckHubAccess {
+	(hub_id: HubId): Promise<void>;
+}
+
+export interface ToServiceRequest<TParams = any> {
+	(
+		repos: Repos,
+		params: TParams,
+		account_id: undefined,
+		actor: undefined,
+		session: ISessionApi,
+		broadcast: IBroadcastApi,
+		passwordHasher: PasswordHasher,
+		afterResponse: AfterResponse,
+	): NonAuthenticatedServiceRequest<TParams>;
+	(
+		repos: Repos,
+		params: TParams,
+		account_id: AccountId,
+		actor: undefined,
+		session: ISessionApi,
+		broadcast: IBroadcastApi,
+		passwordHasher: PasswordHasher,
+		afterResponse: AfterResponse,
+	): NonAuthorizedServiceRequest<TParams>;
+	(
+		repos: Repos,
+		params: TParams,
+		account_id: AccountId,
+		actor: ActionActor,
+		session: ISessionApi,
+		broadcast: IBroadcastApi,
+		passwordHasher: PasswordHasher,
+		afterResponse: AfterResponse,
+	): AuthorizedServiceRequest<TParams>;
+	(
+		repos: Repos,
+		params: TParams,
+		account_id: AccountId | undefined,
+		actor: ActionActor | undefined,
+		session: ISessionApi,
+		broadcast: IBroadcastApi,
+		passwordHasher: PasswordHasher,
+		afterResponse: AfterResponse,
+	): ServiceRequest<TParams>;
+}
+export const toServiceRequest: ToServiceRequest = (
+	repos,
+	params,
+	account_id,
+	actor,
+	session,
+	broadcast,
+	passwordHasher,
+	afterResponse,
+) => {
+	const req: BaseServiceRequest = {
 		repos,
 		params,
+		account_id,
+		actor,
 		session,
 		broadcast,
 		passwordHasher,
 		afterResponse,
+		checkPolicy: undefined,
+		checkHubAccess: undefined,
 	};
-	if (account_id) {
-		// NonAuthorizedServiceRequest or AuthorizedServiceRequest
-		(req as NonAuthorizedServiceRequest).account_id = account_id;
-		if (actor) {
-			// AuthorizedServiceRequest
-			(req as AuthorizedServiceRequest).actor = actor;
-			// TODO consider a `CheckApi` like `SessionApi` to group these helpers, if we add a 3rd,
-			// or consider merging `checkHubAccess` into `checkPolicy` if that makes sense
-			(req as AuthorizedServiceRequest).checkPolicy = checkPolicyForActor.bind(
-				null,
-				repos,
-				actor.actor_id,
-			);
-			(req as AuthorizedServiceRequest).checkHubAccess = checkHubAccessForActor.bind(
-				null,
-				repos,
-				actor.actor_id,
-			);
-		}
-	} else {
-		// NonAuthenticatedServiceRequest
-		if (actor) throw Error('invalid service request');
+	if (actor) {
+		// TODO consider a `CheckApi` like `SessionApi` to group these helpers, if we add a 3rd,
+		// or consider merging `checkHubAccess` into `checkPolicy` if that makes sense
+		req.checkPolicy = checkPolicyForActor.bind(null, repos, actor.actor_id);
+		req.checkHubAccess = checkHubAccessForActor.bind(null, repos, actor.actor_id);
 	}
-	return req;
-}
+	return req as any;
+};
 
 export interface AfterResponse {
 	(cb: AfterResponseCallback): void;

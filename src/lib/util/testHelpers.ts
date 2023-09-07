@@ -10,7 +10,6 @@ import {BroadcastFake} from '$lib/server/BroadcastFake';
 import {
 	toServiceRequest,
 	type AuthorizedServiceRequest,
-	type ServiceRequest,
 	type NonAuthenticatedServiceRequest,
 	type NonAuthorizedServiceRequest,
 	type AfterResponse,
@@ -40,54 +39,57 @@ export const installSourceMaps = (): void => {
 	});
 };
 
-export function toServiceRequestFake(
-	repos: Repos,
-	actor?: undefined,
-	session?: SessionApiFake,
-	account_id?: undefined,
-	broadcast?: IBroadcast,
-	passwordHasher?: PasswordHasher,
-	afterResponse?: AfterResponse,
-): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
-export function toServiceRequestFake(
-	repos: Repos,
-	actor?: undefined,
-	session?: SessionApiFake,
-	account_id?: AccountId,
-	broadcast?: IBroadcast,
-	passwordHasher?: PasswordHasher,
-	afterResponse?: AfterResponse,
-): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
-export function toServiceRequestFake(
-	repos: Repos,
-	actor: ActionActor,
-	session?: SessionApiFake,
-	account_id?: AccountId,
-	broadcast?: IBroadcast,
-	passwordHasher?: PasswordHasher,
-	afterResponse?: AfterResponse,
-): OmitStrict<AuthorizedServiceRequest, 'params'>;
-export function toServiceRequestFake(
-	repos: Repos,
-	actor?: ActionActor,
-	session = new SessionApiFake(), // some tests need to reuse the same fake session
+export interface ToServiceRequestFake {
+	(
+		repos: Repos,
+		actor?: undefined,
+		account_id?: undefined,
+		session?: SessionApiFake,
+		broadcast?: IBroadcast,
+		passwordHasher?: PasswordHasher,
+		afterResponse?: AfterResponse,
+	): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
+	(
+		repos: Repos,
+		actor?: undefined,
+		account_id?: AccountId,
+		session?: SessionApiFake,
+		broadcast?: IBroadcast,
+		passwordHasher?: PasswordHasher,
+		afterResponse?: AfterResponse,
+	): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
+	(
+		repos: Repos,
+		actor: ActionActor,
+		account_id?: AccountId,
+		session?: SessionApiFake,
+		broadcast?: IBroadcast,
+		passwordHasher?: PasswordHasher,
+		afterResponse?: AfterResponse,
+	): OmitStrict<AuthorizedServiceRequest, 'params'>;
+}
+
+export const toServiceRequestFake: ToServiceRequestFake = (
+	repos,
+	actor,
 	account_id = actor?.account_id || undefined,
-	broadcast: IBroadcast = new BroadcastFake(),
+	session = new SessionApiFake(), // some tests need to reuse the same fake session
+	broadcast = new BroadcastFake(),
 	passwordHasher = passwordHasherFake,
 	afterResponse = noop,
-): OmitStrict<ServiceRequest, 'params'> {
+) => {
 	const {params: _, ...rest} = toServiceRequest(
 		repos,
 		undefined,
-		account_id!,
-		actor!,
+		account_id,
+		actor,
 		session,
 		broadcast,
 		passwordHasher,
 		afterResponse,
 	);
-	return rest;
-}
+	return rest as any;
+};
 
 /**
  * Creates a `PasswordHasher` that runs on the main thread and doesn't need teardown.

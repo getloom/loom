@@ -9,6 +9,7 @@ import {services} from '$lib/server/services';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import {SessionApiFake} from '$lib/session/SessionApiFake';
 import {toFailedApiResult} from '$lib/server/api';
+import {performService} from '$lib/server/service';
 
 /* test__serviceDefinitions */
 const test__serviceDefinitions = suite('serviceDefinitions');
@@ -91,12 +92,12 @@ for (const service of services.values()) {
 				)}`,
 			);
 		}
-		const result = await service.perform({
+		const result = await performService(service, {
 			...toServiceRequestFake(
 				repos,
 				action.authorize === false ? undefined! : actor,
-				session,
 				action.authenticate === false ? undefined : account.account_id,
+				session,
 			),
 			params,
 		});
@@ -134,8 +135,8 @@ for (const service of services.values()) {
 
 			let failedResult;
 			try {
-				failedResult = await service.perform({
-					...toServiceRequestFake(repos, unauthorizedActor, session, account.account_id),
+				failedResult = await performService(service, {
+					...toServiceRequestFake(repos, unauthorizedActor, account.account_id, session),
 					params: failedParams,
 				});
 			} catch (err) {
