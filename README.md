@@ -10,7 +10,7 @@
 felt is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
 
 - as an <strong>end user</strong> using Felt like Slack or Discord,
-  but with more power to build custom experiences for your community
+  but with more power to build custom experiences
 - as an <strong>operator user</strong> deploying an instance to the web via servers IRL,
   doing admin and infra
 - (coming soon) as a <strong>dev user</strong> making a custom server using

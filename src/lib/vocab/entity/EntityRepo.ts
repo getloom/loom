@@ -35,7 +35,7 @@ export class EntityRepo extends PostgresRepo {
 		const entity = await this.sql<Entity[]>`
 			INSERT INTO entities (actor_id, space_id, directory_id, hub_id, path, data) VALUES (
 				${actor_id}, ${space_id}, ${
-			directory_id ?? this.sql.unsafe("currval('items_item_id_seq')")
+			directory_id ?? this.sql.unsafe("CURRVAL('items_item_id_seq')")
 		}, ${hub_id}, ${path}, ${this.sql.json(data as any)}
 			) RETURNING *
 		`;
