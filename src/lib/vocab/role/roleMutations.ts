@@ -1,33 +1,33 @@
 import type {Mutations} from '$lib/vocab/action/actionTypes';
 import {evictRoles, stashRoles} from '$lib/vocab/role/roleMutationHelpers';
 
-export const CreateRole: Mutations['CreateRole'] = async ({invoke, ui}) => {
+export const CreateRole: Mutations['CreateRole'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {role} = result.value;
-	ui.mutate(() => stashRoles(ui, [role]));
+	mutate(() => stashRoles(ui, [role]));
 	return result;
 };
 
-export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, ui}) => {
+export const UpdateRole: Mutations['UpdateRole'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {role} = result.value;
-	ui.mutate(() => stashRoles(ui, [role]));
+	mutate(() => stashRoles(ui, [role]));
 	return result;
 };
 
-export const DeleteRole: Mutations['DeleteRole'] = async ({invoke, params, ui}) => {
+export const DeleteRole: Mutations['DeleteRole'] = async ({invoke, mutate, params, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	ui.mutate(() => evictRoles(ui, [params.role_id]));
+	mutate(() => evictRoles(ui, [params.role_id]));
 	return result;
 };
 
-export const ReadRoles: Mutations['ReadRoles'] = async ({invoke, ui}) => {
+export const ReadRoles: Mutations['ReadRoles'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {roles} = result.value;
-	ui.mutate(() => stashRoles(ui, roles));
+	mutate(() => stashRoles(ui, roles));
 	return result;
 };

@@ -4,6 +4,7 @@ import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignme
 export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 	invoke,
 	actions,
+	mutate,
 	ui,
 	params,
 }) => {
@@ -15,7 +16,7 @@ export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 
 	// If there's no hub locally, we were just added to it, so query its data in full.
 	if (hubById.has(hub_id)) {
-		ui.mutate(() => stashAssignments(ui, [assignment]));
+		mutate(() => stashAssignments(ui, [assignment]));
 	} else {
 		const readHubResult = await actions.ReadHub({actor: params.actor, hub_id});
 		if (!readHubResult.ok) return readHubResult;
@@ -24,12 +25,17 @@ export const CreateAssignment: Mutations['CreateAssignment'] = async ({
 	return result;
 };
 
-export const DeleteAssignment: Mutations['DeleteAssignment'] = async ({params, invoke, ui}) => {
+export const DeleteAssignment: Mutations['DeleteAssignment'] = async ({
+	params,
+	invoke,
+	mutate,
+	ui,
+}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const assignment = ui.assignmentById.get(params.assignment_id);
 	if (assignment) {
-		ui.mutate(() => evictAssignments(ui, [assignment]));
+		mutate(() => evictAssignments(ui, [assignment]));
 	}
 	return result;
 };

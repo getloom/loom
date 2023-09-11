@@ -6,11 +6,11 @@ import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
-export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invoke, ui}) => {
+export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actors, hubs, roles, policies, spaces, directories, assignments} = result.value;
-	ui.mutate(() => {
+	mutate(() => {
 		stashActors(ui, actors);
 		stashHubs(ui, hubs);
 		stashSpaces(ui, spaces, directories);
@@ -21,13 +21,13 @@ export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invok
 	return result;
 };
 
-export const DeleteActor: Mutations['DeleteActor'] = async ({params, invoke, ui}) => {
+export const DeleteActor: Mutations['DeleteActor'] = async ({params, invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor_id} = params;
 	const actor = ui.actorById.get(actor_id);
 	if (actor) {
-		ui.mutate(() => {
+		mutate(() => {
 			const $actor = actor.get();
 			const hub_id = 'hub_id' in $actor ? $actor.hub_id : null;
 			// TODO `evictActor` should possibly do this `evictHub` itself

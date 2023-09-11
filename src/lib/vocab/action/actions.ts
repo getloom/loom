@@ -38,6 +38,7 @@ export const toActions = (
 			return mutation({
 				actionName,
 				params,
+				mutate: ui.mutate,
 				ui,
 				actions,
 				invoke: client ? (p = params) => client.invoke(actionName, p) : null,
@@ -75,6 +76,7 @@ export const toActionsBroadcastMessage =
 		return mutation({
 			actionName,
 			params,
+			mutate: ui.mutate,
 			ui,
 			actions,
 			invoke: () => Promise.resolve(message.result),

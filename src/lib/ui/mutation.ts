@@ -1,4 +1,4 @@
-import type {WritableUi} from '$lib/ui/ui';
+import type {MutateUi, WritableUi} from '$lib/ui/ui';
 import type {ApiResult} from '$lib/server/api';
 import type {Actions} from '$lib/vocab/action/actionTypes';
 
@@ -12,6 +12,7 @@ export interface MutationContext<
 > {
 	actionName: string;
 	params: TParams;
+	mutate: MutateUi;
 	ui: WritableUi;
 	actions: Actions;
 	invoke: TResult extends void ? null : (params?: TParams) => Promise<TResult>;

@@ -44,10 +44,10 @@ export const setUi = (store: Ui): Ui => {
 // TODO either add `stashed_ties`, add ties to the payload of `stashed_entities`, or rethink this pattern
 export type UiEvents = EventEmitter<{stashed_entities: [Array<Readable<Entity>>]}>;
 
-export interface UiBatch {
+// TODO maybe extract these to `$lib/ui/mutation.ts`, and don't expose directly on `ui` below
+export interface MutateUi {
 	(cb: () => void): void;
 }
-
 export interface AfterMutation {
 	(cb: AfterMutationCallback): void;
 }
@@ -57,7 +57,7 @@ export interface AfterMutationCallback {
 
 export interface Ui {
 	events: UiEvents;
-	mutate: UiBatch;
+	mutate: MutateUi;
 	afterMutation: AfterMutation;
 
 	// TODO instead of eagerly loading these components,
@@ -135,7 +135,7 @@ export const toUi = (
 	const afterMutationCallbacks: AfterMutationCallback[] = [];
 	// Wraps mutations into a single batch, flushing `afterMutationCallbacks` at the end.
 	// Mutations can do `ui.afterMutation(cb)` to add an cb.
-	const mutate = (cb: () => void): void => {
+	const mutate: MutateUi = (cb) => {
 		// TODO call into a store batch function so we get atomic updates (see `@preactjs/signals` as an example)
 		cb();
 		if (afterMutationCallbacks.length) {

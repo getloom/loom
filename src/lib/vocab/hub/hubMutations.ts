@@ -7,11 +7,11 @@ import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignme
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
-export const ReadHub: Mutations['ReadHub'] = async ({invoke, ui}) => {
+export const ReadHub: Mutations['ReadHub'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {hub, spaces, directories, roles, assignments, actors} = result.value;
-	ui.mutate(() => {
+	mutate(() => {
 		stashActors(ui, actors);
 		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
@@ -21,11 +21,11 @@ export const ReadHub: Mutations['ReadHub'] = async ({invoke, ui}) => {
 	return result;
 };
 
-export const CreateHub: Mutations['CreateHub'] = async ({invoke, ui}) => {
+export const CreateHub: Mutations['CreateHub'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {hub, roles, policies, spaces, directories, assignments, actors} = result.value;
-	ui.mutate(() => {
+	mutate(() => {
 		stashActors(ui, actors);
 		stashHub(ui, hub);
 		stashSpaces(ui, spaces, directories);
@@ -36,22 +36,22 @@ export const CreateHub: Mutations['CreateHub'] = async ({invoke, ui}) => {
 	return result;
 };
 
-export const UpdateHub: Mutations['UpdateHub'] = async ({invoke, ui}) => {
+export const UpdateHub: Mutations['UpdateHub'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	ui.mutate(() => stashHub(ui, result.value.hub));
+	mutate(() => stashHub(ui, result.value.hub));
 	return result;
 };
 
-export const DeleteHub: Mutations['DeleteHub'] = async ({params, invoke, ui}) => {
+export const DeleteHub: Mutations['DeleteHub'] = async ({params, invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {hub_id} = params;
-	ui.mutate(() => evictHub(ui, hub_id));
+	mutate(() => evictHub(ui, hub_id));
 	return result;
 };
 
-export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, actions, ui}) => {
+export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, actions, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 
@@ -64,7 +64,7 @@ export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, actions, ui
 		if (!readHubResult.ok) return readHubResult;
 	}
 
-	ui.mutate(() => {
+	mutate(() => {
 		stashActors(ui, [actor]);
 		stashAssignments(ui, [assignment]);
 	});
@@ -72,7 +72,7 @@ export const InviteToHub: Mutations['InviteToHub'] = async ({invoke, actions, ui
 	return result;
 };
 
-export const LeaveHub: Mutations['LeaveHub'] = async ({params, invoke, ui}) => {
+export const LeaveHub: Mutations['LeaveHub'] = async ({params, invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor_id, hub_id} = params;
@@ -84,12 +84,12 @@ export const LeaveHub: Mutations['LeaveHub'] = async ({params, invoke, ui}) => {
 			assignmentsToEvict.push(assignment);
 		}
 	}
-	ui.mutate(() => evictAssignments(ui, assignmentsToEvict));
+	mutate(() => evictAssignments(ui, assignmentsToEvict));
 
 	return result;
 };
 
-export const KickFromHub: Mutations['KickFromHub'] = async ({params, invoke, ui}) => {
+export const KickFromHub: Mutations['KickFromHub'] = async ({params, invoke, mutate, ui}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor_id, hub_id} = params;
@@ -101,7 +101,7 @@ export const KickFromHub: Mutations['KickFromHub'] = async ({params, invoke, ui}
 			assignmentsToEvict.push(assignment);
 		}
 	}
-	ui.mutate(() => evictAssignments(ui, assignmentsToEvict));
+	mutate(() => evictAssignments(ui, assignmentsToEvict));
 
 	return result;
 };

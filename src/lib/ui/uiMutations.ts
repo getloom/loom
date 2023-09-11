@@ -36,7 +36,7 @@ export const Ephemera: Mutations['Ephemera'] = async ({invoke, ui: {ephemera}}) 
 	return result;
 };
 
-export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
+export const SetSession: Mutations['SetSession'] = async ({mutate, params, ui}) => {
 	const {
 		session,
 		account,
@@ -60,7 +60,7 @@ export const SetSession: Mutations['SetSession'] = async ({params, ui}) => {
 
 	account.set(guest ? null : $session.account);
 
-	ui.mutate(() => {
+	mutate(() => {
 		stashActors(ui, guest ? [] : toInitialActors($session), true);
 		stashHubs(ui, guest ? [] : $session.hubs, true);
 		stashRoles(ui, guest ? [] : $session.roles, true);
