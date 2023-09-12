@@ -8,6 +8,7 @@
 	import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
+	import Alert from '@feltjs/felt-ui/Alert.svelte';
 
 	const {actions} = getApp();
 
@@ -15,14 +16,21 @@
 	export let hub: Readable<Hub>;
 	export let communityActor: Readable<ClientActor>;
 
+	let errorMessage: string | null = null;
+
 	let kickPending = false;
 	const kickActorFromHub = async () => {
 		kickPending = true;
-		await actions.KickFromHub({
+		const result = await actions.KickFromHub({
 			actor: $actor.actor_id,
 			actor_id: $communityActor.actor_id,
 			hub_id: $hub.hub_id,
 		});
+		if (result.ok) {
+			errorMessage = null;
+		} else {
+			errorMessage = result.message;
+		}
 		kickPending = false;
 	};
 </script>
@@ -44,6 +52,9 @@
 	>
 		✕
 	</PendingButton>
+	{#if errorMessage}
+		<Alert status="error">{errorMessage}</Alert>
+	{/if}
 </li>
 
 <style>
