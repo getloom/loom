@@ -29,10 +29,12 @@ export const Ping: Mutations['Ping'] = async ({invoke}) => {
 	return result;
 };
 
-export const Ephemera: Mutations['Ephemera'] = async ({invoke, ui: {ephemera}}) => {
+export const Ephemera: Mutations['Ephemera'] = async ({invoke, mutate, ui: {ephemera}}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	ephemera.set(result.value);
+	mutate(() => {
+		ephemera.set(result.value);
+	});
 	return result;
 };
 
@@ -52,60 +54,61 @@ export const SetSession: Mutations['SetSession'] = async ({mutate, afterMutation
 	} = ui;
 
 	const $session = params.session;
-	session.set($session);
-	const {guest} = $session;
-
-	if (browser) log.debug('[setSession]', $session);
-	deserialize(deserializers)($session);
-
-	account.set(guest ? null : $session.account);
 
 	mutate(() => {
+		session.set($session);
+		const {guest} = $session;
+
+		if (browser) log.debug('[setSession]', $session);
+		deserialize(deserializers)($session);
+
+		account.set(guest ? null : $session.account);
+
 		stashActors(ui, guest ? [] : toInitialActors($session), true);
 		stashHubs(ui, guest ? [] : $session.hubs, true);
 		stashRoles(ui, guest ? [] : $session.roles, true);
 		stashAssignments(ui, guest ? [] : $session.assignments, true);
 		stashPolicies(ui, guest ? [] : $session.policies, true);
 		stashSpaces(ui, afterMutation, guest ? [] : $session.spaces, undefined, true);
+
+		actorIdSelection.set(guest ? null : $session.sessionActors[0]?.actor_id ?? null);
+
+		// TODO these two selections are hacky because using the derived stores
+		// was causing various confusing issues, so they find stuff directly on the session objects
+		// instead of using derived stores like `sessionActors` and `spacesByHubId`.
+		hubIdSelectionByActorId.swap(
+			// TODO first try to load this from localStorage
+			new Map(guest ? null : $session.sessionActors.map(($p) => [$p.actor_id, $p.hub_id!])),
+		);
+		spaceIdSelectionByHubId.swap(
+			//TODO lookup space by hub_id+path (see this comment in multiple places)
+			new Map(
+				guest
+					? null
+					: $session.hubs.map(($hub) => [
+							$hub.hub_id,
+							spaceIdSelectionByHubId.getJson()?.find((v) => v[0] === $hub.hub_id)?.[1] ||
+								$session.spaces.find(
+									(s) =>
+										s.hub_id === $hub.hub_id &&
+										isHomeDirectory(entityById.get(s.directory_id)!.get()),
+								)?.space_id ||
+								null,
+					  ]),
+			),
+		);
+
+		entityById.clear();
+		tiesByDestId.clear();
+		tiesBySourceId.clear();
+
+		lastSeenByDirectoryId.clear();
+		freshnessByDirectoryId.clear();
+		freshnessByHubId.clear();
+
+		// Add entities after the other stores are ready.
+		if (!guest) stashEntities(ui, afterMutation, $session.directories);
 	});
-
-	actorIdSelection.set(guest ? null : $session.sessionActors[0]?.actor_id ?? null);
-
-	// TODO these two selections are hacky because using the derived stores
-	// was causing various confusing issues, so they find stuff directly on the session objects
-	// instead of using derived stores like `sessionActors` and `spacesByHubId`.
-	hubIdSelectionByActorId.swap(
-		// TODO first try to load this from localStorage
-		new Map(guest ? null : $session.sessionActors.map(($p) => [$p.actor_id, $p.hub_id!])),
-	);
-	spaceIdSelectionByHubId.swap(
-		//TODO lookup space by hub_id+path (see this comment in multiple places)
-		new Map(
-			guest
-				? null
-				: $session.hubs.map(($hub) => [
-						$hub.hub_id,
-						spaceIdSelectionByHubId.getJson()?.find((v) => v[0] === $hub.hub_id)?.[1] ||
-							$session.spaces.find(
-								(s) =>
-									s.hub_id === $hub.hub_id &&
-									isHomeDirectory(entityById.get(s.directory_id)!.get()),
-							)?.space_id ||
-							null,
-				  ]),
-		),
-	);
-
-	entityById.clear();
-	tiesByDestId.clear();
-	tiesBySourceId.clear();
-
-	lastSeenByDirectoryId.clear();
-	freshnessByDirectoryId.clear();
-	freshnessByHubId.clear();
-
-	// Add entities after the other stores are ready.
-	if (!guest) stashEntities(ui, afterMutation, $session.directories);
 };
 
 // TODO This is a hack until we figure out how to handle "session actors" differently from the rest.
@@ -125,48 +128,74 @@ const toInitialActors = (session: ClientSession): ClientActor[] =>
 				),
 		  );
 
-export const ToggleMainNav: Mutations['ToggleMainNav'] = ({ui: {expandMainNav}}) => {
-	expandMainNav.update(($expandMainNav) => !$expandMainNav);
+export const ToggleMainNav: Mutations['ToggleMainNav'] = ({mutate, ui: {expandMainNav}}) => {
+	mutate(() => {
+		expandMainNav.update(($expandMainNav) => !$expandMainNav);
+	});
 };
 
-export const ToggleSecondaryNav: Mutations['ToggleSecondaryNav'] = ({ui: {expandMarquee}}) => {
-	expandMarquee.update(($expandMarquee) => !$expandMarquee);
+export const ToggleSecondaryNav: Mutations['ToggleSecondaryNav'] = ({
+	mutate,
+	ui: {expandMarquee},
+}) => {
+	mutate(() => {
+		expandMarquee.update(($expandMarquee) => !$expandMarquee);
+	});
 };
 
-export const SetMobile: Mutations['SetMobile'] = ({params, ui: {mobile}}) => {
-	mobile.set(params);
+export const SetMobile: Mutations['SetMobile'] = ({params, mutate, ui: {mobile}}) => {
+	mutate(() => {
+		mobile.set(params);
+	});
 };
 
-export const OpenDialog: Mutations['OpenDialog'] = ({params, ui: {dialogs}}) => {
-	dialogs.update(($dialogs) => $dialogs.concat(params));
+export const OpenDialog: Mutations['OpenDialog'] = ({params, mutate, ui: {dialogs}}) => {
+	mutate(() => {
+		dialogs.update(($dialogs) => $dialogs.concat(params));
+	});
 };
 
-export const CloseDialog: Mutations['CloseDialog'] = ({ui: {dialogs}}) => {
-	dialogs.update(($dialogs) => $dialogs.slice(0, $dialogs.length - 1));
+export const CloseDialog: Mutations['CloseDialog'] = ({mutate, ui: {dialogs}}) => {
+	mutate(() => {
+		dialogs.update(($dialogs) => $dialogs.slice(0, $dialogs.length - 1));
+	});
 };
 
 export const ViewSpace: Mutations['ViewSpace'] = async ({
 	params: {space_id, view},
+	mutate,
+	afterMutation,
 	ui: {spaceById, viewBySpace, hubById, entityById},
 }) => {
-	const space = spaceById.get(space_id)!;
-	viewBySpace.mutate(($viewBySpace) => {
-		if (view) {
-			$viewBySpace.set(space, view);
-		} else {
-			$viewBySpace.delete(space);
-		}
+	mutate(() => {
+		const space = spaceById.get(space_id)!;
+		viewBySpace.mutate(($viewBySpace) => {
+			if (view) {
+				$viewBySpace.set(space, view);
+			} else {
+				$viewBySpace.delete(space);
+			}
+		});
+
+		afterMutation(async () => {
+			// Navgiate to the space if needed.
+			// If we don't always want to do this,
+			// we could either move this logic to the views or add a `navigate` boolean param.
+			const $space = space.get();
+			const $directory = entityById.get($space.directory_id)!.get();
+			await gotoUnlessActive(
+				toHubUrl(hubById.get($space.hub_id)!.get().name, $directory.path, get(page).url.search),
+			);
+		});
 	});
-	// Navgiate to the space if needed.
-	// If we don't always want to do this,
-	// we could either move this logic to the views or add a `navigate` boolean param.
-	const $space = space.get();
-	const $directory = entityById.get($space.directory_id)!.get();
-	await gotoUnlessActive(
-		toHubUrl(hubById.get($space.hub_id)!.get().name, $directory.path, get(page).url.search),
-	);
 };
 
-export const ClearFreshness: Mutations['ClearFreshness'] = async ({params: {directory_id}, ui}) => {
-	updateLastSeen(ui, directory_id);
+export const ClearFreshness: Mutations['ClearFreshness'] = async ({
+	mutate,
+	params: {directory_id},
+	ui,
+}) => {
+	mutate(() => {
+		updateLastSeen(ui, directory_id);
+	});
 };

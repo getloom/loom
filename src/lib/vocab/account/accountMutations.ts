@@ -24,16 +24,28 @@ export const SignOut: Mutations['SignOut'] = async ({invoke, actions}) => {
 	return result;
 };
 
-export const UpdateAccountSettings: Mutations['UpdateAccountSettings'] = async ({invoke, ui}) => {
+export const UpdateAccountSettings: Mutations['UpdateAccountSettings'] = async ({
+	invoke,
+	mutate,
+	ui,
+}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	setIfUpdated(ui.account, result.value);
+	mutate(() => {
+		setIfUpdated(ui.account, result.value);
+	});
 	return result;
 };
 
-export const UpdateAccountPassword: Mutations['UpdateAccountPassword'] = async ({invoke, ui}) => {
+export const UpdateAccountPassword: Mutations['UpdateAccountPassword'] = async ({
+	invoke,
+	mutate,
+	ui,
+}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
-	setIfUpdated(ui.account, result.value);
+	mutate(() => {
+		setIfUpdated(ui.account, result.value);
+	});
 	return result;
 };
