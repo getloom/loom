@@ -17,8 +17,13 @@ import {setIfUpdated} from '$lib/util/store';
 import {toHubUrl} from '$lib/util/url';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {isDirectory} from '$lib/vocab/entity/entityHelpers';
+import type {AfterMutation} from '$lib/util/mutation';
 
-export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
+export const stashEntities = (
+	ui: WritableUi,
+	afterMutation: AfterMutation,
+	$entities: Entity[],
+): void => {
 	const {entityById, spaceSelection, hubById} = ui;
 
 	const $selectedSpace = spaceSelection.get()?.get();
@@ -51,11 +56,11 @@ export const stashEntities = (ui: WritableUi, $entities: Entity[]): void => {
 		//TODO this check is not type safe, we should fix that
 		if (isDirectory($entity)) {
 			// TODO maybe invert this and listen for `'stashed_entities'` instead of calling this helper directly?
-			ui.afterMutation(() => updateDirectoryFreshness(ui, $entity as Directory));
+			afterMutation(() => updateDirectoryFreshness(ui, $entity as Directory));
 		}
 	}
 
-	ui.afterMutation(() => ui.events.emit('stashed_entities', stashed));
+	afterMutation(() => ui.events.emit('stashed_entities', stashed));
 };
 
 const updateDirectoryFreshness = (ui: WritableUi, $directory: Directory): void => {
@@ -193,7 +198,7 @@ export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 
 		// TODO
 		// if (evicted) {
-		// 	ui.afterMutation(() => ui.events.emit('evicted_entities', evicted!));
+		// 	afterMutation(() => ui.events.emit('evicted_entities', evicted!));
 		// }
 	}
 };

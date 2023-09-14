@@ -2,6 +2,7 @@ import type {WritableUi} from '$lib/ui/ui';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {evictActor} from '$lib/vocab/actor/actorMutationHelpers';
 import {evictHub} from '$lib/vocab/hub/hubMutationHelpers';
+import type {AfterMutation} from '$lib/util/mutation';
 
 export const stashAssignments = (
 	ui: WritableUi,
@@ -29,7 +30,11 @@ export const stashAssignments = (
 	if (mutated) assignments.mutate();
 };
 
-export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[]): void => {
+export const evictAssignments = (
+	ui: WritableUi,
+	afterMutation: AfterMutation,
+	assignmentsToEvict: Assignment[],
+): void => {
 	if (!assignmentsToEvict.length) return;
 	const {assignments, assignmentById, actorById, sessionActorIndexById} = ui;
 	const $assignments = assignments.get().value;
@@ -67,7 +72,7 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 					}
 				}
 				if (!doesHubHaveOtherSessionAssignment) {
-					evictHub(ui, hub_id);
+					evictHub(ui, afterMutation, hub_id);
 				}
 			} else {
 				let doesActorHaveOtherAssignment = false;
@@ -81,7 +86,7 @@ export const evictAssignments = (ui: WritableUi, assignmentsToEvict: Assignment[
 				if (!doesActorHaveOtherAssignment) {
 					const actor = actorById.get(actor_id);
 					if (actor) {
-						evictActor(ui, actor);
+						evictActor(ui, afterMutation, actor);
 					}
 				}
 			}

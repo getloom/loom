@@ -6,7 +6,7 @@ import type {WritableUi} from '$lib/ui/ui';
 import type {ApiClient} from '$lib/ui/ApiClient';
 import type {Actions} from '$lib/vocab/action/actionTypes';
 import type {BroadcastMessage} from '$lib/util/websocket';
-import type {Mutation} from '$lib/ui/mutation';
+import {createMutationContext, type Mutation} from '$lib/util/mutation';
 
 const log = new Logger();
 
@@ -35,14 +35,15 @@ export const toActions = (
 				log.warn('invoking action with no mutation', actionName, params);
 				return client?.invoke(actionName, params);
 			}
-			return mutation({
-				actionName,
-				params,
-				mutate: ui.mutate,
-				ui,
-				actions,
-				invoke: client ? (p = params) => client.invoke(actionName, p) : null,
-			});
+			return mutation(
+				createMutationContext(
+					actionName,
+					params,
+					ui,
+					actions,
+					client ? (p = params) => client.invoke(actionName, p) : null,
+				),
+			);
 		},
 	});
 	return actions;
@@ -73,14 +74,9 @@ export const toActionsBroadcastMessage =
 			log.warn('ignoring broadcast action with no mutation', actionName, params);
 			return;
 		}
-		return mutation({
-			actionName,
-			params,
-			mutate: ui.mutate,
-			ui,
-			actions,
-			invoke: () => Promise.resolve(message.result),
-		});
+		return mutation(
+			createMutationContext(actionName, params, ui, actions, () => Promise.resolve(message.result)),
+		);
 	};
 
 const toLoggedArgs = (actionName: string, params: unknown): any[] => {

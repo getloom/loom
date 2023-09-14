@@ -10,9 +10,11 @@ import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelp
 import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
 import {toHubUrl} from '$lib/util/url';
 import {setIfUpdated} from '$lib/util/store';
+import type {AfterMutation} from '$lib/util/mutation';
 
 export const stashSpaces = (
 	ui: WritableUi,
+	afterMutation: AfterMutation,
 	$spacesToStash: Space[],
 	$directoriesToStash?: Entity[],
 	replace = false,
@@ -25,7 +27,7 @@ export const stashSpaces = (
 	}
 
 	if ($directoriesToStash) {
-		stashEntities(ui, $directoriesToStash);
+		stashEntities(ui, afterMutation, $directoriesToStash);
 	}
 
 	for (const $space of $spacesToStash) {
@@ -47,7 +49,11 @@ export const stashSpaces = (
 	}
 };
 
-export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>>): void => {
+export const evictSpaces = (
+	ui: WritableUi,
+	afterMutation: AfterMutation,
+	spacesToEvict: Array<Writable<Space>>,
+): void => {
 	const {
 		hubById,
 		spaceIdSelectionByHubId,
@@ -64,7 +70,7 @@ export const evictSpaces = (ui: WritableUi, spacesToEvict: Array<Writable<Space>
 		if (space_id === spaceIdSelectionByHubId.get().value.get(hub_id)) {
 			const hub = hubById.get(hub_id)!;
 			if (hub === hubSelection.get()) {
-				ui.afterMutation(() =>
+				afterMutation(() =>
 					goto(toHubUrl(hub.get().name, null, get(page).url.search), {
 						replaceState: true,
 					}),

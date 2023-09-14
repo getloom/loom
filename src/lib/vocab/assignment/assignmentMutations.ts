@@ -29,13 +29,14 @@ export const DeleteAssignment: Mutations['DeleteAssignment'] = async ({
 	params,
 	invoke,
 	mutate,
+	afterMutation,
 	ui,
 }) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const assignment = ui.assignmentById.get(params.assignment_id);
 	if (assignment) {
-		mutate(() => evictAssignments(ui, [assignment]));
+		mutate(() => evictAssignments(ui, afterMutation, [assignment]));
 	}
 	return result;
 };

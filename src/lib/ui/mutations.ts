@@ -1,4 +1,4 @@
-import type {Mutation} from '$lib/ui/mutation';
+import type {Mutation} from '$lib/util/mutation';
 import {
 	SignUp,
 	SignIn,

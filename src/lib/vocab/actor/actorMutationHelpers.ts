@@ -4,6 +4,7 @@ import {goto} from '$app/navigation';
 import type {WritableUi} from '$lib/ui/ui';
 import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 import {toHubUrl, toAppSearchParams} from '$lib/util/url';
+import type {AfterMutation} from '$lib/util/mutation';
 
 export const stashActors = (
 	{actorById, actors, sessionActors, hubIdSelectionByActorId}: WritableUi,
@@ -43,13 +44,11 @@ export const stashActors = (
 	}
 };
 
-export const evictActors = (ui: WritableUi, actorsToEvict: Set<Writable<ClientActor>>): void => {
-	for (const actor of actorsToEvict) {
-		evictActor(ui, actor);
-	}
-};
-
-export const evictActor = (ui: WritableUi, actorToEvict: Writable<ClientActor>): void => {
+export const evictActor = (
+	ui: WritableUi,
+	afterMutation: AfterMutation,
+	actorToEvict: Writable<ClientActor>,
+): void => {
 	const {
 		actors,
 		actorById,
@@ -75,7 +74,7 @@ export const evictActor = (ui: WritableUi, actorToEvict: Writable<ClientActor>):
 			const nextSelectedActorIndex = sessionActorIndexById
 				.get()
 				.get(nextSelectedActor.get().actor_id);
-			ui.afterMutation(() =>
+			afterMutation(() =>
 				goto(
 					toHubUrl(
 						nextSelectedActor.get().name || '',

@@ -12,6 +12,7 @@ import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import {setIfUpdated} from '$lib/util/store';
 import {isAccountActor} from '$lib/vocab/actor/actorHelpers';
+import type {AfterMutation} from '$lib/util/mutation';
 
 export const stashHubs = (ui: WritableUi, $hubs: Hub[], replace = false): void => {
 	const {hubById, hubs} = ui;
@@ -39,7 +40,7 @@ export const stashHub = (ui: WritableUi, $hub: Hub): Writable<Hub> => {
 	return hub;
 };
 
-export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
+export const evictHub = (ui: WritableUi, afterMutation: AfterMutation, hub_id: HubId): void => {
 	const {
 		hubById,
 		hubSelection,
@@ -65,14 +66,14 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 
 	if (hubSelection.get() === hub) {
 		const actor = actorSelection.get()!;
-		ui.afterMutation(() =>
+		afterMutation(() =>
 			goto(toHubUrl(actor.get().name, null, get(page).url.search), {
 				replaceState: true,
 			}),
 		);
 	}
 
-	evictSpaces(ui, spacesByHubId.get().get(hub_id)!);
+	evictSpaces(ui, afterMutation, spacesByHubId.get().get(hub_id)!);
 
 	hubById.delete(hub_id);
 
@@ -97,5 +98,5 @@ export const evictHub = (ui: WritableUi, hub_id: HubId): void => {
 			assignmentsToEvict.push(a);
 		}
 	}
-	evictAssignments(ui, assignmentsToEvict);
+	evictAssignments(ui, afterMutation, assignmentsToEvict);
 };

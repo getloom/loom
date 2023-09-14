@@ -6,14 +6,19 @@ import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
 import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
 import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
 
-export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invoke, mutate, ui}) => {
+export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({
+	invoke,
+	mutate,
+	afterMutation,
+	ui,
+}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actors, hubs, roles, policies, spaces, directories, assignments} = result.value;
 	mutate(() => {
 		stashActors(ui, actors);
 		stashHubs(ui, hubs);
-		stashSpaces(ui, spaces, directories);
+		stashSpaces(ui, afterMutation, spaces, directories);
 		stashAssignments(ui, assignments);
 		stashRoles(ui, roles);
 		stashPolicies(ui, policies);
@@ -21,7 +26,13 @@ export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({invok
 	return result;
 };
 
-export const DeleteActor: Mutations['DeleteActor'] = async ({params, invoke, mutate, ui}) => {
+export const DeleteActor: Mutations['DeleteActor'] = async ({
+	params,
+	invoke,
+	mutate,
+	afterMutation,
+	ui,
+}) => {
 	const result = await invoke();
 	if (!result.ok) return result;
 	const {actor_id} = params;
@@ -31,8 +42,8 @@ export const DeleteActor: Mutations['DeleteActor'] = async ({params, invoke, mut
 			const $actor = actor.get();
 			const hub_id = 'hub_id' in $actor ? $actor.hub_id : null;
 			// TODO `evictActor` should possibly do this `evictHub` itself
-			if (hub_id) evictHub(ui, hub_id);
-			evictActor(ui, actor);
+			if (hub_id) evictHub(ui, afterMutation, hub_id);
+			evictActor(ui, afterMutation, actor);
 		});
 	}
 	return result;

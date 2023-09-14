@@ -44,28 +44,12 @@ export const setUi = (store: Ui): Ui => {
 // TODO either add `stashed_ties`, add ties to the payload of `stashed_entities`, or rethink this pattern
 export type UiEvents = EventEmitter<{stashed_entities: [Array<Readable<Entity>>]}>;
 
-// TODO maybe extract these to `$lib/ui/mutation.ts`, and don't expose directly on `ui` below
-export interface MutateUi {
-	(cb: () => void): void;
-}
-export interface AfterMutation {
-	(cb: AfterMutationCallback): void;
-}
-export interface AfterMutationCallback {
-	(): void;
-}
-
 export interface Ui {
-	events: UiEvents;
-	mutate: MutateUi;
-	afterMutation: AfterMutation;
+	events: UiEvents; // TODO refactor with query system work
 
 	// TODO instead of eagerly loading these components,
 	// this should be an interface to lazy-load UI components
 	components: {[key: string]: typeof SvelteComponent<any>};
-
-	// TODO should the mutable flat arrays be sets instead? or mutable maps from id to store?
-	// if the latter, we'd need to change the
 
 	// db state and caches
 	account: Readable<ClientAccount | null>;
@@ -131,25 +115,6 @@ export const toUi = (
 	contextmenuTextComponent: ComponentType<ContextmenuTextEntry>,
 ) => {
 	const events: UiEvents = new EventEmitter();
-
-	const afterMutationCallbacks: AfterMutationCallback[] = [];
-	// Wraps mutations into a single batch, flushing `afterMutationCallbacks` at the end.
-	// Mutations can do `ui.afterMutation(cb)` to add an cb.
-	const mutate: MutateUi = (cb) => {
-		// TODO call into a store batch function so we get atomic updates (see `@preactjs/signals` as an example)
-		cb();
-		if (afterMutationCallbacks.length) {
-			for (const cb of afterMutationCallbacks) {
-				cb(); // don't await promises
-			}
-			afterMutationCallbacks.length = 0;
-		}
-	};
-	// TODO we probably want to add a way to let cbs register a key
-	// so they can override each other (e.g. so there's only ever a single navigation)
-	const afterMutation: AfterMutation = (cb: AfterMutationCallback) => {
-		afterMutationCallbacks.push(cb);
-	};
 
 	const account = writable<ClientAccount | null>(null);
 	const session = writable<ClientSession>($session);
@@ -369,8 +334,6 @@ export const toUi = (
 
 	return {
 		events,
-		mutate,
-		afterMutation,
 		components,
 		// db data
 		account,

@@ -36,7 +36,7 @@ export const Ephemera: Mutations['Ephemera'] = async ({invoke, ui: {ephemera}}) 
 	return result;
 };
 
-export const SetSession: Mutations['SetSession'] = async ({mutate, params, ui}) => {
+export const SetSession: Mutations['SetSession'] = async ({mutate, afterMutation, params, ui}) => {
 	const {
 		session,
 		account,
@@ -66,7 +66,7 @@ export const SetSession: Mutations['SetSession'] = async ({mutate, params, ui}) 
 		stashRoles(ui, guest ? [] : $session.roles, true);
 		stashAssignments(ui, guest ? [] : $session.assignments, true);
 		stashPolicies(ui, guest ? [] : $session.policies, true);
-		stashSpaces(ui, guest ? [] : $session.spaces, undefined, true);
+		stashSpaces(ui, afterMutation, guest ? [] : $session.spaces, undefined, true);
 	});
 
 	actorIdSelection.set(guest ? null : $session.sessionActors[0]?.actor_id ?? null);
@@ -105,7 +105,7 @@ export const SetSession: Mutations['SetSession'] = async ({mutate, params, ui}) 
 	freshnessByHubId.clear();
 
 	// Add entities after the other stores are ready.
-	if (!guest) stashEntities(ui, $session.directories);
+	if (!guest) stashEntities(ui, afterMutation, $session.directories);
 };
 
 // TODO This is a hack until we figure out how to handle "session actors" differently from the rest.
