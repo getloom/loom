@@ -4,7 +4,7 @@ import {z} from 'zod';
 
 import {green, red} from '$lib/server/colors';
 import {fromEnv} from '$lib/server/env';
-import {toNginxConfig} from '$lib/infra/nginxConfig';
+import {to502File as toHtmlSource, toNginxConfig} from '$lib/infra/nginxConfig';
 import {toLogSequence} from '$lib/infra/helpers';
 
 const Args = z
@@ -31,6 +31,7 @@ export const task: Task<Args> = {
 		const apiServerHost = PUBLIC_API_SERVER_PORT
 			? PUBLIC_API_SERVER_HOSTNAME + ':' + PUBLIC_API_SERVER_PORT
 			: PUBLIC_API_SERVER_HOSTNAME;
+		const PUBLIC_ADMIN_EMAIL_ADDRESS = fromEnv('PUBLIC_ADMIN_EMAIL_ADDRESS');
 		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
 		const NODE_VERSION = '20';
 		const POSTGRES_VERSION = '15';
@@ -40,8 +41,14 @@ export const task: Task<Args> = {
 
 		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt.conf';
 		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt.conf';
+		const REMOTE_NGINX_HTML_DIR = '/var/www/html';
 
-		const nginxConfig = toNginxConfig(PUBLIC_DEPLOY_SERVER_HOST, apiServerHost);
+		const nginxConfig = toNginxConfig(
+			PUBLIC_DEPLOY_SERVER_HOST,
+			apiServerHost,
+			REMOTE_NGINX_HTML_DIR,
+		);
+		const nginxHtmlSource = toHtmlSource(PUBLIC_ADMIN_EMAIL_ADDRESS);
 
 		// This file is used to detect if the setup script has already run.
 		const FELT_SETUP_STATE_FILE_PATH = '~/felt_state_setup';
@@ -113,6 +120,8 @@ export const task: Task<Args> = {
 				echo '${nginxConfig}' >> ${REMOTE_NGINX_CONFIG_PATH};
 				cat ${REMOTE_NGINX_CONFIG_PATH};
 				ln -s ${REMOTE_NGINX_CONFIG_PATH} ${REMOTE_NGINX_SYMLINK_PATH};
+				touch ${REMOTE_NGINX_HTML_DIR}/502.html;
+				echo '${nginxHtmlSource}' >> ${REMOTE_NGINX_HTML_DIR}/502.html;
 				systemctl start nginx;`,
 			//
 			//
