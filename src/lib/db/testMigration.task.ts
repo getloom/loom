@@ -1,7 +1,7 @@
 import type {Task} from '@feltjs/gro';
 import {z} from 'zod';
 
-import {MIGRATIONS_DIR} from '$lib/db/migration';
+import {MIGRATIONS_DIR, find_migrations} from '$lib/db/migration';
 
 const Args = z
 	.object({
@@ -24,11 +24,11 @@ export const task: Task<Args> = {
 		// First move the skipped migration files temporarily out of the migration dir
 		// and create the database with seeded data.
 		const TEMP_PATH = 'src/lib/db';
-		const migrationFiles = (await fs.readDir(MIGRATIONS_DIR)).sort();
-		const migrationFilesToSkip = migrationFiles.slice(-1 * count);
+		const migration_basepaths = await find_migrations();
+		const migration_basepaths_to_skip = migration_basepaths.slice(-1 * count);
 		await Promise.all(
-			migrationFilesToSkip.map((file) =>
-				fs.move(`${MIGRATIONS_DIR}/${file}`, `${TEMP_PATH}/${file}`),
+			migration_basepaths_to_skip.map((basepath) =>
+				fs.move(`${MIGRATIONS_DIR}/${basepath}`, `${TEMP_PATH}/${basepath}`),
 			),
 		);
 
@@ -41,8 +41,8 @@ export const task: Task<Args> = {
 
 		// Move the files back.
 		await Promise.all(
-			migrationFilesToSkip.map((file) =>
-				fs.move(`${TEMP_PATH}/${file}`, `${MIGRATIONS_DIR}/${file}`),
+			migration_basepaths_to_skip.map((basepath) =>
+				fs.move(`${TEMP_PATH}/${basepath}`, `${MIGRATIONS_DIR}/${basepath}`),
 			),
 		);
 

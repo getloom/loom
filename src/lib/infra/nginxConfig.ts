@@ -1,7 +1,8 @@
 import {HEARTBEAT_INTERVAL} from '$lib/ui/socket';
+import {render_ascii_felt_logo} from '$lib/util/logo';
 
 // Outputs an nginx config with configured values.
-export const toNginxConfig = (
+export const render_nginx_config = (
 	PUBLIC_DEPLOY_SERVER_HOST: string,
 	API_SERVER_HOST_PROD: string,
 	REMOTE_NGINX_502_DIR: string,
@@ -42,72 +43,34 @@ server {
 };
 
 // Outputs an simple html file for nginx to server during Felt downtime
-export const to502File = (PUBLIC_ADMIN_EMAIL_ADDRESS: string): string => {
-	return `
-  <!DOCTYPE html> 
-  <html lang="en"> 
-    <head> 
-      <meta charset="utf-8" /> 
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <style>
-        .headers {
-          display: flex; 
-          flex-direction: column; 
-          justify-content: center; 
-          align-items: center; 
-          text-align: center;
-        }
-        .heart {
-          font-family: ui-monospace, monospace;
-          text-align: center;
-          font-size: 4px;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="headers">
-        <h1>Felt is temporarily down</h1>
-        <h2>If this page persists, please contact ${PUBLIC_ADMIN_EMAIL_ADDRESS}</h2>
-      </div>
-      <pre class="heart">${toAsciiFeltLogo()}</pre>
-    </body>
-  </html>
-  `.trim();
-};
-
-//TODO would this be fun to have in felt-util?
-export const toAsciiFeltLogo = (): string => {
-	return `
-               ############                           ############              
-          ######################                 ######################         
-      #############################           ############################      
-    ##################################     ##################################   
-  #####################################  #####################################  
- ############################################################################## 
-################################################################################
-################################################################################
-####################      ######################     ###########################
-#################    ###########################    ########   #################
-################     ##  ######   ###   ########    #####     ##  ##############
-################    ## ######    ######   #####     ######    # ################
- ###############    #########    ###    #######    ######    ###################
-  ##############    #########    ##############    ######    ################## 
-   ############     ############     #########     ########      #############  
-    ########################################################################    
-      ####################################################################      
-        ################################################################        
-          ############################################################          
-             ######################################################             
-                ################################################                
-                   ##########################################                   
-                      #####################################                     
-                        ################################                        
-                           ##########################                           
-                              #####################                             
-                                ################                                
-                                  ############                                  
-                                    ########                                    
-                                      ####                                      
-                                       ##
-                                      `;
-};
+export const render_502_html = (PUBLIC_ADMIN_EMAIL_ADDRESS: string): string =>
+	`
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      .headers {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .heart {
+        font-family: ui-monospace, monospace;
+        text-align: center;
+        font-size: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="headers">
+      <h1>Felt is temporarily down</h1>
+      <h2>If this page persists, please contact ${PUBLIC_ADMIN_EMAIL_ADDRESS}</h2>
+    </div>
+    <pre class="heart">${render_ascii_felt_logo()}</pre>
+  </body>
+</html>
+`.trim();

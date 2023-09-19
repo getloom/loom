@@ -4,7 +4,7 @@ import {z} from 'zod';
 
 import {green, red} from '$lib/server/colors';
 import {fromEnv} from '$lib/server/env';
-import {to502File as toHtmlSource, toNginxConfig} from '$lib/infra/nginxConfig';
+import {render_502_html, render_nginx_config} from '$lib/infra/nginxConfig';
 import {toLogSequence} from '$lib/infra/helpers';
 
 const Args = z
@@ -43,12 +43,12 @@ export const task: Task<Args> = {
 		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt.conf';
 		const REMOTE_NGINX_HTML_DIR = '/var/www/html';
 
-		const nginxConfig = toNginxConfig(
+		const nginxConfig = render_nginx_config(
 			PUBLIC_DEPLOY_SERVER_HOST,
 			apiServerHost,
 			REMOTE_NGINX_HTML_DIR,
 		);
-		const nginxHtmlSource = toHtmlSource(PUBLIC_ADMIN_EMAIL_ADDRESS);
+		const nginxHtmlSource = render_502_html(PUBLIC_ADMIN_EMAIL_ADDRESS);
 
 		// This file is used to detect if the setup script has already run.
 		const FELT_SETUP_STATE_FILE_PATH = '~/felt_state_setup';

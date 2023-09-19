@@ -1,7 +1,7 @@
 import type {Task} from '@feltjs/gro';
 import {z} from 'zod';
 
-import {MIGRATIONS_DIR, toMigrationIndex} from '$lib/db/migration';
+import {find_migrations, to_migration_index} from '$lib/db/migration';
 
 const Args = z
 	.object({
@@ -26,20 +26,20 @@ type Args = z.infer<typeof Args>;
 export const task: Task<Args> = {
 	summary: 'runs gro check with additional checks for this repo',
 	Args,
-	run: async ({invokeTask, fs, args, log}) => {
+	run: async ({invokeTask, args, log}) => {
 		const {migrations, 'no-migrations': noMigrations, ...restArgs} = args;
 
 		// Check that migration files are properly numbered.
 		if (migrations) {
 			log.info('checking migrations');
-			const migrationFiles = (await fs.readDir(MIGRATIONS_DIR)).sort();
-			for (let i = 0; i < migrationFiles.length; i++) {
-				const migrationFile = migrationFiles[i];
-				const migrationIndex = toMigrationIndex(migrationFile);
-				if (i !== migrationIndex) {
+			const migration_basepaths = await find_migrations();
+			for (let i = 0; i < migration_basepaths.length; i++) {
+				const migration_basepath = migration_basepaths[i];
+				const migration_index = to_migration_index(migration_basepath);
+				if (i !== migration_index) {
 					throw Error(
 						'Migration named index does not match its directory index.' +
-							` Expected index '${i}' but got '${migrationIndex}' for file ${migrationFile}`,
+							` Expected index '${i}' but got '${migration_index}' for file ${migration_basepath}`,
 					);
 				}
 			}
