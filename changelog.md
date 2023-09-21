@@ -1,5 +1,10 @@
 # changelog
 
+## 0.5.0
+
+- **break**: rename package to `felt` from `felt-server`
+  ([#941](https://github.com/feltjs/felt/pull/941))
+
 ## 0.4.6
 
 - remove `Vocab` contextmenu temporarily
