@@ -1,5 +1,5 @@
 {
-  "name": "@feltjs/felt-server",
+  "name": "@feltjs/felt",
   "version": "0.4.6",
   "license": "MIT",
   "description": "a programmable platform for hobbyists and human-scale communities 💚",
@@ -8,13 +8,13 @@
     "email": "team@felt.social",
     "url": "https://felt.social"
   },
-  "homepage": "https://github.com/feltjs/felt-server",
+  "homepage": "https://github.com/feltjs/felt",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/feltjs/felt-server.git"
+    "url": "git+https://github.com/feltjs/felt.git"
   },
   "bugs": {
-    "url": "https://github.com/feltjs/felt-server/issues"
+    "url": "https://github.com/feltjs/felt/issues"
   },
   "scripts": {
     "dev": "gro dev",

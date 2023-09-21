@@ -214,7 +214,7 @@
 					<div class="text_align_center">@feltjs/felt</div>
 					<div class="links">
 						<a href="https://github.com/feltjs/felt">GitHub</a>∙<a
-							href="https://npmjs.com/@feltjs/felt-server">npm</a
+							href="https://npmjs.com/@feltjs/felt">npm</a
 						>∙<a href="https://www.felt.dev">felt.dev</a>
 					</div>
 				</div>

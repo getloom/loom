@@ -14,7 +14,7 @@ felt is a [Node.js](https://nodejs.org/) server that you can use in many differe
 - as an <strong>operator user</strong> deploying an instance to the web via servers IRL,
   doing admin and infra
 - (coming soon) as a <strong>dev user</strong> making a custom server using
-  [the library on npm](https://www.npmjs.com/package/@feltjs/felt-server)
+  [the library on npm](https://www.npmjs.com/package/@feltjs/felt)
 - as a <strong>dev user</strong> downloading or forking this repo with git,
   adding or changing anything you wish
 
@@ -38,19 +38,19 @@ and [Managing production](https://www.felt.dev/docs/guide/admin/managing-product
 The server has integrated reference docs, which we'll link after the alpha announcement.
 We also publish [our vocabulary as a JSON Schema](/src/static/schemas/vocab.json).
 
-## using `@feltjs/felt-server` as a library
+## using `@feltjs/felt` as a library
 
 > support for this coming soon - it's published to npm but not yet usable
 
-[`@feltjs/felt-server`](https://www.npmjs.com/package/@feltjs/felt-server)
+[`@feltjs/felt`](https://www.npmjs.com/package/@feltjs/felt)
 can be installed as a library on npm to make custom servers:
 
 ```bash
-npm i -D @feltjs/felt-server # see the available modules at `/src/gro.config.ts`
+npm i -D @feltjs/felt # see the available modules at `/src/gro.config.ts`
 ```
 
 Learn more about
-[using `@feltjs/felt-server` as a library](https://www.felt.dev/docs/guide/dev/library-usage).
+[using `@feltjs/felt` as a library](https://www.felt.dev/docs/guide/dev/library-usage).
 
 ## using `@feltjs/felt` as a git repo
 
