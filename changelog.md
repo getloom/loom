@@ -1,5 +1,11 @@
 # changelog
 
+## 0.6.0
+
+- **break**: switch from `@feltjs/felt-ui` to `@fuz.dev/fuz` and
+  `@feltjs/util` to `@grogarden/util`
+  ([#942](https://github.com/feltjs/felt/pull/942))
+
 ## 0.5.0
 
 - **break**: rename package to `felt` from `felt-server`
