@@ -1,10 +1,10 @@
 <script lang="ts">
 	import {slide} from 'svelte/transition';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {identity} from '@feltjs/util/function.js';
-	import type {Result} from '@feltjs/util/result.js';
+	import {identity} from '@grogarden/util/function.js';
+	import type {Result} from '@grogarden/util/result.js';
 	import {createEventDispatcher} from 'svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';
@@ -89,7 +89,8 @@
 	{#if field === 'hub_id'}
 		<button
 			type="button"
-			on:click={() => actions.OpenDialog(toDialogParams(HubPicker, {actor, done: doneWithPicker}))}
+			on:click={() =>
+				actions.OpenDialog(to_dialog_params(HubPicker, {actor, done: doneWithPicker}))}
 			class="spaced_hz"
 		>
 			pick hub

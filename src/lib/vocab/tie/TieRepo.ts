@@ -1,4 +1,4 @@
-import {Logger} from '@feltjs/util/log.js';
+import {Logger} from '@grogarden/util/log.js';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo';
 import type {Tie, TieId} from '$lib/vocab/tie/tie';

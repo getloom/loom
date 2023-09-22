@@ -25,11 +25,11 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=20.5"
+    "node": ">=20.7"
   },
   "devDependencies": {
     "@feltjs/eslint-config": "^0.3.1",
-    "@feltjs/felt-mural": "^0.2.1",
+    "@feltjs/felt-mural": "^0.2.5",
     "@feltjs/gro": "^0.80.0",
     "@fuz.dev/intersect": "^0.1.3",
     "@ryanatkn/json-schema-to-typescript": "^11.1.5",
@@ -62,8 +62,8 @@
   },
   "dependencies": {
     "@feltcoop/svelte-gettable-stores": "^0.2.0",
-    "@feltjs/felt-ui": "^0.66.1",
-    "@feltjs/util": "^0.9.0",
+    "@fuz.dev/fuz": "^0.69.1",
+    "@grogarden/util": "^0.13.1",
     "@polka/send-type": "^0.5.2",
     "ajv": "^8.12.0",
     "ajv-keywords": "^5.1.0",

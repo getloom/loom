@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams, type ContextmenuActionParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params, type ContextmenuActionParams} from '@fuz.dev/fuz/contextmenu.js';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
@@ -11,8 +11,6 @@
 	export let hub: Readable<Hub>;
 	export let showName = true;
 	export let showIcon = true;
-	// TODO this eslint hack shouldn't be necessary, introduced with Svelte 4 and seems like the TS plugin's fault, if it doesn't get solved, maybe disable the rule
-	/* eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents */
 	export let contextmenuParams: ContextmenuActionParams | null | undefined = undefined;
 	export let inline = false;
 </script>
@@ -24,7 +22,7 @@
 	{showName}
 	{showIcon}
 	contextmenuParams={contextmenuParams === undefined
-		? toContextmenuParams(HubContextmenu, {actor, hub})
+		? to_contextmenu_params(HubContextmenu, {actor, hub})
 		: contextmenuParams}
 	{inline}><slot /></Avatar
 >

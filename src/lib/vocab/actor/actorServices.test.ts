@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import {unwrap, unwrapError} from '@feltjs/util/result.js';
+import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
@@ -29,10 +29,10 @@ test__actorService('create a actor & test name collisions', async ({repos, rando
 
 	unwrap(await CreateAccountActorService.perform(toServiceRequest()));
 
-	unwrapError(await CreateAccountActorService.perform(toServiceRequest()), 'fails with same name');
+	unwrap_error(await CreateAccountActorService.perform(toServiceRequest()), 'fails with same name');
 
 	params.name = params.name.toUpperCase();
-	unwrapError(
+	unwrap_error(
 		await CreateAccountActorService.perform(toServiceRequest()),
 		'fails with different case',
 	);
@@ -144,7 +144,7 @@ test__actorService('actors cannot delete other actors', async ({repos, random}) 
 	const {actor: actor1} = await random.actor(account);
 	const {actor: actor2} = await random.actor(account);
 
-	unwrapError(
+	unwrap_error(
 		await DeleteActorService.perform({
 			...toServiceRequestFake(repos, actor1),
 			params: {actor: actor1.actor_id, actor_id: actor2.actor_id},
@@ -176,7 +176,7 @@ test__actorService('actors cannot delete actors in the admin hub', async ({repos
 	const adminActor = await loadAdminActor(repos);
 
 	assert.is(
-		unwrapError(
+		unwrap_error(
 			await DeleteActorService.perform({
 				...toServiceRequestFake(repos, actor),
 				params: {actor: actor.actor_id, actor_id: adminActor.actor_id},

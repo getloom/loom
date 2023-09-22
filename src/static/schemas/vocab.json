@@ -53,7 +53,7 @@
 			"$id": "/schemas/AccountId",
 			"type": "number",
 			"tsType": "Flavored<number, 'AccountId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"AccountSettings": {
 			"$id": "/schemas/AccountSettings",
@@ -76,7 +76,7 @@
 			"$id": "/schemas/ActorId",
 			"type": "number",
 			"tsType": "Flavored<number, 'ActorId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"Assignment": {
 			"$id": "/schemas/Assignment",
@@ -96,7 +96,7 @@
 			"$id": "/schemas/AssignmentId",
 			"type": "number",
 			"tsType": "Flavored<number, 'AssignmentId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"ClearFreshnessParams": {
 			"$id": "/schemas/ClearFreshnessParams",
@@ -481,7 +481,7 @@
 			"$id": "/schemas/EntityId",
 			"type": "number",
 			"tsType": "Flavored<number, 'EntityId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"EphemeraParams": {
 			"$id": "/schemas/EphemeraParams",
@@ -575,7 +575,7 @@
 			"$id": "/schemas/HubId",
 			"type": "number",
 			"tsType": "Flavored<number, 'HubId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"HubSettings": {
 			"$id": "/schemas/HubSettings",
@@ -655,7 +655,7 @@
 			"$id": "/schemas/OpenDialogParams",
 			"type": "object",
 			"tsType": "DialogParams",
-			"tsImport": "import type {DialogParams} from '@feltjs/felt-ui/dialog.js'"
+			"tsImport": "import type {DialogParams} from '@fuz.dev/fuz/dialog.js'"
 		},
 		"PingParams": {"$id": "/schemas/PingParams", "type": "null"},
 		"PingResponse": {"$id": "/schemas/PingResponse", "type": "null"},
@@ -678,7 +678,7 @@
 			"$id": "/schemas/PolicyId",
 			"type": "number",
 			"tsType": "Flavored<number, 'PolicyId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"PolicyName": {
 			"$id": "/schemas/PolicyName",
@@ -857,7 +857,7 @@
 			"$id": "/schemas/RoleId",
 			"type": "number",
 			"tsType": "Flavored<number, 'RoleId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"SetMobileParams": {"$id": "/schemas/SetMobileParams", "type": "boolean"},
 		"SetSessionParams": {
@@ -927,7 +927,7 @@
 			"$id": "/schemas/SpaceId",
 			"type": "number",
 			"tsType": "Flavored<number, 'SpaceId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"Tie": {
 			"$id": "/schemas/Tie",
@@ -947,7 +947,7 @@
 			"$id": "/schemas/TieId",
 			"type": "number",
 			"tsType": "Flavored<number, 'TieId'>",
-			"tsImport": "import {Flavored} from '@feltjs/util/types.js';"
+			"tsImport": "import {Flavored} from '@grogarden/util/types.js';"
 		},
 		"UpdateAccountPasswordParams": {
 			"$id": "/schemas/UpdateAccountPasswordParams",

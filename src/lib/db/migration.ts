@@ -1,4 +1,4 @@
-import {stripAfter} from '@feltjs/util/string.js';
+import {strip_after} from '@grogarden/util/string.js';
 import {readdir} from 'node:fs/promises';
 
 import type {Basepath} from '$lib/util/fs';
@@ -13,7 +13,8 @@ export const MIGRATIONS_DIR_PROD = 'dist/server/' + MIGRATIONS_PATH;
  * @param basepath - the base file name of the form `'00000-some-migration-name.ext'`
  * @returns the integer portion of the `basepath`, so `'00011-some-migration-name.ext'` returns `11`
  */
-export const to_migration_index = (basepath: Basepath): number => Number(stripAfter(basepath, '-'));
+export const to_migration_index = (basepath: Basepath): number =>
+	Number(strip_after(basepath, '-'));
 
 /**
  * Returns the sorted list of migration file basepaths in `dir`.

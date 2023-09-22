@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
@@ -72,7 +72,7 @@
 					on:click={() => {
 						if (rules) {
 							actions.OpenDialog(
-								toDialogParams(EntityEditor, {actor, entity: rules}, {layout: 'page'}),
+								to_dialog_params(EntityEditor, {actor, entity: rules}, {layout: 'page'}),
 							);
 						}
 					}}
@@ -91,7 +91,7 @@
 					on:click={() => {
 						if (norms) {
 							actions.OpenDialog(
-								toDialogParams(EntityEditor, {actor, entity: norms}, {layout: 'page'}),
+								to_dialog_params(EntityEditor, {actor, entity: norms}, {layout: 'page'}),
 							);
 						}
 					}}

@@ -1,6 +1,6 @@
 import type {Mutable, Writable} from '@feltcoop/svelte-gettable-stores';
-import {identity} from '@feltjs/util/function.js';
-import type {Json} from '@feltjs/util/json.js';
+import {identity} from '@grogarden/util/function.js';
+import type {Json} from '@grogarden/util/json.js';
 
 import {loadFromStorage, setInStorage} from '$lib/ui/localStorage';
 

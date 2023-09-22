@@ -6,7 +6,7 @@
 // https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md
 
 import {inject} from 'regexparam';
-import {Logger} from '@feltjs/util/log.js';
+import {Logger} from '@grogarden/util/log.js';
 
 import type {ApiClient} from '$lib/ui/ApiClient';
 import type {ServiceActionData} from '$lib/vocab/action/action';

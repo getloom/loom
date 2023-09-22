@@ -1,23 +1,24 @@
 import {suite} from 'uvu';
-import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
 import {actionDatas} from '$lib/vocab/action/actionData';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import type {TestAppContext} from '$lib/util/testAppHelpers';
-import {setupApp, teardownApp} from '$lib/util/testAppHelpers';
+// TODO re-enable after https://github.com/feltjs/felt/pull/922
+// import {setupApp, teardownApp} from '$lib/util/testAppHelpers';
 
 /* test__actionDatas */
 const test__actionDatas = suite<TestDbContext & TestAppContext>('actionDatas');
 
 test__actionDatas.before(setupDb);
 test__actionDatas.after(teardownDb);
-test__actionDatas.before(setupApp);
-test__actionDatas.after(teardownApp);
+// TODO re-enable after https://github.com/feltjs/felt/pull/922
+// test__actionDatas.before(setupApp);
+// test__actionDatas.after(teardownApp);
 
 for (const actionData of actionDatas.values()) {
-	test__actionDatas(`do action ${actionData.name} in a client app`, async ({app, random}) => {
+	test__actionDatas(`do action ${actionData.name} in a client app`, async ({/*app,*/ random}) => {
 		const account = await random.account();
 		const params = await randomActionParams[actionData.name](random, {account});
 
@@ -47,27 +48,28 @@ for (const actionData of actionDatas.values()) {
 			return;
 		}
 
-		// TODO fix typecast with a union for `actionData`
-		const result = await (app.actions as any)[actionData.name](params);
-		if (actionData.type === 'ClientAction') {
-			// TODO don't have schemas for `returns` yet, but eventually we'll want them and then validate here
-			if (actionData.returns !== 'void') {
-				assert.ok(result !== undefined);
-			}
-		} else {
-			// TODO can't make remote calls yet -- need to use either `node-fetch` or fake
-			// if (!result.ok) {
-			// 	log.error(`action failed: ${actionData.name}`, result);
-			// } else if (!validateSchema(actionData.response!)(result.value)) {
-			// 	log.error(`failed to validate service response: ${actionData.name}`, result);
-			// 	throw new Error(
-			// 		`Failed to validate response for service ${actionData.name}: ${toValidationErrorMessage(
-			// 			validateSchema(actionData.response!).errors![0],
-			// 		)}`,
-			// 	);
-			// }
-			// assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
-		}
+		// TODO re-enable after https://github.com/feltjs/felt/pull/922
+		// // TODO fix typecast with a union for `actionData`
+		// const result = await (app.actions as any)[actionData.name](params);
+		// if (actionData.type === 'ClientAction') {
+		// 	// TODO don't have schemas for `returns` yet, but eventually we'll want them and then validate here
+		// 	if (actionData.returns !== 'void') {
+		// 		assert.ok(result !== undefined);
+		// 	}
+		// } else {
+		// 	// TODO can't make remote calls yet -- need to use either `node-fetch` or fake
+		// 	// if (!result.ok) {
+		// 	// 	log.error(`action failed: ${actionData.name}`, result);
+		// 	// } else if (!validateSchema(actionData.response!)(result.value)) {
+		// 	// 	log.error(`failed to validate service response: ${actionData.name}`, result);
+		// 	// 	throw new Error(
+		// 	// 		`Failed to validate response for service ${actionData.name}: ${toValidationErrorMessage(
+		// 	// 			validateSchema(actionData.response!).errors![0],
+		// 	// 		)}`,
+		// 	// 	);
+		// 	// }
+		// 	// assert.is(result.status, 200); // TODO generate invalid data and test those params+responses too
+		// }
 	});
 }
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import type {ActionData} from '$lib/vocab/action/action';
 	import CreateActionForm from '$lib/ui/CreateActionForm.svelte';
@@ -28,7 +28,7 @@
 			on:click={() => {
 				if (selectedActor) {
 					actions.OpenDialog(
-						toDialogParams(
+						to_dialog_params(
 							CreateActionForm,
 							{actor: selectedActor, selectedActionData: action},
 							{layout: 'page'},

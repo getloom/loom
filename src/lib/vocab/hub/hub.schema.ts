@@ -4,7 +4,7 @@ export const HubIdSchema = {
 	$id: '/schemas/HubId',
 	type: 'number',
 	tsType: "Flavored<number, 'HubId'>",
-	tsImport: "import {Flavored} from '@feltjs/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
 } satisfies VocabSchema;
 
 export const HubSchema = {

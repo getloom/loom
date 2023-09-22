@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import {getSpaceContext} from '$lib/vocab/view/view';
@@ -18,7 +18,7 @@
 <button
 	on:click={() =>
 		actions.OpenDialog(
-			toDialogParams(CreateEntityForm, {
+			to_dialog_params(CreateEntityForm, {
 				done: () => actions.CloseDialog(),
 				entityName: 'list',
 				actor,

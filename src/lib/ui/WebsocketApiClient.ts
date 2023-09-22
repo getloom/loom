@@ -2,8 +2,8 @@
 // It implements a request/response pattern over websockets instead of fire-and-forget
 // using JSON-RPC 2.0: https://www.jsonrpc.org/specification
 
-import {toCounter} from '@feltjs/util/counter.js';
-import {Logger} from '@feltjs/util/log.js';
+import {create_counter} from '@grogarden/util/counter.js';
+import {Logger} from '@grogarden/util/log.js';
 
 import type {ApiClient} from '$lib/ui/ApiClient';
 import type {ServiceActionData} from '$lib/vocab/action/action';
@@ -15,7 +15,7 @@ import type {ApiResult} from '$lib/server/api';
 
 const log = new Logger('[ws]');
 
-const toId = toCounter();
+const toId = create_counter();
 
 // TODO doesn't handle the case where the client never hears back from the server,
 // might want a timeout on each request

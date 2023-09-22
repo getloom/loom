@@ -1,7 +1,6 @@
 <script lang="ts">
-	import {defaultThemes} from '@feltjs/felt-ui/themes.js';
-	import ColorSchemeInput from '@feltjs/felt-ui/ColorSchemeInput.svelte';
-	import ThemeInput from '@feltjs/felt-ui/ThemeInput.svelte';
+	import ColorSchemeInput from '@fuz.dev/fuz/ColorSchemeInput.svelte';
+	import ThemeInput from '@fuz.dev/fuz/ThemeInput.svelte';
 	import AccountEditor from '$lib/ui/AccountEditor.svelte';
 
 	import {getApp} from '$lib/ui/app';
@@ -16,6 +15,6 @@
 	<h2>Color Scheme</h2>
 	<ColorSchemeInput />
 	<h2>Theme</h2>
-	<ThemeInput themes={defaultThemes} />
+	<ThemeInput />
 	<AccountEditor {account} />
 </div>

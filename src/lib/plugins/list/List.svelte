@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
+	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
 
 	import ListItems from './ListItems.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -10,7 +10,7 @@
 	import type {SpaceId} from '$lib/vocab/space/space';
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 	import type {ActorId} from '$lib/vocab/actor/actor';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores/store';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers';
 
 	const {actor, space} = getSpaceContext();

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -23,14 +23,14 @@
 
 <!-- use:contextmenu.action={[
 	// TODO TieContextmenu ?
-	// toContextmenuParams(TieContextmenu, {actor, tie, sourceEntity, destEntity}),
+	// to_contextmenu_params(TieContextmenu, {actor, tie, sourceEntity, destEntity}),
 ]} -->
 <div class="tie">
 	<div class="row">{tie.type} tie &nbsp; <code>{tie.tie_id}</code></div>
 	{#if source && sourceEntity && $sourceEntity}
 		<details
 			use:contextmenu.action={[
-				toContextmenuParams(EntityContextmenu, {actor, entity: sourceEntity}),
+				to_contextmenu_params(EntityContextmenu, {actor, entity: sourceEntity}),
 			]}
 		>
 			<summary>
@@ -42,7 +42,9 @@
 	{/if}
 	{#if dest && destEntity && $destEntity}
 		<details
-			use:contextmenu.action={[toContextmenuParams(EntityContextmenu, {actor, entity: destEntity})]}
+			use:contextmenu.action={[
+				to_contextmenu_params(EntityContextmenu, {actor, entity: destEntity}),
+			]}
 		>
 			<summary>
 				dest <EntityChip entity={destEntity} /> <code>{JSON.stringify($destEntity.data)}</code>

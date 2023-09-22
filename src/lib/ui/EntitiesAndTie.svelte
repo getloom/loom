@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import type {Tie} from '$lib/vocab/tie/tie';
@@ -22,13 +22,13 @@
 <div>
 	<span
 		class="entity"
-		use:contextmenu.action={toContextmenuParams(EntityContextmenu, {actor, entity: sourceEntity})}
+		use:contextmenu.action={to_contextmenu_params(EntityContextmenu, {actor, entity: sourceEntity})}
 		><code><small>{$sourceEntity.data.type} {$sourceEntity.entity_id}</small></code></span
 	>
 	<code class="tie">{tie.type}</code>
 	<span
 		class="entity"
-		use:contextmenu.action={toContextmenuParams(EntityContextmenu, {actor, entity: destEntity})}
+		use:contextmenu.action={to_contextmenu_params(EntityContextmenu, {actor, entity: destEntity})}
 		><code><small>{$destEntity.data.type} {$destEntity.entity_id}</small></code></span
 	>
 </div>

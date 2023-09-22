@@ -6,7 +6,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
+	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
 
 	import type {Role} from '$lib/vocab/role/role';
 	import RoleDetails from '$lib/ui/RoleDetails.svelte';

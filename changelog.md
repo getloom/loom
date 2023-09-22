@@ -46,7 +46,7 @@
 
 ## 0.3.0
 
-- **break**: upgrade deps `@feltjs/felt-ui@0.64.0` and `@feltjs/util@0.9.0`
+- **break**: upgrade deps `@fuz.dev/fuz@0.64.0` and `@grogarden/util@0.9.0`
   ([#889](https://github.com/feltjs/felt/pull/889))
 
 ## 0.2.1

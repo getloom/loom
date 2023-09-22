@@ -1,5 +1,5 @@
 import {dequal} from 'dequal';
-import {Logger} from '@feltjs/util/log.js';
+import {Logger} from '@grogarden/util/log.js';
 
 import type {ServiceByName} from '$lib/vocab/action/actionTypes';
 import {

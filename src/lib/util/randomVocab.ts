@@ -1,4 +1,4 @@
-import {unwrap} from '@feltjs/util/result.js';
+import {unwrap} from '@grogarden/util/result.js';
 
 import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
@@ -29,7 +29,7 @@ import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/acco
 import {randomHue} from '$lib/util/color';
 import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
-import {randomItem} from '@feltjs/util/random.js';
+import {random_item} from '@grogarden/util/random.js';
 import {policyNames} from '$lib/vocab/policy/policyHelpers';
 import type {Repos} from '$lib/db/Repos';
 
@@ -47,7 +47,7 @@ export const randomView = (): string => '<Chat />';
 export const randomEntityData = (): EntityData => ({content: randomString()});
 export const randomTieType = randomString;
 export const randomRoleName = randomString;
-export const randomPolicyName = (): PolicyName => randomItem(policyNames);
+export const randomPolicyName = (): PolicyName => random_item(policyNames);
 export const randomAccountParams = (): SignInParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
@@ -352,7 +352,7 @@ export class RandomVocabContext {
 	}
 }
 
-// TODO better way to do this? and where does this belong? maybe @feltjs/util/string.js?
+// TODO better way to do this? and where does this belong? maybe @grogarden/util/string.js?
 export const ALPHABET = [
 	'a',
 	'b',

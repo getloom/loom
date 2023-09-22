@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import type {AsyncStatus} from '@feltjs/util/async.js';
+	import type {AsyncStatus} from '@grogarden/util/async.js';
 	import {tick} from 'svelte';
 
 	import type {Hub} from '$lib/vocab/hub/hub';
@@ -8,8 +8,8 @@
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {autofocus} from '$lib/ui/actions';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 
 	const {actions} = getApp();
 

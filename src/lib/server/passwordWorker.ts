@@ -1,6 +1,6 @@
 import {Worker, isMainThread, parentPort} from 'worker_threads';
 import {fileURLToPath} from 'url';
-import {UnreachableError} from '@feltjs/util/error.js';
+import {UnreachableError} from '@grogarden/util/error.js';
 
 import {toPasswordKey, verifyPassword, type PasswordHasher} from '$lib/server/password';
 

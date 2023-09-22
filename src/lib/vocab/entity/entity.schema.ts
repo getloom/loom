@@ -4,7 +4,7 @@ export const EntityIdSchema = {
 	$id: '/schemas/EntityId',
 	type: 'number',
 	tsType: "Flavored<number, 'EntityId'>",
-	tsImport: "import {Flavored} from '@feltjs/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
 } satisfies VocabSchema;
 
 export const EntitySchema = {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 	import {browser} from '$app/environment';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -43,7 +43,7 @@
 
 <li
 	style:--depth={depth}
-	use:contextmenu.action={toContextmenuParams(EntityContextmenu, {actor, entity})}
+	use:contextmenu.action={to_contextmenu_params(EntityContextmenu, {actor, entity})}
 >
 	<div class="item">
 		<span class="select_none"

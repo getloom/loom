@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
 
 	import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error';
 

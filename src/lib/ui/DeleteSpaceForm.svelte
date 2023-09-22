@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Space} from '$lib/vocab/space/space';

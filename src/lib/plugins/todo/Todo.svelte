@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
+	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 	import {page} from '$app/stores';
 
 	import TodoItems from '$lib/plugins/todo/TodoItems.svelte';

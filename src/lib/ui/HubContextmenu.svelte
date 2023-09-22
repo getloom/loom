@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import ContextmenuEntry from '@fuz.dev/fuz/ContextmenuEntry.svelte';
+	import ContextmenuSubmenu from '@fuz.dev/fuz/ContextmenuSubmenu.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import {getApp} from '$lib/ui/app';
@@ -31,7 +31,7 @@
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog(
-					toDialogParams(HubEditor, {actor, hub, done: () => actions.CloseDialog()}),
+					to_dialog_params(HubEditor, {actor, hub, done: () => actions.CloseDialog()}),
 				)}
 		>
 			Edit Hub
@@ -39,14 +39,14 @@
 		<ContextmenuEntry
 			run={() =>
 				actions.OpenDialog(
-					toDialogParams(CreateSpaceForm, {actor, hub, done: () => actions.CloseDialog()}),
+					to_dialog_params(CreateSpaceForm, {actor, hub, done: () => actions.CloseDialog()}),
 				)}
 		>
 			Create Space
 		</ContextmenuEntry>
 		<ContextmenuEntry
 			run={() =>
-				actions.OpenDialog(toDialogParams(ManageRolesForm, {actor, hub}, {layout: 'page'}))}
+				actions.OpenDialog(to_dialog_params(ManageRolesForm, {actor, hub}, {layout: 'page'}))}
 		>
 			Manage Roles
 		</ContextmenuEntry>
@@ -54,20 +54,20 @@
 			<ContextmenuEntry
 				run={() =>
 					actions.OpenDialog(
-						toDialogParams(InviteToHubForm, {actor, hub, done: () => actions.CloseDialog()}),
+						to_dialog_params(InviteToHubForm, {actor, hub, done: () => actions.CloseDialog()}),
 					)}
 			>
 				Invite People
 			</ContextmenuEntry>
 			<ContextmenuEntry
-				run={() => actions.OpenDialog(toDialogParams(KickFromHubForm, {actor, hub}))}
+				run={() => actions.OpenDialog(to_dialog_params(KickFromHubForm, {actor, hub}))}
 			>
 				Kick People
 			</ContextmenuEntry>
 			<ContextmenuEntry
 				run={() =>
 					actions.OpenDialog(
-						toDialogParams(LeaveHubForm, {actor, hub, done: () => actions.CloseDialog()}),
+						to_dialog_params(LeaveHubForm, {actor, hub, done: () => actions.CloseDialog()}),
 					)}
 			>
 				Leave Hub
@@ -75,7 +75,7 @@
 			<ContextmenuEntry
 				run={() =>
 					actions.OpenDialog(
-						toDialogParams(DeleteHubForm, {actor, hub, done: () => actions.CloseDialog()}),
+						to_dialog_params(DeleteHubForm, {actor, hub, done: () => actions.CloseDialog()}),
 					)}
 			>
 				Delete Hub

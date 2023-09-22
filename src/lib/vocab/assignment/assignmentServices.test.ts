@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, unwrapError} from '@feltjs/util/result.js';
+import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {
@@ -70,7 +70,7 @@ test__assignmentServices('delete an assignment in a hub', async ({repos, random}
 
 test__assignmentServices('fail to delete a personal assignment', async ({repos, random}) => {
 	const {actor, assignment} = await random.actor();
-	unwrapError(
+	unwrap_error(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestFake(repos, actor),
 			params: {
@@ -88,7 +88,7 @@ test__assignmentServices('fail to delete a hub actor assignment', async ({repos,
 	const assignment = assignments.find(
 		(a) => a.actor_id === communityActor.actor_id && a.hub_id === hub.hub_id,
 	)!;
-	unwrapError(
+	unwrap_error(
 		await DeleteAssignmentService.perform({
 			...toServiceRequestFake(repos, actor),
 			params: {

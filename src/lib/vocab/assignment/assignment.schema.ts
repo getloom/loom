@@ -4,7 +4,7 @@ export const AssignmentIdSchema = {
 	$id: '/schemas/AssignmentId',
 	type: 'number',
 	tsType: "Flavored<number, 'AssignmentId'>",
-	tsImport: "import {Flavored} from '@feltjs/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
 } satisfies VocabSchema;
 
 export const AssignmentSchema = {

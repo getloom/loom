@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FeltWindowHost from '@feltjs/felt-ui/FeltWindowHost.svelte';
+	import FeltWindowHost from '@fuz.dev/fuz/FeltWindowHost.svelte';
 	import {onDestroy} from 'svelte';
 
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';

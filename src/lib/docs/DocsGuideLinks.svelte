@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 	import {page} from '$app/stores';
-	import {stripStart, stripEnd} from '@feltjs/util/string.js';
+	import {strip_start, strip_end} from '@grogarden/util/string.js';
 
 	import DocsGuideLink from '$lib/docs/DocsGuideLink.svelte';
 	import {getDocsSettings} from '$lib/docs/docs';
@@ -13,8 +13,8 @@
 	$: ({path} = $docsSettings);
 	$: basePath = base + path;
 	$: ({pathname} = $page.url);
-	$: relativePath = stripStart(pathname, basePath);
-	$: parts = stripEnd(stripStart(relativePath, '/'), '/').split('/');
+	$: relativePath = strip_start(pathname, basePath);
+	$: parts = strip_end(strip_start(relativePath, '/'), '/').split('/');
 	$: showUnselected = parts.length <= 2;
 	$: selectedGuide = parts[0] === 'guide' ? parts[1] : undefined;
 </script>

@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import {unwrap} from '@feltjs/util/result.js';
+import {unwrap} from '@grogarden/util/result.js';
 import * as assert from 'uvu/assert';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';

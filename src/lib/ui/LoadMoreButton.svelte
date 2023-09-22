@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 	import {slide} from 'svelte/transition';
 
 	import type {QueryStore} from '$lib/util/query';

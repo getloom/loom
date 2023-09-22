@@ -1,9 +1,9 @@
 import sourcemapSupport from 'source-map-support';
-import {Logger} from '@feltjs/util/log.js';
-import type {OmitStrict} from '@feltjs/util/types.js';
-import {unwrap} from '@feltjs/util/result.js';
+import {Logger} from '@grogarden/util/log.js';
+import type {OmitStrict} from '@grogarden/util/types.js';
+import {unwrap} from '@grogarden/util/result.js';
 import * as assert from 'uvu/assert';
-import {noop} from '@feltjs/util/function.js';
+import {noop} from '@grogarden/util/function.js';
 
 import {SessionApiFake} from '$lib/session/SessionApiFake';
 import {BroadcastFake} from '$lib/server/BroadcastFake';

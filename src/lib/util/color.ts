@@ -1,4 +1,4 @@
-import {toRandomAlea} from '@feltjs/util/random-alea.js';
+import {create_random_alea} from '@grogarden/util/random_alea.js';
 
 // TODO design a color scheme instead of calculating a number of evenly spaced buckets
 export const HUE_BUCKETS = 7;
@@ -6,7 +6,7 @@ export const HUE_BUCKETS = 7;
 // TODO upstream to Felt -- need to figure out patterns with seed and swappable prng,
 // and refactor this to use a random int
 export const randomHue = (seed: any = '', buckets: number | undefined = HUE_BUCKETS): number => {
-	const v = toRandomAlea(seed)() * 360;
+	const v = create_random_alea(seed)() * 360;
 	if (buckets === undefined) {
 		return Math.round(v);
 	}

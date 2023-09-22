@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -62,7 +62,7 @@
 				type="button"
 				on:click={() =>
 					actions.OpenDialog(
-						toDialogParams(ConfirmDialog, {
+						to_dialog_params(ConfirmDialog, {
 							confirmed: () => deleteRole(role), // TODO handle displaying any error somehow, this receives the `result`
 							promptText: `Delete the role "${$role.name}"?`,
 						}),
@@ -78,7 +78,7 @@
 			<button
 				type="button"
 				on:click={() =>
-					actions.OpenDialog(toDialogParams(AssignmentManager, {role, hub}, {layout: 'page'}))}
+					actions.OpenDialog(to_dialog_params(AssignmentManager, {role, hub}, {layout: 'page'}))}
 			>
 				assign this role to an actor
 			</button>

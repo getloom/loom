@@ -7,7 +7,7 @@ import {toGenContextImports} from '@feltjs/gro/dist/gen/runGen.js';
 import {resolveRawInputPaths} from '@feltjs/gro/dist/fs/inputPath.js';
 import type {Filesystem} from '@feltjs/gro/dist/fs/filesystem.js';
 import {normalizeTypeImports} from '@feltjs/gro/dist/gen/helpers/typeImports.js';
-import {traverse} from '@feltjs/util/object.js';
+import {traverse} from '@grogarden/util/object.js';
 
 import {actionDatas} from '$lib/vocab/action/actionData';
 import {

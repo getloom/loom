@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Hub} from '$lib/vocab/hub/hub';
@@ -38,7 +38,7 @@
 	class:selected
 	class="space-info"
 	style="--hue: {hue}"
-	use:contextmenu.action={toContextmenuParams(SpaceContextmenu, {actor, hub, space})}
+	use:contextmenu.action={to_contextmenu_params(SpaceContextmenu, {actor, hub, space})}
 >
 	<div class="name"><SpaceName {space} /></div>
 	<div>

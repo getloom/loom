@@ -7,24 +7,24 @@
 </script>
 
 <script lang="ts">
-	import '@feltjs/felt-ui/style.css';
-	import '@feltjs/felt-ui/theme.css';
+	import '@fuz.dev/fuz/style.css';
+	import '@fuz.dev/fuz/theme.css';
 	import '$lib/ui/style.css';
-	import Themed from '@feltjs/felt-ui/Themed.svelte';
-	import {setDevmode} from '@feltjs/felt-ui/devmode.js';
-	import DevmodeControls from '@feltjs/felt-ui/DevmodeControls.svelte';
+	import Themed from '@fuz.dev/fuz/Themed.svelte';
+	import {set_devmode} from '@fuz.dev/fuz/devmode.js';
+	import DevmodeControls from '@fuz.dev/fuz/DevmodeControls.svelte';
 	import {page} from '$app/stores';
 	import {browser, dev} from '$app/environment';
-	import Dialogs from '@feltjs/felt-ui/Dialogs.svelte';
-	import {isEditable, swallow} from '@feltjs/util/dom.js';
+	import Dialogs from '@fuz.dev/fuz/Dialogs.svelte';
+	import {is_editable, swallow} from '@grogarden/util/dom.js';
 	import {format} from 'date-fns';
-	import Contextmenu from '@feltjs/felt-ui/Contextmenu.svelte';
+	import Contextmenu from '@fuz.dev/fuz/Contextmenu.svelte';
 	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
-	import {Logger} from '@feltjs/util/log.js';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
-	import ContextmenuLinkEntry from '@feltjs/felt-ui/ContextmenuLinkEntry.svelte';
-	import ContextmenuTextEntry from '@feltjs/felt-ui/ContextmenuTextEntry.svelte';
+	import {Logger} from '@grogarden/util/log.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import ContextmenuLinkEntry from '@fuz.dev/fuz/ContextmenuLinkEntry.svelte';
+	import ContextmenuTextEntry from '@fuz.dev/fuz/ContextmenuTextEntry.svelte';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Onboard from '$lib/ui/Onboard.svelte';
@@ -64,7 +64,7 @@
 		mediaQuery.onchange = (e) => actions.SetMobile(e.matches);
 	}
 
-	const devmode = setDevmode();
+	const devmode = set_devmode();
 	const socket = toSocketStore(
 		(message) => websocketClient.handle(message.data),
 		() => actions.Ping(),
@@ -75,7 +75,7 @@
 	// When the contextmenu has an error, display the message in a dialog.
 	const contextmenuError = ui.contextmenu.error;
 	$: if ($contextmenuError) {
-		actions.OpenDialog(toDialogParams(ErrorMessage, {text: $contextmenuError}));
+		actions.OpenDialog(to_dialog_params(ErrorMessage, {text: $contextmenuError}));
 	}
 
 	const actions = toActions(ui, mutations, (e) =>
@@ -137,7 +137,7 @@
 
 	// TODO `ShortcutKeys` or `Hotkeys` component with some interface
 	const onWindowKeydown = async (e: KeyboardEvent) => {
-		if (e.key === '`' && !e.ctrlKey && !isEditable(e.target)) {
+		if (e.key === '`' && !e.ctrlKey && !is_editable(e.target)) {
 			swallow(e);
 			actions.ToggleMainNav();
 		}
@@ -146,9 +146,9 @@
 
 <svelte:body
 	use:contextmenu.action={[
-		hub && actor ? toContextmenuParams(HubContextmenu, {actor, hub}) : null,
-		actor ? toContextmenuParams(ActingActorContextmenu, {actor}) : null,
-		toContextmenuParams(AppContextmenu, {}),
+		hub && actor ? to_contextmenu_params(HubContextmenu, {actor, hub}) : null,
+		actor ? to_contextmenu_params(ActingActorContextmenu, {actor}) : null,
+		to_contextmenu_params(AppContextmenu, {}),
 	]}
 />
 

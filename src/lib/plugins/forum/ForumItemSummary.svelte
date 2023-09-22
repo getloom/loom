@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 	import {page} from '$app/stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -38,8 +38,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 <li
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		toContextmenuParams(EntityContextmenu, {actor, entity}),
-		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
+		to_contextmenu_params(EntityContextmenu, {actor, entity}),
+		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),
 	]}
 >
 	<!-- TODO remove this override after implementing links -->

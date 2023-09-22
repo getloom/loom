@@ -1,5 +1,5 @@
-import type {Result} from '@feltjs/util/result.js';
-import {toGraphemeCount} from '@feltjs/util/string.js';
+import type {Result} from '@grogarden/util/result.js';
+import {to_grapheme_count} from '@grogarden/util/string.js';
 
 import type {Entity} from '$lib/vocab/entity/entity';
 import type {Space} from '$lib/vocab/space/space';
@@ -14,7 +14,7 @@ export const parseSpaceIcon = (value: string): Result<{value: string}, {message:
 	if (!value) {
 		return {ok: false, message: ICON_MISSING_ERROR};
 	}
-	if (toGraphemeCount(value) > ICON_MAX_LENGTH) {
+	if (to_grapheme_count(value) > ICON_MAX_LENGTH) {
 		return {ok: false, message: ICON_TOO_LONG_ERROR};
 	}
 	return {ok: true, value};

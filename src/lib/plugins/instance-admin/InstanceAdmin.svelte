@@ -3,7 +3,7 @@
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import {parseJson, serializeJson} from '$lib/util/json';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
 	import {ADMIN_HUB_ID} from '$lib/util/constants';
 
 	const {actor, hub} = getSpaceContext();

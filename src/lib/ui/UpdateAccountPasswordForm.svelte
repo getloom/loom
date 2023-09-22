@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {tick} from 'svelte';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 
 	import {autofocus} from '$lib/ui/actions';
 	import {getApp} from '$lib/ui/app';

@@ -1,4 +1,4 @@
-import type {AsyncStatus} from '@feltjs/util/async.js';
+import type {AsyncStatus} from '@grogarden/util/async.js';
 import {
 	mutable,
 	writable,

@@ -1,6 +1,6 @@
-import {randomBool} from '@feltjs/util/random.js';
+import {random_boolean} from '@grogarden/util/random.js';
 import {SvelteComponent} from 'svelte';
-import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 import {
 	randomEntityData,
@@ -55,7 +55,7 @@ export const randomActionParams: RandomActionParams = {
 	},
 	UpdateAccountSettings: async () => {
 		return {
-			settings: {darkmode: randomBool()},
+			settings: {darkmode: random_boolean()},
 		};
 	},
 	UpdateAccountPassword: async (random, {account} = {}) => {
@@ -276,10 +276,10 @@ export const randomActionParams: RandomActionParams = {
 		return undefined;
 	},
 	SetMobile: async () => {
-		return randomBool();
+		return random_boolean();
 	},
 	OpenDialog: async () => {
-		return toDialogParams(class SomeComponent extends SvelteComponent {}, {});
+		return to_dialog_params(class SomeComponent extends SvelteComponent {}, {});
 	},
 	CloseDialog: async () => {
 		return undefined;

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@feltjs/felt-ui/ContextmenuSubmenu.svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import ContextmenuEntry from '@fuz.dev/fuz/ContextmenuEntry.svelte';
+	import ContextmenuSubmenu from '@fuz.dev/fuz/ContextmenuSubmenu.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import SessionActorContextmenuEntry from '$lib/ui/SessionActorContextmenuEntry.svelte';
@@ -17,13 +17,13 @@
 </script>
 
 {#if $session.guest}
-	<ContextmenuEntry run={() => actions.OpenDialog(toDialogParams(Settings, {}))}>
+	<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(Settings, {}))}>
 		<svelte:fragment slot="icon">
 			<UnicodeIcon icon="$" />
 		</svelte:fragment>
 		Settings
 	</ContextmenuEntry>
-	<ContextmenuEntry run={() => actions.OpenDialog(toDialogParams(About, {}))}>
+	<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(About, {}))}>
 		<svelte:fragment slot="icon">
 			<UnicodeIcon icon="?" />
 		</svelte:fragment>
@@ -42,7 +42,7 @@
 			<ContextmenuEntry
 				run={() =>
 					actions.OpenDialog(
-						toDialogParams(CreateAccountActorForm, {done: () => actions.CloseDialog()}),
+						to_dialog_params(CreateAccountActorForm, {done: () => actions.CloseDialog()}),
 					)}
 			>
 				<svelte:fragment slot="icon">
@@ -50,13 +50,13 @@
 				</svelte:fragment>
 				Create Actor
 			</ContextmenuEntry>
-			<ContextmenuEntry run={() => actions.OpenDialog(toDialogParams(Settings, {}))}>
+			<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(Settings, {}))}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="$" />
 				</svelte:fragment>
 				Settings
 			</ContextmenuEntry>
-			<ContextmenuEntry run={() => actions.OpenDialog(toDialogParams(About, {}))}>
+			<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(About, {}))}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="?" />
 				</svelte:fragment>

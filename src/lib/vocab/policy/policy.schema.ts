@@ -6,7 +6,7 @@ export const PolicyIdSchema = {
 	$id: '/schemas/PolicyId',
 	type: 'number',
 	tsType: "Flavored<number, 'PolicyId'>",
-	tsImport: "import {Flavored} from '@feltjs/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
 } satisfies VocabSchema;
 
 export const PolicySchema = {

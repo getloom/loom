@@ -98,7 +98,7 @@ export const OpenDialog: ClientActionData = {
 		$id: '/schemas/OpenDialogParams',
 		type: 'object',
 		tsType: 'DialogParams',
-		tsImport: "import type {DialogParams} from '@feltjs/felt-ui/dialog.js'",
+		tsImport: "import type {DialogParams} from '@fuz.dev/fuz/dialog.js'",
 	},
 	returns: 'void',
 };

@@ -1,5 +1,5 @@
 import type {Task} from '@feltjs/gro';
-import {spawnProcess} from '@feltjs/util/process.js';
+import {spawnProcess} from '@grogarden/util/process.js';
 import {ENV_FILE_DEV, ENV_FILE_PROD, syncEnvGitHash, initEnv, reloadEnv} from '$lib/server/env';
 
 export const task: Task = {

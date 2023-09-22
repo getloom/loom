@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 	import {slide} from 'svelte/transition';
 	import {page} from '$app/stores';
-	import {swallow} from '@feltjs/util/dom.js';
+	import {swallow} from '@grogarden/util/dom.js';
 
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -114,8 +114,8 @@
 <li
 	style="--hue: {hue}"
 	use:contextmenu.action={[
-		toContextmenuParams(EntityContextmenu, {actor, entity}),
-		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
+		to_contextmenu_params(EntityContextmenu, {actor, entity}),
+		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),
 	]}
 	class:selected
 	role="treeitem"

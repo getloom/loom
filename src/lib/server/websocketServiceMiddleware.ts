@@ -1,5 +1,5 @@
 import type {WebSocket, Data as WebSocketMessageData} from 'ws';
-import {Logger} from '@feltjs/util/log.js';
+import {Logger} from '@grogarden/util/log.js';
 
 import {red, blue, gray} from '$lib/server/colors';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc';

@@ -9,7 +9,7 @@ import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Tie} from '$lib/vocab/tie/tie';
-import type {DialogParams} from '@feltjs/felt-ui/dialog.js';
+import type {DialogParams} from '@fuz.dev/fuz/dialog.js';
 import type {
 	ClientSession,
 	ClientAccountSession,

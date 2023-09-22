@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
+	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 	import {page} from '$app/stores';
 
 	import ForumItems from '$lib/plugins/forum/ForumItems.svelte';
@@ -71,7 +71,7 @@
 			<button
 				on:click={() =>
 					actions.OpenDialog(
-						toDialogParams(CreateEntityForm, {
+						to_dialog_params(CreateEntityForm, {
 							done: () => actions.CloseDialog(),
 							entityName: 'post',
 							fields: {name: true, content: true},

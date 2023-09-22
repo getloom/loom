@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 
 	import type {Space} from '$lib/vocab/space/space';
 	import type {Hub} from '$lib/vocab/hub/hub';
@@ -19,7 +19,7 @@
 	export let selectedSpace: Readable<Space> | null;
 </script>
 
-<nav class="space-nav" use:contextmenu.action={toContextmenuParams(HubContextmenu, {actor, hub})}>
+<nav class="space-nav" use:contextmenu.action={to_contextmenu_params(HubContextmenu, {actor, hub})}>
 	{#each spaces as space (space)}
 		<SpaceNavItem {actor} {hub} {space} selected={space === selectedSpace} />
 	{/each}

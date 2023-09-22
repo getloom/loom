@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@feltjs/felt-ui/PendingAnimation.svelte';
+	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
 
 	import BoardItems from '$lib/plugins/board/BoardItems.svelte';
 	import {getApp} from '$lib/ui/app';

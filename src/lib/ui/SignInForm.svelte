@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {tick} from 'svelte';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {swallow} from '@feltjs/util/dom.js';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import {swallow} from '@grogarden/util/dom.js';
 	import {dev} from '$app/environment';
 	import {PUBLIC_ADMIN_ICON} from '$env/static/public';
 

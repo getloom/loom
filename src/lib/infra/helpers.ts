@@ -1,4 +1,4 @@
-import {toCounter} from '@feltjs/util/counter.js';
+import {create_counter} from '@grogarden/util/counter.js';
 
 import {cyan} from '$lib/server/colors';
 
@@ -7,7 +7,7 @@ export interface LogSequence {
 }
 
 export const toLogSequence = (): LogSequence => {
-	const counter = toCounter();
+	const counter = create_counter();
 	return (text, color = cyan) => `echo;echo;echo '${color(`${counter()}. ${text}`)}';\n`;
 };
 

@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, unwrapError} from '@feltjs/util/result.js';
+import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {randomHubParams} from '$lib/util/randomVocab';
@@ -34,7 +34,7 @@ test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 	//TODO hack to allow for authorization; remove on init default impl
 	await repos.policy.create(personalHub.settings.defaultRoleId, 'delete_hub');
 	assert.is(
-		unwrapError(
+		unwrap_error(
 			await DeleteHubService.perform({
 				...toServiceRequestFake(repos, actor),
 				params: {actor: actor.actor_id, hub_id: actor.hub_id},
@@ -47,7 +47,7 @@ test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 test_hubServices('disallow deleting admin hub', async ({repos}) => {
 	const adminActor = await loadAdminActor(repos);
 	assert.is(
-		unwrapError(
+		unwrap_error(
 			await DeleteHubService.perform({
 				...toServiceRequestFake(repos, adminActor),
 				params: {actor: adminActor.actor_id, hub_id: ADMIN_HUB_ID},
@@ -86,14 +86,14 @@ test_hubServices('disallow duplicate hub names', async ({repos, random}) => {
 
 	params.template.name = params.template.name.toLowerCase();
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
+		unwrap_error(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
 			.status,
 		409,
 	);
 
 	params.template.name = params.template.name.toUpperCase();
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
+		unwrap_error(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
 			.status,
 		409,
 	);
@@ -105,7 +105,7 @@ test_hubServices('disallow reserved hub names', async ({repos, random}) => {
 	const params = randomHubParams(actor.actor_id);
 	params.template.name = 'docs';
 	assert.is(
-		unwrapError(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
+		unwrap_error(await CreateHubService.perform({...toServiceRequestFake(repos, actor), params}))
 			.status,
 		409,
 	);
@@ -193,7 +193,7 @@ test_hubServices(
 			instance: {...settings.instance, disableCreateHub: true},
 		});
 
-		unwrapError(
+		unwrap_error(
 			await CreateHubService.perform({
 				...toServiceRequestFake(repos, actor),
 				params: randomHubParams(actor.actor_id),

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ContextmenuEntry from '@feltjs/felt-ui/ContextmenuEntry.svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import ContextmenuEntry from '@fuz.dev/fuz/ContextmenuEntry.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
@@ -23,11 +23,11 @@
 
 	const run = (): void => {
 		if (schema) {
-			actions.OpenDialog(toDialogParams(SchemaInfo, {schema}));
+			actions.OpenDialog(to_dialog_params(SchemaInfo, {schema}));
 		} else if (action) {
-			actions.OpenDialog(toDialogParams(ActionInfo, {action}));
+			actions.OpenDialog(to_dialog_params(ActionInfo, {action}));
 		} else if (view) {
-			actions.OpenDialog(toDialogParams(ViewInfo, {view}));
+			actions.OpenDialog(to_dialog_params(ViewInfo, {view}));
 		}
 	};
 </script>

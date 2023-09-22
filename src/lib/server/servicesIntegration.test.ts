@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@feltjs/util/result.js';
+import {unwrap} from '@grogarden/util/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';

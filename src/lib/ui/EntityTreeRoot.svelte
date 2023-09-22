@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 
 	import EntityTree from '$lib/ui/EntityTree.svelte';
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
@@ -24,7 +24,7 @@
 	$: entitiesCountMinusOne = $entities.value.length - 1;
 </script>
 
-<div use:contextmenu.action={toContextmenuParams(EntityContextmenu, {actor, entity})}>
+<div use:contextmenu.action={to_contextmenu_params(EntityContextmenu, {actor, entity})}>
 	<div class="row">
 		<span class="select_none">┏</span>
 		<svelte:component this={itemComponent} {entity} />

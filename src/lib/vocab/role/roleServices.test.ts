@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import {unwrap, unwrapError} from '@feltjs/util/result.js';
+import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {toServiceRequestFake} from '$lib/util/testHelpers';
@@ -16,7 +16,7 @@ test_roleServices('unable to delete default roles in communites', async ({repos,
 	const {hub} = await random.hub(actor);
 	const {role: secondRole} = await random.role(hub, actor);
 
-	unwrapError(
+	unwrap_error(
 		await DeleteRoleService.perform({
 			...toServiceRequestFake(repos, actor),
 			params: {actor: actor.actor_id, role_id: hub.settings.defaultRoleId},

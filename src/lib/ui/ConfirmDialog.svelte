@@ -1,6 +1,6 @@
 <script lang="ts">
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import {onMount} from 'svelte';

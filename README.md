@@ -58,7 +58,7 @@ To work directly on the codebase,
 see [Getting started](https://www.felt.dev/docs/guide/admin/getting-started), then:
 
 ```bash
-# node >=20.5
+# node >=20.7
 npm i
 
 # start SvelteKit/Vite and the Node server
@@ -96,7 +96,7 @@ Open source software including
 [Ley](https://github.com/lukeed/ley) ∙
 [tsm](https://github.com/lukeed/tsm) ∙
 [Gro](https://github.com/feltjs/gro) ∙
-[felt-ui](https://github.com/feltjs/felt-ui) ∙
+[Fuz](https://github.com/fuz-dev/fuz) ∙
 [ESLint](https://github.com/eslint/eslint) ∙
 [Prettier](https://github.com/prettier/prettier)
 & [more](package.json)

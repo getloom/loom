@@ -1,9 +1,9 @@
 <script lang="ts">
 	import {getSpaceContext} from '$lib/vocab/view/view';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import type {AsyncStatus} from '@feltjs/util/async.js';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
+	import type {AsyncStatus} from '@grogarden/util/async.js';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions';

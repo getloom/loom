@@ -1,5 +1,5 @@
-import type {Logger} from '@feltjs/util/log.js';
-import type {Result} from '@feltjs/util/result.js';
+import type {Logger} from '@grogarden/util/log.js';
+import type {Result} from '@grogarden/util/result.js';
 
 import type {ServiceActionData} from '$lib/vocab/action/action';
 import type {ISessionApi} from '$lib/session/SessionApi';

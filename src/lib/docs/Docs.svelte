@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {page} from '$app/stores';
 	import {base} from '$app/paths';
-	import {stripStart} from '@feltjs/util/string.js';
+	import {strip_start} from '@grogarden/util/string.js';
 	import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
 
 	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
@@ -37,7 +37,7 @@
 	// TODO improve how this component interacts with SvelteKit routing --
 	// it's designed like this so it can be imported as a library component and keep the user's routing simple
 
-	$: pathname = stripStart($page.url.pathname, base);
+	$: pathname = strip_start($page.url.pathname, base);
 
 	// TODO display source code links to views and actions and such
 
@@ -78,7 +78,7 @@
 	const toGuideSlug = (p: string, path: string): string | null => {
 		const guidePrefix = path + '/guide/';
 		if (!p.startsWith(guidePrefix)) return null;
-		return stripStart(p, guidePrefix);
+		return strip_start(p, guidePrefix);
 	};
 	$: guideSlug = toGuideSlug(pathname, path);
 	$: selectedGuideItem = guideSlug ? guideItemsBySlug.get(guideSlug) : null;
@@ -89,7 +89,7 @@
 <div class="wrapper">
 	<!-- TODO extract an accessible menu component, see PRS
 	https://github.com/feltjs/felt/pull/362
-	and https://github.com/feltjs/felt-ui/pull/197 -->
+	and https://github.com/fuz.dev/fuz/pull/197 -->
 	<div class="sidebar padded_xl width_sm">
 		<slot name="header"><header>@feltjs/felt</header></slot>
 		<nav>

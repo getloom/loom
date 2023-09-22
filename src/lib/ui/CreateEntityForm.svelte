@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type {AsyncStatus} from '@feltjs/util/async.js';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import type {AsyncStatus} from '@grogarden/util/async.js';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions';

@@ -1,5 +1,5 @@
-import type {Flavored} from '@feltjs/util/types';
+import type {Flavored} from '@grogarden/util/types.js';
 
-// TODO probably upstream to `@feltjs/util`
+// TODO probably upstream to `@grogarden/util`
 
 export type Basepath = Flavored<string, 'Basepath'>;

@@ -1,6 +1,6 @@
 import polka from 'polka';
 import {createServer} from 'http';
-import {Logger} from '@feltjs/util/log.js';
+import {Logger} from '@grogarden/util/log.js';
 import {format} from 'date-fns';
 import {WebSocketServer} from 'ws';
 

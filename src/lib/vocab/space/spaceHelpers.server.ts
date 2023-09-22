@@ -2,7 +2,7 @@ import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/vocab/action/act
 import type {Space} from '$lib/vocab/space/space';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import {ApiError} from '$lib/server/api';
-import {Logger} from '@feltjs/util/log.js';
+import {Logger} from '@grogarden/util/log.js';
 import {blue, gray} from '$lib/server/colors';
 import type {Repos} from '$lib/db/Repos';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';

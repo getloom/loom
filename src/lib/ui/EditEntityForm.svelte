@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -75,8 +75,8 @@
 <form
 	{...attrs}
 	use:contextmenu.action={[
-		toContextmenuParams(EntityContextmenu, {actor, entity}),
-		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
+		to_contextmenu_params(EntityContextmenu, {actor, entity}),
+		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),
 	]}
 >
 	<header class="prose" style:--icon_size="var(--icon_size_sm)">
@@ -126,7 +126,7 @@
 				title="erase entity"
 				on:click={() =>
 					actions.OpenDialog(
-						toDialogParams(ConfirmDialog, {
+						to_dialog_params(ConfirmDialog, {
 							confirmed: eraseEntity,
 							promptText: 'Erase this entity? This cannot be reversed.',
 							confirmText: 'erase entity',
@@ -139,7 +139,7 @@
 			title="delete entity"
 			on:click={() =>
 				actions.OpenDialog(
-					toDialogParams(ConfirmDialog, {
+					to_dialog_params(ConfirmDialog, {
 						confirmed: deleteEntity,
 						promptText: 'Delete this entity? This cannot be reversed.',
 						confirmText: 'delete entity',

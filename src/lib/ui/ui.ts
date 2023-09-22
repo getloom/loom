@@ -7,12 +7,12 @@ import {
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent, type ComponentType} from 'svelte';
-import type {DialogParams} from '@feltjs/felt-ui/dialog.js';
+import type {DialogParams} from '@fuz.dev/fuz/dialog.js';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
-import {createContextmenu, type ContextmenuStore} from '@feltjs/felt-ui/contextmenu.js';
-import type ContextmenuLinkEntry from '@feltjs/felt-ui/ContextmenuLinkEntry.svelte';
-import type ContextmenuTextEntry from '@feltjs/felt-ui/ContextmenuTextEntry.svelte';
+import {createContextmenu, type ContextmenuStore} from '@fuz.dev/fuz/contextmenu.js';
+import type ContextmenuLinkEntry from '@fuz.dev/fuz/ContextmenuLinkEntry.svelte';
+import type ContextmenuTextEntry from '@fuz.dev/fuz/ContextmenuTextEntry.svelte';
 
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
@@ -324,8 +324,8 @@ export const toUi = (
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
 	const contextmenu = createContextmenu({
-		linkComponent: contextmenuLinkComponent,
-		textComponent: contextmenuTextComponent,
+		link_component: contextmenuLinkComponent,
+		text_component: contextmenuTextComponent,
 		layout,
 	});
 	const dialogs = writable<DialogParams[]>([]);

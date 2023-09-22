@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
 
 	const {actions} = getApp();
 
@@ -42,7 +42,7 @@
 		attrs={{class: 'icon_button plain'}}
 		on:click={() =>
 			actions.OpenDialog(
-				toDialogParams(ConfirmDialog, {
+				to_dialog_params(ConfirmDialog, {
 					confirmed: kickActorFromHub,
 					promptText: `Kick ${$communityActor.name} from ${$hub.name}? This cannot be reversed.`,
 					confirmText: 'kick them',

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide, scale} from 'svelte/transition';
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 	import {browser} from '$app/environment';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
@@ -77,8 +77,8 @@
 	in:slide
 	out:scale
 	use:contextmenu.action={[
-		toContextmenuParams(EntityContextmenu, {actor, entity}),
-		toContextmenuParams(ActorContextmenu, {actor: authorActor}),
+		to_contextmenu_params(EntityContextmenu, {actor, entity}),
+		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),
 	]}
 >
 	<div class="item prose">

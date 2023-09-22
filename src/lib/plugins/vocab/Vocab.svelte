@@ -35,7 +35,7 @@
 </script>
 
 <!-- TODO contextmenu is currently disabled because `VocabContextmenu` loads the entire vocab for the root payload
-	use:contextmenu.action={toContextmenuParams(VocabContextmenu, {name})}
+	use:contextmenu.action={to_contextmenu_params(VocabContextmenu, {name})}
 -->
 <a href="{base}{path}/vocab#{name}" class:selected={finalSelected}
 	>{#if plain}<slot>{name}</slot>{:else}<code><slot>{name}</slot></code>{/if}</a

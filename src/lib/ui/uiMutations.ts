@@ -1,5 +1,5 @@
-import {Logger} from '@feltjs/util/log.js';
-import {round} from '@feltjs/util/maths.js';
+import {Logger} from '@grogarden/util/log.js';
+import {round} from '@grogarden/util/maths.js';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 import {browser} from '$app/environment';

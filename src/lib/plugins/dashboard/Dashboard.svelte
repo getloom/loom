@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {toContextmenuParams} from '@feltjs/felt-ui/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
 
 	import Luggage from '$lib/ui/Luggage.svelte';
 	import MainNav from '$lib/ui/MainNav.svelte';
@@ -29,8 +29,8 @@
 <main
 	class="dashboard"
 	use:contextmenu.action={[
-		actor && hub && space ? toContextmenuParams(SpaceContextmenu, {actor, hub, space}) : null,
-		hub && actor ? toContextmenuParams(HubContextmenu, {actor, hub}) : null,
+		actor && hub && space ? to_contextmenu_params(SpaceContextmenu, {actor, hub, space}) : null,
+		hub && actor ? to_contextmenu_params(HubContextmenu, {actor, hub}) : null,
 	]}
 >
 	{#if $expandMarquee}

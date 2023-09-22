@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {slide} from 'svelte/transition';
-	import Alert from '@feltjs/felt-ui/Alert.svelte';
-	import {identity} from '@feltjs/util/function.js';
-	import type {Result} from '@feltjs/util/result.js';
-	import PendingButton from '@feltjs/felt-ui/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz/Alert.svelte';
+	import {identity} from '@grogarden/util/function.js';
+	import type {Result} from '@grogarden/util/result.js';
+	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
-	import {toDialogParams} from '@feltjs/felt-ui/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 
 	import {autofocus} from '$lib/ui/actions';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
@@ -43,7 +43,7 @@
 
 	const reset = () => {
 		actions.OpenDialog(
-			toDialogParams(ConfirmDialog, {
+			to_dialog_params(ConfirmDialog, {
 				confirmed: () => {
 					fieldValue = serialize(value);
 				},
@@ -86,7 +86,7 @@
 
 	const deleteField = () => {
 		actions.OpenDialog(
-			toDialogParams(ConfirmDialog, {
+			to_dialog_params(ConfirmDialog, {
 				confirmed: async () => {
 					fieldValue = undefined;
 					await save();

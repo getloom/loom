@@ -30,7 +30,7 @@ git config --global core.pager 'less -x1,5'`}
 
 	<h3>2. NodeJS</h3>
 	<p>
-		<code>@feltjs/felt</code> requires <a href="https://nodejs.org/">NodeJS</a> >=20.5. Our
+		<code>@feltjs/felt</code> requires <a href="https://nodejs.org/">NodeJS</a> >=20.7. Our
 		recommended Node version manager is
 		<a href="https://github.com/Schniz/fnm"><code>fnm</code></a>, which is roughly equivalent to
 		<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> with improved performance.
