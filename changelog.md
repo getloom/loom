@@ -1,5 +1,9 @@
 # changelog
 
+## 0.7.0
+
+- **break**: switch from `@fuz.dev/intersect` to `@fuz.dev/svelte-intersect`
+
 ## 0.6.0
 
 - **break**: switch from `@feltjs/felt-ui` to `@fuz.dev/fuz` and
