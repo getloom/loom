@@ -3,6 +3,7 @@
 ## 0.7.0
 
 - **break**: switch from `@fuz.dev/intersect` to `@fuz.dev/svelte-intersect`
+  ([commit](https://github.com/feltjs/felt/commit/3a1ce786ed08f0a0c182a41d04b41c9848c0e7d3))
 
 ## 0.6.0
 
