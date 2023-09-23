@@ -2,7 +2,7 @@
 	import type {VocabSchema} from '@feltjs/gro';
 	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
 	import {base} from '$app/paths';
-	import {intersect} from '@fuz.dev/intersect';
+	import {intersect} from '@fuz.dev/svelte-intersect';
 
 	import type {ViewTemplate} from '$lib/vocab/view/view';
 	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
