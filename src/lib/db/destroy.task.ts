@@ -1,4 +1,4 @@
-import type {Task} from '@feltjs/gro';
+import type {Task} from '@grogarden/gro';
 
 import {obtainDb} from '$lib/db/obtainDb';
 import {defaultPostgresOptions} from '$lib/db/postgres';

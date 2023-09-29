@@ -1,11 +1,11 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 export const RoleIdSchema = {
 	$id: '/schemas/RoleId',
 	type: 'number',
 	tsType: "Flavored<number, 'RoleId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const RoleSchema = {
 	$id: '/schemas/Role',
@@ -25,4 +25,4 @@ export const RoleSchema = {
 	},
 	required: ['role_id', 'hub_id', 'name', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;

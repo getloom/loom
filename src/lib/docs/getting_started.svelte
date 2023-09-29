@@ -72,12 +72,12 @@ flowchart
 	<h3>Developing</h3>
 
 	<p>
-		In most cases <a href="https://github.com/feltjs/gro/blob/main/src/lib/docs/dev.md"
+		In most cases <a href="https://github.com/grogarden/gro/blob/main/src/lib/docs/dev.md"
 			><code>gro dev</code></a
 		>
 		is the main command you'll need to run during development. It starts both SvelteKit and an API server,
 		and when files change the system should automatically update or restart as needed. See
-		<a href="https://github.com/feltjs/gro">Gro's docs</a> for more.
+		<a href="https://github.com/grogarden/gro">Gro's docs</a> for more.
 	</p>
 
 	<h3>Manual dev processes</h3>
@@ -102,7 +102,7 @@ flowchart
 	<h4><code>gro gen</code></h4>
 
 	<p>
-		Gro provides the <a href="https://github.com/feltjs/gro/blob/main/src/lib/docs/gen.md"
+		Gro provides the <a href="https://github.com/grogarden/gro/blob/main/src/lib/docs/gen.md"
 			><code>gro gen</code></a
 		>
 		task to make it easier to derive data and other files from single sources of truth. It currently
@@ -126,7 +126,7 @@ flowchart
 	<h3>Building</h3>
 
 	<p>
-		The <a href="https://github.com/feltjs/gro/blob/main/src/lib/docs/build.md"
+		The <a href="https://github.com/grogarden/gro/blob/main/src/lib/docs/build.md"
 			><code>gro build</code></a
 		>
 		command outputs artifacts to the gitignored <code>/dist</code> directory, which can then
@@ -134,23 +134,30 @@ flowchart
 		<code>gro build</code>
 		wraps
 		<code>svelte-kit build</code>, and it also produces directories for each of
-		<a href="https://github.com/feltjs/gro/blob/main/src/lib/docs/config.md"
+		<a href="https://github.com/grogarden/gro/blob/main/src/lib/docs/config.md"
 			>Gro's configured production builds</a
 		>. See
-		<a href="https://github.com/feltjs/gro/blob/main/src/lib/docs/build.md">Gro's build docs</a> for
+		<a href="https://github.com/grogarden/gro/blob/main/src/lib/docs/build.md">Gro's build docs</a> for
 		more.
 	</p>
 
 	<h3>Deploying</h3>
-	<p>
-		To deploy a self-hosted instance to production, see the instructions at
-		<a href="{base}{path}/guide/admin/deploying-production"
-			><code>guide/admin/deploying-production</code></a
-		>.
-	</p>
-	<p>
-		To manage a production instance, see <a href="{base}{path}/guide/admin/managing-production"
-			><code>guide/admin/managing-production</code></a
-		>.
-	</p>
+	<ul>
+		<li>
+			<a href="{base}{path}/guide/admin/setup-production"
+				><code>guide/admin/setup-production</code></a
+			>
+		</li>
+		<li>
+			<a href="{base}{path}/guide/admin/deploying-production"
+				><code>guide/admin/deploying-production</code></a
+			>
+		</li>
+		<li>
+			<a href="{base}{path}/guide/admin/managing-production"
+				><code>guide/admin/managing-production</code></a
+			>
+		</li>
+		<li></li>
+	</ul>
 </div>

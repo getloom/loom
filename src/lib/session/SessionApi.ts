@@ -19,7 +19,10 @@ export interface ISessionApi {
  * while the service processes a request.
  */
 export class SessionApi implements ISessionApi {
-	constructor(private readonly req: ApiServerRequest, private readonly res: ServerResponse) {}
+	constructor(
+		private readonly req: ApiServerRequest,
+		private readonly res: ServerResponse,
+	) {}
 
 	async signIn(account_id: AccountId): Promise<void> {
 		log.debug('logging in', account_id);

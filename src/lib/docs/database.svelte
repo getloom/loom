@@ -60,7 +60,7 @@ create database felt; # notice the semicolon
 		Migration files are located in the
 		<a href="https://github.com/feltjs/felt/tree/main/src/lib/db/migrations">migrations</a>
 		directory. To create a new migration file use the <code>ley new</code> command (see Ley's docs
-		for more details) Use <code>gro lib/db/migrate</code> to run migrations.
+		for more details) Use <code>gro db/migrate</code> to run migrations.
 	</p>
 	<h3>Creating backups</h3>
 	<p>Using the following command one can quickly take backups of the <code>felt</code> database.</p>
@@ -70,26 +70,26 @@ create database felt; # notice the semicolon
 	<h3>Database tasks</h3>
 
 	<p>
-		Felt has a number of <a href="https://github.com/feltjs/gro">Gro</a> tasks for managing the
-		database. To view all of them, run <code>gro lib/db</code>.
+		Felt has a number of <a href="https://github.com/grogarden/gro">Gro</a> tasks for managing the
+		database. To view all of them, run <code>gro db</code>.
 	</p>
 
 	<h4>lib/db/create</h4>
 
 	<p>
-		The task <code>gro lib/db/create</code> creates the database from scratch. It destroys any existing
-		schema and data, runs all migrations (TODO), and seeds the database.
+		The task <code>gro db/create</code> creates the database from scratch. It destroys any existing schema
+		and data, runs all migrations (TODO), and seeds the database.
 	</p>
 	<CodeExample
-		code={`gro lib/db/create
-gro lib/db/create --no-seed # creates the database with no initial data`}
+		code={`gro db/create
+gro db/create --no-seed # creates the database with no initial data`}
 	/>
 
 	<p>The tasks it composes can be run individually:</p>
 
 	<ul>
-		<li><code>gro lib/db/destroy</code></li>
-		<li><code>gro lib/db/migrate</code></li>
-		<li><code>gro lib/db/seed</code></li>
+		<li><code>gro db/destroy</code></li>
+		<li><code>gro db/migrate</code></li>
+		<li><code>gro db/seed</code></li>
 	</ul>
 </div>

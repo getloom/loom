@@ -1,9 +1,10 @@
-import sourcemapSupport from 'source-map-support';
 import {Logger} from '@grogarden/util/log.js';
 import type {OmitStrict} from '@grogarden/util/types.js';
 import {unwrap} from '@grogarden/util/result.js';
 import * as assert from 'uvu/assert';
 import {noop} from '@grogarden/util/function.js';
+// TODO followup
+// import sourcemapSupport from 'source-map-support';
 
 import {SessionApiFake} from '$lib/session/SessionApiFake';
 import {BroadcastFake} from '$lib/server/BroadcastFake';
@@ -24,7 +25,8 @@ import type {HubId} from '$lib/vocab/hub/hub';
 import {InviteToHubService} from '$lib/vocab/hub/hubServices';
 import type {InviteToHubResponse} from '$lib/vocab/action/actionTypes';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
-import {toPasswordKey, type PasswordHasher, verifyPassword} from '$lib/server/password';
+import {toPasswordKey, verifyPassword} from '$lib/server/password';
+import type {PasswordHasher} from '$lib/server/password_hasher';
 
 export const log = new Logger('[test]');
 export const logError = new Logger('[test]', undefined, {...Logger, level: 'off'});
@@ -34,9 +36,10 @@ let installed = false;
 export const installSourceMaps = (): void => {
 	if (installed) return;
 	installed = true;
-	sourcemapSupport.install({
-		handleUncaughtExceptions: false,
-	});
+	// TODO followup
+	// sourcemapSupport.install({
+	// 	handleUncaughtExceptions: false,
+	// });
 };
 
 export interface ToServiceRequestFake {

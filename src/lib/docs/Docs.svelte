@@ -89,7 +89,7 @@
 <div class="wrapper">
 	<!-- TODO extract an accessible menu component, see PRS
 	https://github.com/feltjs/felt/pull/362
-	and https://github.com/fuz.dev/fuz/pull/197 -->
+	and https://github.com/fuz-dev/fuz/pull/197 -->
 	<div class="sidebar padded_xl width_sm">
 		<slot name="header"><header>@feltjs/felt</header></slot>
 		<nav>

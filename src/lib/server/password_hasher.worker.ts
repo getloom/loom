@@ -2,11 +2,12 @@ import {Worker, isMainThread, parentPort} from 'worker_threads';
 import {fileURLToPath} from 'url';
 import {UnreachableError} from '@grogarden/util/error.js';
 
-import {toPasswordKey, verifyPassword, type PasswordHasher} from '$lib/server/password';
+import {toPasswordKey, verifyPassword} from '$lib/server/password';
+import type {PasswordHasher} from '$lib/server/password_hasher';
 
 // TODO make more generic and reusable, with configurable pooling
 
-const workerPath = fileURLToPath(import.meta.url);
+const worker_path = fileURLToPath(import.meta.url);
 
 type WorkerInputMessage =
 	| ExitInputMessage
@@ -61,8 +62,8 @@ interface PendingCall {
  * Use `terminate` to free the resource.
  * @returns `toPasswordKey` with a stateful worker
  */
-export const createPasswordHasherWorker = (): PasswordHasher => {
-	let worker: Worker | null = new Worker(workerPath);
+export const create_password_hasher_worker = (): PasswordHasher => {
+	let worker: Worker | null = new Worker(worker_path);
 	let _id = 0;
 
 	// Track a map of pending calls by id.
@@ -142,7 +143,7 @@ export const createPasswordHasherWorker = (): PasswordHasher => {
 	return hasher;
 };
 
-const passwordWorker = (): void => {
+const main = (): void => {
 	const onMessage = (m: WorkerInputMessage) => {
 		switch (m.method) {
 			case 'exit': {
@@ -171,5 +172,5 @@ const passwordWorker = (): void => {
 };
 
 if (!isMainThread) {
-	passwordWorker();
+	main();
 }

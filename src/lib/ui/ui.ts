@@ -6,13 +6,11 @@ import {
 	mutable,
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
-import {setContext, getContext, type SvelteComponent, type ComponentType} from 'svelte';
+import {setContext, getContext, type SvelteComponent} from 'svelte';
 import type {DialogParams} from '@fuz.dev/fuz/dialog.js';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
 import {createContextmenu, type ContextmenuStore} from '@fuz.dev/fuz/contextmenu.js';
-import type ContextmenuLinkEntry from '@fuz.dev/fuz/ContextmenuLinkEntry.svelte';
-import type ContextmenuTextEntry from '@fuz.dev/fuz/ContextmenuTextEntry.svelte';
 
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
@@ -106,13 +104,11 @@ export interface Ui {
 
 export type WritableUi = ReturnType<typeof toUi>;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const toUi = (
 	$session: ClientSession,
 	initialMobile: boolean,
 	components: {[key: string]: typeof SvelteComponent<any>},
-	contextmenuLinkComponent: ComponentType<ContextmenuLinkEntry>,
-	contextmenuTextComponent: ComponentType<ContextmenuTextEntry>,
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 ) => {
 	const events: UiEvents = new EventEmitter();
 
@@ -323,11 +319,7 @@ export const toUi = (
 	const mainLayoutView = writable('<Dashboard />'); // TODO source this from the hub/space context (so routes can customize the UI)
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
-	const contextmenu = createContextmenu({
-		link_component: contextmenuLinkComponent,
-		text_component: contextmenuTextComponent,
-		layout,
-	});
+	const contextmenu = createContextmenu({layout});
 	const dialogs = writable<DialogParams[]>([]);
 	const viewBySpace = mutable(new WeakMap<Readable<Space>, string>());
 	const ephemera = writable<EphemeraResponse | null>(null);

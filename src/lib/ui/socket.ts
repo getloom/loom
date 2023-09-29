@@ -1,5 +1,4 @@
 import type {AsyncStatus} from '@grogarden/util/async.js';
-
 import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@grogarden/util/log.js';
 
@@ -70,12 +69,15 @@ export const toSocketStore = (
 	let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
 	const queueReconnect = () => {
 		reconnectCount++;
-		reconnectTimeout = setTimeout(() => {
-			reconnectTimeout = null;
-			const currentReconnectCount = reconnectCount; // preserve count because `connect` calls `disconnect`
-			store.connect(store.get().url!);
-			reconnectCount = currentReconnectCount;
-		}, Math.min(RECONNECT_DELAY_MAX, RECONNECT_DELAY * reconnectCount));
+		reconnectTimeout = setTimeout(
+			() => {
+				reconnectTimeout = null;
+				const currentReconnectCount = reconnectCount; // preserve count because `connect` calls `disconnect`
+				store.connect(store.get().url!);
+				reconnectCount = currentReconnectCount;
+			},
+			Math.min(RECONNECT_DELAY_MAX, RECONNECT_DELAY * reconnectCount),
+		);
 	};
 	const cancelReconnect = () => {
 		reconnectCount = 0;

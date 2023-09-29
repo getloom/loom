@@ -1,11 +1,11 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 export const ActorIdSchema = {
 	$id: '/schemas/ActorId',
 	type: 'number',
 	tsType: "Flavored<number, 'ActorId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const ActorRecordSchema = {
 	$id: '/schemas/ActorRecord',
@@ -25,7 +25,7 @@ export const ActorRecordSchema = {
 	},
 	required: ['actor_id', 'account_id', 'hub_id', 'type', 'name', 'icon', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const ActorSchema = {
 	$id: '/schemas/Actor',
@@ -38,12 +38,12 @@ export const ActorSchema = {
 		{$ref: '/schemas/HubActor'},
 		{$ref: '/schemas/GhostActor'},
 	],
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const ActionActorSchema = {
 	$id: '/schemas/ActionActor',
 	anyOf: [{$ref: '/schemas/AccountActor'}, {$ref: '/schemas/HubActor'}],
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const AccountActorSchema = {
 	$id: '/schemas/AccountActor',
@@ -65,7 +65,7 @@ export const AccountActorSchema = {
 	},
 	required: ['actor_id', 'account_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const HubActorSchema = {
 	$id: '/schemas/HubActor',
@@ -87,7 +87,7 @@ export const HubActorSchema = {
 	},
 	required: ['actor_id', 'hub_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const GhostActorSchema = {
 	$id: '/schemas/GhostActor',
@@ -107,7 +107,7 @@ export const GhostActorSchema = {
 	},
 	required: ['actor_id', 'type', 'name', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 // TODO this will need to be split into a type union to support hub "group" actors,
 // and it's related to `hub_id` being overloaded for account/hub actor types.
@@ -128,7 +128,7 @@ export const PublicActorSchema = {
 	},
 	required: ['actor_id', 'type', 'name', 'created'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const ClientActorSchema = {
 	$id: '/schemas/ClientActor',
@@ -137,4 +137,4 @@ export const ClientActorSchema = {
 		including the user's <Vocab name="AccountActors" /> and all other hub actors as <Vocab name="PublicActors" />.
 	`,
 	anyOf: [{$ref: '/schemas/AccountActor'}, {$ref: '/schemas/PublicActor'}],
-} satisfies VocabSchema;
+} satisfies JsonSchema;

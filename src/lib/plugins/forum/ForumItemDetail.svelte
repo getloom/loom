@@ -26,12 +26,15 @@
 
 	$: destTies = lookupTies(tiesBySourceId, $entity.entity_id);
 
-	$: items = Array.from($destTies.value).reduce((acc, tie) => {
-		if (tie.type === 'HasItem') {
-			acc.push(entityById.get(tie.dest_id)!);
-		}
-		return acc;
-	}, [] as Array<Readable<Entity>>);
+	$: items = Array.from($destTies.value).reduce(
+		(acc, tie) => {
+			if (tie.type === 'HasItem') {
+				acc.push(entityById.get(tie.dest_id)!);
+			}
+			return acc;
+		},
+		[] as Array<Readable<Entity>>,
+	);
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 

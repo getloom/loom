@@ -3,16 +3,14 @@ import type {Logger} from '@grogarden/util/log.js';
 import {spawn} from '@grogarden/util/process.js';
 
 import {defaultPostgresOptions} from '$lib/db/postgres';
-import {MIGRATIONS_DIR, MIGRATIONS_DIR_PROD} from '$lib/db/migration';
+import {MIGRATIONS_DIR_DEV, MIGRATIONS_DIR_PROD} from '$lib/db/migration';
 
-// Note: this requires the dependency `tsm` in development but not production
 const BACKUP_FILE = 'backup.sql';
 
 export const migrate = async (prod: boolean, log: Logger): Promise<void> => {
-	const dir = prod ? MIGRATIONS_DIR_PROD : MIGRATIONS_DIR;
+	const dir = prod ? MIGRATIONS_DIR_PROD : MIGRATIONS_DIR_DEV;
 
 	const status = await ley.status({
-		require: prod ? undefined : 'tsm',
 		dir,
 		driver: 'postgres',
 		config: defaultPostgresOptions as any,
@@ -39,7 +37,6 @@ export const migrate = async (prod: boolean, log: Logger): Promise<void> => {
 	log.info('running migrations: ', status);
 
 	const successes = await ley.up({
-		require: prod ? undefined : 'tsm',
 		dir,
 		driver: 'postgres',
 		config: defaultPostgresOptions as any,

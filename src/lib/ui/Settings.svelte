@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ColorSchemeInput from '@fuz.dev/fuz/ColorSchemeInput.svelte';
 	import ThemeInput from '@fuz.dev/fuz/ThemeInput.svelte';
-	import AccountEditor from '$lib/ui/AccountEditor.svelte';
 
+	import AccountEditor from '$lib/ui/AccountEditor.svelte';
 	import {getApp} from '$lib/ui/app';
 
 	const {

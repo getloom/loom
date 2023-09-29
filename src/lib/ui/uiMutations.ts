@@ -78,7 +78,7 @@ export const SetSession: Mutations['SetSession'] = async ({mutate, afterMutation
 		// instead of using derived stores like `sessionActors` and `spacesByHubId`.
 		hubIdSelectionByActorId.swap(
 			// TODO first try to load this from localStorage
-			new Map(guest ? null : $session.sessionActors.map(($p) => [$p.actor_id, $p.hub_id!])),
+			new Map(guest ? null : $session.sessionActors.map(($p) => [$p.actor_id, $p.hub_id])),
 		);
 		spaceIdSelectionByHubId.swap(
 			//TODO lookup space by hub_id+path (see this comment in multiple places)

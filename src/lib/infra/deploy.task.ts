@@ -1,75 +1,92 @@
-import type {Task} from '@feltjs/gro';
+import type {Task} from '@grogarden/gro';
 import {spawn} from '@grogarden/util/process.js';
-import {DIST_DIRNAME} from '@feltjs/gro/dist/paths.js';
+import {SVELTEKIT_BUILD_DIRNAME, SERVER_DIST_PATH} from '@grogarden/gro/paths.js';
 import {unwrap} from '@grogarden/util/result.js';
+import {exists} from '@grogarden/gro/exists.js';
+import {mkdir} from 'node:fs/promises';
 
-import {ENV_FILE_BASE, ENV_FILE_PROD, fromEnv} from '$lib/server/env';
-import {DEPLOYED_SCRIPT_PATH} from '$lib/infra/helpers';
+import {ENV_FILE_BASE, ENV_FILE_PROD, load_envs} from '$lib/server/env';
+
+const ARTIFACT_PREFIX = 'app';
+const ARTIFACTS_DIR = 'dist_app/';
+const DEPLOY_DIRNAME_PREFIX = 'deploy';
+const CURRENT_DEPLOY_DIRNAME = 'current_app_deploy';
 
 export const task: Task = {
-	summary: 'deploy felt to production',
-	production: true,
-	run: async ({log, invokeTask}) => {
+	summary: 'deploy or redeploy to production, after setup',
+	run: async ({log, invoke_task}) => {
 		//build the actual tar deployment artifact
-		await invokeTask('build');
+		await invoke_task('build');
 
-		const DEPLOY_IP = fromEnv('DEPLOY_IP');
-		const DEPLOY_USER = fromEnv('DEPLOY_USER');
-		const deployLogin = `${DEPLOY_USER}@${DEPLOY_IP}`;
+		const {DEPLOY_IP, DEPLOY_USER} = await load_envs(false);
+
+		const deploy_login = `${DEPLOY_USER}@${DEPLOY_IP}`;
+
+		const files: string[] = [
+			SERVER_DIST_PATH,
+			SVELTEKIT_BUILD_DIRNAME,
+			'package.json',
+			'package-lock.json',
+		];
+
+		// TODO ensure_dir helper? or omit the `exists` check?
+		if (!(await exists(ARTIFACTS_DIR))) {
+			await mkdir(ARTIFACTS_DIR, {recursive: true});
+		}
 
 		const timestamp = Date.now();
-		const artifactName = `felt_server_${timestamp}`;
-		const artifactFilename = artifactName + '.tar';
-		const currentDeploy = `current_felt_server_deploy`;
-		log.debug(`Working with artifact: ${artifactName}`);
-		unwrap(
-			await spawn('tar', [
-				'-cf',
-				`${artifactFilename}`,
-				DIST_DIRNAME,
-				'package.json',
-				'package-lock.json',
-			]),
-		);
-		log.debug('tar finished');
+		const artifact_name = `${ARTIFACT_PREFIX}_${timestamp}`;
+		const artifact_filename = artifact_name + '.tar';
+		const artifact_local_path = ARTIFACTS_DIR + artifact_filename;
+		log.debug(`creating artifact ${artifact_local_path}`);
+		unwrap(await spawn('tar', ['-cf', artifact_local_path, ...files]));
 		//clean up any previous deploy directories (except the current one)
 		log.debug('cleaning up previous deployments on server');
 		await spawn('ssh', [
-			deployLogin,
-			`ls -t | grep deploy_felt_server_[0-9] | tail -n +2 | xargs rm -r --`,
+			deploy_login,
+			`ls -t | grep ${DEPLOY_DIRNAME_PREFIX}_${ARTIFACT_PREFIX}_[0-9] | tail -n +2 | xargs -r rm -r --`,
 		]);
 
 		log.debug('copying the tar');
-		await spawn('scp', [`${artifactFilename}`, `${deployLogin}:${artifactFilename}`]);
+		await spawn('scp', [artifact_local_path, `${deploy_login}:${artifact_filename}`]);
 		//unpack & start server
 		log.debug('setting up the server deployment');
-		const deployDirname = `deploy_${artifactName}`;
+		const deploy_dirname = `${DEPLOY_DIRNAME_PREFIX}_${artifact_name}`;
 		await spawn('ssh', [
-			deployLogin,
-			`mkdir ${deployDirname};
-			mv ${artifactFilename} ${deployDirname}/;
-			cd ${deployDirname};
-			tar -xf ${artifactFilename};
-			echo 'stopping old deploy'
-			pm2 stop default
-			echo 'npm ci';
-			npm ci;
-			cd ~;
-			ln -sfn ${deployDirname}/ ${currentDeploy};`,
+			deploy_login,
+			// TODO try to refactor to run `pm2 stop default` after this right before `pm2 start` below, was causing `npm ci` to fail
+			`
+				mkdir ${deploy_dirname};
+				mv ${artifact_filename} ${deploy_dirname}/;
+				cd ${deploy_dirname};
+				tar -xf ${artifact_filename};
+				echo 'stopping old deploy';
+				pm2 stop default;
+				echo 'npm ci';
+				npm ci;
+				cd ~;
+				ln -sfn ${deploy_dirname}/ ${CURRENT_DEPLOY_DIRNAME};
+			`,
 		]);
 
 		log.debug('copying secrets');
-		await spawn('scp', [ENV_FILE_BASE, `${deployLogin}:${currentDeploy}/${ENV_FILE_BASE}`]);
-		await spawn('scp', [ENV_FILE_PROD, `${deployLogin}:${currentDeploy}/${ENV_FILE_PROD}`]);
-
-		log.debug('running post-deploy script');
-		await spawn('ssh', [
-			deployLogin,
-			`cd ${deployDirname};
-			node dist/server/${DEPLOYED_SCRIPT_PATH}.js;`,
+		await spawn('scp', [
+			ENV_FILE_BASE,
+			`${deploy_login}:${CURRENT_DEPLOY_DIRNAME}/${ENV_FILE_BASE}`,
+		]);
+		await spawn('scp', [
+			ENV_FILE_PROD,
+			`${deploy_login}:${CURRENT_DEPLOY_DIRNAME}/${ENV_FILE_PROD}`,
 		]);
 
-		log.debug('starting new server deployment');
-		await spawn('ssh', [deployLogin, `pm2 start npm -- run start --prefix ~/${currentDeploy}`]);
+		log.debug('running after_deploy script');
+		await spawn('ssh', [
+			deploy_login,
+			`
+				cd ${deploy_dirname};
+				npm run after_deploy;
+				pm2 start npm -- run start --prefix ~/${CURRENT_DEPLOY_DIRNAME};
+			`,
+		]);
 	},
 };

@@ -12,8 +12,6 @@ import type {Repos} from '$lib/db/Repos';
 
 const log = new Logger(gray('[') + blue('Broadcast') + gray(']'));
 
-const dev = process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
-
 export interface IBroadcastApi {
 	createHub: (hub_id: HubId, account_id: AccountId, actor_id: ActorId) => Promise<void>;
 	deleteHub: (hub_id: HubId) => Promise<void>;
@@ -270,7 +268,7 @@ export const checkBroadcastAudience = (
 ): void => {
 	if (service.action.broadcast && broadcastAudience === undefined) {
 		const message = 'expected a broadcast property on the result of ' + service.action.name;
-		if (dev) {
+		if (import.meta.env.DEV) {
 			throw Error(message);
 		} else {
 			log.warn(message);

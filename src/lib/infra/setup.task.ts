@@ -1,11 +1,11 @@
-import type {Task} from '@feltjs/gro';
+import type {Task} from '@grogarden/gro';
 import {spawn} from '@grogarden/util/process.js';
 import {z} from 'zod';
 
-import {green, red} from '$lib/server/colors';
-import {fromEnv} from '$lib/server/env';
+import {green} from '$lib/server/colors';
 import {render_502_html, render_nginx_config} from '$lib/infra/nginxConfig';
-import {toLogSequence} from '$lib/infra/helpers';
+import {create_log_sequence} from '$lib/infra/helpers';
+import {load_envs} from '$lib/server/env';
 
 const Args = z
 	.object({
@@ -18,26 +18,29 @@ type Args = z.infer<typeof Args>;
 
 export const task: Task<Args> = {
 	summary: 'setup a clean server to prepare for a felt deploy',
-	production: true,
 	Args,
-	run: async ({log, args: {dry}, invokeTask}) => {
-		await invokeTask('lib/infra/syncEnvGitHash');
+	run: async ({log, args: {dry}, invoke_task}) => {
+		await invoke_task('infra/syncEnvGitHash');
 
-		const DEPLOY_IP = fromEnv('DEPLOY_IP');
-		const DEPLOY_USER = fromEnv('DEPLOY_USER');
-		const PUBLIC_DEPLOY_SERVER_HOST = fromEnv('PUBLIC_DEPLOY_SERVER_HOST');
-		const PUBLIC_API_SERVER_HOSTNAME = fromEnv('PUBLIC_API_SERVER_HOSTNAME');
-		const PUBLIC_API_SERVER_PORT = fromEnv('PUBLIC_API_SERVER_PORT');
-		const apiServerHost = PUBLIC_API_SERVER_PORT
-			? PUBLIC_API_SERVER_HOSTNAME + ':' + PUBLIC_API_SERVER_PORT
-			: PUBLIC_API_SERVER_HOSTNAME;
-		const PUBLIC_ADMIN_EMAIL_ADDRESS = fromEnv('PUBLIC_ADMIN_EMAIL_ADDRESS');
-		const CERTBOT_EMAIL_ADDRESS = fromEnv('CERTBOT_EMAIL_ADDRESS');
+		const {
+			PUBLIC_DEPLOY_SERVER_HOST,
+			PUBLIC_ADMIN_EMAIL,
+			PUBLIC_SERVER_HOSTNAME,
+			PUBLIC_SERVER_PORT,
+			DEPLOY_IP,
+			DEPLOY_USER,
+			CERTBOT_EMAIL,
+			PGDATABASE,
+			PGUSER,
+			PGPASSWORD,
+		} = await load_envs(false);
+
+		const server_host = PUBLIC_SERVER_PORT
+			? PUBLIC_SERVER_HOSTNAME + ':' + PUBLIC_SERVER_PORT
+			: PUBLIC_SERVER_HOSTNAME;
+
 		const NODE_VERSION = '20';
 		const POSTGRES_VERSION = '15';
-		const PGDATABASE = fromEnv('PGDATABASE');
-		const PGUSER = fromEnv('PGUSER');
-		const PGPASSWORD = fromEnv('PGPASSWORD');
 
 		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt.conf';
 		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt.conf';
@@ -45,17 +48,17 @@ export const task: Task<Args> = {
 
 		const nginxConfig = render_nginx_config(
 			PUBLIC_DEPLOY_SERVER_HOST,
-			apiServerHost,
+			server_host,
 			REMOTE_NGINX_HTML_DIR,
 		);
-		const nginxHtmlSource = render_502_html(PUBLIC_ADMIN_EMAIL_ADDRESS);
+		const nginxHtmlSource = render_502_html(PUBLIC_ADMIN_EMAIL);
 
 		// This file is used to detect if the setup script has already run.
-		const FELT_SETUP_STATE_FILE_PATH = '~/felt_state_setup';
+		const APP_SETUP_STATE_FILE_PATH = '~/felt_state_setup';
 
 		const deployLogin = `${DEPLOY_USER}@${DEPLOY_IP}`;
 
-		const logSequence = toLogSequence();
+		const logSequence = create_log_sequence();
 
 		//TODO set up initial user accounts & directory system
 
@@ -69,12 +72,12 @@ export const task: Task<Args> = {
 				// 	-u — throw an error if nonexistent variables are accessed
 				'set -eu;\n\n' +
 				// Ensure the setup task has not already run on this instance:
-				logSequence(`Checking setup state at ${FELT_SETUP_STATE_FILE_PATH}`) +
-				`if [ -f ${FELT_SETUP_STATE_FILE_PATH} ]; then
-					echo '${red('Felt setup task has already run on this instance, exiting without changes')}'
+				logSequence(`Checking setup state at ${APP_SETUP_STATE_FILE_PATH}`) +
+				`if [ -f ${APP_SETUP_STATE_FILE_PATH} ]; then
+					echo '${green('✓ app setup has already run on this instance, exiting without changes')}'
 					exit
 				fi;
-				touch ${FELT_SETUP_STATE_FILE_PATH};`,
+				touch ${APP_SETUP_STATE_FILE_PATH};`,
 			//
 			//
 			// Update and upgrade apt
@@ -109,7 +112,7 @@ export const task: Task<Args> = {
 				echo "export NODE_ENV=production" >> ~/.profile;
 				echo "export NODE_ENV=production
 				  $(cat ~/.bashrc)" > ~/.bashrc;
-				npm i -g pm2 @feltjs/gro;`,
+				npm i -g pm2 @grogarden/gro;`,
 			//
 			//
 			// Install nginx:
@@ -128,7 +131,7 @@ export const task: Task<Args> = {
 			// Install certbot for HTTPS:
 			logSequence('Enabling HTTPS with cerbot and nginx...') +
 				`apt install -y certbot python3-certbot-nginx;
-				certbot --nginx --non-interactive --agree-tos --email ${CERTBOT_EMAIL_ADDRESS} -d ${PUBLIC_DEPLOY_SERVER_HOST};
+				certbot --nginx --non-interactive --agree-tos --email ${CERTBOT_EMAIL} -d ${PUBLIC_DEPLOY_SERVER_HOST};
 				systemctl restart nginx.service;`,
 			//
 			//
@@ -145,7 +148,8 @@ export const task: Task<Args> = {
 			logSequence('Creating Postgres database...') +
 				`sudo -i -u postgres psql -c "CREATE DATABASE ${PGDATABASE};";` +
 				`sudo -i -u postgres psql -c "ALTER USER ${PGUSER} WITH PASSWORD '${PGPASSWORD}';";` +
-				// All done!
+				// All done!!
+				+`echo 'done' >> ${APP_SETUP_STATE_FILE_PATH};` +
 				logSequence(`Success! Server is now setup for deployment.`),
 		];
 		const script = steps.map((s) => s + '\n\n').join('');

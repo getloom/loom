@@ -1,7 +1,10 @@
 // TODO extract to felt
 
 export interface Action<TParameters = undefined> {
-	(node: HTMLElement, parameters?: TParameters):
+	(
+		node: HTMLElement,
+		parameters?: TParameters,
+	):
 		| undefined
 		| {
 				update?: (parameters?: TParameters) => void;

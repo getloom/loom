@@ -4,7 +4,7 @@ import {render_ascii_felt_logo} from '$lib/util/logo';
 // Outputs an nginx config with configured values.
 export const render_nginx_config = (
 	PUBLIC_DEPLOY_SERVER_HOST: string,
-	API_SERVER_HOST_PROD: string,
+	production_server_host: string,
 	REMOTE_NGINX_502_DIR: string,
 ): string => {
 	const websocketTimeout = `${HEARTBEAT_INTERVAL / 1000 + 60}s`; // 60 second padding
@@ -14,7 +14,7 @@ server {
   server_name ${PUBLIC_DEPLOY_SERVER_HOST};
 
   location /api {
-    proxy_pass http://${API_SERVER_HOST_PROD};
+    proxy_pass http://${production_server_host};
   }
 
   location /ws {
@@ -23,7 +23,7 @@ server {
     proxy_http_version 1.1;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $host;
-    proxy_pass http://${API_SERVER_HOST_PROD};
+    proxy_pass http://${production_server_host};
     proxy_read_timeout ${websocketTimeout};
     proxy_send_timeout ${websocketTimeout};
   }
@@ -34,7 +34,7 @@ server {
   }
 
   location / {
-    proxy_pass http://${API_SERVER_HOST_PROD};
+    proxy_pass http://${production_server_host};
   }
 
 }
@@ -43,7 +43,7 @@ server {
 };
 
 // Outputs an simple html file for nginx to server during Felt downtime
-export const render_502_html = (PUBLIC_ADMIN_EMAIL_ADDRESS: string): string =>
+export const render_502_html = (PUBLIC_ADMIN_EMAIL: string): string =>
 	`
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +68,7 @@ export const render_502_html = (PUBLIC_ADMIN_EMAIL_ADDRESS: string): string =>
   <body>
     <div class="headers">
       <h1>Felt is temporarily down</h1>
-      <h2>If this page persists, please contact ${PUBLIC_ADMIN_EMAIL_ADDRESS}</h2>
+      <h2>If this page persists, please contact ${PUBLIC_ADMIN_EMAIL}</h2>
     </div>
     <pre class="heart">${render_ascii_felt_logo()}</pre>
   </body>

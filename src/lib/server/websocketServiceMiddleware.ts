@@ -92,7 +92,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 					toServiceRequest(
 						server.db.repos,
 						params,
-						account_id!,
+						account_id,
 						actor!,
 						session,
 						server.broadcast,
@@ -119,7 +119,7 @@ export const toWebsocketServiceMiddleware: (server: ApiServer) => WebsocketMiddl
 		}
 
 		// TODO maybe do this in production too
-		if (process.env.NODE_ENV !== 'production') {
+		if (import.meta.env.DEV) {
 			const validateResponse = validateSchema(service.action.response);
 			if (!validateResponse(result.value)) {
 				log.error(

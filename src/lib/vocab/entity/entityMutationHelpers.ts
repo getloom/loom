@@ -40,7 +40,7 @@ export const stashEntities = (
 			if ($entity.entity_id === $selectedSpace?.directory_id && $entity.path !== prevPath) {
 				void goto(
 					toHubUrl(
-						hubById.get($selectedSpace!.hub_id)!.get().name,
+						hubById.get($selectedSpace.hub_id)!.get().name,
 						$entity.path,
 						get(page).url.search,
 					),
@@ -56,7 +56,7 @@ export const stashEntities = (
 		//TODO this check is not type safe, we should fix that
 		if (isDirectory($entity)) {
 			// TODO maybe invert this and listen for `'stashed_entities'` instead of calling this helper directly?
-			afterMutation(() => updateDirectoryFreshness(ui, $entity as Directory));
+			afterMutation(() => updateDirectoryFreshness(ui, $entity));
 		}
 	}
 

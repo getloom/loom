@@ -1,11 +1,9 @@
 import cookie from 'cookie';
 import cookieSignature from 'cookie-signature';
 import type {ServerResponse} from 'http';
+import {COOKIE_KEYS} from '$env/static/private';
 
-import {fromEnv} from '$lib/server/env';
 import type {AccountId} from '$lib/vocab/account/account';
-
-const dev = process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
 
 const MAX_AGE = 60 * 60 * 24 * 7 * 5; // 5 weeks
 const RESET_EXPIRY = new Date('Tue, 06 Apr 2021 15:36:00 GMT');
@@ -13,7 +11,7 @@ const RESET_EXPIRY = new Date('Tue, 06 Apr 2021 15:36:00 GMT');
 export const COOKIE_SESSION_NAME = 'session_id';
 
 // TODO make this a param? where should it live?
-const keys = fromEnv('COOKIE_KEYS').split('__');
+const keys = COOKIE_KEYS.split('__');
 
 export interface CookieSessionRequest {
 	account_id?: AccountId;
@@ -67,7 +65,7 @@ const serializeCookie = (value: string, options: cookie.CookieSerializeOptions =
 	const finalOptions: cookie.CookieSerializeOptions = {
 		path: '/',
 		httpOnly: true,
-		secure: !dev,
+		secure: import.meta.env.PROD,
 		sameSite: 'lax',
 		...defaults,
 	};

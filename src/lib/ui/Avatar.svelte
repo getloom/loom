@@ -3,7 +3,7 @@
 
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import {randomHue} from '$lib/util/color';
-	import {GUEST_ACTOR_NAME} from '$lib/vocab/actor/constants';
+	import {GUEST_ACTOR_NAME} from '$lib/util/constants';
 	import type {EntityType} from '$lib/vocab/entity/entityHelpers';
 	import {getApp} from '$lib/ui/app';
 

@@ -29,7 +29,7 @@ import {ALPHABET} from '$lib/util/randomVocab';
 import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$lib/ui/templates';
 import type {Directory} from '$lib/vocab/entity/entityData';
 import type {Repos} from '$lib/db/Repos';
-import {createPasswordHasher} from '$lib/server/password';
+import {create_password_hasher} from '$lib/server/password_hasher';
 import {ADMIN_HUB_ID} from '$lib/util/constants';
 import type {AuthorizedServiceRequest} from '$lib/server/service';
 
@@ -41,7 +41,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const {sql, repos} = db;
 
 	// resource setup
-	const passwordHasher = createPasswordHasher();
+	const passwordHasher = create_password_hasher();
 
 	log.debug('adding initial dataset to database');
 
@@ -99,7 +99,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		}
 	}
 
-	const mainActorCreator = actors[0] as AccountActor;
+	const mainActorCreator = actors[0];
 	const toMainAccountServiceRequest = () => toServiceRequestFake(repos, mainActorCreator);
 	const otherActors = actors.slice(1);
 	const nextActor = to_next(actors);

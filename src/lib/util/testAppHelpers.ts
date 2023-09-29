@@ -6,19 +6,16 @@ import {toHttpApiClient} from '$lib/ui/HttpApiClient';
 import type {ActionParamsByName, ActionResponseByName} from '$lib/vocab/action/actionTypes';
 import {toActions} from '$lib/vocab/action/actions';
 import {findHttpService} from '$lib/ui/services';
-import {installSourceMaps} from '$lib/util/testHelpers';
 import {mutations} from '$lib/ui/mutations';
 import {deserialize, deserializers} from '$lib/util/deserialize';
 import {createQuery} from '$lib/util/query';
-
-installSourceMaps();
 
 export interface TestAppContext {
 	app: App;
 }
 
 export const setupApp = async (context: TestAppContext): Promise<void> => {
-	const ui = toUi({guest: true}, false, {}, {} as any, {} as any);
+	const ui = toUi({guest: true}, false, {});
 	const httpApiClient = toHttpApiClient<ActionParamsByName, ActionResponseByName>(
 		findHttpService,
 		deserialize(deserializers),

@@ -2,8 +2,7 @@
 	import {tick} from 'svelte';
 	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 	import {swallow} from '@grogarden/util/dom.js';
-	import {dev} from '$app/environment';
-	import {PUBLIC_ADMIN_ICON} from '$env/static/public';
+	import {PUBLIC_INSTANCE_ICON} from '$env/static/public';
 
 	import {autofocus} from '$lib/ui/actions';
 	import HeroIcon from '$lib/ui/HeroIcon.svelte';
@@ -15,7 +14,7 @@
 	export let username = '';
 	export let attrs: any = undefined;
 
-	let password = dev ? 'a' : '';
+	let password = import.meta.env.DEV ? 'a' : '';
 	let usernameEl: HTMLInputElement;
 	let passwordEl: HTMLInputElement;
 	let buttonEl: HTMLButtonElement;
@@ -94,7 +93,7 @@
 			<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signIn}
 				>sign in</PendingButton
 			>
-			<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_ADMIN_ICON}</p>
+			<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_INSTANCE_ICON}</p>
 			<slot />
 		</div>
 	</fieldset>

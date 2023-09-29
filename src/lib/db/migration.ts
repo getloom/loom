@@ -3,10 +3,11 @@ import {readdir} from 'node:fs/promises';
 
 import type {Basepath} from '$lib/util/fs';
 
-export const MIGRATIONS_PATH = 'lib/db/migrations';
-export const MIGRATIONS_DIR = 'src/' + MIGRATIONS_PATH;
-export const MIGRATIONS_DIR_PROD = 'dist/server/' + MIGRATIONS_PATH;
-
+// TODO these use some variables from gro but that causes a runtime dependency,
+// so for now we're just hardcoding them (we may use gro at runtime, but not for this)
+export const MIGRATIONS_DIR = 'src/lib/db/migrations';
+export const MIGRATIONS_DIR_PROD = 'dist_server/db/migrations';
+export const MIGRATIONS_DIR_DEV = '.gro/dev/db/migrations';
 /**
  * Extracts the numerical index of a migration file name,
  * stripping any number of prefixed zeros.

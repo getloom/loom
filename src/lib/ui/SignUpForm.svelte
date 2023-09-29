@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {tick} from 'svelte';
-	import {PUBLIC_ADMIN_ICON} from '$env/static/public';
+	import {PUBLIC_INSTANCE_ICON} from '$env/static/public';
 	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
 	import {swallow} from '@grogarden/util/dom.js';
 
@@ -114,7 +114,7 @@
 		<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signUp}
 			>sign up</PendingButton
 		>
-		<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_ADMIN_ICON}</p>
+		<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_INSTANCE_ICON}</p>
 		<slot />
 	</fieldset>
 </form>

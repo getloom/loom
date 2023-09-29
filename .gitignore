@@ -1,16 +1,17 @@
 .DS_Store
-node_modules
+/node_modules
+/worktree
+
 /.svelte-kit
 /build
+/dist
 
 /.gro
-/worktree
-/dist
-felt_server*.tar
-*.pem
+/dist_*
 
+*.pem
 /.env*
 
 *.ignore
 *.ignore.*
-ignore/
+ignore

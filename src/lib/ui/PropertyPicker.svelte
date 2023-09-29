@@ -69,7 +69,7 @@
 	};
 
 	// TODO everything referencing `hub_id` and hubs is a hack, this component should be generic
-	$: hub = field === 'hub_id' && parsedValue ? hubById.get(parsedValue as any) : null;
+	$: hub = field === 'hub_id' && parsedValue ? hubById.get(parsedValue as any) : null; // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
 </script>
 
 <div class="field">{field}</div>

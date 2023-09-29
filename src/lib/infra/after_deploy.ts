@@ -3,13 +3,16 @@ import {Logger} from '@grogarden/util/log.js';
 import {migrate} from '$lib/db/migrate';
 import {db} from '$lib/db/db';
 
-// This script is designed to run after updating a production deployment.
-// The filename needs to stay in sync with this constant: `DEPLOYED_SCRIPT_PATH`
-
 const log = new Logger('[migrate]');
 
+/**
+ * This script runs after updating a production deployment to do finalization like migrations.
+ * See `npm run after_deploy` for its usage.
+ * This module's path must remain synced with
+ * `AFTER_DEPLOY_SCRIPT_SOURCE_PATH` and `AFTER_DEPLOY_SCRIPT_BUILD_PATH`.
+ */
 const main = async () => {
-	log.info('running post-deploy script');
+	log.info('running after_deploy script');
 	await migrate(true, log);
 	log.info('deployed!');
 	await db.close();

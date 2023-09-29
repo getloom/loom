@@ -1,4 +1,4 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 import {schemaNames, vocabNames} from '$lib/vocab/metadata';
 
@@ -6,9 +6,9 @@ import {schemaNames, vocabNames} from '$lib/vocab/metadata';
 export const SchemaNameSchema = {
 	$id: '/schemas/SchemaName',
 	enum: schemaNames,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const VocabNameSchema = {
 	$id: '/schemas/VocabName',
 	enum: vocabNames,
-} satisfies VocabSchema;
+} satisfies JsonSchema;

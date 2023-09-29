@@ -1,5 +1,5 @@
-import type {Gen} from '@feltjs/gro';
-import {bundleSchemas} from '@feltjs/gro/dist/utils/schema.js';
+import type {Gen} from '@grogarden/gro/gen.js';
+import {bundle_schemas} from '@grogarden/gro/schema.js';
 
 import {schemas} from '$lib/vocab/schemas';
 
@@ -10,7 +10,7 @@ import {schemas} from '$lib/vocab/schemas';
  */
 export const gen: Gen = async () => {
 	// TODO make these options configurable
-	const schema = bundleSchemas(
+	const schema = bundle_schemas(
 		schemas,
 		'https://www.felt.dev/schemas/vocab.json',
 		'@feltjs/felt vocab',

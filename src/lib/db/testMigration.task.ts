@@ -1,5 +1,6 @@
-import type {Task} from '@feltjs/gro';
+import type {Task} from '@grogarden/gro';
 import {z} from 'zod';
+import {rename} from 'node:fs/promises';
 
 import {MIGRATIONS_DIR, find_migrations} from '$lib/db/migration';
 
@@ -18,7 +19,7 @@ type Args = z.infer<typeof Args>;
 export const task: Task<Args> = {
 	summary: 'tests the most recent mogration file against the seeded database',
 	Args,
-	run: async ({invokeTask, fs, args}) => {
+	run: async ({invoke_task, args}) => {
 		const {checkpoint, count} = args;
 
 		// First move the skipped migration files temporarily out of the migration dir
@@ -28,13 +29,13 @@ export const task: Task<Args> = {
 		const migration_basepaths_to_skip = migration_basepaths.slice(-1 * count);
 		await Promise.all(
 			migration_basepaths_to_skip.map((basepath) =>
-				fs.move(`${MIGRATIONS_DIR}/${basepath}`, `${TEMP_PATH}/${basepath}`),
+				rename(`${MIGRATIONS_DIR}/${basepath}`, `${TEMP_PATH}/${basepath}`),
 			),
 		);
 
 		let err;
 		try {
-			await invokeTask('lib/db/create');
+			await invoke_task('db/create');
 		} catch (_err) {
 			err = _err;
 		}
@@ -42,7 +43,7 @@ export const task: Task<Args> = {
 		// Move the files back.
 		await Promise.all(
 			migration_basepaths_to_skip.map((basepath) =>
-				fs.move(`${TEMP_PATH}/${basepath}`, `${MIGRATIONS_DIR}/${basepath}`),
+				rename(`${TEMP_PATH}/${basepath}`, `${MIGRATIONS_DIR}/${basepath}`),
 			),
 		);
 
@@ -50,7 +51,7 @@ export const task: Task<Args> = {
 		if (err) throw err;
 
 		if (!checkpoint) {
-			await invokeTask('lib/db/migrate');
+			await invoke_task('db/migrate');
 		}
 	},
 };

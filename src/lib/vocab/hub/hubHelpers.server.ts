@@ -34,17 +34,17 @@ export const HUB_COLUMNS = {
  */
 export const cleanOrphanHubs = async (repos: Repos, hubIds: HubId[]): Promise<null | HubId[]> => {
 	let deleted: HubId[] | null = null;
-	for (const hub_id of hubIds) {
-		// eslint-disable-next-line no-await-in-loop
-		const accountActorAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHub(
-			hub_id,
-		);
-		if (accountActorAssignmentsCount === 0) {
-			log.debug('no assignments found for hub, cleaning up', hub_id);
-			await deleteHub(repos, hub_id); // eslint-disable-line no-await-in-loop
-			(deleted || (deleted = [])).push(hub_id);
-		}
-	}
+	await Promise.all(
+		hubIds.map(async (hub_id) => {
+			const accountActorAssignmentsCount =
+				await repos.assignment.countAccountActorAssignmentsByHub(hub_id);
+			if (accountActorAssignmentsCount === 0) {
+				log.debug('no assignments found for hub, cleaning up', hub_id);
+				await deleteHub(repos, hub_id);
+				(deleted || (deleted = [])).push(hub_id);
+			}
+		}),
+	);
 	return deleted;
 };
 
@@ -172,9 +172,8 @@ export const checkRemoveActor = async (
 		throw new ApiError(405, 'cannot leave a personal hub');
 	}
 	if (hub_id === ADMIN_HUB_ID) {
-		const distinctAccountActorCount = await repos.assignment.countDistinctAccountActorsByHub(
-			hub_id,
-		);
+		const distinctAccountActorCount =
+			await repos.assignment.countDistinctAccountActorsByHub(hub_id);
 		// TODO this fails if the actor has multiple roles
 		if (distinctAccountActorCount === 1) {
 			throw new ApiError(405, 'cannot orphan the admin hub');

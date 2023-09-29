@@ -1,6 +1,6 @@
 import {setContext, getContext} from 'svelte';
 import {Logger} from '@grogarden/util/log.js';
-import {browser, dev} from '$app/environment';
+import {browser} from '$app/environment';
 
 import type {WritableUi} from '$lib/ui/ui';
 import type {ApiClient} from '$lib/ui/ApiClient';
@@ -86,6 +86,6 @@ const toLoggedArgs = (actionName: string, params: unknown): any[] => {
 };
 
 const toLoggedActionName = (actionName: string): any[] =>
-	browser && dev
+	browser && import.meta.env.DEV
 		? ['%c[actions.%c' + actionName + '%c]', 'color: gray', 'color: cornflowerblue', 'color: gray']
 		: ['[actions.' + actionName + ']'];

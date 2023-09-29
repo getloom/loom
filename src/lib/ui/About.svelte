@@ -1,7 +1,9 @@
 <script lang="ts">
 	import {base} from '$app/paths';
-	import {PUBLIC_ADMIN_EMAIL_ADDRESS, PUBLIC_ADMIN_ICON, PUBLIC_GIT_HASH} from '$env/static/public';
+	import {PUBLIC_ADMIN_EMAIL, PUBLIC_GIT_HASH} from '$env/static/public';
 	import {VERSION as SVELTEKIT_VERSION} from '@sveltejs/kit';
+
+	import {VERSION as FELT_VERSION} from '$lib/util/constants';
 </script>
 
 <div class="prose padded_xl">
@@ -9,36 +11,51 @@
 	<p>Need help? Have questions, comments, concerns?</p>
 	<ul>
 		<li>
-			See <a href="{base}/docs">the docs</a>
+			see <a href="{base}/docs">the docs</a>
 		</li>
 		<li>
-			Email the admin at <a href="mailto:{PUBLIC_ADMIN_EMAIL_ADDRESS}"
-				>{PUBLIC_ADMIN_EMAIL_ADDRESS}</a
-			>
+			email the admin at <a href="mailto:{PUBLIC_ADMIN_EMAIL}">{PUBLIC_ADMIN_EMAIL}</a>
 		</li>
 	</ul>
-	<p class="title">
-		{PUBLIC_ADMIN_ICON}
-		<a href="https://github.com/feltjs/felt" target="_blank" rel="noreferrer">felt</a>
-		version
-		<a
-			href="https://github.com/feltjs/felt/commit/{PUBLIC_GIT_HASH}"
-			target="_blank"
-			rel="noreferrer"
-		>
-			{PUBLIC_GIT_HASH}
-		</a>
-	</p>
-	<p class="title">
-		🧡
-		<a href="https://kit.svelte.dev/" target="_blank" rel="noreferrer">SvelteKit</a>
-		version
-		<a
-			href="https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%40{SVELTEKIT_VERSION}"
-			target="_blank"
-			rel="noreferrer"
-		>
-			{SVELTEKIT_VERSION}
-		</a>
-	</p>
+	<blockquote>
+		<p class="title">
+			<a href="https://github.com/feltjs/felt" target="_blank" rel="noreferrer">💚</a>
+			<a href="https://www.felt.dev/" target="_blank" rel="noreferrer">Felt</a>
+			version
+			<a
+				href="https://github.com/feltjs/felt/releases/tag/v{FELT_VERSION}"
+				target="_blank"
+				rel="noreferrer"
+			>
+				{FELT_VERSION}
+			</a>
+			commit
+			<a
+				href="https://github.com/feltjs/felt/commit/{PUBLIC_GIT_HASH}"
+				target="_blank"
+				rel="noreferrer"
+			>
+				{PUBLIC_GIT_HASH.substring(0, 7)}
+			</a>
+		</p>
+		<p class="title">
+			<a href="https://github.com/sveltejs/kit" target="_blank" rel="noreferrer">🧡</a>
+			<a href="https://kit.svelte.dev/" target="_blank" rel="noreferrer">SvelteKit</a>
+			version
+			<a
+				href="https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%40{SVELTEKIT_VERSION}"
+				target="_blank"
+				rel="noreferrer"
+			>
+				{SVELTEKIT_VERSION}
+			</a>
+		</p>
+	</blockquote>
 </div>
+
+<style>
+	/* TODO utility class */
+	h1 {
+		margin-top: 0;
+	}
+</style>

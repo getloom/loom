@@ -9,7 +9,7 @@
 </script>
 
 <div class="prose">
-	<h2>Deploying felt to production</h2>
+	<h2>Deploying Felt to production</h2>
 	<p>
 		This document describes how to deploy a new instance of <a href="https://github.com/feltjs/felt"
 			><code>@feltjs/felt</code></a
@@ -31,27 +31,23 @@
 		but some details will differ.
 	</p>
 	<p>
-		To start, clone the repo locally and make sure <a href="https://github.com/feltjs/gro">Gro</a> is
-		installed globally:
+		To start, clone the repo locally and make sure <a href="https://github.com/grogarden/gro">Gro</a
+		> is installed globally:
 	</p>
 	<CodeExample
 		code={`git clone https://github.com/feltjs/felt
-npm i -g @feltjs/gro`}
+npm i -g @grogarden/gro`}
 	/>
 
 	<h3>Deploy</h3>
 
 	<p>
-		To self-host on a VPS, first <a href="{base}{path}/guide/admin/setup-prod-environment"
+		To self-host on a VPS, first <a href="{base}{path}/guide/admin/setup-production"
 			>set up a production environment</a
 		>.
 	</p>
 	<p>Then:</p>
-	<CodeExample
-		code={`gro deploy
-# TODO automate all of this
-# manually run \`pm2 start npm -- run start --prefix ~/current_felt_server_deploy\``}
-	/>
+	<CodeExample code={`gro deploy`} />
 	<p>
 		This builds the project on the local machine (<code>`gro build`</code>), packs the output into a
 		tar, and attempts to deploys it to the remote instance.
@@ -73,7 +69,7 @@ npm i -g @feltjs/gro`}
 
 	<CodeExample
 		code={`PUBLIC_DEPLOY_SERVER_HOST=localhost
-PUBLIC_API_SERVER_PORT=3000
+PUBLIC_SERVER_PORT=3000
 # notice this is ws://, not wss://, and the same port as above
 PUBLIC_WEBSOCKET_URL=ws://localhost:3000/ws
 PGDATABASE=felt
@@ -89,10 +85,10 @@ PGPASSWORD=password`}
 	<p>Then build and run the server:</p>
 	<CodeExample
 		code={`gro build
-node dist/server/lib/server/server.js`}
+node dist_server/server/server.js`}
 	/>
 	<p>
-		Then browse to <code>${'{'}PUBLIC_DEPLOY_SERVER_HOST}:${'{'}PUBLIC_API_SERVER_PORT}</code>, like
+		Then browse to <code>${'{'}PUBLIC_DEPLOY_SERVER_HOST}:${'{'}PUBLIC_SERVER_PORT}</code>, like
 		<code>localhost:3000</code> with the above settings. The server also logs where it's listening to
 		the console.
 	</p>
@@ -108,7 +104,7 @@ node dist/server/lib/server/server.js`}
 	<ol>
 		<li>Spin up a new server with the new OS</li>
 		<li>Point your DNS record to the new IP</li>
-		<li>Run `gro lib/infra/setup` on the new server</li>
+		<li>Run `gro infra/setup` on the new server</li>
 		<li>Set up your DB password</li>
 		<li>
 			Use <a href="https://www.postgresql.org/docs/current/backup-dump.html"><code>pg_dump</code></a

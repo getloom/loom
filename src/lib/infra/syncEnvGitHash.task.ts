@@ -1,33 +1,25 @@
-import type {Task} from '@feltjs/gro';
-import {spawnProcess} from '@grogarden/util/process.js';
-import {ENV_FILE_DEV, ENV_FILE_PROD, syncEnvGitHash, initEnv, reloadEnv} from '$lib/server/env';
+import type {Task} from '@grogarden/gro';
+import {git_current_commit_hash} from '@grogarden/gro/git.js';
+
+import {ENV_FILE_DEV, ENV_FILE_PROD, update_env_git_hash} from '$lib/server/env';
 
 export const task: Task = {
 	summary: 'write git hash to the appropriate environment variables file',
-	run: async ({fs, log, dev}) => {
-		initEnv();
+	run: async ({log}) => {
+		const raw_git_hash = await git_current_commit_hash();
+		if (!raw_git_hash) log.error('failed to load latest githash');
+		const git_hash = raw_git_hash ?? 'main';
 
-		const envFile = dev ? ENV_FILE_DEV : ENV_FILE_PROD;
-		const branch = (await fs.readFile('.git/HEAD', 'utf8')).trim().substring(5);
+		const update_file = async (path: string) => {
+			const updated = await update_env_git_hash(path, git_hash);
+			if (updated) {
+				log.info(`updated git hash at ${path} - ${git_hash}`);
+			} else {
+				log.info(`git hash already updated at ${path} - ${git_hash}`);
+			}
+		};
 
-		let gitHashContents = '';
-		const buildResult = spawnProcess('git', ['show-ref', '-s', branch], {stdio: 'pipe'});
-		buildResult.child.stdout?.on('data', (data: Buffer) => {
-			gitHashContents += data.toString().trim();
-		});
-		await buildResult.closed;
-
-		if (gitHashContents === '') log.error('failed to load latest githash');
-		const currentEnvContents = await fs.readFile(envFile, 'utf8');
-		const gitHash = gitHashContents.trim().substring(0, 7);
-		const updatedEnvContents = syncEnvGitHash(currentEnvContents, 'PUBLIC_GIT_HASH', gitHash);
-		if (currentEnvContents !== updatedEnvContents) {
-			log.info(`writing updated git hash ${gitHash} to ${envFile}`);
-			await fs.writeFile(envFile, updatedEnvContents, 'utf8');
-		} else {
-			log.info(`git hash already updated to ${gitHash} in ${envFile}`);
-		}
-
-		reloadEnv();
+		await update_file(ENV_FILE_DEV);
+		await update_file(ENV_FILE_PROD);
 	},
 };

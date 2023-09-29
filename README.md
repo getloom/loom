@@ -67,7 +67,7 @@ npm run dev
 # browse to localhost:5173 or whatever it says
 
 # you can also run `gro dev` with Gro installed globally:
-npm i -g @feltjs/gro
+npm i -g @grogarden/gro
 gro # print available tasks
 gro dev # args are forwarded to `vite` like `npm run dev`
 
@@ -76,7 +76,7 @@ npm test
 gro test
 ```
 
-> learn more about [Gro](https://github.com/feltjs/gro),
+> learn more about [Gro](https://github.com/grogarden/gro),
 > [SvelteKit](https://kit.svelte.dev/), and
 > [Vite](https://vitejs.dev/)
 
@@ -90,13 +90,12 @@ Open source software including
 [SvelteKit](https://github.com/sveltejs/kit) ∙
 [Vite](https://github.com/vitejs/vite) ∙
 [TypeScript](https://github.com/microsoft/TypeScript) ∙
-[MDsveX](https://github.com/pngwn/MDsveX) ∙
+[SVAST](https://github.com/pngwn/MDsveX) ∙
+[Fuz](https://github.com/fuz-dev/fuz) ∙
+[Gro](https://github.com/grogarden/gro) ∙
 [uvu](https://github.com/lukeed/uvu) ∙
 [Postgres.js](https://github.com/porsager/postgres) ∙
 [Ley](https://github.com/lukeed/ley) ∙
-[tsm](https://github.com/lukeed/tsm) ∙
-[Gro](https://github.com/feltjs/gro) ∙
-[Fuz](https://github.com/fuz-dev/fuz) ∙
 [ESLint](https://github.com/eslint/eslint) ∙
 [Prettier](https://github.com/prettier/prettier)
 & [more](package.json)

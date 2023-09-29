@@ -1,3 +1,4 @@
+//@ts-expect-error
 import {typescript} from 'svelte-preprocess-esbuild';
 import node from '@sveltejs/adapter-node';
 
@@ -12,5 +13,6 @@ export default {
 			polyfill: false,
 		}),
 		files: {assets: 'src/static'},
+		alias: {$routes: 'src/routes'},
 	},
 };

@@ -1,7 +1,8 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {verifyPassword, toPasswordKey, createPasswordHasher} from '$lib/server/password';
+import {verifyPassword, toPasswordKey} from '$lib/server/password';
+import {create_password_hasher} from '$lib/server/password_hasher';
 
 /* test__password */
 const test__password = suite('password');
@@ -23,7 +24,7 @@ test__password('fail to verify', async () => {
 });
 
 test__password('hash a password with a worker pool', async () => {
-	const passwordHasher = createPasswordHasher();
+	const passwordHasher = create_password_hasher();
 	const password = 'password';
 	const key = await passwordHasher.encrypt(password);
 	assert.ok(await passwordHasher.verify(password, key));
@@ -31,7 +32,7 @@ test__password('hash a password with a worker pool', async () => {
 });
 
 test__password('hash several passwords concurrently with a worker pool', async () => {
-	const passwordHasher = createPasswordHasher();
+	const passwordHasher = create_password_hasher();
 	const passwords = ['password1', 'password2', 'password3'];
 	const keys = await Promise.all(passwords.map((p) => passwordHasher.encrypt(p)));
 	const verified = await Promise.all(
@@ -45,7 +46,7 @@ test__password('hash several passwords concurrently with a worker pool', async (
 });
 
 test__password('handle errors from the worker pool', async () => {
-	const passwordHasher = createPasswordHasher();
+	const passwordHasher = create_password_hasher();
 	let err;
 	try {
 		await passwordHasher.encrypt([] as any); // passing bad data to cause an error

@@ -1,4 +1,4 @@
-import type {Task} from '@feltjs/gro';
+import type {Task} from '@grogarden/gro';
 import {z} from 'zod';
 
 import {obtainDb} from '$lib/db/obtainDb';

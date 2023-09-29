@@ -6,7 +6,7 @@ import * as assert from 'uvu/assert';
 import {ApiServer} from '$lib/server/ApiServer';
 import {Websockets} from '$lib/server/Websockets';
 import {services} from '$lib/server/services';
-import {installSourceMaps, log} from '$lib/util/testHelpers';
+import {log} from '$lib/util/testHelpers';
 import {Broadcast} from '$lib/server/Broadcast';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import type {AccountActor} from '$lib/vocab/actor/actor';
@@ -18,8 +18,6 @@ import {
 import {SignUpService} from '$lib/vocab/account/accountServices';
 import type {SignUpResponse} from '$lib/vocab/action/actionTypes';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
-
-installSourceMaps();
 
 /**
  * The `setupServer` test helper provides a superset of `setupDb`.

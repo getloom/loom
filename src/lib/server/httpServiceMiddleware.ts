@@ -90,7 +90,7 @@ export const toHttpServiceMiddleware =
 		}
 
 		// TODO maybe do this in production too
-		if (process.env.NODE_ENV !== 'production') {
+		if (import.meta.env.DEV) {
 			const validateResponse = validateSchema(service.action.response);
 			if (!validateResponse(result.value)) {
 				log.error(

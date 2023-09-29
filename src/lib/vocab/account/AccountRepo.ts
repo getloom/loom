@@ -10,8 +10,8 @@ import type {
 } from '$lib/vocab/account/account';
 import {ACCOUNT_COLUMNS, type AccountColumn} from '$lib/vocab/account/accountHelpers.server';
 import {ApiError} from '$lib/server/api';
-import {ACTOR_COLUMNS} from '../actor/actorHelpers.server';
-import type {PasswordHasher} from '$lib/server/password';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import type {PasswordHasher} from '$lib/server/password_hasher';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 

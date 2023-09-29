@@ -1,6 +1,13 @@
 import type {Sql, Options} from 'postgres';
-
-import {fromEnv} from '$lib/server/env';
+import {
+	PGHOST,
+	PGPORT,
+	PGDATABASE,
+	PGUSER,
+	PGPASSWORD,
+	PGIDLE_TIMEOUT,
+	PGCONNECT_TIMEOUT,
+} from '$env/static/private';
 
 // Postgres.js - PostgreSQL client for Node.js
 // https://github.com/porsager/postgres
@@ -17,13 +24,13 @@ export interface PostgresOptions extends Options<any> {
 }
 
 const toDefaultPostgresOptions = (): PostgresOptions => ({
-	host: fromEnv('PGHOST'),
-	port: Number(fromEnv('PGPORT')),
-	database: fromEnv('PGDATABASE'),
-	username: fromEnv('PGUSER'),
-	password: fromEnv('PGPASSWORD'),
-	idle_timeout: Number(fromEnv('PGIDLE_TIMEOUT')) || undefined,
-	connect_timeout: Number(fromEnv('PGCONNECT_TIMEOUT')) || undefined,
+	host: PGHOST,
+	port: Number(PGPORT),
+	database: PGDATABASE,
+	username: PGUSER,
+	password: PGPASSWORD,
+	idle_timeout: Number(PGIDLE_TIMEOUT) || undefined,
+	connect_timeout: Number(PGCONNECT_TIMEOUT) || undefined,
 });
 
 export const defaultPostgresOptions = toDefaultPostgresOptions();

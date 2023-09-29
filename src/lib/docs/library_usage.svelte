@@ -19,7 +19,7 @@
 	<p>
 		First, follow the <a href="{base}{path}/guide/admin/getting-started">getting started</a> instructions.
 	</p>
-	<p>Next install felt-server as a dev dependency:</p>
+	<p>Next install Felt as a dev dependency:</p>
 	<CodeExample code="npm i -D @feltjs/felt" />
 	<p>
 		See the available modules at <a

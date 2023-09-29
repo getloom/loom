@@ -19,13 +19,16 @@
 	$: destTies = tiesBySourceId.get($list.entity_id);
 	$: items =
 		$destTies &&
-		Array.from($destTies.value).reduce((acc, tie) => {
-			if (tie.type === 'HasItem') {
-				const entity = entityById.get(tie.dest_id)!;
-				acc.push(entity);
-			}
-			return acc;
-		}, [] as Array<Readable<Entity>>);
+		Array.from($destTies.value).reduce(
+			(acc, tie) => {
+				if (tie.type === 'HasItem') {
+					const entity = entityById.get(tie.dest_id)!;
+					acc.push(entity);
+				}
+				return acc;
+			},
+			[] as Array<Readable<Entity>>,
+		);
 	$: checkedItems =
 		items &&
 		derived(items, ($items) => {

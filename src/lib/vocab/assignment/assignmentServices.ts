@@ -61,9 +61,8 @@ export const DeleteAssignmentService: ServiceByName['DeleteAssignment'] = {
 			return {ok: false, status: 405, message: 'cannot leave a personal hub'};
 		}
 		if (hub_id === ADMIN_HUB_ID) {
-			const adminAssignmentsCount = await repos.assignment.countAccountActorAssignmentsByHub(
-				hub_id,
-			);
+			const adminAssignmentsCount =
+				await repos.assignment.countAccountActorAssignmentsByHub(hub_id);
 			if (adminAssignmentsCount === 1) {
 				return {ok: false, status: 405, message: 'cannot orphan the admin hub'};
 			}

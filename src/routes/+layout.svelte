@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	if (!dev) {
+	if (import.meta.env.PROD) {
 		if (!browser) {
 			Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
 		}
@@ -14,7 +14,7 @@
 	import {set_devmode} from '@fuz.dev/fuz/devmode.js';
 	import DevmodeControls from '@fuz.dev/fuz/DevmodeControls.svelte';
 	import {page} from '$app/stores';
-	import {browser, dev} from '$app/environment';
+	import {browser} from '$app/environment';
 	import Dialogs from '@fuz.dev/fuz/Dialogs.svelte';
 	import {is_editable, swallow} from '@grogarden/util/dom.js';
 	import {format} from 'date-fns';
@@ -23,8 +23,6 @@
 	import {Logger} from '@grogarden/util/log.js';
 	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
 	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
-	import ContextmenuLinkEntry from '@fuz.dev/fuz/ContextmenuLinkEntry.svelte';
-	import ContextmenuTextEntry from '@fuz.dev/fuz/ContextmenuTextEntry.svelte';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Onboard from '$lib/ui/Onboard.svelte';
@@ -69,7 +67,7 @@
 		(message) => websocketClient.handle(message.data),
 		() => actions.Ping(),
 	);
-	const ui = toUi(data, initialMobileValue, components, ContextmenuLinkEntry, ContextmenuTextEntry);
+	const ui = toUi(data, initialMobileValue, components);
 	setUi(ui);
 
 	// When the contextmenu has an error, display the message in a dialog.

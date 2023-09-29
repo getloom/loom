@@ -23,12 +23,16 @@ export const syncUiToUrl = (ui: Ui, params: {hub?: string; space?: string}, url:
 	} = ui;
 
 	const actorIndex = Number(url.searchParams.get(ACTOR_QUERY_KEY)) || 0;
-	// TODO should we handle missing actors differently than just falling back to the first? maybe redirect?
-	const actor = sessionActors.get().value[actorIndex] || sessionActors.get().value[0];
+	// TODO now assuming it may be missing, but is this right?
+	// old comment: should we handle missing actors differently than just falling back to the first? maybe redirect?
+	const actor = sessionActors.get().value.length
+		? sessionActors.get().value[actorIndex] || sessionActors.get().value[0]
+		: null;
 
-	if (actorIndex !== actorIndexSelection.get()) {
+	if (actor && actorIndex !== actorIndexSelection.get()) {
 		selectActor(ui, actor.get().actor_id);
 	} // else already selected
+	// TODO what about when `!actor`?
 
 	// TODO speed this up with a map of hubByName
 	const hub = Array.from(hubs.get().value).find((c) => c.get().name === params.hub);

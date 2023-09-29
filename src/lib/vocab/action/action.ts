@@ -1,4 +1,4 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 import type {ServiceMethod} from '$lib/server/service';
 import type {ClientActionName, ServiceActionName} from '$lib/vocab/action/actionTypes';
@@ -9,7 +9,7 @@ export interface ClientActionData {
 	type: 'ClientAction';
 	name: ClientActionName;
 	// TODO we want to enforce schemas so we can generate params forms and automatic randomizers
-	params: VocabSchema | null;
+	params: JsonSchema | null;
 	returns: string;
 }
 
@@ -22,8 +22,8 @@ export interface ServiceActionData {
 	authorize?: boolean; // `true` by default -- does this service require `params.actor`?
 	websockets?: boolean; // `true` by default -- can this service be called via websockets?
 	broadcast?: boolean; // `false` by default -- does this service action rebroadcast to other hub clients
-	params: VocabSchema;
-	response: VocabSchema;
+	params: JsonSchema;
+	response: JsonSchema;
 	returns: string;
 	// `ServiceAction`s have a `route` for http clients; websocket clients only need the action `name`
 	route: {

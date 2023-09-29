@@ -16,7 +16,7 @@ import {toWebsocketServiceMiddleware} from '$lib/server/websocketServiceMiddlewa
 import type {CookieSessionRequest} from '$lib/session/sessionCookie';
 import type {IBroadcast} from '$lib/server/Broadcast';
 import type {AccountId} from '$lib/vocab/account/account';
-import {createPasswordHasher, type PasswordHasher} from '$lib/server/password';
+import {create_password_hasher, type PasswordHasher} from '$lib/server/password_hasher';
 
 const log = new Logger([blue('[ApiServer]')]);
 
@@ -49,7 +49,7 @@ export class ApiServer {
 		this.app = options.app;
 		this.websockets = options.websockets;
 		this.broadcast = options.broadcast;
-		this.passwordHasher = options.passwordHasher || createPasswordHasher();
+		this.passwordHasher = options.passwordHasher || create_password_hasher();
 		this.port = options.port;
 		this.db = options.db;
 		this.services = options.services;
@@ -91,8 +91,8 @@ export class ApiServer {
 		}
 
 		// SvelteKit Node adapter, adapted to our production API server
-		if (process.env.NODE_ENV === 'production') {
-			const importPath = '../../../svelte-kit/handler.js';
+		if (import.meta.env.PROD) {
+			const importPath = '../../build/handler.js';
 			let handler: any;
 			try {
 				({handler} = await import(importPath));

@@ -2,11 +2,9 @@ import postgres from 'postgres';
 
 import {Database} from '$lib/db/Database';
 import {defaultPostgresOptions} from '$lib/db/postgres';
-import {installSourceMaps, log} from '$lib/util/testHelpers';
+import {log} from '$lib/util/testHelpers';
 import {RandomVocabContext} from '$lib/util/randomVocab';
 import type {Repos} from '$lib/db/Repos';
-
-installSourceMaps();
 
 /**
  * The `setupDb` test helper provides a subset of `setupServer` in `testServerHelpers`.

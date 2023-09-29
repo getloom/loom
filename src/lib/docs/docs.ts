@@ -13,7 +13,7 @@ import known_issues from '$lib/docs/known_issues.svelte';
 import library_usage from '$lib/docs/library_usage.svelte';
 import managing_production from '$lib/docs/managing_production.svelte';
 import setup_dev_environment from '$lib/docs/setup_dev_environment.svelte';
-import setup_prod_environment from '$lib/docs/setup_prod_environment.svelte';
+import setup_prod_environment from '$lib/docs/setup_production.svelte';
 
 // TODO these are eagerly loaded for UX, but we could probably
 // use SvelteKit to optimize it better without issues like scroll position
@@ -64,14 +64,14 @@ export const adminGuideItems: GuideItem[] = [
 		component: database,
 	},
 	{
+		name: 'setup prod environment',
+		slug: 'admin/setup-production',
+		component: setup_prod_environment,
+	},
+	{
 		name: 'deploying production',
 		slug: 'admin/deploying-production',
 		component: deploying_production,
-	},
-	{
-		name: 'setup prod environment',
-		slug: 'admin/setup-prod-environment',
-		component: setup_prod_environment,
 	},
 	{
 		name: 'managing production',

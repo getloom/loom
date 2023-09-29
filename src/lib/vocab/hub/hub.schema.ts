@@ -1,11 +1,11 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 export const HubIdSchema = {
 	$id: '/schemas/HubId',
 	type: 'number',
 	tsType: "Flavored<number, 'HubId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const HubSchema = {
 	$id: '/schemas/Hub',
@@ -25,7 +25,7 @@ export const HubSchema = {
 	},
 	required: ['hub_id', 'type', 'name', 'settings', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const HubSettingsSchema = {
 	$id: '/schemas/HubSettings',
@@ -49,7 +49,7 @@ export const HubSettingsSchema = {
 	},
 	required: ['hue', 'defaultRoleId'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const InitialHubSettingsSchema = {
 	$id: '/schemas/InitialHubSettings',
@@ -62,4 +62,4 @@ export const InitialHubSettingsSchema = {
 	},
 	required: ['hue'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;

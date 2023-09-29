@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type {VocabSchema} from '@feltjs/gro';
+	import type {JsonSchema} from '@grogarden/gro/schema.js';
 	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
 	import {base} from '$app/paths';
-	import {intersect} from '@fuz.dev/svelte-intersect';
+	import {intersect} from '@fuz.dev/svelte_intersect';
 
 	import type {ViewTemplate} from '$lib/vocab/view/view';
 	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
@@ -11,7 +11,7 @@
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';
 
 	export let sortedViewTemplates: ViewTemplate[];
-	export let sortedModelSchemas: VocabSchema[];
+	export let sortedModelSchemas: JsonSchema[];
 	export let serviceActions: ServiceActionData[];
 	export let clientActions: ClientActionData[];
 	export let modelNames: string[];

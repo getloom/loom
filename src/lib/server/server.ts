@@ -3,16 +3,16 @@ import {createServer} from 'http';
 import {Logger} from '@grogarden/util/log.js';
 import {format} from 'date-fns';
 import {WebSocketServer} from 'ws';
+import {PUBLIC_SERVER_PORT} from '$env/static/public';
 
 import {ApiServer} from '$lib/server/ApiServer';
 import {Websockets} from '$lib/server/Websockets';
 import {services} from '$lib/server/services';
 import {db} from '$lib/db/db';
-import {fromEnv} from '$lib/server/env';
 import {Broadcast} from '$lib/server/Broadcast';
 
 // Global logging setup
-if (process.env.NODE_ENV === 'production') {
+if (import.meta.env.PROD) {
 	Logger.prefixes.unshift(() => format(new Date(), 'M/d H:mm:ss.SSS'));
 }
 // Logger.level = 'debug';
@@ -26,7 +26,7 @@ const server = createServer();
 export const apiServer = new ApiServer({
 	server,
 	app: polka({server}),
-	port: Number(fromEnv('PUBLIC_API_SERVER_PORT')),
+	port: Number(PUBLIC_SERVER_PORT),
 	websockets: new Websockets(new WebSocketServer({server})),
 	broadcast: new Broadcast(db.repos),
 	db,

@@ -1,11 +1,11 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 export const SpaceIdSchema = {
 	$id: '/schemas/SpaceId',
 	type: 'number',
 	tsType: "Flavored<number, 'SpaceId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const SpaceSchema = {
 	$id: '/schemas/Space',
@@ -27,4 +27,4 @@ export const SpaceSchema = {
 	},
 	required: ['space_id', 'name', 'icon', 'view', 'created', 'updated', 'hub_id', 'directory_id'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;

@@ -7,10 +7,8 @@ import {
 } from 'kleur/colors';
 import {identity} from '@grogarden/util/function.js';
 
-const dev = process.env.NODE_ENV !== 'production'; // TODO fixme in multiple places to use `$app/environment`
-
-export const gray = dev ? grayKleur : identity;
-export const blue = dev ? blueKleur : identity;
-export const green = dev ? greenKleur : identity;
-export const red = dev ? redKleur : identity;
-export const cyan = dev ? cyanKleur : identity;
+export const gray = import.meta.env.DEV ? grayKleur : identity;
+export const blue = import.meta.env.DEV ? blueKleur : identity;
+export const green = import.meta.env.DEV ? greenKleur : identity;
+export const red = import.meta.env.DEV ? redKleur : identity;
+export const cyan = import.meta.env.DEV ? cyanKleur : identity;

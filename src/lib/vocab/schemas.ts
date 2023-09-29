@@ -1,4 +1,4 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 import {toSchemaName} from '$lib/util/schema';
 import {actionDatas} from '$lib/vocab/action/actionData';
@@ -36,7 +36,7 @@ import {PolicySchema, PolicyIdSchema, PolicyNameSchema} from '$lib/vocab/policy/
 
 // Model schemas are distinct from the action schemas.
 // They're the nouns compared to the action verbs.
-export const modelSchemas: VocabSchema[] = [
+export const modelSchemas: JsonSchema[] = [
 	AccountActorSchema,
 	AccountIdSchema,
 	AccountSchema,
@@ -71,11 +71,11 @@ export const modelSchemas: VocabSchema[] = [
 	VocabNameSchema,
 ];
 
-export const actionSchemas: VocabSchema[] = actionDatas.reduce((schemas, actionData) => {
+export const actionSchemas: JsonSchema[] = actionDatas.reduce((schemas, actionData) => {
 	if (actionData.params) schemas.push(actionData.params);
 	if ('response' in actionData) schemas.push(actionData.response);
 	return schemas;
-}, [] as VocabSchema[]);
+}, [] as JsonSchema[]);
 
 export const schemas = modelSchemas.concat(actionSchemas);
 

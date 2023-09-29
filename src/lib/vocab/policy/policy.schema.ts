@@ -1,4 +1,4 @@
-import type {VocabSchema} from '@feltjs/gro';
+import type {JsonSchema} from '@grogarden/gro/schema.js';
 
 import {policyNames} from '$lib/vocab/policy/policyHelpers';
 
@@ -7,7 +7,7 @@ export const PolicyIdSchema = {
 	type: 'number',
 	tsType: "Flavored<number, 'PolicyId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const PolicySchema = {
 	$id: '/schemas/Policy',
@@ -28,10 +28,10 @@ export const PolicySchema = {
 	},
 	required: ['policy_id', 'role_id', 'name', 'data', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies VocabSchema;
+} satisfies JsonSchema;
 
 export const PolicyNameSchema = {
 	$id: '/schemas/PolicyName',
 	type: 'string',
 	enum: policyNames,
-} satisfies VocabSchema;
+} satisfies JsonSchema;

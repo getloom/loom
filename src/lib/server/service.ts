@@ -10,7 +10,7 @@ import type {AccountId} from '$lib/vocab/account/account';
 import type {ErrorResponse} from '$lib/util/error';
 import type {HubId} from '$lib/vocab/hub/hub';
 import type {IBroadcastApi} from '$lib/server/Broadcast';
-import type {PasswordHasher} from '$lib/server/password';
+import type {PasswordHasher} from '$lib/server/password_hasher';
 import type {PolicyName} from '$lib/vocab/policy/policy';
 import {checkHubAccessForActor, checkPolicyForActor} from '$lib/vocab/policy/policyHelpers.server';
 

@@ -41,7 +41,7 @@ pm2 restart 0 # or whatever id`}
 	<h3>Logs</h3>
 
 	<CodeExample
-		code={`pm2 logs # tails last 15 lines of each log
+		code={`pm2 log # tails last 15 lines of each log
 vi /$${'{'}DEPLOY_USER}/.pm2/logs/npm-out.log # open the app log`}
 	/>
 

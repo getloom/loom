@@ -99,12 +99,11 @@
 		<li><code>DEPLOY_USER</code> to your server's user (defaults to <code>root</code>)</li>
 		<li><code>PUBLIC_DEPLOY_SERVER_HOST</code> is your domain, e.g. <code>felt.dev</code></li>
 		<li>
-			<code>CERTBOT_EMAIL_ADDRESS</code> is the email address to register with LetsEncrypt for an https
-			certificate
+			<code>CERTBOT_EMAIL</code> is the email address to register with LetsEncrypt for an https certificate
 		</li>
 		<li>
 			<code>COOKIE_KEYS</code> should be randomized (TODO do this during
-			<code>gro lib/infra/setup</code>)
+			<code>gro infra/setup</code>)
 		</li>
 	</ul>
 

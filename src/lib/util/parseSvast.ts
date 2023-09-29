@@ -39,7 +39,7 @@ export const parseSvast: typeof parse = (opts) => {
 				const {type: t} = parent as any;
 				if (t !== 'root' && t !== 'svelteElement' && t !== 'svelteComponent') return;
 				const newNode = parseSvastText(node as any) as any;
-				if (newNode !== node) this.replace(newNode as any);
+				if (newNode !== node) this.replace(newNode);
 			}
 		},
 	});
