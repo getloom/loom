@@ -2,4 +2,4 @@
 '@feltjs/felt': minor
 ---
 
-upgrade `@grogarden/util@0.14` from `0.13`
+upgrade `@grogarden/util@0.15` from `0.13`
