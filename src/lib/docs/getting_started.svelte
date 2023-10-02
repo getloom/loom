@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 
-	import Mermaid from '$lib/ui/Mermaid.svelte';
 	import {getDocsSettings} from '$lib/docs/docs';
+	import tech_stack_diagram from '$lib/docs/tech_stack_diagram.png';
 
 	const docsSettings = getDocsSettings();
 	$: ({path} = $docsSettings);
@@ -41,28 +41,8 @@
 		<li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
 	</ul>
 
-	<h3>felt overview diagram</h3>
-
-	<Mermaid
-		content={`%%{ init: { 'flowchart': { 'curve': 'monotoneY' } } }%%
-flowchart
-	subgraph db
-		P[(postgres)]
-		click P "${base}{path}/guide/dev/data-model"
-	end
-	subgraph Node backend
-		S[Services] -- function calls --> R[Repos]
-		R -- queries -->
-		P -- data --> R
-		R -- data --> S
-	end
-	subgraph browser frontend
-		A[Actions] -- "API requests
-		(websockets and RESTful http)" --> S
-		S -- "API response and broadcast data" --> A
-		C["Views (Svelte components)"] <-- ui --> A
-	end`}
-	/>
+	<h3>tech stack diagram</h3>
+	<img alt="the tech stack diagram" src={tech_stack_diagram} />
 
 	<h3>Setup</h3>
 	<p>

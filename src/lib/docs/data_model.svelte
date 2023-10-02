@@ -1,22 +1,9 @@
 <script lang="ts">
-	import Mermaid from '$lib/ui/Mermaid.svelte';
+	import data_model_diagram from '$lib/docs/data_model_diagram.png';
 </script>
 
 <div class="prose">
 	<h2>Data model</h2>
-	<p>felt's SQL database tables:</p>
-	<Mermaid
-		content={`classDiagram
-    Accounts <|-- Actors
-    Actors <|-- Hubs
-    Hubs <|-- Actors
-    Hubs <|-- Roles
-    Roles <|-- Assignments
-    Actors <|-- Assignments
-    Roles <|-- Policies
-    Hubs <|-- Spaces
-    Spaces <|-- Entities
-    Entities <|-- Entities
-    Entities <|-- Ties`}
-	/>
+	<p>SQL database tables:</p>
+	<img alt="the data model diagram" src={data_model_diagram} />
 </div>

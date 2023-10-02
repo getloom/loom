@@ -1,9 +1,9 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 
-	import Mermaid from '$lib/ui/Mermaid.svelte';
 	import CodeExample from '$lib/ui/CodeExample.svelte';
 	import {getDocsSettings} from '$lib/docs/docs';
+	import control_overview_diagram from '$lib/docs/control_overview_diagram.png';
 
 	const docsSettings = getDocsSettings();
 	$: ({path} = $docsSettings);
@@ -54,21 +54,6 @@ const adminActor = {'{'}
 		<a href="{base}{path}/guide/user/actor-types">actor types</a>
 	</blockquote>
 
-	<h3>Control and ownership diagram</h3>
-
-	<Mermaid
-		content={`flowchart
-	subgraph Infrastructure
-		O[Operators] -- delegate control --> A
-		subgraph Instance
-			U[Users] -- access --> C
-			S[Stewards] -- steward --> C[Hubs]
-			A[Admins] -- administer --> C
-			A -- delegate control --> S
-		end
-	end
-	Infrastructure -- host --> Instance
-	O -- manages infrastructure --> O
-	A -- manages instance --> A`}
-	/>
+	<h3>Control overview diagram</h3>
+	<img alt="the control overview diagram" src={control_overview_diagram} />
 </div>
