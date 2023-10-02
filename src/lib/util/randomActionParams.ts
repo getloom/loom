@@ -1,6 +1,6 @@
 import {random_boolean} from '@grogarden/util/random.js';
 import {SvelteComponent} from 'svelte';
-import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 import {
 	randomEntityData,

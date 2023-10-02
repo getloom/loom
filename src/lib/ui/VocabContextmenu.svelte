@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ContextmenuEntry from '@fuz.dev/fuz/ContextmenuEntry.svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';

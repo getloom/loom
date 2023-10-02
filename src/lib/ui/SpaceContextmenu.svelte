@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import ContextmenuEntry from '@fuz.dev/fuz/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@fuz.dev/fuz/ContextmenuSubmenu.svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
+	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import type {Space} from '$lib/vocab/space/space';

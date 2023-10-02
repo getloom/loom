@@ -4,7 +4,7 @@
 	import {identity} from '@grogarden/util/function.js';
 	import type {Result} from '@grogarden/util/result.js';
 	import {createEventDispatcher} from 'svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {getApp} from '$lib/ui/app';

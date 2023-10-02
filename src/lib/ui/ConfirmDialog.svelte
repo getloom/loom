@@ -1,6 +1,6 @@
 <script lang="ts">
-	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
-	import Alert from '@fuz.dev/fuz/Alert.svelte';
+	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import {onMount} from 'svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FeltWindowHost from '@fuz.dev/fuz/FeltWindowHost.svelte';
+	import FeltWindowHost from '@fuz.dev/fuz_library/FeltWindowHost.svelte';
 	import {onDestroy} from 'svelte';
 
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
@@ -13,20 +13,20 @@
 		ui: {ephemera},
 	} = getApp();
 
-	let postMessage: ((message: any) => void) | undefined;
+	let post_message: ((message: any) => void) | undefined;
 
 	// Forward ephemera to the iframe, subscribing manually to avoid the component-level batching.
 	// Demo of the problem: https://svelte.dev/repl/69e1c9327ce847b0af642ed3163201da?version=3.57.0
 	onDestroy(
 		ephemera.subscribe((v) => {
 			if (
-				postMessage && // wait for init
+				post_message && // wait for init
 				v && // there may be no ephemera
 				v.space_id === $space.space_id && // scope to this space
 				v.actor !== $actor.actor_id // don't forward ephemera created by the user
 			) {
 				// TODO forward `actor: v.actor` if user allows it
-				postMessage({type: 'Ephemera', data: v.data}); // don't forward the space_id
+				post_message({type: 'Ephemera', data: v.data}); // don't forward the space_id
 			}
 		}),
 	);
@@ -53,7 +53,7 @@
 	{/if}
 	<FeltWindowHost
 		tenant={el?.contentWindow}
-		bind:postMessage
+		bind:post_message
 		on:message={(e) => {
 			if (e.detail?.type === 'Ephemera') {
 				// TODO validate automatically

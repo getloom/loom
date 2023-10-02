@@ -2,7 +2,7 @@
 	import {goto} from '$app/navigation';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
-	import ContextmenuEntry from '@fuz.dev/fuz/ContextmenuEntry.svelte';
+	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';

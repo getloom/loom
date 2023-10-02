@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
-	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';

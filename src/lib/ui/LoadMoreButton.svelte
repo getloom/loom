@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import {slide} from 'svelte/transition';
 
 	import type {QueryStore} from '$lib/util/query';

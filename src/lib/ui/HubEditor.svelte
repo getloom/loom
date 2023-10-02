@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import type {Hub} from '$lib/vocab/hub/hub';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';

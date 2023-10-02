@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import HubNavItem from '$lib/ui/HubNavItem.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';

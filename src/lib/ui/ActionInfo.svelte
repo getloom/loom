@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import type {ActionData} from '$lib/vocab/action/action';
 	import CreateActionForm from '$lib/ui/CreateActionForm.svelte';

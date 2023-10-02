@@ -7,10 +7,10 @@ import {
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent} from 'svelte';
-import type {DialogParams} from '@fuz.dev/fuz/dialog.js';
+import type {DialogParams} from '@fuz.dev/fuz_dialog/dialog.js';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
-import {createContextmenu, type ContextmenuStore} from '@fuz.dev/fuz/contextmenu.js';
+import {create_contextmenu, type ContextmenuStore} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 import type {Hub, HubId} from '$lib/vocab/hub/hub';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
@@ -319,7 +319,7 @@ export const toUi = (
 	const mainLayoutView = writable('<Dashboard />'); // TODO source this from the hub/space context (so routes can customize the UI)
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
-	const contextmenu = createContextmenu({layout});
+	const contextmenu = create_contextmenu({layout});
 	const dialogs = writable<DialogParams[]>([]);
 	const viewBySpace = mutable(new WeakMap<Readable<Space>, string>());
 	const ephemera = writable<EphemeraResponse | null>(null);

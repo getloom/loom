@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {to_contextmenu_params, type ContextmenuActionParams} from '@fuz.dev/fuz/contextmenu.js';
+	import {
+		to_contextmenu_params,
+		type ContextmenuActionParams,
+	} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import {toName, toIcon} from '$lib/vocab/entity/entityHelpers';

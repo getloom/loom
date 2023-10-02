@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
-	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {ContextmenuActionParams} from '@fuz.dev/fuz/contextmenu.js';
+	import type {ContextmenuActionParams} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';

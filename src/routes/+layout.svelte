@@ -11,18 +11,18 @@
 	import '@fuz.dev/fuz/theme.css';
 	import '$lib/ui/style.css';
 	import Themed from '@fuz.dev/fuz/Themed.svelte';
-	import {set_devmode} from '@fuz.dev/fuz/devmode.js';
-	import DevmodeControls from '@fuz.dev/fuz/DevmodeControls.svelte';
+	import {set_devmode} from '@fuz.dev/fuz_library/devmode.js';
+	import DevmodeControls from '@fuz.dev/fuz_library/DevmodeControls.svelte';
 	import {page} from '$app/stores';
 	import {browser} from '$app/environment';
-	import Dialogs from '@fuz.dev/fuz/Dialogs.svelte';
+	import Dialogs from '@fuz.dev/fuz_dialog/Dialogs.svelte';
 	import {is_editable, swallow} from '@grogarden/util/dom.js';
 	import {format} from 'date-fns';
-	import Contextmenu from '@fuz.dev/fuz/Contextmenu.svelte';
+	import Contextmenu from '@fuz.dev/fuz_contextmenu/Contextmenu.svelte';
 	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
 	import {Logger} from '@grogarden/util/log.js';
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
-	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import {toSocketStore} from '$lib/ui/socket';
 	import Onboard from '$lib/ui/Onboard.svelte';

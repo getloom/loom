@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import {getApp} from '$lib/ui/app';

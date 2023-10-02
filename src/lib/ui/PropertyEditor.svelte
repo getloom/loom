@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {slide} from 'svelte/transition';
-	import Alert from '@fuz.dev/fuz/Alert.svelte';
+	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import {identity} from '@grogarden/util/function.js';
 	import type {Result} from '@grogarden/util/result.js';
-	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import {afterUpdate} from 'svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {autofocus} from '$lib/ui/actions';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';

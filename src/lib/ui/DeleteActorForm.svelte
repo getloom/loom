@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Alert from '@fuz.dev/fuz/Alert.svelte';
-	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 
 	import {getApp} from '$lib/ui/app';
 	import type {AccountActor} from '$lib/vocab/actor/actor';

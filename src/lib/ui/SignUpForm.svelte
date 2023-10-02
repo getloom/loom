@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {tick} from 'svelte';
 	import {PUBLIC_INSTANCE_ICON} from '$env/static/public';
-	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import {swallow} from '@grogarden/util/dom.js';
 
 	import {autofocus} from '$lib/ui/actions';

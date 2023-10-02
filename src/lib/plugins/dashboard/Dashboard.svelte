@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {to_contextmenu_params} from '@fuz.dev/fuz/contextmenu.js';
+	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import Luggage from '$lib/ui/Luggage.svelte';
 	import MainNav from '$lib/ui/MainNav.svelte';

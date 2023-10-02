@@ -8,8 +8,8 @@
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor';
 	import {autofocus} from '$lib/ui/actions';
-	import Alert from '@fuz.dev/fuz/Alert.svelte';
-	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
+	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 
 	const {actions} = getApp();
 

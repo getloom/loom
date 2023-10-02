@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@fuz.dev/fuz/PendingButton.svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz/dialog.js';
+	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub';
-	import Alert from '@fuz.dev/fuz/Alert.svelte';
+	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 
 	const {actions} = getApp();
 

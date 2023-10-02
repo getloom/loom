@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz/PendingAnimation.svelte';
+	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import NotesItems from '$lib/plugins/notes/NotesItems.svelte';
