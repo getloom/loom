@@ -19,7 +19,7 @@
 		});
 </script>
 
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h1>instance admin</h1>
 	{#if $hub.hub_id === ADMIN_HUB_ID}
 		<fieldset>

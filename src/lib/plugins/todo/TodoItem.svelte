@@ -226,7 +226,7 @@
 		width: 100%;
 	}
 	.items {
-		padding-left: var(--spacing_xl);
+		padding-left: var(--spacing_1);
 		width: 100%;
 	}
 	.icon_button {

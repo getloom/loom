@@ -90,7 +90,7 @@
 	<!-- TODO extract an accessible menu component, see PRS
 	https://github.com/feltjs/felt/pull/362
 	and https://github.com/fuz-dev/fuz/pull/197 -->
-	<div class="sidebar padded_xl width_sm">
+	<div class="sidebar padded_1 width_sm">
 		<slot name="header"><header>@feltjs/felt</header></slot>
 		<nav>
 			<h2><a href="{base}{path}" class:selected={pathname === path}>docs</a></h2>
@@ -285,7 +285,7 @@
 	}
 	ol,
 	menu {
-		padding-left: var(--spacing_xl6);
+		padding-left: var(--spacing_6);
 	}
 	li {
 		display: flex;
@@ -327,14 +327,14 @@
 		.sidebar {
 			position: relative;
 			transform: none;
-			margin-bottom: var(--spacing_xl3);
+			margin-bottom: var(--spacing_3);
 		}
 	}
 	menu {
 		margin-bottom: var(--spacing_lg);
 	}
 	h4 {
-		padding-left: var(--spacing_xl3);
+		padding-left: var(--spacing_3);
 	}
 	footer {
 		display: flex;
@@ -343,7 +343,7 @@
 		background-color: var(--fg_1);
 		border-radius: var(--border_radius_sm);
 		padding: var(--spacing_sm);
-		margin: var(--spacing_xl5) 0;
+		margin: var(--spacing_5) 0;
 	}
 	.links {
 		display: flex;

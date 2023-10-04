@@ -66,7 +66,7 @@
 	$: paramsPropertiesKeys = paramsProperties && Object.keys(paramsProperties);
 </script>
 
-<form {...attrs} class="padded_xl">
+<form {...attrs} class="padded_1">
 	<div class="prose">
 		<h2>Create an Action</h2>
 	</div>
@@ -152,7 +152,7 @@
 	.content {
 		position: sticky;
 		top: 0;
-		padding-left: var(--spacing_xl3);
+		padding-left: var(--spacing_3);
 		flex: 1;
 		overflow: hidden;
 	}

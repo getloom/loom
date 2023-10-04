@@ -22,7 +22,7 @@
 	export let selections: Mutable<Set<string>> | undefined = undefined;
 </script>
 
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h1 id="vocab">vocab</h1>
 	<aside>
 		The felt vocabulary is published as a <a href="https://json-schema.org/">JSON Schema</a>
@@ -32,7 +32,7 @@
 		<a href="{base}/schemas/vocab.json" download>{base}/schemas/vocab.json</a>.
 	</aside>
 </div>
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h2 id="views">views</h2>
 </div>
 <ul>
@@ -49,7 +49,7 @@
 	{/each}
 </ul>
 <hr />
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h2 id="models">models</h2>
 </div>
 <ul>
@@ -66,7 +66,7 @@
 	{/each}
 </ul>
 <hr />
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h2 id="service_actions">service actions</h2>
 </div>
 <ul>
@@ -81,7 +81,7 @@
 		</li>
 	{/each}
 </ul>
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h2 id="client_actions">client actions</h2>
 </div>
 <ul>
@@ -101,10 +101,10 @@
 	li {
 		display: flex;
 		flex-direction: column;
-		margin: var(--spacing_xl3) 0;
+		margin: var(--spacing_3) 0;
 	}
 	.view {
 		padding: var(--spacing_lg);
-		margin-bottom: var(--spacing_xl4);
+		margin-bottom: var(--spacing_4);
 	}
 </style>

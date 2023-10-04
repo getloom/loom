@@ -24,7 +24,7 @@
 	<form class="prose" {...attrs}>
 		<header>
 			<h2>Edit Hub</h2>
-			<p style:font-size="var(--size_xl)">
+			<p style:font-size="var(--size_1)">
 				<HubAvatar {actor} {hub} />
 			</p>
 			<section>
@@ -82,6 +82,6 @@
 	.hub-editor {
 		display: flex;
 		flex-direction: column;
-		padding: var(--spacing_xl);
+		padding: var(--spacing_1);
 	}
 </style>

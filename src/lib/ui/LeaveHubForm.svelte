@@ -46,7 +46,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...attrs}>
+<form class="prose padded_1" {...attrs}>
 	<h2>Leave Hub?</h2>
 	<ContextInfo {actor} {hub} />
 	<label>

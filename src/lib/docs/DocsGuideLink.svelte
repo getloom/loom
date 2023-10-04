@@ -51,12 +51,12 @@
 		justify-content: center;
 		flex-shrink: 0;
 		font-size: var(--icon_size_md);
-		width: calc(var(--icon_size_md) + var(--spacing_xl) + var(--spacing_md));
-		padding-right: var(--spacing_xl);
+		width: calc(var(--icon_size_md) + var(--spacing_1) + var(--spacing_md));
+		padding-right: var(--spacing_1);
 		padding-left: var(--spacing_md);
 	}
 	.title {
-		font-size: var(--size_xl);
+		font-size: var(--size_1);
 		margin-bottom: var(--spacing_sm);
 	}
 </style>

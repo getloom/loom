@@ -26,6 +26,6 @@
 
 <style>
 	.entity-editor {
-		padding: var(--spacing_xl);
+		padding: var(--spacing_1);
 	}
 </style>

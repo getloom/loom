@@ -43,7 +43,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...attrs}>
+<form class="prose padded_1" {...attrs}>
 	<h2>Delete <ActorAvatar {actor} inline={true} />?</h2>
 	{#if errorMessage}
 		<Alert status="error">{errorMessage}</Alert>

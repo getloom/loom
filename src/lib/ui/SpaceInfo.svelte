@@ -54,7 +54,7 @@
 		width: 100%;
 	}
 	.name {
-		font-size: var(--size_xl);
+		font-size: var(--size_1);
 		display: flex;
 		align-items: center;
 	}

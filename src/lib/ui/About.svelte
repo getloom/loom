@@ -6,7 +6,7 @@
 	import {VERSION as FELT_VERSION} from '$lib/util/constants';
 </script>
 
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h1>About this Instance</h1>
 	<p>Need help? Have questions, comments, concerns?</p>
 	<ul>

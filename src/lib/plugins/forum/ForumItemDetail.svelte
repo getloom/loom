@@ -127,7 +127,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	li {
 		align-items: flex-start;
 		flex-direction: column;
-		margin-bottom: var(--spacing_xl3);
+		margin-bottom: var(--spacing_3);
 	}
 	li:last-child {
 		margin-bottom: 0;
@@ -147,7 +147,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	.items {
 		width: 100%;
 		padding: var(--spacing_xs);
-		padding-left: var(--spacing_xl3);
+		padding-left: var(--spacing_3);
 		padding-right: 0;
 		padding-bottom: 0;
 	}

@@ -36,7 +36,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding-left: var(--spacing_xl);
+		padding-left: var(--spacing_1);
 		background-color: var(--fg_0);
 	}
 	.assignment-item:hover {

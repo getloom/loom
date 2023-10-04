@@ -7,7 +7,7 @@
 </script>
 
 <div class="personal-home">
-	<section class="prose padded_xl">
+	<section class="prose padded_1">
 		<h1 style:--mention_icon_size="var(--icon_size_md)">
 			<Mention name={$actor.name} />'s personal hub
 		</h1>

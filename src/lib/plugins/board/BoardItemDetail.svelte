@@ -147,14 +147,14 @@
 	}
 	.items {
 		padding: var(--spacing_xs);
-		padding-left: var(--spacing_xl3);
+		padding-left: var(--spacing_3);
 		padding-right: 0;
 		padding-bottom: 0;
 	}
 	.reply-input {
 		--icon_size: var(--icon_size_xs);
 		/* TODO refactor these into Board-specific CSS vars on the top-level `Board` */
-		margin-left: var(--spacing_xl3);
+		margin-left: var(--spacing_3);
 		padding: var(--spacing_xs);
 		padding-left: calc(var(--icon_size_sm) + var(--spacing_xs2) + var(--spacing_xs));
 		display: flex;

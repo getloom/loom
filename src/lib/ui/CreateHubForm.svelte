@@ -83,7 +83,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...attrs}>
+<form class="prose padded_1" {...attrs}>
 	<h2>Create a new Hub</h2>
 	<ContextInfo {actor} />
 	<fieldset>

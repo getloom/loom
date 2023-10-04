@@ -118,7 +118,7 @@
 	}
 
 	section {
-		margin-bottom: var(--spacing_xl3);
+		margin-bottom: var(--spacing_3);
 	}
 
 	/* TODO figure this out semantically */

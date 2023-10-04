@@ -8,6 +8,6 @@
 	$: errorMessage = text ?? ERROR_MESSAGE_UNKNOWN;
 </script>
 
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<Alert status="error">Error: {errorMessage}</Alert>
 </div>

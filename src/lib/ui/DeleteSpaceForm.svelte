@@ -47,7 +47,7 @@
 	};
 </script>
 
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<form {...attrs}>
 		<h2>Delete Space?</h2>
 		<ContextInfo {actor} {hub} {space} />

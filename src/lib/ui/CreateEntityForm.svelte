@@ -80,7 +80,7 @@
 	};
 </script>
 
-<form class="padded_xl" {...attrs}>
+<form class="padded_1" {...attrs}>
 	{#if $$slots.header}
 		<slot name="header">
 			<h2>Create a new {entityName}</h2>

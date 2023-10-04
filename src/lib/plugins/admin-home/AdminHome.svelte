@@ -2,7 +2,7 @@
 	import RolesList from '$lib/ui/RolesList.svelte';
 </script>
 
-<div class="padded_xl">
+<div class="padded_1">
 	<section>
 		<div class="prose">
 			<h1>admin</h1>
@@ -18,6 +18,6 @@
 
 <style>
 	section {
-		margin-bottom: var(--spacing_xl7);
+		margin-bottom: var(--spacing_7);
 	}
 </style>

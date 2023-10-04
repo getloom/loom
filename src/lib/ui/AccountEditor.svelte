@@ -20,10 +20,10 @@
 
 {#if $account}
 	<div class="account-editor width_md">
-		<div class="prose box padded_xl">
+		<div class="prose box padded_1">
 			<h2>Account</h2>
 			<section>
-				<div style:font-size="var(--size_xl)">{$account.name}</div>
+				<div style:font-size="var(--size_1)">{$account.name}</div>
 				<div>created {format($account.created, 'PPPPp')}</div>
 				{#if $account.updated !== null}
 					<div>updated {format($account.updated, 'PPPPp')}</div>
@@ -48,6 +48,6 @@
 
 <style>
 	.account-editor {
-		padding: var(--spacing_xl);
+		padding: var(--spacing_1);
 	}
 </style>

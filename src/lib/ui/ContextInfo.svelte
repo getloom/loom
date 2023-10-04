@@ -15,7 +15,7 @@
 
 <div class="context-info">
 	{#if space && actor && hub}
-		<div class="row" style:font-size="var(--size_xl)">
+		<div class="row" style:font-size="var(--size_1)">
 			<SpaceName {space} />
 		</div>
 	{/if}

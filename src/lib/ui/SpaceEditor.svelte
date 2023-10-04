@@ -94,6 +94,6 @@
 	.space-editor {
 		display: flex;
 		flex-direction: column;
-		padding: var(--spacing_xl);
+		padding: var(--spacing_1);
 	}
 </style>

@@ -35,7 +35,7 @@
 		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),
 	]}
 >
-	<div class="prose padded_xl formatted">
+	<div class="prose padded_1 formatted">
 		<EntityContent {entity} />
 	</div>
 	<button

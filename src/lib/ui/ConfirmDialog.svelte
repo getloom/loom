@@ -47,7 +47,7 @@
 	});
 </script>
 
-<div class="padded_xl">
+<div class="padded_1">
 	<div class="prose">
 		<h1>{promptText}</h1>
 	</div>

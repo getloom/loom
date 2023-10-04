@@ -61,13 +61,13 @@
 
 <style>
 	form {
-		padding: var(--spacing_xl);
+		padding: var(--spacing_1);
 		min-width: var(--width_sm);
 	}
 	/* TODO figure this out more generally, these styles shouldn't be needed --
 	should we be using `.prose` instead? */
 	fieldset {
-		padding: var(--spacing_xl3) 0;
-		margin-top: var(--spacing_xl);
+		padding: var(--spacing_3) 0;
+		margin-top: var(--spacing_1);
 	}
 </style>

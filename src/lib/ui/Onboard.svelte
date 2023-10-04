@@ -9,7 +9,7 @@
 
 <style>
 	.welcome {
-		font-size: var(--size_xl7);
+		font-size: var(--size_7);
 		text-align: center;
 		font-weight: 900;
 	}

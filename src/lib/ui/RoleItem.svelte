@@ -25,7 +25,7 @@
 <style>
 	/* TODO extract some sort of reusable class/component */
 	.role-name {
-		font-size: var(--size_xl);
+		font-size: var(--size_1);
 		font-weight: 600;
 		padding: var(--spacing_xs2) var(--spacing_sm);
 		margin-right: var(--spacing_md);

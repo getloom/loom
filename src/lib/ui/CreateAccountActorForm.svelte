@@ -70,7 +70,7 @@
 
 <!-- TODO these box classes -- ideally would have a single class or change the defaults,
 maybe `form.box` should be interpreted a particular way in Felt? -->
-<div class="prose padded_xl box">
+<div class="prose padded_1 box">
 	<form class="box" {...attrs}>
 		<h2>Create a new Actor</h2>
 		<fieldset class="box">

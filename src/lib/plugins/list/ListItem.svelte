@@ -100,7 +100,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	}
 	.content {
 		flex: 1;
-		font-size: var(--size_xl);
+		font-size: var(--size_1);
 		padding: 0 var(--spacing_md);
 	}
 </style>

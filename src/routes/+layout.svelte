@@ -200,7 +200,7 @@
 	.main-content {
 		width: var(--width_md);
 		max-height: 100%; /* fix vertical scrolling */
-		padding: var(--spacing_xl);
+		padding: var(--spacing_1);
 	}
 	.account {
 		align-items: center;

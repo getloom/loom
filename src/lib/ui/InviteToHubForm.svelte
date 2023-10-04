@@ -55,7 +55,7 @@
 	};
 </script>
 
-<form class="prose padded_xl" {...attrs}>
+<form class="prose padded_1" {...attrs}>
 	<h2>Invite to Hub</h2>
 	<ContextInfo {actor} {hub} />
 	<fieldset>

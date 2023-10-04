@@ -96,7 +96,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_xl4);
+		padding: var(--spacing_md) var(--spacing_md) var(--spacing_md) var(--spacing_4);
 		overflow: auto;
 	}
 	.property .name {

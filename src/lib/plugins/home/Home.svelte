@@ -54,7 +54,7 @@
 
 <!--TODO extract stuff below into new component-->
 <div class="home">
-	<section class="prose padded_xl">
+	<section class="prose padded_1">
 		<p>
 			<strong>
 				Here's our hub rules and norms!<br />
@@ -64,7 +64,7 @@
 		</p>
 	</section>
 	<section class="rules-and-norms">
-		<div class="rules prose padded_xl panel">
+		<div class="rules prose padded_1 panel">
 			<div class="header">
 				<h4>rules</h4>
 				<!--TODO how to trigger a directory freshen from result of this dialogue-->
@@ -84,7 +84,7 @@
 			</div>
 			{#if rules}<EntityContent entity={rules} />{:else}rules not found{/if}
 		</div>
-		<div class="norms prose padded_xl panel">
+		<div class="norms prose padded_1 panel">
 			<div class="header">
 				<h4>norms</h4>
 				<button
@@ -127,8 +127,8 @@
 	.norms {
 		flex: 1;
 		min-height: 200px;
-		margin-left: var(--spacing_xl);
-		margin-right: var(--spacing_xl);
+		margin-left: var(--spacing_1);
+		margin-right: var(--spacing_1);
 	}
 
 	.norms {
@@ -136,9 +136,9 @@
 	}
 
 	.roles {
-		margin: var(--spacing_xl);
+		margin: var(--spacing_1);
 	}
 	.roles .panel {
-		padding: var(--spacing_xl);
+		padding: var(--spacing_1);
 	}
 </style>

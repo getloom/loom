@@ -26,7 +26,7 @@
 	);
 </script>
 
-<div class="padded_xl">
+<div class="padded_1">
 	<h1>Assign the role "{$role.name}" to:</h1>
 	{#if selectedActor}
 		<menu>

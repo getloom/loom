@@ -50,7 +50,7 @@
 		});
 </script>
 
-<div class="prose padded_xl">
+<div class="prose padded_1">
 	<h1>Manage Roles</h1>
 	<ContextInfo {actor} {hub} />
 </div>

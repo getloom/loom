@@ -74,7 +74,7 @@
 	};
 </script>
 
-<form class="panel prose padded_xl" {...attrs}>
+<form class="panel prose padded_1" {...attrs}>
 	<fieldset class="box">
 		<legend class="width_full text_align_center">change account password</legend>
 		<label>
