@@ -11,7 +11,7 @@ import {
 	type AfterResponseCallback,
 	flushAfterResponseCallbacks,
 } from '$lib/server/service';
-import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
+import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv';
 import {SessionApi} from '$lib/session/SessionApi';
 import {authorize} from '$lib/server/authorize';
 import {checkBroadcastAudience} from '$lib/server/Broadcast';

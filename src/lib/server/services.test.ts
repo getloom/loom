@@ -4,7 +4,7 @@ import * as assert from 'uvu/assert';
 import {red} from '$lib/server/colors';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
 import {log, toServiceRequestFake} from '$lib/util/testHelpers';
-import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
+import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv';
 import {services} from '$lib/server/services';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import {SessionApiFake} from '$lib/session/SessionApiFake';

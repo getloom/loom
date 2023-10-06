@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {validateSchema, toValidationErrorMessage} from '$lib/util/ajv';
+import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv';
 import {actionDatas} from '$lib/vocab/action/actionData';
 import {randomActionParams} from '$lib/util/randomActionParams';
 import type {TestAppContext} from '$lib/util/testAppHelpers';

@@ -23,28 +23,14 @@
 			"type": "object",
 			"description": "\n\t\tRepresents a human actor logged in via an <Vocab name=\"Account\" />. They are owned and managed from the account level.\n\t\tWhen an AccountActor is created, a personal <Vocab name=\"Hub\" /> is also created for it and associated via <code>hub_id</code>.\n\t\tA reference to this personal <Vocab name=\"Hub\" /> is stored in <code>hub_id</code>.\n\t",
 			"properties": {
-				"actor_id": {
-					"$ref": "/schemas/ActorId",
-					"tsType": "ActorId",
-					"tsImport": "import type {ActorId} from '$lib/vocab/actor/actor';"
-				},
-				"account_id": {
-					"$ref": "/schemas/AccountId",
-					"tsType": "AccountId",
-					"tsImport": "import type {AccountId} from '$lib/vocab/account/account';"
-				},
-				"hub_id": {
-					"$ref": "/schemas/HubId",
-					"tsType": "HubId",
-					"tsImport": "import type {HubId} from '$lib/vocab/hub/hub';"
-				},
+				"actor_id": {"$ref": "/schemas/ActorId"},
+				"account_id": {"$ref": "/schemas/AccountId"},
+				"hub_id": {"$ref": "/schemas/HubId"},
 				"type": {"type": "string", "enum": ["account"]},
 				"name": {"type": "string"},
 				"icon": {"type": "string"},
-				"created": {"type": "object", "instanceof": "Date", "tsType": "Date"},
-				"updated": {
-					"anyOf": [{"type": "object", "instanceof": "Date", "tsType": "Date"}, {"type": "null"}]
-				}
+				"created": {"type": "object", "instanceof": "Date"},
+				"updated": {"anyOf": [{"type": "object", "instanceof": "Date"}, {"type": "null"}]}
 			},
 			"required": ["actor_id", "account_id", "hub_id", "type", "name", "created", "updated"],
 			"additionalProperties": false

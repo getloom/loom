@@ -48,11 +48,13 @@ export const gen: Gen = async ({origin_id, log}) => {
 	// TODO see about cleaning this up with a helper, we're basically doing a manual `gen` task run
 	const imports = await load_imports();
 	const genCtx: GenContext = {imports, origin_id, log};
-	infer_schema_types(actionDatas as any, genCtx);
 	// TODO refactor, cache somewhere maybe?
 	const $refs = new Set<string>();
 	const tsImports: string[] = [];
-	traverse(actionDatas, (key, value, obj) => {
+	const action_data_items = structuredClone(actionDatas);
+	// TODO maybe add a Gro helper for these
+	infer_schema_types(action_data_items as any, genCtx);
+	traverse(action_data_items, (key, value, obj) => {
 		if (key === 'tsImport') tsImports.push(value);
 		if (key === '$ref' && !('tsImport' in obj)) $refs.add(value);
 	});
@@ -69,6 +71,7 @@ import type {ApiResult} from '$lib/server/api';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service';
 import type {MutationContext} from '$lib/util/mutation';
 import type {HubTemplate} from '$lib/ui/templates';
+import type {Flavored} from '@grogarden/util/types.js'; // TODO something is buggy here, shouldn't be needed
 
 /* eslint-disable @typescript-eslint/array-type */
 
@@ -118,7 +121,7 @@ export interface ServiceByName {
 	}, '')}
 }
 
-${await actionDatas.reduce(
+${await structuredClone(action_data_items).reduce(
 	async (str, actionData) =>
 		(await str) +
 		`

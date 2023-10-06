@@ -10,13 +10,13 @@ import {schemas} from '$lib/vocab/schemas';
  */
 export const gen: Gen = async () => {
 	// TODO make these options configurable
-	const schema = bundle_schemas(
+	const bundled = bundle_schemas(
 		schemas,
 		'https://www.felt.dev/schemas/vocab.json',
 		'@feltjs/felt vocab',
 	);
 	return {
 		filename: '../../static/schemas/vocab.json',
-		content: JSON.stringify(schema),
+		content: JSON.stringify(bundled),
 	};
 };

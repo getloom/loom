@@ -4,7 +4,7 @@ import {Logger} from '@grogarden/util/log.js';
 import {red, blue, gray} from '$lib/server/colors';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc';
 import type {ApiServer} from '$lib/server/ApiServer';
-import {toValidationErrorMessage, validateSchema} from '$lib/util/ajv';
+import {toValidationErrorMessage, validateSchema} from '$lib/server/ajv';
 import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
 import {authorize} from '$lib/server/authorize';
 import {
