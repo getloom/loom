@@ -116,6 +116,9 @@
       }
     ]
   },
+  "files": [
+    "dist"
+  ],
   "exports": {
     "./ui/ErrorMessage.svelte": {
       "svelte": "./dist/ui/ErrorMessage.svelte",
