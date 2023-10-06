@@ -2,6 +2,7 @@ import type {GroConfigCreator} from '@grogarden/gro';
 import {readdir} from 'node:fs/promises';
 import {plugin as gro_plugin_server, SERVER_SOURCE_ID} from '@grogarden/gro/gro_plugin_server.js';
 import {plugin as gro_plugin_sveltekit_frontend} from '@grogarden/gro/gro_plugin_sveltekit_frontend.js';
+import {plugin as gro_plugin_library} from '@grogarden/gro/gro_plugin_library.js';
 
 import {MIGRATIONS_DIR} from '$lib/db/migration';
 import {init_env} from '$lib/server/env';
@@ -33,6 +34,7 @@ const config: GroConfigCreator = async (cfg) => {
 		// a problem with this design is that users could use it in ways that break often, like even when new base plugins are added
 		gro_plugin_server({entry_points}),
 		gro_plugin_sveltekit_frontend(),
+		gro_plugin_library(),
 	];
 
 	cfg.package_json = (pkg) => {
