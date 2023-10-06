@@ -128,12 +128,36 @@
       "default": "./dist/docs/docs.js",
       "types": "./dist/docs/docs.d.ts"
     },
+    "./ui/app.js": {
+      "default": "./dist/ui/app.js",
+      "types": "./dist/ui/app.js"
+    },
+    "./ui/components.js": {
+      "default": "./dist/ui/components.js",
+      "types": "./dist/ui/components.js"
+    },
     "./ui/ErrorMessage.svelte": {
       "svelte": "./dist/ui/ErrorMessage.svelte",
       "types": "./dist/ui/ErrorMessage.svelte.d.ts"
     },
+    "./ui/HttpApiClient.js": {
+      "default": "./dist/ui/HttpApiClient.js",
+      "types": "./dist/ui/HttpApiClient.js"
+    },
+    "./ui/mutations.js": {
+      "default": "./dist/ui/mutations.js",
+      "types": "./dist/ui/mutations.js"
+    },
+    "./ui/services.js": {
+      "default": "./dist/ui/services.js",
+      "types": "./dist/ui/services.js"
+    },
     "./ui/style.css": {
       "default": "./dist/ui/style.css"
+    },
+    "./ui/ui.js": {
+      "default": "./dist/ui/ui.js",
+      "types": "./dist/ui/ui.js"
     },
     "./util/deserialize.js": {
       "default": "./dist/util/deserialize.js",
