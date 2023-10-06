@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.8.3
+
+### Patch Changes
+
+- c05abb95: fix import paths
+
 ## 0.8.2
 
 ### Patch Changes
