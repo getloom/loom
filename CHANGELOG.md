@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.8.5
+
+### Patch Changes
+
+- a932fbb8: export modules for docs
+
 ## 0.8.4
 
 ### Patch Changes
