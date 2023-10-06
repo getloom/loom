@@ -41,17 +41,20 @@ const config: GroConfigCreator = async (cfg) => {
 		pkg.scripts!.start = `node ${START_SERVER_SCRIPT_BUILD_PATH}`;
 		pkg.scripts!.after_deploy = `node ${AFTER_DEPLOY_SCRIPT_BUILD_PATH}`;
 		pkg.exports = {
+			'./docs/Docs.svelte': {
+				svelte: './dist/docs/Docs.svelte',
+				types: './dist/docs/Docs.svelte.d.ts',
+			},
+			'./docs/docs.js': {
+				default: './dist/docs/docs.js',
+				types: './dist/docs/docs.d.ts',
+			},
 			'./ui/ErrorMessage.svelte': {
 				svelte: './dist/ui/ErrorMessage.svelte',
 				types: './dist/ui/ErrorMessage.svelte.d.ts',
 			},
-			'./vocab/schemas.js': {
-				default: './dist/vocab/schemas.js',
-				types: './dist/vocab/schemas.d.ts',
-			},
-			'./vocab/action/actions.js': {
-				default: './dist/vocab/action/actions.js',
-				types: './dist/vocab/action/actions.d.ts',
+			'./ui/style.css': {
+				default: './dist/ui/style.css',
 			},
 			'./util/deserialize.js': {
 				default: './dist/util/deserialize.js',
@@ -61,17 +64,17 @@ const config: GroConfigCreator = async (cfg) => {
 				default: './dist/util/query.js',
 				types: './dist/util/query.d.ts',
 			},
+			'./vocab/schemas.js': {
+				default: './dist/vocab/schemas.js',
+				types: './dist/vocab/schemas.d.ts',
+			},
+			'./vocab/action/actions.js': {
+				default: './dist/vocab/action/actions.js',
+				types: './dist/vocab/action/actions.d.ts',
+			},
 			'./vocab/account/account.js': {
 				default: './dist/vocab/account/account.js',
 				types: './dist/vocab/account/account.d.ts',
-			},
-			'./docs/Docs.svelte': {
-				svelte: './dist/docs/Docs.svelte',
-				types: './dist/docs/Docs.svelte.d.ts',
-			},
-			'./docs/docs.js': {
-				default: './dist/docs/docs.js',
-				types: './dist/docs/docs.d.ts',
 			},
 		};
 		return pkg;
