@@ -1,18 +1,21 @@
 import type {Logger} from '@grogarden/util/log.js';
 import type {Result} from '@grogarden/util/result.js';
 
-import type {ServiceActionData} from '$lib/vocab/action/action';
-import type {ISessionApi} from '$lib/session/SessionApi';
-import {Repos} from '$lib/db/Repos';
-import type {ActionActor} from '$lib/vocab/actor/actor';
-import {type ApiResult, toFailedApiResult} from '$lib/server/api';
-import type {AccountId} from '$lib/vocab/account/account';
-import type {ErrorResponse} from '$lib/util/error';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {IBroadcastApi} from '$lib/server/Broadcast';
-import type {PasswordHasher} from '$lib/server/password_hasher';
-import type {PolicyName} from '$lib/vocab/policy/policy';
-import {checkHubAccessForActor, checkPolicyForActor} from '$lib/vocab/policy/policyHelpers.server';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
+import type {ISessionApi} from '$lib/session/SessionApi.js';
+import {Repos} from '$lib/db/Repos.js';
+import type {ActionActor} from '$lib/vocab/actor/actor.js';
+import {type ApiResult, toFailedApiResult} from '$lib/server/api.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
+import type {ErrorResponse} from '$lib/util/error.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {IBroadcastApi} from '$lib/server/Broadcast.js';
+import type {PasswordHasher} from '$lib/server/password_hasher.js';
+import type {PolicyName} from '$lib/vocab/policy/policy.js';
+import {
+	checkHubAccessForActor,
+	checkPolicyForActor,
+} from '$lib/vocab/policy/policyHelpers.server.js';
 
 export type BroadcastAudience = HubId | HubId[]; // TODO expand to `| {audience: BroadcastAudience; data: T}`
 

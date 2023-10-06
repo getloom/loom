@@ -4,18 +4,18 @@
 	import {slide} from 'svelte/transition';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {randomHue} from '$lib/util/color';
-	import {getApp} from '$lib/ui/app';
+	import {randomHue} from '$lib/util/color.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import ListControls from './ListControls.svelte';
 	import ClearCheckedButton from './ClearCheckedButton.svelte';
-	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
-	import {loadOrderedEntities, moveDown, moveUp} from '$lib/vocab/entity/entityHelpers';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
+	import {loadOrderedEntities, moveDown, moveUp} from '$lib/vocab/entity/entityHelpers.js';
 
 	const {actor} = getSpaceContext();
 

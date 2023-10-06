@@ -3,10 +3,10 @@
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 	import {browser} from '$app/environment';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import {getApp} from '$lib/ui/app';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import {getApp} from '$lib/ui/app.js';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 

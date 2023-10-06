@@ -1,4 +1,4 @@
-import type {ServiceActionData} from '$lib/vocab/action/action';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
 
 export const CreateAccountActor: ServiceActionData = {
 	type: 'ServiceAction',
@@ -30,7 +30,7 @@ export const CreateAccountActor: ServiceActionData = {
 				items: {
 					$ref: '/schemas/Entity',
 					tsType: 'Directory',
-					tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
+					tsImport: "import type {Directory} from '$lib/vocab/entity/entityData.js'",
 				},
 			},
 			assignments: {type: 'array', items: {$ref: '/schemas/Assignment'}},

@@ -6,9 +6,9 @@
 	} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
-	import type {Hub} from '$lib/vocab/hub/hub';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 
 	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;

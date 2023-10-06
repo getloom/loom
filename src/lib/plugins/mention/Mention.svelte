@@ -3,8 +3,8 @@
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 
 	const {
 		ui: {actors, hubs},

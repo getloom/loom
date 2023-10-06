@@ -1,8 +1,8 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 /* test__ActorRepo */
 const test__ActorRepo = suite<TestDbContext>('ActorRepo');

@@ -1,7 +1,7 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
+import {blue, gray} from '$lib/server/colors.js';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {
 	CreateHub,
 	ReadHub,
@@ -10,16 +10,16 @@ import {
 	InviteToHub,
 	LeaveHub,
 	KickFromHub,
-} from '$lib/vocab/hub/hubActions';
-import {ADMIN_HUB_ID} from '$lib/util/constants';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
+} from '$lib/vocab/hub/hubActions.js';
+import {ADMIN_HUB_ID} from '$lib/util/constants.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces.js';
+import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers.js';
 import {
 	ACTOR_COLUMNS,
 	isActorAdmin,
 	isActorNameReserved,
-} from '$lib/vocab/actor/actorHelpers.server';
+} from '$lib/vocab/actor/actorHelpers.server.js';
 import {
 	HUB_COLUMNS,
 	checkRemoveActor,
@@ -27,12 +27,12 @@ import {
 	deleteHub,
 	initTemplateGovernanceForHub,
 	toDefaultHubSettings,
-} from '$lib/vocab/hub/hubHelpers.server';
-import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
-import {isCreateHubDisabled} from '$lib/vocab/policy/policyHelpers.server';
-import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/ui/templates';
-import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
-import {ApiError, assertApiError} from '$lib/server/api';
+} from '$lib/vocab/hub/hubHelpers.server.js';
+import {createSpaces} from '$lib/vocab/space/spaceHelpers.server.js';
+import {isCreateHubDisabled} from '$lib/vocab/policy/policyHelpers.server.js';
+import {spaceTemplateToCreateSpaceParams, defaultCommunityHubRoles} from '$lib/ui/templates.js';
+import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server.js';
+import {ApiError, assertApiError} from '$lib/server/api.js';
 
 const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
 

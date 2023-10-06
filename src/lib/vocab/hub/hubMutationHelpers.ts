@@ -3,16 +3,16 @@ import {goto} from '$app/navigation';
 import {get} from 'svelte/store';
 import {page} from '$app/stores';
 
-import type {WritableUi} from '$lib/ui/ui';
-import type {Hub, HubId} from '$lib/vocab/hub/hub';
-import {evictSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
-import {toHubUrl} from '$lib/util/url';
-import {evictRoles} from '$lib/vocab/role/roleMutationHelpers';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {setIfUpdated} from '$lib/util/store';
-import {isAccountActor} from '$lib/vocab/actor/actorHelpers';
-import type {AfterMutation} from '$lib/util/mutation';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {Hub, HubId} from '$lib/vocab/hub/hub.js';
+import {evictSpaces} from '$lib/vocab/space/spaceMutationHelpers.js';
+import {evictAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers.js';
+import {toHubUrl} from '$lib/util/url.js';
+import {evictRoles} from '$lib/vocab/role/roleMutationHelpers.js';
+import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import {setIfUpdated} from '$lib/util/store.js';
+import {isAccountActor} from '$lib/vocab/actor/actorHelpers.js';
+import type {AfterMutation} from '$lib/util/mutation.js';
 
 export const stashHubs = (ui: WritableUi, $hubs: Hub[], replace = false): void => {
 	const {hubById, hubs} = ui;

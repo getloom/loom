@@ -1,4 +1,4 @@
-import type {ApiResult} from '$lib/server/api';
+import type {ApiResult} from '$lib/server/api.js';
 
 export interface BroadcastMessage {
 	type: 'broadcast';

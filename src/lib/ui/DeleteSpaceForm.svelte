@@ -3,10 +3,10 @@
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 
-	import {getApp} from '$lib/ui/app';
-	import type {Space} from '$lib/vocab/space/space';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {actions} = getApp();

@@ -1,11 +1,11 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Role, RoleId} from '$lib/vocab/role/role';
-import type {PolicyId} from '$lib/vocab/policy/policy';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {AccountId} from '$lib/vocab/account/account';
+import {blue, gray} from '$lib/server/colors.js';
+import {PostgresRepo} from '$lib/db/PostgresRepo.js';
+import type {Role, RoleId} from '$lib/vocab/role/role.js';
+import type {PolicyId} from '$lib/vocab/policy/policy.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 const log = new Logger(gray('[') + blue('RoleRepo') + gray(']'));
 

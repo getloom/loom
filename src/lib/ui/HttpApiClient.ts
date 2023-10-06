@@ -8,10 +8,10 @@
 import {inject} from 'regexparam';
 import {Logger} from '@grogarden/util/log.js';
 
-import type {ApiClient} from '$lib/ui/ApiClient';
-import type {ServiceActionData} from '$lib/vocab/action/action';
-import type {Deserialize} from '$lib/util/deserialize';
-import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error';
+import type {ApiClient} from '$lib/ui/ApiClient.js';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
+import type {Deserialize} from '$lib/util/deserialize.js';
+import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error.js';
 
 const log = new Logger('[http]');
 

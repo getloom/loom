@@ -15,9 +15,9 @@ import {
 	randomPolicyName,
 	randomAccountName,
 	randomPassword,
-} from '$lib/util/randomVocab';
-import {randomHue} from '$lib/util/color';
-import type {RandomActionParams} from '$lib/util/randomActionParamsTypes';
+} from '$lib/util/randomVocab.js';
+import {randomHue} from '$lib/util/color.js';
+import type {RandomActionParams} from '$lib/util/randomActionParamsTypes.js';
 
 /* eslint-disable no-param-reassign */
 

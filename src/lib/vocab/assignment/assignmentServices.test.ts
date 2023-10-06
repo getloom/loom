@@ -2,13 +2,13 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
-} from '$lib/vocab/assignment/assignmentServices';
-import {expectApiError, toServiceRequestFake} from '$lib/util/testHelpers';
-import type {HubActor} from '$lib/vocab/actor/actor';
+} from '$lib/vocab/assignment/assignmentServices.js';
+import {expectApiError, toServiceRequestFake} from '$lib/util/testHelpers.js';
+import type {HubActor} from '$lib/vocab/actor/actor.js';
 
 /* test__assignmentServices */
 const test__assignmentServices = suite<TestDbContext>('assignmentServices');

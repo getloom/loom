@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Role, RoleId} from '$lib/vocab/role/role';
+	import type {Role, RoleId} from '$lib/vocab/role/role.js';
 	import AssignmentDisplayItem from '$lib/ui/AssignmentDisplayItem.svelte';
-	import type {Assignment} from '$lib/vocab/assignment/assignment';
+	import type {Assignment} from '$lib/vocab/assignment/assignment.js';
 
 	export let role: Readable<Role>;
 	export let assignmentsByRoleId: Readable<Map<RoleId, Assignment[]>>;

@@ -2,8 +2,8 @@
 	import {base} from '$app/paths';
 	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
 
-	import {getDocsSettings} from '$lib/docs/docs';
-	import type {VocabName} from '$lib/vocab/vocab';
+	import {getDocsSettings} from '$lib/docs/docs.js';
+	import type {VocabName} from '$lib/vocab/vocab.js';
 
 	const docsSettings = getDocsSettings();
 	$: path = $docsSettings?.path || '/docs';

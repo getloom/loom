@@ -2,7 +2,7 @@ import type {Task} from '@grogarden/gro';
 import {z} from 'zod';
 import {task as baseTask, Args as BaseArgs} from '@grogarden/gro/check.task.js';
 
-import {find_migrations, to_migration_index} from '$lib/db/migration';
+import {find_migrations, to_migration_index} from '$lib/db/migration.js';
 
 export const Args = BaseArgs.extend({
 	migrations: z.boolean({description: 'dual of no-migrations'}).default(true),

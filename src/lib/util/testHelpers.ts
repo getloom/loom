@@ -6,27 +6,27 @@ import {noop} from '@grogarden/util/function.js';
 // TODO followup
 // import sourcemapSupport from 'source-map-support';
 
-import {SessionApiFake} from '$lib/session/SessionApiFake';
-import {BroadcastFake} from '$lib/server/BroadcastFake';
+import {SessionApiFake} from '$lib/session/SessionApiFake.js';
+import {BroadcastFake} from '$lib/server/BroadcastFake.js';
 import {
 	toServiceRequest,
 	type AuthorizedServiceRequest,
 	type NonAuthenticatedServiceRequest,
 	type NonAuthorizedServiceRequest,
 	type AfterResponse,
-} from '$lib/server/service';
-import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor';
-import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/util/constants';
-import type {Repos} from '$lib/db/Repos';
-import {toFailedApiResult, type FailedApiResult} from '$lib/server/api';
-import type {AccountId} from '$lib/vocab/account/account';
-import type {IBroadcast} from '$lib/server/Broadcast';
-import type {HubId} from '$lib/vocab/hub/hub';
-import {InviteToHubService} from '$lib/vocab/hub/hubServices';
-import type {InviteToHubResponse} from '$lib/vocab/action/actionTypes';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
-import {toPasswordKey, verifyPassword} from '$lib/server/password';
-import type {PasswordHasher} from '$lib/server/password_hasher';
+} from '$lib/server/service.js';
+import type {AccountActor, ActionActor} from '$lib/vocab/actor/actor.js';
+import {ADMIN_HUB_ID, ADMIN_ACTOR_ID} from '$lib/util/constants.js';
+import type {Repos} from '$lib/db/Repos.js';
+import {toFailedApiResult, type FailedApiResult} from '$lib/server/api.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
+import type {IBroadcast} from '$lib/server/Broadcast.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import {InviteToHubService} from '$lib/vocab/hub/hubServices.js';
+import type {InviteToHubResponse} from '$lib/vocab/action/actionTypes.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
+import {toPasswordKey, verifyPassword} from '$lib/server/password.js';
+import type {PasswordHasher} from '$lib/server/password_hasher.js';
 
 export const log = new Logger('[test]');
 export const logError = new Logger('[test]', undefined, {...Logger, level: 'off'});

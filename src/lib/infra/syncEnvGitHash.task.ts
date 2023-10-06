@@ -1,7 +1,7 @@
 import type {Task} from '@grogarden/gro';
 import {git_current_commit_hash} from '@grogarden/gro/git.js';
 
-import {ENV_FILE_DEV, ENV_FILE_PROD, update_env_git_hash} from '$lib/server/env';
+import {ENV_FILE_DEV, ENV_FILE_PROD, update_env_git_hash} from '$lib/server/env.js';
 
 export const task: Task = {
 	summary: 'write git hash to the appropriate environment variables file',

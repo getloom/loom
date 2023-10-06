@@ -3,8 +3,8 @@
 	import {onDestroy} from 'svelte';
 
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
-	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {getApp} from '$lib/ui/app';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
+	import {getApp} from '$lib/ui/app.js';
 
 	const {actor, space} = getSpaceContext();
 

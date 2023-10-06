@@ -2,7 +2,7 @@ import type {SvelteChild, Text} from 'svast';
 import {parse} from 'svelte-parse';
 import {walk} from 'estree-walker';
 
-import {checkActorName} from '$lib/vocab/actor/actorHelpers';
+import {checkActorName} from '$lib/vocab/actor/actorHelpers.js';
 import {
 	isHubRelativePath,
 	isHubRelativePathValid,
@@ -10,7 +10,7 @@ import {
 	isNetworkRelativePathValid,
 	isSpaceRelativePath,
 	isSpaceRelativePathValid,
-} from '$lib/util/fuz';
+} from '$lib/util/markdown.js';
 
 // Used to avoids infinite loops because newly added children get walked.
 const ADDED_BY_FELT = Symbol();

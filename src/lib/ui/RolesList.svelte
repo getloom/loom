@@ -1,6 +1,6 @@
 <script lang="ts">
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import RoleItem from '$lib/ui/RoleItem.svelte';
 
 	const {hub} = getSpaceContext();

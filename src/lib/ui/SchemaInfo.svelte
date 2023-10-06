@@ -3,7 +3,7 @@
 	import type {JSONSchema} from '@ryanatkn/json-schema-to-typescript';
 
 	import SvastText from '$lib/ui/SvastText.svelte';
-	import {toSchemaName} from '$lib/util/schema';
+	import {toSchemaName} from '$lib/util/schema.js';
 	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 
 	export let schema: JsonSchema;

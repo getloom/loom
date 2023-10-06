@@ -130,6 +130,7 @@ export const toSocketStore = (
 		},
 		send: (data) => {
 			const $socket = store.get();
+			// TODO buffer if not able to send
 			// log.debug('send', data, $socket);
 			if (!$socket.ws) {
 				log.error('[ws] cannot send because the socket is disconnected', data, $socket);

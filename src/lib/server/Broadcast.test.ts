@@ -2,18 +2,18 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {unwrap} from '@grogarden/util/result.js';
 
-import type {TestServerContext} from '$lib/util/testServerHelpers';
+import type {TestServerContext} from '$lib/util/testServerHelpers.js';
 import {
 	CreateHubService,
 	DeleteHubService,
 	KickFromHubService,
 	LeaveHubService,
-} from '$lib/vocab/hub/hubServices';
-import {invite, toServiceRequestFake} from '$lib/util/testHelpers';
-import {randomHubParams} from '$lib/util/randomVocab';
-import {setupDb, teardownDb} from '$lib/util/testDbHelpers';
-import {Broadcast} from '$lib/server/Broadcast';
-import {flushAfterResponseCallbacks, type AfterResponseCallback} from '$lib/server/service';
+} from '$lib/vocab/hub/hubServices.js';
+import {invite, toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {randomHubParams} from '$lib/util/randomVocab.js';
+import {setupDb, teardownDb} from '$lib/util/testDbHelpers.js';
+import {Broadcast} from '$lib/server/Broadcast.js';
+import {flushAfterResponseCallbacks, type AfterResponseCallback} from '$lib/server/service.js';
 
 // These tests use bracket notation to access private fields with typesafety:
 /* eslint-disable @typescript-eslint/dot-notation */

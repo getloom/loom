@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Space} from '$lib/vocab/space/space';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {setSpaceContext} from '$lib/vocab/view/view';
-	import {getApp} from '$lib/ui/app';
-	import type {Directory} from '$lib/vocab/entity/entityData';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {setSpaceContext} from '$lib/vocab/view/view.js';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Directory} from '$lib/vocab/entity/entityData.js';
 
 	/**
 	 * `SpaceContext` sets a non-reactive object (`spaceContext`) in the Svelte component context

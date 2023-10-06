@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import {
 		isHubRelativePath,
 		isHubRelativePathValid,
@@ -9,8 +9,8 @@
 		isNetworkRelativePathValid,
 		isSpaceRelativePath,
 		isSpaceRelativePathValid,
-	} from '$lib/util/fuz';
-	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
+	} from '$lib/util/markdown.js';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers.js';
 
 	//TODO do we need spaceContext or would layoutContext work here for widgets?
 	const {hub, directory} = getSpaceContext();

@@ -2,22 +2,27 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {randomHubParams} from '$lib/util/randomVocab';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {randomHubParams} from '$lib/util/randomVocab.js';
 import {
 	DeleteHubService,
 	CreateHubService,
 	KickFromHubService,
 	LeaveHubService,
-} from '$lib/vocab/hub/hubServices';
-import {expectApiError, invite, loadAdminActor, toServiceRequestFake} from '$lib/util/testHelpers';
-import {ADMIN_HUB_ID} from '$lib/util/constants';
-import {ReadRolesService} from '$lib/vocab/role/roleServices';
-import {policyNames} from '$lib/vocab/policy/policyHelpers';
-import {ReadPoliciesService} from '$lib/vocab/policy/policyServices';
-import type {Policy} from '$lib/vocab/policy/policy';
-import type {Role} from '$lib/vocab/role/role';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+} from '$lib/vocab/hub/hubServices.js';
+import {
+	expectApiError,
+	invite,
+	loadAdminActor,
+	toServiceRequestFake,
+} from '$lib/util/testHelpers.js';
+import {ADMIN_HUB_ID} from '$lib/util/constants.js';
+import {ReadRolesService} from '$lib/vocab/role/roleServices.js';
+import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
+import {ReadPoliciesService} from '$lib/vocab/policy/policyServices.js';
+import type {Policy} from '$lib/vocab/policy/policy.js';
+import type {Role} from '$lib/vocab/role/role.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 const sortedPolicyNames = policyNames.slice().sort();
 const toSortedPolicyNames = (policies: Policy[]) => policies.map((p) => p.name).sort();

@@ -7,12 +7,12 @@
 	import Marquee from '$lib/ui/Marquee.svelte';
 	import DashboardHeader from '$lib/plugins/dashboard/DashboardHeader.svelte';
 	import MarqueeButton from '$lib/ui/MarqueeButton.svelte';
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import SpaceContextmenu from '$lib/ui/SpaceContextmenu.svelte';
 	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
 	import CreateAccountActorForm from '$lib/ui/CreateAccountActorForm.svelte';
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
-	import {getLayoutContext} from '$lib/ui/layout';
+	import {getLayoutContext} from '$lib/ui/layout.js';
 	import EmptyPath from '$lib/ui/EmptyPath.svelte';
 
 	const {

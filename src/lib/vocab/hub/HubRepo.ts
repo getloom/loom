@@ -1,18 +1,18 @@
 import type {Assignable} from '@grogarden/util/types.js';
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
-import {ADMIN_HUB_ID} from '$lib/util/constants';
-import type {ActorId, ClientActor} from '$lib/vocab/actor/actor';
-import type {Role, RoleId} from '$lib/vocab/role/role';
-import type {AccountId} from '$lib/vocab/account/account';
-import type {Policy} from '$lib/vocab/policy/policy';
-import type {Space} from '$lib/vocab/space/space';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import {HUB_COLUMNS, type HubColumn} from '$lib/vocab/hub/hubHelpers.server';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {blue, gray} from '$lib/server/colors.js';
+import {PostgresRepo} from '$lib/db/PostgresRepo.js';
+import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub.js';
+import {ADMIN_HUB_ID} from '$lib/util/constants.js';
+import type {ActorId, ClientActor} from '$lib/vocab/actor/actor.js';
+import type {Role, RoleId} from '$lib/vocab/role/role.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
+import type {Policy} from '$lib/vocab/policy/policy.js';
+import type {Space} from '$lib/vocab/space/space.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import {HUB_COLUMNS, type HubColumn} from '$lib/vocab/hub/hubHelpers.server.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 const log = new Logger(gray('[') + blue('HubRepo') + gray(']'));
 

@@ -1,10 +1,10 @@
 import {setContext, getContext} from 'svelte';
 import type {Writable as SvelteWritable} from 'svelte/store';
 
-import type {Ui} from '$lib/ui/ui';
-import type {Actions} from '$lib/vocab/action/actionTypes';
-import type {SocketStore} from '$lib/ui/socket';
-import type {QueryAddEntity, QueryMatchEntity, QueryParams, QueryStore} from '$lib/util/query';
+import type {Ui} from '$lib/ui/ui.js';
+import type {Actions} from '$lib/vocab/action/actionTypes.js';
+import type {SocketStore} from '$lib/ui/socket.js';
+import type {QueryAddEntity, QueryMatchEntity, QueryParams, QueryStore} from '$lib/util/query.js';
 
 export interface App {
 	ui: Ui;

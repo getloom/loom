@@ -4,14 +4,14 @@
 	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {getApp} from '$lib/ui/app';
-	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Hub} from '$lib/vocab/hub/hub';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
 	import SpaceEditor from '$lib/ui/SpaceEditor.svelte';
-	import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers';
+	import {canDeleteSpace} from '$lib/vocab/space/spaceHelpers.js';
 
 	const {
 		actions,

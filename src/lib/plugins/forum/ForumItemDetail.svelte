@@ -3,17 +3,17 @@
 	import {format} from 'date-fns';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {randomHue} from '$lib/util/color';
-	import {getApp} from '$lib/ui/app';
+	import {randomHue} from '$lib/util/color.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupTies} from '$lib/vocab/tie/tieHelpers';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {lookupTies} from '$lib/vocab/tie/tieHelpers.js';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 
 	const {
 		ui: {contextmenu, actorById, tiesBySourceId, entityById},

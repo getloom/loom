@@ -1,6 +1,6 @@
 import type {Task} from '@grogarden/gro';
 
-import {migrate} from '$lib/db/migrate';
+import {migrate} from '$lib/db/migrate.js';
 
 export const task: Task = {
 	summary: 'runs any new migrations to bring database up to date',

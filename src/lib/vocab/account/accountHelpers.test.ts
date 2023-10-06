@@ -5,7 +5,7 @@ import {
 	checkAccountName,
 	checkPasswordStrength,
 	scrubAccountName,
-} from '$lib/vocab/account/accountHelpers';
+} from '$lib/vocab/account/accountHelpers.js';
 
 test('scrubAccountName', () => {
 	assert.is(scrubAccountName('a@a.a'), 'a@a.a');

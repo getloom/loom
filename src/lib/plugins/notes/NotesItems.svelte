@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import NotesItem from '$lib/plugins/notes/NotesItem.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 
 	export let actor: Readable<AccountActor>;
 	export let entities: Array<Readable<Entity>>;

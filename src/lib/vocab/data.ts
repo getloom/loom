@@ -1,4 +1,4 @@
-import {actionDatas} from '$lib/vocab/action/actionData';
+import {actionDatas} from '$lib/vocab/action/actionData.js';
 import {
 	modelNames as modelNamesMetadata,
 	schemaNames as schemaNamesMetadata,
@@ -6,11 +6,11 @@ import {
 	viewNames as viewNamesMetadata,
 	clientActionNames as clientActionNamesMetadata,
 	serviceActionNames as serviceActionNamesMetadata,
-} from '$lib/vocab/metadata';
-import {modelSchemas} from '$lib/vocab/schemas';
-import {viewTemplates} from '$lib/vocab/view/view';
-import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
-import type {VocabName} from '$lib/vocab/vocab';
+} from '$lib/vocab/metadata.js';
+import {modelSchemas} from '$lib/vocab/schemas.js';
+import {viewTemplates} from '$lib/vocab/view/view.js';
+import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action.js';
+import type {VocabName} from '$lib/vocab/vocab.js';
 
 // TODO this is somewhat messy, refactor with `$lib/vocab/metadata.ts` and the above deps
 // see also `DocsVocabContent` how it receives modelSchemas and modelSchemaNames separately

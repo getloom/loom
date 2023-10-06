@@ -4,11 +4,11 @@
 	import {page} from '$app/stores';
 	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
 
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers.js';
 
 	const {
 		ui: {

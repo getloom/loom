@@ -1,13 +1,13 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
-import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions';
-import {canDeleteSpace, isHomeSpace} from '$lib/vocab/space/spaceHelpers';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server';
-import {createSpace} from '$lib/vocab/space/spaceHelpers.server';
-import {ApiError} from '$lib/server/api';
+import {blue, gray} from '$lib/server/colors.js';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
+import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions.js';
+import {canDeleteSpace, isHomeSpace} from '$lib/vocab/space/spaceHelpers.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import {cleanOrphanedEntities} from '$lib/vocab/entity/entityHelpers.server.js';
+import {createSpace} from '$lib/vocab/space/spaceHelpers.server.js';
+import {ApiError} from '$lib/server/api.js';
 
 const log = new Logger(gray('[') + blue('spaceServices') + gray(']'));
 

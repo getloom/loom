@@ -4,13 +4,13 @@ import {plugin as gro_plugin_server, SERVER_SOURCE_ID} from '@grogarden/gro/gro_
 import {plugin as gro_plugin_sveltekit_frontend} from '@grogarden/gro/gro_plugin_sveltekit_frontend.js';
 import {plugin as gro_plugin_library} from '@grogarden/gro/gro_plugin_library.js';
 
-import {MIGRATIONS_DIR} from '$lib/db/migration';
-import {init_env} from '$lib/server/env';
+import {MIGRATIONS_DIR} from '$lib/db/migration.js';
+import {init_env} from '$lib/server/env.js';
 import {
 	AFTER_DEPLOY_SCRIPT_BUILD_PATH,
 	AFTER_DEPLOY_SCRIPT_SOURCE_PATH,
 	START_SERVER_SCRIPT_BUILD_PATH,
-} from '$lib/infra/constants';
+} from '$lib/infra/constants.js';
 
 /**
  * @see https://github.com/grogarden/gro/blob/main/src/lib/docs/config.md

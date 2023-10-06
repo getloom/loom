@@ -8,9 +8,9 @@ import {
 	teardownServer,
 	type TestServerContext,
 	initHttpSession,
-} from '$lib/util/testServerHelpers';
-import {services} from '$lib/server/services';
-import {randomActionParams} from '$lib/util/randomActionParams';
+} from '$lib/util/testServerHelpers.js';
+import {services} from '$lib/server/services.js';
+import {randomActionParams} from '$lib/util/randomActionParams.js';
 
 /* test__serviceHttpEndpoints */
 const test__serviceHttpEndpoints = suite<TestServerContext>('serviceHttpEndpoints');

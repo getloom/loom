@@ -2,13 +2,13 @@ import {suite} from 'uvu';
 import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 import * as assert from 'uvu/assert';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices';
-import {randomActionParams} from '$lib/util/randomActionParams';
-import {loadAdminActor, toServiceRequestFake} from '$lib/util/testHelpers';
-import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants';
-import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices.js';
+import {randomActionParams} from '$lib/util/randomActionParams.js';
+import {loadAdminActor, toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants.js';
+import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 /* test__actorService */
 const test__actorService = suite<TestDbContext>('actorService');

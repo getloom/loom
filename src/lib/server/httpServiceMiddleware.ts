@@ -1,8 +1,8 @@
 import send from '@polka/send-type';
 import {Logger} from '@grogarden/util/log.js';
 
-import {red, blue, gray} from '$lib/server/colors';
-import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer';
+import {red, blue, gray} from '$lib/server/colors.js';
+import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';
 import {
 	type Service,
 	toServiceRequest,
@@ -10,11 +10,11 @@ import {
 	toApiResult,
 	type AfterResponseCallback,
 	flushAfterResponseCallbacks,
-} from '$lib/server/service';
-import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv';
-import {SessionApi} from '$lib/session/SessionApi';
-import {authorize} from '$lib/server/authorize';
-import {checkBroadcastAudience} from '$lib/server/Broadcast';
+} from '$lib/server/service.js';
+import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv.js';
+import {SessionApi} from '$lib/session/SessionApi.js';
+import {authorize} from '$lib/server/authorize.js';
+import {checkBroadcastAudience} from '$lib/server/Broadcast.js';
 
 const log = new Logger(gray('[') + blue('httpServiceMiddleware') + gray(']'));
 

@@ -2,8 +2,8 @@ import {Worker, isMainThread, parentPort} from 'worker_threads';
 import {fileURLToPath} from 'url';
 import {UnreachableError} from '@grogarden/util/error.js';
 
-import {toPasswordKey, verifyPassword} from '$lib/server/password';
-import type {PasswordHasher} from '$lib/server/password_hasher';
+import {toPasswordKey, verifyPassword} from '$lib/server/password.js';
+import type {PasswordHasher} from '$lib/server/password_hasher.js';
 
 // TODO make more generic and reusable, with configurable pooling
 

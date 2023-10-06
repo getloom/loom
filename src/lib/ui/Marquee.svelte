@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Space} from '$lib/vocab/space/space';
-	import type {Hub} from '$lib/vocab/hub/hub';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import MemberItem from '$lib/ui/MemberItem.svelte';
 	import MarqueeNav from '$lib/ui/MarqueeNav.svelte';
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import SocketConnectionControls from '$lib/ui/SocketConnectionControls.svelte';
 
 	const {

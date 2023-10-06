@@ -11,7 +11,7 @@
 		adminGuideItems,
 		devGuideItems,
 		setDocsSettings,
-	} from '$lib/docs/docs';
+	} from '$lib/docs/docs.js';
 	import DocsContent from '$lib/docs/DocsContent.svelte';
 	import DocsGuideContent from '$lib/docs/DocsGuideContent.svelte';
 	import DocsGuideUserContent from '$lib/docs/DocsGuideUserContent.svelte';
@@ -25,9 +25,9 @@
 		sortedModelSchemas,
 		sortedViewTemplates,
 		type VocabCategory,
-	} from '$lib/vocab/data';
-	import type {VocabName} from '$lib/vocab/vocab';
-	import {modelNames} from '$lib/vocab/metadata';
+	} from '$lib/vocab/data.js';
+	import type {VocabName} from '$lib/vocab/vocab.js';
+	import {modelNames} from '$lib/vocab/metadata.js';
 
 	export let path = '/docs';
 

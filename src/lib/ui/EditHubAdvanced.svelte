@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import {getApp} from '$lib/ui/app';
-	import {parseJson, serializeJson} from '$lib/util/json';
+	import {getApp} from '$lib/ui/app.js';
+	import {parseJson, serializeJson} from '$lib/util/json.js';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 
 	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type {Mutable, Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ReplyChatItem from '$lib/plugins/reply-chat/ReplyChatItem.svelte';
 
 	export let actor: Readable<AccountActor>;

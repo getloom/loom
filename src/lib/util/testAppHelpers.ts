@@ -1,14 +1,14 @@
 import {writable} from '@feltcoop/svelte-gettable-stores';
 
-import type {App} from '$lib/ui/app';
-import {toUi} from '$lib/ui/ui';
-import {toHttpApiClient} from '$lib/ui/HttpApiClient';
-import type {ActionParamsByName, ActionResponseByName} from '$lib/vocab/action/actionTypes';
-import {toActions} from '$lib/vocab/action/actions';
-import {findHttpService} from '$lib/ui/services';
-import {mutations} from '$lib/ui/mutations';
-import {deserialize, deserializers} from '$lib/util/deserialize';
-import {createQuery} from '$lib/util/query';
+import type {App} from '$lib/ui/app.js';
+import {toUi} from '$lib/ui/ui.js';
+import {toHttpApiClient} from '$lib/ui/HttpApiClient.js';
+import type {ActionParamsByName, ActionResponseByName} from '$lib/vocab/action/actionTypes.js';
+import {toActions} from '$lib/vocab/action/actions.js';
+import {findHttpService} from '$lib/ui/services.js';
+import {mutations} from '$lib/ui/mutations.js';
+import {deserialize, deserializers} from '$lib/util/deserialize.js';
+import {createQuery} from '$lib/util/query.js';
 
 export interface TestAppContext {
 	app: App;

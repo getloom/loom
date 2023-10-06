@@ -1,4 +1,4 @@
-import type {Account, AccountSettings} from '$lib/vocab/account/account';
+import type {Account, AccountSettings} from '$lib/vocab/account/account.js';
 
 export type AccountColumn = keyof Account;
 export const ACCOUNT_COLUMNS = {

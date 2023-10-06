@@ -1,4 +1,4 @@
-import type {VocabName} from '$lib/vocab/vocab';
+import type {VocabName} from '$lib/vocab/vocab.js';
 
 /**
  * This is like Gro's `parseSchemaName` but optimized for the client.

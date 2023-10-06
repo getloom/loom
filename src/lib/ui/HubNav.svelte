@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import HubNavGroup from '$lib/ui/HubNavGroup.svelte';
 
 	const {

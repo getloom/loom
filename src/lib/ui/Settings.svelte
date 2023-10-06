@@ -3,7 +3,7 @@
 	import ThemeInput from '@fuz.dev/fuz/ThemeInput.svelte';
 
 	import AccountEditor from '$lib/ui/AccountEditor.svelte';
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 
 	const {
 		ui: {account},

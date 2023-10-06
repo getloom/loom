@@ -3,7 +3,7 @@ import cookieSignature from 'cookie-signature';
 import type {ServerResponse} from 'http';
 import {COOKIE_KEYS} from '$env/static/private';
 
-import type {AccountId} from '$lib/vocab/account/account';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 const MAX_AGE = 60 * 60 * 24 * 7 * 5; // 5 weeks
 const RESET_EXPIRY = new Date('Tue, 06 Apr 2021 15:36:00 GMT');

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
-	import {getApp} from '$lib/ui/app';
-	import type {Role} from '$lib/vocab/role/role';
+
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {Policy, PolicyName} from '$lib/vocab/policy/policy.js';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Role} from '$lib/vocab/role/role.js';
 
 	const {actions} = getApp();
 

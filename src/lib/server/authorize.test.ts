@@ -1,9 +1,9 @@
 import {suite} from 'uvu';
 import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {authorize} from '$lib/server/authorize';
-import type {AuthorizedService} from '$lib/server/service';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {authorize} from '$lib/server/authorize.js';
+import type {AuthorizedService} from '$lib/server/service.js';
 
 const FakeAuthorizedService = {action: {authenticate: true, authorize: true}} as AuthorizedService;
 

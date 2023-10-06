@@ -2,12 +2,12 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import ForumItemDetail from '$lib/plugins/forum/ForumItemDetail.svelte';
-	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import {toHubUrl} from '$lib/util/url';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import {toHubUrl} from '$lib/util/url.js';
 
 	export let space: Readable<Space>;
 	export let hub: Readable<Hub>;

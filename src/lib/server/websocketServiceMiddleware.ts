@@ -1,12 +1,12 @@
 import type {WebSocket, Data as WebSocketMessageData} from 'ws';
 import {Logger} from '@grogarden/util/log.js';
 
-import {red, blue, gray} from '$lib/server/colors';
-import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc';
-import type {ApiServer} from '$lib/server/ApiServer';
-import {toValidationErrorMessage, validateSchema} from '$lib/server/ajv';
-import {SessionApiDisabled} from '$lib/session/SessionApiDisabled';
-import {authorize} from '$lib/server/authorize';
+import {red, blue, gray} from '$lib/server/colors.js';
+import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc.js';
+import type {ApiServer} from '$lib/server/ApiServer.js';
+import {toValidationErrorMessage, validateSchema} from '$lib/server/ajv.js';
+import {SessionApiDisabled} from '$lib/session/SessionApiDisabled.js';
+import {authorize} from '$lib/server/authorize.js';
 import {
 	performService,
 	toServiceRequest,
@@ -14,10 +14,10 @@ import {
 	toApiResult,
 	type AfterResponseCallback,
 	flushAfterResponseCallbacks,
-} from '$lib/server/service';
-import type {ApiResult} from '$lib/server/api';
-import type {AccountId} from '$lib/vocab/account/account';
-import {checkBroadcastAudience} from '$lib/server/Broadcast';
+} from '$lib/server/service.js';
+import type {ApiResult} from '$lib/server/api.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
+import {checkBroadcastAudience} from '$lib/server/Broadcast.js';
 
 const log = new Logger(gray('[') + blue('websocketServiceMiddleware') + gray(']'));
 

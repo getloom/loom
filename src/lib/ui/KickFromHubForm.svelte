@@ -2,9 +2,9 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
 
-	import {getApp} from '$lib/ui/app';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import KickActorItem from '$lib/ui/KickActorItem.svelte';
 

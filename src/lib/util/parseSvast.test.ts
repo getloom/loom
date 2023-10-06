@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {parseSvast} from '$lib/util/parseSvast';
+import {parseSvast} from '$lib/util/parseSvast.js';
 
 /* test__parseSvast */
 const test__parseSvast = suite('parseSvast');

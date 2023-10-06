@@ -2,8 +2,8 @@ import ley from 'ley';
 import type {Logger} from '@grogarden/util/log.js';
 import {spawn} from '@grogarden/util/process.js';
 
-import {defaultPostgresOptions} from '$lib/db/postgres';
-import {MIGRATIONS_DIR_DEV, MIGRATIONS_DIR_PROD} from '$lib/db/migration';
+import {defaultPostgresOptions} from '$lib/db/postgres.js';
+import {MIGRATIONS_DIR_DEV, MIGRATIONS_DIR_PROD} from '$lib/db/migration.js';
 
 const BACKUP_FILE = 'backup.sql';
 

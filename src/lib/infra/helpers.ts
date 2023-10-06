@@ -1,6 +1,6 @@
 import {create_counter} from '@grogarden/util/counter.js';
 
-import {cyan} from '$lib/server/colors';
+import {cyan} from '$lib/server/colors.js';
 
 export interface LogSequence {
 	(text: string, color?: typeof cyan): string;

@@ -1,4 +1,4 @@
-import type {PolicyName} from '$lib/vocab/policy/policy';
+import type {PolicyName} from '$lib/vocab/policy/policy.js';
 
 // These are defined here for convenient usage as data.
 // They're circularly used in the `PolicyNameSchema` to generate the `PolicyName` type.

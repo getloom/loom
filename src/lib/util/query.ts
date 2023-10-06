@@ -7,10 +7,10 @@ import {
 	type Writable,
 } from '@feltcoop/svelte-gettable-stores';
 
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Actions} from '$lib/vocab/action/actionTypes';
-import type {Ui} from '$lib/ui/ui';
-import type {ActorId} from '$lib/vocab/actor/actor';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+import type {Actions} from '$lib/vocab/action/actionTypes.js';
+import type {Ui} from '$lib/ui/ui.js';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
 
 export interface Query {
 	data: Mutable<Set<Writable<Entity>>>;

@@ -3,8 +3,8 @@
 	import type {MuralAction} from '@feltjs/felt-mural/item.js';
 	import {onDestroy} from 'svelte';
 
-	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {getApp} from '$lib/ui/app';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
+	import {getApp} from '$lib/ui/app.js';
 
 	const {actor, space} = getSpaceContext();
 

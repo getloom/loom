@@ -1,6 +1,6 @@
-import type {WritableUi} from '$lib/ui/ui';
-import type {ApiResult} from '$lib/server/api';
-import type {Actions} from '$lib/vocab/action/actionTypes';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {ApiResult} from '$lib/server/api.js';
+import type {Actions} from '$lib/vocab/action/actionTypes.js';
 
 export interface Mutation<TParams = any, TResult extends ApiResult<unknown> | void = any> {
 	(ctx: MutationContext<TParams, TResult>): any; // TODO improve return type

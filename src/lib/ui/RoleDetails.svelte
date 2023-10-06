@@ -3,16 +3,16 @@
 	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
-	import type {Role} from '$lib/vocab/role/role';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {Role} from '$lib/vocab/role/role.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import AssignmentItem from '$lib/ui/AssignmentItem.svelte';
 	import AssignmentManager from '$lib/ui/AssignmentManager.svelte';
 	import PolicyItem from '$lib/ui/PolicyItem.svelte';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import {policyNames} from '$lib/vocab/policy/policyHelpers';
-	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
+	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes.js';
 
 	const {
 		actions,

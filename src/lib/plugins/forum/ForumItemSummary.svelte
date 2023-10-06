@@ -3,17 +3,17 @@
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 	import {page} from '$app/stores';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {randomHue} from '$lib/util/color';
-	import {getApp} from '$lib/ui/app';
+	import {randomHue} from '$lib/util/color.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
-	import {toHubUrl} from '$lib/util/url';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {Space} from '$lib/vocab/space/space';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
+	import {toHubUrl} from '$lib/util/url.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {Space} from '$lib/vocab/space/space.js';
 
 	const {
 		ui: {contextmenu, actorById},

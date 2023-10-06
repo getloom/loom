@@ -2,14 +2,14 @@
 	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
-	import {schemasByName} from '$lib/vocab/schemas';
-	import {actionDataByName} from '$lib/vocab/action/actionData';
+	import {schemasByName} from '$lib/vocab/schemas.js';
+	import {actionDataByName} from '$lib/vocab/action/actionData.js';
 	import ActionInfo from '$lib/ui/ActionInfo.svelte';
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';
-	import {viewTemplatesByName} from '$lib/vocab/view/view';
-	import type {VocabName} from '$lib/vocab/vocab';
+	import {viewTemplatesByName} from '$lib/vocab/view/view.js';
+	import type {VocabName} from '$lib/vocab/vocab.js';
 
 	// TODO this is currently unused because it causes the entire vocab to be loaded with the root payload
 

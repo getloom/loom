@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {Mutable, Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import EntityExplorerItem from '$lib/plugins/entity-explorer/EntityExplorerItem.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 
 	export let actor: Readable<AccountActor>;
 	export let entities: Mutable<Array<Readable<Entity>>>;

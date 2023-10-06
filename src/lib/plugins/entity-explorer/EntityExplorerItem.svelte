@@ -2,12 +2,12 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import {getApp} from '$lib/ui/app';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import {getApp} from '$lib/ui/app.js';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 	import EntityExplorerTie from '$lib/plugins/entity-explorer/EntityExplorerTie.svelte';
 	import EntityChip from '$lib/ui/EntityChip.svelte';
 

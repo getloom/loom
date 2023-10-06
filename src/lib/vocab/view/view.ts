@@ -3,12 +3,12 @@ import {compile as stringifySvast} from 'svast-stringify';
 import {setContext, getContext} from 'svelte';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-import type {Space} from '$lib/vocab/space/space';
-import type {Hub} from '$lib/vocab/hub/hub';
-import type {AccountActor} from '$lib/vocab/actor/actor';
-import {parseSvast} from '$lib/util/parseSvast';
-import type {Directory} from '$lib/vocab//entity/entityData';
-import type {VocabName} from '$lib/vocab/vocab';
+import type {Space} from '$lib/vocab/space/space.js';
+import type {Hub} from '$lib/vocab/hub/hub.js';
+import type {AccountActor} from '$lib/vocab/actor/actor.js';
+import {parseSvast} from '$lib/util/parseSvast.js';
+import type {Directory} from '$lib/vocab//entity/entityData.js';
+import type {VocabName} from '$lib/vocab/vocab.js';
 
 export type ViewData = Root;
 

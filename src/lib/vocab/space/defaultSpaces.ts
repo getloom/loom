@@ -1,10 +1,10 @@
-import {viewTemplatesByName} from '$lib/vocab/view/view';
-import type {CreateSpaceParams} from '$lib/vocab/action/actionTypes';
-import type {Hub} from '$lib/vocab/hub/hub';
-import {ADMIN_HUB_ID} from '$lib/util/constants';
-import {spaceTemplateToCreateSpaceParams} from '$lib/ui/templates';
-import type {ActorId} from '$lib/vocab/actor/actor';
-import {HOME_NAME} from '$lib/vocab/space/spaceHelpers';
+import {viewTemplatesByName} from '$lib/vocab/view/view.js';
+import type {CreateSpaceParams} from '$lib/vocab/action/actionTypes.js';
+import type {Hub} from '$lib/vocab/hub/hub.js';
+import {ADMIN_HUB_ID} from '$lib/util/constants.js';
+import {spaceTemplateToCreateSpaceParams} from '$lib/ui/templates.js';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
+import {HOME_NAME} from '$lib/vocab/space/spaceHelpers.js';
 
 // TODO these should probably be templates not params and integrated with the default template data,
 // and then callers can call `spaceTemplateToCreateSpaceParams` directly

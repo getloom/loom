@@ -1,16 +1,15 @@
 <script lang="ts">
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import ManageRolesItem from '$lib/ui/ManageRolesItem.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
-
-	import type {Role} from '$lib/vocab/role/role';
+	import type {Role} from '$lib/vocab/role/role.js';
 	import RoleDetails from '$lib/ui/RoleDetails.svelte';
-	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes';
+	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes.js';
 
 	export let actor: Readable<AccountActor>;
 	export let hub: Readable<Hub>;

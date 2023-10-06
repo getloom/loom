@@ -5,12 +5,12 @@
 	import {slide} from 'svelte/transition';
 
 	import ReplyChatItems from '$lib/plugins/reply-chat/ReplyChatItems.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import Mention from '$lib/plugins/mention/Mention.svelte';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space} = getSpaceContext();

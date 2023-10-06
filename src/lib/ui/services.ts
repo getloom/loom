@@ -1,5 +1,5 @@
-import {parseServiceActionData, type ServiceActionData} from '$lib/vocab/action/action';
-import {actionDataByName} from '$lib/vocab/action/actionData';
+import {parseServiceActionData, type ServiceActionData} from '$lib/vocab/action/action.js';
+import {actionDataByName} from '$lib/vocab/action/actionData.js';
 
 export const findHttpService = (name: string): ServiceActionData | undefined =>
 	parseServiceActionData(actionDataByName.get(name));

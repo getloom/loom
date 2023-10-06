@@ -1,12 +1,12 @@
-import type {Mutation} from '$lib/util/mutation';
+import type {Mutation} from '$lib/util/mutation.js';
 import {
 	SignUp,
 	SignIn,
 	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
-} from '$lib/vocab/account/accountMutations';
-import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorMutations';
+} from '$lib/vocab/account/accountMutations.js';
+import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorMutations.js';
 import {
 	ReadHub,
 	CreateHub,
@@ -15,9 +15,9 @@ import {
 	InviteToHub,
 	LeaveHub,
 	KickFromHub,
-} from '$lib/vocab/hub/hubMutations';
-import {CreateSpace, DeleteSpace, UpdateSpace} from '$lib/vocab/space/spaceMutations';
-import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentMutations';
+} from '$lib/vocab/hub/hubMutations.js';
+import {CreateSpace, DeleteSpace, UpdateSpace} from '$lib/vocab/space/spaceMutations.js';
+import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentMutations.js';
 import {
 	CreateEntity,
 	UpdateEntities,
@@ -25,9 +25,9 @@ import {
 	DeleteEntities,
 	ReadEntities,
 	ReadEntitiesById,
-} from '$lib/vocab/entity/entityMutations';
-import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/roleMutations';
-import {CreatePolicy, DeletePolicy} from '$lib/vocab/policy/policyMutations';
+} from '$lib/vocab/entity/entityMutations.js';
+import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/roleMutations.js';
+import {CreatePolicy, DeletePolicy} from '$lib/vocab/policy/policyMutations.js';
 import {
 	Ping,
 	Ephemera,
@@ -39,7 +39,7 @@ import {
 	ClearFreshness,
 	ToggleMainNav,
 	ToggleSecondaryNav,
-} from '$lib/ui/uiMutations';
+} from '$lib/ui/uiMutations.js';
 
 export const mutations: Record<string, Mutation> = {
 	// accountMutations

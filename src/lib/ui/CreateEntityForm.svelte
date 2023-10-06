@@ -4,15 +4,15 @@
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import {autofocus} from '$lib/ui/actions';
-	import {getApp} from '$lib/ui/app';
+	import {autofocus} from '$lib/ui/actions.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Space} from '$lib/vocab/space/space';
-	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {CreateEntityParams} from '$lib/vocab/action/actionTypes';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {BaseEntityData, EntityData} from '$lib/vocab/entity/entityData.js';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import type {CreateEntityParams} from '$lib/vocab/action/actionTypes.js';
 
 	const {actions} = getApp();
 

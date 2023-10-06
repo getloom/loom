@@ -1,10 +1,10 @@
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {stashActors, evictActor} from '$lib/vocab/actor/actorMutationHelpers';
-import {evictHub, stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
-import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
-import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
-import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {stashActors, evictActor} from '$lib/vocab/actor/actorMutationHelpers.js';
+import {evictHub, stashHubs} from '$lib/vocab/hub/hubMutationHelpers.js';
+import {stashRoles} from '$lib/vocab/role/roleMutationHelpers.js';
+import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers.js';
+import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers.js';
+import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers.js';
 
 export const CreateAccountActor: Mutations['CreateAccountActor'] = async ({
 	invoke,

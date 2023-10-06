@@ -2,10 +2,10 @@ import {suite} from 'uvu';
 import {unwrap} from '@grogarden/util/result.js';
 import * as assert from 'uvu/assert';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {DeleteSpaceService} from '$lib/vocab/space/spaceServices';
-import {toServiceRequestFake} from '$lib/util/testHelpers';
-import {isDirectory} from '$lib/vocab/entity/entityHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {DeleteSpaceService} from '$lib/vocab/space/spaceServices.js';
+import {toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {isDirectory} from '$lib/vocab/entity/entityHelpers.js';
 
 /* test__spaceServices */
 const test__spaceServices = suite<TestDbContext>('spaceServices');

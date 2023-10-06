@@ -1,7 +1,7 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {migrate} from '$lib/db/migrate';
-import {db} from '$lib/db/db';
+import {migrate} from '$lib/db/migrate.js';
+import {db} from '$lib/db/db.js';
 
 const log = new Logger('[migrate]');
 

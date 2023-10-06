@@ -1,10 +1,10 @@
 import postgres from 'postgres';
 
-import {Database} from '$lib/db/Database';
-import {defaultPostgresOptions} from '$lib/db/postgres';
-import {log} from '$lib/util/testHelpers';
-import {RandomVocabContext} from '$lib/util/randomVocab';
-import type {Repos} from '$lib/db/Repos';
+import {Database} from '$lib/db/Database.js';
+import {defaultPostgresOptions} from '$lib/db/postgres.js';
+import {log} from '$lib/util/testHelpers.js';
+import {RandomVocabContext} from '$lib/util/randomVocab.js';
+import type {Repos} from '$lib/db/Repos.js';
 
 /**
  * The `setupDb` test helper provides a subset of `setupServer` in `testServerHelpers`.

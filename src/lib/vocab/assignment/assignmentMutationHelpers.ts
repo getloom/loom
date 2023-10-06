@@ -1,8 +1,8 @@
-import type {WritableUi} from '$lib/ui/ui';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {evictActor} from '$lib/vocab/actor/actorMutationHelpers';
-import {evictHub} from '$lib/vocab/hub/hubMutationHelpers';
-import type {AfterMutation} from '$lib/util/mutation';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import {evictActor} from '$lib/vocab/actor/actorMutationHelpers.js';
+import {evictHub} from '$lib/vocab/hub/hubMutationHelpers.js';
+import type {AfterMutation} from '$lib/util/mutation.js';
 
 export const stashAssignments = (
 	ui: WritableUi,

@@ -3,7 +3,7 @@
 	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import SessionActorContextmenuEntry from '$lib/ui/SessionActorContextmenuEntry.svelte';
 	import CreateAccountActorForm from '$lib/ui/CreateAccountActorForm.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';

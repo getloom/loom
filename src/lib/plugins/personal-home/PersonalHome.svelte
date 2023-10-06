@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import Notes from '$lib/plugins/notes/Notes.svelte';
 	import Mention from '$lib/plugins/mention/Mention.svelte';
 

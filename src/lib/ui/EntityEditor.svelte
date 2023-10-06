@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import EntityTable from '$lib/ui/EntityTable.svelte';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import EditEntityForm from '$lib/ui/EditEntityForm.svelte';
 
 	export let actor: Readable<AccountActor>;

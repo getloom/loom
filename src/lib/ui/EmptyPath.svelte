@@ -3,11 +3,11 @@
 	import {page} from '$app/stores';
 
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Hub} from '$lib/vocab/hub/hub';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
+	import {getApp} from '$lib/ui/app.js';
+	import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers.js';
 
 	// TODO problem here is that some of these `SpacePath`s are actually `EntityPath`s off the root space, refactor with Path stuff
 	type PathType = 'SpacePath' | 'EntityPath';

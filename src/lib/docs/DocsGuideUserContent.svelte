@@ -2,7 +2,7 @@
 	import {base} from '$app/paths';
 
 	import DocsGuideLinks from '$lib/docs/DocsGuideLinks.svelte';
-	import {getDocsSettings, userGuideItems} from '$lib/docs/docs';
+	import {getDocsSettings, userGuideItems} from '$lib/docs/docs.js';
 
 	const docsSettings = getDocsSettings();
 	$: ({path} = $docsSettings);

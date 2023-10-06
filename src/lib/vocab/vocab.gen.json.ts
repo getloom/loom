@@ -1,7 +1,7 @@
 import type {Gen} from '@grogarden/gro/gen.js';
 import {bundle_schemas} from '@grogarden/gro/schema.js';
 
-import {schemas} from '$lib/vocab/schemas';
+import {schemas} from '$lib/vocab/schemas.js';
 
 /**
  * Outputs a bunedled schema for the entire vocabulary.

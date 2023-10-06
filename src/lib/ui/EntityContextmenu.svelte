@@ -4,12 +4,12 @@
 	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import {getApp} from '$lib/ui/app';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import {getApp} from '$lib/ui/app.js';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
 	import EditEntityContentForm from '$lib/ui/EditEntityContentForm.svelte';
 	import UnicodeIcon from '$lib/ui/UnicodeIcon.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import EntityChip from '$lib/ui/EntityChip.svelte';
 

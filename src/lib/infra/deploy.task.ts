@@ -5,7 +5,7 @@ import {unwrap} from '@grogarden/util/result.js';
 import {exists} from '@grogarden/gro/exists.js';
 import {mkdir} from 'node:fs/promises';
 
-import {ENV_FILE_BASE, ENV_FILE_PROD, load_envs} from '$lib/server/env';
+import {ENV_FILE_BASE, ENV_FILE_PROD, load_envs} from '$lib/server/env.js';
 
 const ARTIFACT_PREFIX = 'app';
 const ARTIFACTS_DIR = 'dist_app/';

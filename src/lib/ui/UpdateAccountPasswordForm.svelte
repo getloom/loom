@@ -2,8 +2,8 @@
 	import {tick} from 'svelte';
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 
-	import {autofocus} from '$lib/ui/actions';
-	import {getApp} from '$lib/ui/app';
+	import {autofocus} from '$lib/ui/actions.js';
+	import {getApp} from '$lib/ui/app.js';
 
 	const {actions} = getApp();
 

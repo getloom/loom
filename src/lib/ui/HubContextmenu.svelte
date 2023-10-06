@@ -5,9 +5,9 @@
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import {getApp} from '$lib/ui/app';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';
 	import InviteToHubForm from '$lib/ui/InviteToHubForm.svelte';
 	import KickFromHubForm from '$lib/ui/KickFromHubForm.svelte';

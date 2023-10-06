@@ -3,8 +3,8 @@
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import HubNavItem from '$lib/ui/HubNavItem.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {getApp} from '$lib/ui/app';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ActingActorContextmenu from '$lib/ui/ActingActorContextmenu.svelte';
 
 	const {

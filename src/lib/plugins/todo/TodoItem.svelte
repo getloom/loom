@@ -4,22 +4,22 @@
 	import {slide} from 'svelte/transition';
 	import {page} from '$app/stores';
 	import {swallow} from '@grogarden/util/dom.js';
+	import {goto} from '$app/navigation';
 
-	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
+	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {randomHue} from '$lib/util/color';
-	import {getApp} from '$lib/ui/app';
+	import {randomHue} from '$lib/util/color.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import type {Space} from '$lib/vocab/space/space';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
-	import {loadOrderedEntities, moveDown, moveUp} from '$lib/vocab/entity/entityHelpers';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
+	import {loadOrderedEntities, moveDown, moveUp} from '$lib/vocab/entity/entityHelpers.js';
 	import TextInput from '$lib/ui/TextInput.svelte';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import {toHubUrl} from '$lib/util/url';
-	import {goto} from '$app/navigation';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import {toHubUrl} from '$lib/util/url.js';
 
 	const {ui, actions} = getApp();
 	const {contextmenu, actorById} = ui;

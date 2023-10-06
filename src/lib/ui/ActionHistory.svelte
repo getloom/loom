@@ -13,7 +13,7 @@
 <script lang="ts">
 	import type {Writable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {ActionData} from '$lib/vocab/action/action';
+	import type {ActionData} from '$lib/vocab/action/action.js';
 	import {createEventDispatcher} from 'svelte';
 
 	const dispatch = createEventDispatcher<{

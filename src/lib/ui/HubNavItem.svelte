@@ -3,14 +3,14 @@
 	import {page} from '$app/stores';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-	import type {Hub} from '$lib/vocab/hub/hub';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {getApp} from '$lib/ui/app';
-	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {getApp} from '$lib/ui/app.js';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url.js';
 	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
 	import FreshnessIndicator from '$lib/ui/FreshnessIndicator.svelte';
-	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers.js';
 
 	const {
 		ui: {

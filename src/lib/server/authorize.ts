@@ -1,11 +1,11 @@
 import {OK, type Result} from '@grogarden/util/result.js';
 
-import type {Service} from '$lib/server/service';
-import type {ErrorResponse} from '$lib/util/error';
-import type {Repos} from '$lib/db/Repos';
-import type {ActionActor, ActorId} from '$lib/vocab/actor/actor';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
-import type {AccountId} from '$lib/vocab/account/account';
+import type {Service} from '$lib/server/service.js';
+import type {ErrorResponse} from '$lib/util/error.js';
+import type {Repos} from '$lib/db/Repos.js';
+import type {ActionActor, ActorId} from '$lib/vocab/actor/actor.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 // This currently only checks for the existence of an `account_id` on the request.
 // We'll want to allow services to declare more complex rules.

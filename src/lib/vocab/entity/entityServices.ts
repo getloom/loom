@@ -1,7 +1,7 @@
 import {dequal} from 'dequal';
 import {Logger} from '@grogarden/util/log.js';
 
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {
 	ReadEntities,
 	UpdateEntities,
@@ -9,19 +9,19 @@ import {
 	EraseEntities,
 	DeleteEntities,
 	ReadEntitiesById,
-} from '$lib/vocab/entity/entityActions';
-import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers';
-import type {Tie} from '$lib/vocab/tie/tie';
-import {checkEntityPath, isDirectory, scrubEntityPath} from '$lib/vocab/entity/entityHelpers';
+} from '$lib/vocab/entity/entityActions.js';
+import {toTieEntityIds} from '$lib/vocab/tie/tieHelpers.js';
+import type {Tie} from '$lib/vocab/tie/tie.js';
+import {checkEntityPath, isDirectory, scrubEntityPath} from '$lib/vocab/entity/entityHelpers.js';
 import {
 	checkAddOrderedItem,
 	checkRemoveOrderedItems,
 	cleanOrphanedEntities,
 	updateDirectories,
-} from '$lib/vocab/entity/entityHelpers.server';
-import {checkEntityOwnership, checkEntityAccess} from '$lib/vocab/policy/policyHelpers.server';
-import {ApiError, assertApiError} from '$lib/server/api';
-import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
+} from '$lib/vocab/entity/entityHelpers.server.js';
+import {checkEntityOwnership, checkEntityAccess} from '$lib/vocab/policy/policyHelpers.server.js';
+import {ApiError, assertApiError} from '$lib/server/api.js';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants.js';
 
 const log = new Logger('[EntityServices]');
 

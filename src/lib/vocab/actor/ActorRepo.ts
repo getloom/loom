@@ -1,12 +1,12 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {AccountActor, ActorRecord, PublicActor, ActorId} from '$lib/vocab/actor/actor';
-import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants';
-import {ACTOR_COLUMNS, type ActorColumn} from '$lib/vocab/actor/actorHelpers.server';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {AccountId} from '$lib/vocab/account/account';
+import {blue, gray} from '$lib/server/colors.js';
+import {PostgresRepo} from '$lib/db/PostgresRepo.js';
+import type {AccountActor, ActorRecord, PublicActor, ActorId} from '$lib/vocab/actor/actor.js';
+import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants.js';
+import {ACTOR_COLUMNS, type ActorColumn} from '$lib/vocab/actor/actorHelpers.server.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 const log = new Logger(gray('[') + blue('ActorRepo') + gray(']'));
 

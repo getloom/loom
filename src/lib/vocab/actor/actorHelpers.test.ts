@@ -1,7 +1,7 @@
 import {test} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
+import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers.js';
 
 test('scrubActorName', () => {
 	assert.is(scrubActorName('4bc'), '4bc');

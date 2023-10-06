@@ -5,14 +5,14 @@
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import {autofocus} from '$lib/ui/actions';
-	import {getApp} from '$lib/ui/app';
-	import {toCreatableViewTemplates} from '$lib/vocab/view/view';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {parseSpaceIcon, renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
-	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
-	import {ADMIN_HUB_ID} from '$lib/util/constants';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import {autofocus} from '$lib/ui/actions.js';
+	import {getApp} from '$lib/ui/app.js';
+	import {toCreatableViewTemplates} from '$lib/vocab/view/view.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {parseSpaceIcon, renderDirectoryPath} from '$lib/vocab/space/spaceHelpers.js';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url.js';
+	import {ADMIN_HUB_ID} from '$lib/util/constants.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {

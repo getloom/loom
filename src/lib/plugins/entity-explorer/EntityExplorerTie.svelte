@@ -3,9 +3,9 @@
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
-	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Tie} from '$lib/vocab/tie/tie';
+	import {getApp} from '$lib/ui/app.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {Tie} from '$lib/vocab/tie/tie.js';
 	import EntityChip from '$lib/ui/EntityChip.svelte';
 
 	const {

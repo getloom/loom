@@ -2,10 +2,10 @@ import type {Task} from '@grogarden/gro';
 import {spawn} from '@grogarden/util/process.js';
 import {z} from 'zod';
 
-import {green} from '$lib/server/colors';
-import {render_502_html, render_nginx_config} from '$lib/infra/nginxConfig';
-import {create_log_sequence} from '$lib/infra/helpers';
-import {load_envs} from '$lib/server/env';
+import {green} from '$lib/server/colors.js';
+import {render_502_html, render_nginx_config} from '$lib/infra/nginxConfig.js';
+import {create_log_sequence} from '$lib/infra/helpers.js';
+import {load_envs} from '$lib/server/env.js';
 
 const Args = z
 	.object({

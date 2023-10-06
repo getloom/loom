@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
-import type {AccountId} from '$lib/vocab/account/account';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 // for information about these interfaces
 declare global {

@@ -1,12 +1,12 @@
 import type {JsonSchema} from '@grogarden/gro/schema.js';
 
-import {policyNames} from '$lib/vocab/policy/policyHelpers';
+import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
 
 export const PolicyIdSchema = {
 	$id: '/schemas/PolicyId',
 	type: 'number',
 	tsType: "Flavored<number, 'PolicyId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
 } satisfies JsonSchema;
 
 export const PolicySchema = {

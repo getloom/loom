@@ -6,15 +6,15 @@
 	import {page} from '$app/stores';
 
 	import TodoItems from '$lib/plugins/todo/TodoItems.svelte';
-	import {getApp} from '$lib/ui/app';
-	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
+	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers.js';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
-	import type {ActorId} from '$lib/vocab/actor/actor';
-	import type {SpaceId} from '$lib/vocab/space/space';
+	import type {ActorId} from '$lib/vocab/actor/actor.js';
+	import type {SpaceId} from '$lib/vocab/space/space.js';
 	import TextInput from '$lib/ui/TextInput.svelte';
-	import {parseSpacePageParams} from '$lib/util/url';
+	import {parseSpacePageParams} from '$lib/util/url.js';
 
 	const {actor, space, hub} = getSpaceContext();
 

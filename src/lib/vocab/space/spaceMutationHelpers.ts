@@ -3,14 +3,14 @@ import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
-import type {WritableUi} from '$lib/ui/ui';
-import type {Space} from '$lib/vocab/space/space';
-import type {Entity} from '$lib/vocab/entity/entity';
-import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers';
-import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
-import {toHubUrl} from '$lib/util/url';
-import {setIfUpdated} from '$lib/util/store';
-import type {AfterMutation} from '$lib/util/mutation';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {Space} from '$lib/vocab/space/space.js';
+import type {Entity} from '$lib/vocab/entity/entity.js';
+import {stashEntities, evictEntities} from '$lib/vocab/entity/entityMutationHelpers.js';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers.js';
+import {toHubUrl} from '$lib/util/url.js';
+import {setIfUpdated} from '$lib/util/store.js';
+import type {AfterMutation} from '$lib/util/mutation.js';
 
 export const stashSpaces = (
 	ui: WritableUi,

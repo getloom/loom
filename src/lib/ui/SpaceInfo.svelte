@@ -3,15 +3,15 @@
 	import {page} from '$app/stores';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-	import type {Space} from '$lib/vocab/space/space';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {randomHue} from '$lib/util/color';
-	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
-	import {getApp} from '$lib/ui/app';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {randomHue} from '$lib/util/color.js';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url.js';
+	import {getApp} from '$lib/ui/app.js';
 	import SpaceContextmenu from '$lib/ui/SpaceContextmenu.svelte';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
-	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers';
+	import {renderDirectoryPath} from '$lib/vocab/space/spaceHelpers.js';
 
 	const {
 		ui: {contextmenu, sessionActorIndexById, entityById},

@@ -2,8 +2,8 @@
 	import {onDestroy} from 'svelte';
 	import {browser} from '$app/environment';
 
-	import type {SocketStore} from '$lib/ui/socket';
-	import {getApp} from '$lib/ui/app';
+	import type {SocketStore} from '$lib/ui/socket.js';
+	import {getApp} from '$lib/ui/app.js';
 
 	const {
 		ui: {session},

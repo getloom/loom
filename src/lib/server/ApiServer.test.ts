@@ -1,9 +1,9 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import type {TestServerContext} from '$lib/util/testServerHelpers';
-import {setupServer, teardownServer} from '$lib/util/testServerHelpers';
-import {ApiServer} from '$lib/server/ApiServer';
+import type {TestServerContext} from '$lib/util/testServerHelpers.js';
+import {setupServer, teardownServer} from '$lib/util/testServerHelpers.js';
+import {ApiServer} from '$lib/server/ApiServer.js';
 
 /* test__ApiServer */
 const test__ApiServer = suite<TestServerContext>('ApiServer');

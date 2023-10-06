@@ -4,16 +4,16 @@
 	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {randomHue} from '$lib/util/color';
-	import {getApp} from '$lib/ui/app';
+	import {randomHue} from '$lib/util/color.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import Mention from '$lib/plugins/mention/Mention.svelte';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 
 	const {
 		ui: {contextmenu, actorById, entityById, tiesByDestId},

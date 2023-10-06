@@ -5,13 +5,13 @@
 import {create_counter} from '@grogarden/util/counter.js';
 import {Logger} from '@grogarden/util/log.js';
 
-import type {ApiClient} from '$lib/ui/ApiClient';
-import type {ServiceActionData} from '$lib/vocab/action/action';
-import type {JsonRpcId, JsonRpcRequest, JsonRpcResponse} from '$lib/util/jsonRpc';
-import {parseJsonRpcResponse} from '$lib/util/jsonRpc';
-import type {BroadcastMessage, StatusMessage} from '$lib/util/websocket';
-import type {Deserialize} from '$lib/util/deserialize';
-import type {ApiResult} from '$lib/server/api';
+import type {ApiClient} from '$lib/ui/ApiClient.js';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
+import type {JsonRpcId, JsonRpcRequest, JsonRpcResponse} from '$lib/util/jsonRpc.js';
+import {parseJsonRpcResponse} from '$lib/util/jsonRpc.js';
+import type {BroadcastMessage, StatusMessage} from '$lib/util/websocket.js';
+import type {Deserialize} from '$lib/util/deserialize.js';
+import type {ApiResult} from '$lib/server/api.js';
 
 const log = new Logger('[ws]');
 

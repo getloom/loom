@@ -2,7 +2,7 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {isDeepStrictEqual} from 'util';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 
 /* test__TieRepo */
 const test__TieRepo = suite<TestDbContext>('TieRepo');

@@ -2,7 +2,7 @@ import Ajv, {type Options, type ErrorObject, type ValidateFunction, type SchemaO
 import type {JsonSchema} from '@grogarden/gro/schema.js';
 import AjvKeywordInstanceof from 'ajv-keywords/dist/keywords/instanceof.js';
 
-import {schemas} from '$lib/vocab/schemas';
+import {schemas} from '$lib/vocab/schemas.js';
 
 // see also $lib/util/schema.ts
 

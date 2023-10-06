@@ -1,11 +1,14 @@
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {evictHub, stashHub} from '$lib/vocab/hub/hubMutationHelpers';
-import {stashActors} from '$lib/vocab/actor/actorMutationHelpers';
-import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
-import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {evictAssignments, stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {evictHub, stashHub} from '$lib/vocab/hub/hubMutationHelpers.js';
+import {stashActors} from '$lib/vocab/actor/actorMutationHelpers.js';
+import {stashRoles} from '$lib/vocab/role/roleMutationHelpers.js';
+import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers.js';
+import {
+	evictAssignments,
+	stashAssignments,
+} from '$lib/vocab/assignment/assignmentMutationHelpers.js';
+import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers.js';
 
 export const ReadHub: Mutations['ReadHub'] = async ({invoke, mutate, afterMutation, ui}) => {
 	const result = await invoke();

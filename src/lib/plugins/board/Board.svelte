@@ -3,8 +3,8 @@
 	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
 
 	import BoardItems from '$lib/plugins/board/BoardItems.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 

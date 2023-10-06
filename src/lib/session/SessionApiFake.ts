@@ -1,5 +1,5 @@
-import type {ISessionApi} from '$lib/session/SessionApi';
-import type {AccountId} from '$lib/vocab/account/account';
+import type {ISessionApi} from '$lib/session/SessionApi.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 export class SessionApiFake implements ISessionApi {
 	account_id: AccountId | undefined;

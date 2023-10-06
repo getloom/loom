@@ -3,21 +3,21 @@ import {createServer} from 'http';
 import {WebSocketServer} from 'ws';
 import * as assert from 'uvu/assert';
 
-import {ApiServer} from '$lib/server/ApiServer';
-import {Websockets} from '$lib/server/Websockets';
-import {services} from '$lib/server/services';
-import {log} from '$lib/util/testHelpers';
-import {Broadcast} from '$lib/server/Broadcast';
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {AccountActor} from '$lib/vocab/actor/actor';
+import {ApiServer} from '$lib/server/ApiServer.js';
+import {Websockets} from '$lib/server/Websockets.js';
+import {services} from '$lib/server/services.js';
+import {log} from '$lib/util/testHelpers.js';
+import {Broadcast} from '$lib/server/Broadcast.js';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import type {AccountActor} from '$lib/vocab/actor/actor.js';
 import {
 	randomAccountParams,
 	randomActorParams,
 	type RandomTestAccount,
-} from '$lib/util/randomVocab';
-import {SignUpService} from '$lib/vocab/account/accountServices';
-import type {SignUpResponse} from '$lib/vocab/action/actionTypes';
-import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
+} from '$lib/util/randomVocab.js';
+import {SignUpService} from '$lib/vocab/account/accountServices.js';
+import type {SignUpResponse} from '$lib/vocab/action/actionTypes.js';
+import {CreateAccountActorService} from '$lib/vocab/actor/actorServices.js';
 
 /**
  * The `setupServer` test helper provides a superset of `setupDb`.

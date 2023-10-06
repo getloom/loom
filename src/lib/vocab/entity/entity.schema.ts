@@ -4,7 +4,7 @@ export const EntityIdSchema = {
 	$id: '/schemas/EntityId',
 	type: 'number',
 	tsType: "Flavored<number, 'EntityId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
 } satisfies JsonSchema;
 
 export const EntitySchema = {
@@ -28,7 +28,7 @@ export const EntitySchema = {
 		data: {
 			type: 'object',
 			tsType: 'EntityData',
-			tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
+			tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData.js'",
 		},
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},

@@ -1,29 +1,29 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
-import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions';
-import {createSpaces} from '$lib/vocab/space/spaceHelpers.server';
+import {blue, gray} from '$lib/server/colors.js';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
+import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions.js';
+import {createSpaces} from '$lib/vocab/space/spaceHelpers.server.js';
 import {
 	HUB_COLUMNS,
 	cleanOrphanHubs,
 	initAdminHub,
 	initTemplateGovernanceForHub,
 	toDefaultHubSettings,
-} from '$lib/vocab/hub/hubHelpers.server';
-import type {Hub} from '$lib/vocab/hub/hub';
-import type {ClientActor} from '$lib/vocab/actor/actor';
-import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
+} from '$lib/vocab/hub/hubHelpers.server.js';
+import type {Hub} from '$lib/vocab/hub/hub.js';
+import type {ClientActor} from '$lib/vocab/actor/actor.js';
+import {toDefaultAdminSpaces, toDefaultSpaces} from '$lib/vocab/space/defaultSpaces.js';
 import {
 	ACTOR_COLUMNS,
 	isActorAdmin,
 	isActorNameReserved,
-} from '$lib/vocab/actor/actorHelpers.server';
-import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers';
-import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/util/constants';
-import {defaultPersonalHubRoles} from '$lib/ui/templates';
-import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
-import {assertApiError} from '$lib/server/api';
+} from '$lib/vocab/actor/actorHelpers.server.js';
+import {scrubActorName, checkActorName} from '$lib/vocab/actor/actorHelpers.js';
+import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID} from '$lib/util/constants.js';
+import {defaultPersonalHubRoles} from '$lib/ui/templates.js';
+import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server.js';
+import {assertApiError} from '$lib/server/api.js';
 
 const log = new Logger(gray('[') + blue('actorServices') + gray(']'));
 

@@ -2,9 +2,9 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import TextInput from '$lib/ui/TextInput.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 
 	const {actor, space} = getSpaceContext();
 

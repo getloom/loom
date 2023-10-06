@@ -5,11 +5,11 @@ import {format} from 'date-fns';
 import {WebSocketServer} from 'ws';
 import {PUBLIC_SERVER_PORT} from '$env/static/public';
 
-import {ApiServer} from '$lib/server/ApiServer';
-import {Websockets} from '$lib/server/Websockets';
-import {services} from '$lib/server/services';
-import {db} from '$lib/db/db';
-import {Broadcast} from '$lib/server/Broadcast';
+import {ApiServer} from '$lib/server/ApiServer.js';
+import {Websockets} from '$lib/server/Websockets.js';
+import {services} from '$lib/server/services.js';
+import {db} from '$lib/db/db.js';
+import {Broadcast} from '$lib/server/Broadcast.js';
 
 // Global logging setup
 if (import.meta.env.PROD) {

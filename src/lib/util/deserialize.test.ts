@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {deserialize, deserializeDate, deserializers} from '$lib/util/deserialize';
+import {deserialize, deserializeDate, deserializers} from '$lib/util/deserialize.js';
 
 /* test__deserialize */
 const test__deserialize = suite('deserialize');

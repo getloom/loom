@@ -1,9 +1,9 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
-import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions';
-import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
+import {blue, gray} from '$lib/server/colors.js';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
+import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions.js';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
 
 const log = new Logger(gray('[') + blue('roleServices') + gray(']'));
 

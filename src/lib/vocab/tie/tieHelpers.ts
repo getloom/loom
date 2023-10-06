@@ -1,7 +1,7 @@
 import {mutable, type Mutable} from '@feltcoop/svelte-gettable-stores';
 
-import type {Tie} from '$lib/vocab/tie/tie';
-import type {EntityId} from '$lib/vocab/entity/entity';
+import type {Tie} from '$lib/vocab/tie/tie.js';
+import type {EntityId} from '$lib/vocab/entity/entity.js';
 
 export const toTieEntityIds = (ties: Tie[]): Set<EntityId> => {
 	const ids = new Set<EntityId>();

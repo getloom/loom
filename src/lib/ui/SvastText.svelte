@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SvastView from '$lib/ui/SvastView.svelte';
-	import {parseView} from '$lib/vocab/view/view';
+	import {parseView} from '$lib/vocab/view/view.js';
 
 	export let text: string;
 

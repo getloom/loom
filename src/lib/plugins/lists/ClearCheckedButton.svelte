@@ -3,9 +3,9 @@
 	import {slide} from 'svelte/transition';
 	import {plural} from '@grogarden/util/string.js';
 
-	import {getApp} from '$lib/ui/app';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 
 	const {actor} = getSpaceContext();
 

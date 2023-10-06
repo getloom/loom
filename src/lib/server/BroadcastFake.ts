@@ -1,7 +1,7 @@
 import type {WebSocket} from 'ws';
 
-import type {IBroadcast} from '$lib/server/Broadcast';
-import type {AccountId} from '$lib/vocab/account/account';
+import type {IBroadcast} from '$lib/server/Broadcast.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 /**
  * A no-op alternative to `Broadcast` for testing purposes.

@@ -1,4 +1,4 @@
-import type {ServiceActionData, ClientActionData} from '$lib/vocab/action/action';
+import type {ServiceActionData, ClientActionData} from '$lib/vocab/action/action.js';
 
 export const Ping: ServiceActionData = {
 	type: 'ServiceAction',

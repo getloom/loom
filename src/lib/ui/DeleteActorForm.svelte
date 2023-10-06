@@ -3,8 +3,8 @@
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 
-	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 
 	const {actions} = getApp();

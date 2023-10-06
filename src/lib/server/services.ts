@@ -1,6 +1,6 @@
-import type {Service} from '$lib/server/service';
-import {PingService, EphemeraService} from '$lib/server/uiServices';
-import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices';
+import type {Service} from '$lib/server/service.js';
+import {PingService, EphemeraService} from '$lib/server/uiServices.js';
+import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices.js';
 import {
 	ReadHubService,
 	CreateHubService,
@@ -9,11 +9,11 @@ import {
 	InviteToHubService,
 	LeaveHubService,
 	KickFromHubService,
-} from '$lib/vocab/hub/hubServices';
+} from '$lib/vocab/hub/hubServices.js';
 import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
-} from '$lib/vocab/assignment/assignmentServices';
+} from '$lib/vocab/assignment/assignmentServices.js';
 import {
 	ReadEntitiesService,
 	ReadEntitiesByIdService,
@@ -21,32 +21,32 @@ import {
 	UpdateEntitiesService,
 	EraseEntitiesService,
 	DeleteEntitiesService,
-} from '$lib/vocab/entity/entityServices';
+} from '$lib/vocab/entity/entityServices.js';
 import {
 	ReadSpacesService,
 	CreateSpaceService,
 	UpdateSpaceService,
 	DeleteSpaceService,
-} from '$lib/vocab/space/spaceServices';
+} from '$lib/vocab/space/spaceServices.js';
 import {
 	CreateRoleService,
 	DeleteRoleService,
 	ReadRolesService,
 	UpdateRoleService,
-} from '$lib/vocab/role/roleServices';
+} from '$lib/vocab/role/roleServices.js';
 import {
 	CreatePolicyService,
 	DeletePolicyService,
 	ReadPoliciesService,
 	UpdatePolicyService,
-} from '$lib/vocab/policy/policyServices';
+} from '$lib/vocab/policy/policyServices.js';
 import {
 	SignUpService,
 	SignInService,
 	SignOutService,
 	UpdateAccountSettingsService,
 	UpdateAccountPasswordService,
-} from '$lib/vocab/account/accountServices';
+} from '$lib/vocab/account/accountServices.js';
 
 export const services: Map<string, Service> = new Map(
 	[

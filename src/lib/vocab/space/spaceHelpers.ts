@@ -1,8 +1,8 @@
 import type {Result} from '@grogarden/util/result.js';
 import {to_grapheme_count} from '@grogarden/util/string.js';
 
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {Space} from '$lib/vocab/space/space';
+import type {Entity} from '$lib/vocab/entity/entity.js';
+import type {Space} from '$lib/vocab/space/space.js';
 
 export const ICON_MISSING_ERROR = 'please add an icon, any character including emoji';
 export const ICON_TOO_LONG_ERROR = 'icon must be exactly 1 character';

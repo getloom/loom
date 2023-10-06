@@ -1,14 +1,14 @@
-import type {EntityData} from '$lib/vocab/entity/entityData';
+import type {EntityData} from '$lib/vocab/entity/entityData.js';
 import type {
 	CreatePolicyParams,
 	CreateRoleParams,
 	CreateSpaceParams,
-} from '$lib/vocab/action/actionTypes';
-import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
-import {policyNames} from '$lib/vocab/policy/policyHelpers';
-import type {RoleId} from '$lib/vocab/role/role';
-import type {HubId, InitialHubSettings} from '$lib/vocab/hub/hub';
-import type {ActorId} from '$lib/vocab/actor/actor';
+} from '$lib/vocab/action/actionTypes.js';
+import type {Policy, PolicyName} from '$lib/vocab/policy/policy.js';
+import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
+import type {RoleId} from '$lib/vocab/role/role.js';
+import type {HubId, InitialHubSettings} from '$lib/vocab/hub/hub.js';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
 
 // TODO where does this belong? vocab?
 

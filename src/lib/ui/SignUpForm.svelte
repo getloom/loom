@@ -4,10 +4,10 @@
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import {swallow} from '@grogarden/util/dom.js';
 
-	import {autofocus} from '$lib/ui/actions';
+	import {autofocus} from '$lib/ui/actions.js';
 	import HeroIcon from '$lib/ui/HeroIcon.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers';
+	import {getApp} from '$lib/ui/app.js';
+	import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers.js';
 
 	const {actions} = getApp();
 

@@ -2,7 +2,7 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {parse_schema_name} from '@grogarden/gro/schema.js';
 
-import {schemas} from '$lib/vocab/schemas';
+import {schemas} from '$lib/vocab/schemas.js';
 
 /* test__schemas */
 const test__schemas = suite('schemas');

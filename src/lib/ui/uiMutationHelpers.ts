@@ -1,12 +1,12 @@
 import {derived, writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@grogarden/util/log.js';
 
-import {locallyStored} from '$lib/ui/locallyStored';
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import {LAST_SEEN_KEY} from '$lib/ui/app';
-import type {WritableUi} from '$lib/ui/ui';
-import type {HubId} from '$lib/vocab/hub/hub';
+import {locallyStored} from '$lib/ui/locallyStored.js';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import {LAST_SEEN_KEY} from '$lib/ui/app.js';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
 
 const log = new Logger('[uiMutationHelpers]');
 

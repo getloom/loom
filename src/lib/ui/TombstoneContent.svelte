@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import type {TombstoneEntityData} from '$lib/vocab/entity/entityData.js';
 
 	// TODO probably want to support generic entity, `Entity<TombstoneEntityData>`.
 	// Another solution would be to check if the entity prop is type `Tombstone` and handle the other case,

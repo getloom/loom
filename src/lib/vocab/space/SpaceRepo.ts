@@ -1,11 +1,11 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Space, SpaceId} from '$lib/vocab/space/space';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {EntityId} from '$lib/vocab/entity/entity';
-import type {AccountId} from '$lib/vocab/account/account';
+import {blue, gray} from '$lib/server/colors.js';
+import {PostgresRepo} from '$lib/db/PostgresRepo.js';
+import type {Space, SpaceId} from '$lib/vocab/space/space.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {EntityId} from '$lib/vocab/entity/entity.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 const log = new Logger(gray('[') + blue('SpaceRepo') + gray(']'));
 

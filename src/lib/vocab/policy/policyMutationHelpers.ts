@@ -1,9 +1,9 @@
 import {Logger} from '@grogarden/util/log.js';
 import {writable} from '@feltcoop/svelte-gettable-stores';
 
-import type {WritableUi} from '$lib/ui/ui';
-import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
-import {setIfUpdated} from '$lib/util/store';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {Policy, PolicyId} from '$lib/vocab/policy/policy.js';
+import {setIfUpdated} from '$lib/util/store.js';
 
 const log = new Logger('[policyMutationHelpers]');
 

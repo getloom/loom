@@ -5,19 +5,19 @@
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {getApp} from '$lib/ui/app';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import {parseJson, serializeJson} from '$lib/util/json';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import {parseJson, serializeJson} from '$lib/util/json.js';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import TombstoneContent from '$lib/ui/TombstoneContent.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
 	import SourceEntities from '$lib/ui/SourceEntities.svelte';
 	import DestEntities from '$lib/ui/DestEntities.svelte';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
-	import {lookupActor} from '$lib/vocab/actor/actorHelpers';
+	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 	import EntityChip from '$lib/ui/EntityChip.svelte';
 
 	export let actor: Readable<AccountActor>;

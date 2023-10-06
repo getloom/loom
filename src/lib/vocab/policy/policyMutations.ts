@@ -1,5 +1,5 @@
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {evictPolicies, stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {evictPolicies, stashPolicies} from '$lib/vocab/policy/policyMutationHelpers.js';
 
 export const CreatePolicy: Mutations['CreatePolicy'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();

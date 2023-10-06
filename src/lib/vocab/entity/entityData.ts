@@ -1,4 +1,4 @@
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 
 export type EntityData =
 	| BaseEntityData

@@ -1,5 +1,5 @@
-import type {ApiResult} from '$lib/server/api';
-import type {ServiceActionData} from '$lib/vocab/action/action';
+import type {ApiResult} from '$lib/server/api.js';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
 
 export interface ApiClient<
 	TParamsMap extends Record<string, any> = any, // TODO default and value types?

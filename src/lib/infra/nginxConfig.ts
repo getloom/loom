@@ -1,5 +1,5 @@
-import {HEARTBEAT_INTERVAL} from '$lib/ui/socket';
-import {render_ascii_felt_logo} from '$lib/util/logo';
+import {HEARTBEAT_INTERVAL} from '$lib/ui/socket.js';
+import {render_ascii_felt_logo} from '$lib/util/logo.js';
 
 // Outputs an nginx config with configured values.
 export const render_nginx_config = (

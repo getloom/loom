@@ -1,10 +1,10 @@
 <script lang="ts">
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
-	import type {SignOutResponseResult} from '$lib/vocab/action/actionTypes';
+	import type {SignOutResponseResult} from '$lib/vocab/action/actionTypes.js';
 
-	import type {ClientAccount} from '$lib/vocab/account/account';
-	import {getApp} from '$lib/ui/app';
+	import type {ClientAccount} from '$lib/vocab/account/account.js';
+	import {getApp} from '$lib/ui/app.js';
 
 	const {
 		actions,

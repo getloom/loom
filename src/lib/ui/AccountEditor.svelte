@@ -2,10 +2,10 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
 
-	import {getApp} from '$lib/ui/app';
-	import {parseJson, serializeJson} from '$lib/util/json';
+	import {getApp} from '$lib/ui/app.js';
+	import {parseJson, serializeJson} from '$lib/util/json.js';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import type {ClientAccount} from '$lib/vocab/account/account';
+	import type {ClientAccount} from '$lib/vocab/account/account.js';
 	import UpdateAccountPasswordForm from '$lib/ui/UpdateAccountPasswordForm.svelte';
 
 	export let account: Readable<ClientAccount | null>;

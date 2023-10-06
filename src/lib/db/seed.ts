@@ -6,32 +6,39 @@ import {magenta} from 'kleur/colors';
 import {to_next} from '@grogarden/util/array.js';
 import type {OmitStrict} from '@grogarden/util/types.js';
 
-import {cyan} from '$lib/server/colors';
-import type {Database} from '$lib/db/Database';
-import type {Account} from '$lib/vocab/account/account';
-import type {Space} from '$lib/vocab/space/space';
-import type {Hub} from '$lib/vocab/hub/hub';
+import {cyan} from '$lib/server/colors.js';
+import type {Database} from '$lib/db/Database.js';
+import type {Account} from '$lib/vocab/account/account.js';
+import type {Space} from '$lib/vocab/space/space.js';
+import type {Hub} from '$lib/vocab/hub/hub.js';
 import type {
 	CreateEntityParams,
 	CreateEntityResponse,
 	SignInParams,
-} from '$lib/vocab/action/actionTypes';
-import type {AccountActor} from '$lib/vocab/actor/actor';
-import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view';
-import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
-import {CreateHubService, UpdateHubService} from '$lib/vocab/hub/hubServices';
-import {toServiceRequestFake} from '$lib/util/testHelpers';
-import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices';
-import {CreateEntityService} from '$lib/vocab/entity/entityServices';
-import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
-import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
-import {ALPHABET} from '$lib/util/randomVocab';
-import {defaultCommunityHubRoles, type HubTemplate, type EntityTemplate} from '$lib/ui/templates';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import type {Repos} from '$lib/db/Repos';
-import {create_password_hasher} from '$lib/server/password_hasher';
-import {ADMIN_HUB_ID} from '$lib/util/constants';
-import type {AuthorizedServiceRequest} from '$lib/server/service';
+} from '$lib/vocab/action/actionTypes.js';
+import type {AccountActor} from '$lib/vocab/actor/actor.js';
+import {parseView, toCreatableViewTemplates, type ViewData} from '$lib/vocab/view/view.js';
+import {CreateAccountActorService} from '$lib/vocab/actor/actorServices.js';
+import {CreateHubService, UpdateHubService} from '$lib/vocab/hub/hubServices.js';
+import {toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices.js';
+import {CreateEntityService} from '$lib/vocab/entity/entityServices.js';
+import {
+	ACCOUNT_COLUMNS,
+	toDefaultAccountSettings,
+} from '$lib/vocab/account/accountHelpers.server.js';
+import {CreateSpaceService} from '$lib/vocab/space/spaceServices.js';
+import {ALPHABET} from '$lib/util/randomVocab.js';
+import {
+	defaultCommunityHubRoles,
+	type HubTemplate,
+	type EntityTemplate,
+} from '$lib/ui/templates.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import type {Repos} from '$lib/db/Repos.js';
+import {create_password_hasher} from '$lib/server/password_hasher.js';
+import {ADMIN_HUB_ID} from '$lib/util/constants.js';
+import type {AuthorizedServiceRequest} from '$lib/server/service.js';
 
 /* eslint-disable no-await-in-loop */
 

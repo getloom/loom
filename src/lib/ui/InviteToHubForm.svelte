@@ -3,11 +3,11 @@
 	import type {AsyncStatus} from '@grogarden/util/async.js';
 	import {tick} from 'svelte';
 
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import {getApp} from '$lib/ui/app';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import {getApp} from '$lib/ui/app.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {autofocus} from '$lib/ui/actions';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {autofocus} from '$lib/ui/actions.js';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 

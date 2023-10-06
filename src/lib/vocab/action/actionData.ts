@@ -1,11 +1,11 @@
-import type {ActionData} from '$lib/vocab/action/action';
+import type {ActionData} from '$lib/vocab/action/action.js';
 import {
 	SignIn,
 	SignOut,
 	SignUp,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
-} from '$lib/vocab/account/accountActions';
+} from '$lib/vocab/account/accountActions.js';
 import {
 	CreateHub,
 	ReadHub,
@@ -14,10 +14,10 @@ import {
 	InviteToHub,
 	LeaveHub,
 	KickFromHub,
-} from '$lib/vocab/hub/hubActions';
-import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions';
-import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
-import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions';
+} from '$lib/vocab/hub/hubActions.js';
+import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions.js';
+import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions.js';
+import {CreateSpace, ReadSpaces, UpdateSpace, DeleteSpace} from '$lib/vocab/space/spaceActions.js';
 import {
 	CreateEntity,
 	UpdateEntities,
@@ -25,14 +25,14 @@ import {
 	DeleteEntities,
 	ReadEntities,
 	ReadEntitiesById,
-} from '$lib/vocab/entity/entityActions';
-import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions';
+} from '$lib/vocab/entity/entityActions.js';
+import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions.js';
 import {
 	CreatePolicy,
 	ReadPolicies,
 	UpdatePolicy,
 	DeletePolicy,
-} from '$lib/vocab/policy/policyActions';
+} from '$lib/vocab/policy/policyActions.js';
 import {
 	Ping,
 	Ephemera,
@@ -44,7 +44,7 @@ import {
 	CloseDialog,
 	ViewSpace,
 	ClearFreshness,
-} from '$lib/ui/uiActions';
+} from '$lib/ui/uiActions.js';
 
 // TODO awkwardly named, but what's better? `actions` is overloaded with the client's interface to them,
 // maybe `Definition` is better than `Data`?

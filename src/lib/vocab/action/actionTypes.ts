@@ -6,7 +6,7 @@ import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
 import type {Role, RoleId} from '$lib/vocab/role/role';
 import type {Policy, PolicyName, PolicyId} from '$lib/vocab/policy/policy';
 import type {Space, SpaceId} from '$lib/vocab/space/space';
-import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
+import type {Directory, EntityData} from '$lib/vocab/entity/entityData.js';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Tie} from '$lib/vocab/tie/tie';
 import type {DialogParams} from '@fuz.dev/fuz_dialog/dialog.js';
@@ -16,14 +16,14 @@ import type {
 	ClientAccount,
 	AccountSettings,
 } from '$lib/vocab/account/account';
-import type {ApiResult} from '$lib/server/api';
+import type {ApiResult} from '$lib/server/api.js';
 import type {
 	NonAuthenticatedService,
 	NonAuthorizedService,
 	AuthorizedService,
-} from '$lib/server/service';
-import type {MutationContext} from '$lib/util/mutation';
-import type {HubTemplate} from '$lib/ui/templates';
+} from '$lib/server/service.js';
+import type {MutationContext} from '$lib/util/mutation.js';
+import type {HubTemplate} from '$lib/ui/templates.js';
 import type {Flavored} from '@grogarden/util/types.js'; // TODO something is buggy here, shouldn't be needed
 
 /* eslint-disable @typescript-eslint/array-type */

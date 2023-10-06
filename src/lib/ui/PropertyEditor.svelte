@@ -7,9 +7,9 @@
 	import {afterUpdate} from 'svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {autofocus} from '$lib/ui/actions';
+	import {autofocus} from '$lib/ui/actions.js';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 
 	// TODO make this work with other kinds of inputs, starting with numbers
 

@@ -3,21 +3,21 @@ import {goto} from '$app/navigation';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
-import type {WritableUi} from '$lib/ui/ui';
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Tie, TieId} from '$lib/vocab/tie/tie';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+import type {Tie, TieId} from '$lib/vocab/tie/tie.js';
 import {
 	setLastSeen,
 	updateLastSeen,
 	upsertFreshnessByHubId,
 	setFreshnessByDirectoryId,
-} from '$lib/ui/uiMutationHelpers';
-import {lookupTies} from '$lib/vocab/tie/tieHelpers';
-import {setIfUpdated} from '$lib/util/store';
-import {toHubUrl} from '$lib/util/url';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import {isDirectory} from '$lib/vocab/entity/entityHelpers';
-import type {AfterMutation} from '$lib/util/mutation';
+} from '$lib/ui/uiMutationHelpers.js';
+import {lookupTies} from '$lib/vocab/tie/tieHelpers.js';
+import {setIfUpdated} from '$lib/util/store.js';
+import {toHubUrl} from '$lib/util/url.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import {isDirectory} from '$lib/vocab/entity/entityHelpers.js';
+import type {AfterMutation} from '$lib/util/mutation.js';
 
 export const stashEntities = (
 	ui: WritableUi,

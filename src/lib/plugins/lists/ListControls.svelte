@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import ListInput from './ListInput.svelte';
 
 	export let list: Readable<Entity>;

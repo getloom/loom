@@ -1,14 +1,14 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {Repos} from '$lib/db/Repos';
-import {ApiError} from '$lib/server/api';
-import {isActorAdmin} from '$lib/vocab/actor/actorHelpers.server';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {ActorId} from '$lib/vocab/actor/actor';
-import type {EntityId} from '$lib/vocab/entity/entity';
-import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
-import type {PolicyName} from '$lib/vocab/policy/policy';
+import {blue, gray} from '$lib/server/colors.js';
+import type {Repos} from '$lib/db/Repos.js';
+import {ApiError} from '$lib/server/api.js';
+import {isActorAdmin} from '$lib/vocab/actor/actorHelpers.server.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
+import type {EntityId} from '$lib/vocab/entity/entity.js';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
+import type {PolicyName} from '$lib/vocab/policy/policy.js';
 
 const log = new Logger(gray('[') + blue('policyHelpers.server') + gray(']'));
 

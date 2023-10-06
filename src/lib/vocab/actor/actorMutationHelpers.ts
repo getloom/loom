@@ -1,10 +1,10 @@
 import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 
-import type {WritableUi} from '$lib/ui/ui';
-import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
-import {toHubUrl, toAppSearchParams} from '$lib/util/url';
-import type {AfterMutation} from '$lib/util/mutation';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor.js';
+import {toHubUrl, toAppSearchParams} from '$lib/util/url.js';
+import type {AfterMutation} from '$lib/util/mutation.js';
 
 export const stashActors = (
 	{actorById, actors, sessionActors, hubIdSelectionByActorId}: WritableUi,

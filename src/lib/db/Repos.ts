@@ -1,13 +1,13 @@
-import type {PostgresSql} from '$lib/db/postgres';
-import {AccountRepo} from '$lib/vocab/account/AccountRepo';
-import {ActorRepo} from '$lib/vocab/actor/ActorRepo';
-import {AssignmentRepo} from '$lib/vocab/assignment/AssignmentRepo';
-import {HubRepo} from '$lib/vocab/hub/HubRepo';
-import {SpaceRepo} from '$lib/vocab/space/SpaceRepo';
-import {EntityRepo} from '$lib/vocab/entity/EntityRepo';
-import {TieRepo} from '$lib/vocab/tie/TieRepo';
-import {RoleRepo} from '$lib/vocab/role/RoleRepo';
-import {PolicyRepo} from '$lib/vocab/policy/PolicyRepo';
+import type {PostgresSql} from '$lib/db/postgres.js';
+import {AccountRepo} from '$lib/vocab/account/AccountRepo.js';
+import {ActorRepo} from '$lib/vocab/actor/ActorRepo.js';
+import {AssignmentRepo} from '$lib/vocab/assignment/AssignmentRepo.js';
+import {HubRepo} from '$lib/vocab/hub/HubRepo.js';
+import {SpaceRepo} from '$lib/vocab/space/SpaceRepo.js';
+import {EntityRepo} from '$lib/vocab/entity/EntityRepo.js';
+import {TieRepo} from '$lib/vocab/tie/TieRepo.js';
+import {RoleRepo} from '$lib/vocab/role/RoleRepo.js';
+import {PolicyRepo} from '$lib/vocab/policy/PolicyRepo.js';
 
 /**
  * The `Repos` is instantiated with a `postgres.Sql` instance,

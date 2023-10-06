@@ -1,14 +1,14 @@
 import type {WebSocket} from 'ws';
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {BroadcastMessage} from '$lib/util/websocket';
-import type {BroadcastAudience, Service} from '$lib/server/service';
-import type {ApiResult} from '$lib/server/api';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {ActorId} from '$lib/vocab/actor/actor';
-import type {AccountId} from '$lib/vocab/account/account';
-import type {Repos} from '$lib/db/Repos';
+import {blue, gray} from '$lib/server/colors.js';
+import type {BroadcastMessage} from '$lib/util/websocket.js';
+import type {BroadcastAudience, Service} from '$lib/server/service.js';
+import type {ApiResult} from '$lib/server/api.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
+import type {Repos} from '$lib/db/Repos.js';
 
 const log = new Logger(gray('[') + blue('Broadcast') + gray(']'));
 

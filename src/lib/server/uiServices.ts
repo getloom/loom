@@ -1,5 +1,5 @@
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
-import {Ping, Ephemera} from '$lib/ui/uiActions';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
+import {Ping, Ephemera} from '$lib/ui/uiActions.js';
 
 export const PingService: ServiceByName['Ping'] = {
 	action: Ping,

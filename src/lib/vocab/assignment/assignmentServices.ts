@@ -1,12 +1,12 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
-import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions';
-import {ADMIN_HUB_ID} from '$lib/util/constants';
-import {HUB_COLUMNS, cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server';
-import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {blue, gray} from '$lib/server/colors.js';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
+import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions.js';
+import {ADMIN_HUB_ID} from '$lib/util/constants.js';
+import {HUB_COLUMNS, cleanOrphanHubs} from '$lib/vocab/hub/hubHelpers.server.js';
+import {createAssignment} from '$lib/vocab/assignment/assignmentHelpers.server.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 const log = new Logger(gray('[') + blue('assignmentServices') + gray(']'));
 

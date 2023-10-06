@@ -2,19 +2,19 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {unwrap} from '@grogarden/util/result.js';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces';
-import {ReadHubService, DeleteHubService} from '$lib/vocab/hub/hubServices';
-import {DeleteSpaceService, ReadSpacesService} from '$lib/vocab/space/spaceServices';
-import {ReadEntitiesService} from '$lib/vocab/entity/entityServices';
-import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {toDefaultSpaces} from '$lib/vocab/space/defaultSpaces.js';
+import {ReadHubService, DeleteHubService} from '$lib/vocab/hub/hubServices.js';
+import {DeleteSpaceService, ReadSpacesService} from '$lib/vocab/space/spaceServices.js';
+import {ReadEntitiesService} from '$lib/vocab/entity/entityServices.js';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers.js';
 import {
 	CreateAssignmentService,
 	DeleteAssignmentService,
-} from '$lib/vocab/assignment/assignmentServices';
-import {toServiceRequestFake} from '$lib/util/testHelpers';
-import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+} from '$lib/vocab/assignment/assignmentServices.js';
+import {toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {ACCOUNT_COLUMNS} from '$lib/vocab/account/accountHelpers.server.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 /* test_servicesIntegration */
 const test_servicesIntegration = suite<TestDbContext>('repos');

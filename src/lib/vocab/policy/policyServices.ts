@@ -1,14 +1,14 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
+import {blue, gray} from '$lib/server/colors.js';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {
 	CreatePolicy,
 	ReadPolicies,
 	UpdatePolicy,
 	DeletePolicy,
-} from '$lib/vocab/policy/policyActions';
-import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
+} from '$lib/vocab/policy/policyActions.js';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
 
 const log = new Logger(gray('[') + blue('policyServices') + gray(']'));
 

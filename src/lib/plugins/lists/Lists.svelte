@@ -1,17 +1,17 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ListItems from './ListItems.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import AddListButton from './AddListButton.svelte';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
-	import type {SpaceId} from '$lib/vocab/space/space';
-	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-	import type {ActorId} from '$lib/vocab/actor/actor';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers';
+	import type {SpaceId} from '$lib/vocab/space/space.js';
+	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+	import type {ActorId} from '$lib/vocab/actor/actor.js';
+	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers.js';
 
 	const {actor, space} = getSpaceContext();
 

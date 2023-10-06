@@ -2,11 +2,11 @@ import {setContext, getContext} from 'svelte';
 import {Logger} from '@grogarden/util/log.js';
 import {browser} from '$app/environment';
 
-import type {WritableUi} from '$lib/ui/ui';
-import type {ApiClient} from '$lib/ui/ApiClient';
-import type {Actions} from '$lib/vocab/action/actionTypes';
-import type {BroadcastMessage} from '$lib/util/websocket';
-import {createMutationContext, type Mutation} from '$lib/util/mutation';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {ApiClient} from '$lib/ui/ApiClient.js';
+import type {Actions} from '$lib/vocab/action/actionTypes.js';
+import type {BroadcastMessage} from '$lib/util/websocket.js';
+import {createMutationContext, type Mutation} from '$lib/util/mutation.js';
 
 const log = new Logger();
 

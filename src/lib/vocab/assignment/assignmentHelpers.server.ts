@@ -1,12 +1,12 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {Repos} from '$lib/db/Repos';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {ApiError} from '$lib/server/api';
-import type {Hub} from '$lib/vocab/hub/hub';
-import type {ActorId} from '$lib/vocab/actor/actor';
-import type {RoleId} from '$lib/vocab/role/role';
+import {blue, gray} from '$lib/server/colors.js';
+import type {Repos} from '$lib/db/Repos.js';
+import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import {ApiError} from '$lib/server/api.js';
+import type {Hub} from '$lib/vocab/hub/hub.js';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
+import type {RoleId} from '$lib/vocab/role/role.js';
 
 const log = new Logger(gray('[') + blue('assignmentHelpers.server') + gray(']'));
 

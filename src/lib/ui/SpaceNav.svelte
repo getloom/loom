@@ -1,12 +1,12 @@
 <script lang="ts">
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
-
-	import type {Space} from '$lib/vocab/space/space';
-	import type {Hub} from '$lib/vocab/hub/hub';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import SpaceNavItem from '$lib/ui/SpaceNavItem.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {getApp} from '$lib/ui/app';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {getApp} from '$lib/ui/app.js';
 	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
 
 	const {

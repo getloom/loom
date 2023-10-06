@@ -1,15 +1,15 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {red} from '$lib/server/colors';
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {log, toServiceRequestFake} from '$lib/util/testHelpers';
-import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv';
-import {services} from '$lib/server/services';
-import {randomActionParams} from '$lib/util/randomActionParams';
-import {SessionApiFake} from '$lib/session/SessionApiFake';
-import {toFailedApiResult} from '$lib/server/api';
-import {performService} from '$lib/server/service';
+import {red} from '$lib/server/colors.js';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {log, toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv.js';
+import {services} from '$lib/server/services.js';
+import {randomActionParams} from '$lib/util/randomActionParams.js';
+import {SessionApiFake} from '$lib/session/SessionApiFake.js';
+import {toFailedApiResult} from '$lib/server/api.js';
+import {performService} from '$lib/server/service.js';
 
 /* test__serviceDefinitions */
 const test__serviceDefinitions = suite('serviceDefinitions');

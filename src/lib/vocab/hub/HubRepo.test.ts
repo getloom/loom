@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 
 /* test__HubRepo */
 const test__HubRepo = suite<TestDbContext>('HubRepo');

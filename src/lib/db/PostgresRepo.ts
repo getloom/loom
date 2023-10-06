@@ -1,5 +1,5 @@
-import type {PostgresSql} from '$lib/db/postgres';
-import type {Repos} from '$lib/db/Repos';
+import type {PostgresSql} from '$lib/db/postgres.js';
+import type {Repos} from '$lib/db/Repos.js';
 
 export class PostgresRepo {
 	constructor(

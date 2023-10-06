@@ -6,13 +6,13 @@
 	import {page} from '$app/stores';
 
 	import ForumItems from '$lib/plugins/forum/ForumItems.svelte';
-	import {getApp} from '$lib/ui/app';
-	import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 	import ForumDetail from './ForumDetail.svelte';
-	import {parseSpacePageParams} from '$lib/util/url';
+	import {parseSpacePageParams} from '$lib/util/url.js';
 
 	const {actor, space, hub} = getSpaceContext();
 

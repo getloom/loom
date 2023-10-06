@@ -1,4 +1,4 @@
-import type {ServiceActionData} from '$lib/vocab/action/action';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
 
 export const CreateAssignment: ServiceActionData = {
 	type: 'ServiceAction',

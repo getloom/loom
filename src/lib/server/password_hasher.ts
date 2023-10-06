@@ -1,4 +1,4 @@
-import {create_password_hasher_worker} from '$lib/server/password_hasher.worker';
+import {create_password_hasher_worker} from '$lib/server/password_hasher.worker.js';
 
 export interface PasswordHasher {
 	/**

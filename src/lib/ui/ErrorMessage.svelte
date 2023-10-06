@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 
-	import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error';
+	import {ERROR_MESSAGE_UNKNOWN} from '$lib/util/error.js';
 
 	export let text: string | undefined;
 

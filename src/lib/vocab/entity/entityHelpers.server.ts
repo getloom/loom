@@ -1,11 +1,11 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {Repos} from '$lib/db/Repos';
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {Tie} from '$lib/vocab/tie/tie';
+import {blue, gray} from '$lib/server/colors.js';
+import type {Repos} from '$lib/db/Repos.js';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {Tie} from '$lib/vocab/tie/tie.js';
 
 const log = new Logger(gray('[') + blue('entityHelpers.server') + gray(']'));
 

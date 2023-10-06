@@ -4,13 +4,13 @@
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import type {Space} from '$lib/vocab/space/space';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import {getApp} from '$lib/ui/app';
-	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers';
+	import type {Space} from '$lib/vocab/space/space.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import {getApp} from '$lib/ui/app.js';
+	import {parseSpaceIcon} from '$lib/vocab/space/spaceHelpers.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import DeleteSpaceForm from '$lib/ui/DeleteSpaceForm.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 
 	const {
 		actions,

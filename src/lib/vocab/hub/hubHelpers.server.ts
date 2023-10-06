@@ -1,17 +1,17 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/util/constants';
-import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub';
-import type {ActorId, PublicActor} from '$lib/vocab/actor/actor';
-import type {Repos} from '$lib/db/Repos';
-import type {Role, RoleId} from '$lib/vocab/role/role';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {defaultAdminHubRoles, type RoleTemplate} from '$lib/ui/templates';
-import type {Policy} from '$lib/vocab/policy/policy';
-import {ApiError} from '$lib/server/api';
-import {randomHue} from '$lib/util/color';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {blue, gray} from '$lib/server/colors.js';
+import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/util/constants.js';
+import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub.js';
+import type {ActorId, PublicActor} from '$lib/vocab/actor/actor.js';
+import type {Repos} from '$lib/db/Repos.js';
+import type {Role, RoleId} from '$lib/vocab/role/role.js';
+import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import {defaultAdminHubRoles, type RoleTemplate} from '$lib/ui/templates.js';
+import type {Policy} from '$lib/vocab/policy/policy.js';
+import {ApiError} from '$lib/server/api.js';
+import {randomHue} from '$lib/util/color.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 const log = new Logger(gray('[') + blue('hubHelpers.server') + gray(']'));
 

@@ -5,8 +5,8 @@
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import CreateHubForm from '$lib/ui/CreateHubForm.svelte';
 	import DeleteActorForm from '$lib/ui/DeleteActorForm.svelte';
 

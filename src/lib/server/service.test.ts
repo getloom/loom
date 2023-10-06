@@ -1,16 +1,16 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {Hub} from '$lib/vocab/hub/hub';
-import {toServiceRequestFake} from '$lib/util/testHelpers';
-import {toDefaultHubSettings} from '$lib/vocab/hub/hubHelpers.server';
-import {performService} from '$lib/server/service';
-import {CreateHubService} from '$lib/vocab/hub/hubServices';
-import {randomCommunnityName} from '$lib/util/randomVocab';
-import {ApiError, type ApiResult} from '$lib/server/api';
-import {randomActionParams} from '$lib/util/randomActionParams';
-import {PingService} from '$lib/server/uiServices';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import type {Hub} from '$lib/vocab/hub/hub.js';
+import {toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {toDefaultHubSettings} from '$lib/vocab/hub/hubHelpers.server.js';
+import {performService} from '$lib/server/service.js';
+import {CreateHubService} from '$lib/vocab/hub/hubServices.js';
+import {randomCommunnityName} from '$lib/util/randomVocab.js';
+import {ApiError, type ApiResult} from '$lib/server/api.js';
+import {randomActionParams} from '$lib/util/randomActionParams.js';
+import {PingService} from '$lib/server/uiServices.js';
 
 /* test__service */
 const test__service = suite<TestDbContext>('services');

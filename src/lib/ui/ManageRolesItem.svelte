@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 
-	import type {Role, RoleId} from '$lib/vocab/role/role';
+	import type {Role, RoleId} from '$lib/vocab/role/role.js';
 
 	export let role: Readable<Role>;
 	export let defaultRoleId: RoleId;

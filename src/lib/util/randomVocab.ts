@@ -1,9 +1,9 @@
 import {unwrap} from '@grogarden/util/result.js';
 
-import type {Space, SpaceId} from '$lib/vocab/space/space';
-import type {Hub, HubId} from '$lib/vocab/hub/hub';
-import type {Account} from '$lib/vocab/account/account';
-import type {AccountActor, ActorId, ClientActor, PublicActor} from '$lib/vocab/actor/actor';
+import type {Space, SpaceId} from '$lib/vocab/space/space.js';
+import type {Hub, HubId} from '$lib/vocab/hub/hub.js';
+import type {Account} from '$lib/vocab/account/account.js';
+import type {AccountActor, ActorId, ClientActor, PublicActor} from '$lib/vocab/actor/actor.js';
 import type {
 	CreateHubParams,
 	CreateAccountActorParams,
@@ -13,25 +13,28 @@ import type {
 	CreateRoleParams,
 	SignInParams,
 	CreatePolicyParams,
-} from '$lib/vocab/action/actionTypes';
-import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Tie} from '$lib/vocab/tie/tie';
-import {CreateAccountActorService} from '$lib/vocab/actor/actorServices';
-import {CreateHubService} from '$lib/vocab/hub/hubServices';
-import {CreateSpaceService} from '$lib/vocab/space/spaceServices';
-import type {Assignment} from '$lib/vocab/assignment/assignment';
-import {CreateEntityService} from '$lib/vocab/entity/entityServices';
-import {passwordHasherFake, toServiceRequestFake} from '$lib/util/testHelpers';
-import type {Role, RoleId} from '$lib/vocab/role/role';
-import {CreateRoleService} from '$lib/vocab/role/roleServices';
-import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
-import {randomHue} from '$lib/util/color';
-import type {Policy, PolicyName} from '$lib/vocab/policy/policy';
-import {CreatePolicyService} from '$lib/vocab/policy/policyServices';
+} from '$lib/vocab/action/actionTypes.js';
+import type {Directory, EntityData} from '$lib/vocab/entity/entityData.js';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+import type {Tie} from '$lib/vocab/tie/tie.js';
+import {CreateAccountActorService} from '$lib/vocab/actor/actorServices.js';
+import {CreateHubService} from '$lib/vocab/hub/hubServices.js';
+import {CreateSpaceService} from '$lib/vocab/space/spaceServices.js';
+import type {Assignment} from '$lib/vocab/assignment/assignment.js';
+import {CreateEntityService} from '$lib/vocab/entity/entityServices.js';
+import {passwordHasherFake, toServiceRequestFake} from '$lib/util/testHelpers.js';
+import type {Role, RoleId} from '$lib/vocab/role/role.js';
+import {CreateRoleService} from '$lib/vocab/role/roleServices.js';
+import {
+	ACCOUNT_COLUMNS,
+	toDefaultAccountSettings,
+} from '$lib/vocab/account/accountHelpers.server.js';
+import {randomHue} from '$lib/util/color.js';
+import type {Policy, PolicyName} from '$lib/vocab/policy/policy.js';
+import {CreatePolicyService} from '$lib/vocab/policy/policyServices.js';
 import {random_item} from '@grogarden/util/random.js';
-import {policyNames} from '$lib/vocab/policy/policyHelpers';
-import type {Repos} from '$lib/db/Repos';
+import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
+import type {Repos} from '$lib/db/Repos.js';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 

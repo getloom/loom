@@ -3,7 +3,7 @@
 	import {PUBLIC_ADMIN_EMAIL, PUBLIC_GIT_HASH} from '$env/static/public';
 	import {VERSION as SVELTEKIT_VERSION} from '@sveltejs/kit';
 
-	import {VERSION as FELT_VERSION} from '$lib/util/constants';
+	import {VERSION as FELT_VERSION} from '$lib/util/constants.js';
 </script>
 
 <div class="prose padded_1">

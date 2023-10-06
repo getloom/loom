@@ -4,7 +4,7 @@ export const AccountIdSchema = {
 	$id: '/schemas/AccountId',
 	type: 'number',
 	tsType: "Flavored<number, 'AccountId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
 } satisfies JsonSchema;
 
 export const AccountSchema = {
@@ -86,7 +86,7 @@ export const ClientAccountSessionSchema = {
 			type: 'array',
 			items: {$ref: '/schemas/Entity'},
 			tsType: 'Array<Entity & {data: EntityData}>',
-			tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
+			tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData.js'",
 		},
 		assignments: {type: 'array', items: {$ref: '/schemas/Assignment'}},
 		policies: {type: 'array', items: {$ref: '/schemas/Policy'}},

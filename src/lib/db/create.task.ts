@@ -1,7 +1,7 @@
 import type {Task} from '@grogarden/gro';
 import {z} from 'zod';
 
-import {obtainDb} from '$lib/db/obtainDb';
+import {obtainDb} from '$lib/db/obtainDb.js';
 
 const Args = z
 	.object({

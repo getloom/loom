@@ -6,8 +6,8 @@
 	import {createEventDispatcher} from 'svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {getApp} from '$lib/ui/app';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {getApp} from '$lib/ui/app.js';
 	import HubPicker from '$lib/ui/HubPicker.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 

@@ -2,10 +2,9 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import AssignmentInputItem from '$lib/ui/AssignmentInputItem.svelte';
-	import {getApp} from '$lib/ui/app';
-
-	import type {Role} from '$lib/vocab/role/role';
-	import type {Hub} from '$lib/vocab/hub/hub';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Role} from '$lib/vocab/role/role.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 
 	const {
 		ui: {actorSelection, actorsByHubId, assignmentsByRoleId},

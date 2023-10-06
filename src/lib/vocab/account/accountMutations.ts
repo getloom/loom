@@ -1,6 +1,6 @@
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {gotoUnlessActive, toUrl} from '$lib/util/url';
-import {setIfUpdated} from '$lib/util/store';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {gotoUnlessActive, toUrl} from '$lib/util/url.js';
+import {setIfUpdated} from '$lib/util/store.js';
 
 export const SignUp: Mutations['SignUp'] = async ({invoke, actions}) => {
 	const result = await invoke();

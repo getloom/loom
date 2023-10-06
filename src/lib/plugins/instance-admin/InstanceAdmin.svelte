@@ -1,10 +1,10 @@
 <script lang="ts">
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
-	import {parseJson, serializeJson} from '$lib/util/json';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
+	import {parseJson, serializeJson} from '$lib/util/json.js';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
-	import {ADMIN_HUB_ID} from '$lib/util/constants';
+	import {ADMIN_HUB_ID} from '$lib/util/constants.js';
 
 	const {actor, hub} = getSpaceContext();
 	const {actions} = getApp();

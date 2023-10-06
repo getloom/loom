@@ -3,7 +3,7 @@ import {base} from '$app/paths';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 
-import type {EntityId} from '$lib/vocab/entity/entity';
+import type {EntityId} from '$lib/vocab/entity/entity.js';
 
 export type SearchParams<TKey extends string = string> = Record<TKey, string | null | undefined>;
 

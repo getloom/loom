@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 
-	import {getDocsSettings} from '$lib/docs/docs';
+	import {getDocsSettings} from '$lib/docs/docs.js';
 
 	const docsSettings = getDocsSettings();
 	$: ({path} = $docsSettings);

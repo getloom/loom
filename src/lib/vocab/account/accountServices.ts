@@ -1,22 +1,25 @@
 import {blue, gray} from 'kleur/colors';
 import {Logger} from '@grogarden/util/log.js';
 
-import type {ServiceByName} from '$lib/vocab/action/actionTypes';
+import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {
 	SignUp,
 	SignIn,
 	SignOut,
 	UpdateAccountSettings,
 	UpdateAccountPassword,
-} from '$lib/vocab/account/accountActions';
-import {ACCOUNT_COLUMNS, toDefaultAccountSettings} from '$lib/vocab/account/accountHelpers.server';
+} from '$lib/vocab/account/accountActions.js';
+import {
+	ACCOUNT_COLUMNS,
+	toDefaultAccountSettings,
+} from '$lib/vocab/account/accountHelpers.server.js';
 import {
 	checkAccountName,
 	checkPasswordStrength,
 	scrubAccountName,
-} from '$lib/vocab/account/accountHelpers';
-import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server';
-import {assertApiError} from '$lib/server/api';
+} from '$lib/vocab/account/accountHelpers.js';
+import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
+import {assertApiError} from '$lib/server/api.js';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 

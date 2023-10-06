@@ -2,7 +2,7 @@ import type {Task} from '@grogarden/gro';
 import {z} from 'zod';
 import {rename} from 'node:fs/promises';
 
-import {MIGRATIONS_DIR, find_migrations} from '$lib/db/migration';
+import {MIGRATIONS_DIR, find_migrations} from '$lib/db/migration.js';
 
 const Args = z
 	.object({

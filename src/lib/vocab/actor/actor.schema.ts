@@ -4,7 +4,7 @@ export const ActorIdSchema = {
 	$id: '/schemas/ActorId',
 	type: 'number',
 	tsType: "Flavored<number, 'ActorId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js';",
+	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
 } satisfies JsonSchema;
 
 export const ActorRecordSchema = {

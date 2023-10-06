@@ -1,11 +1,11 @@
 import type {Writable} from '@feltcoop/svelte-gettable-stores';
 
-import type {ActorId} from '$lib/vocab/actor/actor';
-import {ACTOR_QUERY_KEY} from '$lib/util/url';
-import type {Ui} from '$lib/ui/ui';
-import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers';
-import type {SpaceId} from '$lib/vocab/space/space';
-import type {HubId} from '$lib/vocab/hub/hub';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
+import {ACTOR_QUERY_KEY} from '$lib/util/url.js';
+import type {Ui} from '$lib/ui/ui.js';
+import {parseDirectoryPath} from '$lib/vocab/space/spaceHelpers.js';
+import type {SpaceId} from '$lib/vocab/space/space.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
 
 // TODO instead doing a `select` action on startup, initialize with correct values
 

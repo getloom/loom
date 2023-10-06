@@ -1,5 +1,5 @@
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {evictSpaces, stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {evictSpaces, stashSpaces} from '$lib/vocab/space/spaceMutationHelpers.js';
 
 export const CreateSpace: Mutations['CreateSpace'] = async ({
 	invoke,

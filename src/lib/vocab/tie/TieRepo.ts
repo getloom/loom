@@ -1,9 +1,9 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Tie, TieId} from '$lib/vocab/tie/tie';
-import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
-import type {EntityId} from '$lib/vocab/entity/entity';
+import {PostgresRepo} from '$lib/db/PostgresRepo.js';
+import type {Tie, TieId} from '$lib/vocab/tie/tie.js';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants.js';
+import type {EntityId} from '$lib/vocab/entity/entity.js';
 
 const log = new Logger('[TieRepo]');
 

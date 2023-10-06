@@ -2,19 +2,19 @@ import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 import {unwrap} from '@grogarden/util/result.js';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {EntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData';
-import {expectApiError, invite, toServiceRequestFake} from '$lib/util/testHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import type {EntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData.js';
+import {expectApiError, invite, toServiceRequestFake} from '$lib/util/testHelpers.js';
 import {
 	ReadEntitiesService,
 	DeleteEntitiesService,
 	CreateEntityService,
 	UpdateEntitiesService,
 	EraseEntitiesService,
-} from '$lib/vocab/entity/entityServices';
-import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
-import {validateSchema} from '$lib/server/ajv';
-import {isDirectory} from '$lib/vocab/entity/entityHelpers';
+} from '$lib/vocab/entity/entityServices.js';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants.js';
+import {validateSchema} from '$lib/server/ajv.js';
+import {isDirectory} from '$lib/vocab/entity/entityHelpers.js';
 
 /* test_entityServices */
 const test_entityServices = suite<TestDbContext>('hubRepo');

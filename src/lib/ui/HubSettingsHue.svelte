@@ -3,9 +3,9 @@
 	import {throttle} from 'throttle-debounce';
 	import HueInput from '@fuz.dev/fuz_library/HueInput.svelte';
 
-	import {getApp} from '$lib/ui/app';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 
 	const {actions} = getApp();
 

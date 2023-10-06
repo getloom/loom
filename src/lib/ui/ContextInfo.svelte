@@ -3,9 +3,9 @@
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import type {Hub} from '$lib/vocab/hub/hub';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {Space} from '$lib/vocab/space/space';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {Space} from '$lib/vocab/space/space.js';
 	import SpaceName from '$lib/ui/SpaceName.svelte';
 
 	export let actor: Readable<AccountActor> | null = null;

@@ -1,9 +1,9 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers';
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {TombstoneEntityData} from '$lib/vocab/entity/entityData';
+import {setupDb, teardownDb, testDbCounts, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import type {Entity} from '$lib/vocab/entity/entity.js';
+import type {TombstoneEntityData} from '$lib/vocab/entity/entityData.js';
 
 /* test__EntityRepo */
 const test__EntityRepo = suite<TestDbContext>('EntityRepo');

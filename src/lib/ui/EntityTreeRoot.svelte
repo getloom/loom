@@ -4,11 +4,11 @@
 
 	import EntityTree from '$lib/ui/EntityTree.svelte';
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {getApp} from '$lib/ui/app';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {getApp} from '$lib/ui/app.js';
 	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
-	import type {QueryStore} from '$lib/util/query';
+	import type {QueryStore} from '$lib/util/query.js';
 
 	const {
 		ui: {contextmenu},

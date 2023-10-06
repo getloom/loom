@@ -2,9 +2,9 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {QueryStore} from '$lib/util/query';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {QueryStore} from '$lib/util/query.js';
 	import EntityTreeRoot from '$lib/ui/EntityTreeRoot.svelte';
 
 	export let actor: Readable<AccountActor>;

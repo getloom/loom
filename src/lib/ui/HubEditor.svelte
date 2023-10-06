@@ -3,14 +3,14 @@
 	import {format} from 'date-fns';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import type {Hub} from '$lib/vocab/hub/hub';
+	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import HubSettingsHue from '$lib/ui/HubSettingsHue.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import EditHubAdvanced from '$lib/ui/EditHubAdvanced.svelte';
 	import DeleteHubForm from '$lib/ui/DeleteHubForm.svelte';
 	import LeaveHubForm from '$lib/ui/LeaveHubForm.svelte';
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 
 	const {actions} = getApp();
 

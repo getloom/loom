@@ -2,7 +2,7 @@
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import {slide} from 'svelte/transition';
 
-	import type {QueryStore} from '$lib/util/query';
+	import type {QueryStore} from '$lib/util/query.js';
 
 	export let query: QueryStore;
 

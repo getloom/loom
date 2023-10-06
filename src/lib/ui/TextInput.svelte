@@ -3,8 +3,8 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {autofocus as autofocusAction} from '$lib/ui/actions';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {autofocus as autofocusAction} from '$lib/ui/actions.js';
 
 	const dispatch = createEventDispatcher<{submit: string}>();
 

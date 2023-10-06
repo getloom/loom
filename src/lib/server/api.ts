@@ -1,6 +1,6 @@
 import {ResultError, type Result} from '@grogarden/util/result.js';
 
-import type {ErrorResponse} from '$lib/util/error';
+import type {ErrorResponse} from '$lib/util/error.js';
 
 export class ApiError extends Error {
 	constructor(

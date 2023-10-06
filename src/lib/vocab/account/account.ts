@@ -6,7 +6,7 @@ import type {Hub} from '$lib/vocab/hub/hub';
 import type {Role} from '$lib/vocab/role/role';
 import type {Space} from '$lib/vocab/space/space';
 import type {Entity} from '$lib/vocab/entity/entity';
-import type {EntityData} from '$lib/vocab/entity/entityData';
+import type {EntityData} from '$lib/vocab/entity/entityData.js';
 import type {Assignment} from '$lib/vocab/assignment/assignment';
 import type {Policy} from '$lib/vocab/policy/policy';
 

@@ -1,14 +1,14 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 import {
 	ADMIN_HUB_NAME,
 	ADMIN_ACTOR_ID,
 	GHOST_ACTOR_ID,
 	GHOST_ACTOR_NAME,
-} from '$lib/util/constants';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+} from '$lib/util/constants.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 /* test__constants */
 const test__constants = suite<TestDbContext>('constants');

@@ -3,8 +3,8 @@
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {getApp} from '$lib/ui/app';
-	import type {ClientActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {ClientActor} from '$lib/vocab/actor/actor.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 
 	const {

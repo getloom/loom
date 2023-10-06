@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 
-	import {getDocsSettings} from '$lib/docs/docs';
+	import {getDocsSettings} from '$lib/docs/docs.js';
 	import tech_stack_diagram from '$lib/docs/tech_stack_diagram.png';
 
 	const docsSettings = getDocsSettings();

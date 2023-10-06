@@ -1,15 +1,15 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {PostgresRepo} from '$lib/db/PostgresRepo';
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Directory, EntityData} from '$lib/vocab/entity/entityData';
-import {GHOST_ACTOR_ID} from '$lib/util/constants';
-import type {ActorId} from '$lib/vocab/actor/actor';
-import type {SpaceId} from '$lib/vocab/space/space';
-import type {HubId} from '$lib/vocab/hub/hub';
-import type {AccountId} from '$lib/vocab/account/account';
-import {ENTITY_COLUMNS, type EntityColumn} from '$lib/vocab/entity/entityHelpers.server';
+import {blue, gray} from '$lib/server/colors.js';
+import {PostgresRepo} from '$lib/db/PostgresRepo.js';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+import type {Directory, EntityData} from '$lib/vocab/entity/entityData.js';
+import {GHOST_ACTOR_ID} from '$lib/util/constants.js';
+import type {ActorId} from '$lib/vocab/actor/actor.js';
+import type {SpaceId} from '$lib/vocab/space/space.js';
+import type {HubId} from '$lib/vocab/hub/hub.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
+import {ENTITY_COLUMNS, type EntityColumn} from '$lib/vocab/entity/entityHelpers.server.js';
 
 const log = new Logger(gray('[') + blue('EntityRepo') + gray(']'));
 

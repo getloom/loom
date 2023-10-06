@@ -1,9 +1,9 @@
 import {writable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@grogarden/util/log.js';
 
-import type {WritableUi} from '$lib/ui/ui';
-import type {Role, RoleId} from '$lib/vocab/role/role';
-import {setIfUpdated} from '$lib/util/store';
+import type {WritableUi} from '$lib/ui/ui.js';
+import type {Role, RoleId} from '$lib/vocab/role/role.js';
+import {setIfUpdated} from '$lib/util/store.js';
 
 const log = new Logger('[roleMutationHelpers]');
 

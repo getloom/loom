@@ -4,8 +4,8 @@
 	import {base} from '$app/paths';
 	import {intersect} from '@fuz.dev/svelte_intersect';
 
-	import type {ViewTemplate} from '$lib/vocab/view/view';
-	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action';
+	import type {ViewTemplate} from '$lib/vocab/view/view.js';
+	import type {ClientActionData, ServiceActionData} from '$lib/vocab/action/action.js';
 	import SchemaInfo from '$lib/ui/SchemaInfo.svelte';
 	import ActionInfo from '$lib/ui/ActionInfo.svelte';
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';

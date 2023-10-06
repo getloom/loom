@@ -1,5 +1,5 @@
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {evictRoles, stashRoles} from '$lib/vocab/role/roleMutationHelpers';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {evictRoles, stashRoles} from '$lib/vocab/role/roleMutationHelpers.js';
 
 export const CreateRole: Mutations['CreateRole'] = async ({invoke, mutate, ui}) => {
 	const result = await invoke();

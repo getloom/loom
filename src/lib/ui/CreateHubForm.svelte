@@ -6,13 +6,13 @@
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 
-	import {autofocus} from '$lib/ui/actions';
-	import {getApp} from '$lib/ui/app';
+	import {autofocus} from '$lib/ui/actions.js';
+	import {getApp} from '$lib/ui/app.js';
 	import Avatar from '$lib/ui/Avatar.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import {randomHue} from '$lib/util/color';
-	import {toHubUrl, toAppSearchParams} from '$lib/util/url';
-	import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import {randomHue} from '$lib/util/color.js';
+	import {toHubUrl, toAppSearchParams} from '$lib/util/url.js';
+	import {checkActorName, scrubActorName} from '$lib/vocab/actor/actorHelpers.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 
 	const {

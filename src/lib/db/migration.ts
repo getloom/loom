@@ -1,7 +1,7 @@
 import {strip_after} from '@grogarden/util/string.js';
 import {readdir} from 'node:fs/promises';
 
-import type {Basepath} from '$lib/util/fs';
+import type {Basepath} from '$lib/util/fs.js';
 
 // TODO these use some variables from gro but that causes a runtime dependency,
 // so for now we're just hardcoding them (we may use gro at runtime, but not for this)

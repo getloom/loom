@@ -1,8 +1,8 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import type {PostgresSql} from '$lib/db/postgres';
-import {Repos} from '$lib/db/Repos';
+import {blue, gray} from '$lib/server/colors.js';
+import type {PostgresSql} from '$lib/db/postgres.js';
+import {Repos} from '$lib/db/Repos.js';
 
 export interface Options {
 	sql: PostgresSql;

@@ -3,11 +3,11 @@
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import {writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
 
-	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {getApp} from '$lib/ui/app.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import CreateActionParamsFields from '$lib/ui/CreateActionParamsFields.svelte';
-	import {actionDatas} from '$lib/vocab/action/actionData';
-	import type {ActionData} from '$lib/vocab/action/action';
+	import {actionDatas} from '$lib/vocab/action/actionData.js';
+	import type {ActionData} from '$lib/vocab/action/action.js';
 	import ActionHistory, {type ActionHistoryItem} from '$lib/ui/ActionHistory.svelte';
 
 	const {actions} = getApp();

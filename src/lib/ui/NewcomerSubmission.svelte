@@ -1,13 +1,13 @@
 <script lang="ts">
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {AsyncStatus} from '@grogarden/util/async.js';
 	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import {autofocus} from '$lib/ui/actions';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import {autofocus} from '$lib/ui/actions.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 
 	const {hub} = getSpaceContext();
 

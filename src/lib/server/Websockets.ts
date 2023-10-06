@@ -4,10 +4,10 @@ import {EventEmitter} from 'events';
 import type StrictEventEmitter from 'strict-event-emitter-types';
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {parseSessionCookie} from '$lib/session/sessionCookie';
-import type {StatusMessage} from '$lib/util/websocket';
-import type {AccountId} from '$lib/vocab/account/account';
+import {blue, gray} from '$lib/server/colors.js';
+import {parseSessionCookie} from '$lib/session/sessionCookie.js';
+import type {StatusMessage} from '$lib/util/websocket.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 // TODO detect broken connections -
 // see https://github.com/websockets/ws#how-to-detect-and-close-broken-connections

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import CreateEntityForm from '$lib/ui/CreateEntityForm.svelte';
-	import type {EntityId} from '$lib/vocab/entity/entity';
+	import type {EntityId} from '$lib/vocab/entity/entity.js';
 
 	const {actor, space, hub} = getSpaceContext();
 

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import {getApp} from '$lib/ui/app';
+	import {getApp} from '$lib/ui/app.js';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {HubId} from '$lib/vocab/hub/hub';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {HubId} from '$lib/vocab/hub/hub.js';
 
 	const {
 		ui: {hubs},

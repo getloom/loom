@@ -2,7 +2,7 @@ import type {Mutable, Writable} from '@feltcoop/svelte-gettable-stores';
 import {identity} from '@grogarden/util/function.js';
 import type {Json} from '@grogarden/util/json.js';
 
-import {loadFromStorage, setInStorage} from '$lib/ui/localStorage';
+import {loadFromStorage, setInStorage} from '$lib/ui/localStorage.js';
 
 // TODO problem is this doesn't compose with custom stores that internally use `set` from a writable
 

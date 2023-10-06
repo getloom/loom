@@ -1,5 +1,5 @@
-import {DEFAULT_PAGE_SIZE} from '$lib/util/constants';
-import type {ServiceActionData} from '$lib/vocab/action/action';
+import {DEFAULT_PAGE_SIZE} from '$lib/util/constants.js';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
 
 export const CreateEntity: ServiceActionData = {
 	type: 'ServiceAction',
@@ -15,7 +15,7 @@ export const CreateEntity: ServiceActionData = {
 			data: {
 				type: 'object',
 				tsType: 'EntityData',
-				tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
+				tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData.js'",
 			},
 			ties: {
 				type: 'array',
@@ -81,7 +81,7 @@ export const UpdateEntities: ServiceActionData = {
 						data: {
 							type: 'object',
 							tsType: 'EntityData',
-							tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData'",
+							tsImport: "import type {EntityData} from '$lib/vocab/entity/entityData.js'",
 						},
 						path: {anyOf: [{type: 'string'}, {type: 'null'}]},
 					},

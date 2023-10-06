@@ -3,8 +3,8 @@
 	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
 
 	import ChatItems from '$lib/plugins/chat/ChatItems.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import TextInput from '$lib/ui/TextInput.svelte';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 

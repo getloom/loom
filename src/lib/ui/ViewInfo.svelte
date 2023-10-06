@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {ViewTemplate} from '$lib/vocab/view/view';
+	import type {ViewTemplate} from '$lib/vocab/view/view.js';
 
 	export let view: ViewTemplate;
 </script>

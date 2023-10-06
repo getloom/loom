@@ -1,10 +1,10 @@
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
-
-import type {Entity} from '$lib/vocab/entity/entity';
-import type {Hub} from '$lib/vocab/hub/hub';
-import type {AccountActor} from '$lib/vocab/actor/actor';
-import type {Space} from '$lib/vocab/space/space';
 import {getContext, setContext} from 'svelte';
+
+import type {Entity} from '$lib/vocab/entity/entity.js';
+import type {Hub} from '$lib/vocab/hub/hub.js';
+import type {AccountActor} from '$lib/vocab/actor/actor.js';
+import type {Space} from '$lib/vocab/space/space.js';
 
 export interface LayoutContext {
 	actor: Readable<AccountActor> | null;

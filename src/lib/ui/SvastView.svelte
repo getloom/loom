@@ -1,6 +1,6 @@
 <script lang="ts">
-	import {getApp} from '$lib/ui/app';
-	import {type ViewNode, toViewProps} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {type ViewNode, toViewProps} from '$lib/vocab/view/view.js';
 
 	const {
 		ui: {components},

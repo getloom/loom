@@ -1,7 +1,7 @@
 import type {LayoutServerLoad} from './$types';
 import {Logger} from '@grogarden/util/log.js';
 
-import {db} from '$lib/db/db';
+import {db} from '$lib/db/db.js';
 
 const log = new Logger('[hooks]');
 

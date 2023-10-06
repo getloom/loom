@@ -3,10 +3,10 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import EntityEditor from '$lib/ui/EntityEditor.svelte';
-	import type {Entity} from '$lib/vocab/entity/entity';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import EntityContent from '$lib/ui/EntityContent.svelte';
 	import RolesList from '$lib/ui/RolesList.svelte';
 

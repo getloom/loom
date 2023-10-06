@@ -2,7 +2,7 @@
 	import {base} from '$app/paths';
 	import {page} from '$app/stores';
 
-	import {getDocsSettings} from '$lib/docs/docs';
+	import {getDocsSettings} from '$lib/docs/docs.js';
 
 	type GuideName = 'user' | 'admin' | 'dev';
 

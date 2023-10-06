@@ -1,8 +1,8 @@
 import type {Task} from '@grogarden/gro';
 import {z} from 'zod';
 
-import {obtainDb} from '$lib/db/obtainDb';
-import {seed} from '$lib/db/seed';
+import {obtainDb} from '$lib/db/obtainDb.js';
+import {seed} from '$lib/db/seed.js';
 
 const Args = z
 	.object({

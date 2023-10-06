@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {AccountActor} from '$lib/vocab/actor/actor';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import PropertyPicker from '$lib/ui/PropertyPicker.svelte';
-	import type {ActionData} from '$lib/vocab/action/action';
+	import type {ActionData} from '$lib/vocab/action/action.js';
 
 	// TODO  what should be the interface here?
 	// bind:params? on:create or on:input ?

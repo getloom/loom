@@ -6,8 +6,8 @@
 	} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
-	import {toName, toIcon} from '$lib/vocab/entity/entityHelpers';
-	import type {ClientActor} from '$lib/vocab/actor/actor';
+	import {toName, toIcon} from '$lib/vocab/entity/entityHelpers.js';
+	import type {ClientActor} from '$lib/vocab/actor/actor.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
 
 	export let actor: Readable<ClientActor>;

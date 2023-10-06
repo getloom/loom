@@ -4,7 +4,7 @@
 	import {strip_start, strip_end} from '@grogarden/util/string.js';
 
 	import DocsGuideLink from '$lib/docs/DocsGuideLink.svelte';
-	import {getDocsSettings} from '$lib/docs/docs';
+	import {getDocsSettings} from '$lib/docs/docs.js';
 
 	// TODO this is all very hacky because we're mounting a component
 	// from a library that wants to own a route directory like `/docs`

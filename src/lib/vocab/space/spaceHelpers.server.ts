@@ -1,11 +1,11 @@
-import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/vocab/action/actionTypes';
-import type {Space} from '$lib/vocab/space/space';
-import type {Directory} from '$lib/vocab/entity/entityData';
-import {ApiError} from '$lib/server/api';
+import type {CreateSpaceParams, CreateSpaceResponse} from '$lib/vocab/action/actionTypes.js';
+import type {Space} from '$lib/vocab/space/space.js';
+import type {Directory} from '$lib/vocab/entity/entityData.js';
+import {ApiError} from '$lib/server/api.js';
 import {Logger} from '@grogarden/util/log.js';
-import {blue, gray} from '$lib/server/colors';
-import type {Repos} from '$lib/db/Repos';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {blue, gray} from '$lib/server/colors.js';
+import type {Repos} from '$lib/db/Repos.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 
 const log = new Logger(gray('[') + blue('spaceHelpers.server') + gray(']'));
 

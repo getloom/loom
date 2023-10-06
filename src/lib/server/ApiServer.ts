@@ -6,17 +6,17 @@ import {Logger} from '@grogarden/util/log.js';
 import {promisify} from 'util';
 import type {WebSocket} from 'ws';
 
-import {blue} from '$lib/server/colors';
-import type {Database} from '$lib/db/Database';
-import type {Websockets} from '$lib/server/Websockets';
-import type {Service} from '$lib/server/service';
-import {toHttpServiceMiddleware} from '$lib/server/httpServiceMiddleware';
-import {cookieSessionMiddleware} from '$lib/session/cookieSessionMiddleware';
-import {toWebsocketServiceMiddleware} from '$lib/server/websocketServiceMiddleware';
-import type {CookieSessionRequest} from '$lib/session/sessionCookie';
-import type {IBroadcast} from '$lib/server/Broadcast';
-import type {AccountId} from '$lib/vocab/account/account';
-import {create_password_hasher, type PasswordHasher} from '$lib/server/password_hasher';
+import {blue} from '$lib/server/colors.js';
+import type {Database} from '$lib/db/Database.js';
+import type {Websockets} from '$lib/server/Websockets.js';
+import type {Service} from '$lib/server/service.js';
+import {toHttpServiceMiddleware} from '$lib/server/httpServiceMiddleware.js';
+import {cookieSessionMiddleware} from '$lib/session/cookieSessionMiddleware.js';
+import {toWebsocketServiceMiddleware} from '$lib/server/websocketServiceMiddleware.js';
+import type {CookieSessionRequest} from '$lib/session/sessionCookie.js';
+import type {IBroadcast} from '$lib/server/Broadcast.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
+import {create_password_hasher, type PasswordHasher} from '$lib/server/password_hasher.js';
 
 const log = new Logger([blue('[ApiServer]')]);
 

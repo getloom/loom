@@ -1,9 +1,9 @@
 import {suite} from 'uvu';
 import {unwrap, unwrap_error} from '@grogarden/util/result.js';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {toServiceRequestFake} from '$lib/util/testHelpers';
-import {DeleteRoleService} from '$lib/vocab/role/roleServices';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {DeleteRoleService} from '$lib/vocab/role/roleServices.js';
 
 /* test_roleServices */
 const test_roleServices = suite<TestDbContext>('hubRepo');

@@ -4,8 +4,8 @@
 
 	import EntityExplorerItems from '$lib/plugins/entity-explorer/EntityExplorerItems.svelte';
 	import EntityTrees from '$lib/ui/EntityTrees.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {getApp} from '$lib/ui/app.js';
+	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 
 	const {actor, space} = getSpaceContext();

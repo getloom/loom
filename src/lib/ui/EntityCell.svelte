@@ -3,10 +3,10 @@
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import {scale} from 'svelte/transition';
 
-	import type {Entity} from '$lib/vocab/entity/entity';
-	import {getApp} from '$lib/ui/app';
-	import type {AccountActor} from '$lib/vocab/actor/actor';
-	import type {EntityColumn} from '$lib/vocab/entity/entityHelpers.server';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import {getApp} from '$lib/ui/app.js';
+	import type {AccountActor} from '$lib/vocab/actor/actor.js';
+	import type {EntityColumn} from '$lib/vocab/entity/entityHelpers.server.js';
 
 	export let actor: Readable<AccountActor>;
 	export let entity: Readable<Entity>;

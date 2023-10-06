@@ -1,4 +1,4 @@
-import type {ISessionApi} from '$lib/session/SessionApi';
+import type {ISessionApi} from '$lib/session/SessionApi.js';
 
 /**
  * Transports like websockets cannot set http headers,

@@ -1,12 +1,12 @@
 import {suite} from 'uvu';
 
-import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers';
-import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv';
-import {actionDatas} from '$lib/vocab/action/actionData';
-import {randomActionParams} from '$lib/util/randomActionParams';
-import type {TestAppContext} from '$lib/util/testAppHelpers';
+import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
+import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv.js';
+import {actionDatas} from '$lib/vocab/action/actionData.js';
+import {randomActionParams} from '$lib/util/randomActionParams.js';
+import type {TestAppContext} from '$lib/util/testAppHelpers.js';
 // TODO re-enable after https://github.com/feltjs/felt/pull/922
-// import {setupApp, teardownApp} from '$lib/util/testAppHelpers';
+// import {setupApp, teardownApp} from '$lib/util/testAppHelpers.js';
 
 /* test__actionDatas */
 const test__actionDatas = suite<TestDbContext & TestAppContext>('actionDatas');

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import type {Space} from '$lib/vocab/space/space';
+
+	import type {Space} from '$lib/vocab/space/space.js';
 	import SpaceIcon from '$lib/ui/SpaceIcon.svelte';
 
 	export let space: Readable<Space>;

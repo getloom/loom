@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
-	import type {ClientActor} from '$lib/vocab/actor/actor';
-	import type {Space} from '$lib/vocab/space/space';
+	import type {ClientActor} from '$lib/vocab/actor/actor.js';
+	import type {Space} from '$lib/vocab/space/space.js';
 
 	export let space: Readable<Space> | null;
 	export let communityActors: Array<Readable<ClientActor>>;

@@ -1,4 +1,4 @@
-import type {ServiceActionData} from '$lib/vocab/action/action';
+import type {ServiceActionData} from '$lib/vocab/action/action.js';
 
 export const CreateSpace: ServiceActionData = {
 	type: 'ServiceAction',
@@ -25,7 +25,7 @@ export const CreateSpace: ServiceActionData = {
 			directory: {
 				$ref: '/schemas/Entity',
 				tsType: 'Directory',
-				tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
+				tsImport: "import type {Directory} from '$lib/vocab/entity/entityData.js'",
 			},
 		},
 		required: ['space', 'directory'],
@@ -61,7 +61,7 @@ export const ReadSpaces: ServiceActionData = {
 				items: {
 					$ref: '/schemas/Entity',
 					tsType: 'Directory',
-					tsImport: "import type {Directory} from '$lib/vocab/entity/entityData';",
+					tsImport: "import type {Directory} from '$lib/vocab/entity/entityData.js'",
 				},
 			},
 		},

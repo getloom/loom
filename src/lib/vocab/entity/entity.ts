@@ -4,7 +4,7 @@ import type {Flavored} from '@grogarden/util/types.js';
 import type {ActorId} from '$lib/vocab/actor/actor';
 import type {SpaceId} from '$lib/vocab/space/space';
 import type {HubId} from '$lib/vocab/hub/hub';
-import type {EntityData} from '$lib/vocab/entity/entityData';
+import type {EntityData} from '$lib/vocab/entity/entityData.js';
 
 export type EntityId = Flavored<number, 'EntityId'>;
 

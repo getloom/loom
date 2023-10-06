@@ -1,4 +1,4 @@
-import {ACTOR_NAME_CHARACTER_MATCHER} from '$lib/vocab/actor/actorHelpers';
+import {ACTOR_NAME_CHARACTER_MATCHER} from '$lib/vocab/actor/actorHelpers.js';
 
 // TODO misses a lot of cases, need a regexp or proper parsing
 export const isPathValid = (p: string): boolean => {

@@ -24,26 +24,26 @@
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-	import {toSocketStore} from '$lib/ui/socket';
+	import {toSocketStore} from '$lib/ui/socket.js';
 	import Onboard from '$lib/ui/Onboard.svelte';
-	import {setUi, toUi} from '$lib/ui/ui';
-	import {syncUiToUrl} from '$lib/ui/syncUiToUrl';
-	import {toActions, toActionsBroadcastMessage} from '$lib/vocab/action/actions';
-	import {setApp} from '$lib/ui/app';
+	import {setUi, toUi} from '$lib/ui/ui.js';
+	import {syncUiToUrl} from '$lib/ui/syncUiToUrl.js';
+	import {toActions, toActionsBroadcastMessage} from '$lib/vocab/action/actions.js';
+	import {setApp} from '$lib/ui/app.js';
 	import AccountForm from '$lib/ui/AccountForm.svelte';
-	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient';
-	import {toHttpApiClient} from '$lib/ui/HttpApiClient';
-	import {findHttpService, findWebsocketService} from '$lib/ui/services';
-	import {components} from '$lib/ui/components';
-	import {mutations} from '$lib/ui/mutations';
+	import {toWebsocketApiClient} from '$lib/ui/WebsocketApiClient.js';
+	import {toHttpApiClient} from '$lib/ui/HttpApiClient.js';
+	import {findHttpService, findWebsocketService} from '$lib/ui/services.js';
+	import {components} from '$lib/ui/components.js';
+	import {mutations} from '$lib/ui/mutations.js';
 	import AppContextmenu from '$lib/ui/AppContextmenu.svelte';
 	import HubContextmenu from '$lib/ui/HubContextmenu.svelte';
 	import ActingActorContextmenu from '$lib/ui/ActingActorContextmenu.svelte';
 	import SocketConnection from '$lib/ui/SocketConnection.svelte';
 	import ErrorMessage from '$lib/ui/ErrorMessage.svelte';
-	import {deserialize, deserializers} from '$lib/util/deserialize';
-	import type {ClientSession} from '$lib/vocab/account/account';
-	import {createQuery} from '$lib/util/query';
+	import {deserialize, deserializers} from '$lib/util/deserialize.js';
+	import type {ClientSession} from '$lib/vocab/account/account.js';
+	import {createQuery} from '$lib/util/query.js';
 
 	export let data: ClientSession; // TODO should be `LayoutServerLoad`, right? but doesn't typecheck if so
 

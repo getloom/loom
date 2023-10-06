@@ -2,9 +2,9 @@
 	import HubNav from '$lib/ui/HubNav.svelte';
 	import SpaceNav from '$lib/ui/SpaceNav.svelte';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
-	import {getApp} from '$lib/ui/app';
-	import {randomHue} from '$lib/util/color';
-	import {toName} from '$lib/vocab/entity/entityHelpers';
+	import {getApp} from '$lib/ui/app.js';
+	import {randomHue} from '$lib/util/color.js';
+	import {toName} from '$lib/vocab/entity/entityHelpers.js';
 
 	const {
 		actions,

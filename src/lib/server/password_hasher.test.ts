@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {create_password_hasher} from '$lib/server/password_hasher';
+import {create_password_hasher} from '$lib/server/password_hasher.js';
 
 /* test__create_password_hasher */
 const test__create_password_hasher = suite('create_password_hasher');

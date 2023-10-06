@@ -1,5 +1,5 @@
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityMutationHelpers';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {stashEntities, evictEntities, stashTies} from '$lib/vocab/entity/entityMutationHelpers.js';
 
 // TODO if `Create/Update/Erase` remain identical, probably make them use a single helper
 // `updateEntity` or more likely `updateEntities`

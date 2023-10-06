@@ -1,6 +1,6 @@
 import type {JsonSchema} from '@grogarden/gro/schema.js';
 
-import {schemaNames, vocabNames} from '$lib/vocab/metadata';
+import {schemaNames, vocabNames} from '$lib/vocab/metadata.js';
 
 // TODO we may want this to be added to `schemas`, but it currently would cause cicularity
 export const SchemaNameSchema = {

@@ -2,7 +2,7 @@
 	import {base} from '$app/paths';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
-	import {getDocsSettings} from '$lib/docs/docs';
+	import {getDocsSettings} from '$lib/docs/docs.js';
 	import control_overview_diagram from '$lib/docs/control_overview_diagram.png';
 
 	const docsSettings = getDocsSettings();

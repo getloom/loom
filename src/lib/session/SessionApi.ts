@@ -1,9 +1,9 @@
 import type {ServerResponse} from 'http';
 import {Logger} from '@grogarden/util/log.js';
 
-import type {ApiServerRequest} from '$lib/server/ApiServer';
-import {setSessionCookie} from '$lib/session/sessionCookie';
-import type {AccountId} from '$lib/vocab/account/account';
+import type {ApiServerRequest} from '$lib/server/ApiServer.js';
+import {setSessionCookie} from '$lib/session/sessionCookie.js';
+import type {AccountId} from '$lib/vocab/account/account.js';
 
 const log = new Logger('[SessionApi]');
 

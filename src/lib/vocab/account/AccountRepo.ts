@@ -1,17 +1,17 @@
 import {Logger} from '@grogarden/util/log.js';
 
-import {blue, gray} from '$lib/server/colors';
-import {PostgresRepo} from '$lib/db/PostgresRepo';
+import {blue, gray} from '$lib/server/colors.js';
+import {PostgresRepo} from '$lib/db/PostgresRepo.js';
 import type {
 	Account,
 	AccountId,
 	ClientAccount,
 	ClientAccountSession,
-} from '$lib/vocab/account/account';
-import {ACCOUNT_COLUMNS, type AccountColumn} from '$lib/vocab/account/accountHelpers.server';
-import {ApiError} from '$lib/server/api';
-import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
-import type {PasswordHasher} from '$lib/server/password_hasher';
+} from '$lib/vocab/account/account.js';
+import {ACCOUNT_COLUMNS, type AccountColumn} from '$lib/vocab/account/accountHelpers.server.js';
+import {ApiError} from '$lib/server/api.js';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
+import type {PasswordHasher} from '$lib/server/password_hasher.js';
 
 const log = new Logger(gray('[') + blue('AccountRepo') + gray(']'));
 

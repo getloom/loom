@@ -12,21 +12,21 @@ import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
 import {create_contextmenu, type ContextmenuStore} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
-import type {Hub, HubId} from '$lib/vocab/hub/hub';
-import type {Space, SpaceId} from '$lib/vocab/space/space';
-import type {ClientActor, AccountActor, ActorId} from '$lib/vocab/actor/actor';
-import type {ClientAccount, ClientSession} from '$lib/vocab/account/account';
-import type {Entity, EntityId} from '$lib/vocab/entity/entity';
-import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
-import {initBrowser} from '$lib/ui/init';
-import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
-import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored';
-import type {Tie, TieId} from '$lib/vocab/tie/tie';
-import {ADMIN_HUB_ID} from '$lib/util/constants';
-import type {EphemeraResponse} from '$lib/vocab/action/actionTypes';
-import type {Role, RoleId} from '$lib/vocab/role/role';
-import type {Policy, PolicyId} from '$lib/vocab/policy/policy';
-import type {QueryStore} from '$lib/util/query';
+import type {Hub, HubId} from '$lib/vocab/hub/hub.js';
+import type {Space, SpaceId} from '$lib/vocab/space/space.js';
+import type {ClientActor, AccountActor, ActorId} from '$lib/vocab/actor/actor.js';
+import type {ClientAccount, ClientSession} from '$lib/vocab/account/account.js';
+import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
+import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment.js';
+import {initBrowser} from '$lib/ui/init.js';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers.js';
+import {locallyStored, locallyStoredMap} from '$lib/ui/locallyStored.js';
+import type {Tie, TieId} from '$lib/vocab/tie/tie.js';
+import {ADMIN_HUB_ID} from '$lib/util/constants.js';
+import type {EphemeraResponse} from '$lib/vocab/action/actionTypes.js';
+import type {Role, RoleId} from '$lib/vocab/role/role.js';
+import type {Policy, PolicyId} from '$lib/vocab/policy/policy.js';
+import type {QueryStore} from '$lib/util/query.js';
 
 if (browser) initBrowser();
 

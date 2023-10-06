@@ -4,20 +4,20 @@ import {page} from '$app/stores';
 import {get} from 'svelte/store';
 import {browser} from '$app/environment';
 
-import type {Mutations} from '$lib/vocab/action/actionTypes';
-import {updateLastSeen} from '$lib/ui/uiMutationHelpers';
-import {toHubUrl, gotoUnlessActive} from '$lib/util/url';
-import {deserialize, deserializers} from '$lib/util/deserialize';
-import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers';
-import type {ClientActor} from '$lib/vocab/actor/actor';
-import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers';
-import type {ClientSession} from '$lib/vocab/account/account';
-import {stashRoles} from '$lib/vocab/role/roleMutationHelpers';
-import {stashHubs} from '$lib/vocab/hub/hubMutationHelpers';
-import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers';
-import {stashActors} from '$lib/vocab/actor/actorMutationHelpers';
-import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers';
-import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers';
+import type {Mutations} from '$lib/vocab/action/actionTypes.js';
+import {updateLastSeen} from '$lib/ui/uiMutationHelpers.js';
+import {toHubUrl, gotoUnlessActive} from '$lib/util/url.js';
+import {deserialize, deserializers} from '$lib/util/deserialize.js';
+import {isHomeDirectory} from '$lib/vocab/space/spaceHelpers.js';
+import type {ClientActor} from '$lib/vocab/actor/actor.js';
+import {stashEntities} from '$lib/vocab/entity/entityMutationHelpers.js';
+import type {ClientSession} from '$lib/vocab/account/account.js';
+import {stashRoles} from '$lib/vocab/role/roleMutationHelpers.js';
+import {stashHubs} from '$lib/vocab/hub/hubMutationHelpers.js';
+import {stashSpaces} from '$lib/vocab/space/spaceMutationHelpers.js';
+import {stashActors} from '$lib/vocab/actor/actorMutationHelpers.js';
+import {stashAssignments} from '$lib/vocab/assignment/assignmentMutationHelpers.js';
+import {stashPolicies} from '$lib/vocab/policy/policyMutationHelpers.js';
 
 const log = new Logger('[uiMutations]');
 
