@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.8.2
+
+### Patch Changes
+
+- 3c9cbce6: add gro library plugin to fix published dist
+
 ## 0.8.1
 
 ### Patch Changes
