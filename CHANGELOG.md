@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.8.4
+
+### Patch Changes
+
+- 14c7c593: export ui/style.css
+
 ## 0.8.3
 
 ### Patch Changes
