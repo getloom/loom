@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.8.1
+
+### Patch Changes
+
+- 43e788af: include dist in published package
+
 ## 0.8.0
 
 ### Minor Changes
