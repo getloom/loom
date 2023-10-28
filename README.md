@@ -36,7 +36,7 @@ To deploy to production, see
 and [Managing production](https://www.felt.dev/docs/guide/admin/managing-production).
 
 The server has integrated reference docs, which we'll link after the alpha announcement.
-We also publish [our vocabulary as a JSON Schema](/src/static/schemas/vocab.json).
+We also publish [our vocabulary as a JSON Schema](/src/schemas/vocab.json).
 
 ## using `@feltjs/felt` as a library
 

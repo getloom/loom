@@ -16,7 +16,7 @@ export const gen: Gen = async () => {
 		'@feltjs/felt vocab',
 	);
 	return {
-		filename: '../../static/schemas/vocab.json',
+		filename: '../../../static/schemas/vocab.json',
 		content: JSON.stringify(bundled),
 	};
 };

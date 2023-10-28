@@ -1,4 +1,4 @@
-[<img src="/src/static/felt.png" align="right" width="192" height="178">](https://felt.dev)
+[<img src="/src/felt.png" align="right" width="192" height="178">](https://felt.dev)
 
 # Contributing to `@feltjs/felt`
 

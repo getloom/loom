@@ -12,7 +12,6 @@ export default {
 			precompress: true,
 			polyfill: false,
 		}),
-		files: {assets: 'src/static'},
 		alias: {$routes: 'src/routes', $fixtures: 'src/fixtures'},
 	},
 };
