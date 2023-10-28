@@ -2,7 +2,7 @@
 	<h2>Known issues</h2>
 
 	<p>
-		Some of felt's issues have no scheduled spot on the roadmap and no obvious use for discussion.
+		Some of Felt's issues have no scheduled spot on the roadmap and no obvious use for discussion.
 		We don't want these to clutter the GitHub issues, but we're open to feedback in our other dev
 		community spaces and by email.
 	</p>
@@ -124,7 +124,7 @@
 		shared or automated control, like bot actors and group actors.
 	</p>
 	<p>
-		This power brings complexity, and currently, end-users of felt are exposed to this concept and
+		This power brings complexity, and currently, end-users of Felt are exposed to this concept and
 		have no options for a simpler experience. Fortunately, our system is being designed to support a
 		fully customizable UI, so when it's ready, you'll be able to hide or disable this complexity
 		completely.

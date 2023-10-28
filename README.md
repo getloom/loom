@@ -7,7 +7,7 @@
 
 > **work in progress**: pre-alpha
 
-felt is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
+Felt is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
 
 - as an <strong>end user</strong> using Felt like Slack or Discord,
   but with more power to build custom experiences

@@ -9,7 +9,7 @@
 </script>
 
 <div class="prose">
-	<h2>Using felt as a library</h2>
+	<h2>Using Felt as a library</h2>
 	<blockquote>support for this coming soon - it's published to npm but not yet usable</blockquote>
 	<p>
 		<code>@feltjs/felt</code> can be installed as
