@@ -7,9 +7,10 @@ export const data_model_diagram = `classDiagram
   Actors <|-- Hubs
   Hubs <|-- Actors
   Hubs <|-- Roles
-  Roles <|-- Assignments
   Actors <|-- Assignments
+  Hubs <|-- Assignments
+  Roles <|-- Assignments
   Roles <|-- Policies
   Hubs <|-- Spaces
-  Spaces <|-- Entities
-  Entities <|-- Entities`;
+  Spaces <|-- Items
+  Items <|-- Items`;
