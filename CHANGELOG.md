@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.9.0
+
+### Minor Changes
+
+- 67f9143b: upgrade deps
+
 ## 0.8.5
 
 ### Patch Changes
