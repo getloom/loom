@@ -28,6 +28,9 @@
   "engines": {
     "node": ">=20.7"
   },
+  "peerDependencies": {
+    "@sveltejs/kit": "*"
+  },
   "devDependencies": {
     "@changesets/changelog-git": "^0.1.14",
     "@feltjs/eslint-config": "^0.4.1",
@@ -119,6 +122,10 @@
     "dist"
   ],
   "exports": {
+    "./package.js": {
+      "default": "./dist/package.js",
+      "types": "./dist/package.d.ts"
+    },
     "./docs/Docs.svelte": {
       "svelte": "./dist/docs/Docs.svelte",
       "types": "./dist/docs/Docs.svelte.d.ts"

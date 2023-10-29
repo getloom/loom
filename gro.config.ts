@@ -41,6 +41,10 @@ const config: CreateGroConfig = async (cfg) => {
 		pkg.scripts!.start = `node ${START_SERVER_SCRIPT_BUILD_PATH}`;
 		pkg.scripts!.after_deploy = `node ${AFTER_DEPLOY_SCRIPT_BUILD_PATH}`;
 		pkg.exports = {
+			'./package.js': {
+				default: './dist/package.js',
+				types: './dist/package.d.ts',
+			},
 			'./docs/Docs.svelte': {
 				svelte: './dist/docs/Docs.svelte',
 				types: './dist/docs/Docs.svelte.d.ts',
