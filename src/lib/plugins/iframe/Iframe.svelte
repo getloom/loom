@@ -1,7 +1,7 @@
 <script lang="ts">
-	import FeltWindowHost from '@fuz.dev/fuz_library/FeltWindowHost.svelte';
 	import {onDestroy} from 'svelte';
 
+	import FeltWindowHost from '$lib/ui/FeltWindowHost.svelte';
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import {getApp} from '$lib/ui/app.js';

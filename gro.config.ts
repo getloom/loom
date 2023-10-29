@@ -1,4 +1,4 @@
-import type {GroConfigCreator} from '@grogarden/gro';
+import type {CreateGroConfig} from '@grogarden/gro';
 import {readdir} from 'node:fs/promises';
 import {plugin as gro_plugin_server, SERVER_SOURCE_ID} from '@grogarden/gro/gro_plugin_server.js';
 import {plugin as gro_plugin_sveltekit_frontend} from '@grogarden/gro/gro_plugin_sveltekit_frontend.js';
@@ -15,7 +15,7 @@ import {
 /**
  * @see https://github.com/grogarden/gro/blob/main/src/lib/docs/config.md
  */
-const config: GroConfigCreator = async (cfg) => {
+const config: CreateGroConfig = async (cfg) => {
 	await init_env();
 
 	const entry_points: string[] = [
@@ -37,7 +37,7 @@ const config: GroConfigCreator = async (cfg) => {
 		gro_plugin_library(),
 	];
 
-	cfg.package_json = (pkg) => {
+	cfg.map_package_json = (pkg) => {
 		pkg.scripts!.start = `node ${START_SERVER_SCRIPT_BUILD_PATH}`;
 		pkg.scripts!.after_deploy = `node ${AFTER_DEPLOY_SCRIPT_BUILD_PATH}`;
 		pkg.exports = {
