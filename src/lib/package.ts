@@ -2,7 +2,7 @@ import type {PackageJson} from '@grogarden/gro/package_json.js';
 
 export const package_json = {
 	name: '@feltjs/felt',
-	version: '0.9.0',
+	version: '0.9.1',
 	license: 'MIT',
 	description: 'a programmable platform for hobbyists and human-scale communities 💚',
 	author: {name: 'feltjs', email: 'team@felt.social', url: 'https://felt.social'},

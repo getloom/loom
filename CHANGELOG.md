@@ -1,5 +1,12 @@
 # @feltjs/felt
 
+## 0.9.1
+
+### Patch Changes
+
+- a4711458: add peer dep `@sveltejs/kit`
+- a4711458: add and export `$lib/package.ts`
+
 ## 0.9.0
 
 ### Minor Changes
