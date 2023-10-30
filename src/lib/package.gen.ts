@@ -1,1 +1,1 @@
-export * from '@fuz.dev/fuz_library/package.gen.js';
+export * from '@grogarden/gro/package.gen.js';
