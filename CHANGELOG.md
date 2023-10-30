@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.9.2
+
+### Patch Changes
+
+- 4b8cc9bf: switch to `@feltjs/felt_mural`
+
 ## 0.9.1
 
 ### Patch Changes
