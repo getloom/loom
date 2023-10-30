@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.9.3
+
+### Patch Changes
+
+- 75f5304a: upgrade deps which adds `modules` to `package.json`
+
 ## 0.9.2
 
 ### Patch Changes
