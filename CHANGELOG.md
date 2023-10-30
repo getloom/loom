@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.9.4
+
+### Patch Changes
+
+- 3f7f3a15: update docs
+
 ## 0.9.3
 
 ### Patch Changes

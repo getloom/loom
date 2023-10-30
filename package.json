@@ -1,7 +1,7 @@
 {
   "name": "@feltjs/felt",
   "description": "a programmable platform for hobbyists and human-scale communities 💚",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "public": true,
   "license": "MIT",
   "author": {
