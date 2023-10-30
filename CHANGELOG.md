@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.9.5
+
+### Patch Changes
+
+- f68d9c00: add package summary to intro docs
+
 ## 0.9.4
 
 ### Patch Changes
