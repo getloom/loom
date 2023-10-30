@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Mural from '@feltjs/felt-mural/Mural.svelte';
-	import type {MuralAction} from '@feltjs/felt-mural/item.js';
+	import Mural from '@feltjs/felt_mural/Mural.svelte';
+	import type {MuralAction} from '@feltjs/felt_mural/item.js';
 	import {onDestroy} from 'svelte';
 
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
