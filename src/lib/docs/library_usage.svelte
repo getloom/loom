@@ -1,14 +1,19 @@
 <script lang="ts">
 	import {base} from '$app/paths';
+	import PackageDetail from '@fuz.dev/fuz_library/PackageDetail.svelte';
+	import {parse_package_meta} from '@fuz.dev/fuz_library/package_meta.js';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
 	import {getDocsSettings} from '$lib/docs/docs.js';
+	import {package_json} from '$lib/package.js';
 
 	const docsSettings = getDocsSettings();
 	$: ({path} = $docsSettings);
+
+	const pkg = parse_package_meta(package_json.homepage, package_json);
 </script>
 
-<div class="prose">
+<section class="prose spaced">
 	<h2>Using Felt as a library</h2>
 	<blockquote>support for this coming soon - it's published to npm but not yet usable</blockquote>
 	<p>
@@ -21,15 +26,7 @@
 	</p>
 	<p>Next install Felt as a dev dependency:</p>
 	<CodeExample code="npm i -D @feltjs/felt" />
-	<p>
-		See the available modules at <a
-			href="https://github.com/feltjs/felt/tree/main/src/gro.config.ts"
-			><code>/src/gro.config.ts</code></a
-		>
-	</p>
-	<p>
-		For more, see the <a href="https://github.com/feltjs/felt"
-			><code>@feltjs/felt</code> docs on GitHub</a
-		>.
-	</p>
-</div>
+</section>
+<section class="panel padded">
+	<PackageDetail {pkg} />
+</section>

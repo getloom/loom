@@ -9,7 +9,7 @@ export const package_json = {
 	public: true,
 	license: 'MIT',
 	author: {name: 'feltjs', email: 'team@felt.social', url: 'https://felt.social'},
-	homepage: 'https://github.com/feltjs/felt',
+	homepage: 'https://www.felt.dev/',
 	repository: {type: 'git', url: 'git+https://github.com/feltjs/felt.git'},
 	bugs: {url: 'https://github.com/feltjs/felt/issues'},
 	scripts: {
@@ -30,7 +30,7 @@ export const package_json = {
 		'@fuz.dev/fuz': '^0.77.1',
 		'@fuz.dev/fuz_contextmenu': '^0.5.1',
 		'@fuz.dev/fuz_dialog': '^0.4.2',
-		'@fuz.dev/fuz_library': '^0.17.0',
+		'@fuz.dev/fuz_library': '^0.17.1',
 		'@fuz.dev/svelte_intersect': '^0.6.1',
 		'@grogarden/gro': '^0.98.1',
 		'@ryanatkn/json-schema-to-typescript': '^11.1.5',
