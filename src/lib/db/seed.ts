@@ -4,7 +4,7 @@ import {traverse} from '@grogarden/util/object.js';
 import {random_item} from '@grogarden/util/random.js';
 import {magenta} from 'kleur/colors';
 import {to_next} from '@grogarden/util/array.js';
-import type {OmitStrict} from '@grogarden/util/types.js';
+import type {Omit_Strict} from '@grogarden/util/types.js';
 
 import {cyan} from '$lib/server/colors.js';
 import type {Database} from '$lib/db/Database.js';
@@ -172,7 +172,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 
 const createDefaultEntities = async (
 	repos: Repos,
-	toServiceRequest: () => OmitStrict<AuthorizedServiceRequest, 'params'>,
+	toServiceRequest: () => Omit_Strict<AuthorizedServiceRequest, 'params'>,
 	spaces: Space[],
 	nextActor: () => AccountActor,
 ) => {
@@ -249,7 +249,7 @@ const hubTemplates: HubTemplate[] = [
 ];
 
 interface SeedContext {
-	toServiceRequest: () => OmitStrict<AuthorizedServiceRequest, 'params'>;
+	toServiceRequest: () => Omit_Strict<AuthorizedServiceRequest, 'params'>;
 	nextActor: () => AccountActor;
 	space: Space;
 	directory: Directory;
@@ -363,7 +363,7 @@ const findFirstComponentName = (view: ViewData): string | undefined => {
 const MUCH_SPACE_COUNT = 100;
 
 const createMuchSpaces = async (
-	toServiceRequest: () => OmitStrict<AuthorizedServiceRequest<any>, 'params'>,
+	toServiceRequest: () => Omit_Strict<AuthorizedServiceRequest<any>, 'params'>,
 	hub: Hub,
 	nextActor: () => AccountActor,
 ) => {

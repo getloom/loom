@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import {onMount} from 'svelte';
 
@@ -54,7 +54,7 @@
 	<!-- TODO a11y -->
 	<div class="buttons">
 		<button on:click={close} bind:this={cancelButtonEl}>{cancelText}</button>
-		<PendingButton {pending} on:click={confirm}>{confirmText}</PendingButton>
+		<Pending_Button {pending} on:click={confirm}>{confirmText}</Pending_Button>
 	</div>
 	{#if errorMessage}
 		<Alert status="error">{errorMessage}</Alert>

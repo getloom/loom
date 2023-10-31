@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 
 	import ChatItems from '$lib/plugins/chat/ChatItems.svelte';
 	import {getApp} from '$lib/ui/app.js';
@@ -52,7 +52,7 @@
 			<ChatItems {actor} {entities} />
 			<LoadMoreButton {query} />
 		{:else}
-			<PendingAnimation />
+			<Pending_Animation />
 		{/if}
 	</div>
 	<TextInput {actor} placeholder="> chat" on:submit={onSubmit} bind:value={text} />

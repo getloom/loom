@@ -1,8 +1,8 @@
 <script lang="ts">
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import HueInput from '@fuz.dev/fuz_library/HueInput.svelte';
+	import Hue_Input from '@fuz.dev/fuz_library/Hue_Input.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 
@@ -97,7 +97,7 @@
 				on:keydown={onKeydown}
 			/>
 		</label>
-		<PendingButton on:click={create} {pending}>create hub</PendingButton>
+		<Pending_Button on:click={create} {pending}>create hub</Pending_Button>
 		{#if errorMessage}
 			<Alert status="error">{errorMessage}</Alert>
 		{/if}
@@ -109,7 +109,7 @@
 		<details>
 			<summary>Customize</summary>
 			<div>
-				<HueInput {hue} on:input={(e) => (chosenHue = e.detail)} />
+				<Hue_Input {hue} on:input={(e) => (chosenHue = e.detail)} />
 			</div>
 		</details>
 	{/if}

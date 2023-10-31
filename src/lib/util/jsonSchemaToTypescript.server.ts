@@ -1,9 +1,9 @@
 import type {SchemaObject} from 'ajv';
 import {compile, type Options} from '@ryanatkn/json-schema-to-typescript';
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 export const jsonSchemaToTypescript = (
-	schema: JsonSchema | SchemaObject | null,
+	schema: Json_Schema | SchemaObject | null,
 	name: string,
 	options?: Partial<Options> | undefined,
 ): string | Promise<string> => {
@@ -13,4 +13,4 @@ export const jsonSchemaToTypescript = (
 	return `export type ${name} = void;`;
 };
 
-export type JsonSchemaToTypeScriptOptions = Options;
+export type Json_SchemaToTypeScriptOptions = Options;

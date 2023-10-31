@@ -1,11 +1,11 @@
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 export const AccountIdSchema = {
 	$id: '/schemas/AccountId',
 	type: 'number',
 	tsType: "Flavored<number, 'AccountId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const AccountSchema = {
 	$id: '/schemas/Account',
@@ -24,7 +24,7 @@ export const AccountSchema = {
 	},
 	required: ['account_id', 'name', 'settings', 'password', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const ClientAccountSchema = {
 	$id: '/schemas/ClientAccount',
@@ -41,7 +41,7 @@ export const ClientAccountSchema = {
 	},
 	required: ['account_id', 'name', 'settings', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const AccountSettingsSchema = {
 	$id: '/schemas/AccountSettings',
@@ -54,7 +54,7 @@ export const AccountSettingsSchema = {
 	},
 	required: [],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const ClientSessionSchema = {
 	$id: '/schemas/ClientSession',
@@ -62,7 +62,7 @@ export const ClientSessionSchema = {
 		The session data loaded on each page for authenticated and unauthenticated users.
 	`,
 	anyOf: [{$ref: '/schemas/ClientAccountSession'}, {$ref: '/schemas/ClientGuestSession'}],
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const ClientAccountSessionSchema = {
 	$id: '/schemas/ClientAccountSession',
@@ -108,7 +108,7 @@ export const ClientAccountSessionSchema = {
 		'actors',
 	],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const ClientGuestSessionSchema = {
 	$id: '/schemas/ClientGuestSession',
@@ -121,4 +121,4 @@ export const ClientGuestSessionSchema = {
 	},
 	required: ['guest'],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;

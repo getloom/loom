@@ -61,7 +61,7 @@ export type SchemaName =
 	| 'KickFromHubResponse'
 	| 'LeaveHubParams'
 	| 'LeaveHubResponse'
-	| 'OpenDialogParams'
+	| 'OpenDialog_Params'
 	| 'PingParams'
 	| 'PingResponse'
 	| 'Policy'

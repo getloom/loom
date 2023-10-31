@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type {AsyncStatus} from '@grogarden/util/async.js';
+	import type {Async_Status} from '@grogarden/util/async.js';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions.js';
@@ -29,7 +29,7 @@
 	$: finalTies = ties ?? [{source_id: $space.directory_id}];
 	let name = '';
 	let content = '';
-	let status: AsyncStatus = 'initial'; // TODO refactor
+	let status: Async_Status = 'initial'; // TODO refactor
 	let nameEl: HTMLInputElement;
 	let contentEl: HTMLTextAreaElement;
 	let errorMessage: string | null = null;
@@ -118,8 +118,8 @@
 				<Alert status="error">{errorMessage}</Alert>
 			{/if}
 		</slot>
-		<PendingButton on:click={create} pending={status === 'pending'}
-			>create {entityName.toLowerCase()}</PendingButton
+		<Pending_Button on:click={create} pending={status === 'pending'}
+			>create {entityName.toLowerCase()}</Pending_Button
 		>
 	</fieldset>
 </form>

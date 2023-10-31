@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
-	import type {AsyncStatus} from '@grogarden/util/async.js';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import type {Async_Status} from '@grogarden/util/async.js';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
@@ -13,7 +13,7 @@
 
 	export let actor: Readable<AccountActor>;
 
-	let status: AsyncStatus = 'initial'; // TODO refactor
+	let status: Async_Status = 'initial'; // TODO refactor
 	let submitted = false;
 	let errorMessage: string | null = null;
 
@@ -117,8 +117,8 @@
 			{#if errorMessage}
 				<Alert status="error">{errorMessage}</Alert>
 			{/if}
-			<PendingButton on:click={submit} pending={status === 'pending'}
-				>submit application</PendingButton
+			<Pending_Button on:click={submit} pending={status === 'pending'}
+				>submit application</Pending_Button
 			>
 		</form>
 	{:else}

@@ -1,4 +1,4 @@
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 import {toSchemaName} from '$lib/util/schema.js';
 import {actionDatas} from '$lib/vocab/action/actionData.js';
@@ -36,7 +36,7 @@ import {PolicySchema, PolicyIdSchema, PolicyNameSchema} from '$lib/vocab/policy/
 
 // Model schemas are distinct from the action schemas.
 // They're the nouns compared to the action verbs.
-export const modelSchemas: JsonSchema[] = [
+export const modelSchemas: Json_Schema[] = [
 	AccountActorSchema,
 	AccountIdSchema,
 	AccountSchema,
@@ -71,11 +71,11 @@ export const modelSchemas: JsonSchema[] = [
 	VocabNameSchema,
 ];
 
-export const actionSchemas: JsonSchema[] = actionDatas.reduce((schemas, actionData) => {
+export const actionSchemas: Json_Schema[] = actionDatas.reduce((schemas, actionData) => {
 	if (actionData.params) schemas.push(actionData.params);
 	if ('response' in actionData) schemas.push(actionData.response);
 	return schemas;
-}, [] as JsonSchema[]);
+}, [] as Json_Schema[]);
 
 export const schemas = modelSchemas.concat(actionSchemas);
 

@@ -1,4 +1,4 @@
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 import {schemaNames, vocabNames} from '$lib/vocab/metadata.js';
 
@@ -6,9 +6,9 @@ import {schemaNames, vocabNames} from '$lib/vocab/metadata.js';
 export const SchemaNameSchema = {
 	$id: '/schemas/SchemaName',
 	enum: schemaNames,
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const VocabNameSchema = {
 	$id: '/schemas/VocabName',
 	enum: vocabNames,
-} satisfies JsonSchema;
+} satisfies Json_Schema;

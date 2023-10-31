@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {throttle} from 'throttle-debounce';
-	import HueInput from '@fuz.dev/fuz_library/HueInput.svelte';
+	import Hue_Input from '@fuz.dev/fuz_library/Hue_Input.svelte';
 
 	import {getApp} from '$lib/ui/app.js';
 	import type {Hub} from '$lib/vocab/hub/hub.js';
@@ -23,4 +23,4 @@
 </script>
 
 <!-- TODO maybe add a title or tooltip explaining `hub.settings.hue` -->
-<HueInput hue={$hub.settings.hue} on:input={(e) => updateHue(e.detail)} />
+<Hue_Input hue={$hub.settings.hue} on:input={(e) => updateHue(e.detail)} />

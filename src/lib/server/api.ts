@@ -1,4 +1,4 @@
-import {ResultError, type Result} from '@grogarden/util/result.js';
+import {Result_Error, type Result} from '@grogarden/util/result.js';
 
 import type {ErrorResponse} from '$lib/util/error.js';
 
@@ -28,15 +28,15 @@ export interface FailedApiResult {
 
 /**
  * Converts an `Error` object that may or may not
- * be an `ApiError` or `ResultError` to a failed `ApiResult`.
+ * be an `ApiError` or `Result_Error` to a failed `ApiResult`.
  * The purpose is to enable throwing errors that specify
  * a `status` and user-facing error `message`.
- * @param err - Any `Error`, may or may not be a `ResultError`.
+ * @param err - Any `Error`, may or may not be a `Result_Error`.
  * @returns An `ApiResult` with `ok: false`.
  */
 export const toFailedApiResult = (err: any): FailedApiResult =>
 	err instanceof ApiError
 		? {ok: false, status: err.status, message: err.message}
-		: err instanceof ResultError
+		: err instanceof Result_Error
 		? {ok: false, status: (err.result as any).status || 500, message: err.message}
-		: {ok: false, status: 500, message: ResultError.DEFAULT_MESSAGE};
+		: {ok: false, status: 500, message: Result_Error.DEFAULT_MESSAGE};

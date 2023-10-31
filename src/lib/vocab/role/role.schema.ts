@@ -1,11 +1,11 @@
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 export const RoleIdSchema = {
 	$id: '/schemas/RoleId',
 	type: 'number',
 	tsType: "Flavored<number, 'RoleId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const RoleSchema = {
 	$id: '/schemas/Role',
@@ -25,4 +25,4 @@ export const RoleSchema = {
 	},
 	required: ['role_id', 'hub_id', 'name', 'created', 'updated'],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;

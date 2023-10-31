@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import {writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
 
@@ -104,7 +104,7 @@
 				</div>
 				<div class="spaced">
 					<!-- TODO `style="width: 100%"` is a hack -->
-					<PendingButton
+					<Pending_Button
 						on:click={() =>
 							selectedActionDataHack && performAction(selectedActionDataHack, formParams)}
 						attrs={{style: 'width: 100%'}}
@@ -114,10 +114,10 @@
 						perform action&nbsp;<code class={selectedActionDataHack.type}
 							>{selectedActionDataHack.name}</code
 						>
-					</PendingButton>
+					</Pending_Button>
 					<!-- TODO implement saving actions like any other data to a path/entity -->
-					<!-- <PendingButton on:click={save} pending={savePending} disabled={pending}
-					>save action</PendingButton
+					<!-- <Pending_Button on:click={save} pending={savePending} disabled={pending}
+					>save action</Pending_Button
 				> -->
 					{#if errorMessage}
 						<div class="error_message">

@@ -1,11 +1,11 @@
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 export const TieIdSchema = {
 	$id: '/schemas/TieId',
 	type: 'number',
 	tsType: "Flavored<number, 'TieId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const TieSchema = {
 	$id: '/schemas/Tie',
@@ -24,4 +24,4 @@ export const TieSchema = {
 	},
 	required: ['tie_id', 'source_id', 'dest_id', 'type', 'created'],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;

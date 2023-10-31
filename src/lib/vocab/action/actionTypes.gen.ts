@@ -1,4 +1,4 @@
-import type {Gen, GenContext} from '@grogarden/gro/gen.js';
+import type {Gen, Gen_Context} from '@grogarden/gro/gen.js';
 import {to_root_path} from '@grogarden/gro/paths.js';
 import {to_json_schema_resolver, infer_schema_types} from '@grogarden/gro/schema.js';
 import {load_modules} from '@grogarden/gro/modules.js';
@@ -11,7 +11,7 @@ import {traverse} from '@grogarden/util/object.js';
 import {actionDatas} from '$lib/vocab/action/actionData.js';
 import {
 	jsonSchemaToTypescript,
-	type JsonSchemaToTypeScriptOptions,
+	type Json_SchemaToTypeScriptOptions,
 } from '$lib/util/jsonSchemaToTypescript.server.js';
 import {schemas} from '$lib/vocab/schemas.js';
 import {services} from '$lib/server/services.js';
@@ -21,7 +21,7 @@ const toParamsName = (name: string): string => name + 'Params';
 const toResponseName = (name: string): string => name + 'Response';
 const toResponseResultName = (name: string): string => name + 'ResponseResult';
 
-const opts: Partial<JsonSchemaToTypeScriptOptions> = {
+const opts: Partial<Json_SchemaToTypeScriptOptions> = {
 	$refOptions: {
 		resolve: {
 			http: false, // disable web resolution
@@ -47,7 +47,7 @@ const load_imports = async (): Promise<Record<string, string>> => {
 export const gen: Gen = async ({origin_id, log}) => {
 	// TODO see about cleaning this up with a helper, we're basically doing a manual `gen` task run
 	const imports = await load_imports();
-	const genCtx: GenContext = {imports, origin_id, log};
+	const genCtx: Gen_Context = {imports, origin_id, log};
 	// TODO refactor, cache somewhere maybe?
 	const $refs = new Set<string>();
 	const tsImports: string[] = [];

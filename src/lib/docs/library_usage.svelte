@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {base} from '$app/paths';
-	import PackageDetail from '@fuz.dev/fuz_library/PackageDetail.svelte';
+	import Package_Detail from '@fuz.dev/fuz_library/Package_Detail.svelte';
 	import {parse_package_meta} from '@fuz.dev/fuz_library/package_meta.js';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
@@ -28,5 +28,5 @@
 	<CodeExample code="npm i -D @feltjs/felt" />
 </section>
 <section class="panel padded">
-	<PackageDetail {pkg} />
+	<Package_Detail {pkg} />
 </section>

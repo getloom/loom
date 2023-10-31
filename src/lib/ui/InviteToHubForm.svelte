@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import type {AsyncStatus} from '@grogarden/util/async.js';
+	import type {Async_Status} from '@grogarden/util/async.js';
 	import {tick} from 'svelte';
 
 	import type {Hub} from '$lib/vocab/hub/hub.js';
@@ -9,7 +9,7 @@
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import {autofocus} from '$lib/ui/actions.js';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 
 	const {actions} = getApp();
 
@@ -19,7 +19,7 @@
 	export let attrs: any = undefined;
 
 	let name = '';
-	let status: AsyncStatus = 'initial'; // TODO refactor
+	let status: Async_Status = 'initial'; // TODO refactor
 	let nameEl: HTMLInputElement;
 	let errorMessage: string | null = null;
 
@@ -73,6 +73,6 @@
 		{#if errorMessage}
 			<Alert status="error">{errorMessage}</Alert>
 		{/if}
-		<PendingButton on:click={invite} pending={status === 'pending'}>invite</PendingButton>
+		<Pending_Button on:click={invite} pending={status === 'pending'}>invite</Pending_Button>
 	</fieldset>
 </form>

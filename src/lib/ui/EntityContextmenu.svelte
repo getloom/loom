@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
+	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
+	import Contextmenu_Submenu from '@fuz.dev/fuz_contextmenu/Contextmenu_Submenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity.js';
@@ -19,14 +19,14 @@
 	const {actions} = getApp();
 </script>
 
-<ContextmenuSubmenu>
+<Contextmenu_Submenu>
 	<svelte:fragment slot="icon">
 		<UnicodeIcon icon="~" />
 	</svelte:fragment>
 	Entity {#if $entity.data.type}<code><small>{$entity.data.type}</small></code>{/if}
 	<EntityChip {entity} />
 	<svelte:fragment slot="menu">
-		<ContextmenuEntry
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(
 					to_dialog_params(
@@ -38,8 +38,8 @@
 		>
 			Edit Entity
 			<svelte:fragment slot="icon">></svelte:fragment>
-		</ContextmenuEntry>
-		<ContextmenuEntry
+		</Contextmenu_Entry>
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(
 					to_dialog_params(
@@ -51,10 +51,10 @@
 		>
 			More details
 			<svelte:fragment slot="icon">?</svelte:fragment>
-		</ContextmenuEntry>
+		</Contextmenu_Entry>
 		<!-- TODO add confirmation dialogs to both delete and erase actions -->
 		{#if $entity.data.type !== 'Tombstone'}
-			<ContextmenuEntry
+			<Contextmenu_Entry
 				run={() =>
 					actions.OpenDialog(
 						to_dialog_params(ConfirmDialog, {
@@ -69,9 +69,9 @@
 					)}
 			>
 				Erase Entity
-			</ContextmenuEntry>
+			</Contextmenu_Entry>
 		{/if}
-		<ContextmenuEntry
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(
 					to_dialog_params(ConfirmDialog, {
@@ -83,6 +83,6 @@
 				)}
 		>
 			Delete Entity
-		</ContextmenuEntry>
+		</Contextmenu_Entry>
 	</svelte:fragment>
-</ContextmenuSubmenu>
+</Contextmenu_Submenu>

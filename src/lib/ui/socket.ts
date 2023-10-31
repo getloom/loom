@@ -1,4 +1,4 @@
-import type {AsyncStatus} from '@grogarden/util/async.js';
+import type {Async_Status} from '@grogarden/util/async.js';
 import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
 import {Logger} from '@grogarden/util/log.js';
 
@@ -19,7 +19,7 @@ export interface SocketState {
 	url: string | null;
 	ws: WebSocket | null;
 	open: boolean;
-	status: AsyncStatus;
+	status: Async_Status;
 }
 
 export interface SocketStore extends Readable<SocketState> {

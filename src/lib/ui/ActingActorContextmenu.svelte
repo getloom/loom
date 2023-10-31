@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
+	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
+	import Contextmenu_Submenu from '@fuz.dev/fuz_contextmenu/Contextmenu_Submenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -15,13 +15,13 @@
 	export let actor: Readable<AccountActor>;
 </script>
 
-<ContextmenuSubmenu>
+<Contextmenu_Submenu>
 	<svelte:fragment slot="icon">
 		<ActorAvatar {actor} showName={false} />
 	</svelte:fragment>
 	<ActorAvatar {actor} showIcon={false} />
 	<svelte:fragment slot="menu">
-		<ContextmenuEntry
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(
 					to_dialog_params(
@@ -32,14 +32,14 @@
 				)}
 		>
 			Create Hub
-		</ContextmenuEntry>
-		<ContextmenuEntry
+		</Contextmenu_Entry>
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(
 					to_dialog_params(DeleteActorForm, {actor, done: () => actions.CloseDialog()}),
 				)}
 		>
 			Delete Actor
-		</ContextmenuEntry>
+		</Contextmenu_Entry>
 	</svelte:fragment>
-</ContextmenuSubmenu>
+</Contextmenu_Submenu>

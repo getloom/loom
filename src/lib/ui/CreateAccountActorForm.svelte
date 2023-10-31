@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type {AsyncStatus} from '@grogarden/util/async.js';
+	import type {Async_Status} from '@grogarden/util/async.js';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 
@@ -19,7 +19,7 @@
 	export let attrs: any = undefined;
 
 	let name = '';
-	let status: AsyncStatus = 'initial'; // TODO refactor
+	let status: Async_Status = 'initial'; // TODO refactor
 	let nameEl: HTMLInputElement;
 	let errorMessage: string | null = null;
 
@@ -88,7 +88,7 @@ maybe `form.box` should be interpreted a particular way in Felt? -->
 			{#if errorMessage}
 				<Alert status="error">{errorMessage}</Alert>
 			{/if}
-			<PendingButton on:click={create} pending={status === 'pending'}>create actor</PendingButton>
+			<Pending_Button on:click={create} pending={status === 'pending'}>create actor</Pending_Button>
 		</fieldset>
 		<Alert icon="‼">your actor names are visible to people in the hubs you join</Alert>
 	</form>

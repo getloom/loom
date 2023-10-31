@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {slide} from 'svelte/transition';
 
 	import type {QueryStore} from '$lib/util/query.js';
@@ -11,12 +11,12 @@
 
 {#if more}
 	<div class="load_more_button" out:slide>
-		<PendingButton
+		<Pending_Button
 			attrs={{class: 'plain'}}
 			pending={status === 'pending'}
 			on:click={query.loadMore}
 		>
 			load more
-		</PendingButton>
+		</Pending_Button>
 	</div>
 {/if}

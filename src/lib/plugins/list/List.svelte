@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 
 	import ListItems from './ListItems.svelte';
 	import {getApp} from '$lib/ui/app.js';
@@ -81,7 +81,7 @@
 			<ListItems entities={orderedEntities} parentList={listsCollection} />
 			<LoadMoreButton {query} />
 		{:else}
-			<PendingAnimation />
+			<Pending_Animation />
 		{/if}
 	</div>
 </div>

@@ -1,11 +1,11 @@
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 export const AssignmentIdSchema = {
 	$id: '/schemas/AssignmentId',
 	type: 'number',
 	tsType: "Flavored<number, 'AssignmentId'>",
 	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
-} satisfies JsonSchema;
+} satisfies Json_Schema;
 
 export const AssignmentSchema = {
 	$id: '/schemas/Assignment',
@@ -24,4 +24,4 @@ export const AssignmentSchema = {
 	},
 	required: ['assignment_id', 'actor_id', 'hub_id', 'role_id', 'created'],
 	additionalProperties: false,
-} satisfies JsonSchema;
+} satisfies Json_Schema;

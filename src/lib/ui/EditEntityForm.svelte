@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
@@ -122,7 +122,7 @@
 	<fieldset>
 		<legend class="error_text">danger zone</legend>
 		{#if $entity.data.type !== 'Tombstone'}
-			<PendingButton
+			<Pending_Button
 				title="erase entity"
 				on:click={() =>
 					actions.OpenDialog(
@@ -132,10 +132,10 @@
 							confirmText: 'erase entity',
 						}),
 					)}
-				pending={erasePending}>erase entity</PendingButton
+				pending={erasePending}>erase entity</Pending_Button
 			>
 		{/if}
-		<PendingButton
+		<Pending_Button
 			title="delete entity"
 			on:click={() =>
 				actions.OpenDialog(
@@ -145,7 +145,7 @@
 						confirmText: 'delete entity',
 					}),
 				)}
-			pending={deletePending}>delete entity</PendingButton
+			pending={deletePending}>delete entity</Pending_Button
 		>
 	</fieldset>
 	<fieldset>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 
 	import BoardItems from '$lib/plugins/board/BoardItems.svelte';
 	import {getApp} from '$lib/ui/app.js';
@@ -59,7 +59,7 @@
 			<!-- {:else if status === 'failure'}
 				<Alert status="error">{$queryError.message}</Alert> -->
 		{:else}
-			<PendingAnimation />
+			<Pending_Animation />
 		{/if}
 	</div>
 </div>

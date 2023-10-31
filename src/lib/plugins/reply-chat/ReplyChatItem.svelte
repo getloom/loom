@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import type {Entity} from '$lib/vocab/entity/entity.js';
@@ -69,7 +69,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 						<Mention name={$repliedToActor.name} /> said:
 						{$repliedToEntity.data.content}
 					{:else}
-						<PendingAnimation />
+						<Pending_Animation />
 					{/if}
 				</div>
 			{/if}<EntityContent {entity} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PackageSummary from '@fuz.dev/fuz_library/PackageSummary.svelte';
+	import Package_Summary from '@fuz.dev/fuz_library/Package_Summary.svelte';
 	import {parse_package_meta} from '@fuz.dev/fuz_library/package_meta.js';
 
 	import {package_json} from '$lib/package.js';
@@ -17,6 +17,6 @@
 </section>
 <section class="padded">
 	<div class="width_sm panel">
-		<PackageSummary {pkg} />
+		<Package_Summary {pkg} />
 	</div>
 </section>

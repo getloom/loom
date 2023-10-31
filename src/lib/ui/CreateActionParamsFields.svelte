@@ -45,7 +45,7 @@
 </script>
 
 <!-- TODO need some way to pass back the params -- maybe emitting an event, calling a callback, exporting a store -->
-<!-- TODO extract JsonSchemaForm component? -->
+<!-- TODO extract Json_SchemaForm component? -->
 {#if paramsPropertiesKeys}
 	{#each paramsPropertiesKeys as key (key)}
 		<div class="field" style:--icon_size="var(--icon_size_sm)">

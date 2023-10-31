@@ -1,5 +1,5 @@
 import Ajv, {type Options, type ErrorObject, type ValidateFunction, type SchemaObject} from 'ajv';
-import type {JsonSchema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '@grogarden/gro/schema.js';
 import AjvKeywordInstanceof from 'ajv-keywords/dist/keywords/instanceof.js';
 
 import {schemas} from '$lib/vocab/schemas.js';
@@ -22,17 +22,17 @@ export interface CreateValidate<T = unknown> {
 	(): ValidateFunction<T>;
 }
 
-const validators: Map<SchemaObject | JsonSchema, ValidateFunction> = new Map();
+const validators: Map<SchemaObject | Json_Schema, ValidateFunction> = new Map();
 
 // Memoizes the returned schema validation function in the module-level lookup `validators`.
 // Does not support multiple instantiations with different options.
-export const validateSchema = <T>(schema: SchemaObject | JsonSchema): ValidateFunction<T> =>
+export const validateSchema = <T>(schema: SchemaObject | Json_Schema): ValidateFunction<T> =>
 	toValidateSchema<T>(schema)();
 
 // Creates a lazily-compiled schema validation function to avoid wasteful compilation.
 // It's also faster than ajv's internal compiled schema cache
 // because we can assume a consistent environment.
-export const toValidateSchema = <T>(schema: SchemaObject | JsonSchema): CreateValidate<T> => {
+export const toValidateSchema = <T>(schema: SchemaObject | Json_Schema): CreateValidate<T> => {
 	let validate = validators.get(schema) as ValidateFunction<T> | undefined;
 	return () => {
 		if (validate) return validate;

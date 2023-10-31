@@ -12,7 +12,7 @@
 	import '$lib/ui/style.css';
 	import Themed from '@fuz.dev/fuz/Themed.svelte';
 	import {set_devmode} from '@fuz.dev/fuz_library/devmode.js';
-	import DevmodeControls from '@fuz.dev/fuz_library/DevmodeControls.svelte';
+	import Devmode_Controls from '@fuz.dev/fuz_library/Devmode_Controls.svelte';
 	import {page} from '$app/stores';
 	import {browser} from '$app/environment';
 	import Dialogs from '@fuz.dev/fuz_dialog/Dialogs.svelte';
@@ -171,7 +171,7 @@
 		{:else}
 			<slot />
 		{/if}
-		<DevmodeControls {devmode} />
+		<Devmode_Controls {devmode} />
 		<Dialogs {dialogs} on:close={() => actions.CloseDialog()} let:dialog>
 			<div class="pane width_md">
 				<svelte:component this={dialog.Component} {...dialog.props} />

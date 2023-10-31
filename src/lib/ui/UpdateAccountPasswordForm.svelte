@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {tick} from 'svelte';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 
 	import {autofocus} from '$lib/ui/actions.js';
 	import {getApp} from '$lib/ui/app.js';
@@ -114,8 +114,8 @@
 		<p class="box" class:error_text={!!errorMessage} class:success-text={!!successMessage}>
 			{errorMessage || successMessage || '🔑'}
 		</p>
-		<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={updatePassword}
-			>change password</PendingButton
+		<Pending_Button pending={!!submitting} bind:el={buttonEl} on:click={updatePassword}
+			>change password</Pending_Button
 		>
 	</fieldset>
 </form>

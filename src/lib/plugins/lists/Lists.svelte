@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import ListItems from './ListItems.svelte';
@@ -72,7 +72,7 @@
 			<LoadMoreButton {query} />
 			<AddListButton source_id={$listsCollection.entity_id} />
 		{:else}
-			<PendingAnimation />
+			<Pending_Animation />
 		{/if}
 	</div>
 </div>

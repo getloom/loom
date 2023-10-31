@@ -6,7 +6,7 @@
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 
 	const {actions} = getApp();
 
@@ -54,9 +54,9 @@
 		<input type="text" name="name" placeholder=">" bind:value={lockText} on:keydown={onKeydown} />
 		<p>enter the hub name to unlock the leave button</p>
 	</label>
-	<PendingButton {pending} disabled={locked || pending} on:click={leaveHub}>
+	<Pending_Button {pending} disabled={locked || pending} on:click={leaveHub}>
 		leave hub
-	</PendingButton>
+	</Pending_Button>
 	{#if errorMessage}
 		<Alert status="error">{errorMessage}</Alert>
 	{/if}

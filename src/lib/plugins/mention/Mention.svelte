@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {ContextmenuActionParams} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+	import type {Contextmenu_Action_Params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
@@ -14,7 +14,7 @@
 	const {actor} = getSpaceContext();
 
 	export let name: string;
-	export let contextmenuParams: ContextmenuActionParams | null | undefined = undefined;
+	export let contextmenuParams: Contextmenu_Action_Params | null | undefined = undefined;
 	export let inline = true;
 
 	// TODO maybe add a cache of actor by name

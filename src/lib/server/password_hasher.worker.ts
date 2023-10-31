@@ -1,6 +1,6 @@
 import {Worker, isMainThread, parentPort} from 'worker_threads';
 import {fileURLToPath} from 'url';
-import {UnreachableError} from '@grogarden/util/error.js';
+import {Unreachable_Error} from '@grogarden/util/error.js';
 
 import {toPasswordKey, verifyPassword} from '$lib/server/password.js';
 import type {PasswordHasher} from '$lib/server/password_hasher.js';
@@ -165,7 +165,7 @@ const main = (): void => {
 				break;
 			}
 			default:
-				throw new UnreachableError(m);
+				throw new Unreachable_Error(m);
 		}
 	};
 	parentPort!.on('message', onMessage);

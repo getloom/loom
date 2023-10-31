@@ -9,7 +9,7 @@ import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData.js';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Tie} from '$lib/vocab/tie/tie';
-import type {DialogParams} from '@fuz.dev/fuz_dialog/dialog.js';
+import type {Dialog_Params} from '@fuz.dev/fuz_dialog/dialog.js';
 import type {
 	ClientSession,
 	ClientAccountSession,
@@ -459,7 +459,7 @@ export interface LeaveHubParams {
 export type LeaveHubResponse = null;
 export type LeaveHubResponseResult = ApiResult<LeaveHubResponse>;
 
-export type OpenDialogParams = DialogParams;
+export type OpenDialogParams = Dialog_Params;
 
 export type PingParams = null;
 export type PingResponse = null;

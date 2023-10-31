@@ -95,10 +95,10 @@ export const OpenDialog: ClientActionData = {
 	type: 'ClientAction',
 	name: 'OpenDialog',
 	params: {
-		$id: '/schemas/OpenDialogParams',
+		$id: '/schemas/OpenDialog_Params',
 		type: 'object',
-		tsType: 'DialogParams',
-		tsImport: "import type {DialogParams} from '@fuz.dev/fuz_dialog/dialog.js'",
+		tsType: 'Dialog_Params',
+		tsImport: "import type {Dialog_Params} from '@fuz.dev/fuz_dialog/dialog.js'",
 	},
 	returns: 'void',
 };

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
+	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
+	import Contextmenu_Submenu from '@fuz.dev/fuz_contextmenu/Contextmenu_Submenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
@@ -25,20 +25,20 @@
 	$: directory = entityById.get($space.directory_id)!;
 </script>
 
-<ContextmenuSubmenu>
+<Contextmenu_Submenu>
 	<svelte:fragment slot="icon">
 		<SpaceIcon {space} />
 	</svelte:fragment>
 	{$space.name}
 	<svelte:fragment slot="menu">
-		<ContextmenuEntry
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(to_dialog_params(SpaceEditor, {actor, space, hub}, {layout: 'page'}))}
 		>
 			Edit Space
-		</ContextmenuEntry>
+		</Contextmenu_Entry>
 		{#if canDeleteSpace($directory)}
-			<ContextmenuEntry
+			<Contextmenu_Entry
 				run={() =>
 					actions.OpenDialog(
 						to_dialog_params(DeleteSpaceForm, {
@@ -50,9 +50,9 @@
 					)}
 			>
 				Delete Space
-			</ContextmenuEntry>
+			</Contextmenu_Entry>
 		{/if}
-		<ContextmenuEntry
+		<Contextmenu_Entry
 			run={() =>
 				actions.ViewSpace({
 					space_id: $space.space_id,
@@ -60,6 +60,6 @@
 				})}
 		>
 			View with EntityExplorer
-		</ContextmenuEntry>
+		</Contextmenu_Entry>
 	</svelte:fragment>
-</ContextmenuSubmenu>
+</Contextmenu_Submenu>

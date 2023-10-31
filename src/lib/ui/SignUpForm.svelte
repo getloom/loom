@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {tick} from 'svelte';
 	import {PUBLIC_INSTANCE_ICON} from '$env/static/public';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {swallow} from '@grogarden/util/dom.js';
 
 	import {autofocus} from '$lib/ui/actions.js';
@@ -111,8 +111,8 @@
 				placeholder=">"
 			/>
 		</label>
-		<PendingButton pending={!!submitting} bind:el={buttonEl} on:click={signUp}
-			>sign up</PendingButton
+		<Pending_Button pending={!!submitting} bind:el={buttonEl} on:click={signUp}
+			>sign up</Pending_Button
 		>
 		<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_INSTANCE_ICON}</p>
 		<slot />

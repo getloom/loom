@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 
@@ -100,7 +100,7 @@
 			<ReplyChatItems {actor} {entities} {selectReply} {queryReply} />
 			<LoadMoreButton {query} />
 		{:else}
-			<PendingAnimation />
+			<Pending_Animation />
 		{/if}
 	</div>
 	{#if selectedReply && $selectedReplyActor}

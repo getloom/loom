@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {onMount, createEventDispatcher, onDestroy} from 'svelte';
-	import type {AsyncStatus} from '@grogarden/util/async.js';
+	import type {Async_Status} from '@grogarden/util/async.js';
 
 	type Host = {postMessage: Window['postMessage']} | ServiceWorker | MessagePort;
 
@@ -36,7 +36,7 @@
 		if (connect_timeout) clearTimeout(connect_timeout);
 	});
 
-	let connect_status: AsyncStatus = 'initial';
+	let connect_status: Async_Status = 'initial';
 	let connecting: Promise<boolean> | undefined;
 	let connecting_host: Host | undefined;
 	let resolve_connection: ((connected: boolean) => void) | undefined = undefined;

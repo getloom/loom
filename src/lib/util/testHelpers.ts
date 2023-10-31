@@ -1,5 +1,5 @@
 import {Logger} from '@grogarden/util/log.js';
-import type {OmitStrict} from '@grogarden/util/types.js';
+import type {Omit_Strict} from '@grogarden/util/types.js';
 import {unwrap} from '@grogarden/util/result.js';
 import * as assert from 'uvu/assert';
 import {noop} from '@grogarden/util/function.js';
@@ -51,7 +51,7 @@ export interface ToServiceRequestFake {
 		broadcast?: IBroadcast,
 		passwordHasher?: PasswordHasher,
 		afterResponse?: AfterResponse,
-	): OmitStrict<NonAuthenticatedServiceRequest, 'params'>;
+	): Omit_Strict<NonAuthenticatedServiceRequest, 'params'>;
 	(
 		repos: Repos,
 		actor?: undefined,
@@ -60,7 +60,7 @@ export interface ToServiceRequestFake {
 		broadcast?: IBroadcast,
 		passwordHasher?: PasswordHasher,
 		afterResponse?: AfterResponse,
-	): OmitStrict<NonAuthorizedServiceRequest, 'params'>;
+	): Omit_Strict<NonAuthorizedServiceRequest, 'params'>;
 	(
 		repos: Repos,
 		actor: ActionActor,
@@ -69,7 +69,7 @@ export interface ToServiceRequestFake {
 		broadcast?: IBroadcast,
 		passwordHasher?: PasswordHasher,
 		afterResponse?: AfterResponse,
-	): OmitStrict<AuthorizedServiceRequest, 'params'>;
+	): Omit_Strict<AuthorizedServiceRequest, 'params'>;
 }
 
 export const toServiceRequestFake: ToServiceRequestFake = (

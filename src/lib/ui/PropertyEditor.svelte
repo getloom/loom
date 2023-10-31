@@ -3,7 +3,7 @@
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import {identity} from '@grogarden/util/function.js';
 	import type {Result} from '@grogarden/util/result.js';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {afterUpdate} from 'svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
@@ -130,9 +130,9 @@
 				<div transition:slide>
 					<div class="buttons">
 						<button type="button" on:click={reset}> reset </button>
-						<PendingButton on:click={save} {pending} disabled={pending || !!errorMessage}>
+						<Pending_Button on:click={save} {pending} disabled={pending || !!errorMessage}>
 							save
-						</PendingButton>
+						</Pending_Button>
 					</div>
 					{#if !errorMessage}
 						<div class="preview prose panel">
@@ -143,9 +143,9 @@
 					{/if}
 				</div>
 			{:else if deletable && fieldValue !== undefined}
-				<PendingButton on:click={deleteField} {pending} disabled={pending || !!errorMessage}>
+				<Pending_Button on:click={deleteField} {pending} disabled={pending || !!errorMessage}>
 					delete property '{field}'
-				</PendingButton>
+				</Pending_Button>
 			{/if}
 			{#if errorMessage}
 				<Alert status="error">{errorMessage}</Alert>

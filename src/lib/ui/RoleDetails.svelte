@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
@@ -95,7 +95,7 @@
 				<p>there are no assignments for this role</p>
 			{/if}
 		{:else}
-			<PendingAnimation />
+			<Pending_Animation />
 		{/if}
 	</section>
 	<section>
@@ -107,7 +107,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<PendingAnimation />
+			<Pending_Animation />
 		{/if}
 	</section>
 </div>

@@ -7,10 +7,10 @@ import {
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent} from 'svelte';
-import type {DialogParams} from '@fuz.dev/fuz_dialog/dialog.js';
+import type {Dialog_Params} from '@fuz.dev/fuz_dialog/dialog.js';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
-import {create_contextmenu, type ContextmenuStore} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+import {create_contextmenu, type Contextmenu_Store} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 import type {Hub, HubId} from '$lib/vocab/hub/hub.js';
 import type {Space, SpaceId} from '$lib/vocab/space/space.js';
@@ -86,8 +86,8 @@ export interface Ui {
 	mainLayoutView: Writable<string>;
 	expandMainNav: Readable<boolean>;
 	expandMarquee: Readable<boolean>;
-	contextmenu: ContextmenuStore;
-	dialogs: Readable<DialogParams[]>;
+	contextmenu: Contextmenu_Store;
+	dialogs: Readable<Dialog_Params[]>;
 	viewBySpace: Mutable<WeakMap<Readable<Space>, string>>; // client overrides for the views set by the hub
 	ephemera: Readable<EphemeraResponse | null>;
 	actorIdSelection: Readable<ActorId | null>;
@@ -320,7 +320,7 @@ export const toUi = (
 	const expandMainNav = locallyStored(writable(!initialMobile), 'expandMainNav');
 	const expandMarquee = locallyStored(writable(!initialMobile), 'expandMarquee');
 	const contextmenu = create_contextmenu({layout});
-	const dialogs = writable<DialogParams[]>([]);
+	const dialogs = writable<Dialog_Params[]>([]);
 	const viewBySpace = mutable(new WeakMap<Readable<Space>, string>());
 	const ephemera = writable<EphemeraResponse | null>(null);
 

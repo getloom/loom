@@ -6,7 +6,7 @@
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 	import type {Role} from '$lib/vocab/role/role.js';
 	import RoleDetails from '$lib/ui/RoleDetails.svelte';
 	import type {DeleteRoleResponseResult} from '$lib/vocab/action/actionTypes.js';
@@ -69,7 +69,7 @@
 			<RoleDetails {actor} role={selectedRole} {hub} {deleteRole} />
 		</div>
 	{:else}
-		<PendingAnimation />
+		<Pending_Animation />
 	{/if}
 </div>
 

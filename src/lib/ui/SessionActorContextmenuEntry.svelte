@@ -2,7 +2,7 @@
 	import {goto} from '$app/navigation';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
-	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
+	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
 
 	import {getApp} from '$lib/ui/app.js';
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
@@ -41,7 +41,7 @@
 	</li>
 {:else}
 	<!-- TODO change to a link once the contextmenu supports them -->
-	<ContextmenuEntry
+	<Contextmenu_Entry
 		run={() =>
 			goto(
 				toHubUrl(
@@ -53,5 +53,5 @@
 	>
 		<svelte:fragment slot="icon"><ActorAvatar {actor} showName={false} /></svelte:fragment>
 		<ActorAvatar {actor} showIcon={false} />
-	</ContextmenuEntry>
+	</Contextmenu_Entry>
 {/if}

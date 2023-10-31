@@ -26,4 +26,4 @@
 		{/each}
 	</fieldset>
 {/if}
-<!-- TODO maybe show a PendingAnimation in some state? -->
+<!-- TODO maybe show a Pending_Animation in some state? -->

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {ContextmenuActionParams} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+	import type {Contextmenu_Action_Params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import {randomHue} from '$lib/util/color.js';
@@ -13,7 +13,7 @@
 	export let showName = true;
 	export let showIcon = true;
 	export let type: EntityType = 'Actor';
-	export let contextmenuParams: ContextmenuActionParams | null = null;
+	export let contextmenuParams: Contextmenu_Action_Params | null = null;
 	export let inline = false;
 
 	$: finalHue = hue ?? randomHue(name);

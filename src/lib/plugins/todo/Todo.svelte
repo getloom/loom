@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {page} from '$app/stores';
 
 	import TodoItems from '$lib/plugins/todo/TodoItems.svelte';
@@ -130,10 +130,10 @@
 				autofocus={true}
 				placeholder="> new todo list"
 			/>
-			<PendingButton pending={creating} on:click={createList}>create new list</PendingButton>
+			<Pending_Button pending={creating} on:click={createList}>create new list</Pending_Button>
 		</div>
 	{:else}
-		<PendingAnimation />
+		<Pending_Animation />
 	{/if}
 </div>
 

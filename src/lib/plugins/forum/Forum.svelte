@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 	import {page} from '$app/stores';
@@ -88,7 +88,7 @@
 		<!-- {:else if status === 'failure'}
 				<Alert status="error">{$queryError.message}</Alert> -->
 	{:else}
-		<PendingAnimation />
+		<Pending_Animation />
 	{/if}
 </div>
 

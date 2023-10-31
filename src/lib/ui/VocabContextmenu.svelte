@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
+	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
@@ -33,8 +33,8 @@
 </script>
 
 {#if schema || action || view}
-	<ContextmenuEntry {run}>
+	<Contextmenu_Entry {run}>
 		More about <code>{name}</code>
 		<svelte:fragment slot="icon">?</svelte:fragment>
-	</ContextmenuEntry>
+	</Contextmenu_Entry>
 {/if}

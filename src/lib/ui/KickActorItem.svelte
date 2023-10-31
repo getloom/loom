@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
@@ -37,7 +37,7 @@
 
 <li class="actor-item">
 	<ActorAvatar actor={communityActor} showIcon={true} />
-	<PendingButton
+	<Pending_Button
 		title="kick actor"
 		attrs={{class: 'icon_button plain'}}
 		on:click={() =>
@@ -51,7 +51,7 @@
 		pending={kickPending}
 	>
 		✕
-	</PendingButton>
+	</Pending_Button>
 	{#if errorMessage}
 		<Alert status="error">{errorMessage}</Alert>
 	{/if}

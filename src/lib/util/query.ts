@@ -1,4 +1,4 @@
-import type {AsyncStatus} from '@grogarden/util/async.js';
+import type {Async_Status} from '@grogarden/util/async.js';
 import {
 	mutable,
 	writable,
@@ -14,7 +14,7 @@ import type {ActorId} from '$lib/vocab/actor/actor.js';
 
 export interface Query {
 	data: Mutable<Set<Writable<Entity>>>;
-	status: Writable<AsyncStatus>;
+	status: Writable<Async_Status>;
 	error: Writable<string | null>;
 }
 
@@ -28,7 +28,7 @@ export interface QueryParams {
 }
 
 export interface QueryState {
-	status: AsyncStatus;
+	status: Async_Status;
 	error: string | null;
 	more: boolean;
 }

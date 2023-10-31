@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
+	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
+	import Contextmenu_Submenu from '@fuz.dev/fuz_contextmenu/Contextmenu_Submenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
@@ -22,64 +22,64 @@
 	export let hub: Readable<Hub>;
 </script>
 
-<ContextmenuSubmenu>
+<Contextmenu_Submenu>
 	<svelte:fragment slot="icon">
 		<HubAvatar {actor} {hub} showName={false} />
 	</svelte:fragment>
 	<HubAvatar {actor} {hub} showIcon={false} />
 	<svelte:fragment slot="menu">
-		<ContextmenuEntry
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(
 					to_dialog_params(HubEditor, {actor, hub, done: () => actions.CloseDialog()}),
 				)}
 		>
 			Edit Hub
-		</ContextmenuEntry>
-		<ContextmenuEntry
+		</Contextmenu_Entry>
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(
 					to_dialog_params(CreateSpaceForm, {actor, hub, done: () => actions.CloseDialog()}),
 				)}
 		>
 			Create Space
-		</ContextmenuEntry>
-		<ContextmenuEntry
+		</Contextmenu_Entry>
+		<Contextmenu_Entry
 			run={() =>
 				actions.OpenDialog(to_dialog_params(ManageRolesForm, {actor, hub}, {layout: 'page'}))}
 		>
 			Manage Roles
-		</ContextmenuEntry>
+		</Contextmenu_Entry>
 		{#if $hub.type !== 'personal'}
-			<ContextmenuEntry
+			<Contextmenu_Entry
 				run={() =>
 					actions.OpenDialog(
 						to_dialog_params(InviteToHubForm, {actor, hub, done: () => actions.CloseDialog()}),
 					)}
 			>
 				Invite People
-			</ContextmenuEntry>
-			<ContextmenuEntry
+			</Contextmenu_Entry>
+			<Contextmenu_Entry
 				run={() => actions.OpenDialog(to_dialog_params(KickFromHubForm, {actor, hub}))}
 			>
 				Kick People
-			</ContextmenuEntry>
-			<ContextmenuEntry
+			</Contextmenu_Entry>
+			<Contextmenu_Entry
 				run={() =>
 					actions.OpenDialog(
 						to_dialog_params(LeaveHubForm, {actor, hub, done: () => actions.CloseDialog()}),
 					)}
 			>
 				Leave Hub
-			</ContextmenuEntry>
-			<ContextmenuEntry
+			</Contextmenu_Entry>
+			<Contextmenu_Entry
 				run={() =>
 					actions.OpenDialog(
 						to_dialog_params(DeleteHubForm, {actor, hub, done: () => actions.CloseDialog()}),
 					)}
 			>
 				Delete Hub
-			</ContextmenuEntry>
+			</Contextmenu_Entry>
 		{/if}
 	</svelte:fragment>
-</ContextmenuSubmenu>
+</Contextmenu_Submenu>

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ContextmenuEntry from '@fuz.dev/fuz_contextmenu/ContextmenuEntry.svelte';
-	import ContextmenuSubmenu from '@fuz.dev/fuz_contextmenu/ContextmenuSubmenu.svelte';
+	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
+	import Contextmenu_Submenu from '@fuz.dev/fuz_contextmenu/Contextmenu_Submenu.svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
@@ -17,20 +17,20 @@
 </script>
 
 {#if $session.guest}
-	<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(Settings, {}))}>
+	<Contextmenu_Entry run={() => actions.OpenDialog(to_dialog_params(Settings, {}))}>
 		<svelte:fragment slot="icon">
 			<UnicodeIcon icon="$" />
 		</svelte:fragment>
 		Settings
-	</ContextmenuEntry>
-	<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(About, {}))}>
+	</Contextmenu_Entry>
+	<Contextmenu_Entry run={() => actions.OpenDialog(to_dialog_params(About, {}))}>
 		<svelte:fragment slot="icon">
 			<UnicodeIcon icon="?" />
 		</svelte:fragment>
 		About
-	</ContextmenuEntry>
+	</Contextmenu_Entry>
 {:else}
-	<ContextmenuSubmenu>
+	<Contextmenu_Submenu>
 		<svelte:fragment slot="icon">
 			<UnicodeIcon icon="/" />
 		</svelte:fragment>
@@ -39,7 +39,7 @@
 			{#each $sessionActors.value as actor (actor)}
 				<SessionActorContextmenuEntry {actor} />
 			{/each}
-			<ContextmenuEntry
+			<Contextmenu_Entry
 				run={() =>
 					actions.OpenDialog(
 						to_dialog_params(CreateAccountActorForm, {done: () => actions.CloseDialog()}),
@@ -49,25 +49,25 @@
 					<UnicodeIcon icon="@" />
 				</svelte:fragment>
 				Create Actor
-			</ContextmenuEntry>
-			<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(Settings, {}))}>
+			</Contextmenu_Entry>
+			<Contextmenu_Entry run={() => actions.OpenDialog(to_dialog_params(Settings, {}))}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="$" />
 				</svelte:fragment>
 				Settings
-			</ContextmenuEntry>
-			<ContextmenuEntry run={() => actions.OpenDialog(to_dialog_params(About, {}))}>
+			</Contextmenu_Entry>
+			<Contextmenu_Entry run={() => actions.OpenDialog(to_dialog_params(About, {}))}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="?" />
 				</svelte:fragment>
 				About
-			</ContextmenuEntry>
-			<ContextmenuEntry run={() => actions.SignOut()}>
+			</Contextmenu_Entry>
+			<Contextmenu_Entry run={() => actions.SignOut()}>
 				<svelte:fragment slot="icon">
 					<UnicodeIcon icon="<" />
 				</svelte:fragment>
 				Sign out
-			</ContextmenuEntry>
+			</Contextmenu_Entry>
 		</svelte:fragment>
-	</ContextmenuSubmenu>
+	</Contextmenu_Submenu>
 {/if}

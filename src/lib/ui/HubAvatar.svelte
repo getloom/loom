@@ -2,7 +2,7 @@
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {
 		to_contextmenu_params,
-		type ContextmenuActionParams,
+		type Contextmenu_Action_Params,
 	} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
@@ -14,7 +14,7 @@
 	export let hub: Readable<Hub>;
 	export let showName = true;
 	export let showIcon = true;
-	export let contextmenuParams: ContextmenuActionParams | null | undefined = undefined;
+	export let contextmenuParams: Contextmenu_Action_Params | null | undefined = undefined;
 	export let inline = false;
 </script>
 

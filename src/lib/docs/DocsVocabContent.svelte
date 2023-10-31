@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {JsonSchema} from '@grogarden/gro/schema.js';
+	import type {Json_Schema} from '@grogarden/gro/schema.js';
 	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
 	import {base} from '$app/paths';
 	import {intersect} from '@fuz.dev/svelte_intersect';
@@ -11,7 +11,7 @@
 	import ViewInfo from '$lib/ui/ViewInfo.svelte';
 
 	export let sortedViewTemplates: ViewTemplate[];
-	export let sortedModelSchemas: JsonSchema[];
+	export let sortedModelSchemas: Json_Schema[];
 	export let serviceActions: ServiceActionData[];
 	export let clientActions: ClientActionData[];
 	export let modelNames: string[];

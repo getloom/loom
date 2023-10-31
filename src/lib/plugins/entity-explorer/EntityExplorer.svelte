@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import PendingAnimation from '@fuz.dev/fuz_library/PendingAnimation.svelte';
+	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
 
 	import EntityExplorerItems from '$lib/plugins/entity-explorer/EntityExplorerItems.svelte';
 	import EntityTrees from '$lib/ui/EntityTrees.svelte';
@@ -59,7 +59,7 @@
 					<EntityExplorerItems {actor} {entities} />
 					<LoadMoreButton {query} />
 				{:else}
-					<PendingAnimation />
+					<Pending_Animation />
 				{/if}
 			</div>
 		{/if}
@@ -68,7 +68,7 @@
 				<EntityTrees {actor} entity={directory} bind:queries />
 				<LoadMoreButton {query} />
 			{:else}
-				<PendingAnimation />
+				<Pending_Animation />
 			{/if}
 		{/if}
 	</div>

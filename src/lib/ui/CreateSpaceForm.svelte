@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import PendingButton from '@fuz.dev/fuz_library/PendingButton.svelte';
+	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
@@ -122,7 +122,7 @@
 			<div class="title">icon</div>
 			<input placeholder=">" bind:this={iconEl} bind:value={icon} on:keydown={onKeydown} />
 		</label>
-		<PendingButton on:click={create} {pending}>create space</PendingButton>
+		<Pending_Button on:click={create} {pending}>create space</Pending_Button>
 		{#if errorMessage}
 			<Alert status="error">{errorMessage}</Alert>
 		{/if}

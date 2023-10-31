@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type {JsonSchema} from '@grogarden/gro/schema.js';
+	import type {Json_Schema} from '@grogarden/gro/schema.js';
 	import type {JSONSchema} from '@ryanatkn/json-schema-to-typescript';
 
 	import SvastText from '$lib/ui/SvastText.svelte';
 	import {toSchemaName} from '$lib/util/schema.js';
 	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 
-	export let schema: JsonSchema;
+	export let schema: Json_Schema;
 
 	let properties: undefined | Array<[string, JSONSchema]>;
 	$: properties = schema.properties && Array.from(Object.entries(schema.properties));
