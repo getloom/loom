@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Mural from '@feltjs/felt_mural/Mural.svelte';
-	import type {MuralAction} from '@feltjs/felt_mural/item.js';
+	import type {Mural_Action} from '@feltjs/felt_mural/item.js';
 	import {onDestroy} from 'svelte';
 
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
@@ -13,13 +13,13 @@
 		ui: {ephemera},
 	} = getApp();
 
-	let handleAction: (action: MuralAction) => any;
+	let handleAction: (action: Mural_Action) => any;
 
 	// fixed dimensions so it's consistent for multiple users at once - not great, is there another way?
 	const width = 800;
 	const height = 400;
 
-	const brodcastAction = (action: MuralAction): void => {
+	const brodcastAction = (action: Mural_Action): void => {
 		void actions.Ephemera({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,

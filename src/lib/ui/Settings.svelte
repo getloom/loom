@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ColorSchemeInput from '@fuz.dev/fuz/ColorSchemeInput.svelte';
-	import ThemeInput from '@fuz.dev/fuz/ThemeInput.svelte';
+	import Color_Scheme_Input from '@fuz.dev/fuz/Color_Scheme_Input.svelte';
+	import Theme_Input from '@fuz.dev/fuz/Theme_Input.svelte';
 
 	import AccountEditor from '$lib/ui/AccountEditor.svelte';
 	import {getApp} from '$lib/ui/app.js';
@@ -13,8 +13,8 @@
 <div class="prose padded_1 box">
 	<h1>Settings</h1>
 	<h2>Color Scheme</h2>
-	<ColorSchemeInput />
+	<Color_Scheme_Input />
 	<h2>Theme</h2>
-	<ThemeInput />
+	<Theme_Input />
 	<AccountEditor {account} />
 </div>
