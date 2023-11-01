@@ -94,45 +94,2114 @@ export const package_json = {
 	},
 	files: ['dist'],
 	exports: {
-		'./package.js': {default: './dist/package.js', types: './dist/package.d.ts'},
+		'./check.task.js': {default: './dist/check.task.js', types: './dist/check.task.d.ts'},
+		'./db/create.task.js': {
+			default: './dist/db/create.task.js',
+			types: './dist/db/create.task.d.ts',
+		},
+		'./db/Database.js': {default: './dist/db/Database.js', types: './dist/db/Database.d.ts'},
+		'./db/db.js': {default: './dist/db/db.js', types: './dist/db/db.d.ts'},
+		'./db/destroy.task.js': {
+			default: './dist/db/destroy.task.js',
+			types: './dist/db/destroy.task.d.ts',
+		},
+		'./db/migrate.task.js': {
+			default: './dist/db/migrate.task.js',
+			types: './dist/db/migrate.task.d.ts',
+		},
+		'./db/migrate.js': {default: './dist/db/migrate.js', types: './dist/db/migrate.d.ts'},
+		'./db/migration.js': {default: './dist/db/migration.js', types: './dist/db/migration.d.ts'},
+		'./db/migrations/00000-create-accounts.js': {
+			default: './dist/db/migrations/00000-create-accounts.js',
+			types: './dist/db/migrations/00000-create-accounts.d.ts',
+		},
+		'./db/migrations/00001-create-personas.js': {
+			default: './dist/db/migrations/00001-create-personas.js',
+			types: './dist/db/migrations/00001-create-personas.d.ts',
+		},
+		'./db/migrations/00002-create-communities.js': {
+			default: './dist/db/migrations/00002-create-communities.js',
+			types: './dist/db/migrations/00002-create-communities.d.ts',
+		},
+		'./db/migrations/00003-create-memberships.js': {
+			default: './dist/db/migrations/00003-create-memberships.js',
+			types: './dist/db/migrations/00003-create-memberships.d.ts',
+		},
+		'./db/migrations/00004-create-spaces.js': {
+			default: './dist/db/migrations/00004-create-spaces.js',
+			types: './dist/db/migrations/00004-create-spaces.d.ts',
+		},
+		'./db/migrations/00005-create-files.js': {
+			default: './dist/db/migrations/00005-create-files.js',
+			types: './dist/db/migrations/00005-create-files.d.ts',
+		},
+		'./db/migrations/00006-refactor-space-communities.js': {
+			default: './dist/db/migrations/00006-refactor-space-communities.js',
+			types: './dist/db/migrations/00006-refactor-space-communities.d.ts',
+		},
+		'./db/migrations/00007-add-communities-settings.js': {
+			default: './dist/db/migrations/00007-add-communities-settings.js',
+			types: './dist/db/migrations/00007-add-communities-settings.d.ts',
+		},
+		'./db/migrations/00008-rename-entities-table.js': {
+			default: './dist/db/migrations/00008-rename-entities-table.js',
+			types: './dist/db/migrations/00008-rename-entities-table.d.ts',
+		},
+		'./db/migrations/00009-refactor-entity-content-to-data.js': {
+			default: './dist/db/migrations/00009-refactor-entity-content-to-data.js',
+			types: './dist/db/migrations/00009-refactor-entity-content-to-data.d.ts',
+		},
+		'./db/migrations/00010-personal-communities.js': {
+			default: './dist/db/migrations/00010-personal-communities.js',
+			types: './dist/db/migrations/00010-personal-communities.d.ts',
+		},
+		'./db/migrations/00011-id-references.js': {
+			default: './dist/db/migrations/00011-id-references.js',
+			types: './dist/db/migrations/00011-id-references.d.ts',
+		},
+		'./db/migrations/00012-refactor-space-view.js': {
+			default: './dist/db/migrations/00012-refactor-space-view.js',
+			types: './dist/db/migrations/00012-refactor-space-view.d.ts',
+		},
+		'./db/migrations/00013-drop-space-mediatype.js': {
+			default: './dist/db/migrations/00013-drop-space-mediatype.js',
+			types: './dist/db/migrations/00013-drop-space-mediatype.d.ts',
+		},
+		'./db/migrations/00014-create-ties.js': {
+			default: './dist/db/migrations/00014-create-ties.js',
+			types: './dist/db/migrations/00014-create-ties.d.ts',
+		},
+		'./db/migrations/00015-index-ties.js': {
+			default: './dist/db/migrations/00015-index-ties.js',
+			types: './dist/db/migrations/00015-index-ties.d.ts',
+		},
+		'./db/migrations/00016-pk-ties.js': {
+			default: './dist/db/migrations/00016-pk-ties.js',
+			types: './dist/db/migrations/00016-pk-ties.d.ts',
+		},
+		'./db/migrations/00017-space-view-svast.js': {
+			default: './dist/db/migrations/00017-space-view-svast.js',
+			types: './dist/db/migrations/00017-space-view-svast.d.ts',
+		},
+		'./db/migrations/00018-space-icon.js': {
+			default: './dist/db/migrations/00018-space-icon.js',
+			types: './dist/db/migrations/00018-space-icon.d.ts',
+		},
+		'./db/migrations/00019-space-directory-refactor.js': {
+			default: './dist/db/migrations/00019-space-directory-refactor.js',
+			types: './dist/db/migrations/00019-space-directory-refactor.d.ts',
+		},
+		'./db/migrations/00020-tie-entities-directory.js': {
+			default: './dist/db/migrations/00020-tie-entities-directory.js',
+			types: './dist/db/migrations/00020-tie-entities-directory.d.ts',
+		},
+		'./db/migrations/00021-space-view-text.js': {
+			default: './dist/db/migrations/00021-space-view-text.js',
+			types: './dist/db/migrations/00021-space-view-text.d.ts',
+		},
+		'./db/migrations/00022-remove-entity-spaceid.js': {
+			default: './dist/db/migrations/00022-remove-entity-spaceid.js',
+			types: './dist/db/migrations/00022-remove-entity-spaceid.d.ts',
+		},
+		'./db/migrations/00023-rename-actor-to-persona.js': {
+			default: './dist/db/migrations/00023-rename-actor-to-persona.js',
+			types: './dist/db/migrations/00023-rename-actor-to-persona.d.ts',
+		},
+		'./db/migrations/00024-set-entity-data-non-nullable.js': {
+			default: './dist/db/migrations/00024-set-entity-data-non-nullable.js',
+			types: './dist/db/migrations/00024-set-entity-data-non-nullable.d.ts',
+		},
+		'./db/migrations/00025-directory-data-space-community-ids.js': {
+			default: './dist/db/migrations/00025-directory-data-space-community-ids.js',
+			types: './dist/db/migrations/00025-directory-data-space-community-ids.d.ts',
+		},
+		'./db/migrations/00026-fix-unique-indexes.js': {
+			default: './dist/db/migrations/00026-fix-unique-indexes.js',
+			types: './dist/db/migrations/00026-fix-unique-indexes.d.ts',
+		},
+		'./db/migrations/00027-admin-community.js': {
+			default: './dist/db/migrations/00027-admin-community.js',
+			types: './dist/db/migrations/00027-admin-community.d.ts',
+		},
+		'./db/migrations/00028-remove-immutable-updated.js': {
+			default: './dist/db/migrations/00028-remove-immutable-updated.js',
+			types: './dist/db/migrations/00028-remove-immutable-updated.d.ts',
+		},
+		'./db/migrations/00029-create-roles.js': {
+			default: './dist/db/migrations/00029-create-roles.js',
+			types: './dist/db/migrations/00029-create-roles.d.ts',
+		},
+		'./db/migrations/00030-add-tie-id.js': {
+			default: './dist/db/migrations/00030-add-tie-id.js',
+			types: './dist/db/migrations/00030-add-tie-id.d.ts',
+		},
+		'./db/migrations/00031-add-account-settings.js': {
+			default: './dist/db/migrations/00031-add-account-settings.js',
+			types: './dist/db/migrations/00031-add-account-settings.d.ts',
+		},
+		'./db/migrations/00032-index-entity-data.js': {
+			default: './dist/db/migrations/00032-index-entity-data.js',
+			types: './dist/db/migrations/00032-index-entity-data.d.ts',
+		},
+		'./db/migrations/00033-add-default-roles.js': {
+			default: './dist/db/migrations/00033-add-default-roles.js',
+			types: './dist/db/migrations/00033-add-default-roles.d.ts',
+		},
+		'./db/migrations/00034-add-membership-id.js': {
+			default: './dist/db/migrations/00034-add-membership-id.js',
+			types: './dist/db/migrations/00034-add-membership-id.d.ts',
+		},
+		'./db/migrations/00035-rename-memberships-assignments.js': {
+			default: './dist/db/migrations/00035-rename-memberships-assignments.js',
+			types: './dist/db/migrations/00035-rename-memberships-assignments.d.ts',
+		},
+		'./db/migrations/00036-add-roles-to-assignments.js': {
+			default: './dist/db/migrations/00036-add-roles-to-assignments.js',
+			types: './dist/db/migrations/00036-add-roles-to-assignments.d.ts',
+		},
+		'./db/migrations/00037-add-ghost-persona-type.js': {
+			default: './dist/db/migrations/00037-add-ghost-persona-type.js',
+			types: './dist/db/migrations/00037-add-ghost-persona-type.d.ts',
+		},
+		'./db/migrations/00038-add-ghost-persona.js': {
+			default: './dist/db/migrations/00038-add-ghost-persona.js',
+			types: './dist/db/migrations/00038-add-ghost-persona.d.ts',
+		},
+		'./db/migrations/00039-add-policies.js': {
+			default: './dist/db/migrations/00039-add-policies.js',
+			types: './dist/db/migrations/00039-add-policies.d.ts',
+		},
+		'./db/migrations/00040-rename-space-path-from-url.js': {
+			default: './dist/db/migrations/00040-rename-space-path-from-url.js',
+			types: './dist/db/migrations/00040-rename-space-path-from-url.d.ts',
+		},
+		'./db/migrations/00041-add-entity-space-id.js': {
+			default: './dist/db/migrations/00041-add-entity-space-id.js',
+			types: './dist/db/migrations/00041-add-entity-space-id.d.ts',
+		},
+		'./db/migrations/00042-rename-todo-content.js': {
+			default: './dist/db/migrations/00042-rename-todo-content.js',
+			types: './dist/db/migrations/00042-rename-todo-content.d.ts',
+		},
+		'./db/migrations/00043-refactor-directories.js': {
+			default: './dist/db/migrations/00043-refactor-directories.js',
+			types: './dist/db/migrations/00043-refactor-directories.d.ts',
+		},
+		'./db/migrations/00044-rename-hub-from-community.js': {
+			default: './dist/db/migrations/00044-rename-hub-from-community.js',
+			types: './dist/db/migrations/00044-rename-hub-from-community.d.ts',
+		},
+		'./db/migrations/00045-add-entity-path.js': {
+			default: './dist/db/migrations/00045-add-entity-path.js',
+			types: './dist/db/migrations/00045-add-entity-path.d.ts',
+		},
+		'./db/migrations/00046-remove-space-path.js': {
+			default: './dist/db/migrations/00046-remove-space-path.js',
+			types: './dist/db/migrations/00046-remove-space-path.d.ts',
+		},
+		'./db/migrations/00047-rename-actor-from-persona.js': {
+			default: './dist/db/migrations/00047-rename-actor-from-persona.js',
+			types: './dist/db/migrations/00047-rename-actor-from-persona.d.ts',
+		},
+		'./db/migrations/00048-rename-update-hub-policy.js': {
+			default: './dist/db/migrations/00048-rename-update-hub-policy.js',
+			types: './dist/db/migrations/00048-rename-update-hub-policy.d.ts',
+		},
+		'./db/migrations/00049-rename-policy-name.js': {
+			default: './dist/db/migrations/00049-rename-policy-name.js',
+			types: './dist/db/migrations/00049-rename-policy-name.d.ts',
+		},
+		'./db/migrations/00050-rename-policy-names.js': {
+			default: './dist/db/migrations/00050-rename-policy-names.js',
+			types: './dist/db/migrations/00050-rename-policy-names.d.ts',
+		},
+		'./db/migrations/00051-normalize-entity-paths.js': {
+			default: './dist/db/migrations/00051-normalize-entity-paths.js',
+			types: './dist/db/migrations/00051-normalize-entity-paths.d.ts',
+		},
+		'./db/migrations/00052-add-entity-directory-id.js': {
+			default: './dist/db/migrations/00052-add-entity-directory-id.js',
+			types: './dist/db/migrations/00052-add-entity-directory-id.d.ts',
+		},
+		'./db/obtainDb.js': {default: './dist/db/obtainDb.js', types: './dist/db/obtainDb.d.ts'},
+		'./db/postgres.js': {default: './dist/db/postgres.js', types: './dist/db/postgres.d.ts'},
+		'./db/PostgresRepo.js': {
+			default: './dist/db/PostgresRepo.js',
+			types: './dist/db/PostgresRepo.d.ts',
+		},
+		'./db/Repos.js': {default: './dist/db/Repos.js', types: './dist/db/Repos.d.ts'},
+		'./db/seed.task.js': {default: './dist/db/seed.task.js', types: './dist/db/seed.task.d.ts'},
+		'./db/seed.js': {default: './dist/db/seed.js', types: './dist/db/seed.d.ts'},
+		'./db/testMigration.task.js': {
+			default: './dist/db/testMigration.task.js',
+			types: './dist/db/testMigration.task.d.ts',
+		},
+		'./deploy.task.js': {default: './dist/deploy.task.js', types: './dist/deploy.task.d.ts'},
+		'./docs/actor_types.svelte': {
+			svelte: './dist/docs/actor_types.svelte',
+			default: './dist/docs/actor_types.svelte',
+			types: './dist/docs/actor_types.svelte.d.ts',
+		},
+		'./docs/admin.svelte': {
+			svelte: './dist/docs/admin.svelte',
+			default: './dist/docs/admin.svelte',
+			types: './dist/docs/admin.svelte.d.ts',
+		},
+		'./docs/control_overview_diagram.png': {default: './dist/docs/control_overview_diagram.png'},
+		'./docs/control_overview_diagram.js': {
+			default: './dist/docs/control_overview_diagram.js',
+			types: './dist/docs/control_overview_diagram.d.ts',
+		},
+		'./docs/data_model_diagram.png': {default: './dist/docs/data_model_diagram.png'},
+		'./docs/data_model_diagram.js': {
+			default: './dist/docs/data_model_diagram.js',
+			types: './dist/docs/data_model_diagram.d.ts',
+		},
+		'./docs/data_model.svelte': {
+			svelte: './dist/docs/data_model.svelte',
+			default: './dist/docs/data_model.svelte',
+			types: './dist/docs/data_model.svelte.d.ts',
+		},
+		'./docs/database.svelte': {
+			svelte: './dist/docs/database.svelte',
+			default: './dist/docs/database.svelte',
+			types: './dist/docs/database.svelte.d.ts',
+		},
+		'./docs/deploying_production.svelte': {
+			svelte: './dist/docs/deploying_production.svelte',
+			default: './dist/docs/deploying_production.svelte',
+			types: './dist/docs/deploying_production.svelte.d.ts',
+		},
 		'./docs/Docs.svelte': {
 			svelte: './dist/docs/Docs.svelte',
+			default: './dist/docs/Docs.svelte',
 			types: './dist/docs/Docs.svelte.d.ts',
 		},
 		'./docs/docs.js': {default: './dist/docs/docs.js', types: './dist/docs/docs.d.ts'},
-		'./ui/app.js': {default: './dist/ui/app.js', types: './dist/ui/app.js'},
-		'./ui/components.js': {default: './dist/ui/components.js', types: './dist/ui/components.js'},
+		'./docs/DocsContent.svelte': {
+			svelte: './dist/docs/DocsContent.svelte',
+			default: './dist/docs/DocsContent.svelte',
+			types: './dist/docs/DocsContent.svelte.d.ts',
+		},
+		'./docs/DocsGuideAdminContent.svelte': {
+			svelte: './dist/docs/DocsGuideAdminContent.svelte',
+			default: './dist/docs/DocsGuideAdminContent.svelte',
+			types: './dist/docs/DocsGuideAdminContent.svelte.d.ts',
+		},
+		'./docs/DocsGuideContent.svelte': {
+			svelte: './dist/docs/DocsGuideContent.svelte',
+			default: './dist/docs/DocsGuideContent.svelte',
+			types: './dist/docs/DocsGuideContent.svelte.d.ts',
+		},
+		'./docs/DocsGuideDevContent.svelte': {
+			svelte: './dist/docs/DocsGuideDevContent.svelte',
+			default: './dist/docs/DocsGuideDevContent.svelte',
+			types: './dist/docs/DocsGuideDevContent.svelte.d.ts',
+		},
+		'./docs/DocsGuideLink.svelte': {
+			svelte: './dist/docs/DocsGuideLink.svelte',
+			default: './dist/docs/DocsGuideLink.svelte',
+			types: './dist/docs/DocsGuideLink.svelte.d.ts',
+		},
+		'./docs/DocsGuideLinks.svelte': {
+			svelte: './dist/docs/DocsGuideLinks.svelte',
+			default: './dist/docs/DocsGuideLinks.svelte',
+			types: './dist/docs/DocsGuideLinks.svelte.d.ts',
+		},
+		'./docs/DocsGuideUserContent.svelte': {
+			svelte: './dist/docs/DocsGuideUserContent.svelte',
+			default: './dist/docs/DocsGuideUserContent.svelte',
+			types: './dist/docs/DocsGuideUserContent.svelte.d.ts',
+		},
+		'./docs/DocsVocabContent.svelte': {
+			svelte: './dist/docs/DocsVocabContent.svelte',
+			default: './dist/docs/DocsVocabContent.svelte',
+			types: './dist/docs/DocsVocabContent.svelte.d.ts',
+		},
+		'./docs/getting_started.svelte': {
+			svelte: './dist/docs/getting_started.svelte',
+			default: './dist/docs/getting_started.svelte',
+			types: './dist/docs/getting_started.svelte.d.ts',
+		},
+		'./docs/hub_types.svelte': {
+			svelte: './dist/docs/hub_types.svelte',
+			default: './dist/docs/hub_types.svelte',
+			types: './dist/docs/hub_types.svelte.d.ts',
+		},
+		'./docs/introduction.svelte': {
+			svelte: './dist/docs/introduction.svelte',
+			default: './dist/docs/introduction.svelte',
+			types: './dist/docs/introduction.svelte.d.ts',
+		},
+		'./docs/known_issues.svelte': {
+			svelte: './dist/docs/known_issues.svelte',
+			default: './dist/docs/known_issues.svelte',
+			types: './dist/docs/known_issues.svelte.d.ts',
+		},
+		'./docs/library_usage.svelte': {
+			svelte: './dist/docs/library_usage.svelte',
+			default: './dist/docs/library_usage.svelte',
+			types: './dist/docs/library_usage.svelte.d.ts',
+		},
+		'./docs/managing_production.svelte': {
+			svelte: './dist/docs/managing_production.svelte',
+			default: './dist/docs/managing_production.svelte',
+			types: './dist/docs/managing_production.svelte.d.ts',
+		},
+		'./docs/setup_dev_environment.svelte': {
+			svelte: './dist/docs/setup_dev_environment.svelte',
+			default: './dist/docs/setup_dev_environment.svelte',
+			types: './dist/docs/setup_dev_environment.svelte.d.ts',
+		},
+		'./docs/setup_production.svelte': {
+			svelte: './dist/docs/setup_production.svelte',
+			default: './dist/docs/setup_production.svelte',
+			types: './dist/docs/setup_production.svelte.d.ts',
+		},
+		'./docs/tech_stack_diagram.png': {default: './dist/docs/tech_stack_diagram.png'},
+		'./docs/tech_stack_diagram.js': {
+			default: './dist/docs/tech_stack_diagram.js',
+			types: './dist/docs/tech_stack_diagram.d.ts',
+		},
+		'./infra/.env.development.default': {default: './dist/infra/.env.development.default'},
+		'./infra/after_deploy.js': {
+			default: './dist/infra/after_deploy.js',
+			types: './dist/infra/after_deploy.d.ts',
+		},
+		'./infra/constants.js': {
+			default: './dist/infra/constants.js',
+			types: './dist/infra/constants.d.ts',
+		},
+		'./infra/deploy.task.js': {
+			default: './dist/infra/deploy.task.js',
+			types: './dist/infra/deploy.task.d.ts',
+		},
+		'./infra/helpers.js': {default: './dist/infra/helpers.js', types: './dist/infra/helpers.d.ts'},
+		'./infra/nginxConfig.js': {
+			default: './dist/infra/nginxConfig.js',
+			types: './dist/infra/nginxConfig.d.ts',
+		},
+		'./infra/setup.task.js': {
+			default: './dist/infra/setup.task.js',
+			types: './dist/infra/setup.task.d.ts',
+		},
+		'./infra/syncEnvGitHash.task.js': {
+			default: './dist/infra/syncEnvGitHash.task.js',
+			types: './dist/infra/syncEnvGitHash.task.d.ts',
+		},
+		'./package.gen.js': {default: './dist/package.gen.js', types: './dist/package.gen.d.ts'},
+		'./package.js': {default: './dist/package.js', types: './dist/package.d.ts'},
+		'./plugins/admin-home/AdminHome.svelte': {
+			svelte: './dist/plugins/admin-home/AdminHome.svelte',
+			default: './dist/plugins/admin-home/AdminHome.svelte',
+			types: './dist/plugins/admin-home/AdminHome.svelte.d.ts',
+		},
+		'./plugins/board/Board.svelte': {
+			svelte: './dist/plugins/board/Board.svelte',
+			default: './dist/plugins/board/Board.svelte',
+			types: './dist/plugins/board/Board.svelte.d.ts',
+		},
+		'./plugins/board/BoardItemDetail.svelte': {
+			svelte: './dist/plugins/board/BoardItemDetail.svelte',
+			default: './dist/plugins/board/BoardItemDetail.svelte',
+			types: './dist/plugins/board/BoardItemDetail.svelte.d.ts',
+		},
+		'./plugins/board/BoardItems.svelte': {
+			svelte: './dist/plugins/board/BoardItems.svelte',
+			default: './dist/plugins/board/BoardItems.svelte',
+			types: './dist/plugins/board/BoardItems.svelte.d.ts',
+		},
+		'./plugins/chat/Chat.svelte': {
+			svelte: './dist/plugins/chat/Chat.svelte',
+			default: './dist/plugins/chat/Chat.svelte',
+			types: './dist/plugins/chat/Chat.svelte.d.ts',
+		},
+		'./plugins/chat/ChatItem.svelte': {
+			svelte: './dist/plugins/chat/ChatItem.svelte',
+			default: './dist/plugins/chat/ChatItem.svelte',
+			types: './dist/plugins/chat/ChatItem.svelte.d.ts',
+		},
+		'./plugins/chat/ChatItems.svelte': {
+			svelte: './dist/plugins/chat/ChatItems.svelte',
+			default: './dist/plugins/chat/ChatItems.svelte',
+			types: './dist/plugins/chat/ChatItems.svelte.d.ts',
+		},
+		'./plugins/dashboard/Dashboard.svelte': {
+			svelte: './dist/plugins/dashboard/Dashboard.svelte',
+			default: './dist/plugins/dashboard/Dashboard.svelte',
+			types: './dist/plugins/dashboard/Dashboard.svelte.d.ts',
+		},
+		'./plugins/dashboard/DashboardHeader.svelte': {
+			svelte: './dist/plugins/dashboard/DashboardHeader.svelte',
+			default: './dist/plugins/dashboard/DashboardHeader.svelte',
+			types: './dist/plugins/dashboard/DashboardHeader.svelte.d.ts',
+		},
+		'./plugins/entity-explorer/EntityExplorer.svelte': {
+			svelte: './dist/plugins/entity-explorer/EntityExplorer.svelte',
+			default: './dist/plugins/entity-explorer/EntityExplorer.svelte',
+			types: './dist/plugins/entity-explorer/EntityExplorer.svelte.d.ts',
+		},
+		'./plugins/entity-explorer/EntityExplorerItem.svelte': {
+			svelte: './dist/plugins/entity-explorer/EntityExplorerItem.svelte',
+			default: './dist/plugins/entity-explorer/EntityExplorerItem.svelte',
+			types: './dist/plugins/entity-explorer/EntityExplorerItem.svelte.d.ts',
+		},
+		'./plugins/entity-explorer/EntityExplorerItems.svelte': {
+			svelte: './dist/plugins/entity-explorer/EntityExplorerItems.svelte',
+			default: './dist/plugins/entity-explorer/EntityExplorerItems.svelte',
+			types: './dist/plugins/entity-explorer/EntityExplorerItems.svelte.d.ts',
+		},
+		'./plugins/entity-explorer/EntityExplorerTie.svelte': {
+			svelte: './dist/plugins/entity-explorer/EntityExplorerTie.svelte',
+			default: './dist/plugins/entity-explorer/EntityExplorerTie.svelte',
+			types: './dist/plugins/entity-explorer/EntityExplorerTie.svelte.d.ts',
+		},
+		'./plugins/forum/Forum.svelte': {
+			svelte: './dist/plugins/forum/Forum.svelte',
+			default: './dist/plugins/forum/Forum.svelte',
+			types: './dist/plugins/forum/Forum.svelte.d.ts',
+		},
+		'./plugins/forum/ForumDetail.svelte': {
+			svelte: './dist/plugins/forum/ForumDetail.svelte',
+			default: './dist/plugins/forum/ForumDetail.svelte',
+			types: './dist/plugins/forum/ForumDetail.svelte.d.ts',
+		},
+		'./plugins/forum/ForumItemDetail.svelte': {
+			svelte: './dist/plugins/forum/ForumItemDetail.svelte',
+			default: './dist/plugins/forum/ForumItemDetail.svelte',
+			types: './dist/plugins/forum/ForumItemDetail.svelte.d.ts',
+		},
+		'./plugins/forum/ForumItems.svelte': {
+			svelte: './dist/plugins/forum/ForumItems.svelte',
+			default: './dist/plugins/forum/ForumItems.svelte',
+			types: './dist/plugins/forum/ForumItems.svelte.d.ts',
+		},
+		'./plugins/forum/ForumItemSummary.svelte': {
+			svelte: './dist/plugins/forum/ForumItemSummary.svelte',
+			default: './dist/plugins/forum/ForumItemSummary.svelte',
+			types: './dist/plugins/forum/ForumItemSummary.svelte.d.ts',
+		},
+		'./plugins/home/Home.svelte': {
+			svelte: './dist/plugins/home/Home.svelte',
+			default: './dist/plugins/home/Home.svelte',
+			types: './dist/plugins/home/Home.svelte.d.ts',
+		},
+		'./plugins/iframe/Iframe.svelte': {
+			svelte: './dist/plugins/iframe/Iframe.svelte',
+			default: './dist/plugins/iframe/Iframe.svelte',
+			types: './dist/plugins/iframe/Iframe.svelte.d.ts',
+		},
+		'./plugins/instance-admin/InstanceAdmin.svelte': {
+			svelte: './dist/plugins/instance-admin/InstanceAdmin.svelte',
+			default: './dist/plugins/instance-admin/InstanceAdmin.svelte',
+			types: './dist/plugins/instance-admin/InstanceAdmin.svelte.d.ts',
+		},
+		'./plugins/link/Link.svelte': {
+			svelte: './dist/plugins/link/Link.svelte',
+			default: './dist/plugins/link/Link.svelte',
+			types: './dist/plugins/link/Link.svelte.d.ts',
+		},
+		'./plugins/list/List.svelte': {
+			svelte: './dist/plugins/list/List.svelte',
+			default: './dist/plugins/list/List.svelte',
+			types: './dist/plugins/list/List.svelte.d.ts',
+		},
+		'./plugins/list/ListControls.svelte': {
+			svelte: './dist/plugins/list/ListControls.svelte',
+			default: './dist/plugins/list/ListControls.svelte',
+			types: './dist/plugins/list/ListControls.svelte.d.ts',
+		},
+		'./plugins/list/ListInput.svelte': {
+			svelte: './dist/plugins/list/ListInput.svelte',
+			default: './dist/plugins/list/ListInput.svelte',
+			types: './dist/plugins/list/ListInput.svelte.d.ts',
+		},
+		'./plugins/list/ListItem.svelte': {
+			svelte: './dist/plugins/list/ListItem.svelte',
+			default: './dist/plugins/list/ListItem.svelte',
+			types: './dist/plugins/list/ListItem.svelte.d.ts',
+		},
+		'./plugins/list/ListItems.svelte': {
+			svelte: './dist/plugins/list/ListItems.svelte',
+			default: './dist/plugins/list/ListItems.svelte',
+			types: './dist/plugins/list/ListItems.svelte.d.ts',
+		},
+		'./plugins/lists/AddListButton.svelte': {
+			svelte: './dist/plugins/lists/AddListButton.svelte',
+			default: './dist/plugins/lists/AddListButton.svelte',
+			types: './dist/plugins/lists/AddListButton.svelte.d.ts',
+		},
+		'./plugins/lists/ClearCheckedButton.svelte': {
+			svelte: './dist/plugins/lists/ClearCheckedButton.svelte',
+			default: './dist/plugins/lists/ClearCheckedButton.svelte',
+			types: './dist/plugins/lists/ClearCheckedButton.svelte.d.ts',
+		},
+		'./plugins/lists/ListControls.svelte': {
+			svelte: './dist/plugins/lists/ListControls.svelte',
+			default: './dist/plugins/lists/ListControls.svelte',
+			types: './dist/plugins/lists/ListControls.svelte.d.ts',
+		},
+		'./plugins/lists/ListInput.svelte': {
+			svelte: './dist/plugins/lists/ListInput.svelte',
+			default: './dist/plugins/lists/ListInput.svelte',
+			types: './dist/plugins/lists/ListInput.svelte.d.ts',
+		},
+		'./plugins/lists/ListItem.svelte': {
+			svelte: './dist/plugins/lists/ListItem.svelte',
+			default: './dist/plugins/lists/ListItem.svelte',
+			types: './dist/plugins/lists/ListItem.svelte.d.ts',
+		},
+		'./plugins/lists/ListItems.svelte': {
+			svelte: './dist/plugins/lists/ListItems.svelte',
+			default: './dist/plugins/lists/ListItems.svelte',
+			types: './dist/plugins/lists/ListItems.svelte.d.ts',
+		},
+		'./plugins/lists/Lists.svelte': {
+			svelte: './dist/plugins/lists/Lists.svelte',
+			default: './dist/plugins/lists/Lists.svelte',
+			types: './dist/plugins/lists/Lists.svelte.d.ts',
+		},
+		'./plugins/mention/Mention.svelte': {
+			svelte: './dist/plugins/mention/Mention.svelte',
+			default: './dist/plugins/mention/Mention.svelte',
+			types: './dist/plugins/mention/Mention.svelte.d.ts',
+		},
+		'./plugins/mural/Mural.svelte': {
+			svelte: './dist/plugins/mural/Mural.svelte',
+			default: './dist/plugins/mural/Mural.svelte',
+			types: './dist/plugins/mural/Mural.svelte.d.ts',
+		},
+		'./plugins/notes/Notes.svelte': {
+			svelte: './dist/plugins/notes/Notes.svelte',
+			default: './dist/plugins/notes/Notes.svelte',
+			types: './dist/plugins/notes/Notes.svelte.d.ts',
+		},
+		'./plugins/notes/NotesItem.svelte': {
+			svelte: './dist/plugins/notes/NotesItem.svelte',
+			default: './dist/plugins/notes/NotesItem.svelte',
+			types: './dist/plugins/notes/NotesItem.svelte.d.ts',
+		},
+		'./plugins/notes/NotesItems.svelte': {
+			svelte: './dist/plugins/notes/NotesItems.svelte',
+			default: './dist/plugins/notes/NotesItems.svelte',
+			types: './dist/plugins/notes/NotesItems.svelte.d.ts',
+		},
+		'./plugins/personal-home/PersonalHome.svelte': {
+			svelte: './dist/plugins/personal-home/PersonalHome.svelte',
+			default: './dist/plugins/personal-home/PersonalHome.svelte',
+			types: './dist/plugins/personal-home/PersonalHome.svelte.d.ts',
+		},
+		'./plugins/reply-chat/ReplyChat.svelte': {
+			svelte: './dist/plugins/reply-chat/ReplyChat.svelte',
+			default: './dist/plugins/reply-chat/ReplyChat.svelte',
+			types: './dist/plugins/reply-chat/ReplyChat.svelte.d.ts',
+		},
+		'./plugins/reply-chat/ReplyChatItem.svelte': {
+			svelte: './dist/plugins/reply-chat/ReplyChatItem.svelte',
+			default: './dist/plugins/reply-chat/ReplyChatItem.svelte',
+			types: './dist/plugins/reply-chat/ReplyChatItem.svelte.d.ts',
+		},
+		'./plugins/reply-chat/ReplyChatItems.svelte': {
+			svelte: './dist/plugins/reply-chat/ReplyChatItems.svelte',
+			default: './dist/plugins/reply-chat/ReplyChatItems.svelte',
+			types: './dist/plugins/reply-chat/ReplyChatItems.svelte.d.ts',
+		},
+		'./plugins/todo/Todo.svelte': {
+			svelte: './dist/plugins/todo/Todo.svelte',
+			default: './dist/plugins/todo/Todo.svelte',
+			types: './dist/plugins/todo/Todo.svelte.d.ts',
+		},
+		'./plugins/todo/TodoItem.svelte': {
+			svelte: './dist/plugins/todo/TodoItem.svelte',
+			default: './dist/plugins/todo/TodoItem.svelte',
+			types: './dist/plugins/todo/TodoItem.svelte.d.ts',
+		},
+		'./plugins/todo/TodoItems.svelte': {
+			svelte: './dist/plugins/todo/TodoItems.svelte',
+			default: './dist/plugins/todo/TodoItems.svelte',
+			types: './dist/plugins/todo/TodoItems.svelte.d.ts',
+		},
+		'./plugins/vocab/Vocab.svelte': {
+			svelte: './dist/plugins/vocab/Vocab.svelte',
+			default: './dist/plugins/vocab/Vocab.svelte',
+			types: './dist/plugins/vocab/Vocab.svelte.d.ts',
+		},
+		'./server/ajv.js': {default: './dist/server/ajv.js', types: './dist/server/ajv.d.ts'},
+		'./server/api.js': {default: './dist/server/api.js', types: './dist/server/api.d.ts'},
+		'./server/ApiServer.test.js': {
+			default: './dist/server/ApiServer.test.js',
+			types: './dist/server/ApiServer.test.d.ts',
+		},
+		'./server/ApiServer.js': {
+			default: './dist/server/ApiServer.js',
+			types: './dist/server/ApiServer.d.ts',
+		},
+		'./server/authorize.test.js': {
+			default: './dist/server/authorize.test.js',
+			types: './dist/server/authorize.test.d.ts',
+		},
+		'./server/authorize.js': {
+			default: './dist/server/authorize.js',
+			types: './dist/server/authorize.d.ts',
+		},
+		'./server/Broadcast.test.js': {
+			default: './dist/server/Broadcast.test.js',
+			types: './dist/server/Broadcast.test.d.ts',
+		},
+		'./server/Broadcast.js': {
+			default: './dist/server/Broadcast.js',
+			types: './dist/server/Broadcast.d.ts',
+		},
+		'./server/BroadcastFake.js': {
+			default: './dist/server/BroadcastFake.js',
+			types: './dist/server/BroadcastFake.d.ts',
+		},
+		'./server/colors.js': {default: './dist/server/colors.js', types: './dist/server/colors.d.ts'},
+		'./server/env.js': {default: './dist/server/env.js', types: './dist/server/env.d.ts'},
+		'./server/hack-polka-send-type.d.ts': {default: './dist/server/hack-polka-send-type.d.ts'},
+		'./server/hack-polka.d.ts': {default: './dist/server/hack-polka.d.ts'},
+		'./server/hack-trouter.d.ts': {default: './dist/server/hack-trouter.d.ts'},
+		'./server/httpServiceMiddleware.js': {
+			default: './dist/server/httpServiceMiddleware.js',
+			types: './dist/server/httpServiceMiddleware.d.ts',
+		},
+		'./server/password_hasher.test.js': {
+			default: './dist/server/password_hasher.test.js',
+			types: './dist/server/password_hasher.test.d.ts',
+		},
+		'./server/password_hasher.js': {
+			default: './dist/server/password_hasher.js',
+			types: './dist/server/password_hasher.d.ts',
+		},
+		'./server/password_hasher.worker.js': {
+			default: './dist/server/password_hasher.worker.js',
+			types: './dist/server/password_hasher.worker.d.ts',
+		},
+		'./server/password.test.js': {
+			default: './dist/server/password.test.js',
+			types: './dist/server/password.test.d.ts',
+		},
+		'./server/password.js': {
+			default: './dist/server/password.js',
+			types: './dist/server/password.d.ts',
+		},
+		'./server/server.js': {default: './dist/server/server.js', types: './dist/server/server.d.ts'},
+		'./server/service.test.js': {
+			default: './dist/server/service.test.js',
+			types: './dist/server/service.test.d.ts',
+		},
+		'./server/service.js': {
+			default: './dist/server/service.js',
+			types: './dist/server/service.d.ts',
+		},
+		'./server/serviceHttpEndpoints.test.js': {
+			default: './dist/server/serviceHttpEndpoints.test.js',
+			types: './dist/server/serviceHttpEndpoints.test.d.ts',
+		},
+		'./server/services.test.js': {
+			default: './dist/server/services.test.js',
+			types: './dist/server/services.test.d.ts',
+		},
+		'./server/services.js': {
+			default: './dist/server/services.js',
+			types: './dist/server/services.d.ts',
+		},
+		'./server/servicesIntegration.test.js': {
+			default: './dist/server/servicesIntegration.test.js',
+			types: './dist/server/servicesIntegration.test.d.ts',
+		},
+		'./server/uiServices.js': {
+			default: './dist/server/uiServices.js',
+			types: './dist/server/uiServices.d.ts',
+		},
+		'./server/Websockets.js': {
+			default: './dist/server/Websockets.js',
+			types: './dist/server/Websockets.d.ts',
+		},
+		'./server/websocketServiceMiddleware.js': {
+			default: './dist/server/websocketServiceMiddleware.js',
+			types: './dist/server/websocketServiceMiddleware.d.ts',
+		},
+		'./session/cookieSessionMiddleware.js': {
+			default: './dist/session/cookieSessionMiddleware.js',
+			types: './dist/session/cookieSessionMiddleware.d.ts',
+		},
+		'./session/SessionApi.js': {
+			default: './dist/session/SessionApi.js',
+			types: './dist/session/SessionApi.d.ts',
+		},
+		'./session/SessionApiDisabled.js': {
+			default: './dist/session/SessionApiDisabled.js',
+			types: './dist/session/SessionApiDisabled.d.ts',
+		},
+		'./session/SessionApiFake.js': {
+			default: './dist/session/SessionApiFake.js',
+			types: './dist/session/SessionApiFake.d.ts',
+		},
+		'./session/sessionCookie.js': {
+			default: './dist/session/sessionCookie.js',
+			types: './dist/session/sessionCookie.d.ts',
+		},
+		'./sync.task.js': {default: './dist/sync.task.js', types: './dist/sync.task.d.ts'},
+		'./ui/About.svelte': {
+			svelte: './dist/ui/About.svelte',
+			default: './dist/ui/About.svelte',
+			types: './dist/ui/About.svelte.d.ts',
+		},
+		'./ui/AccountEditor.svelte': {
+			svelte: './dist/ui/AccountEditor.svelte',
+			default: './dist/ui/AccountEditor.svelte',
+			types: './dist/ui/AccountEditor.svelte.d.ts',
+		},
+		'./ui/AccountForm.svelte': {
+			svelte: './dist/ui/AccountForm.svelte',
+			default: './dist/ui/AccountForm.svelte',
+			types: './dist/ui/AccountForm.svelte.d.ts',
+		},
+		'./ui/ActingActorContextmenu.svelte': {
+			svelte: './dist/ui/ActingActorContextmenu.svelte',
+			default: './dist/ui/ActingActorContextmenu.svelte',
+			types: './dist/ui/ActingActorContextmenu.svelte.d.ts',
+		},
+		'./ui/ActionHistory.svelte': {
+			svelte: './dist/ui/ActionHistory.svelte',
+			default: './dist/ui/ActionHistory.svelte',
+			types: './dist/ui/ActionHistory.svelte.d.ts',
+		},
+		'./ui/ActionInfo.svelte': {
+			svelte: './dist/ui/ActionInfo.svelte',
+			default: './dist/ui/ActionInfo.svelte',
+			types: './dist/ui/ActionInfo.svelte.d.ts',
+		},
+		'./ui/actions.js': {default: './dist/ui/actions.js', types: './dist/ui/actions.d.ts'},
+		'./ui/ActorAvatar.svelte': {
+			svelte: './dist/ui/ActorAvatar.svelte',
+			default: './dist/ui/ActorAvatar.svelte',
+			types: './dist/ui/ActorAvatar.svelte.d.ts',
+		},
+		'./ui/ActorContextmenu.svelte': {
+			svelte: './dist/ui/ActorContextmenu.svelte',
+			default: './dist/ui/ActorContextmenu.svelte',
+			types: './dist/ui/ActorContextmenu.svelte.d.ts',
+		},
+		'./ui/ApiClient.js': {default: './dist/ui/ApiClient.js', types: './dist/ui/ApiClient.d.ts'},
+		'./ui/app.js': {default: './dist/ui/app.js', types: './dist/ui/app.d.ts'},
+		'./ui/AppContextmenu.svelte': {
+			svelte: './dist/ui/AppContextmenu.svelte',
+			default: './dist/ui/AppContextmenu.svelte',
+			types: './dist/ui/AppContextmenu.svelte.d.ts',
+		},
+		'./ui/AssignmentDisplayItem.svelte': {
+			svelte: './dist/ui/AssignmentDisplayItem.svelte',
+			default: './dist/ui/AssignmentDisplayItem.svelte',
+			types: './dist/ui/AssignmentDisplayItem.svelte.d.ts',
+		},
+		'./ui/AssignmentInputItem.svelte': {
+			svelte: './dist/ui/AssignmentInputItem.svelte',
+			default: './dist/ui/AssignmentInputItem.svelte',
+			types: './dist/ui/AssignmentInputItem.svelte.d.ts',
+		},
+		'./ui/AssignmentItem.svelte': {
+			svelte: './dist/ui/AssignmentItem.svelte',
+			default: './dist/ui/AssignmentItem.svelte',
+			types: './dist/ui/AssignmentItem.svelte.d.ts',
+		},
+		'./ui/AssignmentManager.svelte': {
+			svelte: './dist/ui/AssignmentManager.svelte',
+			default: './dist/ui/AssignmentManager.svelte',
+			types: './dist/ui/AssignmentManager.svelte.d.ts',
+		},
+		'./ui/Avatar.svelte': {
+			svelte: './dist/ui/Avatar.svelte',
+			default: './dist/ui/Avatar.svelte',
+			types: './dist/ui/Avatar.svelte.d.ts',
+		},
+		'./ui/CodeExample.svelte': {
+			svelte: './dist/ui/CodeExample.svelte',
+			default: './dist/ui/CodeExample.svelte',
+			types: './dist/ui/CodeExample.svelte.d.ts',
+		},
+		'./ui/components.js': {default: './dist/ui/components.js', types: './dist/ui/components.d.ts'},
+		'./ui/ConfirmDialog.svelte': {
+			svelte: './dist/ui/ConfirmDialog.svelte',
+			default: './dist/ui/ConfirmDialog.svelte',
+			types: './dist/ui/ConfirmDialog.svelte.d.ts',
+		},
+		'./ui/ContextInfo.svelte': {
+			svelte: './dist/ui/ContextInfo.svelte',
+			default: './dist/ui/ContextInfo.svelte',
+			types: './dist/ui/ContextInfo.svelte.d.ts',
+		},
+		'./ui/CreateAccountActorForm.svelte': {
+			svelte: './dist/ui/CreateAccountActorForm.svelte',
+			default: './dist/ui/CreateAccountActorForm.svelte',
+			types: './dist/ui/CreateAccountActorForm.svelte.d.ts',
+		},
+		'./ui/CreateActionForm.svelte': {
+			svelte: './dist/ui/CreateActionForm.svelte',
+			default: './dist/ui/CreateActionForm.svelte',
+			types: './dist/ui/CreateActionForm.svelte.d.ts',
+		},
+		'./ui/CreateActionParamsFields.svelte': {
+			svelte: './dist/ui/CreateActionParamsFields.svelte',
+			default: './dist/ui/CreateActionParamsFields.svelte',
+			types: './dist/ui/CreateActionParamsFields.svelte.d.ts',
+		},
+		'./ui/CreateEntityForm.svelte': {
+			svelte: './dist/ui/CreateEntityForm.svelte',
+			default: './dist/ui/CreateEntityForm.svelte',
+			types: './dist/ui/CreateEntityForm.svelte.d.ts',
+		},
+		'./ui/CreateHubForm.svelte': {
+			svelte: './dist/ui/CreateHubForm.svelte',
+			default: './dist/ui/CreateHubForm.svelte',
+			types: './dist/ui/CreateHubForm.svelte.d.ts',
+		},
+		'./ui/CreateSpaceForm.svelte': {
+			svelte: './dist/ui/CreateSpaceForm.svelte',
+			default: './dist/ui/CreateSpaceForm.svelte',
+			types: './dist/ui/CreateSpaceForm.svelte.d.ts',
+		},
+		'./ui/DeleteActorForm.svelte': {
+			svelte: './dist/ui/DeleteActorForm.svelte',
+			default: './dist/ui/DeleteActorForm.svelte',
+			types: './dist/ui/DeleteActorForm.svelte.d.ts',
+		},
+		'./ui/DeleteHubForm.svelte': {
+			svelte: './dist/ui/DeleteHubForm.svelte',
+			default: './dist/ui/DeleteHubForm.svelte',
+			types: './dist/ui/DeleteHubForm.svelte.d.ts',
+		},
+		'./ui/DeleteSpaceForm.svelte': {
+			svelte: './dist/ui/DeleteSpaceForm.svelte',
+			default: './dist/ui/DeleteSpaceForm.svelte',
+			types: './dist/ui/DeleteSpaceForm.svelte.d.ts',
+		},
+		'./ui/DestEntities.svelte': {
+			svelte: './dist/ui/DestEntities.svelte',
+			default: './dist/ui/DestEntities.svelte',
+			types: './dist/ui/DestEntities.svelte.d.ts',
+		},
+		'./ui/EditEntityContentForm.svelte': {
+			svelte: './dist/ui/EditEntityContentForm.svelte',
+			default: './dist/ui/EditEntityContentForm.svelte',
+			types: './dist/ui/EditEntityContentForm.svelte.d.ts',
+		},
+		'./ui/EditEntityForm.svelte': {
+			svelte: './dist/ui/EditEntityForm.svelte',
+			default: './dist/ui/EditEntityForm.svelte',
+			types: './dist/ui/EditEntityForm.svelte.d.ts',
+		},
+		'./ui/EditHubAdvanced.svelte': {
+			svelte: './dist/ui/EditHubAdvanced.svelte',
+			default: './dist/ui/EditHubAdvanced.svelte',
+			types: './dist/ui/EditHubAdvanced.svelte.d.ts',
+		},
+		'./ui/EmptyPath.svelte': {
+			svelte: './dist/ui/EmptyPath.svelte',
+			default: './dist/ui/EmptyPath.svelte',
+			types: './dist/ui/EmptyPath.svelte.d.ts',
+		},
+		'./ui/EntitiesAndTie.svelte': {
+			svelte: './dist/ui/EntitiesAndTie.svelte',
+			default: './dist/ui/EntitiesAndTie.svelte',
+			types: './dist/ui/EntitiesAndTie.svelte.d.ts',
+		},
+		'./ui/EntityCell.svelte': {
+			svelte: './dist/ui/EntityCell.svelte',
+			default: './dist/ui/EntityCell.svelte',
+			types: './dist/ui/EntityCell.svelte.d.ts',
+		},
+		'./ui/EntityChip.svelte': {
+			svelte: './dist/ui/EntityChip.svelte',
+			default: './dist/ui/EntityChip.svelte',
+			types: './dist/ui/EntityChip.svelte.d.ts',
+		},
+		'./ui/EntityContent.svelte': {
+			svelte: './dist/ui/EntityContent.svelte',
+			default: './dist/ui/EntityContent.svelte',
+			types: './dist/ui/EntityContent.svelte.d.ts',
+		},
+		'./ui/EntityContextmenu.svelte': {
+			svelte: './dist/ui/EntityContextmenu.svelte',
+			default: './dist/ui/EntityContextmenu.svelte',
+			types: './dist/ui/EntityContextmenu.svelte.d.ts',
+		},
+		'./ui/EntityEditor.svelte': {
+			svelte: './dist/ui/EntityEditor.svelte',
+			default: './dist/ui/EntityEditor.svelte',
+			types: './dist/ui/EntityEditor.svelte.d.ts',
+		},
+		'./ui/EntityIcon.svelte': {
+			svelte: './dist/ui/EntityIcon.svelte',
+			default: './dist/ui/EntityIcon.svelte',
+			types: './dist/ui/EntityIcon.svelte.d.ts',
+		},
+		'./ui/EntityTable.svelte': {
+			svelte: './dist/ui/EntityTable.svelte',
+			default: './dist/ui/EntityTable.svelte',
+			types: './dist/ui/EntityTable.svelte.d.ts',
+		},
+		'./ui/EntityTree.svelte': {
+			svelte: './dist/ui/EntityTree.svelte',
+			default: './dist/ui/EntityTree.svelte',
+			types: './dist/ui/EntityTree.svelte.d.ts',
+		},
+		'./ui/EntityTreeItem.svelte': {
+			svelte: './dist/ui/EntityTreeItem.svelte',
+			default: './dist/ui/EntityTreeItem.svelte',
+			types: './dist/ui/EntityTreeItem.svelte.d.ts',
+		},
+		'./ui/EntityTreeRoot.svelte': {
+			svelte: './dist/ui/EntityTreeRoot.svelte',
+			default: './dist/ui/EntityTreeRoot.svelte',
+			types: './dist/ui/EntityTreeRoot.svelte.d.ts',
+		},
+		'./ui/EntityTrees.svelte': {
+			svelte: './dist/ui/EntityTrees.svelte',
+			default: './dist/ui/EntityTrees.svelte',
+			types: './dist/ui/EntityTrees.svelte.d.ts',
+		},
 		'./ui/ErrorMessage.svelte': {
 			svelte: './dist/ui/ErrorMessage.svelte',
+			default: './dist/ui/ErrorMessage.svelte',
 			types: './dist/ui/ErrorMessage.svelte.d.ts',
+		},
+		'./ui/FeltWindowHost.svelte': {
+			svelte: './dist/ui/FeltWindowHost.svelte',
+			default: './dist/ui/FeltWindowHost.svelte',
+			types: './dist/ui/FeltWindowHost.svelte.d.ts',
+		},
+		'./ui/FeltWindowTenant.svelte': {
+			svelte: './dist/ui/FeltWindowTenant.svelte',
+			default: './dist/ui/FeltWindowTenant.svelte',
+			types: './dist/ui/FeltWindowTenant.svelte.d.ts',
+		},
+		'./ui/FreshnessIndicator.svelte': {
+			svelte: './dist/ui/FreshnessIndicator.svelte',
+			default: './dist/ui/FreshnessIndicator.svelte',
+			types: './dist/ui/FreshnessIndicator.svelte.d.ts',
+		},
+		'./ui/HelpButton.svelte': {
+			svelte: './dist/ui/HelpButton.svelte',
+			default: './dist/ui/HelpButton.svelte',
+			types: './dist/ui/HelpButton.svelte.d.ts',
+		},
+		'./ui/HeroIcon.svelte': {
+			svelte: './dist/ui/HeroIcon.svelte',
+			default: './dist/ui/HeroIcon.svelte',
+			types: './dist/ui/HeroIcon.svelte.d.ts',
 		},
 		'./ui/HttpApiClient.js': {
 			default: './dist/ui/HttpApiClient.js',
-			types: './dist/ui/HttpApiClient.js',
+			types: './dist/ui/HttpApiClient.d.ts',
 		},
-		'./ui/mutations.js': {default: './dist/ui/mutations.js', types: './dist/ui/mutations.js'},
-		'./ui/services.js': {default: './dist/ui/services.js', types: './dist/ui/services.js'},
+		'./ui/HubAvatar.svelte': {
+			svelte: './dist/ui/HubAvatar.svelte',
+			default: './dist/ui/HubAvatar.svelte',
+			types: './dist/ui/HubAvatar.svelte.d.ts',
+		},
+		'./ui/HubContextmenu.svelte': {
+			svelte: './dist/ui/HubContextmenu.svelte',
+			default: './dist/ui/HubContextmenu.svelte',
+			types: './dist/ui/HubContextmenu.svelte.d.ts',
+		},
+		'./ui/HubEditor.svelte': {
+			svelte: './dist/ui/HubEditor.svelte',
+			default: './dist/ui/HubEditor.svelte',
+			types: './dist/ui/HubEditor.svelte.d.ts',
+		},
+		'./ui/HubNav.svelte': {
+			svelte: './dist/ui/HubNav.svelte',
+			default: './dist/ui/HubNav.svelte',
+			types: './dist/ui/HubNav.svelte.d.ts',
+		},
+		'./ui/HubNavGroup.svelte': {
+			svelte: './dist/ui/HubNavGroup.svelte',
+			default: './dist/ui/HubNavGroup.svelte',
+			types: './dist/ui/HubNavGroup.svelte.d.ts',
+		},
+		'./ui/HubNavItem.svelte': {
+			svelte: './dist/ui/HubNavItem.svelte',
+			default: './dist/ui/HubNavItem.svelte',
+			types: './dist/ui/HubNavItem.svelte.d.ts',
+		},
+		'./ui/HubPicker.svelte': {
+			svelte: './dist/ui/HubPicker.svelte',
+			default: './dist/ui/HubPicker.svelte',
+			types: './dist/ui/HubPicker.svelte.d.ts',
+		},
+		'./ui/HubSettingsHue.svelte': {
+			svelte: './dist/ui/HubSettingsHue.svelte',
+			default: './dist/ui/HubSettingsHue.svelte',
+			types: './dist/ui/HubSettingsHue.svelte.d.ts',
+		},
+		'./ui/init.js': {default: './dist/ui/init.js', types: './dist/ui/init.d.ts'},
+		'./ui/InviteToHubForm.svelte': {
+			svelte: './dist/ui/InviteToHubForm.svelte',
+			default: './dist/ui/InviteToHubForm.svelte',
+			types: './dist/ui/InviteToHubForm.svelte.d.ts',
+		},
+		'./ui/KickActorItem.svelte': {
+			svelte: './dist/ui/KickActorItem.svelte',
+			default: './dist/ui/KickActorItem.svelte',
+			types: './dist/ui/KickActorItem.svelte.d.ts',
+		},
+		'./ui/KickFromHubForm.svelte': {
+			svelte: './dist/ui/KickFromHubForm.svelte',
+			default: './dist/ui/KickFromHubForm.svelte',
+			types: './dist/ui/KickFromHubForm.svelte.d.ts',
+		},
+		'./ui/layout.js': {default: './dist/ui/layout.js', types: './dist/ui/layout.d.ts'},
+		'./ui/LayoutContextProvider.svelte': {
+			svelte: './dist/ui/LayoutContextProvider.svelte',
+			default: './dist/ui/LayoutContextProvider.svelte',
+			types: './dist/ui/LayoutContextProvider.svelte.d.ts',
+		},
+		'./ui/LeaveHubForm.svelte': {
+			svelte: './dist/ui/LeaveHubForm.svelte',
+			default: './dist/ui/LeaveHubForm.svelte',
+			types: './dist/ui/LeaveHubForm.svelte.d.ts',
+		},
+		'./ui/LoadMoreButton.svelte': {
+			svelte: './dist/ui/LoadMoreButton.svelte',
+			default: './dist/ui/LoadMoreButton.svelte',
+			types: './dist/ui/LoadMoreButton.svelte.d.ts',
+		},
+		'./ui/locallyStored.js': {
+			default: './dist/ui/locallyStored.js',
+			types: './dist/ui/locallyStored.d.ts',
+		},
+		'./ui/localStorage.js': {
+			default: './dist/ui/localStorage.js',
+			types: './dist/ui/localStorage.d.ts',
+		},
+		'./ui/Luggage.svelte': {
+			svelte: './dist/ui/Luggage.svelte',
+			default: './dist/ui/Luggage.svelte',
+			types: './dist/ui/Luggage.svelte.d.ts',
+		},
+		'./ui/MainLayout.svelte': {
+			svelte: './dist/ui/MainLayout.svelte',
+			default: './dist/ui/MainLayout.svelte',
+			types: './dist/ui/MainLayout.svelte.d.ts',
+		},
+		'./ui/MainNav.svelte': {
+			svelte: './dist/ui/MainNav.svelte',
+			default: './dist/ui/MainNav.svelte',
+			types: './dist/ui/MainNav.svelte.d.ts',
+		},
+		'./ui/ManageRolesForm.svelte': {
+			svelte: './dist/ui/ManageRolesForm.svelte',
+			default: './dist/ui/ManageRolesForm.svelte',
+			types: './dist/ui/ManageRolesForm.svelte.d.ts',
+		},
+		'./ui/ManageRolesItem.svelte': {
+			svelte: './dist/ui/ManageRolesItem.svelte',
+			default: './dist/ui/ManageRolesItem.svelte',
+			types: './dist/ui/ManageRolesItem.svelte.d.ts',
+		},
+		'./ui/Marquee.svelte': {
+			svelte: './dist/ui/Marquee.svelte',
+			default: './dist/ui/Marquee.svelte',
+			types: './dist/ui/Marquee.svelte.d.ts',
+		},
+		'./ui/MarqueeButton.svelte': {
+			svelte: './dist/ui/MarqueeButton.svelte',
+			default: './dist/ui/MarqueeButton.svelte',
+			types: './dist/ui/MarqueeButton.svelte.d.ts',
+		},
+		'./ui/MarqueeNav.svelte': {
+			svelte: './dist/ui/MarqueeNav.svelte',
+			default: './dist/ui/MarqueeNav.svelte',
+			types: './dist/ui/MarqueeNav.svelte.d.ts',
+		},
+		'./ui/MemberItem.svelte': {
+			svelte: './dist/ui/MemberItem.svelte',
+			default: './dist/ui/MemberItem.svelte',
+			types: './dist/ui/MemberItem.svelte.d.ts',
+		},
+		'./ui/mutations.js': {default: './dist/ui/mutations.js', types: './dist/ui/mutations.d.ts'},
+		'./ui/NewcomerSubmission.svelte': {
+			svelte: './dist/ui/NewcomerSubmission.svelte',
+			default: './dist/ui/NewcomerSubmission.svelte',
+			types: './dist/ui/NewcomerSubmission.svelte.d.ts',
+		},
+		'./ui/Onboard.svelte': {
+			svelte: './dist/ui/Onboard.svelte',
+			default: './dist/ui/Onboard.svelte',
+			types: './dist/ui/Onboard.svelte.d.ts',
+		},
+		'./ui/PendingAnimationOverlay.svelte': {
+			svelte: './dist/ui/PendingAnimationOverlay.svelte',
+			default: './dist/ui/PendingAnimationOverlay.svelte',
+			types: './dist/ui/PendingAnimationOverlay.svelte.d.ts',
+		},
+		'./ui/PolicyItem.svelte': {
+			svelte: './dist/ui/PolicyItem.svelte',
+			default: './dist/ui/PolicyItem.svelte',
+			types: './dist/ui/PolicyItem.svelte.d.ts',
+		},
+		'./ui/PropertyEditor.svelte': {
+			svelte: './dist/ui/PropertyEditor.svelte',
+			default: './dist/ui/PropertyEditor.svelte',
+			types: './dist/ui/PropertyEditor.svelte.d.ts',
+		},
+		'./ui/PropertyPicker.svelte': {
+			svelte: './dist/ui/PropertyPicker.svelte',
+			default: './dist/ui/PropertyPicker.svelte',
+			types: './dist/ui/PropertyPicker.svelte.d.ts',
+		},
+		'./ui/RoleDetails.svelte': {
+			svelte: './dist/ui/RoleDetails.svelte',
+			default: './dist/ui/RoleDetails.svelte',
+			types: './dist/ui/RoleDetails.svelte.d.ts',
+		},
+		'./ui/RoleItem.svelte': {
+			svelte: './dist/ui/RoleItem.svelte',
+			default: './dist/ui/RoleItem.svelte',
+			types: './dist/ui/RoleItem.svelte.d.ts',
+		},
+		'./ui/RolesList.svelte': {
+			svelte: './dist/ui/RolesList.svelte',
+			default: './dist/ui/RolesList.svelte',
+			types: './dist/ui/RolesList.svelte.d.ts',
+		},
+		'./ui/SchemaInfo.svelte': {
+			svelte: './dist/ui/SchemaInfo.svelte',
+			default: './dist/ui/SchemaInfo.svelte',
+			types: './dist/ui/SchemaInfo.svelte.d.ts',
+		},
+		'./ui/services.js': {default: './dist/ui/services.js', types: './dist/ui/services.d.ts'},
+		'./ui/SessionActorContextmenuEntry.svelte': {
+			svelte: './dist/ui/SessionActorContextmenuEntry.svelte',
+			default: './dist/ui/SessionActorContextmenuEntry.svelte',
+			types: './dist/ui/SessionActorContextmenuEntry.svelte.d.ts',
+		},
+		'./ui/Settings.svelte': {
+			svelte: './dist/ui/Settings.svelte',
+			default: './dist/ui/Settings.svelte',
+			types: './dist/ui/Settings.svelte.d.ts',
+		},
+		'./ui/SignInForm.svelte': {
+			svelte: './dist/ui/SignInForm.svelte',
+			default: './dist/ui/SignInForm.svelte',
+			types: './dist/ui/SignInForm.svelte.d.ts',
+		},
+		'./ui/SignOutForm.svelte': {
+			svelte: './dist/ui/SignOutForm.svelte',
+			default: './dist/ui/SignOutForm.svelte',
+			types: './dist/ui/SignOutForm.svelte.d.ts',
+		},
+		'./ui/SignUpForm.svelte': {
+			svelte: './dist/ui/SignUpForm.svelte',
+			default: './dist/ui/SignUpForm.svelte',
+			types: './dist/ui/SignUpForm.svelte.d.ts',
+		},
+		'./ui/socket.js': {default: './dist/ui/socket.js', types: './dist/ui/socket.d.ts'},
+		'./ui/SocketConnection.svelte': {
+			svelte: './dist/ui/SocketConnection.svelte',
+			default: './dist/ui/SocketConnection.svelte',
+			types: './dist/ui/SocketConnection.svelte.d.ts',
+		},
+		'./ui/SocketConnectionControls.svelte': {
+			svelte: './dist/ui/SocketConnectionControls.svelte',
+			default: './dist/ui/SocketConnectionControls.svelte',
+			types: './dist/ui/SocketConnectionControls.svelte.d.ts',
+		},
+		'./ui/SourceEntities.svelte': {
+			svelte: './dist/ui/SourceEntities.svelte',
+			default: './dist/ui/SourceEntities.svelte',
+			types: './dist/ui/SourceEntities.svelte.d.ts',
+		},
+		'./ui/SpaceContextmenu.svelte': {
+			svelte: './dist/ui/SpaceContextmenu.svelte',
+			default: './dist/ui/SpaceContextmenu.svelte',
+			types: './dist/ui/SpaceContextmenu.svelte.d.ts',
+		},
+		'./ui/SpaceContextProvider.svelte': {
+			svelte: './dist/ui/SpaceContextProvider.svelte',
+			default: './dist/ui/SpaceContextProvider.svelte',
+			types: './dist/ui/SpaceContextProvider.svelte.d.ts',
+		},
+		'./ui/SpaceEditor.svelte': {
+			svelte: './dist/ui/SpaceEditor.svelte',
+			default: './dist/ui/SpaceEditor.svelte',
+			types: './dist/ui/SpaceEditor.svelte.d.ts',
+		},
+		'./ui/SpaceIcon.svelte': {
+			svelte: './dist/ui/SpaceIcon.svelte',
+			default: './dist/ui/SpaceIcon.svelte',
+			types: './dist/ui/SpaceIcon.svelte.d.ts',
+		},
+		'./ui/SpaceInfo.svelte': {
+			svelte: './dist/ui/SpaceInfo.svelte',
+			default: './dist/ui/SpaceInfo.svelte',
+			types: './dist/ui/SpaceInfo.svelte.d.ts',
+		},
+		'./ui/SpaceName.svelte': {
+			svelte: './dist/ui/SpaceName.svelte',
+			default: './dist/ui/SpaceName.svelte',
+			types: './dist/ui/SpaceName.svelte.d.ts',
+		},
+		'./ui/SpaceNav.svelte': {
+			svelte: './dist/ui/SpaceNav.svelte',
+			default: './dist/ui/SpaceNav.svelte',
+			types: './dist/ui/SpaceNav.svelte.d.ts',
+		},
+		'./ui/SpaceNavItem.svelte': {
+			svelte: './dist/ui/SpaceNavItem.svelte',
+			default: './dist/ui/SpaceNavItem.svelte',
+			types: './dist/ui/SpaceNavItem.svelte.d.ts',
+		},
+		'./ui/SpaceView.svelte': {
+			svelte: './dist/ui/SpaceView.svelte',
+			default: './dist/ui/SpaceView.svelte',
+			types: './dist/ui/SpaceView.svelte.d.ts',
+		},
 		'./ui/style.css': {default: './dist/ui/style.css'},
-		'./ui/ui.js': {default: './dist/ui/ui.js', types: './dist/ui/ui.js'},
+		'./ui/SvastText.svelte': {
+			svelte: './dist/ui/SvastText.svelte',
+			default: './dist/ui/SvastText.svelte',
+			types: './dist/ui/SvastText.svelte.d.ts',
+		},
+		'./ui/SvastView.svelte': {
+			svelte: './dist/ui/SvastView.svelte',
+			default: './dist/ui/SvastView.svelte',
+			types: './dist/ui/SvastView.svelte.d.ts',
+		},
+		'./ui/syncUiToUrl.js': {
+			default: './dist/ui/syncUiToUrl.js',
+			types: './dist/ui/syncUiToUrl.d.ts',
+		},
+		'./ui/templates.js': {default: './dist/ui/templates.js', types: './dist/ui/templates.d.ts'},
+		'./ui/TextInput.svelte': {
+			svelte: './dist/ui/TextInput.svelte',
+			default: './dist/ui/TextInput.svelte',
+			types: './dist/ui/TextInput.svelte.d.ts',
+		},
+		'./ui/TombstoneContent.svelte': {
+			svelte: './dist/ui/TombstoneContent.svelte',
+			default: './dist/ui/TombstoneContent.svelte',
+			types: './dist/ui/TombstoneContent.svelte.d.ts',
+		},
+		'./ui/ui.js': {default: './dist/ui/ui.js', types: './dist/ui/ui.d.ts'},
+		'./ui/uiActions.js': {default: './dist/ui/uiActions.js', types: './dist/ui/uiActions.d.ts'},
+		'./ui/uiMutationHelpers.js': {
+			default: './dist/ui/uiMutationHelpers.js',
+			types: './dist/ui/uiMutationHelpers.d.ts',
+		},
+		'./ui/uiMutations.js': {
+			default: './dist/ui/uiMutations.js',
+			types: './dist/ui/uiMutations.d.ts',
+		},
+		'./ui/UnicodeIcon.svelte': {
+			svelte: './dist/ui/UnicodeIcon.svelte',
+			default: './dist/ui/UnicodeIcon.svelte',
+			types: './dist/ui/UnicodeIcon.svelte.d.ts',
+		},
+		'./ui/UpdateAccountPasswordForm.svelte': {
+			svelte: './dist/ui/UpdateAccountPasswordForm.svelte',
+			default: './dist/ui/UpdateAccountPasswordForm.svelte',
+			types: './dist/ui/UpdateAccountPasswordForm.svelte.d.ts',
+		},
+		'./ui/ViewInfo.svelte': {
+			svelte: './dist/ui/ViewInfo.svelte',
+			default: './dist/ui/ViewInfo.svelte',
+			types: './dist/ui/ViewInfo.svelte.d.ts',
+		},
+		'./ui/VocabContextmenu.svelte': {
+			svelte: './dist/ui/VocabContextmenu.svelte',
+			default: './dist/ui/VocabContextmenu.svelte',
+			types: './dist/ui/VocabContextmenu.svelte.d.ts',
+		},
+		'./ui/WebsocketApiClient.js': {
+			default: './dist/ui/WebsocketApiClient.js',
+			types: './dist/ui/WebsocketApiClient.d.ts',
+		},
+		'./util/color.js': {default: './dist/util/color.js', types: './dist/util/color.d.ts'},
+		'./util/constants.gen.js': {
+			default: './dist/util/constants.gen.js',
+			types: './dist/util/constants.gen.d.ts',
+		},
+		'./util/constants.test.js': {
+			default: './dist/util/constants.test.js',
+			types: './dist/util/constants.test.d.ts',
+		},
+		'./util/constants.js': {
+			default: './dist/util/constants.js',
+			types: './dist/util/constants.d.ts',
+		},
+		'./util/deserialize.test.js': {
+			default: './dist/util/deserialize.test.js',
+			types: './dist/util/deserialize.test.d.ts',
+		},
 		'./util/deserialize.js': {
 			default: './dist/util/deserialize.js',
 			types: './dist/util/deserialize.d.ts',
 		},
+		'./util/error.js': {default: './dist/util/error.js', types: './dist/util/error.d.ts'},
+		'./util/fs.js': {default: './dist/util/fs.js', types: './dist/util/fs.d.ts'},
+		'./util/json.js': {default: './dist/util/json.js', types: './dist/util/json.d.ts'},
+		'./util/jsonRpc.js': {default: './dist/util/jsonRpc.js', types: './dist/util/jsonRpc.d.ts'},
+		'./util/jsonSchemaToTypescript.server.js': {
+			default: './dist/util/jsonSchemaToTypescript.server.js',
+			types: './dist/util/jsonSchemaToTypescript.server.d.ts',
+		},
+		'./util/logo.js': {default: './dist/util/logo.js', types: './dist/util/logo.d.ts'},
+		'./util/markdown.js': {default: './dist/util/markdown.js', types: './dist/util/markdown.d.ts'},
+		'./util/mutation.js': {default: './dist/util/mutation.js', types: './dist/util/mutation.d.ts'},
+		'./util/parseSvast.test.js': {
+			default: './dist/util/parseSvast.test.js',
+			types: './dist/util/parseSvast.test.d.ts',
+		},
+		'./util/parseSvast.js': {
+			default: './dist/util/parseSvast.js',
+			types: './dist/util/parseSvast.d.ts',
+		},
 		'./util/query.js': {default: './dist/util/query.js', types: './dist/util/query.d.ts'},
-		'./vocab/schemas.js': {default: './dist/vocab/schemas.js', types: './dist/vocab/schemas.d.ts'},
-		'./vocab/action/actions.js': {
-			default: './dist/vocab/action/actions.js',
-			types: './dist/vocab/action/actions.d.ts',
+		'./util/randomActionParams.js': {
+			default: './dist/util/randomActionParams.js',
+			types: './dist/util/randomActionParams.d.ts',
+		},
+		'./util/randomActionParamsTypes.gen.js': {
+			default: './dist/util/randomActionParamsTypes.gen.js',
+			types: './dist/util/randomActionParamsTypes.gen.d.ts',
+		},
+		'./util/randomActionParamsTypes.js': {
+			default: './dist/util/randomActionParamsTypes.js',
+			types: './dist/util/randomActionParamsTypes.d.ts',
+		},
+		'./util/randomVocab.js': {
+			default: './dist/util/randomVocab.js',
+			types: './dist/util/randomVocab.d.ts',
+		},
+		'./util/schema.js': {default: './dist/util/schema.js', types: './dist/util/schema.d.ts'},
+		'./util/store.js': {default: './dist/util/store.js', types: './dist/util/store.d.ts'},
+		'./util/testAppHelpers.js': {
+			default: './dist/util/testAppHelpers.js',
+			types: './dist/util/testAppHelpers.d.ts',
+		},
+		'./util/testDbHelpers.js': {
+			default: './dist/util/testDbHelpers.js',
+			types: './dist/util/testDbHelpers.d.ts',
+		},
+		'./util/testHelpers.js': {
+			default: './dist/util/testHelpers.js',
+			types: './dist/util/testHelpers.d.ts',
+		},
+		'./util/testServerHelpers.js': {
+			default: './dist/util/testServerHelpers.js',
+			types: './dist/util/testServerHelpers.d.ts',
+		},
+		'./util/url.js': {default: './dist/util/url.js', types: './dist/util/url.d.ts'},
+		'./util/websocket.js': {
+			default: './dist/util/websocket.js',
+			types: './dist/util/websocket.d.ts',
+		},
+		'./vocab/account/account.schema.js': {
+			default: './dist/vocab/account/account.schema.js',
+			types: './dist/vocab/account/account.schema.d.ts',
 		},
 		'./vocab/account/account.js': {
 			default: './dist/vocab/account/account.js',
 			types: './dist/vocab/account/account.d.ts',
 		},
+		'./vocab/account/accountActions.js': {
+			default: './dist/vocab/account/accountActions.js',
+			types: './dist/vocab/account/accountActions.d.ts',
+		},
+		'./vocab/account/accountHelpers.server.js': {
+			default: './dist/vocab/account/accountHelpers.server.js',
+			types: './dist/vocab/account/accountHelpers.server.d.ts',
+		},
+		'./vocab/account/accountHelpers.test.js': {
+			default: './dist/vocab/account/accountHelpers.test.js',
+			types: './dist/vocab/account/accountHelpers.test.d.ts',
+		},
+		'./vocab/account/accountHelpers.js': {
+			default: './dist/vocab/account/accountHelpers.js',
+			types: './dist/vocab/account/accountHelpers.d.ts',
+		},
+		'./vocab/account/accountMutations.js': {
+			default: './dist/vocab/account/accountMutations.js',
+			types: './dist/vocab/account/accountMutations.d.ts',
+		},
+		'./vocab/account/AccountRepo.test.js': {
+			default: './dist/vocab/account/AccountRepo.test.js',
+			types: './dist/vocab/account/AccountRepo.test.d.ts',
+		},
+		'./vocab/account/AccountRepo.js': {
+			default: './dist/vocab/account/AccountRepo.js',
+			types: './dist/vocab/account/AccountRepo.d.ts',
+		},
+		'./vocab/account/accountServices.js': {
+			default: './dist/vocab/account/accountServices.js',
+			types: './dist/vocab/account/accountServices.d.ts',
+		},
+		'./vocab/action/action.js': {
+			default: './dist/vocab/action/action.js',
+			types: './dist/vocab/action/action.d.ts',
+		},
+		'./vocab/action/actionData.test.js': {
+			default: './dist/vocab/action/actionData.test.js',
+			types: './dist/vocab/action/actionData.test.d.ts',
+		},
+		'./vocab/action/actionData.js': {
+			default: './dist/vocab/action/actionData.js',
+			types: './dist/vocab/action/actionData.d.ts',
+		},
+		'./vocab/action/actions.js': {
+			default: './dist/vocab/action/actions.js',
+			types: './dist/vocab/action/actions.d.ts',
+		},
+		'./vocab/action/actionTypes.gen.js': {
+			default: './dist/vocab/action/actionTypes.gen.js',
+			types: './dist/vocab/action/actionTypes.gen.d.ts',
+		},
+		'./vocab/action/actionTypes.js': {
+			default: './dist/vocab/action/actionTypes.js',
+			types: './dist/vocab/action/actionTypes.d.ts',
+		},
+		'./vocab/actor/actor.schema.js': {
+			default: './dist/vocab/actor/actor.schema.js',
+			types: './dist/vocab/actor/actor.schema.d.ts',
+		},
+		'./vocab/actor/actor.js': {
+			default: './dist/vocab/actor/actor.js',
+			types: './dist/vocab/actor/actor.d.ts',
+		},
+		'./vocab/actor/actorActions.js': {
+			default: './dist/vocab/actor/actorActions.js',
+			types: './dist/vocab/actor/actorActions.d.ts',
+		},
+		'./vocab/actor/actorHelpers.server.js': {
+			default: './dist/vocab/actor/actorHelpers.server.js',
+			types: './dist/vocab/actor/actorHelpers.server.d.ts',
+		},
+		'./vocab/actor/actorHelpers.test.js': {
+			default: './dist/vocab/actor/actorHelpers.test.js',
+			types: './dist/vocab/actor/actorHelpers.test.d.ts',
+		},
+		'./vocab/actor/actorHelpers.js': {
+			default: './dist/vocab/actor/actorHelpers.js',
+			types: './dist/vocab/actor/actorHelpers.d.ts',
+		},
+		'./vocab/actor/actorMutationHelpers.js': {
+			default: './dist/vocab/actor/actorMutationHelpers.js',
+			types: './dist/vocab/actor/actorMutationHelpers.d.ts',
+		},
+		'./vocab/actor/actorMutations.js': {
+			default: './dist/vocab/actor/actorMutations.js',
+			types: './dist/vocab/actor/actorMutations.d.ts',
+		},
+		'./vocab/actor/ActorRepo.test.js': {
+			default: './dist/vocab/actor/ActorRepo.test.js',
+			types: './dist/vocab/actor/ActorRepo.test.d.ts',
+		},
+		'./vocab/actor/ActorRepo.js': {
+			default: './dist/vocab/actor/ActorRepo.js',
+			types: './dist/vocab/actor/ActorRepo.d.ts',
+		},
+		'./vocab/actor/actorServices.test.js': {
+			default: './dist/vocab/actor/actorServices.test.js',
+			types: './dist/vocab/actor/actorServices.test.d.ts',
+		},
+		'./vocab/actor/actorServices.js': {
+			default: './dist/vocab/actor/actorServices.js',
+			types: './dist/vocab/actor/actorServices.d.ts',
+		},
+		'./vocab/assignment/assignment.schema.js': {
+			default: './dist/vocab/assignment/assignment.schema.js',
+			types: './dist/vocab/assignment/assignment.schema.d.ts',
+		},
+		'./vocab/assignment/assignment.js': {
+			default: './dist/vocab/assignment/assignment.js',
+			types: './dist/vocab/assignment/assignment.d.ts',
+		},
+		'./vocab/assignment/assignmentActions.js': {
+			default: './dist/vocab/assignment/assignmentActions.js',
+			types: './dist/vocab/assignment/assignmentActions.d.ts',
+		},
+		'./vocab/assignment/assignmentHelpers.server.js': {
+			default: './dist/vocab/assignment/assignmentHelpers.server.js',
+			types: './dist/vocab/assignment/assignmentHelpers.server.d.ts',
+		},
+		'./vocab/assignment/assignmentMutationHelpers.js': {
+			default: './dist/vocab/assignment/assignmentMutationHelpers.js',
+			types: './dist/vocab/assignment/assignmentMutationHelpers.d.ts',
+		},
+		'./vocab/assignment/assignmentMutations.js': {
+			default: './dist/vocab/assignment/assignmentMutations.js',
+			types: './dist/vocab/assignment/assignmentMutations.d.ts',
+		},
+		'./vocab/assignment/AssignmentRepo.js': {
+			default: './dist/vocab/assignment/AssignmentRepo.js',
+			types: './dist/vocab/assignment/AssignmentRepo.d.ts',
+		},
+		'./vocab/assignment/assignmentServices.test.js': {
+			default: './dist/vocab/assignment/assignmentServices.test.js',
+			types: './dist/vocab/assignment/assignmentServices.test.d.ts',
+		},
+		'./vocab/assignment/assignmentServices.js': {
+			default: './dist/vocab/assignment/assignmentServices.js',
+			types: './dist/vocab/assignment/assignmentServices.d.ts',
+		},
+		'./vocab/data.js': {default: './dist/vocab/data.js', types: './dist/vocab/data.d.ts'},
+		'./vocab/entity/entity.schema.js': {
+			default: './dist/vocab/entity/entity.schema.js',
+			types: './dist/vocab/entity/entity.schema.d.ts',
+		},
+		'./vocab/entity/entity.js': {
+			default: './dist/vocab/entity/entity.js',
+			types: './dist/vocab/entity/entity.d.ts',
+		},
+		'./vocab/entity/entityActions.js': {
+			default: './dist/vocab/entity/entityActions.js',
+			types: './dist/vocab/entity/entityActions.d.ts',
+		},
+		'./vocab/entity/entityData.js': {
+			default: './dist/vocab/entity/entityData.js',
+			types: './dist/vocab/entity/entityData.d.ts',
+		},
+		'./vocab/entity/entityHelpers.server.js': {
+			default: './dist/vocab/entity/entityHelpers.server.js',
+			types: './dist/vocab/entity/entityHelpers.server.d.ts',
+		},
+		'./vocab/entity/entityHelpers.js': {
+			default: './dist/vocab/entity/entityHelpers.js',
+			types: './dist/vocab/entity/entityHelpers.d.ts',
+		},
+		'./vocab/entity/entityMutationHelpers.js': {
+			default: './dist/vocab/entity/entityMutationHelpers.js',
+			types: './dist/vocab/entity/entityMutationHelpers.d.ts',
+		},
+		'./vocab/entity/entityMutations.js': {
+			default: './dist/vocab/entity/entityMutations.js',
+			types: './dist/vocab/entity/entityMutations.d.ts',
+		},
+		'./vocab/entity/EntityRepo.test.js': {
+			default: './dist/vocab/entity/EntityRepo.test.js',
+			types: './dist/vocab/entity/EntityRepo.test.d.ts',
+		},
+		'./vocab/entity/EntityRepo.js': {
+			default: './dist/vocab/entity/EntityRepo.js',
+			types: './dist/vocab/entity/EntityRepo.d.ts',
+		},
+		'./vocab/entity/entityServices.test.js': {
+			default: './dist/vocab/entity/entityServices.test.js',
+			types: './dist/vocab/entity/entityServices.test.d.ts',
+		},
+		'./vocab/entity/entityServices.js': {
+			default: './dist/vocab/entity/entityServices.js',
+			types: './dist/vocab/entity/entityServices.d.ts',
+		},
+		'./vocab/hub/hub.schema.js': {
+			default: './dist/vocab/hub/hub.schema.js',
+			types: './dist/vocab/hub/hub.schema.d.ts',
+		},
+		'./vocab/hub/hub.js': {default: './dist/vocab/hub/hub.js', types: './dist/vocab/hub/hub.d.ts'},
+		'./vocab/hub/hubActions.js': {
+			default: './dist/vocab/hub/hubActions.js',
+			types: './dist/vocab/hub/hubActions.d.ts',
+		},
+		'./vocab/hub/hubHelpers.server.js': {
+			default: './dist/vocab/hub/hubHelpers.server.js',
+			types: './dist/vocab/hub/hubHelpers.server.d.ts',
+		},
+		'./vocab/hub/hubMutationHelpers.js': {
+			default: './dist/vocab/hub/hubMutationHelpers.js',
+			types: './dist/vocab/hub/hubMutationHelpers.d.ts',
+		},
+		'./vocab/hub/hubMutations.js': {
+			default: './dist/vocab/hub/hubMutations.js',
+			types: './dist/vocab/hub/hubMutations.d.ts',
+		},
+		'./vocab/hub/HubRepo.test.js': {
+			default: './dist/vocab/hub/HubRepo.test.js',
+			types: './dist/vocab/hub/HubRepo.test.d.ts',
+		},
+		'./vocab/hub/HubRepo.js': {
+			default: './dist/vocab/hub/HubRepo.js',
+			types: './dist/vocab/hub/HubRepo.d.ts',
+		},
+		'./vocab/hub/hubServices.test.js': {
+			default: './dist/vocab/hub/hubServices.test.js',
+			types: './dist/vocab/hub/hubServices.test.d.ts',
+		},
+		'./vocab/hub/hubServices.js': {
+			default: './dist/vocab/hub/hubServices.js',
+			types: './dist/vocab/hub/hubServices.d.ts',
+		},
+		'./vocab/metadata.gen.js': {
+			default: './dist/vocab/metadata.gen.js',
+			types: './dist/vocab/metadata.gen.d.ts',
+		},
+		'./vocab/metadata.js': {
+			default: './dist/vocab/metadata.js',
+			types: './dist/vocab/metadata.d.ts',
+		},
+		'./vocab/policy/policy.schema.js': {
+			default: './dist/vocab/policy/policy.schema.js',
+			types: './dist/vocab/policy/policy.schema.d.ts',
+		},
+		'./vocab/policy/policy.js': {
+			default: './dist/vocab/policy/policy.js',
+			types: './dist/vocab/policy/policy.d.ts',
+		},
+		'./vocab/policy/policyActions.js': {
+			default: './dist/vocab/policy/policyActions.js',
+			types: './dist/vocab/policy/policyActions.d.ts',
+		},
+		'./vocab/policy/policyHelpers.server.js': {
+			default: './dist/vocab/policy/policyHelpers.server.js',
+			types: './dist/vocab/policy/policyHelpers.server.d.ts',
+		},
+		'./vocab/policy/policyHelpers.js': {
+			default: './dist/vocab/policy/policyHelpers.js',
+			types: './dist/vocab/policy/policyHelpers.d.ts',
+		},
+		'./vocab/policy/policyMutationHelpers.js': {
+			default: './dist/vocab/policy/policyMutationHelpers.js',
+			types: './dist/vocab/policy/policyMutationHelpers.d.ts',
+		},
+		'./vocab/policy/policyMutations.js': {
+			default: './dist/vocab/policy/policyMutations.js',
+			types: './dist/vocab/policy/policyMutations.d.ts',
+		},
+		'./vocab/policy/PolicyRepo.js': {
+			default: './dist/vocab/policy/PolicyRepo.js',
+			types: './dist/vocab/policy/PolicyRepo.d.ts',
+		},
+		'./vocab/policy/policyServices.js': {
+			default: './dist/vocab/policy/policyServices.js',
+			types: './dist/vocab/policy/policyServices.d.ts',
+		},
+		'./vocab/role/role.schema.js': {
+			default: './dist/vocab/role/role.schema.js',
+			types: './dist/vocab/role/role.schema.d.ts',
+		},
+		'./vocab/role/role.js': {
+			default: './dist/vocab/role/role.js',
+			types: './dist/vocab/role/role.d.ts',
+		},
+		'./vocab/role/roleActions.js': {
+			default: './dist/vocab/role/roleActions.js',
+			types: './dist/vocab/role/roleActions.d.ts',
+		},
+		'./vocab/role/roleMutationHelpers.js': {
+			default: './dist/vocab/role/roleMutationHelpers.js',
+			types: './dist/vocab/role/roleMutationHelpers.d.ts',
+		},
+		'./vocab/role/roleMutations.js': {
+			default: './dist/vocab/role/roleMutations.js',
+			types: './dist/vocab/role/roleMutations.d.ts',
+		},
+		'./vocab/role/RoleRepo.js': {
+			default: './dist/vocab/role/RoleRepo.js',
+			types: './dist/vocab/role/RoleRepo.d.ts',
+		},
+		'./vocab/role/roleServices.test.js': {
+			default: './dist/vocab/role/roleServices.test.js',
+			types: './dist/vocab/role/roleServices.test.d.ts',
+		},
+		'./vocab/role/roleServices.js': {
+			default: './dist/vocab/role/roleServices.js',
+			types: './dist/vocab/role/roleServices.d.ts',
+		},
+		'./vocab/schemas.test.js': {
+			default: './dist/vocab/schemas.test.js',
+			types: './dist/vocab/schemas.test.d.ts',
+		},
+		'./vocab/schemas.js': {default: './dist/vocab/schemas.js', types: './dist/vocab/schemas.d.ts'},
+		'./vocab/space/defaultSpaces.js': {
+			default: './dist/vocab/space/defaultSpaces.js',
+			types: './dist/vocab/space/defaultSpaces.d.ts',
+		},
+		'./vocab/space/space.schema.js': {
+			default: './dist/vocab/space/space.schema.js',
+			types: './dist/vocab/space/space.schema.d.ts',
+		},
+		'./vocab/space/space.js': {
+			default: './dist/vocab/space/space.js',
+			types: './dist/vocab/space/space.d.ts',
+		},
+		'./vocab/space/spaceActions.js': {
+			default: './dist/vocab/space/spaceActions.js',
+			types: './dist/vocab/space/spaceActions.d.ts',
+		},
+		'./vocab/space/spaceHelpers.server.js': {
+			default: './dist/vocab/space/spaceHelpers.server.js',
+			types: './dist/vocab/space/spaceHelpers.server.d.ts',
+		},
+		'./vocab/space/spaceHelpers.js': {
+			default: './dist/vocab/space/spaceHelpers.js',
+			types: './dist/vocab/space/spaceHelpers.d.ts',
+		},
+		'./vocab/space/spaceMutationHelpers.js': {
+			default: './dist/vocab/space/spaceMutationHelpers.js',
+			types: './dist/vocab/space/spaceMutationHelpers.d.ts',
+		},
+		'./vocab/space/spaceMutations.js': {
+			default: './dist/vocab/space/spaceMutations.js',
+			types: './dist/vocab/space/spaceMutations.d.ts',
+		},
+		'./vocab/space/SpaceRepo.js': {
+			default: './dist/vocab/space/SpaceRepo.js',
+			types: './dist/vocab/space/SpaceRepo.d.ts',
+		},
+		'./vocab/space/spaceServices.test.js': {
+			default: './dist/vocab/space/spaceServices.test.js',
+			types: './dist/vocab/space/spaceServices.test.d.ts',
+		},
+		'./vocab/space/spaceServices.js': {
+			default: './dist/vocab/space/spaceServices.js',
+			types: './dist/vocab/space/spaceServices.d.ts',
+		},
+		'./vocab/tie/tie.schema.js': {
+			default: './dist/vocab/tie/tie.schema.js',
+			types: './dist/vocab/tie/tie.schema.d.ts',
+		},
+		'./vocab/tie/tie.js': {default: './dist/vocab/tie/tie.js', types: './dist/vocab/tie/tie.d.ts'},
+		'./vocab/tie/tieHelpers.js': {
+			default: './dist/vocab/tie/tieHelpers.js',
+			types: './dist/vocab/tie/tieHelpers.d.ts',
+		},
+		'./vocab/tie/TieRepo.test.js': {
+			default: './dist/vocab/tie/TieRepo.test.js',
+			types: './dist/vocab/tie/TieRepo.test.d.ts',
+		},
+		'./vocab/tie/TieRepo.js': {
+			default: './dist/vocab/tie/TieRepo.js',
+			types: './dist/vocab/tie/TieRepo.d.ts',
+		},
+		'./vocab/view/view.js': {
+			default: './dist/vocab/view/view.js',
+			types: './dist/vocab/view/view.d.ts',
+		},
+		'./vocab/vocab.gen.json.js': {
+			default: './dist/vocab/vocab.gen.json.js',
+			types: './dist/vocab/vocab.gen.json.d.ts',
+		},
+		'./vocab/vocab.schema.js': {
+			default: './dist/vocab/vocab.schema.js',
+			types: './dist/vocab/vocab.schema.d.ts',
+		},
+		'./vocab/vocab.js': {default: './dist/vocab/vocab.js', types: './dist/vocab/vocab.d.ts'},
 	},
 	modules: {
-		'./package.js': {
-			path: 'package.ts',
-			declarations: [{name: 'package_json', kind: 'VariableDeclaration'}],
+		'./check.task.js': {
+			path: 'check.task.ts',
+			declarations: [
+				{name: 'Args', kind: 'VariableDeclaration'},
+				{name: 'task', kind: 'VariableDeclaration'},
+			],
+		},
+		'./db/create.task.js': {
+			path: 'db/create.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./db/Database.js': {
+			path: 'db/Database.ts',
+			declarations: [
+				{name: 'Options', kind: 'InterfaceDeclaration'},
+				{name: 'Database', kind: 'ClassDeclaration'},
+			],
+		},
+		'./db/db.js': {path: 'db/db.ts', declarations: [{name: 'db', kind: 'VariableDeclaration'}]},
+		'./db/destroy.task.js': {
+			path: 'db/destroy.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrate.task.js': {
+			path: 'db/migrate.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrate.js': {
+			path: 'db/migrate.ts',
+			declarations: [{name: 'migrate', kind: 'VariableDeclaration'}],
+		},
+		'./db/migration.js': {
+			path: 'db/migration.ts',
+			declarations: [
+				{name: 'MIGRATIONS_DIR', kind: 'VariableDeclaration'},
+				{name: 'MIGRATIONS_DIR_PROD', kind: 'VariableDeclaration'},
+				{name: 'MIGRATIONS_DIR_DEV', kind: 'VariableDeclaration'},
+				{name: 'to_migration_index', kind: 'VariableDeclaration'},
+				{name: 'find_migrations', kind: 'VariableDeclaration'},
+			],
+		},
+		'./db/migrations/00000-create-accounts.js': {
+			path: 'db/migrations/00000-create-accounts.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00001-create-personas.js': {
+			path: 'db/migrations/00001-create-personas.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00002-create-communities.js': {
+			path: 'db/migrations/00002-create-communities.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00003-create-memberships.js': {
+			path: 'db/migrations/00003-create-memberships.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00004-create-spaces.js': {
+			path: 'db/migrations/00004-create-spaces.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00005-create-files.js': {
+			path: 'db/migrations/00005-create-files.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00006-refactor-space-communities.js': {
+			path: 'db/migrations/00006-refactor-space-communities.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00007-add-communities-settings.js': {
+			path: 'db/migrations/00007-add-communities-settings.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00008-rename-entities-table.js': {
+			path: 'db/migrations/00008-rename-entities-table.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00009-refactor-entity-content-to-data.js': {
+			path: 'db/migrations/00009-refactor-entity-content-to-data.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00010-personal-communities.js': {
+			path: 'db/migrations/00010-personal-communities.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00011-id-references.js': {
+			path: 'db/migrations/00011-id-references.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00012-refactor-space-view.js': {
+			path: 'db/migrations/00012-refactor-space-view.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00013-drop-space-mediatype.js': {
+			path: 'db/migrations/00013-drop-space-mediatype.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00014-create-ties.js': {
+			path: 'db/migrations/00014-create-ties.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00015-index-ties.js': {
+			path: 'db/migrations/00015-index-ties.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00016-pk-ties.js': {
+			path: 'db/migrations/00016-pk-ties.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00017-space-view-svast.js': {
+			path: 'db/migrations/00017-space-view-svast.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00018-space-icon.js': {
+			path: 'db/migrations/00018-space-icon.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00019-space-directory-refactor.js': {
+			path: 'db/migrations/00019-space-directory-refactor.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00020-tie-entities-directory.js': {
+			path: 'db/migrations/00020-tie-entities-directory.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00021-space-view-text.js': {
+			path: 'db/migrations/00021-space-view-text.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00022-remove-entity-spaceid.js': {
+			path: 'db/migrations/00022-remove-entity-spaceid.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00023-rename-actor-to-persona.js': {
+			path: 'db/migrations/00023-rename-actor-to-persona.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00024-set-entity-data-non-nullable.js': {
+			path: 'db/migrations/00024-set-entity-data-non-nullable.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00025-directory-data-space-community-ids.js': {
+			path: 'db/migrations/00025-directory-data-space-community-ids.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00026-fix-unique-indexes.js': {
+			path: 'db/migrations/00026-fix-unique-indexes.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00027-admin-community.js': {
+			path: 'db/migrations/00027-admin-community.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00028-remove-immutable-updated.js': {
+			path: 'db/migrations/00028-remove-immutable-updated.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00029-create-roles.js': {
+			path: 'db/migrations/00029-create-roles.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00030-add-tie-id.js': {
+			path: 'db/migrations/00030-add-tie-id.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00031-add-account-settings.js': {
+			path: 'db/migrations/00031-add-account-settings.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00032-index-entity-data.js': {
+			path: 'db/migrations/00032-index-entity-data.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00033-add-default-roles.js': {
+			path: 'db/migrations/00033-add-default-roles.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00034-add-membership-id.js': {
+			path: 'db/migrations/00034-add-membership-id.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00035-rename-memberships-assignments.js': {
+			path: 'db/migrations/00035-rename-memberships-assignments.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00036-add-roles-to-assignments.js': {
+			path: 'db/migrations/00036-add-roles-to-assignments.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00037-add-ghost-persona-type.js': {
+			path: 'db/migrations/00037-add-ghost-persona-type.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00038-add-ghost-persona.js': {
+			path: 'db/migrations/00038-add-ghost-persona.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00039-add-policies.js': {
+			path: 'db/migrations/00039-add-policies.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00040-rename-space-path-from-url.js': {
+			path: 'db/migrations/00040-rename-space-path-from-url.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00041-add-entity-space-id.js': {
+			path: 'db/migrations/00041-add-entity-space-id.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00042-rename-todo-content.js': {
+			path: 'db/migrations/00042-rename-todo-content.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00043-refactor-directories.js': {
+			path: 'db/migrations/00043-refactor-directories.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00044-rename-hub-from-community.js': {
+			path: 'db/migrations/00044-rename-hub-from-community.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00045-add-entity-path.js': {
+			path: 'db/migrations/00045-add-entity-path.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00046-remove-space-path.js': {
+			path: 'db/migrations/00046-remove-space-path.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00047-rename-actor-from-persona.js': {
+			path: 'db/migrations/00047-rename-actor-from-persona.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00048-rename-update-hub-policy.js': {
+			path: 'db/migrations/00048-rename-update-hub-policy.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00049-rename-policy-name.js': {
+			path: 'db/migrations/00049-rename-policy-name.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00050-rename-policy-names.js': {
+			path: 'db/migrations/00050-rename-policy-names.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00051-normalize-entity-paths.js': {
+			path: 'db/migrations/00051-normalize-entity-paths.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/migrations/00052-add-entity-directory-id.js': {
+			path: 'db/migrations/00052-add-entity-directory-id.ts',
+			declarations: [{name: 'up', kind: 'VariableDeclaration'}],
+		},
+		'./db/obtainDb.js': {
+			path: 'db/obtainDb.ts',
+			declarations: [{name: 'obtainDb', kind: 'VariableDeclaration'}],
+		},
+		'./db/postgres.js': {
+			path: 'db/postgres.ts',
+			declarations: [
+				{name: 'PostgresSql', kind: 'TypeAliasDeclaration'},
+				{name: 'PostgresOptions', kind: 'InterfaceDeclaration'},
+				{name: 'defaultPostgresOptions', kind: 'VariableDeclaration'},
+			],
+		},
+		'./db/PostgresRepo.js': {
+			path: 'db/PostgresRepo.ts',
+			declarations: [{name: 'PostgresRepo', kind: 'ClassDeclaration'}],
+		},
+		'./db/Repos.js': {
+			path: 'db/Repos.ts',
+			declarations: [{name: 'Repos', kind: 'ClassDeclaration'}],
+		},
+		'./db/seed.task.js': {
+			path: 'db/seed.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./db/seed.js': {
+			path: 'db/seed.ts',
+			declarations: [{name: 'seed', kind: 'VariableDeclaration'}],
+		},
+		'./db/testMigration.task.js': {
+			path: 'db/testMigration.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./deploy.task.js': {
+			path: 'deploy.task.ts',
+			declarations: [
+				{name: 'Args', kind: 'VariableDeclaration'},
+				{name: 'task', kind: 'VariableDeclaration'},
+			],
+		},
+		'./docs/actor_types.svelte': {path: 'docs/actor_types.svelte', declarations: []},
+		'./docs/admin.svelte': {path: 'docs/admin.svelte', declarations: []},
+		'./docs/control_overview_diagram.png': {
+			path: 'docs/control_overview_diagram.png',
+			declarations: [],
+		},
+		'./docs/control_overview_diagram.js': {
+			path: 'docs/control_overview_diagram.ts',
+			declarations: [{name: 'control_overview_diagram', kind: 'VariableDeclaration'}],
+		},
+		'./docs/data_model_diagram.png': {path: 'docs/data_model_diagram.png', declarations: []},
+		'./docs/data_model_diagram.js': {
+			path: 'docs/data_model_diagram.ts',
+			declarations: [{name: 'data_model_diagram', kind: 'VariableDeclaration'}],
+		},
+		'./docs/data_model.svelte': {path: 'docs/data_model.svelte', declarations: []},
+		'./docs/database.svelte': {path: 'docs/database.svelte', declarations: []},
+		'./docs/deploying_production.svelte': {
+			path: 'docs/deploying_production.svelte',
+			declarations: [],
 		},
 		'./docs/Docs.svelte': {path: 'docs/Docs.svelte', declarations: []},
 		'./docs/docs.js': {
@@ -148,6 +2217,415 @@ export const package_json = {
 				{name: 'setDocsSettings', kind: 'VariableDeclaration'},
 			],
 		},
+		'./docs/DocsContent.svelte': {path: 'docs/DocsContent.svelte', declarations: []},
+		'./docs/DocsGuideAdminContent.svelte': {
+			path: 'docs/DocsGuideAdminContent.svelte',
+			declarations: [],
+		},
+		'./docs/DocsGuideContent.svelte': {path: 'docs/DocsGuideContent.svelte', declarations: []},
+		'./docs/DocsGuideDevContent.svelte': {
+			path: 'docs/DocsGuideDevContent.svelte',
+			declarations: [],
+		},
+		'./docs/DocsGuideLink.svelte': {path: 'docs/DocsGuideLink.svelte', declarations: []},
+		'./docs/DocsGuideLinks.svelte': {path: 'docs/DocsGuideLinks.svelte', declarations: []},
+		'./docs/DocsGuideUserContent.svelte': {
+			path: 'docs/DocsGuideUserContent.svelte',
+			declarations: [],
+		},
+		'./docs/DocsVocabContent.svelte': {path: 'docs/DocsVocabContent.svelte', declarations: []},
+		'./docs/getting_started.svelte': {path: 'docs/getting_started.svelte', declarations: []},
+		'./docs/hub_types.svelte': {path: 'docs/hub_types.svelte', declarations: []},
+		'./docs/introduction.svelte': {path: 'docs/introduction.svelte', declarations: []},
+		'./docs/known_issues.svelte': {path: 'docs/known_issues.svelte', declarations: []},
+		'./docs/library_usage.svelte': {path: 'docs/library_usage.svelte', declarations: []},
+		'./docs/managing_production.svelte': {
+			path: 'docs/managing_production.svelte',
+			declarations: [],
+		},
+		'./docs/setup_dev_environment.svelte': {
+			path: 'docs/setup_dev_environment.svelte',
+			declarations: [],
+		},
+		'./docs/setup_production.svelte': {path: 'docs/setup_production.svelte', declarations: []},
+		'./docs/tech_stack_diagram.png': {path: 'docs/tech_stack_diagram.png', declarations: []},
+		'./docs/tech_stack_diagram.js': {
+			path: 'docs/tech_stack_diagram.ts',
+			declarations: [{name: 'tech_stack_diagram', kind: 'VariableDeclaration'}],
+		},
+		'./infra/.env.development.default': {path: 'infra/.env.development.default', declarations: []},
+		'./infra/after_deploy.js': {path: 'infra/after_deploy.ts', declarations: []},
+		'./infra/constants.js': {
+			path: 'infra/constants.ts',
+			declarations: [
+				{name: 'START_SERVER_SCRIPT_BUILD_PATH', kind: 'VariableDeclaration'},
+				{name: 'AFTER_DEPLOY_SCRIPT_BUILD_PATH', kind: 'VariableDeclaration'},
+				{name: 'AFTER_DEPLOY_SCRIPT_SOURCE_PATH', kind: 'VariableDeclaration'},
+			],
+		},
+		'./infra/deploy.task.js': {
+			path: 'infra/deploy.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./infra/helpers.js': {
+			path: 'infra/helpers.ts',
+			declarations: [
+				{name: 'LogSequence', kind: 'InterfaceDeclaration'},
+				{name: 'create_log_sequence', kind: 'VariableDeclaration'},
+			],
+		},
+		'./infra/nginxConfig.js': {
+			path: 'infra/nginxConfig.ts',
+			declarations: [
+				{name: 'render_nginx_config', kind: 'VariableDeclaration'},
+				{name: 'render_502_html', kind: 'VariableDeclaration'},
+			],
+		},
+		'./infra/setup.task.js': {
+			path: 'infra/setup.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./infra/syncEnvGitHash.task.js': {
+			path: 'infra/syncEnvGitHash.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./package.gen.js': {path: 'package.gen.ts', declarations: []},
+		'./package.js': {
+			path: 'package.ts',
+			declarations: [{name: 'package_json', kind: 'VariableDeclaration'}],
+		},
+		'./plugins/admin-home/AdminHome.svelte': {
+			path: 'plugins/admin-home/AdminHome.svelte',
+			declarations: [],
+		},
+		'./plugins/board/Board.svelte': {path: 'plugins/board/Board.svelte', declarations: []},
+		'./plugins/board/BoardItemDetail.svelte': {
+			path: 'plugins/board/BoardItemDetail.svelte',
+			declarations: [],
+		},
+		'./plugins/board/BoardItems.svelte': {
+			path: 'plugins/board/BoardItems.svelte',
+			declarations: [],
+		},
+		'./plugins/chat/Chat.svelte': {path: 'plugins/chat/Chat.svelte', declarations: []},
+		'./plugins/chat/ChatItem.svelte': {path: 'plugins/chat/ChatItem.svelte', declarations: []},
+		'./plugins/chat/ChatItems.svelte': {path: 'plugins/chat/ChatItems.svelte', declarations: []},
+		'./plugins/dashboard/Dashboard.svelte': {
+			path: 'plugins/dashboard/Dashboard.svelte',
+			declarations: [],
+		},
+		'./plugins/dashboard/DashboardHeader.svelte': {
+			path: 'plugins/dashboard/DashboardHeader.svelte',
+			declarations: [],
+		},
+		'./plugins/entity-explorer/EntityExplorer.svelte': {
+			path: 'plugins/entity-explorer/EntityExplorer.svelte',
+			declarations: [],
+		},
+		'./plugins/entity-explorer/EntityExplorerItem.svelte': {
+			path: 'plugins/entity-explorer/EntityExplorerItem.svelte',
+			declarations: [],
+		},
+		'./plugins/entity-explorer/EntityExplorerItems.svelte': {
+			path: 'plugins/entity-explorer/EntityExplorerItems.svelte',
+			declarations: [],
+		},
+		'./plugins/entity-explorer/EntityExplorerTie.svelte': {
+			path: 'plugins/entity-explorer/EntityExplorerTie.svelte',
+			declarations: [],
+		},
+		'./plugins/forum/Forum.svelte': {path: 'plugins/forum/Forum.svelte', declarations: []},
+		'./plugins/forum/ForumDetail.svelte': {
+			path: 'plugins/forum/ForumDetail.svelte',
+			declarations: [],
+		},
+		'./plugins/forum/ForumItemDetail.svelte': {
+			path: 'plugins/forum/ForumItemDetail.svelte',
+			declarations: [],
+		},
+		'./plugins/forum/ForumItems.svelte': {
+			path: 'plugins/forum/ForumItems.svelte',
+			declarations: [],
+		},
+		'./plugins/forum/ForumItemSummary.svelte': {
+			path: 'plugins/forum/ForumItemSummary.svelte',
+			declarations: [],
+		},
+		'./plugins/home/Home.svelte': {path: 'plugins/home/Home.svelte', declarations: []},
+		'./plugins/iframe/Iframe.svelte': {path: 'plugins/iframe/Iframe.svelte', declarations: []},
+		'./plugins/instance-admin/InstanceAdmin.svelte': {
+			path: 'plugins/instance-admin/InstanceAdmin.svelte',
+			declarations: [],
+		},
+		'./plugins/link/Link.svelte': {path: 'plugins/link/Link.svelte', declarations: []},
+		'./plugins/list/List.svelte': {path: 'plugins/list/List.svelte', declarations: []},
+		'./plugins/list/ListControls.svelte': {
+			path: 'plugins/list/ListControls.svelte',
+			declarations: [],
+		},
+		'./plugins/list/ListInput.svelte': {path: 'plugins/list/ListInput.svelte', declarations: []},
+		'./plugins/list/ListItem.svelte': {path: 'plugins/list/ListItem.svelte', declarations: []},
+		'./plugins/list/ListItems.svelte': {path: 'plugins/list/ListItems.svelte', declarations: []},
+		'./plugins/lists/AddListButton.svelte': {
+			path: 'plugins/lists/AddListButton.svelte',
+			declarations: [],
+		},
+		'./plugins/lists/ClearCheckedButton.svelte': {
+			path: 'plugins/lists/ClearCheckedButton.svelte',
+			declarations: [],
+		},
+		'./plugins/lists/ListControls.svelte': {
+			path: 'plugins/lists/ListControls.svelte',
+			declarations: [],
+		},
+		'./plugins/lists/ListInput.svelte': {path: 'plugins/lists/ListInput.svelte', declarations: []},
+		'./plugins/lists/ListItem.svelte': {path: 'plugins/lists/ListItem.svelte', declarations: []},
+		'./plugins/lists/ListItems.svelte': {path: 'plugins/lists/ListItems.svelte', declarations: []},
+		'./plugins/lists/Lists.svelte': {path: 'plugins/lists/Lists.svelte', declarations: []},
+		'./plugins/mention/Mention.svelte': {path: 'plugins/mention/Mention.svelte', declarations: []},
+		'./plugins/mural/Mural.svelte': {path: 'plugins/mural/Mural.svelte', declarations: []},
+		'./plugins/notes/Notes.svelte': {path: 'plugins/notes/Notes.svelte', declarations: []},
+		'./plugins/notes/NotesItem.svelte': {path: 'plugins/notes/NotesItem.svelte', declarations: []},
+		'./plugins/notes/NotesItems.svelte': {
+			path: 'plugins/notes/NotesItems.svelte',
+			declarations: [],
+		},
+		'./plugins/personal-home/PersonalHome.svelte': {
+			path: 'plugins/personal-home/PersonalHome.svelte',
+			declarations: [],
+		},
+		'./plugins/reply-chat/ReplyChat.svelte': {
+			path: 'plugins/reply-chat/ReplyChat.svelte',
+			declarations: [],
+		},
+		'./plugins/reply-chat/ReplyChatItem.svelte': {
+			path: 'plugins/reply-chat/ReplyChatItem.svelte',
+			declarations: [],
+		},
+		'./plugins/reply-chat/ReplyChatItems.svelte': {
+			path: 'plugins/reply-chat/ReplyChatItems.svelte',
+			declarations: [],
+		},
+		'./plugins/todo/Todo.svelte': {path: 'plugins/todo/Todo.svelte', declarations: []},
+		'./plugins/todo/TodoItem.svelte': {path: 'plugins/todo/TodoItem.svelte', declarations: []},
+		'./plugins/todo/TodoItems.svelte': {path: 'plugins/todo/TodoItems.svelte', declarations: []},
+		'./plugins/vocab/Vocab.svelte': {path: 'plugins/vocab/Vocab.svelte', declarations: []},
+		'./server/ajv.js': {
+			path: 'server/ajv.ts',
+			declarations: [
+				{name: 'ajv', kind: 'VariableDeclaration'},
+				{name: 'CreateValidate', kind: 'InterfaceDeclaration'},
+				{name: 'validateSchema', kind: 'VariableDeclaration'},
+				{name: 'toValidateSchema', kind: 'VariableDeclaration'},
+				{name: 'toValidationErrorMessage', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/api.js': {
+			path: 'server/api.ts',
+			declarations: [
+				{name: 'ApiError', kind: 'ClassDeclaration'},
+				{name: 'assertApiError', kind: 'VariableDeclaration'},
+				{name: 'ApiResult', kind: 'TypeAliasDeclaration'},
+				{name: 'FailedApiResult', kind: 'InterfaceDeclaration'},
+				{name: 'toFailedApiResult', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/ApiServer.test.js': {path: 'server/ApiServer.test.ts', declarations: []},
+		'./server/ApiServer.js': {
+			path: 'server/ApiServer.ts',
+			declarations: [
+				{name: 'ApiServerRequest', kind: 'InterfaceDeclaration'},
+				{name: 'HttpMiddleware', kind: 'InterfaceDeclaration'},
+				{name: 'Options', kind: 'InterfaceDeclaration'},
+				{name: 'ApiServer', kind: 'ClassDeclaration'},
+			],
+		},
+		'./server/authorize.test.js': {path: 'server/authorize.test.ts', declarations: []},
+		'./server/authorize.js': {
+			path: 'server/authorize.ts',
+			declarations: [{name: 'authorize', kind: 'VariableDeclaration'}],
+		},
+		'./server/Broadcast.test.js': {path: 'server/Broadcast.test.ts', declarations: []},
+		'./server/Broadcast.js': {
+			path: 'server/Broadcast.ts',
+			declarations: [
+				{name: 'IBroadcastApi', kind: 'InterfaceDeclaration'},
+				{name: 'IBroadcast', kind: 'InterfaceDeclaration'},
+				{name: 'Broadcast', kind: 'ClassDeclaration'},
+				{name: 'checkBroadcastAudience', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/BroadcastFake.js': {
+			path: 'server/BroadcastFake.ts',
+			declarations: [{name: 'BroadcastFake', kind: 'ClassDeclaration'}],
+		},
+		'./server/colors.js': {
+			path: 'server/colors.ts',
+			declarations: [
+				{name: 'gray', kind: 'VariableDeclaration'},
+				{name: 'blue', kind: 'VariableDeclaration'},
+				{name: 'green', kind: 'VariableDeclaration'},
+				{name: 'red', kind: 'VariableDeclaration'},
+				{name: 'cyan', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/env.js': {
+			path: 'server/env.ts',
+			declarations: [
+				{name: 'ENV_FILE_BASE', kind: 'VariableDeclaration'},
+				{name: 'ENV_FILE_PROD', kind: 'VariableDeclaration'},
+				{name: 'ENV_FILE_DEV', kind: 'VariableDeclaration'},
+				{name: 'init_env', kind: 'VariableDeclaration'},
+				{name: 'update_env_git_hash', kind: 'VariableDeclaration'},
+				{name: 'load_envs', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/hack-polka-send-type.d.ts': {
+			path: 'server/hack-polka-send-type.d.ts',
+			declarations: [],
+		},
+		'./server/hack-polka.d.ts': {path: 'server/hack-polka.d.ts', declarations: []},
+		'./server/hack-trouter.d.ts': {path: 'server/hack-trouter.d.ts', declarations: []},
+		'./server/httpServiceMiddleware.js': {
+			path: 'server/httpServiceMiddleware.ts',
+			declarations: [{name: 'toHttpServiceMiddleware', kind: 'VariableDeclaration'}],
+		},
+		'./server/password_hasher.test.js': {path: 'server/password_hasher.test.ts', declarations: []},
+		'./server/password_hasher.js': {
+			path: 'server/password_hasher.ts',
+			declarations: [
+				{name: 'PasswordHasher', kind: 'InterfaceDeclaration'},
+				{name: 'create_password_hasher', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/password_hasher.worker.js': {
+			path: 'server/password_hasher.worker.ts',
+			declarations: [{name: 'create_password_hasher_worker', kind: 'VariableDeclaration'}],
+		},
+		'./server/password.test.js': {path: 'server/password.test.ts', declarations: []},
+		'./server/password.js': {
+			path: 'server/password.ts',
+			declarations: [
+				{name: 'toPasswordKey', kind: 'VariableDeclaration'},
+				{name: 'verifyPassword', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/server.js': {
+			path: 'server/server.ts',
+			declarations: [{name: 'apiServer', kind: 'VariableDeclaration'}],
+		},
+		'./server/service.test.js': {path: 'server/service.test.ts', declarations: []},
+		'./server/service.js': {
+			path: 'server/service.ts',
+			declarations: [
+				{name: 'BroadcastAudience', kind: 'TypeAliasDeclaration'},
+				{name: 'ServiceResult', kind: 'TypeAliasDeclaration'},
+				{name: 'toApiResult', kind: 'VariableDeclaration'},
+				{name: 'performService', kind: 'VariableDeclaration'},
+				{name: 'ServiceMethod', kind: 'TypeAliasDeclaration'},
+				{name: 'Service', kind: 'TypeAliasDeclaration'},
+				{name: 'NonAuthenticatedService', kind: 'InterfaceDeclaration'},
+				{name: 'NonAuthorizedService', kind: 'InterfaceDeclaration'},
+				{name: 'AuthorizedService', kind: 'InterfaceDeclaration'},
+				{name: 'ServiceRequest', kind: 'TypeAliasDeclaration'},
+				{name: 'BaseServiceRequest', kind: 'InterfaceDeclaration'},
+				{name: 'NonAuthenticatedServiceRequest', kind: 'InterfaceDeclaration'},
+				{name: 'NonAuthorizedServiceRequest', kind: 'InterfaceDeclaration'},
+				{name: 'AuthorizedServiceRequest', kind: 'InterfaceDeclaration'},
+				{name: 'CheckPolicy', kind: 'InterfaceDeclaration'},
+				{name: 'CheckHubAccess', kind: 'InterfaceDeclaration'},
+				{name: 'ToServiceRequest', kind: 'InterfaceDeclaration'},
+				{name: 'toServiceRequest', kind: 'VariableDeclaration'},
+				{name: 'AfterResponse', kind: 'InterfaceDeclaration'},
+				{name: 'AfterResponseCallback', kind: 'InterfaceDeclaration'},
+				{name: 'flushAfterResponseCallbacks', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/serviceHttpEndpoints.test.js': {
+			path: 'server/serviceHttpEndpoints.test.ts',
+			declarations: [],
+		},
+		'./server/services.test.js': {path: 'server/services.test.ts', declarations: []},
+		'./server/services.js': {
+			path: 'server/services.ts',
+			declarations: [{name: 'services', kind: 'VariableDeclaration'}],
+		},
+		'./server/servicesIntegration.test.js': {
+			path: 'server/servicesIntegration.test.ts',
+			declarations: [],
+		},
+		'./server/uiServices.js': {
+			path: 'server/uiServices.ts',
+			declarations: [
+				{name: 'PingService', kind: 'VariableDeclaration'},
+				{name: 'EphemeraService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./server/Websockets.js': {
+			path: 'server/Websockets.ts',
+			declarations: [{name: 'Websockets', kind: 'ClassDeclaration'}],
+		},
+		'./server/websocketServiceMiddleware.js': {
+			path: 'server/websocketServiceMiddleware.ts',
+			declarations: [
+				{name: 'WebsocketMiddleware', kind: 'InterfaceDeclaration'},
+				{name: 'toWebsocketServiceMiddleware', kind: 'VariableDeclaration'},
+			],
+		},
+		'./session/cookieSessionMiddleware.js': {
+			path: 'session/cookieSessionMiddleware.ts',
+			declarations: [{name: 'cookieSessionMiddleware', kind: 'VariableDeclaration'}],
+		},
+		'./session/SessionApi.js': {
+			path: 'session/SessionApi.ts',
+			declarations: [
+				{name: 'ISessionApi', kind: 'InterfaceDeclaration'},
+				{name: 'SessionApi', kind: 'ClassDeclaration'},
+			],
+		},
+		'./session/SessionApiDisabled.js': {
+			path: 'session/SessionApiDisabled.ts',
+			declarations: [{name: 'SessionApiDisabled', kind: 'ClassDeclaration'}],
+		},
+		'./session/SessionApiFake.js': {
+			path: 'session/SessionApiFake.ts',
+			declarations: [{name: 'SessionApiFake', kind: 'ClassDeclaration'}],
+		},
+		'./session/sessionCookie.js': {
+			path: 'session/sessionCookie.ts',
+			declarations: [
+				{name: 'COOKIE_SESSION_NAME', kind: 'VariableDeclaration'},
+				{name: 'CookieSessionRequest', kind: 'InterfaceDeclaration'},
+				{name: 'parseSessionCookie', kind: 'VariableDeclaration'},
+				{name: 'setSessionCookie', kind: 'VariableDeclaration'},
+			],
+		},
+		'./sync.task.js': {
+			path: 'sync.task.ts',
+			declarations: [{name: 'task', kind: 'VariableDeclaration'}],
+		},
+		'./ui/About.svelte': {path: 'ui/About.svelte', declarations: []},
+		'./ui/AccountEditor.svelte': {path: 'ui/AccountEditor.svelte', declarations: []},
+		'./ui/AccountForm.svelte': {path: 'ui/AccountForm.svelte', declarations: []},
+		'./ui/ActingActorContextmenu.svelte': {
+			path: 'ui/ActingActorContextmenu.svelte',
+			declarations: [],
+		},
+		'./ui/ActionHistory.svelte': {path: 'ui/ActionHistory.svelte', declarations: []},
+		'./ui/ActionInfo.svelte': {path: 'ui/ActionInfo.svelte', declarations: []},
+		'./ui/actions.js': {
+			path: 'ui/actions.ts',
+			declarations: [
+				{name: 'Action', kind: 'InterfaceDeclaration'},
+				{name: 'autofocus', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/ActorAvatar.svelte': {path: 'ui/ActorAvatar.svelte', declarations: []},
+		'./ui/ActorContextmenu.svelte': {path: 'ui/ActorContextmenu.svelte', declarations: []},
+		'./ui/ApiClient.js': {
+			path: 'ui/ApiClient.ts',
+			declarations: [{name: 'ApiClient', kind: 'InterfaceDeclaration'}],
+		},
 		'./ui/app.js': {
 			path: 'ui/app.ts',
 			declarations: [
@@ -158,19 +2636,136 @@ export const package_json = {
 				{name: 'setApp', kind: 'VariableDeclaration'},
 			],
 		},
+		'./ui/AppContextmenu.svelte': {path: 'ui/AppContextmenu.svelte', declarations: []},
+		'./ui/AssignmentDisplayItem.svelte': {
+			path: 'ui/AssignmentDisplayItem.svelte',
+			declarations: [],
+		},
+		'./ui/AssignmentInputItem.svelte': {path: 'ui/AssignmentInputItem.svelte', declarations: []},
+		'./ui/AssignmentItem.svelte': {path: 'ui/AssignmentItem.svelte', declarations: []},
+		'./ui/AssignmentManager.svelte': {path: 'ui/AssignmentManager.svelte', declarations: []},
+		'./ui/Avatar.svelte': {path: 'ui/Avatar.svelte', declarations: []},
+		'./ui/CodeExample.svelte': {path: 'ui/CodeExample.svelte', declarations: []},
 		'./ui/components.js': {
 			path: 'ui/components.ts',
 			declarations: [{name: 'components', kind: 'VariableDeclaration'}],
 		},
+		'./ui/ConfirmDialog.svelte': {path: 'ui/ConfirmDialog.svelte', declarations: []},
+		'./ui/ContextInfo.svelte': {path: 'ui/ContextInfo.svelte', declarations: []},
+		'./ui/CreateAccountActorForm.svelte': {
+			path: 'ui/CreateAccountActorForm.svelte',
+			declarations: [],
+		},
+		'./ui/CreateActionForm.svelte': {path: 'ui/CreateActionForm.svelte', declarations: []},
+		'./ui/CreateActionParamsFields.svelte': {
+			path: 'ui/CreateActionParamsFields.svelte',
+			declarations: [],
+		},
+		'./ui/CreateEntityForm.svelte': {path: 'ui/CreateEntityForm.svelte', declarations: []},
+		'./ui/CreateHubForm.svelte': {path: 'ui/CreateHubForm.svelte', declarations: []},
+		'./ui/CreateSpaceForm.svelte': {path: 'ui/CreateSpaceForm.svelte', declarations: []},
+		'./ui/DeleteActorForm.svelte': {path: 'ui/DeleteActorForm.svelte', declarations: []},
+		'./ui/DeleteHubForm.svelte': {path: 'ui/DeleteHubForm.svelte', declarations: []},
+		'./ui/DeleteSpaceForm.svelte': {path: 'ui/DeleteSpaceForm.svelte', declarations: []},
+		'./ui/DestEntities.svelte': {path: 'ui/DestEntities.svelte', declarations: []},
+		'./ui/EditEntityContentForm.svelte': {
+			path: 'ui/EditEntityContentForm.svelte',
+			declarations: [],
+		},
+		'./ui/EditEntityForm.svelte': {path: 'ui/EditEntityForm.svelte', declarations: []},
+		'./ui/EditHubAdvanced.svelte': {path: 'ui/EditHubAdvanced.svelte', declarations: []},
+		'./ui/EmptyPath.svelte': {path: 'ui/EmptyPath.svelte', declarations: []},
+		'./ui/EntitiesAndTie.svelte': {path: 'ui/EntitiesAndTie.svelte', declarations: []},
+		'./ui/EntityCell.svelte': {path: 'ui/EntityCell.svelte', declarations: []},
+		'./ui/EntityChip.svelte': {path: 'ui/EntityChip.svelte', declarations: []},
+		'./ui/EntityContent.svelte': {path: 'ui/EntityContent.svelte', declarations: []},
+		'./ui/EntityContextmenu.svelte': {path: 'ui/EntityContextmenu.svelte', declarations: []},
+		'./ui/EntityEditor.svelte': {path: 'ui/EntityEditor.svelte', declarations: []},
+		'./ui/EntityIcon.svelte': {path: 'ui/EntityIcon.svelte', declarations: []},
+		'./ui/EntityTable.svelte': {path: 'ui/EntityTable.svelte', declarations: []},
+		'./ui/EntityTree.svelte': {path: 'ui/EntityTree.svelte', declarations: []},
+		'./ui/EntityTreeItem.svelte': {path: 'ui/EntityTreeItem.svelte', declarations: []},
+		'./ui/EntityTreeRoot.svelte': {path: 'ui/EntityTreeRoot.svelte', declarations: []},
+		'./ui/EntityTrees.svelte': {path: 'ui/EntityTrees.svelte', declarations: []},
 		'./ui/ErrorMessage.svelte': {path: 'ui/ErrorMessage.svelte', declarations: []},
+		'./ui/FeltWindowHost.svelte': {path: 'ui/FeltWindowHost.svelte', declarations: []},
+		'./ui/FeltWindowTenant.svelte': {path: 'ui/FeltWindowTenant.svelte', declarations: []},
+		'./ui/FreshnessIndicator.svelte': {path: 'ui/FreshnessIndicator.svelte', declarations: []},
+		'./ui/HelpButton.svelte': {path: 'ui/HelpButton.svelte', declarations: []},
+		'./ui/HeroIcon.svelte': {path: 'ui/HeroIcon.svelte', declarations: []},
 		'./ui/HttpApiClient.js': {
 			path: 'ui/HttpApiClient.ts',
 			declarations: [{name: 'toHttpApiClient', kind: 'VariableDeclaration'}],
 		},
+		'./ui/HubAvatar.svelte': {path: 'ui/HubAvatar.svelte', declarations: []},
+		'./ui/HubContextmenu.svelte': {path: 'ui/HubContextmenu.svelte', declarations: []},
+		'./ui/HubEditor.svelte': {path: 'ui/HubEditor.svelte', declarations: []},
+		'./ui/HubNav.svelte': {path: 'ui/HubNav.svelte', declarations: []},
+		'./ui/HubNavGroup.svelte': {path: 'ui/HubNavGroup.svelte', declarations: []},
+		'./ui/HubNavItem.svelte': {path: 'ui/HubNavItem.svelte', declarations: []},
+		'./ui/HubPicker.svelte': {path: 'ui/HubPicker.svelte', declarations: []},
+		'./ui/HubSettingsHue.svelte': {path: 'ui/HubSettingsHue.svelte', declarations: []},
+		'./ui/init.js': {
+			path: 'ui/init.ts',
+			declarations: [{name: 'initBrowser', kind: 'VariableDeclaration'}],
+		},
+		'./ui/InviteToHubForm.svelte': {path: 'ui/InviteToHubForm.svelte', declarations: []},
+		'./ui/KickActorItem.svelte': {path: 'ui/KickActorItem.svelte', declarations: []},
+		'./ui/KickFromHubForm.svelte': {path: 'ui/KickFromHubForm.svelte', declarations: []},
+		'./ui/layout.js': {
+			path: 'ui/layout.ts',
+			declarations: [
+				{name: 'LayoutContext', kind: 'InterfaceDeclaration'},
+				{name: 'getLayoutContext', kind: 'VariableDeclaration'},
+				{name: 'setLayoutContext', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/LayoutContextProvider.svelte': {
+			path: 'ui/LayoutContextProvider.svelte',
+			declarations: [],
+		},
+		'./ui/LeaveHubForm.svelte': {path: 'ui/LeaveHubForm.svelte', declarations: []},
+		'./ui/LoadMoreButton.svelte': {path: 'ui/LoadMoreButton.svelte', declarations: []},
+		'./ui/locallyStored.js': {
+			path: 'ui/locallyStored.ts',
+			declarations: [
+				{name: 'locallyStored', kind: 'VariableDeclaration'},
+				{name: 'locallyStoredMap', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/localStorage.js': {
+			path: 'ui/localStorage.ts',
+			declarations: [
+				{name: 'loadFromStorage', kind: 'VariableDeclaration'},
+				{name: 'setInStorage', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/Luggage.svelte': {path: 'ui/Luggage.svelte', declarations: []},
+		'./ui/MainLayout.svelte': {path: 'ui/MainLayout.svelte', declarations: []},
+		'./ui/MainNav.svelte': {path: 'ui/MainNav.svelte', declarations: []},
+		'./ui/ManageRolesForm.svelte': {path: 'ui/ManageRolesForm.svelte', declarations: []},
+		'./ui/ManageRolesItem.svelte': {path: 'ui/ManageRolesItem.svelte', declarations: []},
+		'./ui/Marquee.svelte': {path: 'ui/Marquee.svelte', declarations: []},
+		'./ui/MarqueeButton.svelte': {path: 'ui/MarqueeButton.svelte', declarations: []},
+		'./ui/MarqueeNav.svelte': {path: 'ui/MarqueeNav.svelte', declarations: []},
+		'./ui/MemberItem.svelte': {path: 'ui/MemberItem.svelte', declarations: []},
 		'./ui/mutations.js': {
 			path: 'ui/mutations.ts',
 			declarations: [{name: 'mutations', kind: 'VariableDeclaration'}],
 		},
+		'./ui/NewcomerSubmission.svelte': {path: 'ui/NewcomerSubmission.svelte', declarations: []},
+		'./ui/Onboard.svelte': {path: 'ui/Onboard.svelte', declarations: []},
+		'./ui/PendingAnimationOverlay.svelte': {
+			path: 'ui/PendingAnimationOverlay.svelte',
+			declarations: [],
+		},
+		'./ui/PolicyItem.svelte': {path: 'ui/PolicyItem.svelte', declarations: []},
+		'./ui/PropertyEditor.svelte': {path: 'ui/PropertyEditor.svelte', declarations: []},
+		'./ui/PropertyPicker.svelte': {path: 'ui/PropertyPicker.svelte', declarations: []},
+		'./ui/RoleDetails.svelte': {path: 'ui/RoleDetails.svelte', declarations: []},
+		'./ui/RoleItem.svelte': {path: 'ui/RoleItem.svelte', declarations: []},
+		'./ui/RolesList.svelte': {path: 'ui/RolesList.svelte', declarations: []},
+		'./ui/SchemaInfo.svelte': {path: 'ui/SchemaInfo.svelte', declarations: []},
 		'./ui/services.js': {
 			path: 'ui/services.ts',
 			declarations: [
@@ -178,7 +2773,64 @@ export const package_json = {
 				{name: 'findWebsocketService', kind: 'VariableDeclaration'},
 			],
 		},
+		'./ui/SessionActorContextmenuEntry.svelte': {
+			path: 'ui/SessionActorContextmenuEntry.svelte',
+			declarations: [],
+		},
+		'./ui/Settings.svelte': {path: 'ui/Settings.svelte', declarations: []},
+		'./ui/SignInForm.svelte': {path: 'ui/SignInForm.svelte', declarations: []},
+		'./ui/SignOutForm.svelte': {path: 'ui/SignOutForm.svelte', declarations: []},
+		'./ui/SignUpForm.svelte': {path: 'ui/SignUpForm.svelte', declarations: []},
+		'./ui/socket.js': {
+			path: 'ui/socket.ts',
+			declarations: [
+				{name: 'HEARTBEAT_INTERVAL', kind: 'VariableDeclaration'},
+				{name: 'SocketState', kind: 'InterfaceDeclaration'},
+				{name: 'SocketStore', kind: 'InterfaceDeclaration'},
+				{name: 'HandleSocketMessage', kind: 'InterfaceDeclaration'},
+				{name: 'toSocketStore', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/SocketConnection.svelte': {path: 'ui/SocketConnection.svelte', declarations: []},
+		'./ui/SocketConnectionControls.svelte': {
+			path: 'ui/SocketConnectionControls.svelte',
+			declarations: [],
+		},
+		'./ui/SourceEntities.svelte': {path: 'ui/SourceEntities.svelte', declarations: []},
+		'./ui/SpaceContextmenu.svelte': {path: 'ui/SpaceContextmenu.svelte', declarations: []},
+		'./ui/SpaceContextProvider.svelte': {path: 'ui/SpaceContextProvider.svelte', declarations: []},
+		'./ui/SpaceEditor.svelte': {path: 'ui/SpaceEditor.svelte', declarations: []},
+		'./ui/SpaceIcon.svelte': {path: 'ui/SpaceIcon.svelte', declarations: []},
+		'./ui/SpaceInfo.svelte': {path: 'ui/SpaceInfo.svelte', declarations: []},
+		'./ui/SpaceName.svelte': {path: 'ui/SpaceName.svelte', declarations: []},
+		'./ui/SpaceNav.svelte': {path: 'ui/SpaceNav.svelte', declarations: []},
+		'./ui/SpaceNavItem.svelte': {path: 'ui/SpaceNavItem.svelte', declarations: []},
+		'./ui/SpaceView.svelte': {path: 'ui/SpaceView.svelte', declarations: []},
 		'./ui/style.css': {path: 'ui/style.css', declarations: []},
+		'./ui/SvastText.svelte': {path: 'ui/SvastText.svelte', declarations: []},
+		'./ui/SvastView.svelte': {path: 'ui/SvastView.svelte', declarations: []},
+		'./ui/syncUiToUrl.js': {
+			path: 'ui/syncUiToUrl.ts',
+			declarations: [{name: 'syncUiToUrl', kind: 'VariableDeclaration'}],
+		},
+		'./ui/templates.js': {
+			path: 'ui/templates.ts',
+			declarations: [
+				{name: 'HubTemplate', kind: 'InterfaceDeclaration'},
+				{name: 'SpaceTemplate', kind: 'InterfaceDeclaration'},
+				{name: 'RoleTemplate', kind: 'InterfaceDeclaration'},
+				{name: 'PolicyTemplate', kind: 'InterfaceDeclaration'},
+				{name: 'EntityTemplate', kind: 'TypeAliasDeclaration'},
+				{name: 'spaceTemplateToCreateSpaceParams', kind: 'VariableDeclaration'},
+				{name: 'roleTemplateToCreateRoleParams', kind: 'VariableDeclaration'},
+				{name: 'policyTemplateToCreatePolicyParams', kind: 'VariableDeclaration'},
+				{name: 'defaultAdminHubRoles', kind: 'VariableDeclaration'},
+				{name: 'defaultCommunityHubRoles', kind: 'VariableDeclaration'},
+				{name: 'defaultPersonalHubRoles', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/TextInput.svelte': {path: 'ui/TextInput.svelte', declarations: []},
+		'./ui/TombstoneContent.svelte': {path: 'ui/TombstoneContent.svelte', declarations: []},
 		'./ui/ui.js': {
 			path: 'ui/ui.ts',
 			declarations: [
@@ -190,6 +2842,85 @@ export const package_json = {
 				{name: 'toUi', kind: 'VariableDeclaration'},
 			],
 		},
+		'./ui/uiActions.js': {
+			path: 'ui/uiActions.ts',
+			declarations: [
+				{name: 'Ping', kind: 'VariableDeclaration'},
+				{name: 'Ephemera', kind: 'VariableDeclaration'},
+				{name: 'SetSession', kind: 'VariableDeclaration'},
+				{name: 'ToggleMainNav', kind: 'VariableDeclaration'},
+				{name: 'ToggleSecondaryNav', kind: 'VariableDeclaration'},
+				{name: 'SetMobile', kind: 'VariableDeclaration'},
+				{name: 'OpenDialog', kind: 'VariableDeclaration'},
+				{name: 'CloseDialog', kind: 'VariableDeclaration'},
+				{name: 'ViewSpace', kind: 'VariableDeclaration'},
+				{name: 'ClearFreshness', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/uiMutationHelpers.js': {
+			path: 'ui/uiMutationHelpers.ts',
+			declarations: [
+				{name: 'setFreshnessByDirectoryId', kind: 'VariableDeclaration'},
+				{name: 'upsertFreshnessByHubId', kind: 'VariableDeclaration'},
+				{name: 'setLastSeen', kind: 'VariableDeclaration'},
+				{name: 'updateLastSeen', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/uiMutations.js': {
+			path: 'ui/uiMutations.ts',
+			declarations: [
+				{name: 'Ping', kind: 'VariableDeclaration'},
+				{name: 'Ephemera', kind: 'VariableDeclaration'},
+				{name: 'SetSession', kind: 'VariableDeclaration'},
+				{name: 'ToggleMainNav', kind: 'VariableDeclaration'},
+				{name: 'ToggleSecondaryNav', kind: 'VariableDeclaration'},
+				{name: 'SetMobile', kind: 'VariableDeclaration'},
+				{name: 'OpenDialog', kind: 'VariableDeclaration'},
+				{name: 'CloseDialog', kind: 'VariableDeclaration'},
+				{name: 'ViewSpace', kind: 'VariableDeclaration'},
+				{name: 'ClearFreshness', kind: 'VariableDeclaration'},
+			],
+		},
+		'./ui/UnicodeIcon.svelte': {path: 'ui/UnicodeIcon.svelte', declarations: []},
+		'./ui/UpdateAccountPasswordForm.svelte': {
+			path: 'ui/UpdateAccountPasswordForm.svelte',
+			declarations: [],
+		},
+		'./ui/ViewInfo.svelte': {path: 'ui/ViewInfo.svelte', declarations: []},
+		'./ui/VocabContextmenu.svelte': {path: 'ui/VocabContextmenu.svelte', declarations: []},
+		'./ui/WebsocketApiClient.js': {
+			path: 'ui/WebsocketApiClient.ts',
+			declarations: [
+				{name: 'WebsocketApiClient', kind: 'InterfaceDeclaration'},
+				{name: 'toWebsocketApiClient', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/color.js': {
+			path: 'util/color.ts',
+			declarations: [
+				{name: 'HUE_BUCKETS', kind: 'VariableDeclaration'},
+				{name: 'randomHue', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/constants.gen.js': {
+			path: 'util/constants.gen.ts',
+			declarations: [{name: 'gen', kind: 'VariableDeclaration'}],
+		},
+		'./util/constants.test.js': {path: 'util/constants.test.ts', declarations: []},
+		'./util/constants.js': {
+			path: 'util/constants.ts',
+			declarations: [
+				{name: 'DEFAULT_PAGE_SIZE', kind: 'VariableDeclaration'},
+				{name: 'ADMIN_HUB_NAME', kind: 'VariableDeclaration'},
+				{name: 'ADMIN_HUB_ID', kind: 'VariableDeclaration'},
+				{name: 'ADMIN_ACTOR_ID', kind: 'VariableDeclaration'},
+				{name: 'GHOST_ACTOR_NAME', kind: 'VariableDeclaration'},
+				{name: 'GHOST_ACTOR_ID', kind: 'VariableDeclaration'},
+				{name: 'GUEST_ACTOR_NAME', kind: 'VariableDeclaration'},
+				{name: 'VERSION', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/deserialize.test.js': {path: 'util/deserialize.test.ts', declarations: []},
 		'./util/deserialize.js': {
 			path: 'util/deserialize.ts',
 			declarations: [
@@ -200,6 +2931,73 @@ export const package_json = {
 				{name: 'Deserializers', kind: 'TypeAliasDeclaration'},
 				{name: 'deserializers', kind: 'VariableDeclaration'},
 			],
+		},
+		'./util/error.js': {
+			path: 'util/error.ts',
+			declarations: [
+				{name: 'ErrorResponse', kind: 'InterfaceDeclaration'},
+				{name: 'ERROR_MESSAGE_UNKNOWN', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/fs.js': {
+			path: 'util/fs.ts',
+			declarations: [{name: 'Basepath', kind: 'TypeAliasDeclaration'}],
+		},
+		'./util/json.js': {
+			path: 'util/json.ts',
+			declarations: [
+				{name: 'parseJson', kind: 'VariableDeclaration'},
+				{name: 'serializeJson', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/jsonRpc.js': {
+			path: 'util/jsonRpc.ts',
+			declarations: [
+				{name: 'JsonRpcRequest', kind: 'InterfaceDeclaration'},
+				{name: 'JsonRpcResponse', kind: 'InterfaceDeclaration'},
+				{name: 'JsonRpcId', kind: 'TypeAliasDeclaration'},
+				{name: 'parseJsonRpcRequest', kind: 'VariableDeclaration'},
+				{name: 'parseJsonRpcResponse', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/jsonSchemaToTypescript.server.js': {
+			path: 'util/jsonSchemaToTypescript.server.ts',
+			declarations: [
+				{name: 'jsonSchemaToTypescript', kind: 'VariableDeclaration'},
+				{name: 'Json_SchemaToTypeScriptOptions', kind: 'TypeAliasDeclaration'},
+			],
+		},
+		'./util/logo.js': {
+			path: 'util/logo.ts',
+			declarations: [{name: 'render_ascii_felt_logo', kind: 'VariableDeclaration'}],
+		},
+		'./util/markdown.js': {
+			path: 'util/markdown.ts',
+			declarations: [
+				{name: 'isPathValid', kind: 'VariableDeclaration'},
+				{name: 'isNetworkRelativePath', kind: 'VariableDeclaration'},
+				{name: 'isNetworkRelativePathValid', kind: 'VariableDeclaration'},
+				{name: 'isHubRelativePath', kind: 'VariableDeclaration'},
+				{name: 'isHubRelativePathValid', kind: 'VariableDeclaration'},
+				{name: 'isSpaceRelativePath', kind: 'VariableDeclaration'},
+				{name: 'isSpaceRelativePathValid', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/mutation.js': {
+			path: 'util/mutation.ts',
+			declarations: [
+				{name: 'Mutation', kind: 'InterfaceDeclaration'},
+				{name: 'MutationContext', kind: 'InterfaceDeclaration'},
+				{name: 'MutateUi', kind: 'InterfaceDeclaration'},
+				{name: 'AfterMutation', kind: 'InterfaceDeclaration'},
+				{name: 'AfterMutationCallback', kind: 'InterfaceDeclaration'},
+				{name: 'createMutationContext', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/parseSvast.test.js': {path: 'util/parseSvast.test.ts', declarations: []},
+		'./util/parseSvast.js': {
+			path: 'util/parseSvast.ts',
+			declarations: [{name: 'parseSvast', kind: 'VariableDeclaration'}],
 		},
 		'./util/query.js': {
 			path: 'util/query.ts',
@@ -217,13 +3015,220 @@ export const package_json = {
 				{name: 'addEntitySortedByCreatedReversed', kind: 'VariableDeclaration'},
 			],
 		},
-		'./vocab/schemas.js': {
-			path: 'vocab/schemas.ts',
+		'./util/randomActionParams.js': {
+			path: 'util/randomActionParams.ts',
+			declarations: [{name: 'randomActionParams', kind: 'VariableDeclaration'}],
+		},
+		'./util/randomActionParamsTypes.gen.js': {
+			path: 'util/randomActionParamsTypes.gen.ts',
+			declarations: [{name: 'gen', kind: 'VariableDeclaration'}],
+		},
+		'./util/randomActionParamsTypes.js': {
+			path: 'util/randomActionParamsTypes.ts',
+			declarations: [{name: 'RandomActionParams', kind: 'InterfaceDeclaration'}],
+		},
+		'./util/randomVocab.js': {
+			path: 'util/randomVocab.ts',
 			declarations: [
-				{name: 'modelSchemas', kind: 'VariableDeclaration'},
-				{name: 'actionSchemas', kind: 'VariableDeclaration'},
-				{name: 'schemas', kind: 'VariableDeclaration'},
-				{name: 'schemasByName', kind: 'VariableDeclaration'},
+				{name: 'RandomTestAccount', kind: 'TypeAliasDeclaration'},
+				{name: 'randomString', kind: 'VariableDeclaration'},
+				{name: 'randomAccountName', kind: 'VariableDeclaration'},
+				{name: 'randomPassword', kind: 'VariableDeclaration'},
+				{name: 'randomActorName', kind: 'VariableDeclaration'},
+				{name: 'randomCommunnityName', kind: 'VariableDeclaration'},
+				{name: 'randomSpaceIcon', kind: 'VariableDeclaration'},
+				{name: 'randomSpaceName', kind: 'VariableDeclaration'},
+				{name: 'randomView', kind: 'VariableDeclaration'},
+				{name: 'randomEntityData', kind: 'VariableDeclaration'},
+				{name: 'randomTieType', kind: 'VariableDeclaration'},
+				{name: 'randomRoleName', kind: 'VariableDeclaration'},
+				{name: 'randomPolicyName', kind: 'VariableDeclaration'},
+				{name: 'randomAccountParams', kind: 'VariableDeclaration'},
+				{name: 'randomActorParams', kind: 'VariableDeclaration'},
+				{name: 'randomAssignmentParams', kind: 'VariableDeclaration'},
+				{name: 'randomHubParams', kind: 'VariableDeclaration'},
+				{name: 'randomSpaceParams', kind: 'VariableDeclaration'},
+				{name: 'randomEntityParams', kind: 'VariableDeclaration'},
+				{name: 'randomRoleParams', kind: 'VariableDeclaration'},
+				{name: 'randomPolicyParams', kind: 'VariableDeclaration'},
+				{name: 'RandomVocab', kind: 'InterfaceDeclaration'},
+				{name: 'RandomVocabContext', kind: 'ClassDeclaration'},
+				{name: 'ALPHABET', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/schema.js': {
+			path: 'util/schema.ts',
+			declarations: [{name: 'toSchemaName', kind: 'VariableDeclaration'}],
+		},
+		'./util/store.js': {
+			path: 'util/store.ts',
+			declarations: [{name: 'setIfUpdated', kind: 'VariableDeclaration'}],
+		},
+		'./util/testAppHelpers.js': {
+			path: 'util/testAppHelpers.ts',
+			declarations: [
+				{name: 'TestAppContext', kind: 'InterfaceDeclaration'},
+				{name: 'setupApp', kind: 'VariableDeclaration'},
+				{name: 'teardownApp', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/testDbHelpers.js': {
+			path: 'util/testDbHelpers.ts',
+			declarations: [
+				{name: 'TestDbContext', kind: 'InterfaceDeclaration'},
+				{name: 'setupDb', kind: 'VariableDeclaration'},
+				{name: 'teardownDb', kind: 'VariableDeclaration'},
+				{name: 'testDbCounts', kind: 'VariableDeclaration'},
+				{name: 'toDbCounts', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/testHelpers.js': {
+			path: 'util/testHelpers.ts',
+			declarations: [
+				{name: 'log', kind: 'VariableDeclaration'},
+				{name: 'logError', kind: 'VariableDeclaration'},
+				{name: 'installSourceMaps', kind: 'VariableDeclaration'},
+				{name: 'ToServiceRequestFake', kind: 'InterfaceDeclaration'},
+				{name: 'toServiceRequestFake', kind: 'VariableDeclaration'},
+				{name: 'passwordHasherFake', kind: 'VariableDeclaration'},
+				{name: 'loadAdminActor', kind: 'VariableDeclaration'},
+				{name: 'expectApiError', kind: 'VariableDeclaration'},
+				{name: 'expectError', kind: 'VariableDeclaration'},
+				{name: 'invite', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/testServerHelpers.js': {
+			path: 'util/testServerHelpers.ts',
+			declarations: [
+				{name: 'TEST_PORT', kind: 'VariableDeclaration'},
+				{name: 'TestServerContext', kind: 'InterfaceDeclaration'},
+				{name: 'setupServer', kind: 'VariableDeclaration'},
+				{name: 'teardownServer', kind: 'VariableDeclaration'},
+				{name: 'TestHttpSession', kind: 'InterfaceDeclaration'},
+				{name: 'initHttpSession', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/url.js': {
+			path: 'util/url.ts',
+			declarations: [
+				{name: 'SearchParams', kind: 'TypeAliasDeclaration'},
+				{name: 'toUrl', kind: 'VariableDeclaration'},
+				{name: 'toHubUrl', kind: 'VariableDeclaration'},
+				{name: 'mergeSearchParams', kind: 'VariableDeclaration'},
+				{name: 'isUrlEqual', kind: 'VariableDeclaration'},
+				{name: 'gotoUnlessActive', kind: 'VariableDeclaration'},
+				{name: 'ACTOR_QUERY_KEY', kind: 'VariableDeclaration'},
+				{name: 'toAppSearchParams', kind: 'VariableDeclaration'},
+				{name: 'parseSpacePageParams', kind: 'VariableDeclaration'},
+			],
+		},
+		'./util/websocket.js': {
+			path: 'util/websocket.ts',
+			declarations: [
+				{name: 'BroadcastMessage', kind: 'InterfaceDeclaration'},
+				{name: 'StatusMessage', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/account/account.schema.js': {
+			path: 'vocab/account/account.schema.ts',
+			declarations: [
+				{name: 'AccountIdSchema', kind: 'VariableDeclaration'},
+				{name: 'AccountSchema', kind: 'VariableDeclaration'},
+				{name: 'ClientAccountSchema', kind: 'VariableDeclaration'},
+				{name: 'AccountSettingsSchema', kind: 'VariableDeclaration'},
+				{name: 'ClientSessionSchema', kind: 'VariableDeclaration'},
+				{name: 'ClientAccountSessionSchema', kind: 'VariableDeclaration'},
+				{name: 'ClientGuestSessionSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/account/account.js': {
+			path: 'vocab/account/account.ts',
+			declarations: [
+				{name: 'AccountId', kind: 'TypeAliasDeclaration'},
+				{name: 'Account', kind: 'InterfaceDeclaration'},
+				{name: 'AccountSettings', kind: 'InterfaceDeclaration'},
+				{name: 'ClientAccount', kind: 'InterfaceDeclaration'},
+				{name: 'ClientAccountSession', kind: 'InterfaceDeclaration'},
+				{name: 'ClientGuestSession', kind: 'InterfaceDeclaration'},
+				{name: 'ClientSession', kind: 'TypeAliasDeclaration'},
+			],
+		},
+		'./vocab/account/accountActions.js': {
+			path: 'vocab/account/accountActions.ts',
+			declarations: [
+				{name: 'SignUp', kind: 'VariableDeclaration'},
+				{name: 'UpdateAccountSettings', kind: 'VariableDeclaration'},
+				{name: 'UpdateAccountPassword', kind: 'VariableDeclaration'},
+				{name: 'SignIn', kind: 'VariableDeclaration'},
+				{name: 'SignOut', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/account/accountHelpers.server.js': {
+			path: 'vocab/account/accountHelpers.server.ts',
+			declarations: [
+				{name: 'AccountColumn', kind: 'TypeAliasDeclaration'},
+				{name: 'ACCOUNT_COLUMNS', kind: 'VariableDeclaration'},
+				{name: 'toDefaultAccountSettings', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/account/accountHelpers.test.js': {
+			path: 'vocab/account/accountHelpers.test.ts',
+			declarations: [],
+		},
+		'./vocab/account/accountHelpers.js': {
+			path: 'vocab/account/accountHelpers.ts',
+			declarations: [
+				{name: 'scrubAccountName', kind: 'VariableDeclaration'},
+				{name: 'checkAccountName', kind: 'VariableDeclaration'},
+				{name: 'checkPasswordStrength', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/account/accountMutations.js': {
+			path: 'vocab/account/accountMutations.ts',
+			declarations: [
+				{name: 'SignUp', kind: 'VariableDeclaration'},
+				{name: 'SignIn', kind: 'VariableDeclaration'},
+				{name: 'SignOut', kind: 'VariableDeclaration'},
+				{name: 'UpdateAccountSettings', kind: 'VariableDeclaration'},
+				{name: 'UpdateAccountPassword', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/account/AccountRepo.test.js': {
+			path: 'vocab/account/AccountRepo.test.ts',
+			declarations: [],
+		},
+		'./vocab/account/AccountRepo.js': {
+			path: 'vocab/account/AccountRepo.ts',
+			declarations: [{name: 'AccountRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/account/accountServices.js': {
+			path: 'vocab/account/accountServices.ts',
+			declarations: [
+				{name: 'SignUpService', kind: 'VariableDeclaration'},
+				{name: 'SignInService', kind: 'VariableDeclaration'},
+				{name: 'SignOutService', kind: 'VariableDeclaration'},
+				{name: 'UpdateAccountSettingsService', kind: 'VariableDeclaration'},
+				{name: 'UpdateAccountPasswordService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/action/action.js': {
+			path: 'vocab/action/action.ts',
+			declarations: [
+				{name: 'ActionData', kind: 'TypeAliasDeclaration'},
+				{name: 'ClientActionData', kind: 'InterfaceDeclaration'},
+				{name: 'ServiceActionData', kind: 'InterfaceDeclaration'},
+				{name: 'parseServiceActionData', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/action/actionData.test.js': {
+			path: 'vocab/action/actionData.test.ts',
+			declarations: [],
+		},
+		'./vocab/action/actionData.js': {
+			path: 'vocab/action/actionData.ts',
+			declarations: [
+				{name: 'actionDatas', kind: 'VariableDeclaration'},
+				{name: 'actionDataByName', kind: 'VariableDeclaration'},
 			],
 		},
 		'./vocab/action/actions.js': {
@@ -237,16 +3242,780 @@ export const package_json = {
 				{name: 'toActionsBroadcastMessage', kind: 'VariableDeclaration'},
 			],
 		},
-		'./vocab/account/account.js': {
-			path: 'vocab/account/account.ts',
+		'./vocab/action/actionTypes.gen.js': {
+			path: 'vocab/action/actionTypes.gen.ts',
+			declarations: [{name: 'gen', kind: 'VariableDeclaration'}],
+		},
+		'./vocab/action/actionTypes.js': {
+			path: 'vocab/action/actionTypes.ts',
 			declarations: [
-				{name: 'AccountId', kind: 'TypeAliasDeclaration'},
-				{name: 'Account', kind: 'InterfaceDeclaration'},
-				{name: 'AccountSettings', kind: 'InterfaceDeclaration'},
-				{name: 'ClientAccount', kind: 'InterfaceDeclaration'},
-				{name: 'ClientAccountSession', kind: 'InterfaceDeclaration'},
-				{name: 'ClientGuestSession', kind: 'InterfaceDeclaration'},
-				{name: 'ClientSession', kind: 'TypeAliasDeclaration'},
+				{name: 'ServiceActionName', kind: 'TypeAliasDeclaration'},
+				{name: 'ClientActionName', kind: 'TypeAliasDeclaration'},
+				{name: 'ActionParamsByName', kind: 'InterfaceDeclaration'},
+				{name: 'ActionResponseByName', kind: 'InterfaceDeclaration'},
+				{name: 'ServiceByName', kind: 'InterfaceDeclaration'},
+				{name: 'ClearFreshnessParams', kind: 'InterfaceDeclaration'},
+				{name: 'CloseDialogParams', kind: 'TypeAliasDeclaration'},
+				{name: 'CreateAccountActorParams', kind: 'InterfaceDeclaration'},
+				{name: 'CreateAccountActorResponse', kind: 'InterfaceDeclaration'},
+				{name: 'CreateAccountActorResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'CreateAssignmentParams', kind: 'InterfaceDeclaration'},
+				{name: 'CreateAssignmentResponse', kind: 'InterfaceDeclaration'},
+				{name: 'CreateAssignmentResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'CreateEntityParams', kind: 'InterfaceDeclaration'},
+				{name: 'CreateEntityResponse', kind: 'InterfaceDeclaration'},
+				{name: 'CreateEntityResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'CreateHubParams', kind: 'InterfaceDeclaration'},
+				{name: 'CreateHubResponse', kind: 'InterfaceDeclaration'},
+				{name: 'CreateHubResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'CreatePolicyParams', kind: 'InterfaceDeclaration'},
+				{name: 'CreatePolicyResponse', kind: 'InterfaceDeclaration'},
+				{name: 'CreatePolicyResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'CreateRoleParams', kind: 'InterfaceDeclaration'},
+				{name: 'CreateRoleResponse', kind: 'InterfaceDeclaration'},
+				{name: 'CreateRoleResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'CreateSpaceParams', kind: 'InterfaceDeclaration'},
+				{name: 'CreateSpaceResponse', kind: 'InterfaceDeclaration'},
+				{name: 'CreateSpaceResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteActorParams', kind: 'InterfaceDeclaration'},
+				{name: 'DeleteActorResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteActorResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteAssignmentParams', kind: 'InterfaceDeclaration'},
+				{name: 'DeleteAssignmentResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteAssignmentResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteEntitiesParams', kind: 'InterfaceDeclaration'},
+				{name: 'DeleteEntitiesResponse', kind: 'InterfaceDeclaration'},
+				{name: 'DeleteEntitiesResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteHubParams', kind: 'InterfaceDeclaration'},
+				{name: 'DeleteHubResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteHubResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'DeletePolicyParams', kind: 'InterfaceDeclaration'},
+				{name: 'DeletePolicyResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'DeletePolicyResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteRoleParams', kind: 'InterfaceDeclaration'},
+				{name: 'DeleteRoleResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteRoleResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteSpaceParams', kind: 'InterfaceDeclaration'},
+				{name: 'DeleteSpaceResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'DeleteSpaceResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'EphemeraParams', kind: 'InterfaceDeclaration'},
+				{name: 'EphemeraResponse', kind: 'InterfaceDeclaration'},
+				{name: 'EphemeraResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'EraseEntitiesParams', kind: 'InterfaceDeclaration'},
+				{name: 'EraseEntitiesResponse', kind: 'InterfaceDeclaration'},
+				{name: 'EraseEntitiesResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'InviteToHubParams', kind: 'InterfaceDeclaration'},
+				{name: 'InviteToHubResponse', kind: 'InterfaceDeclaration'},
+				{name: 'InviteToHubResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'KickFromHubParams', kind: 'InterfaceDeclaration'},
+				{name: 'KickFromHubResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'KickFromHubResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'LeaveHubParams', kind: 'InterfaceDeclaration'},
+				{name: 'LeaveHubResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'LeaveHubResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'OpenDialogParams', kind: 'TypeAliasDeclaration'},
+				{name: 'PingParams', kind: 'TypeAliasDeclaration'},
+				{name: 'PingResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'PingResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ReadEntitiesParams', kind: 'InterfaceDeclaration'},
+				{name: 'ReadEntitiesResponse', kind: 'InterfaceDeclaration'},
+				{name: 'ReadEntitiesResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ReadEntitiesByIdParams', kind: 'InterfaceDeclaration'},
+				{name: 'ReadEntitiesByIdResponse', kind: 'InterfaceDeclaration'},
+				{name: 'ReadEntitiesByIdResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ReadHubParams', kind: 'InterfaceDeclaration'},
+				{name: 'ReadHubResponse', kind: 'InterfaceDeclaration'},
+				{name: 'ReadHubResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ReadPoliciesParams', kind: 'InterfaceDeclaration'},
+				{name: 'ReadPoliciesResponse', kind: 'InterfaceDeclaration'},
+				{name: 'ReadPoliciesResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ReadRolesParams', kind: 'InterfaceDeclaration'},
+				{name: 'ReadRolesResponse', kind: 'InterfaceDeclaration'},
+				{name: 'ReadRolesResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ReadSpacesParams', kind: 'InterfaceDeclaration'},
+				{name: 'ReadSpacesResponse', kind: 'InterfaceDeclaration'},
+				{name: 'ReadSpacesResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'SetMobileParams', kind: 'TypeAliasDeclaration'},
+				{name: 'SetSessionParams', kind: 'InterfaceDeclaration'},
+				{name: 'SignInParams', kind: 'InterfaceDeclaration'},
+				{name: 'SignInResponse', kind: 'InterfaceDeclaration'},
+				{name: 'SignInResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'SignOutParams', kind: 'TypeAliasDeclaration'},
+				{name: 'SignOutResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'SignOutResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'SignUpParams', kind: 'InterfaceDeclaration'},
+				{name: 'SignUpResponse', kind: 'InterfaceDeclaration'},
+				{name: 'SignUpResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ToggleMainNavParams', kind: 'TypeAliasDeclaration'},
+				{name: 'ToggleSecondaryNavParams', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateAccountPasswordParams', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateAccountPasswordResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateAccountPasswordResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateAccountSettingsParams', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateAccountSettingsResponse', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateAccountSettingsResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateEntitiesParams', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateEntitiesResponse', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateEntitiesResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateHubParams', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateHubResponse', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateHubResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdatePolicyParams', kind: 'InterfaceDeclaration'},
+				{name: 'UpdatePolicyResponse', kind: 'InterfaceDeclaration'},
+				{name: 'UpdatePolicyResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateRoleParams', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateRoleResponse', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateRoleResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'UpdateSpaceParams', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateSpaceResponse', kind: 'InterfaceDeclaration'},
+				{name: 'UpdateSpaceResponseResult', kind: 'TypeAliasDeclaration'},
+				{name: 'ViewSpaceParams', kind: 'InterfaceDeclaration'},
+				{name: 'Actions', kind: 'InterfaceDeclaration'},
+				{name: 'Mutations', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/actor/actor.schema.js': {
+			path: 'vocab/actor/actor.schema.ts',
+			declarations: [
+				{name: 'ActorIdSchema', kind: 'VariableDeclaration'},
+				{name: 'ActorRecordSchema', kind: 'VariableDeclaration'},
+				{name: 'ActorSchema', kind: 'VariableDeclaration'},
+				{name: 'ActionActorSchema', kind: 'VariableDeclaration'},
+				{name: 'AccountActorSchema', kind: 'VariableDeclaration'},
+				{name: 'HubActorSchema', kind: 'VariableDeclaration'},
+				{name: 'GhostActorSchema', kind: 'VariableDeclaration'},
+				{name: 'PublicActorSchema', kind: 'VariableDeclaration'},
+				{name: 'ClientActorSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/actor/actor.js': {
+			path: 'vocab/actor/actor.ts',
+			declarations: [
+				{name: 'AccountActor', kind: 'InterfaceDeclaration'},
+				{name: 'ActionActor', kind: 'TypeAliasDeclaration'},
+				{name: 'ActorId', kind: 'TypeAliasDeclaration'},
+				{name: 'ActorRecord', kind: 'InterfaceDeclaration'},
+				{name: 'Actor', kind: 'TypeAliasDeclaration'},
+				{name: 'ClientActor', kind: 'TypeAliasDeclaration'},
+				{name: 'GhostActor', kind: 'InterfaceDeclaration'},
+				{name: 'HubActor', kind: 'InterfaceDeclaration'},
+				{name: 'PublicActor', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/actor/actorActions.js': {
+			path: 'vocab/actor/actorActions.ts',
+			declarations: [
+				{name: 'CreateAccountActor', kind: 'VariableDeclaration'},
+				{name: 'DeleteActor', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/actor/actorHelpers.server.js': {
+			path: 'vocab/actor/actorHelpers.server.ts',
+			declarations: [
+				{name: 'ActorColumn', kind: 'TypeAliasDeclaration'},
+				{name: 'ACTOR_COLUMNS', kind: 'VariableDeclaration'},
+				{name: 'RESERVED_ACTOR_NAMES', kind: 'VariableDeclaration'},
+				{name: 'isActorNameReserved', kind: 'VariableDeclaration'},
+				{name: 'isActorAdmin', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/actor/actorHelpers.test.js': {
+			path: 'vocab/actor/actorHelpers.test.ts',
+			declarations: [],
+		},
+		'./vocab/actor/actorHelpers.js': {
+			path: 'vocab/actor/actorHelpers.ts',
+			declarations: [
+				{name: 'scrubActorName', kind: 'VariableDeclaration'},
+				{name: 'ACTOR_NAME_CHARACTER_MATCHER', kind: 'VariableDeclaration'},
+				{name: 'checkActorName', kind: 'VariableDeclaration'},
+				{name: 'lookupActor', kind: 'VariableDeclaration'},
+				{name: 'isAccountActor', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/actor/actorMutationHelpers.js': {
+			path: 'vocab/actor/actorMutationHelpers.ts',
+			declarations: [
+				{name: 'stashActors', kind: 'VariableDeclaration'},
+				{name: 'evictActor', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/actor/actorMutations.js': {
+			path: 'vocab/actor/actorMutations.ts',
+			declarations: [
+				{name: 'CreateAccountActor', kind: 'VariableDeclaration'},
+				{name: 'DeleteActor', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/actor/ActorRepo.test.js': {path: 'vocab/actor/ActorRepo.test.ts', declarations: []},
+		'./vocab/actor/ActorRepo.js': {
+			path: 'vocab/actor/ActorRepo.ts',
+			declarations: [{name: 'ActorRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/actor/actorServices.test.js': {
+			path: 'vocab/actor/actorServices.test.ts',
+			declarations: [],
+		},
+		'./vocab/actor/actorServices.js': {
+			path: 'vocab/actor/actorServices.ts',
+			declarations: [
+				{name: 'CreateAccountActorService', kind: 'VariableDeclaration'},
+				{name: 'DeleteActorService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/assignment/assignment.schema.js': {
+			path: 'vocab/assignment/assignment.schema.ts',
+			declarations: [
+				{name: 'AssignmentIdSchema', kind: 'VariableDeclaration'},
+				{name: 'AssignmentSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/assignment/assignment.js': {
+			path: 'vocab/assignment/assignment.ts',
+			declarations: [
+				{name: 'AssignmentId', kind: 'TypeAliasDeclaration'},
+				{name: 'Assignment', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/assignment/assignmentActions.js': {
+			path: 'vocab/assignment/assignmentActions.ts',
+			declarations: [
+				{name: 'CreateAssignment', kind: 'VariableDeclaration'},
+				{name: 'DeleteAssignment', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/assignment/assignmentHelpers.server.js': {
+			path: 'vocab/assignment/assignmentHelpers.server.ts',
+			declarations: [{name: 'createAssignment', kind: 'VariableDeclaration'}],
+		},
+		'./vocab/assignment/assignmentMutationHelpers.js': {
+			path: 'vocab/assignment/assignmentMutationHelpers.ts',
+			declarations: [
+				{name: 'stashAssignments', kind: 'VariableDeclaration'},
+				{name: 'evictAssignments', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/assignment/assignmentMutations.js': {
+			path: 'vocab/assignment/assignmentMutations.ts',
+			declarations: [
+				{name: 'CreateAssignment', kind: 'VariableDeclaration'},
+				{name: 'DeleteAssignment', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/assignment/AssignmentRepo.js': {
+			path: 'vocab/assignment/AssignmentRepo.ts',
+			declarations: [{name: 'AssignmentRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/assignment/assignmentServices.test.js': {
+			path: 'vocab/assignment/assignmentServices.test.ts',
+			declarations: [],
+		},
+		'./vocab/assignment/assignmentServices.js': {
+			path: 'vocab/assignment/assignmentServices.ts',
+			declarations: [
+				{name: 'CreateAssignmentService', kind: 'VariableDeclaration'},
+				{name: 'DeleteAssignmentService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/data.js': {
+			path: 'vocab/data.ts',
+			declarations: [
+				{name: 'sortedModelSchemas', kind: 'VariableDeclaration'},
+				{name: 'sortedViewTemplates', kind: 'VariableDeclaration'},
+				{name: 'clientActions', kind: 'VariableDeclaration'},
+				{name: 'serviceActions', kind: 'VariableDeclaration'},
+				{name: 'schemaNames', kind: 'VariableDeclaration'},
+				{name: 'vocabNames', kind: 'VariableDeclaration'},
+				{name: 'viewNames', kind: 'VariableDeclaration'},
+				{name: 'modelNames', kind: 'VariableDeclaration'},
+				{name: 'clientActionNames', kind: 'VariableDeclaration'},
+				{name: 'serviceActionNames', kind: 'VariableDeclaration'},
+				{name: 'VocabCategory', kind: 'TypeAliasDeclaration'},
+				{name: 'namesByCategory', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/entity/entity.schema.js': {
+			path: 'vocab/entity/entity.schema.ts',
+			declarations: [
+				{name: 'EntityIdSchema', kind: 'VariableDeclaration'},
+				{name: 'EntitySchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/entity/entity.js': {
+			path: 'vocab/entity/entity.ts',
+			declarations: [
+				{name: 'EntityId', kind: 'TypeAliasDeclaration'},
+				{name: 'Entity', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/entity/entityActions.js': {
+			path: 'vocab/entity/entityActions.ts',
+			declarations: [
+				{name: 'CreateEntity', kind: 'VariableDeclaration'},
+				{name: 'UpdateEntities', kind: 'VariableDeclaration'},
+				{name: 'ReadEntities', kind: 'VariableDeclaration'},
+				{name: 'ReadEntitiesById', kind: 'VariableDeclaration'},
+				{name: 'EraseEntities', kind: 'VariableDeclaration'},
+				{name: 'DeleteEntities', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/entity/entityData.js': {
+			path: 'vocab/entity/entityData.ts',
+			declarations: [
+				{name: 'EntityData', kind: 'TypeAliasDeclaration'},
+				{name: 'BaseEntityData', kind: 'InterfaceDeclaration'},
+				{name: 'CollectionEntityData', kind: 'InterfaceDeclaration'},
+				{name: 'OrderedCollectionEntityData', kind: 'InterfaceDeclaration'},
+				{name: 'NoteEntityData', kind: 'InterfaceDeclaration'},
+				{name: 'TombstoneEntityData', kind: 'InterfaceDeclaration'},
+				{name: 'Directory', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/entity/entityHelpers.server.js': {
+			path: 'vocab/entity/entityHelpers.server.ts',
+			declarations: [
+				{name: 'EntityColumn', kind: 'TypeAliasDeclaration'},
+				{name: 'ENTITY_COLUMNS', kind: 'VariableDeclaration'},
+				{name: 'cleanOrphanedEntities', kind: 'VariableDeclaration'},
+				{name: 'updateDirectories', kind: 'VariableDeclaration'},
+				{name: 'checkAddOrderedItem', kind: 'VariableDeclaration'},
+				{name: 'checkRemoveOrderedItems', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/entity/entityHelpers.js': {
+			path: 'vocab/entity/entityHelpers.ts',
+			declarations: [
+				{name: 'isDirectory', kind: 'VariableDeclaration'},
+				{name: 'toName', kind: 'VariableDeclaration'},
+				{name: 'toIcon', kind: 'VariableDeclaration'},
+				{name: 'sortEntitiesByCreated', kind: 'VariableDeclaration'},
+				{name: 'scrubEntityPath', kind: 'VariableDeclaration'},
+				{name: 'ENTITY_PATH_MAX_LENGTH', kind: 'VariableDeclaration'},
+				{name: 'checkEntityPath', kind: 'VariableDeclaration'},
+				{name: 'lookupOrderedItems', kind: 'VariableDeclaration'},
+				{name: 'moveUp', kind: 'VariableDeclaration'},
+				{name: 'moveDown', kind: 'VariableDeclaration'},
+				{name: 'loadOrderedEntities', kind: 'VariableDeclaration'},
+				{name: 'EntityType', kind: 'TypeAliasDeclaration'},
+			],
+		},
+		'./vocab/entity/entityMutationHelpers.js': {
+			path: 'vocab/entity/entityMutationHelpers.ts',
+			declarations: [
+				{name: 'stashEntities', kind: 'VariableDeclaration'},
+				{name: 'stashTies', kind: 'VariableDeclaration'},
+				{name: 'evictTie', kind: 'VariableDeclaration'},
+				{name: 'evictEntities', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/entity/entityMutations.js': {
+			path: 'vocab/entity/entityMutations.ts',
+			declarations: [
+				{name: 'CreateEntity', kind: 'VariableDeclaration'},
+				{name: 'UpdateEntities', kind: 'VariableDeclaration'},
+				{name: 'EraseEntities', kind: 'VariableDeclaration'},
+				{name: 'DeleteEntities', kind: 'VariableDeclaration'},
+				{name: 'ReadEntitiesById', kind: 'VariableDeclaration'},
+				{name: 'ReadEntities', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/entity/EntityRepo.test.js': {
+			path: 'vocab/entity/EntityRepo.test.ts',
+			declarations: [],
+		},
+		'./vocab/entity/EntityRepo.js': {
+			path: 'vocab/entity/EntityRepo.ts',
+			declarations: [{name: 'EntityRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/entity/entityServices.test.js': {
+			path: 'vocab/entity/entityServices.test.ts',
+			declarations: [],
+		},
+		'./vocab/entity/entityServices.js': {
+			path: 'vocab/entity/entityServices.ts',
+			declarations: [
+				{name: 'ReadEntitiesService', kind: 'VariableDeclaration'},
+				{name: 'CreateEntityService', kind: 'VariableDeclaration'},
+				{name: 'UpdateEntitiesService', kind: 'VariableDeclaration'},
+				{name: 'EraseEntitiesService', kind: 'VariableDeclaration'},
+				{name: 'DeleteEntitiesService', kind: 'VariableDeclaration'},
+				{name: 'ReadEntitiesByIdService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/hub/hub.schema.js': {
+			path: 'vocab/hub/hub.schema.ts',
+			declarations: [
+				{name: 'HubIdSchema', kind: 'VariableDeclaration'},
+				{name: 'HubSchema', kind: 'VariableDeclaration'},
+				{name: 'HubSettingsSchema', kind: 'VariableDeclaration'},
+				{name: 'InitialHubSettingsSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/hub/hub.js': {
+			path: 'vocab/hub/hub.ts',
+			declarations: [
+				{name: 'HubId', kind: 'TypeAliasDeclaration'},
+				{name: 'Hub', kind: 'InterfaceDeclaration'},
+				{name: 'HubSettings', kind: 'InterfaceDeclaration'},
+				{name: 'InitialHubSettings', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/hub/hubActions.js': {
+			path: 'vocab/hub/hubActions.ts',
+			declarations: [
+				{name: 'CreateHub', kind: 'VariableDeclaration'},
+				{name: 'ReadHub', kind: 'VariableDeclaration'},
+				{name: 'UpdateHub', kind: 'VariableDeclaration'},
+				{name: 'DeleteHub', kind: 'VariableDeclaration'},
+				{name: 'InviteToHub', kind: 'VariableDeclaration'},
+				{name: 'LeaveHub', kind: 'VariableDeclaration'},
+				{name: 'KickFromHub', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/hub/hubHelpers.server.js': {
+			path: 'vocab/hub/hubHelpers.server.ts',
+			declarations: [
+				{name: 'HubColumn', kind: 'TypeAliasDeclaration'},
+				{name: 'HUB_COLUMNS', kind: 'VariableDeclaration'},
+				{name: 'cleanOrphanHubs', kind: 'VariableDeclaration'},
+				{name: 'deleteHub', kind: 'VariableDeclaration'},
+				{name: 'initAdminHub', kind: 'VariableDeclaration'},
+				{name: 'initTemplateGovernanceForHub', kind: 'VariableDeclaration'},
+				{name: 'checkRemoveActor', kind: 'VariableDeclaration'},
+				{name: 'toDefaultHubSettings', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/hub/hubMutationHelpers.js': {
+			path: 'vocab/hub/hubMutationHelpers.ts',
+			declarations: [
+				{name: 'stashHubs', kind: 'VariableDeclaration'},
+				{name: 'stashHub', kind: 'VariableDeclaration'},
+				{name: 'evictHub', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/hub/hubMutations.js': {
+			path: 'vocab/hub/hubMutations.ts',
+			declarations: [
+				{name: 'ReadHub', kind: 'VariableDeclaration'},
+				{name: 'CreateHub', kind: 'VariableDeclaration'},
+				{name: 'UpdateHub', kind: 'VariableDeclaration'},
+				{name: 'DeleteHub', kind: 'VariableDeclaration'},
+				{name: 'InviteToHub', kind: 'VariableDeclaration'},
+				{name: 'LeaveHub', kind: 'VariableDeclaration'},
+				{name: 'KickFromHub', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/hub/HubRepo.test.js': {path: 'vocab/hub/HubRepo.test.ts', declarations: []},
+		'./vocab/hub/HubRepo.js': {
+			path: 'vocab/hub/HubRepo.ts',
+			declarations: [{name: 'HubRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/hub/hubServices.test.js': {path: 'vocab/hub/hubServices.test.ts', declarations: []},
+		'./vocab/hub/hubServices.js': {
+			path: 'vocab/hub/hubServices.ts',
+			declarations: [
+				{name: 'ReadHubService', kind: 'VariableDeclaration'},
+				{name: 'CreateHubService', kind: 'VariableDeclaration'},
+				{name: 'UpdateHubService', kind: 'VariableDeclaration'},
+				{name: 'DeleteHubService', kind: 'VariableDeclaration'},
+				{name: 'InviteToHubService', kind: 'VariableDeclaration'},
+				{name: 'LeaveHubService', kind: 'VariableDeclaration'},
+				{name: 'KickFromHubService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/metadata.gen.js': {
+			path: 'vocab/metadata.gen.ts',
+			declarations: [{name: 'gen', kind: 'VariableDeclaration'}],
+		},
+		'./vocab/metadata.js': {
+			path: 'vocab/metadata.ts',
+			declarations: [
+				{name: 'schemaNames', kind: 'VariableDeclaration'},
+				{name: 'vocabNames', kind: 'VariableDeclaration'},
+				{name: 'viewNames', kind: 'VariableDeclaration'},
+				{name: 'modelNames', kind: 'VariableDeclaration'},
+				{name: 'actionNames', kind: 'VariableDeclaration'},
+				{name: 'clientActionNames', kind: 'VariableDeclaration'},
+				{name: 'serviceActionNames', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/policy/policy.schema.js': {
+			path: 'vocab/policy/policy.schema.ts',
+			declarations: [
+				{name: 'PolicyIdSchema', kind: 'VariableDeclaration'},
+				{name: 'PolicySchema', kind: 'VariableDeclaration'},
+				{name: 'PolicyNameSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/policy/policy.js': {
+			path: 'vocab/policy/policy.ts',
+			declarations: [
+				{name: 'PolicyId', kind: 'TypeAliasDeclaration'},
+				{name: 'PolicyName', kind: 'TypeAliasDeclaration'},
+				{name: 'Policy', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/policy/policyActions.js': {
+			path: 'vocab/policy/policyActions.ts',
+			declarations: [
+				{name: 'CreatePolicy', kind: 'VariableDeclaration'},
+				{name: 'ReadPolicies', kind: 'VariableDeclaration'},
+				{name: 'UpdatePolicy', kind: 'VariableDeclaration'},
+				{name: 'DeletePolicy', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/policy/policyHelpers.server.js': {
+			path: 'vocab/policy/policyHelpers.server.ts',
+			declarations: [
+				{name: 'checkPolicyForActor', kind: 'VariableDeclaration'},
+				{name: 'checkHubAccessForActor', kind: 'VariableDeclaration'},
+				{name: 'isCreateHubDisabled', kind: 'VariableDeclaration'},
+				{name: 'checkEntityOwnership', kind: 'VariableDeclaration'},
+				{name: 'checkEntityAccess', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/policy/policyHelpers.js': {
+			path: 'vocab/policy/policyHelpers.ts',
+			declarations: [{name: 'policyNames', kind: 'VariableDeclaration'}],
+		},
+		'./vocab/policy/policyMutationHelpers.js': {
+			path: 'vocab/policy/policyMutationHelpers.ts',
+			declarations: [
+				{name: 'stashPolicies', kind: 'VariableDeclaration'},
+				{name: 'evictPolicies', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/policy/policyMutations.js': {
+			path: 'vocab/policy/policyMutations.ts',
+			declarations: [
+				{name: 'CreatePolicy', kind: 'VariableDeclaration'},
+				{name: 'DeletePolicy', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/policy/PolicyRepo.js': {
+			path: 'vocab/policy/PolicyRepo.ts',
+			declarations: [{name: 'PolicyRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/policy/policyServices.js': {
+			path: 'vocab/policy/policyServices.ts',
+			declarations: [
+				{name: 'CreatePolicyService', kind: 'VariableDeclaration'},
+				{name: 'ReadPoliciesService', kind: 'VariableDeclaration'},
+				{name: 'UpdatePolicyService', kind: 'VariableDeclaration'},
+				{name: 'DeletePolicyService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/role/role.schema.js': {
+			path: 'vocab/role/role.schema.ts',
+			declarations: [
+				{name: 'RoleIdSchema', kind: 'VariableDeclaration'},
+				{name: 'RoleSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/role/role.js': {
+			path: 'vocab/role/role.ts',
+			declarations: [
+				{name: 'RoleId', kind: 'TypeAliasDeclaration'},
+				{name: 'Role', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/role/roleActions.js': {
+			path: 'vocab/role/roleActions.ts',
+			declarations: [
+				{name: 'CreateRole', kind: 'VariableDeclaration'},
+				{name: 'ReadRoles', kind: 'VariableDeclaration'},
+				{name: 'UpdateRole', kind: 'VariableDeclaration'},
+				{name: 'DeleteRole', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/role/roleMutationHelpers.js': {
+			path: 'vocab/role/roleMutationHelpers.ts',
+			declarations: [
+				{name: 'stashRoles', kind: 'VariableDeclaration'},
+				{name: 'evictRoles', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/role/roleMutations.js': {
+			path: 'vocab/role/roleMutations.ts',
+			declarations: [
+				{name: 'CreateRole', kind: 'VariableDeclaration'},
+				{name: 'UpdateRole', kind: 'VariableDeclaration'},
+				{name: 'DeleteRole', kind: 'VariableDeclaration'},
+				{name: 'ReadRoles', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/role/RoleRepo.js': {
+			path: 'vocab/role/RoleRepo.ts',
+			declarations: [{name: 'RoleRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/role/roleServices.test.js': {
+			path: 'vocab/role/roleServices.test.ts',
+			declarations: [],
+		},
+		'./vocab/role/roleServices.js': {
+			path: 'vocab/role/roleServices.ts',
+			declarations: [
+				{name: 'CreateRoleService', kind: 'VariableDeclaration'},
+				{name: 'ReadRolesService', kind: 'VariableDeclaration'},
+				{name: 'UpdateRoleService', kind: 'VariableDeclaration'},
+				{name: 'DeleteRoleService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/schemas.test.js': {path: 'vocab/schemas.test.ts', declarations: []},
+		'./vocab/schemas.js': {
+			path: 'vocab/schemas.ts',
+			declarations: [
+				{name: 'modelSchemas', kind: 'VariableDeclaration'},
+				{name: 'actionSchemas', kind: 'VariableDeclaration'},
+				{name: 'schemas', kind: 'VariableDeclaration'},
+				{name: 'schemasByName', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/defaultSpaces.js': {
+			path: 'vocab/space/defaultSpaces.ts',
+			declarations: [
+				{name: 'toDefaultSpaces', kind: 'VariableDeclaration'},
+				{name: 'toDefaultAdminSpaces', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/space.schema.js': {
+			path: 'vocab/space/space.schema.ts',
+			declarations: [
+				{name: 'SpaceIdSchema', kind: 'VariableDeclaration'},
+				{name: 'SpaceSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/space.js': {
+			path: 'vocab/space/space.ts',
+			declarations: [
+				{name: 'SpaceId', kind: 'TypeAliasDeclaration'},
+				{name: 'Space', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/space/spaceActions.js': {
+			path: 'vocab/space/spaceActions.ts',
+			declarations: [
+				{name: 'CreateSpace', kind: 'VariableDeclaration'},
+				{name: 'ReadSpaces', kind: 'VariableDeclaration'},
+				{name: 'UpdateSpace', kind: 'VariableDeclaration'},
+				{name: 'DeleteSpace', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/spaceHelpers.server.js': {
+			path: 'vocab/space/spaceHelpers.server.ts',
+			declarations: [
+				{name: 'createSpaces', kind: 'VariableDeclaration'},
+				{name: 'createSpace', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/spaceHelpers.js': {
+			path: 'vocab/space/spaceHelpers.ts',
+			declarations: [
+				{name: 'ICON_MISSING_ERROR', kind: 'VariableDeclaration'},
+				{name: 'ICON_TOO_LONG_ERROR', kind: 'VariableDeclaration'},
+				{name: 'parseSpaceIcon', kind: 'VariableDeclaration'},
+				{name: 'HOME_NAME', kind: 'VariableDeclaration'},
+				{name: 'HOME_PATH', kind: 'VariableDeclaration'},
+				{name: 'parseDirectoryPath', kind: 'VariableDeclaration'},
+				{name: 'renderDirectoryPath', kind: 'VariableDeclaration'},
+				{name: 'isHomeDirectory', kind: 'VariableDeclaration'},
+				{name: 'canDeleteSpace', kind: 'VariableDeclaration'},
+				{name: 'isHomeSpace', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/spaceMutationHelpers.js': {
+			path: 'vocab/space/spaceMutationHelpers.ts',
+			declarations: [
+				{name: 'stashSpaces', kind: 'VariableDeclaration'},
+				{name: 'evictSpaces', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/spaceMutations.js': {
+			path: 'vocab/space/spaceMutations.ts',
+			declarations: [
+				{name: 'CreateSpace', kind: 'VariableDeclaration'},
+				{name: 'DeleteSpace', kind: 'VariableDeclaration'},
+				{name: 'UpdateSpace', kind: 'VariableDeclaration'},
+				{name: 'ReadSpaces', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/space/SpaceRepo.js': {
+			path: 'vocab/space/SpaceRepo.ts',
+			declarations: [{name: 'SpaceRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/space/spaceServices.test.js': {
+			path: 'vocab/space/spaceServices.test.ts',
+			declarations: [],
+		},
+		'./vocab/space/spaceServices.js': {
+			path: 'vocab/space/spaceServices.ts',
+			declarations: [
+				{name: 'ReadSpacesService', kind: 'VariableDeclaration'},
+				{name: 'CreateSpaceService', kind: 'VariableDeclaration'},
+				{name: 'UpdateSpaceService', kind: 'VariableDeclaration'},
+				{name: 'DeleteSpaceService', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/tie/tie.schema.js': {
+			path: 'vocab/tie/tie.schema.ts',
+			declarations: [
+				{name: 'TieIdSchema', kind: 'VariableDeclaration'},
+				{name: 'TieSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/tie/tie.js': {
+			path: 'vocab/tie/tie.ts',
+			declarations: [
+				{name: 'TieId', kind: 'TypeAliasDeclaration'},
+				{name: 'Tie', kind: 'InterfaceDeclaration'},
+			],
+		},
+		'./vocab/tie/tieHelpers.js': {
+			path: 'vocab/tie/tieHelpers.ts',
+			declarations: [
+				{name: 'toTieEntityIds', kind: 'VariableDeclaration'},
+				{name: 'lookupTies', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/tie/TieRepo.test.js': {path: 'vocab/tie/TieRepo.test.ts', declarations: []},
+		'./vocab/tie/TieRepo.js': {
+			path: 'vocab/tie/TieRepo.ts',
+			declarations: [{name: 'TieRepo', kind: 'ClassDeclaration'}],
+		},
+		'./vocab/view/view.js': {
+			path: 'vocab/view/view.ts',
+			declarations: [
+				{name: 'ViewData', kind: 'TypeAliasDeclaration'},
+				{name: 'ViewNode', kind: 'TypeAliasDeclaration'},
+				{name: 'ViewTemplate', kind: 'InterfaceDeclaration'},
+				{name: 'viewTemplates', kind: 'VariableDeclaration'},
+				{name: 'viewTemplatesByName', kind: 'VariableDeclaration'},
+				{name: 'toCreatableViewTemplates', kind: 'VariableDeclaration'},
+				{name: 'DEFAULT_ALLOWED_HTML_ATTRIBUTES', kind: 'VariableDeclaration'},
+				{name: 'toViewProps', kind: 'VariableDeclaration'},
+				{name: 'SpaceContext', kind: 'InterfaceDeclaration'},
+				{name: 'getSpaceContext', kind: 'VariableDeclaration'},
+				{name: 'setSpaceContext', kind: 'VariableDeclaration'},
+				{name: 'parseView', kind: 'VariableDeclaration'},
+				{name: 'serializeView', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/vocab.gen.json.js': {
+			path: 'vocab/vocab.gen.json.ts',
+			declarations: [{name: 'gen', kind: 'VariableDeclaration'}],
+		},
+		'./vocab/vocab.schema.js': {
+			path: 'vocab/vocab.schema.ts',
+			declarations: [
+				{name: 'SchemaNameSchema', kind: 'VariableDeclaration'},
+				{name: 'VocabNameSchema', kind: 'VariableDeclaration'},
+			],
+		},
+		'./vocab/vocab.js': {
+			path: 'vocab/vocab.ts',
+			declarations: [
+				{name: 'SchemaName', kind: 'TypeAliasDeclaration'},
+				{name: 'VocabName', kind: 'TypeAliasDeclaration'},
 			],
 		},
 	},
