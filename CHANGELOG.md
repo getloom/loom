@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.11.1
+
+### Patch Changes
+
+- 6d76fdba: export all modules
+
 ## 0.11.0
 
 ### Minor Changes
