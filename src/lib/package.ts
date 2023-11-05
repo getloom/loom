@@ -4,7 +4,7 @@ import type {Package_Json} from '@grogarden/gro/package_json.js';
 
 export const package_json = {
 	name: '@feltjs/felt',
-	version: '0.11.1',
+	version: '0.11.2',
 	description: 'a programmable platform for hobbyists and human-scale communities',
 	icon: '💚',
 	public: true,

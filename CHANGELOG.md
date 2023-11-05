@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.11.2
+
+### Patch Changes
+
+- dc1f1d3f: add icon 💚
+
 ## 0.11.1
 
 ### Patch Changes
