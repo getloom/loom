@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.12.2
+
+### Patch Changes
+
+- 7da37ea1: upgrade types
+
 ## 0.12.1
 
 ### Patch Changes
