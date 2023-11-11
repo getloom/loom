@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.12.1
+
+### Patch Changes
+
+- 60ed66a5: upgrade deps
+
 ## 0.12.0
 
 ### Minor Changes

@@ -6,7 +6,7 @@ import type {Src_Json} from '@grogarden/gro/src_json.js';
 
 export const package_json = {
 	name: '@feltjs/felt',
-	version: '0.12.0',
+	version: '0.12.1',
 	description: 'a programmable platform for hobbyists and human-scale communities',
 	icon: '💚',
 	public: true,
@@ -1896,7 +1896,7 @@ export const package_json = {
 
 export const src_json = {
 	name: '@feltjs/felt',
-	version: '0.12.0',
+	version: '0.12.1',
 	modules: {
 		'./check.task.js': {
 			path: 'check.task.ts',
@@ -2289,7 +2289,13 @@ export const src_json = {
 			declarations: [{name: 'task', kind: 'variable'}],
 		},
 		'./package.gen.js': {path: 'package.gen.ts', declarations: []},
-		'./package.js': {path: 'package.ts', declarations: [{name: 'package_json', kind: 'variable'}]},
+		'./package.js': {
+			path: 'package.ts',
+			declarations: [
+				{name: 'package_json', kind: 'variable'},
+				{name: 'src_json', kind: 'variable'},
+			],
+		},
 		'./plugins/admin-home/AdminHome.svelte': {
 			path: 'plugins/admin-home/AdminHome.svelte',
 			declarations: [],
