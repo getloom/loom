@@ -2,9 +2,9 @@
 	import Package_Summary from '@fuz.dev/fuz_library/Package_Summary.svelte';
 	import {parse_package_meta} from '@fuz.dev/fuz_library/package_meta.js';
 
-	import {package_json} from '$lib/package.js';
+	import {package_json, src_json} from '$lib/package.js';
 
-	const pkg = parse_package_meta(package_json.homepage, package_json);
+	const pkg = parse_package_meta(package_json.homepage, package_json, src_json);
 </script>
 
 <section class="prose spaced">

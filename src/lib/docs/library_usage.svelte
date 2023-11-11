@@ -5,12 +5,12 @@
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
 	import {getDocsSettings} from '$lib/docs/docs.js';
-	import {package_json} from '$lib/package.js';
+	import {package_json, src_json} from '$lib/package.js';
 
 	const docsSettings = getDocsSettings();
 	$: ({path} = $docsSettings);
 
-	const pkg = parse_package_meta(package_json.homepage, package_json);
+	const pkg = parse_package_meta(package_json.homepage, package_json, src_json);
 </script>
 
 <section class="prose spaced">
