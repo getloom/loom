@@ -1,5 +1,11 @@
 # @feltjs/felt
 
+## 0.12.3
+
+### Patch Changes
+
+- d3249fd5: upgrade deps
+
 ## 0.12.2
 
 ### Patch Changes
