@@ -90,10 +90,7 @@ create database felt; # notice the semicolon
 		machine:
 	</p>
 	<CodeExample
-		code={`npm run dev
-npm test
-# or
-gro dev
+		code={`gro dev
 gro test
 gro # print available tasks`}
 	/>

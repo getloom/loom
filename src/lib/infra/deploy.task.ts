@@ -15,7 +15,10 @@ const CURRENT_DEPLOY_DIRNAME = 'current_app_deploy';
 export const task: Task = {
 	summary: 'deploy or redeploy to production, after setup',
 	run: async ({log, invoke_task}) => {
-		//build the actual tar deployment artifact
+		// this is a no-op if it's already set up
+		await invoke_task('infra/setup');
+
+		//build and tar the deployment artifact
 		await invoke_task('build');
 
 		const {DEPLOY_IP, DEPLOY_USER} = await load_envs(false);

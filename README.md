@@ -52,7 +52,7 @@ npm i -D @feltjs/felt # see the available modules at `/src/gro.config.ts`
 Learn more about
 [using `@feltjs/felt` as a library](https://www.felt.dev/docs/guide/dev/library-usage).
 
-## using `@feltjs/felt` as a git repo
+## local development
 
 To work directly on the codebase,
 see [Getting started](https://www.felt.dev/docs/guide/admin/getting-started), then:
@@ -62,17 +62,12 @@ see [Getting started](https://www.felt.dev/docs/guide/admin/getting-started), th
 npm i
 
 # start SvelteKit/Vite and the Node server
-npm run dev
+npx gro dev # args are forwarded to `vite dev`
+gro dev # install Gro globally: npm i -g @grogarden/gro
 
 # browse to localhost:5173 or whatever it says
 
-# you can also run `gro dev` with Gro installed globally:
-npm i -g @grogarden/gro
 gro # print available tasks
-gro dev # args are forwarded to `vite` like `npm run dev`
-
-npm test
-# or
 gro test
 ```
 

@@ -47,7 +47,7 @@ npm i -g @grogarden/gro`}
 		>.
 	</p>
 	<p>Then:</p>
-	<CodeExample code={`gro deploy`} />
+	<CodeExample code={`gro infra/deploy`} />
 	<p>
 		This builds the project on the local machine (<code>`gro build`</code>), packs the output into a
 		tar, and attempts to deploys it to the remote instance.
@@ -57,7 +57,7 @@ npm i -g @grogarden/gro`}
 	</blockquote>
 	<p>To redeploy:</p>
 
-	<CodeExample code={`gro deploy`} />
+	<CodeExample code={`gro infra/deploy`} />
 
 	<h3>Test production locally</h3>
 

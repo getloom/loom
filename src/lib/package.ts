@@ -15,10 +15,6 @@ export const package_json = {
 	repository: {type: 'git', url: 'git+https://github.com/feltjs/felt.git'},
 	bugs: {url: 'https://github.com/feltjs/felt/issues'},
 	scripts: {
-		dev: 'gro dev',
-		build: 'gro build',
-		test: 'gro test',
-		deploy: 'gro deploy',
 		start: 'node dist_server/server/server.js',
 		after_deploy: 'node dist_server/infra/after_deploy.js',
 	},
@@ -338,7 +334,6 @@ export const package_json = {
 			default: './dist/db/testMigration.task.js',
 			types: './dist/db/testMigration.task.d.ts',
 		},
-		'./deploy.task.js': {default: './dist/deploy.task.js', types: './dist/deploy.task.d.ts'},
 		'./docs/actor_types.svelte': {
 			svelte: './dist/docs/actor_types.svelte',
 			default: './dist/docs/actor_types.svelte',
@@ -2172,13 +2167,6 @@ export const src_json = {
 		'./db/testMigration.task.js': {
 			path: 'db/testMigration.task.ts',
 			declarations: [{name: 'task', kind: 'variable'}],
-		},
-		'./deploy.task.js': {
-			path: 'deploy.task.ts',
-			declarations: [
-				{name: 'Args', kind: 'variable'},
-				{name: 'task', kind: 'variable'},
-			],
 		},
 		'./docs/actor_types.svelte': {path: 'docs/actor_types.svelte', declarations: []},
 		'./docs/admin.svelte': {path: 'docs/admin.svelte', declarations: []},
