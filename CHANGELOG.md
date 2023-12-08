@@ -1,5 +1,15 @@
 # @feltjs/felt
 
+## 0.13.0
+
+### Minor Changes
+
+- d9a15f8e: delete the `gro deploy` override for `gro infra/deploy`
+
+### Patch Changes
+
+- b1eabf5a: improve docs
+
 ## 0.12.3
 
 ### Patch Changes

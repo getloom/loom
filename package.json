@@ -1,6 +1,6 @@
 {
   "name": "@feltjs/felt",
-  "version": "0.12.3",
+  "version": "0.13.0",
   "description": "a programmable platform for hobbyists and human-scale communities",
   "icon": "💚",
   "public": true,

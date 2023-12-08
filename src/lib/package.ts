@@ -5,7 +5,7 @@ import type {Src_Json} from '@grogarden/gro/src_json.js';
 
 export const package_json = {
 	name: '@feltjs/felt',
-	version: '0.12.3',
+	version: '0.13.0',
 	description: 'a programmable platform for hobbyists and human-scale communities',
 	icon: '💚',
 	public: true,
@@ -1890,7 +1890,7 @@ export const package_json = {
 
 export const src_json = {
 	name: '@feltjs/felt',
-	version: '0.12.3',
+	version: '0.13.0',
 	modules: {
 		'./check.task.js': {
 			path: 'check.task.ts',
