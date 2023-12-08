@@ -80,8 +80,8 @@ export const toAppSearchParams = (
 		actorIndex === 0 || actorIndex === '0' // omit the actor index unless it differs from the default
 			? null
 			: typeof actorIndex === 'number'
-			? actorIndex + ''
-			: actorIndex;
+			  ? actorIndex + ''
+			  : actorIndex;
 	return mergeSearchParams(searchParams, {[ACTOR_QUERY_KEY]: actor});
 };
 

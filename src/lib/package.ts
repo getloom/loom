@@ -30,7 +30,7 @@ export const package_json = {
 		'@fuz.dev/fuz_dialog': '^0.5.0',
 		'@fuz.dev/fuz_library': '^0.23.0',
 		'@fuz.dev/svelte_intersect': '^0.7.0',
-		'@grogarden/gro': '^0.102.2',
+		'@grogarden/gro': '^0.103.1',
 		'@ryanatkn/json-schema-to-typescript': '^11.1.5',
 		'@sveltejs/adapter-node': '^1.3.1',
 		'@sveltejs/kit': '^1.27.2',
@@ -58,7 +58,7 @@ export const package_json = {
 	},
 	dependencies: {
 		'@feltcoop/svelte-gettable-stores': '^0.2.0',
-		'@grogarden/util': '^0.16.1',
+		'@grogarden/util': '^0.18.0',
 		'@polka/send-type': '^0.5.2',
 		ajv: '^8.12.0',
 		'ajv-keywords': '^5.1.0',
@@ -460,7 +460,7 @@ export const package_json = {
 			default: './dist/docs/tech_stack_diagram.js',
 			types: './dist/docs/tech_stack_diagram.d.ts',
 		},
-		'./infra/.env.development.default': {default: './dist/infra/.env.development.default'},
+		'./infra/.env.example': {default: './dist/infra/.env.example'},
 		'./infra/after_deploy.js': {
 			default: './dist/infra/after_deploy.js',
 			types: './dist/infra/after_deploy.d.ts',
@@ -2239,7 +2239,7 @@ export const src_json = {
 			path: 'docs/tech_stack_diagram.ts',
 			declarations: [{name: 'tech_stack_diagram', kind: 'variable'}],
 		},
-		'./infra/.env.development.default': {path: 'infra/.env.development.default', declarations: []},
+		'./infra/.env.example': {path: 'infra/.env.example', declarations: []},
 		'./infra/after_deploy.js': {path: 'infra/after_deploy.ts', declarations: []},
 		'./infra/constants.js': {
 			path: 'infra/constants.ts',

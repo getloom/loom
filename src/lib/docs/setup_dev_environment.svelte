@@ -140,11 +140,8 @@ gro # print available tasks`}
 		</li>
 	</ul>
 	<p>
-		Felt's projects are not currently being tested on Windows.
-		<a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install">WSL2</a> provides a decent
-		experience running a Linux distro on Windows via the VSCode extension
-		<a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl"
-			>Remote - WSL</a
-		>. (may not work with VSCodium, and may have various issues)
+		Felt chooses Bash integration over Windows support. We recommend <a
+			href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install">WSL</a
+		> with Ubuntu for Windows users.
 	</p>
 </div>

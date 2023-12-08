@@ -1,7 +1,9 @@
+import {randomInt} from 'crypto';
+
 import {env as env_dynamic_public} from '$env/dynamic/public';
 import type * as env_static_private from '$env/static/private';
 import type * as env_static_public from '$env/static/public';
-import {copyFile, readFile, writeFile} from 'node:fs/promises';
+import {readFile, writeFile} from 'node:fs/promises';
 import {exists} from '@grogarden/gro/exists.js';
 import {load_env} from '@grogarden/gro/env.js';
 
@@ -9,16 +11,22 @@ export const ENV_FILE_BASE = '.env';
 export const ENV_FILE_PROD = '.env.production';
 export const ENV_FILE_DEV = '.env.development';
 
-const envs: Array<{file: string; defaultFile: string; load: boolean}> = [
-	{file: ENV_FILE_BASE, defaultFile: `src/lib/infra/${ENV_FILE_BASE}.default`, load: true},
+interface Env_File {
+	path: string;
+	example_path: string;
+	load: boolean;
+}
+
+const env_files: Env_File[] = [
+	{path: ENV_FILE_BASE, example_path: `src/lib/infra/${ENV_FILE_BASE}.example`, load: true},
 	{
-		file: ENV_FILE_DEV,
-		defaultFile: `src/lib/infra/${ENV_FILE_DEV}.default`,
+		path: ENV_FILE_DEV,
+		example_path: `src/lib/infra/${ENV_FILE_DEV}.example`,
 		load: import.meta.env.DEV,
 	},
 	{
-		file: ENV_FILE_PROD,
-		defaultFile: `src/lib/infra/${ENV_FILE_PROD}.default`,
+		path: ENV_FILE_PROD,
+		example_path: `src/lib/infra/${ENV_FILE_PROD}.example`,
 		load: import.meta.env.PROD,
 	},
 ];
@@ -29,16 +37,25 @@ const envs: Array<{file: string; defaultFile: string; load: boolean}> = [
 export const init_env = async (): Promise<boolean> => {
 	let inited = false;
 	await Promise.all(
-		envs.map(async (env) => {
-			if (!(await exists(env.file)) && (await exists(env.defaultFile))) {
-				// TODO randomize the secrets in these on copy
-				await copyFile(env.defaultFile, env.file);
+		env_files.map(async (env_file) => {
+			if (!(await exists(env_file.path))) {
+				await init_env_file(env_file);
 				inited = true;
 			}
 		}),
 	);
 	return inited;
 };
+
+const init_env_file = async (env_file: Env_File): Promise<void> => {
+	const example_contents = await readFile(env_file.example_path, 'utf8');
+	const contents = example_contents.replaceAll('🎲', () => random_char());
+	await writeFile(env_file.path, contents, 'utf8');
+};
+
+// TODO move this to another module?
+const random_char = (chars = alphanumerics): string => chars[randomInt(chars.length)];
+const alphanumerics = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
 
 /**
  * Updates `PUBLIC_GIT_HASH`, mutating the runtime dynamic env with the new value.

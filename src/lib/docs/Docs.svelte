@@ -63,14 +63,14 @@
 		pathname === path_guide
 			? 'felt guide'
 			: pathname === path_guide_user
-			? 'felt user guide'
-			: pathname === path_guide_admin
-			? 'felt admin guide'
-			: pathname === path_guide_dev
-			? 'felt dev guide'
-			: pathname === path_vocab
-			? 'felt vocab docs'
-			: 'felt docs';
+			  ? 'felt user guide'
+			  : pathname === path_guide_admin
+			    ? 'felt admin guide'
+			    : pathname === path_guide_dev
+			      ? 'felt dev guide'
+			      : pathname === path_vocab
+			        ? 'felt vocab docs'
+			        : 'felt docs';
 
 	$: showGuideContent = pathname.startsWith(path_guide);
 	$: showVocabContent = pathname.startsWith(path_vocab);

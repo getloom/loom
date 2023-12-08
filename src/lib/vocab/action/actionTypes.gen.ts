@@ -177,5 +177,5 @@ const toServiceAuthPrefix = (service: Service): string =>
 	service.action.authenticate === false
 		? 'NonAuthenticated'
 		: service.action.authorize === false
-		? 'NonAuthorized'
-		: 'Authorized';
+		  ? 'NonAuthorized'
+		  : 'Authorized';

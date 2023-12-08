@@ -24,17 +24,17 @@
 	$: valid = networkRelative
 		? isNetworkRelativePathValid(href)
 		: hubRelative
-		? isHubRelativePathValid(href)
-		: spaceRelative
-		? isSpaceRelativePathValid(href)
-		: true;
+		  ? isHubRelativePathValid(href)
+		  : spaceRelative
+		    ? isSpaceRelativePathValid(href)
+		    : true;
 	$: finalHref = networkRelative
 		? 'https:' + href
 		: hubRelative
-		? base + '/' + $hub.name + href
-		: spaceRelative
-		? base + '/' + $hub.name + renderDirectoryPath($directory.path) + '/' + href.substring(2)
-		: href;
+		  ? base + '/' + $hub.name + href
+		  : spaceRelative
+		    ? base + '/' + $hub.name + renderDirectoryPath($directory.path) + '/' + href.substring(2)
+		    : href;
 	$: external = !(hubRelative || spaceRelative || href.startsWith('.'));
 	$: rel = external ? 'external noreferrer nofollow' : undefined;
 	$: target = external ? '_blank' : undefined;
