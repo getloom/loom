@@ -13,7 +13,7 @@
 		ui: {ephemera},
 	} = getApp();
 
-	let handleAction: (action: Mural_Action) => any;
+	let handle_action: (action: Mural_Action) => any;
 
 	// fixed dimensions so it's consistent for multiple users at once - not great, is there another way?
 	const width = 800;
@@ -36,14 +36,14 @@
 				v.space_id === $space.space_id && // scope to this space
 				v.actor !== $actor.actor_id // don't forward ephemera created by the user
 			) {
-				handleAction(v.data as any); // don't forward the space_id
+				handle_action(v.data as any); // don't forward the space_id
 			}
 		}),
 	);
 </script>
 
 <div class="mural_wrapper panel">
-	<Mural {width} {height} bind:handleAction on:action={(e) => brodcastAction(e.detail)} />
+	<Mural {width} {height} bind:handle_action on:action={(e) => brodcastAction(e.detail)} />
 </div>
 
 <style>
