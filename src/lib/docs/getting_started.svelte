@@ -138,6 +138,5 @@
 				><code>guide/admin/managing-production</code></a
 			>
 		</li>
-		<li></li>
 	</ul>
 </div>

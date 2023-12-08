@@ -54,7 +54,13 @@ fnm default 20`}
 cd felt
 npm i # install dependencies`}
 	/>
-	<p>Install any desired global dependencies:</p>
+	<p>
+		Install any desired global dependencies. Felt uses <a href="https://github.com/grogarden/gro"
+			>Gro</a
+		>
+		for tasks and <a href="https://github.com/changesets/changesets">Changesets</a> (installed globally)
+		for versioning and changelogs:
+	</p>
 	<CodeExample code={`npm i -g @grogarden/gro @changesets/cli`} />
 	<p>To upgrade an existing installation:</p>
 	<CodeExample
@@ -87,11 +93,12 @@ create database felt; # notice the semicolon
 	/>
 	<p>
 		Now that the database is setup and the repo is installed, run the project locally on your
-		machine:
+		machine. First initialize the database and run the tests to ensure everything works:
 	</p>
 	<CodeExample
-		code={`gro dev
+		code={`gro db/create
 gro test
+gro dev # browse to localhost:5173
 gro # print available tasks`}
 	/>
 	<h3>4. VSCode</h3>

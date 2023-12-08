@@ -282,6 +282,7 @@
 		overflow: auto;
 		flex: 1;
 		padding: var(--spacing_md);
+		padding-bottom: var(--spacing_6);
 	}
 	ol,
 	menu {
