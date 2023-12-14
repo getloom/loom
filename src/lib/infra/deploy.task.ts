@@ -2,7 +2,7 @@ import type {Task} from '@grogarden/gro';
 import {spawn} from '@grogarden/util/process.js';
 import {SVELTEKIT_BUILD_DIRNAME, SERVER_DIST_PATH} from '@grogarden/gro/paths.js';
 import {unwrap} from '@grogarden/util/result.js';
-import {exists} from '@grogarden/gro/exists.js';
+import {exists} from '@grogarden/gro/fs.js';
 import {mkdir} from 'node:fs/promises';
 
 import {ENV_FILE_BASE, ENV_FILE_PROD, load_envs} from '$lib/server/env.js';

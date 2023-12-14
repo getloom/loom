@@ -152,7 +152,7 @@
 						? (e) => {
 								swallow(e);
 								void goto(toHubUrl($hub.name, '/' + $space.name, $page.url.search));
-						  }
+							}
 						: undefined}
 				>
 					<EntityContent {entity} />

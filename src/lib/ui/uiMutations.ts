@@ -94,7 +94,7 @@ export const SetSession: Mutations['SetSession'] = async ({mutate, afterMutation
 										isHomeDirectory(entityById.get(s.directory_id)!.get()),
 								)?.space_id ||
 								null,
-					  ]),
+						]),
 			),
 		);
 
@@ -126,7 +126,7 @@ const toInitialActors = (session: ClientSession): ClientActor[] =>
 				session.actors.filter(
 					(p1) => !session.sessionActors.find((p2) => p2.actor_id === p1.actor_id),
 				),
-		  );
+			);
 
 export const ToggleMainNav: Mutations['ToggleMainNav'] = ({mutate, ui: {expandMainNav}}) => {
 	mutate(() => {

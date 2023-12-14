@@ -47,5 +47,5 @@ export const toValidationErrorMessage = (e: ErrorObject): string =>
 	e.keyword === 'additionalProperties'
 		? `${e.message}: '${e.params.additionalProperty}'`
 		: e.instancePath
-		  ? `'${e.instancePath.substring(1)}' ${e.message}`
-		  : e.message!;
+			? `'${e.instancePath.substring(1)}' ${e.message}`
+			: e.message!;

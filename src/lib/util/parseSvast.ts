@@ -175,7 +175,7 @@ const parseSvastText = (node: Text): SvelteChild => {
 				properties: [],
 				selfClosing: false,
 				children,
-		  };
+			};
 };
 
 const MATCH_WHITESPACE = /(\s+)/u;

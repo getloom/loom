@@ -122,8 +122,8 @@ const toPaginatedQuery = (
 					? $entities[$entities.length - 1]
 					: $entities[0]
 				: reversed
-				  ? $entities[0]
-				  : $entities[$entities.length - 1];
+					? $entities[0]
+					: $entities[$entities.length - 1];
 		return load(oldest?.get().entity_id);
 	};
 

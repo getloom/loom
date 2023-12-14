@@ -31,7 +31,7 @@
 					// path: $directory.path + '/thread',
 				},
 				true,
-		  )
+			)
 		: null;
 	$: entities = query?.entities;
 </script>

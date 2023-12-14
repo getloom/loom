@@ -24,7 +24,7 @@
 		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $space.directory_id,
-		  })
+			})
 		: null;
 	$: entities = query?.entities;
 

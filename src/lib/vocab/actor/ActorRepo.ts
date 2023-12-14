@@ -115,7 +115,7 @@ export class ActorRepo extends PostgresRepo {
 				? null
 				: actorIds.filter(
 						(id) => !actors.some((e) => (e as Pick<ActorRecord, 'actor_id'>).actor_id === id), // TODO try to remove the cast to `as Pick<Actor, 'actor_id'>`
-				  );
+					);
 		return {actors, missing};
 	}
 

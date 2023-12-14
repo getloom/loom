@@ -38,5 +38,5 @@ export const toFailedApiResult = (err: any): FailedApiResult =>
 	err instanceof ApiError
 		? {ok: false, status: err.status, message: err.message}
 		: err instanceof Result_Error
-		  ? {ok: false, status: (err.result as any).status || 500, message: err.message}
-		  : {ok: false, status: 500, message: Result_Error.DEFAULT_MESSAGE};
+			? {ok: false, status: (err.result as any).status || 500, message: err.message}
+			: {ok: false, status: 500, message: Result_Error.DEFAULT_MESSAGE};

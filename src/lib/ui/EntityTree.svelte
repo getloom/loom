@@ -29,7 +29,7 @@
 		? createQuery({
 				actor: $actor.actor_id,
 				source_id: $entity.entity_id,
-		  })
+			})
 		: null;
 	$: destEntities = query?.entities;
 	$: more = $query?.more;

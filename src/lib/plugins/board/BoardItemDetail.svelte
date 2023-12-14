@@ -36,7 +36,7 @@
 					source_id: $entity.entity_id,
 				},
 				true,
-		  )
+			)
 		: null;
 	$: items = query?.entities;
 

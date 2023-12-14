@@ -24,7 +24,7 @@
 					orderBy: 'oldest',
 				},
 				true,
-		  )
+			)
 		: null;
 	$: entities = query?.entities;
 

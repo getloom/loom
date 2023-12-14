@@ -150,10 +150,10 @@ export const toUi = (
 					return isHomeDirectory(entityById.get(a.directory_id)!.get())
 						? -1
 						: isHomeDirectory(entityById.get(b.directory_id)!.get())
-						  ? 1
-						  : a.name < b.name
-						    ? -1
-						    : 1;
+							? 1
+							: a.name < b.name
+								? -1
+								: 1;
 				});
 				map.set(hub_id, hubSpaces);
 			}

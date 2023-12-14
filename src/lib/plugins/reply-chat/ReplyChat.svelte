@@ -33,7 +33,7 @@
 				// path: '/thread',
 				source_id: $space.directory_id,
 				related: 'dest',
-		  })
+			})
 		: null;
 	$: entities = query?.entities;
 

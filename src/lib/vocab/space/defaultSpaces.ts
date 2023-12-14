@@ -27,7 +27,7 @@ export const toDefaultSpaces = (actor: ActorId, hub: Hub): CreateSpaceParams[] =
 				{...toTemplatePartial('List'), name: 'list'},
 				{...toTemplatePartial('Lists'), name: 'lists'},
 				{...toTemplatePartial('Mural'), name: 'mural'},
-		  ].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
+			].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
 };
 
 export const toDefaultAdminSpaces = (actor: ActorId, {hub_id}: Hub): CreateSpaceParams[] =>

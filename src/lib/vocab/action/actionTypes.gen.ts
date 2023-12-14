@@ -136,7 +136,7 @@ ${await jsonSchemaToTypescript(actionData.params, toParamsName(actionData.name),
 			'response' in actionData
 				? `	export type ${toResponseResultName(actionData.name)} = ApiResult<${toResponseName(
 						actionData.name,
-				  )}>;`
+					)}>;`
 				: ''
 		}
 `,
@@ -177,5 +177,5 @@ const toServiceAuthPrefix = (service: Service): string =>
 	service.action.authenticate === false
 		? 'NonAuthenticated'
 		: service.action.authorize === false
-		  ? 'NonAuthorized'
-		  : 'Authorized';
+			? 'NonAuthorized'
+			: 'Authorized';
