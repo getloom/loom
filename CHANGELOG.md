@@ -1,136 +1,143 @@
 # @feltjs/felt
 
+## 0.14.0
+
+### Minor Changes
+
+- upgrade deps ([#959](https://github.com/feltjs/felt/pull/959))
+- upgrade gro ([#958](https://github.com/feltjs/felt/pull/958))
+
 ## 0.13.0
 
 ### Minor Changes
 
-- d9a15f8e: delete the `gro deploy` override for `gro infra/deploy`
+- delete the `gro deploy` override for `gro infra/deploy` ([#955](https://github.com/feltjs/felt/pull/955))
 
 ### Patch Changes
 
-- b1eabf5a: improve docs
+- improve docs ([#956](https://github.com/feltjs/felt/pull/956))
 
 ## 0.12.3
 
 ### Patch Changes
 
-- d3249fd5: upgrade deps
+- upgrade deps ([d3249fd5](https://github.com/feltjs/felt/commit/d3249fd5))
 
 ## 0.12.2
 
 ### Patch Changes
 
-- 7da37ea1: upgrade types
+- upgrade types ([7da37ea1](https://github.com/feltjs/felt/commit/7da37ea1))
 
 ## 0.12.1
 
 ### Patch Changes
 
-- 60ed66a5: upgrade deps
+- upgrade deps ([60ed66a5](https://github.com/feltjs/felt/commit/60ed66a5))
 
 ## 0.12.0
 
 ### Minor Changes
 
-- b8a4cdbe: upgrade deps
+- upgrade deps ([b8a4cdbe](https://github.com/feltjs/felt/commit/b8a4cdbe))
 
 ## 0.11.2
 
 ### Patch Changes
 
-- dc1f1d3f: add icon 💚
+- add icon 💚 ([dc1f1d3f](https://github.com/feltjs/felt/commit/dc1f1d3f))
 
 ## 0.11.1
 
 ### Patch Changes
 
-- 6d76fdba: export all modules
+- export all modules ([6d76fdba](https://github.com/feltjs/felt/commit/6d76fdba))
 
 ## 0.11.0
 
 ### Minor Changes
 
-- c49309b3: upgrade deps
+- upgrade deps ([c49309b3](https://github.com/feltjs/felt/commit/c49309b3))
 
 ## 0.10.0
 
 ### Minor Changes
 
-- a50aac54: upgrade deps
+- upgrade deps ([a50aac54](https://github.com/feltjs/felt/commit/a50aac54))
 
 ## 0.9.5
 
 ### Patch Changes
 
-- f68d9c00: add package summary to intro docs
+- add package summary to intro docs ([f68d9c00](https://github.com/feltjs/felt/commit/f68d9c00))
 
 ## 0.9.4
 
 ### Patch Changes
 
-- 3f7f3a15: update docs
+- update docs ([3f7f3a15](https://github.com/feltjs/felt/commit/3f7f3a15))
 
 ## 0.9.3
 
 ### Patch Changes
 
-- 75f5304a: upgrade deps which adds `modules` to `package.json`
+- upgrade deps which adds `modules` to `package.json` ([#954](https://github.com/feltjs/felt/pull/954))
 
 ## 0.9.2
 
 ### Patch Changes
 
-- 4b8cc9bf: switch to `@feltjs/felt_mural`
+- switch to `@feltjs/felt_mural` ([4b8cc9bf](https://github.com/feltjs/felt/commit/4b8cc9bf))
 
 ## 0.9.1
 
 ### Patch Changes
 
-- a4711458: add peer dep `@sveltejs/kit`
-- a4711458: add and export `$lib/package.ts`
+- add peer dep `@sveltejs/kit` ([a4711458](https://github.com/feltjs/felt/commit/a4711458))
+- add and export `$lib/package.ts` ([a4711458](https://github.com/feltjs/felt/commit/a4711458))
 
 ## 0.9.0
 
 ### Minor Changes
 
-- 67f9143b: upgrade deps
+- upgrade deps ([67f9143b](https://github.com/feltjs/felt/commit/67f9143b))
 
 ## 0.8.5
 
 ### Patch Changes
 
-- a932fbb8: export modules for docs
+- export modules for docs ([a932fbb8](https://github.com/feltjs/felt/commit/a932fbb8))
 
 ## 0.8.4
 
 ### Patch Changes
 
-- 14c7c593: export ui/style.css
+- export ui/style.css ([14c7c593](https://github.com/feltjs/felt/commit/14c7c593))
 
 ## 0.8.3
 
 ### Patch Changes
 
-- c05abb95: fix import paths
+- fix import paths ([#950](https://github.com/feltjs/felt/pull/950))
 
 ## 0.8.2
 
 ### Patch Changes
 
-- 3c9cbce6: add gro library plugin to fix published dist
+- add gro library plugin to fix published dist ([3c9cbce6](https://github.com/feltjs/felt/commit/3c9cbce6))
 
 ## 0.8.1
 
 ### Patch Changes
 
-- 43e788af: include dist in published package
+- include dist in published package ([43e788af](https://github.com/feltjs/felt/commit/43e788af))
 
 ## 0.8.0
 
 ### Minor Changes
 
-- 1fc3b615: upgrade `@grogarden/util@0.15` from `0.13`
-- 1fc3b615: rename `@fuz.dev/svelte_intersect` from `@fuz.dev/svelte-intersect`
+- upgrade `@grogarden/util@0.15` from `0.13` ([#922](https://github.com/feltjs/felt/pull/922))
+- rename `@fuz.dev/svelte_intersect` from `@fuz.dev/svelte-intersect` ([#922](https://github.com/feltjs/felt/pull/922))
 
 ## 0.7.0
 
