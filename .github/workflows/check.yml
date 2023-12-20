@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [20.7]
+        node-version: ['20.10']
 
     services:
       # Postgres config taken from GitHub Actions help docs:

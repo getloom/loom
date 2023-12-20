@@ -58,7 +58,7 @@ To work directly on the codebase,
 see [Getting started](https://www.felt.dev/docs/guide/admin/getting-started), then:
 
 ```bash
-# node >=20.7
+# node >=20.10
 npm i
 
 # start SvelteKit/Vite and the Node server
