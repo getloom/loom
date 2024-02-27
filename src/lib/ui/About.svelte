@@ -19,11 +19,11 @@
 	</ul>
 	<blockquote>
 		<p class="title">
-			<a href="https://github.com/feltjs/felt" target="_blank" rel="noreferrer">💚</a>
-			<a href="https://www.felt.dev/" target="_blank" rel="noreferrer">Felt</a>
+			<a href="https://github.com/getloom/loom" target="_blank" rel="noreferrer">🟪</a>
+			<a href="https://www.getloom.org/" target="_blank" rel="noreferrer">Loom</a>
 			version
 			<a
-				href="https://github.com/feltjs/felt/releases/tag/v{FELT_VERSION}"
+				href="https://github.com/getloom/loom/releases/tag/v{FELT_VERSION}"
 				target="_blank"
 				rel="noreferrer"
 			>
@@ -31,7 +31,7 @@
 			</a>
 			commit
 			<a
-				href="https://github.com/feltjs/felt/commit/{PUBLIC_GIT_HASH}"
+				href="https://github.com/getloom/loom/commit/{PUBLIC_GIT_HASH}"
 				target="_blank"
 				rel="noreferrer"
 			>

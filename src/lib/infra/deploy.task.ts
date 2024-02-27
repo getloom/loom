@@ -25,11 +25,14 @@ export const task: Task = {
 
 		const deploy_login = `${DEPLOY_USER}@${DEPLOY_IP}`;
 
+		//TODO get upstream dependencies fixed and remove the tarballss
 		const files: string[] = [
 			SERVER_DIST_PATH,
 			SVELTEKIT_BUILD_DIRNAME,
 			'package.json',
 			'package-lock.json',
+			'svelte-gettable-stores-0.2.0.tgz',
+			'util-0.18.1.tgz',			
 		];
 
 		// TODO ensure_dir helper? or omit the `exists` check?
