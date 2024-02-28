@@ -24,6 +24,8 @@ Purple: #7019A4  RGB: 112–25–164
 Peach: #F6A719 RGB: 246–167–25
 Green: #13BE28 RGB: 19–190–40
 
+https://paletton.com/#uid=34G0V0ksJuNhRD-mXwrvdoT-mjF
+
 ## getting started
 
 To learn about the project, see [felt.dev/about](https://felt.dev/about).
