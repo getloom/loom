@@ -1,9 +1,9 @@
 <script lang="ts">
-	export let alt = 'green felt heart';
+	export let alt = 'word loom, woven together in motley color';
 </script>
 
 <div class="icon">
-	<img src="/favicon.png" {alt} />
+	<img src="/felt.png" {alt} />
 </div>
 
 <style>
@@ -13,7 +13,7 @@
 		padding: var(--spacing_lg);
 	}
 	.icon img {
-		width: var(--icon_size);
-		height: var(--icon_size);
+		width: var(--icon_size_2);
+		height: var(--icon_size_2);
 	}
 </style>
