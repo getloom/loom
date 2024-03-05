@@ -1,4 +1,4 @@
-// TODO extract to felt
+// TODO extract to loom
 
 export interface Action<TParameters = undefined> {
 	(

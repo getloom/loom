@@ -14,18 +14,18 @@
 </script>
 
 <section class="prose spaced">
-	<h2>Using Felt as a library</h2>
+	<h2>Using Loom as a library</h2>
 	<blockquote>support for this coming soon - it's published to npm but not yet usable</blockquote>
 	<p>
-		<code>@feltjs/felt</code> can be installed as
-		<a href="https://www.npmjs.com/package/@feltjs/felt">an npm library</a>
+		<code>@getloom/loom</code> can be installed as
+		<a href="https://www.npmjs.com/package/@getloom/loom">an npm library</a>
 		to make custom servers.
 	</p>
 	<p>
 		First, follow the <a href="{base}{path}/guide/admin/getting-started">getting started</a> instructions.
 	</p>
-	<p>Next install Felt as a dev dependency:</p>
-	<CodeExample code="npm i -D @feltjs/felt" />
+	<p>Next install Loom as a dev dependency:</p>
+	<CodeExample code="npm i -D @getloom/felt" />
 </section>
 <section class="panel padded">
 	<Package_Detail {pkg} />

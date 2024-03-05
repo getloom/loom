@@ -11,7 +11,7 @@
 	<h2>Introduction to Felt</h2>
 	<p>
 		These docs are currently a work in progress. For the project overview see <a
-			href="https://www.felt.dev/">felt.dev</a
+			href="https://www.getloom.org/">getloom.org</a
 		>.
 	</p>
 </section>

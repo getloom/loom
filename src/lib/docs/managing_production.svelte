@@ -12,7 +12,7 @@
 	<h2>Managing a production deployment</h2>
 	<p>
 		This document describes how to manage a deployed instance of <a
-			href="https://github.com/feltjs/felt"><code>@feltjs/felt</code></a
+			href="https://github.com/getloom/loom"><code>@getloom/loom</code></a
 		>.
 	</p>
 	<p>
@@ -50,7 +50,7 @@ vi /$${'{'}DEPLOY_USER}/.pm2/logs/npm-out.log # open the app log`}
 	<CodeExample
 		code={`sudo -i -u postgres psql
 \\l # list databases
-\\c felt # connect to <code>felt</code>
+\\c loom # connect to <code>felt</code>
 \\dt # list tables
 SELECT count(*) FROM accounts; # any SQL`}
 	/>

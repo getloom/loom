@@ -12,8 +12,8 @@ export const gen: Gen = async () => {
 	// TODO make these options configurable
 	const bundled = bundle_schemas(
 		schemas,
-		'https://www.felt.dev/schemas/vocab.json',
-		'@feltjs/felt vocab',
+		'https://www.getloom.org/schemas/vocab.json',
+		'@getloom/felt vocab',
 	);
 	return {
 		filename: '../../../static/schemas/vocab.json',

@@ -1,7 +1,7 @@
 {
-	"$id": "https://www.felt.dev/schemas/vocab.json",
+	"$id": "https://www.getloom.org/schemas/vocab.json",
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
-	"title": "@feltjs/felt vocab",
+	"title": "@getloom/felt vocab",
 	"$defs": {
 		"Account": {
 			"$id": "/schemas/Account",

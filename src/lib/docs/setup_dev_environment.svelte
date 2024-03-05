@@ -10,11 +10,11 @@
 
 <div class="prose">
 	<h2>Development setup</h2>
-	<p>This walks through setting up a development environment for Felt.coop projects.</p>
+	<p>This walks through setting up a development environment for loom.coop projects.</p>
 	<h3>1. Git</h3>
 	<p>
-		<code>@feltjs/felt</code>'s code is on GitHub:
-		<a href="https://github.com/feltjs/felt">github.com/feltjs/felt</a>
+		<code>@getloom/loom</code>'s code is on GitHub:
+		<a href="https://github.com/getloom/loom">github.com/getloom/loom</a>
 	</p>
 	<p>Configure git:</p>
 	<CodeExample
@@ -30,7 +30,7 @@ git config --global core.pager 'less -x1,5'`}
 
 	<h3>2. NodeJS</h3>
 	<p>
-		<code>@feltjs/felt</code> requires <a href="https://nodejs.org/">NodeJS</a> >=20.10. Our
+		<code>@getloom/loom</code> requires <a href="https://nodejs.org/">NodeJS</a> >=20.10. Our
 		recommended Node version manager is
 		<a href="https://github.com/Schniz/fnm"><code>fnm</code></a>, which is roughly equivalent to
 		<a href="https://github.com/nvm-sh/nvm"><code>nvm</code></a> with improved performance.
@@ -46,16 +46,16 @@ fnm use 20
 fnm default 20`}
 	/>
 	<p>
-		Now that we have git and Node installed, clone the <code>@feltjs/felt</code> repo and install
+		Now that we have git and Node installed, clone the <code>@getloom/loom</code> repo and install
 		with <code>npm</code>:
 	</p>
 	<CodeExample
-		code={`git clone https://github.com/feltjs/felt
-cd felt
+		code={`git clone https://github.com/getloom/loom
+cd loom
 npm i # install dependencies`}
 	/>
 	<p>
-		Install any desired global dependencies. Felt uses <a href="https://github.com/grogarden/gro"
+		Install any desired global dependencies. Loom uses <a href="https://github.com/grogarden/gro"
 			>Gro</a
 		>
 		for tasks and <a href="https://github.com/changesets/changesets">Changesets</a> (installed globally)
@@ -73,12 +73,12 @@ npm i -g @grogarden/gro @changesets/cli # reinstall global dependencies`}
 	/>
 	<h3>3. Postgres</h3>
 	<p>
-		<code>@feltjs/felt</code> requires <a href="https://www.postgresql.org/">Postgres</a> >= 15. For
+		<code>@getloom/loom</code> requires <a href="https://www.postgresql.org/">Postgres</a> >= 15. For
 		details about Felt's database implementation, see
 		<a href="{base}{path}/guide/dev/data-model">the data model docs</a>.
 	</p>
 	<p>
-		<code>@feltjs/felt</code> defaults to user <code>postgres</code> with password
+		<code>@getloom/felt</code> defaults to user <code>postgres</code> with password
 		<code>password</code>
 		and database
 		<code>felt</code>. To set up its database with the expected defaults:
@@ -132,8 +132,8 @@ gro # print available tasks`}
 					<code>"eslint.validate": ["javascript", "svelte"],</code>
 				</li>
 				<li>
-					for more, see <a href="https://github.com/feltjs/eslint-config"
-						><code>@feltjs/eslint-config</code></a
+					for more, see <a href="https://github.com/getloom/eslint-config"
+						><code>@getloom/eslint-config</code></a
 					>
 				</li>
 			</ul>

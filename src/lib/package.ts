@@ -4,16 +4,16 @@ import type {Package_Json} from '@grogarden/gro/package_json.js';
 import type {Src_Json} from '@grogarden/gro/src_json.js';
 
 export const package_json = {
-	name: '@feltjs/felt',
+	name: '@getloom/felt',
 	version: '0.14.0',
 	description: 'a programmable platform for hobbyists and human-scale communities',
-	icon: '💚',
+	icon: '🧺',
 	public: true,
 	license: 'MIT',
-	author: {name: 'feltjs', email: 'team@felt.social', url: 'https://felt.social'},
-	homepage: 'https://www.felt.dev/',
-	repository: {type: 'git', url: 'git+https://github.com/feltjs/felt.git'},
-	bugs: {url: 'https://github.com/feltjs/felt/issues'},
+	author: {name: 'getloom', email: 'team@felt.social', url: 'https://felt.social'},
+	homepage: 'https://www.getloom.org/',
+	repository: {type: 'git', url: 'git+https://github.com/getloom/felt.git'},
+	bugs: {url: 'https://github.com/getloom/felt/issues'},
 	scripts: {
 		start: 'node dist_server/server/server.js',
 		after_deploy: 'node dist_server/infra/after_deploy.js',
@@ -23,8 +23,8 @@ export const package_json = {
 	peerDependencies: {'@sveltejs/kit': '*'},
 	devDependencies: {
 		'@changesets/changelog-git': '^0.2.0',
-		'@feltjs/eslint-config': 'file:eslint-config-0.4.1.tgz',
-		'@feltjs/felt_mural': 'file:felt_mural-0.9.4.tgz',
+		'@getloom/eslint-config': 'file:eslint-config-0.4.1.tgz',
+		'@getloom/felt_mural': 'file:felt_mural-0.9.4.tgz',
 		'@fuz.dev/fuz': 'file:fuz-0.81.0.tgz',
 		'@fuz.dev/fuz_contextmenu': 'file:fuz_contextmenu-0.7.0.tgz',
 		'@fuz.dev/fuz_dialog': 'file:fuz_dialog-0.6.0.tgz',
@@ -82,7 +82,7 @@ export const package_json = {
 		ws: '^8.15.1',
 	},
 	optionalDependencies: {bufferutil: '^4.0.3', 'utf-8-validate': '^5.0.5'},
-	eslintConfig: {root: true, extends: '@feltjs', rules: {'no-console': 1}},
+	eslintConfig: {root: true, extends: '@getloom', rules: {'no-console': 1}},
 	prettier: {
 		plugins: ['prettier-plugin-svelte'],
 		useTabs: true,
@@ -1890,7 +1890,7 @@ export const package_json = {
 } satisfies Package_Json;
 
 export const src_json = {
-	name: '@feltjs/felt',
+	name: '@getloom/felt',
 	version: '0.14.0',
 	modules: {
 		'./check.task.js': {

@@ -2,7 +2,7 @@
 	<h2>Known issues</h2>
 
 	<p>
-		Some of Felt's issues have no scheduled spot on the roadmap and no obvious use for discussion.
+		Some of Loom's issues have no scheduled spot on the roadmap and no obvious use for discussion.
 		We don't want these to clutter the GitHub issues, but we're open to feedback in our other dev
 		community spaces and by email.
 	</p>
@@ -79,7 +79,7 @@
 		<li>aligning with the web platform and not breaking its standard behaviors</li>
 	</ol>
 	<p>
-		Part of our answer for 1) includes <a href="https://ui.felt.dev/library/Contextmenu"
+		Part of our answer for 1) includes <a href="https://ui.getloom.org/library/Contextmenu"
 			>a custom contextmenu</a
 		>. Like Google Docs, when you right-click or tap-and-hold (aka longpress) on the page, you'll
 		see options and actions specific to our application for your current context.
@@ -118,13 +118,13 @@
 
 	<h3 id="multi-actor-systems-are-more-complex">Multi-actor systems are more complex</h3>
 	<p>
-		Felt was designed from the beginning to support multiple users, or actors, for each account.
+		Loom was designed from the beginning to support multiple users, or actors, for each account.
 		This is a useful and powerful concept to integrate with a social app, and it helps support
 		strong privacy mechanics with good UX. We're also excited to explore novel actor types with
 		shared or automated control, like bot actors and group actors.
 	</p>
 	<p>
-		This power brings complexity, and currently, end-users of Felt are exposed to this concept and
+		This power brings complexity, and currently, end-users of Loom are exposed to this concept and
 		have no options for a simpler experience. Fortunately, our system is being designed to support a
 		fully customizable UI, so when it's ready, you'll be able to hide or disable this complexity
 		completely.

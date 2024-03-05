@@ -111,7 +111,7 @@ export const GhostActorSchema = {
 
 // TODO this will need to be split into a type union to support hub "group" actors,
 // and it's related to `hub_id` being overloaded for account/hub actor types.
-// see: https://github.com/feltjs/felt/pull/545#discussion_r1013465948
+// see: https://github.com/getloom/felt/pull/545#discussion_r1013465948
 export const PublicActorSchema = {
 	$id: '/schemas/PublicActor',
 	type: 'object',

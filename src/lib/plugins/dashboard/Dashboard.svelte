@@ -103,7 +103,7 @@
 		display: none;
 		position: fixed;
 		inset: 0;
-		/* TODO from felt */
+		/* TODO from loom */
 		background-color: rgba(0, 0, 0, 0.4);
 	}
 	:global(.mobile) .marquee_wrapper {

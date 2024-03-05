@@ -1,20 +1,20 @@
-[<img src="static/felt.png" align="right" width="192" height="178">](https://felt.dev)
+[<img src="static/loom.png" align="right" width="192" height="178">](https://getloom.org)
 
-# `@feltjs/felt`
+# `@getloom/loom`
 
-> a programmable platform for hobbyists and human-scale communities 💚
-> [@feltjs](https://github.com/feltjs)
+> a programmable platform for hobbyists and human-scale communities 🧺
+> [@getloom](https://github.com/getloom)
 
 > **work in progress**: pre-alpha
 
-Felt is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
+Loom is a [Node.js](https://nodejs.org/) server that you can use in many different ways:
 
-- as an <strong>end user</strong> using Felt like Slack or Discord,
+- as an <strong>end user</strong> using Loom like Slack or Discord,
   but with more power to build custom experiences
 - as an <strong>operator user</strong> deploying an instance to the web via servers IRL,
   doing admin and infra
 - (coming soon) as a <strong>dev user</strong> making a custom server using
-  [the library on npm](https://www.npmjs.com/package/@feltjs/felt)
+  [the library on npm](https://www.npmjs.com/package/@getloom/loom)
 - as a <strong>dev user</strong> downloading or forking this repo with git,
   adding or changing anything you wish
 
@@ -28,42 +28,42 @@ https://paletton.com/#uid=34G0V0ksJuNhRD-mXwrvdoT-mjF
 
 ## getting started
 
-To learn about the project, see [felt.dev/about](https://felt.dev/about).
+To learn about the project, see [getloom.org/about](https://getloom.org/about).
 We'll link to a video introduction with the alpha announcement.
 
 To play with the code, see
-[Getting started](https://www.felt.dev/docs/guide/admin/getting-started) and
+[Getting started](https://www.getloom.org/docs/guide/admin/getting-started) and
 [Contributing](CONTRIBUTING.md).
 Docs are a work-in-progress at
-[felt.dev/docs](https://www.felt.dev/docs),
+[getloom.org/docs](https://www.getloom.org/docs),
 including our
-[known issues](https://www.felt.dev/docs/guide/user/known-issues).
+[known issues](https://www.getloom.org/docs/guide/user/known-issues).
 
 To deploy to production, see
-[Deploying production](https://www.felt.dev/docs/guide/admin/deploying-production)
-and [Managing production](https://www.felt.dev/docs/guide/admin/managing-production).
+[Deploying production](https://www.getloom.org/docs/guide/admin/deploying-production)
+and [Managing production](https://www.getloom.org/docs/guide/admin/managing-production).
 
 The server has integrated reference docs, which we'll link after the alpha announcement.
 We also publish [our vocabulary as a JSON Schema](/src/schemas/vocab.json).
 
-## using `@feltjs/felt` as a library
+## using `@getloom/loom` as a library
 
 > support for this coming soon - it's published to npm but not yet usable
 
-[`@feltjs/felt`](https://www.npmjs.com/package/@feltjs/felt)
+[`@getloom/loom`](https://www.npmjs.com/package/@getloom/loom)
 can be installed as a library on npm to make custom servers:
 
 ```bash
-npm i -D @feltjs/felt # see the available modules at `/src/gro.config.ts`
+npm i -D @getloom/loom # see the available modules at `/src/gro.config.ts`
 ```
 
 Learn more about
-[using `@feltjs/felt` as a library](https://www.felt.dev/docs/guide/dev/library-usage).
+[using `@getloom/loom` as a library](https://www.getloom.org/docs/guide/dev/library-usage).
 
 ## local development
 
 To work directly on the codebase,
-see [Getting started](https://www.felt.dev/docs/guide/admin/getting-started), then:
+see [Getting started](https://www.getloom.org/docs/guide/admin/getting-started), then:
 
 ```bash
 # node >=20.10

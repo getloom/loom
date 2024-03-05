@@ -1,22 +1,22 @@
 {
-  "name": "@feltjs/felt",
+  "name": "@getloom/loom",
   "version": "0.14.0",
   "description": "a programmable platform for hobbyists and human-scale communities",
-  "icon": "💚",
+  "icon": "🧺",
   "public": true,
   "license": "MIT",
   "author": {
-    "name": "feltjs",
-    "email": "team@felt.social",
-    "url": "https://felt.social"
+    "name": "getloom",
+    "email": "team@getloom.org",
+    "url": "https://getloom.org"
   },
-  "homepage": "https://www.felt.dev/",
+  "homepage": "https://www.getloom.org/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/feltjs/felt.git"
+    "url": "git+https://github.com/getloom/loom.git"
   },
   "bugs": {
-    "url": "https://github.com/feltjs/felt/issues"
+    "url": "https://github.com/getloom/loom/issues"
   },
   "scripts": {
     "start": "node dist_server/server/server.js",
