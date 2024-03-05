@@ -23,8 +23,7 @@ but when there's non-obvious design choices or other ambiguities,
 please open an [issue](https://github.com/getloom/loom/issues)
 to work out the details with the maintainers.
 
-To develop, see [Getting started](https://loom.dev/docs/guide/admin/getting-started)
+To develop, see [Getting started](https://getloom.org/docs/guide/admin/getting-started)
 
-Felt is governed by a
+Loom is governed by a
 [Temporary Benevolent Dictator (TBD)](GOVERNANCE.md)
-under [@feltcoop](https://github.com/feltcoop).

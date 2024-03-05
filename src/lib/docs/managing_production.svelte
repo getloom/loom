@@ -50,7 +50,7 @@ vi /$${'{'}DEPLOY_USER}/.pm2/logs/npm-out.log # open the app log`}
 	<CodeExample
 		code={`sudo -i -u postgres psql
 \\l # list databases
-\\c loom # connect to <code>felt</code>
+\\c felt # connect to <code>felt</code>
 \\dt # list tables
 SELECT count(*) FROM accounts; # any SQL`}
 	/>

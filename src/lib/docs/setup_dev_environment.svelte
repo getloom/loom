@@ -74,14 +74,14 @@ npm i -g @grogarden/gro @changesets/cli # reinstall global dependencies`}
 	<h3>3. Postgres</h3>
 	<p>
 		<code>@getloom/loom</code> requires <a href="https://www.postgresql.org/">Postgres</a> >= 15. For
-		details about Felt's database implementation, see
+		details about Loom's database implementation, see
 		<a href="{base}{path}/guide/dev/data-model">the data model docs</a>.
 	</p>
 	<p>
-		<code>@getloom/felt</code> defaults to user <code>postgres</code> with password
+		<code>@getloom/loom</code> defaults to user <code>postgres</code> with password
 		<code>password</code>
 		and database
-		<code>felt</code>. To set up its database with the expected defaults:
+		<code>loom</code>. To set up its database with the expected defaults:
 	</p>
 	<CodeExample
 		code={`sudo -u postgres psql
@@ -140,7 +140,7 @@ gro # print available tasks`}
 		</li>
 	</ul>
 	<p>
-		Felt chooses Bash integration over Windows support. We recommend <a
+		Loom chooses Bash integration over Windows support. We recommend <a
 			href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install">WSL</a
 		> with Ubuntu for Windows users.
 	</p>

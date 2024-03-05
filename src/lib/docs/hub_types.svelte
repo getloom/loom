@@ -23,7 +23,7 @@
 	<h3><code>'personal'</code> hubs</h3>
 
 	<p>
-		Felt has a special kind of hub called a **personal hub**. It's a private world scoped to one
+		Loom has a special kind of hub called a **personal hub**. It's a private world scoped to one
 		actor, similar to <code>'community'</code> hubs with some important differences:
 	</p>
 

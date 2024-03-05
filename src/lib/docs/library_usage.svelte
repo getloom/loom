@@ -25,7 +25,7 @@
 		First, follow the <a href="{base}{path}/guide/admin/getting-started">getting started</a> instructions.
 	</p>
 	<p>Next install Loom as a dev dependency:</p>
-	<CodeExample code="npm i -D @getloom/felt" />
+	<CodeExample code="npm i -D @getloom/loom" />
 </section>
 <section class="panel padded">
 	<Package_Detail {pkg} />

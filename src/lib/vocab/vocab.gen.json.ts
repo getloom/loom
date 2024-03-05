@@ -13,7 +13,7 @@ export const gen: Gen = async () => {
 	const bundled = bundle_schemas(
 		schemas,
 		'https://www.getloom.org/schemas/vocab.json',
-		'@getloom/felt vocab',
+		'@getloom/loom vocab',
 	);
 	return {
 		filename: '../../../static/schemas/vocab.json',

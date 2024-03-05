@@ -2,7 +2,7 @@
 
 ## Basics
 
-For now, Felt Co-op ([@feltcoop](https://github.com/feltcoop)),
+For now, Hamilton (@greatbacon),
 the temporary benevolent dictator (TBD), holds ultimate decision-making power,
 until the community is ready for a more inclusive model.
 

@@ -16,12 +16,12 @@
 	<h3>Postgres setup</h3>
 
 	<p>
-		The Felt server has a dependency on <a href="https://www.postgresql.org">PostgreSQL</a> 15+. You
+		The Loom server has a dependency on <a href="https://www.postgresql.org">PostgreSQL</a> 15+. You
 		can find
 		<a href="https://www.postgresql.org/download/">setup instructions</a> on their website.
 	</p>
 	<p>
-		Felt's database driver is <a href="https://github.com/porsager/postgres"
+		Loom's database driver is <a href="https://github.com/porsager/postgres"
 			><code>postgres</code></a
 		>. See <a href="https://github.com/porsager/postgres#readme">its README</a> to learn more.
 	</p>
@@ -56,21 +56,21 @@ create database felt; # notice the semicolon
 	<blockquote>TODO figure out config, maybe through <code>src/gro.config.ts</code></blockquote>
 	<h3>Creating migrations</h3>
 	<p>
-		Felt server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its DB migrations.
+		Loom server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its DB migrations.
 		Migration files are located in the
-		<a href="https://github.com/getloom/felt/tree/main/src/lib/db/migrations">migrations</a>
+		<a href="https://github.com/getloom/loom/tree/main/src/lib/db/migrations">migrations</a>
 		directory. To create a new migration file use the <code>ley new</code> command (see Ley's docs
 		for more details) Use <code>gro db/migrate</code> to run migrations.
 	</p>
 	<h3>Creating backups</h3>
-	<p>Using the following command one can quickly take backups of the <code>felt</code> database.</p>
+	<p>Using the following command one can quickly take backups of the <code>Loom</code> database.</p>
 
 	<CodeExample code={`sudo -u postgres pg_dump felt > backup.sql`} />
 
 	<h3>Database tasks</h3>
 
 	<p>
-		Felt has a number of <a href="https://github.com/grogarden/gro">Gro</a> tasks for managing the
+		Loom has a number of <a href="https://github.com/grogarden/gro">Gro</a> tasks for managing the
 		database. To view all of them, run <code>gro db</code>.
 	</p>
 
