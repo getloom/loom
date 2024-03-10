@@ -9,11 +9,11 @@
 </script>
 
 <div class="prose">
-	<h2>Getting started with <code>@feltjs/felt</code></h2>
+	<h2>Getting started with <code>@getloom/loom</code></h2>
 	<blockquote>
-		docs for devs and operators of <a href="https://github.com/feltjs/felt"
-			><code>@feltjs/felt</code></a
-		>, a programmable platform for hobbyists and human-scale communities 💚
+		docs for devs and operators of <a href="https://github.com/getloom/loom"
+			><code>@getloom/loom</code></a
+		>, a programmable platform for hobbyists and human-scale communities 🧺
 	</blockquote>
 	<p>
 		Looking for instructions for how to use this project as a library? See <a
@@ -21,13 +21,13 @@
 		>.
 	</p>
 	<p>
-		Problems? We track <a href="https://github.com/feltjs/felt">open issues</a> on GitHub and
+		Problems? We track <a href="https://github.com/getloom/loom">open issues</a> on GitHub and
 		<a href="{base}{path}/guide/user/known-issues">known issues</a> in the docs.
 	</p>
 	<h3>Overview</h3>
 
 	<p>
-		<code>@feltjs/felt</code> depends on the following software:
+		<code>@getloom/loom</code> depends on the following software:
 	</p>
 	<ul>
 		<li><a href="https://nodejs.org/">Node</a></li>
@@ -67,7 +67,7 @@
 	<h4><code>gro format</code></h4>
 	<p>
 		Gro integrates formatting with <a href="https://github.com/prettier/prettier">Prettier</a>.
-		<a href="https://github.com/feltjs/felt/blob/main/.github/workflows/check.yml"
+		<a href="https://github.com/getloom/loom/blob/main/.github/workflows/check.yml"
 			>This project's CI</a
 		>
 		runs <code>gro check</code> which runs <code>gro format --check</code> which fails if any files
@@ -90,7 +90,7 @@
 		<code>gro gen</code> when things change.
 	</p>
 	<p>
-		<a href="https://github.com/feltjs/felt/blob/main/.github/workflows/check.yml"
+		<a href="https://github.com/getloom/loom/blob/main/.github/workflows/check.yml"
 			>This project's CI</a
 		>
 		runs <code>gro check</code> which runs

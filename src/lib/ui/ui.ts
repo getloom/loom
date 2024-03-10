@@ -293,7 +293,7 @@ export const toUi = (
 		[hubSelection, spaceIdSelectionByHubId],
 		([$hubSelection, $spaceIdSelectionByHubId]) =>
 			($hubSelection &&
-				spaceById.get($spaceIdSelectionByHubId.value.get($hubSelection.get()!.hub_id)!)) ||
+				spaceById.get($spaceIdSelectionByHubId.value.get($hubSelection.get().hub_id)!)) ||
 			null,
 	);
 

@@ -12,11 +12,11 @@
 
 	<p>
 		This document describes how to set up a production environment for deploying an instance of <a
-			href="https://github.com/feltjs/felt"><code>@feltjs/felt</code></a
+			href="https://github.com/getloom/loom"><code>@getloom/loom</code></a
 		>.
 	</p>
 	<p>
-		To learn more about <code>@feltjs/felt</code>, see
+		To learn more about <code>@getloom/loom</code>, see
 		<a href="{base}{path}/guide/admin/getting-started">guide/admin/getting-started</a>.
 	</p>
 	<p>
@@ -80,7 +80,7 @@
 			</ul>
 		</li>
 		<li>
-			Felt depends on the database <a href="https://www.postgresql.org/">PostgreSQL</a>. The
+			Loom depends on the database <a href="https://www.postgresql.org/">PostgreSQL</a>. The
 			project's scripts are currently configured to install it on the same VPS as your server. See
 			<a href="{base}{path}/guide/admin/database">the database docs</a> for more.
 		</li>
@@ -89,7 +89,7 @@
 	<h4>Set environment variables</h4>
 	<p>
 		Open <code>.env.production</code> and set all of the values. See also
-		<a href="https://github.com/feltjs/felt/tree/main/src/lib/infra/.env.production.default"
+		<a href="https://github.com/getloom/loom/tree/main/src/lib/infra/.env.production.default"
 			>src/lib/infra/.env.production.default</a
 		>:
 	</p>
@@ -97,7 +97,7 @@
 	<ul>
 		<li><code>DEPLOY_IP</code> to the IP address of your server</li>
 		<li><code>DEPLOY_USER</code> to your server's user (defaults to <code>root</code>)</li>
-		<li><code>PUBLIC_DEPLOY_SERVER_HOST</code> is your domain, e.g. <code>felt.dev</code></li>
+		<li><code>PUBLIC_DEPLOY_SERVER_HOST</code> is your domain, e.g. <code>getloom.org</code></li>
 		<li>
 			<code>CERTBOT_EMAIL</code> is the email address to register with LetsEncrypt for an https certificate
 		</li>

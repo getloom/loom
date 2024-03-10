@@ -142,7 +142,7 @@
 	}
 	.item {
 		--icon_size: var(--icon_size_xs);
-		/* TODO this shouldn't be needed after upgrading Felt for .prose -> .flow  */
+		/* TODO this shouldn't be needed after upgrading loom for .prose -> .flow  */
 		display: block;
 	}
 	.items {

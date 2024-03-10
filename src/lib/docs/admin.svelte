@@ -12,7 +12,7 @@
 <div class="prose">
 	<h2>Admin</h2>
 	<p>
-		When a Felt server instance is first created, it has no communities, no accounts, and no actors.
+		When a Loom server instance is first created, it has no communities, no accounts, and no actors.
 		When the first actor is created, which happens when the first account signs up, the server
 		creates a special hub, the "admin" hub, located at <code>$HOSTNAME/admin</code>, and adds that
 		first actor to its assignments. This hub inherits all of the same functionality as normal

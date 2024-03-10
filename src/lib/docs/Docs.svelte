@@ -61,16 +61,16 @@
 
 	$: title =
 		pathname === path_guide
-			? 'felt guide'
+			? 'loom guide'
 			: pathname === path_guide_user
-				? 'felt user guide'
+				? 'loom user guide'
 				: pathname === path_guide_admin
-					? 'felt admin guide'
+					? 'loom admin guide'
 					: pathname === path_guide_dev
-						? 'felt dev guide'
+						? 'loom dev guide'
 						: pathname === path_vocab
-							? 'felt vocab docs'
-							: 'felt docs';
+							? 'loom vocab docs'
+							: 'loom docs';
 
 	$: showGuideContent = pathname.startsWith(path_guide);
 	$: showVocabContent = pathname.startsWith(path_vocab);
@@ -88,10 +88,10 @@
 
 <div class="wrapper">
 	<!-- TODO extract an accessible menu component, see PRS
-	https://github.com/feltjs/felt/pull/362
+	https://github.com/getloom/loom/pull/362
 	and https://github.com/fuz-dev/fuz/pull/197 -->
 	<div class="sidebar padded_1 width_sm">
-		<slot name="header"><header>@feltjs/felt</header></slot>
+		<slot name="header"><header>@getloom/loom</header></slot>
 		<nav>
 			<h2><a href="{base}{path}" class:selected={pathname === path}>docs</a></h2>
 			<h3><a href="{base}{path_guide}" class:selected={showGuideContent}>guide</a></h3>
@@ -211,11 +211,11 @@
 					<p class="text_align_center width_full" style:margin-top="var(--spacing_sm)">
 						<a href="{base}/">back home</a>
 					</p>
-					<div class="text_align_center">@feltjs/felt</div>
+					<div class="text_align_center">@getloom/loom</div>
 					<div class="links">
-						<a href="https://github.com/feltjs/felt">GitHub</a>∙<a
-							href="https://npmjs.com/@feltjs/felt">npm</a
-						>∙<a href="https://www.felt.dev">felt.dev</a>
+						<a href="https://github.com/getloom/loom">GitHub</a>∙<a
+							href="https://npmjs.com/@getloom/loom">npm</a
+						>∙<a href="https://www.getloom.org">getloom.org</a>
 					</div>
 				</div>
 			</slot>

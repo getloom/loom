@@ -30,7 +30,7 @@
 		and have a
 		<code>hub_id</code> that points to it. They cannot be deleted directly, and instead they are
 		deleted automatically with their hub. Unlike account actors, they have no
-		<code>account_id</code>. They currently have no behavior in Felt, but the plan is to allow them
+		<code>account_id</code>. They currently have no behavior in Loom, but the plan is to allow them
 		to act as normal actors under the control of the entire hub, and otherwise have most of the same
 		behavior as account actors.
 	</p>

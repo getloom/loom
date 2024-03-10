@@ -70,7 +70,7 @@ export const initAdminHub = async (
 
 	// The admin hub doesn't exist, so this is a freshly installed instance!
 	// We need to set up the admin hub and its actor.
-	// For more see https://www.felt.dev/docs/guide/admin
+	// For more see https://www.getloom.org/docs/guide/admin
 
 	// Create the hub.
 	const hub = await repos.hub.create(

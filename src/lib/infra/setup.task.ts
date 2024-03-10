@@ -17,7 +17,7 @@ const Args = z
 type Args = z.infer<typeof Args>;
 
 export const task: Task<Args> = {
-	summary: 'setup a clean server to prepare for a felt deploy',
+	summary: 'setup a clean server to prepare for a loom deploy',
 	Args,
 	run: async ({log, args: {dry}, invoke_task}) => {
 		await invoke_task('infra/syncEnvGitHash');

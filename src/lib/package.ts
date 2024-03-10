@@ -4,16 +4,16 @@ import type {Package_Json} from '@grogarden/gro/package_json.js';
 import type {Src_Json} from '@grogarden/gro/src_json.js';
 
 export const package_json = {
-	name: '@feltjs/felt',
+	name: '@getloom/loom',
 	version: '0.14.0',
 	description: 'a programmable platform for hobbyists and human-scale communities',
-	icon: '💚',
+	icon: '🧺',
 	public: true,
 	license: 'MIT',
-	author: {name: 'feltjs', email: 'team@felt.social', url: 'https://felt.social'},
-	homepage: 'https://www.felt.dev/',
-	repository: {type: 'git', url: 'git+https://github.com/feltjs/felt.git'},
-	bugs: {url: 'https://github.com/feltjs/felt/issues'},
+	author: {name: 'getloom', email: 'team@getloom.org', url: 'https://getloom.org'},
+	homepage: 'https://www.getloom.org/',
+	repository: {type: 'git', url: 'git+https://github.com/getloom/loom.git'},
+	bugs: {url: 'https://github.com/getloom/loom/issues'},
 	scripts: {
 		start: 'node dist_server/server/server.js',
 		after_deploy: 'node dist_server/infra/after_deploy.js',
@@ -1890,7 +1890,7 @@ export const package_json = {
 } satisfies Package_Json;
 
 export const src_json = {
-	name: '@feltjs/felt',
+	name: '@getloom/loom',
 	version: '0.14.0',
 	modules: {
 		'./check.task.js': {

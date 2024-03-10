@@ -12,7 +12,7 @@
 	<h2>Managing a production deployment</h2>
 	<p>
 		This document describes how to manage a deployed instance of <a
-			href="https://github.com/feltjs/felt"><code>@feltjs/felt</code></a
+			href="https://github.com/getloom/loom"><code>@getloom/loom</code></a
 		>.
 	</p>
 	<p>
