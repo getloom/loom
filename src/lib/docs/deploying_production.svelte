@@ -11,8 +11,8 @@
 <div class="prose">
 	<h2>Deploying Loom to production</h2>
 	<p>
-		This document describes how to deploy a new instance of <a href="https://github.com/getloom/loom"
-			><code>@getloom/loom</code></a
+		This document describes how to deploy a new instance of <a
+			href="https://github.com/getloom/loom"><code>@getloom/loom</code></a
 		> to the internet.
 	</p>
 	<p>

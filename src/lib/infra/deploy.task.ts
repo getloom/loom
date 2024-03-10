@@ -32,7 +32,7 @@ export const task: Task = {
 			'package.json',
 			'package-lock.json',
 			'svelte-gettable-stores-0.2.0.tgz',
-			'util-0.18.1.tgz',			
+			'util-0.18.1.tgz',
 		];
 
 		// TODO ensure_dir helper? or omit the `exists` check?

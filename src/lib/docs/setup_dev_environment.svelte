@@ -73,8 +73,8 @@ npm i -g @grogarden/gro @changesets/cli # reinstall global dependencies`}
 	/>
 	<h3>3. Postgres</h3>
 	<p>
-		<code>@getloom/loom</code> requires <a href="https://www.postgresql.org/">Postgres</a> >= 15. For
-		details about Loom's database implementation, see
+		<code>@getloom/loom</code> requires <a href="https://www.postgresql.org/">Postgres</a> >= 15.
+		For details about Loom's database implementation, see
 		<a href="{base}{path}/guide/dev/data-model">the data model docs</a>.
 	</p>
 	<p>

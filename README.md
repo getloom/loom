@@ -19,8 +19,9 @@ Loom is a [Node.js](https://nodejs.org/) server that you can use in many differe
   adding or changing anything you wish
 
 ## design colors
+
 Loom uses the following hex codes as it's base branding:
-Purple: #7019A4  RGB: 112–25–164
+Purple: #7019A4 RGB: 112–25–164
 Peach: #F6A719 RGB: 246–167–25
 Green: #13BE28 RGB: 19–190–40
 
