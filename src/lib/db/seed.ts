@@ -151,7 +151,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		await createDefaultEntities(repos, toMainAccountServiceRequest, spaces, nextActor);
 	}
 
-	const adminHub = await repos.hub.loadAdminHub()!;
+	const adminHub = await repos.hub.loadAdminHub();
 	if (!adminHub) {
 		throw Error('no admin hub created while seeding db');
 	}
