@@ -93,7 +93,7 @@
   },
   "eslintConfig": {
     "root": true,
-    "extends": "@feltjs",
+    "extends": "@getloom",
     "rules": {
       "no-console": 1
     }
