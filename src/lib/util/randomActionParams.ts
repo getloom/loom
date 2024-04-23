@@ -1,6 +1,6 @@
 import {random_boolean} from '@ryanatkn/belt/random.js';
 import {SvelteComponent} from 'svelte';
-import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 import {
 	randomEntityData,
@@ -136,6 +136,7 @@ export const randomActionParams: RandomActionParams = {
 		if (!actor) ({actor} = await random.actor(account));
 		if (!hub) ({hub, assignments} = await random.hub(actor));
 		//TODO create random assignment, sorry future me
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 		const assignment = assignments!.find((a) => a.actor_id === actor!.actor_id) || assignments![0];
 		return {
 			actor: actor.actor_id,

@@ -3,7 +3,7 @@
 	import {
 		to_contextmenu_params,
 		type Contextmenu_Action_Params,
-	} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+	} from '@ryanatkn/fuz/contextmenu.js';
 
 	import Avatar from '$lib/ui/Avatar.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub.js';

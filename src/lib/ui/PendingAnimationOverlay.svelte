@@ -1,6 +1,6 @@
 <script lang="ts">
 	// TODO extract to Felt
-	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
+	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
 </script>
 
 <div class="pending-animation-overlay">

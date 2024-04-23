@@ -9,7 +9,7 @@ import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData.js';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Tie} from '$lib/vocab/tie/tie';
-import type {Dialog_Params} from '@fuz.dev/fuz_dialog/dialog.js';
+import type {Dialog_Params} from '@ryanatkn/fuz/dialog.js';
 import type {
 	ClientSession,
 	ClientAccountSession,

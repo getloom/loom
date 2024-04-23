@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
+	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
 
 	import EntityExplorerItems from '$lib/plugins/entity-explorer/EntityExplorerItems.svelte';
 	import EntityTrees from '$lib/ui/EntityTrees.svelte';

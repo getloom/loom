@@ -4,7 +4,7 @@
 	import {identity} from '@ryanatkn/belt/function.js';
 	import type {Result} from '@ryanatkn/belt/result.js';
 	import {createEventDispatcher} from 'svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import {getApp} from '$lib/ui/app.js';

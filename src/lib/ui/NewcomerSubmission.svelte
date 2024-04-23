@@ -2,8 +2,8 @@
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
 	import type {Async_Status} from '@ryanatkn/belt/async.js';
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
-	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
+	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions.js';

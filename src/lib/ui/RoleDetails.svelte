@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';

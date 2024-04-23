@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
+	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 	import {page} from '$app/stores';
 
 	import TodoItems from '$lib/plugins/todo/TodoItems.svelte';

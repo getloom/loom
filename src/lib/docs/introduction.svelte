@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Package_Summary from '@fuz.dev/fuz_library/Package_Summary.svelte';
-	import {parse_package_meta} from '@fuz.dev/fuz_library/package_meta.js';
+	import Package_Summary from '@ryanatkn/fuz/Package_Summary.svelte';
+	import {parse_package_meta} from '@ryanatkn/fuz/package_meta.js';
 
 	import {package_json, src_json} from '$lib/package.js';
 

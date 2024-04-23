@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import About from '$lib/ui/About.svelte';
 	import {getApp} from '$lib/ui/app.js';

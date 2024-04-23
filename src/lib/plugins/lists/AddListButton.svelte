@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
 	import {getSpaceContext} from '$lib/vocab/view/view.js';

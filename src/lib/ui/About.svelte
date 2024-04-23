@@ -19,7 +19,7 @@
 	</ul>
 	<blockquote>
 		<p class="title">
-			<a href="https://github.com/getloom/loom" target="_blank" rel="noreferrer">🟪</a>
+			<a href="https://github.com/getloom/loom" target="_blank" rel="noreferrer">🧺</a>
 			<a href="https://www.getloom.org/" target="_blank" rel="noreferrer">Loom</a>
 			version
 			<a

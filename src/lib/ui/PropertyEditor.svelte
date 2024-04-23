@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {slide} from 'svelte/transition';
-	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import {identity} from '@ryanatkn/belt/function.js';
 	import type {Result} from '@ryanatkn/belt/result.js';
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 	import {afterUpdate} from 'svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import {autofocus} from '$lib/ui/actions.js';
 	import ConfirmDialog from '$lib/ui/ConfirmDialog.svelte';
