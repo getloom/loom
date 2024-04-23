@@ -1,5 +1,5 @@
 import {suite} from 'uvu';
-import {unwrap, unwrap_error} from '@grogarden/util/result.js';
+import {unwrap, unwrap_error} from '@ryanatkn/belt/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 import {authorize} from '$lib/server/authorize.js';

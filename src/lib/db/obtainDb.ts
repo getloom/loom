@@ -1,4 +1,4 @@
-import {create_obtainable} from '@grogarden/util/obtainable.js';
+import {create_obtainable} from '@ryanatkn/belt/obtainable.js';
 import postgres from 'postgres';
 
 import {defaultPostgresOptions} from '$lib/db/postgres.js';

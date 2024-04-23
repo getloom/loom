@@ -23,7 +23,7 @@ export const package_json = {
 	peerDependencies: {'@sveltejs/kit': '*'},
 	devDependencies: {
 		'@changesets/changelog-git': '^0.2.0',
-		'@feltjs/eslint-config': 'file:eslint-config-0.4.1.tgz',
+		'@getloom/eslint-config': '^0.4.1',
 		'@feltjs/felt_mural': 'file:felt_mural-0.9.4.tgz',
 		'@fuz.dev/fuz': 'file:fuz-0.81.0.tgz',
 		'@fuz.dev/fuz_contextmenu': 'file:fuz_contextmenu-0.7.0.tgz',
@@ -59,7 +59,7 @@ export const package_json = {
 	},
 	dependencies: {
 		'@feltcoop/svelte-gettable-stores': 'file:svelte-gettable-stores-0.2.0.tgz',
-		'@grogarden/util': 'file:util-0.18.1.tgz',
+		'@ryanatkn/belt': '^0.20.1',
 		'@polka/send-type': '^0.5.2',
 		ajv: '^8.12.0',
 		'ajv-keywords': '^5.1.0',

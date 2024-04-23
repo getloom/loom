@@ -1,6 +1,6 @@
 import ley from 'ley';
-import type {Logger} from '@grogarden/util/log.js';
-import {spawn} from '@grogarden/util/process.js';
+import type {Logger} from '@ryanatkn/belt/log.js';
+import {spawn} from '@ryanatkn/belt/process.js';
 
 import {defaultPostgresOptions} from '$lib/db/postgres.js';
 import {MIGRATIONS_DIR_DEV, MIGRATIONS_DIR_PROD} from '$lib/db/migration.js';

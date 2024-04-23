@@ -4,7 +4,7 @@ export const RoleIdSchema = {
 	$id: '/schemas/RoleId',
 	type: 'number',
 	tsType: "Flavored<number, 'RoleId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
+	tsImport: "import {Flavored} from '@ryanatkn/belt/types.js'",
 } satisfies Json_Schema;
 
 export const RoleSchema = {

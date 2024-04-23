@@ -4,7 +4,7 @@ export const HubIdSchema = {
 	$id: '/schemas/HubId',
 	type: 'number',
 	tsType: "Flavored<number, 'HubId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
+	tsImport: "import {Flavored} from '@ryanatkn/belt/types.js'",
 } satisfies Json_Schema;
 
 export const HubSchema = {

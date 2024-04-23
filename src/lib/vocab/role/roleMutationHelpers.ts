@@ -1,5 +1,5 @@
 import {writable} from '@feltcoop/svelte-gettable-stores';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import type {WritableUi} from '$lib/ui/ui.js';
 import type {Role, RoleId} from '$lib/vocab/role/role.js';

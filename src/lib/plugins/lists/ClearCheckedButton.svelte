@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {derived, type Readable} from '@feltcoop/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
-	import {plural} from '@grogarden/util/string.js';
+	import {plural} from '@ryanatkn/belt/string.js';
 
 	import {getApp} from '$lib/ui/app.js';
 	import type {Entity} from '$lib/vocab/entity/entity.js';

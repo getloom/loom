@@ -2,8 +2,8 @@
 // It implements a request/response pattern over websockets instead of fire-and-forget
 // using JSON-RPC 2.0: https://www.jsonrpc.org/specification
 
-import {create_counter} from '@grogarden/util/counter.js';
-import {Logger} from '@grogarden/util/log.js';
+import {create_counter} from '@ryanatkn/belt/counter.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import type {ApiClient} from '$lib/ui/ApiClient.js';
 import type {ServiceActionData} from '$lib/vocab/action/action.js';

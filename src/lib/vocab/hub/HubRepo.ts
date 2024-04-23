@@ -1,5 +1,5 @@
-import type {Assignable} from '@grogarden/util/types.js';
-import {Logger} from '@grogarden/util/log.js';
+import type {Assignable} from '@ryanatkn/belt/types.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {blue, gray} from '$lib/server/colors.js';
 import {PostgresRepo} from '$lib/db/PostgresRepo.js';

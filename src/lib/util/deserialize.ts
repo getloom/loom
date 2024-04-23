@@ -1,4 +1,4 @@
-import {traverse} from '@grogarden/util/object.js';
+import {traverse} from '@ryanatkn/belt/object.js';
 
 // TODO where does this belong? vocab utils?
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {onMount, createEventDispatcher, onDestroy} from 'svelte';
-	import type {Async_Status} from '@grogarden/util/async.js';
+	import type {Async_Status} from '@ryanatkn/belt/async.js';
 
 	type Host = {postMessage: Window['postMessage']} | ServiceWorker | MessagePort;
 

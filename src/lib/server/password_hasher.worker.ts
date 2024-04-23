@@ -1,6 +1,6 @@
 import {Worker, isMainThread, parentPort} from 'worker_threads';
 import {fileURLToPath} from 'url';
-import {Unreachable_Error} from '@grogarden/util/error.js';
+import {Unreachable_Error} from '@ryanatkn/belt/error.js';
 
 import {toPasswordKey, verifyPassword} from '$lib/server/password.js';
 import type {PasswordHasher} from '$lib/server/password_hasher.js';

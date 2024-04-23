@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {slide} from 'svelte/transition';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
-	import {identity} from '@grogarden/util/function.js';
-	import type {Result} from '@grogarden/util/result.js';
+	import {identity} from '@ryanatkn/belt/function.js';
+	import type {Result} from '@ryanatkn/belt/result.js';
 	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {afterUpdate} from 'svelte';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';

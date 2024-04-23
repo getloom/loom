@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap} from '@grogarden/util/result.js';
+import {unwrap} from '@ryanatkn/belt/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 import type {EntityData, OrderedCollectionEntityData} from '$lib/vocab/entity/entityData.js';

@@ -4,7 +4,7 @@ export const AccountIdSchema = {
 	$id: '/schemas/AccountId',
 	type: 'number',
 	tsType: "Flavored<number, 'AccountId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
+	tsImport: "import {Flavored} from '@ryanatkn/belt/types.js'",
 } satisfies Json_Schema;
 
 export const AccountSchema = {

@@ -1,8 +1,8 @@
-import {Logger} from '@grogarden/util/log.js';
-import type {Omit_Strict} from '@grogarden/util/types.js';
-import {unwrap} from '@grogarden/util/result.js';
+import {Logger} from '@ryanatkn/belt/log.js';
+import type {Omit_Strict} from '@ryanatkn/belt/types.js';
+import {unwrap} from '@ryanatkn/belt/result.js';
 import * as assert from 'uvu/assert';
-import {noop} from '@grogarden/util/function.js';
+import {noop} from '@ryanatkn/belt/function.js';
 // TODO followup
 // import sourcemapSupport from 'source-map-support';
 

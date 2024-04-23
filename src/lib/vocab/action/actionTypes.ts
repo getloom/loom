@@ -24,7 +24,7 @@ import type {
 } from '$lib/server/service.js';
 import type {MutationContext} from '$lib/util/mutation.js';
 import type {HubTemplate} from '$lib/ui/templates.js';
-import type {Flavored} from '@grogarden/util/types.js'; // TODO something is buggy here, shouldn't be needed
+import type {Flavored} from '@ryanatkn/belt/types.js'; // TODO something is buggy here, shouldn't be needed
 
 /* eslint-disable @typescript-eslint/array-type */
 

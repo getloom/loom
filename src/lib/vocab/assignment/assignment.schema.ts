@@ -4,7 +4,7 @@ export const AssignmentIdSchema = {
 	$id: '/schemas/AssignmentId',
 	type: 'number',
 	tsType: "Flavored<number, 'AssignmentId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
+	tsImport: "import {Flavored} from '@ryanatkn/belt/types.js'",
 } satisfies Json_Schema;
 
 export const AssignmentSchema = {

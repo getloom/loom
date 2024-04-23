@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import type {Async_Status} from '@grogarden/util/async.js';
+	import type {Async_Status} from '@ryanatkn/belt/async.js';
 	import {tick} from 'svelte';
 
 	import type {Hub} from '$lib/vocab/hub/hub.js';

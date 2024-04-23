@@ -1,5 +1,5 @@
-import {Logger} from '@grogarden/util/log.js';
-import {round} from '@grogarden/util/maths.js';
+import {Logger} from '@ryanatkn/belt/log.js';
+import {round} from '@ryanatkn/belt/maths.js';
 import {page} from '$app/stores';
 import {get} from 'svelte/store';
 import {browser} from '$app/environment';

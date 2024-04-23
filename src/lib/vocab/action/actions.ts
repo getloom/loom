@@ -1,5 +1,5 @@
 import {setContext, getContext} from 'svelte';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 import {browser} from '$app/environment';
 
 import type {WritableUi} from '$lib/ui/ui.js';

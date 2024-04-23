@@ -2,7 +2,7 @@
 
 import type {AccountId} from '$lib/vocab/account/account';
 import type {HubId} from '$lib/vocab/hub/hub';
-import type {Flavored} from '@grogarden/util/types.js';
+import type {Flavored} from '@ryanatkn/belt/types.js';
 
 /**
  * Represents a human actor logged in via an <Vocab name="Account" />. They are owned and managed from the account level.

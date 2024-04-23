@@ -3,7 +3,7 @@ import type {Readable} from '@feltcoop/svelte-gettable-stores';
 import {GUEST_ACTOR_NAME} from '$lib/util/constants.js';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 import type {Ui} from '$lib/ui/ui.js';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 import type {Actions} from '$lib/vocab/action/actionTypes.js';
 import type {ActorId} from '$lib/vocab/actor/actor.js';
 import type {Directory} from '$lib/vocab/entity/entityData.js';

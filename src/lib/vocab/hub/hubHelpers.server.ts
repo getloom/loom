@@ -1,4 +1,4 @@
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {blue, gray} from '$lib/server/colors.js';
 import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/util/constants.js';

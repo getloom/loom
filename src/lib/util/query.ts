@@ -1,4 +1,4 @@
-import type {Async_Status} from '@grogarden/util/async.js';
+import type {Async_Status} from '@ryanatkn/belt/async.js';
 import {
 	mutable,
 	writable,

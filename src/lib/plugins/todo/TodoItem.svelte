@@ -3,7 +3,7 @@
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 	import {slide} from 'svelte/transition';
 	import {page} from '$app/stores';
-	import {swallow} from '@grogarden/util/dom.js';
+	import {swallow} from '@ryanatkn/belt/dom.js';
 	import {goto} from '$app/navigation';
 
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';

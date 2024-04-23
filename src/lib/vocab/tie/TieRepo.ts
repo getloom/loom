@@ -1,4 +1,4 @@
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {PostgresRepo} from '$lib/db/PostgresRepo.js';
 import type {Tie, TieId} from '$lib/vocab/tie/tie.js';

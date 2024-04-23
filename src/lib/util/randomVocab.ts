@@ -1,4 +1,4 @@
-import {unwrap} from '@grogarden/util/result.js';
+import {unwrap} from '@ryanatkn/belt/result.js';
 
 import type {Space, SpaceId} from '$lib/vocab/space/space.js';
 import type {Hub, HubId} from '$lib/vocab/hub/hub.js';
@@ -32,7 +32,7 @@ import {
 import {randomHue} from '$lib/util/color.js';
 import type {Policy, PolicyName} from '$lib/vocab/policy/policy.js';
 import {CreatePolicyService} from '$lib/vocab/policy/policyServices.js';
-import {random_item} from '@grogarden/util/random.js';
+import {random_item} from '@ryanatkn/belt/random.js';
 import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
 import type {Repos} from '$lib/db/Repos.js';
 
@@ -355,7 +355,7 @@ export class RandomVocabContext {
 	}
 }
 
-// TODO better way to do this? and where does this belong? maybe @grogarden/util/string.js?
+// TODO better way to do this? and where does this belong? maybe @ryanatkn/belt/string.js?
 export const ALPHABET = [
 	'a',
 	'b',

@@ -1,4 +1,4 @@
-import {Result_Error, type Result} from '@grogarden/util/result.js';
+import {Result_Error, type Result} from '@ryanatkn/belt/result.js';
 
 import type {ErrorResponse} from '$lib/util/error.js';
 

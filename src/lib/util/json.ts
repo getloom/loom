@@ -1,4 +1,4 @@
-import type {Result} from '@grogarden/util/result.js';
+import type {Result} from '@ryanatkn/belt/result.js';
 
 export const parseJson = (value: string): Result<{value: object}, {message: string}> => {
 	try {

@@ -6,7 +6,7 @@ export const PolicyIdSchema = {
 	$id: '/schemas/PolicyId',
 	type: 'number',
 	tsType: "Flavored<number, 'PolicyId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
+	tsImport: "import {Flavored} from '@ryanatkn/belt/types.js'",
 } satisfies Json_Schema;
 
 export const PolicySchema = {

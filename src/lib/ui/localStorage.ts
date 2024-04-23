@@ -1,6 +1,6 @@
 import {browser} from '$app/environment';
-import type {Json} from '@grogarden/util/json.js';
-// import {Logger} from '@grogarden/util/log.js';
+import type {Json} from '@ryanatkn/belt/json.js';
+// import {Logger} from '@ryanatkn/belt/log.js';
 
 // const log = new Logger('[storage]');
 

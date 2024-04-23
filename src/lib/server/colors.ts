@@ -5,7 +5,7 @@ import {
 	red as redKleur,
 	cyan as cyanKleur,
 } from 'kleur/colors';
-import {identity} from '@grogarden/util/function.js';
+import {identity} from '@ryanatkn/belt/function.js';
 
 export const gray = import.meta.env.DEV ? grayKleur : identity;
 export const blue = import.meta.env.DEV ? blueKleur : identity;
