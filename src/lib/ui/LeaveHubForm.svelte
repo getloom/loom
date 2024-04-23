@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import Alert from '@ryanatkn/fuz/Alert.svelte';
 
 	import {getApp} from '$lib/ui/app.js';
 	import ContextInfo from '$lib/ui/ContextInfo.svelte';
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 
 	const {actions} = getApp();
 

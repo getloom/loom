@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
 	import type {Space} from '$lib/vocab/space/space.js';

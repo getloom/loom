@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import {scale} from 'svelte/transition';
 
 	import type {Entity} from '$lib/vocab/entity/entity.js';

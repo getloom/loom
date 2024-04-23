@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {format} from 'date-fns';
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
-	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
+	import {to_contextmenu_params} from '@ryanatkn/fuz/contextmenu.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
 	import type {Entity} from '$lib/vocab/entity/entity.js';

@@ -7,10 +7,10 @@ import {
 	type Mutable,
 } from '@feltcoop/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent} from 'svelte';
-import type {Dialog_Params} from '@fuz.dev/fuz_dialog/dialog.js';
+import type {Dialog_Params} from '@ryanatkn/fuz/dialog.js';
 import {browser} from '$app/environment';
 import {EventEmitter} from 'eventemitter3';
-import {create_contextmenu, type Contextmenu_Store} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+import {create_contextmenu, type Contextmenu_Store} from '@ryanatkn/fuz/contextmenu.js';
 
 import type {Hub, HubId} from '$lib/vocab/hub/hub.js';
 import type {Space, SpaceId} from '$lib/vocab/space/space.js';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
-	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
+	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import {writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
 
 	import {getApp} from '$lib/ui/app.js';

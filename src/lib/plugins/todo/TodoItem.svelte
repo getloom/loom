@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+	import {to_contextmenu_params} from '@ryanatkn/fuz/contextmenu.js';
 	import {slide} from 'svelte/transition';
 	import {page} from '$app/stores';
 	import {swallow} from '@ryanatkn/belt/dom.js';

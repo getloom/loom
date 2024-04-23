@@ -3,7 +3,7 @@
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import {parseJson, serializeJson} from '$lib/util/json.js';
 	import PropertyEditor from '$lib/ui/PropertyEditor.svelte';
-	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import {ADMIN_HUB_ID} from '$lib/util/constants.js';
 
 	const {actor, hub} = getSpaceContext();

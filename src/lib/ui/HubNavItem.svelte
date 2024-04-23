@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {page} from '$app/stores';
-	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+	import {to_contextmenu_params} from '@ryanatkn/fuz/contextmenu.js';
 
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {tick} from 'svelte';
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 
 	import {autofocus} from '$lib/ui/actions.js';
 	import {getApp} from '$lib/ui/app.js';

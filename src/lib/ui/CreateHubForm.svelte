@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
-	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
+	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
+	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Hue_Input from '@fuz.dev/fuz_library/Hue_Input.svelte';
+	import Hue_Input from '@ryanatkn/fuz/Hue_Input.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';
 

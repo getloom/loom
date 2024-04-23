@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
+	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
 
 	import {getApp} from '$lib/ui/app.js';
 	import type {Hub} from '$lib/vocab/hub/hub.js';

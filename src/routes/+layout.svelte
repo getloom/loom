@@ -7,22 +7,22 @@
 </script>
 
 <script lang="ts">
-	import '@fuz.dev/fuz/style.css';
-	import '@fuz.dev/fuz/theme.css';
+	import '@ryanatkn/fuz/style.css';
+	import '@ryanatkn/fuz/theme.css';
 	import '$lib/ui/style.css';
-	import Themed from '@fuz.dev/fuz/Themed.svelte';
-	import {set_devmode} from '@fuz.dev/fuz_library/devmode.js';
-	import Devmode_Controls from '@fuz.dev/fuz_library/Devmode_Controls.svelte';
+	import Themed from '@ryanatkn/fuz/Themed.svelte';
+	import {set_devmode} from '@ryanatkn/fuz/devmode.js';
+	import Devmode_Controls from '@ryanatkn/fuz/Devmode_Controls.svelte';
 	import {page} from '$app/stores';
 	import {browser} from '$app/environment';
-	import Dialogs from '@fuz.dev/fuz_dialog/Dialogs.svelte';
+	import Dialogs from '@ryanatkn/fuz/Dialogs.svelte';
 	import {is_editable, swallow} from '@ryanatkn/belt/dom.js';
 	import {format} from 'date-fns';
-	import Contextmenu from '@fuz.dev/fuz_contextmenu/Contextmenu.svelte';
+	import Contextmenu from '@ryanatkn/fuz/Contextmenu.svelte';
 	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
 	import {Logger} from '@ryanatkn/belt/log.js';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
-	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
+	import {to_contextmenu_params} from '@ryanatkn/fuz/contextmenu.js';
 
 	import {toSocketStore} from '$lib/ui/socket.js';
 	import Onboard from '$lib/ui/Onboard.svelte';

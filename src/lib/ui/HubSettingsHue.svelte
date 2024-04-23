@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
 	import {throttle} from 'throttle-debounce';
-	import Hue_Input from '@fuz.dev/fuz_library/Hue_Input.svelte';
+	import Hue_Input from '@ryanatkn/fuz/Hue_Input.svelte';
 
 	import {getApp} from '$lib/ui/app.js';
 	import type {Hub} from '$lib/vocab/hub/hub.js';

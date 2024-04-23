@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Contextmenu_Entry from '@fuz.dev/fuz_contextmenu/Contextmenu_Entry.svelte';
-	import Contextmenu_Submenu from '@fuz.dev/fuz_contextmenu/Contextmenu_Submenu.svelte';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import Contextmenu_Entry from '@ryanatkn/fuz/Contextmenu_Entry.svelte';
+	import Contextmenu_Submenu from '@ryanatkn/fuz/Contextmenu_Submenu.svelte';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';
 	import SessionActorContextmenuEntry from '$lib/ui/SessionActorContextmenuEntry.svelte';

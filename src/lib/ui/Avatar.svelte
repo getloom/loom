@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Contextmenu_Action_Params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
+	import type {Contextmenu_Action_Params} from '@ryanatkn/fuz/contextmenu.js';
 
 	import EntityIcon from '$lib/ui/EntityIcon.svelte';
 	import {randomHue} from '$lib/util/color.js';

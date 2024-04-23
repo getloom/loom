@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import Pending_Animation from '@fuz.dev/fuz_library/Pending_Animation.svelte';
+	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
 	import type {Readable} from '@feltcoop/svelte-gettable-stores';
-	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
+	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 	import {page} from '$app/stores';
 
 	import ForumItems from '$lib/plugins/forum/ForumItems.svelte';

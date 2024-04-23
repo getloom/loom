@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
-	import Package_Detail from '@fuz.dev/fuz_library/Package_Detail.svelte';
-	import {parse_package_meta} from '@fuz.dev/fuz_library/package_meta.js';
+	import Package_Detail from '@ryanatkn/fuz/Package_Detail.svelte';
+	import {parse_package_meta} from '@ryanatkn/fuz/package_meta.js';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
 	import {getDocsSettings} from '$lib/docs/docs.js';
