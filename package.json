@@ -32,7 +32,7 @@
   "devDependencies": {
     "@changesets/changelog-git": "^0.2.0",
     "@getloom/eslint-config": "^0.4.1",
-    "@feltjs/felt_mural": "file:felt_mural-0.9.4.tgz",
+    "@getloom/mural": "^0.9.6",
     "@ryanatkn/fuz": "^0.82.0",
     "@fuz.dev/svelte_intersect": "file:svelte_intersect-0.8.0.tgz",
     "@grogarden/gro": "file:gro-0.107.1.tgz",
