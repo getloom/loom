@@ -80,7 +80,7 @@ export const package_json = {
 		ws: '^8.15.1',
 	},
 	optionalDependencies: {bufferutil: '^4.0.3', 'utf-8-validate': '^5.0.5'},
-	eslintConfig: {root: true, extends: '@feltjs', rules: {'no-console': 1}},
+	eslintConfig: {root: true, extends: '@getloom', rules: {'no-console': 1}},
 	prettier: {
 		plugins: ['prettier-plugin-svelte'],
 		useTabs: true,
