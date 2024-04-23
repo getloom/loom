@@ -31,6 +31,7 @@ export const package_json = {
 		'@fuz.dev/fuz_library': 'file:fuz_library-0.23.0.tgz',
 		'@fuz.dev/svelte_intersect': 'file:svelte_intersect-0.8.0.tgz',
 		'@grogarden/gro': 'file:gro-0.107.1.tgz',
+		'@grogarden/util': 'file:util-0.18.1.tgz',
 		'@ryanatkn/json-schema-to-typescript': 'file:json-schema-to-typescript-11.1.5.tgz',
 		'@sveltejs/adapter-node': '^2.0.1',
 		'@sveltejs/kit': '^2.0.4',
