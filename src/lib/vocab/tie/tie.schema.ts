@@ -4,7 +4,7 @@ export const TieIdSchema = {
 	$id: '/schemas/TieId',
 	type: 'number',
 	tsType: "Flavored<number, 'TieId'>",
-	tsImport: "import {Flavored} from '@grogarden/util/types.js'",
+	tsImport: "import {Flavored} from '@ryanatkn/belt/types.js'",
 } satisfies Json_Schema;
 
 export const TieSchema = {

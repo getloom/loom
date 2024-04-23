@@ -16,11 +16,11 @@
 	import {page} from '$app/stores';
 	import {browser} from '$app/environment';
 	import Dialogs from '@fuz.dev/fuz_dialog/Dialogs.svelte';
-	import {is_editable, swallow} from '@grogarden/util/dom.js';
+	import {is_editable, swallow} from '@ryanatkn/belt/dom.js';
 	import {format} from 'date-fns';
 	import Contextmenu from '@fuz.dev/fuz_contextmenu/Contextmenu.svelte';
 	import {PUBLIC_WEBSOCKET_URL} from '$env/static/public';
-	import {Logger} from '@grogarden/util/log.js';
+	import {Logger} from '@ryanatkn/belt/log.js';
 	import {to_dialog_params} from '@fuz.dev/fuz_dialog/dialog.js';
 	import {to_contextmenu_params} from '@fuz.dev/fuz_contextmenu/contextmenu.js';
 

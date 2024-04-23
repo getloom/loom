@@ -1,4 +1,4 @@
-import {create_random_alea} from '@grogarden/util/random_alea.js';
+import {create_random_alea} from '@ryanatkn/belt/random_alea.js';
 
 // TODO design a color scheme instead of calculating a number of evenly spaced buckets
 export const HUE_BUCKETS = 7;

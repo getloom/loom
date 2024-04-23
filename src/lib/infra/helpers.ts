@@ -1,4 +1,4 @@
-import {create_counter} from '@grogarden/util/counter.js';
+import {create_counter} from '@ryanatkn/belt/counter.js';
 
 import {cyan} from '$lib/server/colors.js';
 

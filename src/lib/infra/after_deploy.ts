@@ -1,4 +1,4 @@
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {migrate} from '$lib/db/migrate.js';
 import {db} from '$lib/db/db.js';

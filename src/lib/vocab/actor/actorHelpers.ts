@@ -1,4 +1,4 @@
-import {plural} from '@grogarden/util/string.js';
+import {plural} from '@ryanatkn/belt/string.js';
 import type {Readable} from '@feltcoop/svelte-gettable-stores';
 
 import type {

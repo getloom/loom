@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {base} from '$app/paths';
 	import {page} from '$app/stores';
-	import {strip_start, strip_end} from '@grogarden/util/string.js';
+	import {strip_start, strip_end} from '@ryanatkn/belt/string.js';
 
 	import DocsGuideLink from '$lib/docs/DocsGuideLink.svelte';
 	import {getDocsSettings} from '$lib/docs/docs.js';

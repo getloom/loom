@@ -6,7 +6,7 @@ import {find_gen_modules, load_gen_module} from '@grogarden/gro/gen_module.js';
 import {to_gen_context_imports} from '@grogarden/gro/run_gen.js';
 import {resolve_input_paths} from '@grogarden/gro/input_path.js';
 import {normalize_type_imports} from '@grogarden/gro/type_imports.js';
-import {traverse} from '@grogarden/util/object.js';
+import {traverse} from '@ryanatkn/belt/object.js';
 
 import {actionDatas} from '$lib/vocab/action/actionData.js';
 import {
@@ -71,7 +71,7 @@ import type {ApiResult} from '$lib/server/api.js';
 import type {NonAuthenticatedService, NonAuthorizedService, AuthorizedService} from '$lib/server/service.js';
 import type {MutationContext} from '$lib/util/mutation.js';
 import type {HubTemplate} from '$lib/ui/templates.js';
-import type {Flavored} from '@grogarden/util/types.js'; // TODO something is buggy here, shouldn't be needed
+import type {Flavored} from '@ryanatkn/belt/types.js'; // TODO something is buggy here, shouldn't be needed
 
 /* eslint-disable @typescript-eslint/array-type */
 

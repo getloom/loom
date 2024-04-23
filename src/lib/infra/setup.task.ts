@@ -1,5 +1,5 @@
 import type {Task} from '@grogarden/gro';
-import {spawn} from '@grogarden/util/process.js';
+import {spawn} from '@ryanatkn/belt/process.js';
 import {z} from 'zod';
 
 import {green} from '$lib/server/colors.js';

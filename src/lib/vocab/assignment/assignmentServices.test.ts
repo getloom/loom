@@ -1,6 +1,6 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
-import {unwrap, unwrap_error} from '@grogarden/util/result.js';
+import {unwrap, unwrap_error} from '@ryanatkn/belt/result.js';
 
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 import {

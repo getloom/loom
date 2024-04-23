@@ -1,5 +1,5 @@
 import {derived, writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {locallyStored} from '$lib/ui/locallyStored.js';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';

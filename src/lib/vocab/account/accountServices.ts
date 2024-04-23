@@ -1,5 +1,5 @@
 import {blue, gray} from 'kleur/colors';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {

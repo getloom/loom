@@ -1,5 +1,5 @@
-import type {Result} from '@grogarden/util/result.js';
-import {to_grapheme_count} from '@grogarden/util/string.js';
+import type {Result} from '@ryanatkn/belt/result.js';
+import {to_grapheme_count} from '@ryanatkn/belt/string.js';
 
 import type {Entity} from '$lib/vocab/entity/entity.js';
 import type {Space} from '$lib/vocab/space/space.js';

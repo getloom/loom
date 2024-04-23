@@ -1,5 +1,5 @@
 import type {WebSocket, Data as WebSocketMessageData} from 'ws';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {red, blue, gray} from '$lib/server/colors.js';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc.js';

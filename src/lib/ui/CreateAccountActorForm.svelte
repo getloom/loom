@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Async_Status} from '@grogarden/util/async.js';
+	import type {Async_Status} from '@ryanatkn/belt/async.js';
 	import Alert from '@fuz.dev/fuz_library/Alert.svelte';
 	import Pending_Button from '@fuz.dev/fuz_library/Pending_Button.svelte';
 	import {goto} from '$app/navigation';

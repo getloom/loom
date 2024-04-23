@@ -39,7 +39,7 @@
 			"$id": "/schemas/AccountId",
 			"type": "number",
 			"tsType": "Flavored<number, 'AccountId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"AccountSettings": {
 			"$id": "/schemas/AccountSettings",
@@ -62,7 +62,7 @@
 			"$id": "/schemas/ActorId",
 			"type": "number",
 			"tsType": "Flavored<number, 'ActorId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"Assignment": {
 			"$id": "/schemas/Assignment",
@@ -82,7 +82,7 @@
 			"$id": "/schemas/AssignmentId",
 			"type": "number",
 			"tsType": "Flavored<number, 'AssignmentId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"ClearFreshnessParams": {
 			"$id": "/schemas/ClearFreshnessParams",
@@ -467,7 +467,7 @@
 			"$id": "/schemas/EntityId",
 			"type": "number",
 			"tsType": "Flavored<number, 'EntityId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"EphemeraParams": {
 			"$id": "/schemas/EphemeraParams",
@@ -561,7 +561,7 @@
 			"$id": "/schemas/HubId",
 			"type": "number",
 			"tsType": "Flavored<number, 'HubId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"HubSettings": {
 			"$id": "/schemas/HubSettings",
@@ -664,7 +664,7 @@
 			"$id": "/schemas/PolicyId",
 			"type": "number",
 			"tsType": "Flavored<number, 'PolicyId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"PolicyName": {
 			"$id": "/schemas/PolicyName",
@@ -843,7 +843,7 @@
 			"$id": "/schemas/RoleId",
 			"type": "number",
 			"tsType": "Flavored<number, 'RoleId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"SetMobileParams": {"$id": "/schemas/SetMobileParams", "type": "boolean"},
 		"SetSessionParams": {
@@ -913,7 +913,7 @@
 			"$id": "/schemas/SpaceId",
 			"type": "number",
 			"tsType": "Flavored<number, 'SpaceId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"Tie": {
 			"$id": "/schemas/Tie",
@@ -933,7 +933,7 @@
 			"$id": "/schemas/TieId",
 			"type": "number",
 			"tsType": "Flavored<number, 'TieId'>",
-			"tsImport": "import {Flavored} from '@grogarden/util/types.js'"
+			"tsImport": "import {Flavored} from '@ryanatkn/belt/types.js'"
 		},
 		"UpdateAccountPasswordParams": {
 			"$id": "/schemas/UpdateAccountPasswordParams",

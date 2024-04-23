@@ -1,4 +1,4 @@
-import {strip_after} from '@grogarden/util/string.js';
+import {strip_after} from '@ryanatkn/belt/string.js';
 import {readdir} from 'node:fs/promises';
 
 import type {Basepath} from '$lib/util/fs.js';

@@ -1,5 +1,5 @@
 import type {LayoutServerLoad} from './$types';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {db} from '$lib/db/db.js';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {page} from '$app/stores';
 	import {base} from '$app/paths';
-	import {strip_start} from '@grogarden/util/string.js';
+	import {strip_start} from '@ryanatkn/belt/string.js';
 	import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
 
 	import Vocab from '$lib/plugins/vocab/Vocab.svelte';

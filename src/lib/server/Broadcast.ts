@@ -1,5 +1,5 @@
 import type {WebSocket} from 'ws';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {blue, gray} from '$lib/server/colors.js';
 import type {BroadcastMessage} from '$lib/util/websocket.js';

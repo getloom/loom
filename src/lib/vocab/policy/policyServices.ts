@@ -1,4 +1,4 @@
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {blue, gray} from '$lib/server/colors.js';
 import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';

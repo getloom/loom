@@ -2,7 +2,7 @@ import type {WebSocketServer, WebSocket, Data as WebSocketMessageData} from 'ws'
 import {promisify} from 'util';
 import {EventEmitter} from 'events';
 import type StrictEventEmitter from 'strict-event-emitter-types';
-import {Logger} from '@grogarden/util/log.js';
+import {Logger} from '@ryanatkn/belt/log.js';
 
 import {blue, gray} from '$lib/server/colors.js';
 import {parseSessionCookie} from '$lib/session/sessionCookie.js';
