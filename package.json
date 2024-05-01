@@ -556,14 +556,6 @@
       "default": "./dist/infra/syncEnvGitHash.task.js",
       "types": "./dist/infra/syncEnvGitHash.task.d.ts"
     },
-    "./package.gen.js": {
-      "default": "./dist/package.gen.js",
-      "types": "./dist/package.gen.d.ts"
-    },
-    "./package.js": {
-      "default": "./dist/package.js",
-      "types": "./dist/package.d.ts"
-    },
     "./plugins/admin-home/AdminHome.svelte": {
       "svelte": "./dist/plugins/admin-home/AdminHome.svelte",
       "default": "./dist/plugins/admin-home/AdminHome.svelte",
@@ -1726,10 +1718,6 @@
       "default": "./dist/vocab/action/actions.js",
       "types": "./dist/vocab/action/actions.d.ts"
     },
-    "./vocab/action/actionTypes.gen.js": {
-      "default": "./dist/vocab/action/actionTypes.gen.js",
-      "types": "./dist/vocab/action/actionTypes.gen.d.ts"
-    },
     "./vocab/action/actionTypes.js": {
       "default": "./dist/vocab/action/actionTypes.js",
       "types": "./dist/vocab/action/actionTypes.d.ts"
@@ -2061,14 +2049,6 @@
     "./vocab/view/view.js": {
       "default": "./dist/vocab/view/view.js",
       "types": "./dist/vocab/view/view.d.ts"
-    },
-    "./vocab/vocab.gen.json.js": {
-      "default": "./dist/vocab/vocab.gen.json.js",
-      "types": "./dist/vocab/vocab.gen.json.d.ts"
-    },
-    "./vocab/vocab.schema.js": {
-      "default": "./dist/vocab/vocab.schema.js",
-      "types": "./dist/vocab/vocab.schema.d.ts"
     },
     "./vocab/vocab.js": {
       "default": "./dist/vocab/vocab.js",

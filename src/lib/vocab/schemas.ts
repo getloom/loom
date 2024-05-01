@@ -2,7 +2,6 @@ import type {Json_Schema} from '@grogarden/gro/schema.js';
 
 import {toSchemaName} from '$lib/util/schema.js';
 import {actionDatas} from '$lib/vocab/action/actionData.js';
-import {VocabNameSchema} from '$lib/vocab/vocab.schema.js';
 import {
 	AccountSchema,
 	AccountIdSchema,
@@ -11,7 +10,7 @@ import {
 	ClientSessionSchema,
 	ClientAccountSessionSchema,
 	ClientGuestSessionSchema,
-} from '$lib/vocab/account/account.schema.js';
+} from '$lib/vocab/account/accountSchema.js';
 import {
 	ActorSchema,
 	ActorIdSchema,
@@ -68,7 +67,6 @@ export const modelSchemas: Json_Schema[] = [
 	SpaceSchema,
 	TieIdSchema,
 	TieSchema,
-	VocabNameSchema,
 ];
 
 export const actionSchemas: Json_Schema[] = actionDatas.reduce((schemas, actionData) => {

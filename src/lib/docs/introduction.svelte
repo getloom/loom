@@ -1,10 +1,5 @@
 <script lang="ts">
-	import Package_Summary from '@ryanatkn/fuz/Package_Summary.svelte';
-	import {parse_package_meta} from '@ryanatkn/fuz/package_meta.js';
 
-	import {package_json, src_json} from '$lib/package.js';
-
-	const pkg = parse_package_meta(package_json.homepage, package_json, src_json);
 </script>
 
 <section class="prose spaced">
@@ -17,6 +12,6 @@
 </section>
 <section class="padded">
 	<div class="width_sm panel">
-		<Package_Summary {pkg} />
+		Package details go here (if we even release a package?)
 	</div>
 </section>

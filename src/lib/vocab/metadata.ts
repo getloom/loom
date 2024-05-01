@@ -111,7 +111,6 @@ export const schemaNames: SchemaName[] = [
 	'UpdateSpaceParams',
 	'UpdateSpaceResponse',
 	'ViewSpaceParams',
-	'VocabName',
 ];
 
 export const vocabNames: VocabName[] = [
@@ -205,7 +204,6 @@ export const vocabNames: VocabName[] = [
 	'UpdateRole',
 	'UpdateSpace',
 	'ViewSpace',
-	'VocabName',
 ];
 
 export const viewNames: VocabName[] = [
@@ -258,7 +256,6 @@ export const modelNames: VocabName[] = [
 	'Space',
 	'TieId',
 	'Tie',
-	'VocabName',
 ];
 
 export const actionNames: VocabName[] = [

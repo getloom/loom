@@ -15,7 +15,7 @@
 	import DocsGuideContent from '$lib/docs/DocsGuideContent.svelte';
 	import DocsGuideUserContent from '$lib/docs/DocsGuideUserContent.svelte';
 	import DocsGuideAdminContent from '$lib/docs/DocsGuideAdminContent.svelte';
-	import DocsGuideDevContent from '$lib/docs/DocsGuideDevContent.svelte';	
+	import DocsGuideDevContent from '$lib/docs/DocsGuideDevContent.svelte';
 
 	export let path = '/docs';
 
@@ -30,7 +30,7 @@
 	$: path_guide = path + '/guide';
 	$: path_guide_user = path + '/guide/user';
 	$: path_guide_admin = path + '/guide/admin';
-	$: path_guide_dev = path + '/guide/dev';	
+	$: path_guide_dev = path + '/guide/dev';
 
 	$: title =
 		pathname === path_guide
@@ -41,9 +41,9 @@
 					? 'loom admin guide'
 					: pathname === path_guide_dev
 						? 'loom dev guide'
-							: 'loom docs';
+						: 'loom docs';
 
-	$: showGuideContent = pathname.startsWith(path_guide);	
+	$: showGuideContent = pathname.startsWith(path_guide);
 
 	const toGuideSlug = (p: string, path: string): string | null => {
 		const guidePrefix = path + '/guide/';
