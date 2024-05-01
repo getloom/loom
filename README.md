@@ -72,7 +72,7 @@ npm i
 
 # start SvelteKit/Vite and the Node server
 npx gro dev # args are forwarded to `vite dev`
-gro dev # install Gro globally: npm i -g @grogarden/gro
+gro dev # install Gro globally: npm i -g @ryanatkn/gro
 
 # browse to localhost:5173 or whatever it says
 

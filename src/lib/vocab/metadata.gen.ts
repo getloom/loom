@@ -1,5 +1,5 @@
-import type {Gen} from '@grogarden/gro/gen.js';
-import {to_root_path} from '@grogarden/gro/paths.js';
+import type {Gen} from '@ryanatkn/gro/gen.js';
+import {to_root_path} from '@ryanatkn/gro/paths.js';
 
 import {toSchemaName} from '$lib/util/schema.js';
 import {schemas, modelSchemas} from '$lib/vocab/schemas.js';

@@ -1,5 +1,5 @@
-import type {Task} from '@grogarden/gro';
-import {git_current_commit_hash} from '@grogarden/gro/git.js';
+import type {Task} from '@ryanatkn/gro';
+import {git_current_commit_hash} from '@ryanatkn/gro/git.js';
 
 import {ENV_FILE_DEV, ENV_FILE_PROD, update_env_git_hash} from '$lib/server/env.js';
 

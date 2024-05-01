@@ -1,6 +1,6 @@
-import type {Task} from '@grogarden/gro';
+import type {Task} from '@ryanatkn/gro';
 import {z} from 'zod';
-import {task as baseTask, Args as BaseArgs} from '@grogarden/gro/check.task.js';
+import {task as baseTask, Args as BaseArgs} from '@ryanatkn/gro/check.task.js';
 
 import {find_migrations, to_migration_index} from '$lib/db/migration.js';
 

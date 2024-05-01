@@ -1,5 +1,5 @@
-import type {Gen} from '@grogarden/gro';
-import {to_root_path} from '@grogarden/gro/paths.js';
+import type {Gen} from '@ryanatkn/gro';
+import {to_root_path} from '@ryanatkn/gro/paths.js';
 
 import {actionDatas} from '$lib/vocab/action/actionData.js';
 

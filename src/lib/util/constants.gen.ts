@@ -1,6 +1,6 @@
-import type {Gen} from '@grogarden/gro/gen.js';
-import {load_package_json} from '@grogarden/gro/package_json.js';
-import {to_root_path} from '@grogarden/gro/paths.js';
+import type {Gen} from '@ryanatkn/gro/gen.js';
+import {load_package_json} from '@ryanatkn/gro/package_json.js';
+import {to_root_path} from '@ryanatkn/gro/paths.js';
 
 export const gen: Gen = async ({origin_id}) => {
 	const package_json = await load_package_json();

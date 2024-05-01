@@ -61,7 +61,7 @@ npm i # install dependencies`}
 		for tasks and <a href="https://github.com/changesets/changesets">Changesets</a> (installed globally)
 		for versioning and changelogs:
 	</p>
-	<CodeExample code={`npm i -g @grogarden/gro @changesets/cli`} />
+	<CodeExample code={`npm i -g @ryanatkn/gro @changesets/cli`} />
 	<p>To upgrade an existing installation:</p>
 	<CodeExample
 		code={`fnm install 20
@@ -69,7 +69,7 @@ fnm use 20
 fnm default 20
 fnm ls # view the status of your installed versions
 fnm uninstall X # remove any old versions you no longer want
-npm i -g @grogarden/gro @changesets/cli # reinstall global dependencies`}
+npm i -g @ryanatkn/gro @changesets/cli # reinstall global dependencies`}
 	/>
 	<h3>3. Postgres</h3>
 	<p>

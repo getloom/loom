@@ -1,8 +1,8 @@
-import type {Create_Gro_Config} from '@grogarden/gro';
+import type {Create_Gro_Config} from '@ryanatkn/gro';
 import {readdir} from 'node:fs/promises';
-import {plugin as gro_plugin_server, SERVER_SOURCE_ID} from '@grogarden/gro/gro_plugin_server.js';
-import {plugin as gro_plugin_sveltekit_frontend} from '@grogarden/gro/gro_plugin_sveltekit_frontend.js';
-import {plugin as gro_plugin_library} from '@grogarden/gro/gro_plugin_library.js';
+import {gro_plugin_server, SERVER_SOURCE_ID} from '@ryanatkn/gro/gro_plugin_server.js';
+import {gro_plugin_sveltekit_app} from '@ryanatkn/gro/gro_plugin_sveltekit_app.js';
+import {gro_plugin_sveltekit_library} from '@ryanatkn/gro/gro_plugin_sveltekit_library.js';
 
 import {MIGRATIONS_DIR} from '$lib/db/migration.js';
 import {init_env} from '$lib/server/env.js';
@@ -33,8 +33,8 @@ const config: Create_Gro_Config = async (cfg) => {
 		// TODO could replace just the server plugin to be more forwards compatible, `replace_plugin` helper?
 		// a problem with this design is that users could use it in ways that break often, like even when new base plugins are added
 		gro_plugin_server({entry_points}),
-		gro_plugin_sveltekit_frontend(),
-		gro_plugin_library(),
+		gro_plugin_sveltekit_app(),
+		gro_plugin_sveltekit_library(),
 	];
 
 	cfg.map_package_json = (pkg) => {

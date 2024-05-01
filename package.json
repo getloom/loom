@@ -35,8 +35,7 @@
     "@getloom/mural": "^0.9.6",
     "@ryanatkn/fuz": "^0.82.0",
     "@fuz.dev/svelte_intersect": "file:svelte_intersect-0.8.0.tgz",
-    "@grogarden/gro": "file:gro-0.107.1.tgz",
-    "@grogarden/util": "file:util-0.18.1.tgz",
+    "@ryanatkn/gro": "^0.112.0",
     "@sveltejs/adapter-node": "^2.0.1",
     "@sveltejs/kit": "^2.0.4",
     "@sveltejs/package": "^2.2.4",
@@ -1965,10 +1964,6 @@
     "./vocab/role/roleServices.js": {
       "default": "./dist/vocab/role/roleServices.js",
       "types": "./dist/vocab/role/roleServices.d.ts"
-    },
-    "./vocab/schemas.test.js": {
-      "default": "./dist/vocab/schemas.test.js",
-      "types": "./dist/vocab/schemas.test.d.ts"
     },
     "./vocab/schemas.js": {
       "default": "./dist/vocab/schemas.js",

@@ -36,7 +36,7 @@
 	</p>
 	<CodeExample
 		code={`git clone https://github.com/getloom/loom
-npm i -g @grogarden/gro`}
+npm i -g @ryanatkn/gro`}
 	/>
 
 	<h3>Deploy</h3>
