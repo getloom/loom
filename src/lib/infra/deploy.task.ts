@@ -31,7 +31,7 @@ export const task: Task = {
 			SVELTEKIT_BUILD_DIRNAME,
 			'package.json',
 			'package-lock.json',
-			'svelte-gettable-stores-0.2.0.tgz',			
+			'svelte-gettable-stores-0.2.0.tgz',
 		];
 
 		// TODO ensure_dir helper? or omit the `exists` check?
