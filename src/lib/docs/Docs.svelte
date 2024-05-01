@@ -2,9 +2,8 @@
 	import {page} from '$app/stores';
 	import {base} from '$app/paths';
 	import {strip_start} from '@ryanatkn/belt/string.js';
-	import {mutable, writable} from '@feltcoop/svelte-gettable-stores';
+	import {writable} from '@feltcoop/svelte-gettable-stores';
 
-	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 	import {
 		guideItemsBySlug,
 		userGuideItems,
@@ -17,17 +16,6 @@
 	import DocsGuideUserContent from '$lib/docs/DocsGuideUserContent.svelte';
 	import DocsGuideAdminContent from '$lib/docs/DocsGuideAdminContent.svelte';
 	import DocsGuideDevContent from '$lib/docs/DocsGuideDevContent.svelte';
-	import DocsVocabContent from '$lib/docs/DocsVocabContent.svelte';
-	import {
-		clientActions,
-		namesByCategory,
-		serviceActions,
-		sortedModelSchemas,
-		sortedViewTemplates,
-		type VocabCategory,
-	} from '$lib/vocab/data.js';
-	import type {VocabName} from '$lib/vocab/vocab.js';
-	import {modelNames} from '$lib/vocab/metadata.js';
 
 	export let path = '/docs';
 
@@ -39,25 +27,10 @@
 
 	$: pathname = strip_start($page.url.pathname, base);
 
-	// TODO display source code links to views and actions and such
-
-	const vocabOnscreen = mutable(new Set<VocabName>()); // set of vocab names onscreen via IntersectionObserver
-
-	const isCategoryOnscreen = (c: VocabCategory, $vocabOnscreen: Set<VocabName>): boolean => {
-		const names = namesByCategory.get(c)!;
-		for (const v of $vocabOnscreen) {
-			if (names.has(v)) {
-				return true;
-			}
-		}
-		return false;
-	};
-
 	$: path_guide = path + '/guide';
 	$: path_guide_user = path + '/guide/user';
 	$: path_guide_admin = path + '/guide/admin';
 	$: path_guide_dev = path + '/guide/dev';
-	$: path_vocab = path + '/vocab';
 
 	$: title =
 		pathname === path_guide
@@ -68,12 +41,9 @@
 					? 'loom admin guide'
 					: pathname === path_guide_dev
 						? 'loom dev guide'
-						: pathname === path_vocab
-							? 'loom vocab docs'
-							: 'loom docs';
+						: 'loom docs';
 
 	$: showGuideContent = pathname.startsWith(path_guide);
-	$: showVocabContent = pathname.startsWith(path_vocab);
 
 	const toGuideSlug = (p: string, path: string): string | null => {
 		const guidePrefix = path + '/guide/';
@@ -146,64 +116,6 @@
 					{/each}
 				</ol>
 			{/if}
-
-			<h3><a href="{base}{path_vocab}#vocab" class:selected={showVocabContent}>vocab</a></h3>
-			{#if showVocabContent}
-				<h4>
-					<a
-						href="{base}{path_vocab}#views"
-						class:selected={isCategoryOnscreen('views', $vocabOnscreen.value)}>views</a
-					>
-				</h4>
-				<menu>
-					{#each sortedViewTemplates as { name }}
-						<li>
-							<Vocab {name} plain={true} selections={vocabOnscreen} />
-						</li>
-					{/each}
-				</menu>
-				<h4>
-					<a
-						href="{base}{path_vocab}#models"
-						class:selected={isCategoryOnscreen('models', $vocabOnscreen.value)}>models</a
-					>
-				</h4>
-				<menu>
-					{#each modelNames as name}
-						<li>
-							<Vocab {name} plain={true} selections={vocabOnscreen} />
-						</li>
-					{/each}
-				</menu>
-				<h4>
-					<a
-						href="{base}{path_vocab}#service_actions"
-						class:selected={isCategoryOnscreen('service_actions', $vocabOnscreen.value)}
-						>service actions</a
-					>
-				</h4>
-				<menu>
-					{#each serviceActions as { name } (name)}
-						<li>
-							<Vocab {name} plain={true} selections={vocabOnscreen} />
-						</li>
-					{/each}
-				</menu>
-				<h4>
-					<a
-						href="{base}{path_vocab}#client_actions"
-						class:selected={isCategoryOnscreen('client_actions', $vocabOnscreen.value)}
-						>client actions</a
-					>
-				</h4>
-				<menu>
-					{#each clientActions as { name } (name)}
-						<li>
-							<Vocab {name} plain={true} selections={vocabOnscreen} />
-						</li>
-					{/each}
-				</menu>
-			{/if}
 		</nav>
 		<footer>
 			<slot name="footer">
@@ -240,15 +152,6 @@
 				<DocsGuideAdminContent />
 			{:else if pathname === path_guide_dev}
 				<DocsGuideDevContent />
-			{:else if pathname === path_vocab}
-				<DocsVocabContent
-					{sortedViewTemplates}
-					{sortedModelSchemas}
-					{serviceActions}
-					{clientActions}
-					{modelNames}
-					selections={vocabOnscreen}
-				/>
 			{:else if selectedGuideItem}
 				{#if pathname.startsWith(path_guide_user + '/')}
 					<DocsGuideUserContent
@@ -285,9 +188,6 @@
 		padding-bottom: var(--spacing_6);
 	}
 	ol,
-	menu {
-		padding-left: var(--spacing_6);
-	}
 	li {
 		display: flex;
 		flex-direction: column;
@@ -330,9 +230,6 @@
 			transform: none;
 			margin-bottom: var(--spacing_3);
 		}
-	}
-	menu {
-		margin-bottom: var(--spacing_lg);
 	}
 	h4 {
 		padding-left: var(--spacing_3);

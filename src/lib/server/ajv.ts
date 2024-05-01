@@ -1,5 +1,5 @@
 import Ajv, {type Options, type ErrorObject, type ValidateFunction, type SchemaObject} from 'ajv';
-import type {Json_Schema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '$lib/util/schema.js';
 import AjvKeywordInstanceof from 'ajv-keywords/dist/keywords/instanceof.js';
 
 import {schemas} from '$lib/vocab/schemas.js';

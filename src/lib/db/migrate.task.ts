@@ -1,4 +1,4 @@
-import type {Task} from '@grogarden/gro';
+import type {Task} from '@ryanatkn/gro';
 
 import {migrate} from '$lib/db/migrate.js';
 

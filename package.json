@@ -35,9 +35,7 @@
     "@getloom/mural": "^0.9.6",
     "@ryanatkn/fuz": "^0.82.0",
     "@fuz.dev/svelte_intersect": "file:svelte_intersect-0.8.0.tgz",
-    "@grogarden/gro": "file:gro-0.107.1.tgz",
-    "@grogarden/util": "file:util-0.18.1.tgz",
-    "@ryanatkn/json-schema-to-typescript": "file:json-schema-to-typescript-11.1.5.tgz",
+    "@ryanatkn/gro": "^0.112.0",
     "@sveltejs/adapter-node": "^2.0.1",
     "@sveltejs/kit": "^2.0.4",
     "@sveltejs/package": "^2.2.4",
@@ -45,6 +43,7 @@
     "@types/body-parser": "^1.19.5",
     "@types/cookie": "^0.6.0",
     "@types/cookie-signature": "^1.1.2",
+    "@types/json-schema": "^7.0.6",
     "@types/node": "^20.10.5",
     "@types/throttle-debounce": "^5.0.2",
     "@types/ws": "^8.5.10",
@@ -474,11 +473,6 @@
       "default": "./dist/docs/DocsGuideUserContent.svelte",
       "types": "./dist/docs/DocsGuideUserContent.svelte.d.ts"
     },
-    "./docs/DocsVocabContent.svelte": {
-      "svelte": "./dist/docs/DocsVocabContent.svelte",
-      "default": "./dist/docs/DocsVocabContent.svelte",
-      "types": "./dist/docs/DocsVocabContent.svelte.d.ts"
-    },
     "./docs/getting_started.svelte": {
       "svelte": "./dist/docs/getting_started.svelte",
       "default": "./dist/docs/getting_started.svelte",
@@ -556,14 +550,6 @@
     "./infra/syncEnvGitHash.task.js": {
       "default": "./dist/infra/syncEnvGitHash.task.js",
       "types": "./dist/infra/syncEnvGitHash.task.d.ts"
-    },
-    "./package.gen.js": {
-      "default": "./dist/package.gen.js",
-      "types": "./dist/package.gen.d.ts"
-    },
-    "./package.js": {
-      "default": "./dist/package.js",
-      "types": "./dist/package.d.ts"
     },
     "./plugins/admin-home/AdminHome.svelte": {
       "svelte": "./dist/plugins/admin-home/AdminHome.svelte",
@@ -1595,10 +1581,6 @@
       "default": "./dist/util/jsonRpc.js",
       "types": "./dist/util/jsonRpc.d.ts"
     },
-    "./util/jsonSchemaToTypescript.server.js": {
-      "default": "./dist/util/jsonSchemaToTypescript.server.js",
-      "types": "./dist/util/jsonSchemaToTypescript.server.d.ts"
-    },
     "./util/logo.js": {
       "default": "./dist/util/logo.js",
       "types": "./dist/util/logo.d.ts"
@@ -1671,10 +1653,6 @@
       "default": "./dist/util/websocket.js",
       "types": "./dist/util/websocket.d.ts"
     },
-    "./vocab/account/account.schema.js": {
-      "default": "./dist/vocab/account/account.schema.js",
-      "types": "./dist/vocab/account/account.schema.d.ts"
-    },
     "./vocab/account/account.js": {
       "default": "./dist/vocab/account/account.js",
       "types": "./dist/vocab/account/account.d.ts"
@@ -1707,6 +1685,10 @@
       "default": "./dist/vocab/account/AccountRepo.js",
       "types": "./dist/vocab/account/AccountRepo.d.ts"
     },
+    "./vocab/account/accountSchema.js": {
+      "default": "./dist/vocab/account/accountSchema.js",
+      "types": "./dist/vocab/account/accountSchema.d.ts"
+    },
     "./vocab/account/accountServices.js": {
       "default": "./dist/vocab/account/accountServices.js",
       "types": "./dist/vocab/account/accountServices.d.ts"
@@ -1727,17 +1709,9 @@
       "default": "./dist/vocab/action/actions.js",
       "types": "./dist/vocab/action/actions.d.ts"
     },
-    "./vocab/action/actionTypes.gen.js": {
-      "default": "./dist/vocab/action/actionTypes.gen.js",
-      "types": "./dist/vocab/action/actionTypes.gen.d.ts"
-    },
     "./vocab/action/actionTypes.js": {
       "default": "./dist/vocab/action/actionTypes.js",
       "types": "./dist/vocab/action/actionTypes.d.ts"
-    },
-    "./vocab/actor/actor.schema.js": {
-      "default": "./dist/vocab/actor/actor.schema.js",
-      "types": "./dist/vocab/actor/actor.schema.d.ts"
     },
     "./vocab/actor/actor.js": {
       "default": "./dist/vocab/actor/actor.js",
@@ -1775,6 +1749,10 @@
       "default": "./dist/vocab/actor/ActorRepo.js",
       "types": "./dist/vocab/actor/ActorRepo.d.ts"
     },
+    "./vocab/actor/actorSchema.js": {
+      "default": "./dist/vocab/actor/actorSchema.js",
+      "types": "./dist/vocab/actor/actorSchema.d.ts"
+    },
     "./vocab/actor/actorServices.test.js": {
       "default": "./dist/vocab/actor/actorServices.test.js",
       "types": "./dist/vocab/actor/actorServices.test.d.ts"
@@ -1782,10 +1760,6 @@
     "./vocab/actor/actorServices.js": {
       "default": "./dist/vocab/actor/actorServices.js",
       "types": "./dist/vocab/actor/actorServices.d.ts"
-    },
-    "./vocab/assignment/assignment.schema.js": {
-      "default": "./dist/vocab/assignment/assignment.schema.js",
-      "types": "./dist/vocab/assignment/assignment.schema.d.ts"
     },
     "./vocab/assignment/assignment.js": {
       "default": "./dist/vocab/assignment/assignment.js",
@@ -1811,6 +1785,10 @@
       "default": "./dist/vocab/assignment/AssignmentRepo.js",
       "types": "./dist/vocab/assignment/AssignmentRepo.d.ts"
     },
+    "./vocab/assignment/assignmentSchema.js": {
+      "default": "./dist/vocab/assignment/assignmentSchema.js",
+      "types": "./dist/vocab/assignment/assignmentSchema.d.ts"
+    },
     "./vocab/assignment/assignmentServices.test.js": {
       "default": "./dist/vocab/assignment/assignmentServices.test.js",
       "types": "./dist/vocab/assignment/assignmentServices.test.d.ts"
@@ -1822,10 +1800,6 @@
     "./vocab/data.js": {
       "default": "./dist/vocab/data.js",
       "types": "./dist/vocab/data.d.ts"
-    },
-    "./vocab/entity/entity.schema.js": {
-      "default": "./dist/vocab/entity/entity.schema.js",
-      "types": "./dist/vocab/entity/entity.schema.d.ts"
     },
     "./vocab/entity/entity.js": {
       "default": "./dist/vocab/entity/entity.js",
@@ -1863,6 +1837,10 @@
       "default": "./dist/vocab/entity/EntityRepo.js",
       "types": "./dist/vocab/entity/EntityRepo.d.ts"
     },
+    "./vocab/entity/entitySchema.js": {
+      "default": "./dist/vocab/entity/entitySchema.js",
+      "types": "./dist/vocab/entity/entitySchema.d.ts"
+    },
     "./vocab/entity/entityServices.test.js": {
       "default": "./dist/vocab/entity/entityServices.test.js",
       "types": "./dist/vocab/entity/entityServices.test.d.ts"
@@ -1870,10 +1848,6 @@
     "./vocab/entity/entityServices.js": {
       "default": "./dist/vocab/entity/entityServices.js",
       "types": "./dist/vocab/entity/entityServices.d.ts"
-    },
-    "./vocab/hub/hub.schema.js": {
-      "default": "./dist/vocab/hub/hub.schema.js",
-      "types": "./dist/vocab/hub/hub.schema.d.ts"
     },
     "./vocab/hub/hub.js": {
       "default": "./dist/vocab/hub/hub.js",
@@ -1903,6 +1877,10 @@
       "default": "./dist/vocab/hub/HubRepo.js",
       "types": "./dist/vocab/hub/HubRepo.d.ts"
     },
+    "./vocab/hub/hubSchema.js": {
+      "default": "./dist/vocab/hub/hubSchema.js",
+      "types": "./dist/vocab/hub/hubSchema.d.ts"
+    },
     "./vocab/hub/hubServices.test.js": {
       "default": "./dist/vocab/hub/hubServices.test.js",
       "types": "./dist/vocab/hub/hubServices.test.d.ts"
@@ -1918,10 +1896,6 @@
     "./vocab/metadata.js": {
       "default": "./dist/vocab/metadata.js",
       "types": "./dist/vocab/metadata.d.ts"
-    },
-    "./vocab/policy/policy.schema.js": {
-      "default": "./dist/vocab/policy/policy.schema.js",
-      "types": "./dist/vocab/policy/policy.schema.d.ts"
     },
     "./vocab/policy/policy.js": {
       "default": "./dist/vocab/policy/policy.js",
@@ -1951,13 +1925,13 @@
       "default": "./dist/vocab/policy/PolicyRepo.js",
       "types": "./dist/vocab/policy/PolicyRepo.d.ts"
     },
+    "./vocab/policy/policySchema.js": {
+      "default": "./dist/vocab/policy/policySchema.js",
+      "types": "./dist/vocab/policy/policySchema.d.ts"
+    },
     "./vocab/policy/policyServices.js": {
       "default": "./dist/vocab/policy/policyServices.js",
       "types": "./dist/vocab/policy/policyServices.d.ts"
-    },
-    "./vocab/role/role.schema.js": {
-      "default": "./dist/vocab/role/role.schema.js",
-      "types": "./dist/vocab/role/role.schema.d.ts"
     },
     "./vocab/role/role.js": {
       "default": "./dist/vocab/role/role.js",
@@ -1979,6 +1953,10 @@
       "default": "./dist/vocab/role/RoleRepo.js",
       "types": "./dist/vocab/role/RoleRepo.d.ts"
     },
+    "./vocab/role/roleSchema.js": {
+      "default": "./dist/vocab/role/roleSchema.js",
+      "types": "./dist/vocab/role/roleSchema.d.ts"
+    },
     "./vocab/role/roleServices.test.js": {
       "default": "./dist/vocab/role/roleServices.test.js",
       "types": "./dist/vocab/role/roleServices.test.d.ts"
@@ -1987,10 +1965,6 @@
       "default": "./dist/vocab/role/roleServices.js",
       "types": "./dist/vocab/role/roleServices.d.ts"
     },
-    "./vocab/schemas.test.js": {
-      "default": "./dist/vocab/schemas.test.js",
-      "types": "./dist/vocab/schemas.test.d.ts"
-    },
     "./vocab/schemas.js": {
       "default": "./dist/vocab/schemas.js",
       "types": "./dist/vocab/schemas.d.ts"
@@ -1998,10 +1972,6 @@
     "./vocab/space/defaultSpaces.js": {
       "default": "./dist/vocab/space/defaultSpaces.js",
       "types": "./dist/vocab/space/defaultSpaces.d.ts"
-    },
-    "./vocab/space/space.schema.js": {
-      "default": "./dist/vocab/space/space.schema.js",
-      "types": "./dist/vocab/space/space.schema.d.ts"
     },
     "./vocab/space/space.js": {
       "default": "./dist/vocab/space/space.js",
@@ -2031,6 +2001,10 @@
       "default": "./dist/vocab/space/SpaceRepo.js",
       "types": "./dist/vocab/space/SpaceRepo.d.ts"
     },
+    "./vocab/space/spaceSchema.js": {
+      "default": "./dist/vocab/space/spaceSchema.js",
+      "types": "./dist/vocab/space/spaceSchema.d.ts"
+    },
     "./vocab/space/spaceServices.test.js": {
       "default": "./dist/vocab/space/spaceServices.test.js",
       "types": "./dist/vocab/space/spaceServices.test.d.ts"
@@ -2038,10 +2012,6 @@
     "./vocab/space/spaceServices.js": {
       "default": "./dist/vocab/space/spaceServices.js",
       "types": "./dist/vocab/space/spaceServices.d.ts"
-    },
-    "./vocab/tie/tie.schema.js": {
-      "default": "./dist/vocab/tie/tie.schema.js",
-      "types": "./dist/vocab/tie/tie.schema.d.ts"
     },
     "./vocab/tie/tie.js": {
       "default": "./dist/vocab/tie/tie.js",
@@ -2059,17 +2029,13 @@
       "default": "./dist/vocab/tie/TieRepo.js",
       "types": "./dist/vocab/tie/TieRepo.d.ts"
     },
+    "./vocab/tie/tieSchema.js": {
+      "default": "./dist/vocab/tie/tieSchema.js",
+      "types": "./dist/vocab/tie/tieSchema.d.ts"
+    },
     "./vocab/view/view.js": {
       "default": "./dist/vocab/view/view.js",
       "types": "./dist/vocab/view/view.d.ts"
-    },
-    "./vocab/vocab.gen.json.js": {
-      "default": "./dist/vocab/vocab.gen.json.js",
-      "types": "./dist/vocab/vocab.gen.json.d.ts"
-    },
-    "./vocab/vocab.schema.js": {
-      "default": "./dist/vocab/vocab.schema.js",
-      "types": "./dist/vocab/vocab.schema.d.ts"
     },
     "./vocab/vocab.js": {
       "default": "./dist/vocab/vocab.js",

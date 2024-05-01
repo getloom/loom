@@ -1,4 +1,4 @@
-import type {Json_Schema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '$lib/util/schema.js';
 
 export const AccountIdSchema = {
 	$id: '/schemas/AccountId',

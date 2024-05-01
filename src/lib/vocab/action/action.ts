@@ -1,4 +1,4 @@
-import type {Json_Schema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '$lib/util/schema.js';
 
 import type {ServiceMethod} from '$lib/server/service.js';
 import type {ClientActionName, ServiceActionName} from '$lib/vocab/action/actionTypes.js';

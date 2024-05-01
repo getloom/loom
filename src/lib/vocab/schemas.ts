@@ -1,8 +1,7 @@
-import type {Json_Schema} from '@grogarden/gro/schema.js';
+import type {Json_Schema} from '$lib/util/schema.js';
 
 import {toSchemaName} from '$lib/util/schema.js';
 import {actionDatas} from '$lib/vocab/action/actionData.js';
-import {VocabNameSchema} from '$lib/vocab/vocab.schema.js';
 import {
 	AccountSchema,
 	AccountIdSchema,
@@ -11,7 +10,7 @@ import {
 	ClientSessionSchema,
 	ClientAccountSessionSchema,
 	ClientGuestSessionSchema,
-} from '$lib/vocab/account/account.schema.js';
+} from '$lib/vocab/account/accountSchema.js';
 import {
 	ActorSchema,
 	ActorIdSchema,
@@ -20,19 +19,19 @@ import {
 	GhostActorSchema,
 	PublicActorSchema,
 	ClientActorSchema,
-} from '$lib/vocab/actor/actor.schema.js';
+} from '$lib/vocab/actor/actorSchema.js';
 import {
 	HubSchema,
 	HubIdSchema,
 	HubSettingsSchema,
 	InitialHubSettingsSchema,
-} from '$lib/vocab/hub/hub.schema.js';
-import {AssignmentSchema, AssignmentIdSchema} from '$lib/vocab/assignment/assignment.schema.js';
-import {SpaceSchema, SpaceIdSchema} from '$lib/vocab/space/space.schema.js';
-import {EntitySchema, EntityIdSchema} from '$lib/vocab/entity/entity.schema.js';
-import {TieSchema, TieIdSchema} from '$lib/vocab/tie/tie.schema.js';
-import {RoleSchema, RoleIdSchema} from '$lib/vocab/role/role.schema.js';
-import {PolicySchema, PolicyIdSchema, PolicyNameSchema} from '$lib/vocab/policy/policy.schema.js';
+} from '$lib/vocab/hub/hubSchema.js';
+import {AssignmentSchema, AssignmentIdSchema} from '$lib/vocab/assignment/assignmentSchema.js';
+import {SpaceSchema, SpaceIdSchema} from '$lib/vocab/space/spaceSchema.js';
+import {EntitySchema, EntityIdSchema} from '$lib/vocab/entity/entitySchema.js';
+import {TieSchema, TieIdSchema} from '$lib/vocab/tie/tieSchema.js';
+import {RoleSchema, RoleIdSchema} from '$lib/vocab/role/roleSchema.js';
+import {PolicySchema, PolicyIdSchema, PolicyNameSchema} from '$lib/vocab/policy/policySchema.js';
 
 // Model schemas are distinct from the action schemas.
 // They're the nouns compared to the action verbs.
@@ -68,7 +67,6 @@ export const modelSchemas: Json_Schema[] = [
 	SpaceSchema,
 	TieIdSchema,
 	TieSchema,
-	VocabNameSchema,
 ];
 
 export const actionSchemas: Json_Schema[] = actionDatas.reduce((schemas, actionData) => {

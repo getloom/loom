@@ -1,4 +1,4 @@
-import type {Task} from '@grogarden/gro';
+import type {Task} from '@ryanatkn/gro';
 import {spawn} from '@ryanatkn/belt/process.js';
 import {z} from 'zod';
 
@@ -112,7 +112,7 @@ export const task: Task<Args> = {
 				echo "export NODE_ENV=production" >> ~/.profile;
 				echo "export NODE_ENV=production
 				  $(cat ~/.bashrc)" > ~/.bashrc;
-				npm i -g pm2 @grogarden/gro;`,
+				npm i -g pm2 @ryanatkn/gro;`,
 			//
 			//
 			// Install nginx:

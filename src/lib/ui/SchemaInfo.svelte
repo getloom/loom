@@ -1,9 +1,6 @@
 <script lang="ts">
-	import type {Json_Schema} from '@grogarden/gro/schema.js';
-	import type {JSONSchema} from '@ryanatkn/json-schema-to-typescript';
-
 	import SvastText from '$lib/ui/SvastText.svelte';
-	import {toSchemaName} from '$lib/util/schema.js';
+	import {type Json_Schema, type JSONSchema, toSchemaName} from '$lib/util/schema.js';
 	import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 
 	export let schema: Json_Schema;

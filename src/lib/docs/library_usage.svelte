@@ -1,16 +1,11 @@
 <script lang="ts">
 	import {base} from '$app/paths';
-	import Package_Detail from '@ryanatkn/fuz/Package_Detail.svelte';
-	import {parse_package_meta} from '@ryanatkn/fuz/package_meta.js';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
 	import {getDocsSettings} from '$lib/docs/docs.js';
-	import {package_json, src_json} from '$lib/package.js';
 
 	const docsSettings = getDocsSettings();
 	$: ({path} = $docsSettings);
-
-	const pkg = parse_package_meta(package_json.homepage, package_json, src_json);
 </script>
 
 <section class="prose spaced">
@@ -26,7 +21,4 @@
 	</p>
 	<p>Next install Loom as a dev dependency:</p>
 	<CodeExample code="npm i -D @getloom/loom" />
-</section>
-<section class="panel padded">
-	<Package_Detail {pkg} />
 </section>
