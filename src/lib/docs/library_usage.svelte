@@ -2,10 +2,10 @@
 	import {base} from '$app/paths';
 
 	import CodeExample from '$lib/ui/CodeExample.svelte';
-	import {getDocsSettings} from '$lib/docs/docs.js';	
+	import {getDocsSettings} from '$lib/docs/docs.js';
 
 	const docsSettings = getDocsSettings();
-	$: ({path} = $docsSettings);	
+	$: ({path} = $docsSettings);
 </script>
 
 <section class="prose spaced">

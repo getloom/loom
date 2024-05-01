@@ -1,4 +1,4 @@
-import type {Flavored} from '@ryanatkn/belt/types.js'
+import type {Flavored} from '@ryanatkn/belt/types.js';
 import type {AccountActor, ClientActor} from '$lib/vocab/actor/actor';
 import type {Hub} from '$lib/vocab/hub/hub';
 import type {Role} from '$lib/vocab/role/role';

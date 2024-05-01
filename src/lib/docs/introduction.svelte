@@ -1,5 +1,4 @@
 <script lang="ts">
-
 </script>
 
 <section class="prose spaced">
@@ -11,7 +10,5 @@
 	</p>
 </section>
 <section class="padded">
-	<div class="width_sm panel">
-		Package details go here (if we even release a package?)
-	</div>
+	<div class="width_sm panel">Package details go here (if we even release a package?)</div>
 </section>
