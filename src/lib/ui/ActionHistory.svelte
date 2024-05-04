@@ -11,7 +11,7 @@
 </script>
 
 <script lang="ts">
-	import type {Writable} from '@feltcoop/svelte-gettable-stores';
+	import type {Writable} from '@getloom/svelte-gettable-stores';
 
 	import type {ActionData} from '$lib/vocab/action/action.js';
 	import {createEventDispatcher} from 'svelte';

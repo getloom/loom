@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import {getApp} from '$lib/ui/app.js';

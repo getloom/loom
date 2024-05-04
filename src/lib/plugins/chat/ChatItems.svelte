@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Mutable, Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Mutable, Readable} from '@getloom/svelte-gettable-stores';
 
 	import type {Entity} from '$lib/vocab/entity/entity.js';
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';

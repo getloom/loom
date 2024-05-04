@@ -4,7 +4,7 @@
 	import type {Async_Status} from '@ryanatkn/belt/async.js';
 	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 	import Alert from '@ryanatkn/fuz/Alert.svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions.js';
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';

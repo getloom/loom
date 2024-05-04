@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 	import {page} from '$app/stores';
 

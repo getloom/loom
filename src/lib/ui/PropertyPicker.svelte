@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {slide} from 'svelte/transition';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {identity} from '@ryanatkn/belt/function.js';
 	import type {Result} from '@ryanatkn/belt/result.js';
 	import {createEventDispatcher} from 'svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {throttle} from 'throttle-debounce';
 	import Hue_Input from '@ryanatkn/fuz/Hue_Input.svelte';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {getApp} from '$lib/ui/app.js';
 	import ManageRolesItem from '$lib/ui/ManageRolesItem.svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import type {Hub} from '$lib/vocab/hub/hub.js';
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import {scale} from 'svelte/transition';
 

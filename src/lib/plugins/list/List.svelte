@@ -10,7 +10,7 @@
 	import type {SpaceId} from '$lib/vocab/space/space.js';
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 	import type {ActorId} from '$lib/vocab/actor/actor.js';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers.js';
 
 	const {actor, space} = getSpaceContext();

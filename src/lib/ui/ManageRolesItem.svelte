@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 
 	import type {Role, RoleId} from '$lib/vocab/role/role.js';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {derived, type Readable} from '@feltcoop/svelte-gettable-stores';
+	import {derived, type Readable} from '@getloom/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 	import {plural} from '@ryanatkn/belt/string.js';
 

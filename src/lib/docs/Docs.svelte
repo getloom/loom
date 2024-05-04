@@ -2,7 +2,7 @@
 	import {page} from '$app/stores';
 	import {base} from '$app/paths';
 	import {strip_start} from '@ryanatkn/belt/string.js';
-	import {writable} from '@feltcoop/svelte-gettable-stores';
+	import {writable} from '@getloom/svelte-gettable-stores';
 
 	import {
 		guideItemsBySlug,

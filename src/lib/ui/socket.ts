@@ -1,5 +1,5 @@
 import type {Async_Status} from '@ryanatkn/belt/async.js';
-import {writable, type Readable} from '@feltcoop/svelte-gettable-stores';
+import {writable, type Readable} from '@getloom/svelte-gettable-stores';
 import {Logger} from '@ryanatkn/belt/log.js';
 
 const log = new Logger('[socket]');

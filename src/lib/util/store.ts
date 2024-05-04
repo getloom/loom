@@ -1,4 +1,4 @@
-import type {Writable} from '@feltcoop/svelte-gettable-stores';
+import type {Writable} from '@getloom/svelte-gettable-stores';
 
 export const setIfUpdated = <T extends {updated?: Date | null}>(
 	store: Writable<T | null | undefined>,

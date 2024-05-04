@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 	import Alert from '@ryanatkn/fuz/Alert.svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import Hue_Input from '@ryanatkn/fuz/Hue_Input.svelte';
 	import {goto} from '$app/navigation';
 	import {page} from '$app/stores';

@@ -1,4 +1,4 @@
-import type {Readable} from '@feltcoop/svelte-gettable-stores';
+import type {Readable} from '@getloom/svelte-gettable-stores';
 import {getContext, setContext} from 'svelte';
 
 import type {Entity} from '$lib/vocab/entity/entity.js';

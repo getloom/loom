@@ -1,5 +1,5 @@
 import {Logger} from '@ryanatkn/belt/log.js';
-import {writable} from '@feltcoop/svelte-gettable-stores';
+import {writable} from '@getloom/svelte-gettable-stores';
 
 import type {WritableUi} from '$lib/ui/ui.js';
 import type {Policy, PolicyId} from '$lib/vocab/policy/policy.js';

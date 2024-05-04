@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import Contextmenu_Entry from '@ryanatkn/fuz/Contextmenu_Entry.svelte';
 	import Contextmenu_Submenu from '@ryanatkn/fuz/Contextmenu_Submenu.svelte';
 	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';

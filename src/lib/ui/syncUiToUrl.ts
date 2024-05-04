@@ -1,4 +1,4 @@
-import type {Writable} from '@feltcoop/svelte-gettable-stores';
+import type {Writable} from '@getloom/svelte-gettable-stores';
 
 import type {ActorId} from '$lib/vocab/actor/actor.js';
 import {ACTOR_QUERY_KEY} from '$lib/util/url.js';
