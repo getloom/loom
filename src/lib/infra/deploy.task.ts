@@ -30,7 +30,7 @@ export const task: Task = {
 			SERVER_DIST_PATH,
 			SVELTEKIT_BUILD_DIRNAME,
 			'package.json',
-			'package-lock.json',			
+			'package-lock.json',
 		];
 
 		// TODO ensure_dir helper? or omit the `exists` check?
