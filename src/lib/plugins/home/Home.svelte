@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 
 	import {getApp} from '$lib/ui/app.js';

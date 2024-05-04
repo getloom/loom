@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {goto} from '$app/navigation';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {page} from '$app/stores';
 	import Contextmenu_Entry from '@ryanatkn/fuz/Contextmenu_Entry.svelte';
 

@@ -1,4 +1,4 @@
-import {writable} from '@feltcoop/svelte-gettable-stores';
+import {writable} from '@getloom/svelte-gettable-stores';
 
 import type {App} from '$lib/ui/app.js';
 import {toUi} from '$lib/ui/ui.js';

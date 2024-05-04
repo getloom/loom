@@ -1,5 +1,5 @@
 import {getContext, setContext, type SvelteComponent} from 'svelte';
-import type {Writable} from '@feltcoop/svelte-gettable-stores';
+import type {Writable} from '@getloom/svelte-gettable-stores';
 
 import actor_types from '$lib/docs/actor_types.svelte';
 import admin from '$lib/docs/admin.svelte';

@@ -2,7 +2,7 @@
 	import type {Async_Status} from '@ryanatkn/belt/async.js';
 	import Alert from '@ryanatkn/fuz/Alert.svelte';
 	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import {autofocus} from '$lib/ui/actions.js';
 	import {getApp} from '$lib/ui/app.js';

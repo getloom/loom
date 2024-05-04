@@ -5,7 +5,7 @@ import {
 	type Mutable,
 	type Readable,
 	type Writable,
-} from '@feltcoop/svelte-gettable-stores';
+} from '@getloom/svelte-gettable-stores';
 
 import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 import type {Actions} from '$lib/vocab/action/actionTypes.js';

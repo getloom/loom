@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import EntityTreeItem from '$lib/ui/EntityTreeItem.svelte';
 	import type {Entity} from '$lib/vocab/entity/entity.js';

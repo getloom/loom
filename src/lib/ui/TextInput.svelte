@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {createEventDispatcher} from 'svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';

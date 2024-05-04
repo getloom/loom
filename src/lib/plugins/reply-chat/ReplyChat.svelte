@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 
 	import ReplyChatItems from '$lib/plugins/reply-chat/ReplyChatItems.svelte';

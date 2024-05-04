@@ -34,7 +34,7 @@
     "@getloom/eslint-config": "^0.4.1",
     "@getloom/mural": "^0.9.6",
     "@ryanatkn/fuz": "^0.82.0",
-    "@fuz.dev/svelte_intersect": "file:svelte_intersect-0.8.0.tgz",
+    "svelte-intersect": "0.12.1",
     "@ryanatkn/gro": "^0.112.0",
     "@sveltejs/adapter-node": "^2.0.1",
     "@sveltejs/kit": "^2.0.4",
@@ -63,7 +63,7 @@
     "zod": "^3.22.4"
   },
   "dependencies": {
-    "@feltcoop/svelte-gettable-stores": "file:svelte-gettable-stores-0.2.0.tgz",
+    "@getloom/svelte-gettable-stores": "^0.2.3",
     "@ryanatkn/belt": "^0.20.1",
     "@polka/send-type": "^0.5.2",
     "ajv": "^8.12.0",

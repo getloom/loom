@@ -1,4 +1,4 @@
-import {mutable, type Mutable} from '@feltcoop/svelte-gettable-stores';
+import {mutable, type Mutable} from '@getloom/svelte-gettable-stores';
 
 import type {Tie} from '$lib/vocab/tie/tie.js';
 import type {EntityId} from '$lib/vocab/entity/entity.js';

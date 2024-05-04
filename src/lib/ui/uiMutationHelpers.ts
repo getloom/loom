@@ -1,4 +1,4 @@
-import {derived, writable, type Readable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {derived, writable, type Readable, type Writable} from '@getloom/svelte-gettable-stores';
 import {Logger} from '@ryanatkn/belt/log.js';
 
 import {locallyStored} from '$lib/ui/locallyStored.js';

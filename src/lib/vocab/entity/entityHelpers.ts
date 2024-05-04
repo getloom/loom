@@ -1,4 +1,4 @@
-import type {Readable} from '@feltcoop/svelte-gettable-stores';
+import type {Readable} from '@getloom/svelte-gettable-stores';
 
 import {GUEST_ACTOR_NAME} from '$lib/util/constants.js';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';

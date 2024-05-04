@@ -1,4 +1,4 @@
-import {writable, type Writable} from '@feltcoop/svelte-gettable-stores';
+import {writable, type Writable} from '@getloom/svelte-gettable-stores';
 import {goto} from '$app/navigation';
 import {get} from 'svelte/store';
 import {page} from '$app/stores';

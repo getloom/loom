@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import type {AccountActor} from '$lib/vocab/actor/actor.js';
 	import type {Policy, PolicyName} from '$lib/vocab/policy/policy.js';

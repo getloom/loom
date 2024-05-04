@@ -1,5 +1,5 @@
 import {plural} from '@ryanatkn/belt/string.js';
-import type {Readable} from '@feltcoop/svelte-gettable-stores';
+import type {Readable} from '@getloom/svelte-gettable-stores';
 
 import type {
 	AccountActor,

@@ -1,4 +1,4 @@
-import {writable} from '@feltcoop/svelte-gettable-stores';
+import {writable} from '@getloom/svelte-gettable-stores';
 import {Logger} from '@ryanatkn/belt/log.js';
 
 import type {WritableUi} from '$lib/ui/ui.js';

@@ -1,4 +1,4 @@
-import type {Mutable, Writable} from '@feltcoop/svelte-gettable-stores';
+import type {Mutable, Writable} from '@getloom/svelte-gettable-stores';
 import {identity} from '@ryanatkn/belt/function.js';
 import type {Json} from '@ryanatkn/belt/json.js';
 

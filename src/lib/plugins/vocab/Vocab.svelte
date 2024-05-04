@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {base} from '$app/paths';
-	import type {Mutable} from '@feltcoop/svelte-gettable-stores';
+	import type {Mutable} from '@getloom/svelte-gettable-stores';
 
 	import {getDocsSettings} from '$lib/docs/docs.js';
 	import type {VocabName} from '$lib/vocab/vocab.js';

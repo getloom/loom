@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {page} from '$app/stores';
 
 	import CreateSpaceForm from '$lib/ui/CreateSpaceForm.svelte';

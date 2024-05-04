@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import AssignmentInputItem from '$lib/ui/AssignmentInputItem.svelte';
 	import {getApp} from '$lib/ui/app.js';

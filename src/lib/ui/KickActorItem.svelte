@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 	import {to_dialog_params} from '@ryanatkn/fuz/dialog.js';
 

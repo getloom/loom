@@ -5,7 +5,7 @@ import {
 	type Writable,
 	mutable,
 	type Mutable,
-} from '@feltcoop/svelte-gettable-stores';
+} from '@getloom/svelte-gettable-stores';
 import {setContext, getContext, type SvelteComponent} from 'svelte';
 import type {Dialog_Params} from '@ryanatkn/fuz/dialog.js';
 import {browser} from '$app/environment';

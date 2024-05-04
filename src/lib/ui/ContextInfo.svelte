@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {Readable} from '@feltcoop/svelte-gettable-stores';
+	import type {Readable} from '@getloom/svelte-gettable-stores';
 
 	import ActorAvatar from '$lib/ui/ActorAvatar.svelte';
 	import HubAvatar from '$lib/ui/HubAvatar.svelte';
