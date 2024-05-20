@@ -149,7 +149,7 @@ export const task: Task<Args> = {
 				`sudo -i -u postgres psql -c "CREATE DATABASE ${PGDATABASE};";` +
 				`sudo -i -u postgres psql -c "ALTER USER ${PGUSER} WITH PASSWORD '${PGPASSWORD}';";` +
 				// All done!!
-				+`echo 'done' >> ${APP_SETUP_STATE_FILE_PATH};` +
+				`echo 'done' >> ${APP_SETUP_STATE_FILE_PATH};` +
 				logSequence(`Success! Server is now setup for deployment.`),
 		];
 		const script = steps.map((s) => s + '\n\n').join('');
