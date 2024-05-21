@@ -24,8 +24,7 @@ export const task: Task = {
 		const {DEPLOY_IP, DEPLOY_USER} = await load_envs(false);
 
 		const deploy_login = `${DEPLOY_USER}@${DEPLOY_IP}`;
-
-		//TODO get upstream dependencies fixed and remove the tarballss
+		
 		const files: string[] = [
 			SERVER_DIST_PATH,
 			SVELTEKIT_BUILD_DIRNAME,
@@ -65,7 +64,7 @@ export const task: Task = {
 				cd ${deploy_dirname};
 				tar -xf ${artifact_filename};
 				echo 'stopping old deploy';
-				pm2 stop default;
+				pm2 stop npm;
 				echo 'npm ci';
 				npm ci;
 				cd ~;
