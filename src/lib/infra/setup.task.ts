@@ -169,13 +169,24 @@ export const task: Task<Args> = {
 				sudo apt install -y postgresql-${POSTGRES_VERSION};`,
 			//
 			//
-			// Create the Postgres database for Felt:
+			// Create the Postgres database for Loom:
 			logSequence('Creating Postgres database...') +
 				`sudo -i -u postgres psql -c "CREATE DATABASE ${PGDATABASE};";` +
 				`sudo -i -u postgres psql -c "ALTER USER ${PGUSER} WITH PASSWORD '${PGPASSWORD}';";` +
-				// All done!!
-				`echo 'done' >> ${APP_SETUP_STATE_FILE_PATH};` +
-				logSequence(`Success! Server is now setup for deployment.`),
+			//
+			//
+			// Install default site:
+			logSequence('Installing default site...') +
+			//clone site-default to server
+			//cd to cloned directory
+			//npm i
+			//npm run build
+			//symlink deploy_dir
+			//pm2 start node --name yada yada yad
+
+			// All done!!
+			`echo 'done' >> ${APP_SETUP_STATE_FILE_PATH};` +
+			logSequence(`Success! Server is now setup for deployment.`),
 		];
 		const script = steps.map((s) => s + '\n\n').join('');
 		if (dry) {
