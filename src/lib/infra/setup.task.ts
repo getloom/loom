@@ -3,7 +3,11 @@ import {spawn} from '@ryanatkn/belt/process.js';
 import {z} from 'zod';
 
 import {green} from '$lib/server/colors.js';
-import {render_502_html, render_nginx_config} from '$lib/infra/nginxConfig.js';
+import {
+	render_502_html,
+	render_nginx_app_config,
+	render_nginx_site_config,
+} from '$lib/infra/nginxConfig.js';
 import {create_log_sequence} from '$lib/infra/helpers.js';
 import {load_envs} from '$lib/server/env.js';
 
@@ -27,6 +31,8 @@ export const task: Task<Args> = {
 			PUBLIC_ADMIN_EMAIL,
 			PUBLIC_SERVER_HOSTNAME,
 			PUBLIC_SERVER_PORT,
+			PUBLIC_SITE_HOST,
+			PUBLIC_SITE_PORT,
 			DEPLOY_IP,
 			DEPLOY_USER,
 			CERTBOT_EMAIL,
@@ -35,20 +41,31 @@ export const task: Task<Args> = {
 			PGPASSWORD,
 		} = await load_envs(false);
 
-		const server_host = PUBLIC_SERVER_PORT
+		const site_host = PUBLIC_SITE_PORT
+			? PUBLIC_SERVER_HOSTNAME + ':' + PUBLIC_SITE_PORT
+			: PUBLIC_SERVER_HOSTNAME;
+
+		const app_host = PUBLIC_SERVER_PORT
 			? PUBLIC_SERVER_HOSTNAME + ':' + PUBLIC_SERVER_PORT
 			: PUBLIC_SERVER_HOSTNAME;
 
 		const NODE_VERSION = '20';
 		const POSTGRES_VERSION = '15';
 
-		const REMOTE_NGINX_CONFIG_PATH = '/etc/nginx/sites-available/felt.conf';
-		const REMOTE_NGINX_SYMLINK_PATH = '/etc/nginx/sites-enabled/felt.conf';
+		const REMOTE_NGINX_APP_CONFIG_PATH = '/etc/nginx/sites-available/app.conf';
+		const REMOTE_NGINX_SITE_CONFIG_PATH = '/etc/nginx/sites-available/site.conf';
+		const REMOTE_NGINX_APP_SYMLINK_PATH = '/etc/nginx/sites-enabled/app.conf';
+		const REMOTE_NGINX_SITE_SYMLINK_PATH = '/etc/nginx/sites-enabled/site.conf';
 		const REMOTE_NGINX_HTML_DIR = '/var/www/html';
 
-		const nginxConfig = render_nginx_config(
+		const nginxSiteConfig = render_nginx_site_config(
+			PUBLIC_SITE_HOST,
+			site_host,
+			REMOTE_NGINX_HTML_DIR,
+		);
+		const nginxAppConfig = render_nginx_app_config(
 			PUBLIC_DEPLOY_SERVER_HOST,
-			server_host,
+			app_host,
 			REMOTE_NGINX_HTML_DIR,
 		);
 		const nginxHtmlSource = render_502_html(PUBLIC_ADMIN_EMAIL);
@@ -116,13 +133,21 @@ export const task: Task<Args> = {
 			//
 			//
 			// Install nginx:
-			logSequence('Installing nginx...') +
+			logSequence('Installing nginx sites...') +
 				`apt install -y nginx;
 				sudo unlink /etc/nginx/sites-enabled/default;
-				touch ${REMOTE_NGINX_CONFIG_PATH};
-				echo '${nginxConfig}' >> ${REMOTE_NGINX_CONFIG_PATH};
-				cat ${REMOTE_NGINX_CONFIG_PATH};
-				ln -s ${REMOTE_NGINX_CONFIG_PATH} ${REMOTE_NGINX_SYMLINK_PATH};
+
+				touch ${REMOTE_NGINX_SITE_CONFIG_PATH};
+				echo '${nginxSiteConfig}' >> ${REMOTE_NGINX_SITE_CONFIG_PATH};
+				cat ${REMOTE_NGINX_SITE_CONFIG_PATH};
+				ln -s ${REMOTE_NGINX_SITE_CONFIG_PATH} ${REMOTE_NGINX_SITE_SYMLINK_PATH};
+				
+				touch ${REMOTE_NGINX_APP_CONFIG_PATH};
+				echo '${nginxAppConfig}' >> ${REMOTE_NGINX_APP_CONFIG_PATH};
+				cat ${REMOTE_NGINX_APP_CONFIG_PATH};
+				ln -s ${REMOTE_NGINX_APP_CONFIG_PATH} ${REMOTE_NGINX_APP_SYMLINK_PATH};
+
+
 				touch ${REMOTE_NGINX_HTML_DIR}/502.html;
 				echo '${nginxHtmlSource}' >> ${REMOTE_NGINX_HTML_DIR}/502.html;
 				systemctl start nginx;`,
@@ -131,7 +156,7 @@ export const task: Task<Args> = {
 			// Install certbot for HTTPS:
 			logSequence('Enabling HTTPS with cerbot and nginx...') +
 				`apt install -y certbot python3-certbot-nginx;
-				certbot --nginx --non-interactive --agree-tos --email ${CERTBOT_EMAIL} -d ${PUBLIC_DEPLOY_SERVER_HOST};
+				certbot --nginx --non-interactive --agree-tos --email ${CERTBOT_EMAIL} -d ${PUBLIC_SITE_HOST} -d ${PUBLIC_DEPLOY_SERVER_HOST};
 				systemctl restart nginx.service;`,
 			//
 			//
