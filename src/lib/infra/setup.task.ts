@@ -177,9 +177,18 @@ export const task: Task<Args> = {
 			//
 			// Install default site:
 			logSequence('Installing default site...') +
-			//clone site-default to server
-			//cd to cloned directory
-			//npm i
+			//configure swap file to allow for builds
+				`sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024` +
+				`sudo /sbin/mkswap /var/swap.1` +
+				`sudo /sbin/swapon /var/swap.1` +
+				//clone site-default to server
+				`git clone https://github.com/getloom/site-template.git` +
+				`ln -sfn site-template/ current_site_deploy` +
+				`cd site-template` +
+				`npm ci` +
+				`npm run build` +
+				`ORIGIN=https://${PUBLIC_SITE_HOST} PORT=${PUBLIC_SITE_PORT} pm2 start node --name 'site' -- build` +
+			
 			//npm run build
 			//symlink deploy_dir
 			//pm2 start node --name yada yada yad
