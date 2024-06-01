@@ -153,6 +153,20 @@ export const task: Task<Args> = {
 				systemctl start nginx;`,
 			//
 			//
+			// Install default site:
+			logSequence('Installing default site...') +
+				//configure swap file to allow for builds
+				`sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024;
+				sudo /sbin/mkswap /var/swap.1;
+				sudo /sbin/swapon /var/swap.1;
+				git clone https://github.com/getloom/site-template.git;
+				ln -sfn site-template/ current_site_deploy;
+				cd site-template;
+				npm ci;
+				npm run build;
+				ORIGIN=https://${PUBLIC_SITE_HOST} PORT=${PUBLIC_SITE_PORT} pm2 start node --name 'site' -- build;`,
+			//
+			//
 			// Install certbot for HTTPS:
 			logSequence('Enabling HTTPS with cerbot and nginx...') +
 				`apt install -y certbot python3-certbot-nginx;
@@ -173,29 +187,9 @@ export const task: Task<Args> = {
 			logSequence('Creating Postgres database...') +
 				`sudo -i -u postgres psql -c "CREATE DATABASE ${PGDATABASE};";` +
 				`sudo -i -u postgres psql -c "ALTER USER ${PGUSER} WITH PASSWORD '${PGPASSWORD}';";` +
-			//
-			//
-			// Install default site:
-			logSequence('Installing default site...') +
-			//configure swap file to allow for builds
-				`sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024` +
-				`sudo /sbin/mkswap /var/swap.1` +
-				`sudo /sbin/swapon /var/swap.1` +
-				//clone site-default to server
-				`git clone https://github.com/getloom/site-template.git` +
-				`ln -sfn site-template/ current_site_deploy` +
-				`cd site-template` +
-				`npm ci` +
-				`npm run build` +
-				`ORIGIN=https://${PUBLIC_SITE_HOST} PORT=${PUBLIC_SITE_PORT} pm2 start node --name 'site' -- build` +
-			
-			//npm run build
-			//symlink deploy_dir
-			//pm2 start node --name yada yada yad
-
-			// All done!!
-			`echo 'done' >> ${APP_SETUP_STATE_FILE_PATH};` +
-			logSequence(`Success! Server is now setup for deployment.`),
+				// All done!!
+				`echo 'done' >> ${APP_SETUP_STATE_FILE_PATH};` +
+				logSequence(`Success! Server is now setup for deployment.`),
 		];
 		const script = steps.map((s) => s + '\n\n').join('');
 		if (dry) {
