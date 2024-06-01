@@ -24,7 +24,7 @@ export const task: Task = {
 		const {DEPLOY_IP, DEPLOY_USER} = await load_envs(false);
 
 		const deploy_login = `${DEPLOY_USER}@${DEPLOY_IP}`;
-		
+
 		const files: string[] = [
 			SERVER_DIST_PATH,
 			SVELTEKIT_BUILD_DIRNAME,
