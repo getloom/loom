@@ -556,6 +556,11 @@
       "default": "./dist/plugins/admin-home/AdminHome.svelte",
       "types": "./dist/plugins/admin-home/AdminHome.svelte.d.ts"
     },
+    "./plugins/admin-site/AdminSite.svelte": {
+      "svelte": "./dist/plugins/admin-site/AdminSite.svelte",
+      "default": "./dist/plugins/admin-site/AdminSite.svelte",
+      "types": "./dist/plugins/admin-site/AdminSite.svelte.d.ts"
+    },
     "./plugins/board/Board.svelte": {
       "svelte": "./dist/plugins/board/Board.svelte",
       "default": "./dist/plugins/board/Board.svelte",

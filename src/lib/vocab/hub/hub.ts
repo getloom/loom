@@ -25,13 +25,22 @@ export interface Hub {
 export interface HubSettings {
 	hue: number;
 	defaultRoleId: RoleId;
-	instance?: {
-		allowedAccountNames?: string[];
-		disableCreateHub?: boolean;
-		defaultHubIds?: HubId[];
-		minPasswordLength?: number;
-	};
+	instance?: InstanceSettings;
 }
+
+/**
+ * The instance admin specific settings
+ */
+export interface InstanceSettings {
+	allowedAccountNames?: string[];
+	disableCreateHub?: boolean;
+	defaultHubIds?: HubId[];
+	minPasswordLength?: number;
+	site?: {
+		sourceRepo?: string;
+	}
+}
+
 /**
  * A subset of <Vocab name="HubSettings" /> needed for defaults at the time of <Vocab name="Hub" /> creation.
  */
