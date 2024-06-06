@@ -117,6 +117,7 @@ export type VocabName =
 	| 'Actor'
 	| 'ActorId'
 	| 'AdminHome'
+	| 'AdminSite'
 	| 'Assignment'
 	| 'AssignmentId'
 	| 'Board'

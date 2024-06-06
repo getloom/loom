@@ -932,6 +932,10 @@
       "default": "./dist/sync.task.js",
       "types": "./dist/sync.task.d.ts"
     },
+    "./tasks/test.task.js": {
+      "default": "./dist/tasks/test.task.js",
+      "types": "./dist/tasks/test.task.d.ts"
+    },
     "./ui/About.svelte": {
       "svelte": "./dist/ui/About.svelte",
       "default": "./dist/ui/About.svelte",
@@ -2017,6 +2021,14 @@
     "./vocab/space/spaceServices.js": {
       "default": "./dist/vocab/space/spaceServices.js",
       "types": "./dist/vocab/space/spaceServices.d.ts"
+    },
+    "./vocab/task/taskActions.js": {
+      "default": "./dist/vocab/task/taskActions.js",
+      "types": "./dist/vocab/task/taskActions.d.ts"
+    },
+    "./vocab/task/taskServices.js": {
+      "default": "./dist/vocab/task/taskServices.js",
+      "types": "./dist/vocab/task/taskServices.d.ts"
     },
     "./vocab/tie/tie.js": {
       "default": "./dist/vocab/tie/tie.js",
