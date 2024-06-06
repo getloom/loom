@@ -684,7 +684,7 @@ export type UpdateSpaceResponseResult = ApiResult<UpdateSpaceResponse>;
 export interface RunTaskParams {
 	actor: ActorId;
 	hub_id: HubId;
-	name: string;
+	task: string;
 }
 
 export interface RunTaskResponse {

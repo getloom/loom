@@ -78,6 +78,8 @@ export type SchemaName =
 	| 'ReadRolesResponse'
 	| 'ReadSpacesParams'
 	| 'ReadSpacesResponse'
+	| 'RunTaskParams'
+	| 'RunTaskResponse'
 	| 'Role'
 	| 'RoleId'
 	| 'SetMobileParams'
@@ -181,6 +183,7 @@ export type VocabName =
 	| 'ReplyChat'
 	| 'Role'
 	| 'RoleId'
+	| 'RunTask'
 	| 'SetMobile'
 	| 'SetSession'
 	| 'SignIn'
@@ -202,3 +205,4 @@ export type VocabName =
 	| 'UpdateSpace'
 	| 'ViewSpace'
 	| 'VocabName';
+	
