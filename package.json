@@ -2026,6 +2026,10 @@
       "default": "./dist/vocab/task/taskActions.js",
       "types": "./dist/vocab/task/taskActions.d.ts"
     },
+    "./vocab/task/taskMutations.js": {
+      "default": "./dist/vocab/task/taskMutations.js",
+      "types": "./dist/vocab/task/taskMutations.d.ts"
+    },
     "./vocab/task/taskServices.js": {
       "default": "./dist/vocab/task/taskServices.js",
       "types": "./dist/vocab/task/taskServices.d.ts"

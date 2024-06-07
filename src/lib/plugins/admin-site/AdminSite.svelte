@@ -26,7 +26,7 @@
 		const result = await actions.RunTask({
 			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
-			task: 'test',
+			task: 'siteDeploy',
 		});
 		console.log(result);
 		pending = false;
