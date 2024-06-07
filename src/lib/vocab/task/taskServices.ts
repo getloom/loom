@@ -6,7 +6,7 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import { RunTask } from '$lib/vocab/task/taskActions';
 import { ADMIN_HUB_ID } from '$lib/util/constants';
 import { isActorAdmin } from '../actor/actorHelpers.server';
-import {execSync} from 'node:child_process';
+import {spawnSync} from 'node:child_process';
 
 
 const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
@@ -21,7 +21,7 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 			return {ok: false, status: 403, message: "only admins can call tasks"};
 		}
 		
-        const {hub_id, task} = params;
+        const {hub_id, task, args} = params;
 		log.debug('[RunTask] hub', hub_id);		
 		if (hub_id !== ADMIN_HUB_ID) return {ok: false, status: 403, message: "tasks can only be called from Admin hub"};
 		
@@ -29,19 +29,31 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		if (!hub) {
 			return {ok: false, status: 404, message: 'no hub found'};
 		}
-
 		await checkHubAccess(hub_id);
 
+		const commandArgs = [`tasks/${task}`].concat(args);
+		log.info(commandArgs);
 		//2 invoke the actual named task
 		//TODO add a list of "approved tasks" to mitigate user input attacks		
-		const result = execSync(`gro tasks/${task}`);
-		log.debug(result.toString());
+		const result = spawnSync('gro', commandArgs);
 
-        //3 return invokation result & messages
-		return {
-			ok: true,
-			status: 200,
-			value: {message: `${task} successfully executed`},
-		};
+
+		//3 return invokation result & messages
+		if (result.status === 0){
+			log.debug(result.stdout);
+			return {
+				ok: true,
+				status: 200,
+				value: {message: `${task} successfully executed`},
+			};
+		} else {
+			log.error('RunTask failed execution')
+			log.error(result.stderr)
+			return {
+				ok: false,
+				status: 500,
+				message: `error executing ${task}`,
+			};
+		}
 	},
 };

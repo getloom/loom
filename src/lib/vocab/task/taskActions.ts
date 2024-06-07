@@ -9,7 +9,8 @@ export const RunTask: ServiceActionData = {
 		properties: {
 			actor: {$ref: '/schemas/ActorId'},
 			hub_id: {$ref: '/schemas/HubId'},
-			task: {type: 'string'}
+			task: {type: 'string'},
+			args: {type: 'array', items: {type: 'string'}},
 		},
 		required: ['actor', 'hub_id', 'task'],
 		additionalProperties: false,

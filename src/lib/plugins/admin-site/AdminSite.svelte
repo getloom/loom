@@ -10,6 +10,7 @@
 
     $: instanceSettings = $hub.settings.instance;
 	$: siteSettings = $hub.settings.instance ? $hub.settings.instance.site : undefined;
+	$: sourceRepo = $hub.settings.instance?.site?.sourceRepo || '';
 
 	let pending = false;
 
@@ -27,6 +28,7 @@
 			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			task: 'siteDeploy',
+			args: [sourceRepo]
 		});
 		console.log(result);
 		pending = false;

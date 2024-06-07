@@ -685,6 +685,7 @@ export interface RunTaskParams {
 	actor: ActorId;
 	hub_id: HubId;
 	task: string;
+	args: string[];
 }
 
 export interface RunTaskResponse {
