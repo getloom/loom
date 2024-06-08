@@ -932,6 +932,10 @@
       "default": "./dist/sync.task.js",
       "types": "./dist/sync.task.d.ts"
     },
+    "./tasks/siteDeploy.task.js": {
+      "default": "./dist/tasks/siteDeploy.task.js",
+      "types": "./dist/tasks/siteDeploy.task.d.ts"
+    },
     "./tasks/test.task.js": {
       "default": "./dist/tasks/test.task.js",
       "types": "./dist/tasks/test.task.d.ts"

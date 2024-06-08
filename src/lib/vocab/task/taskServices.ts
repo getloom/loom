@@ -32,15 +32,16 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		await checkHubAccess(hub_id);
 
 		const commandArgs = [`tasks/${task}`].concat(args);
-		log.info(commandArgs);
+		if (import.meta.env.DEV) {			
+			commandArgs.push('--dev');
+		}		
 		//2 invoke the actual named task
 		//TODO add a list of "approved tasks" to mitigate user input attacks		
 		const result = spawnSync('gro', commandArgs);
 
-
 		//3 return invokation result & messages
 		if (result.status === 0){
-			log.debug(result.stdout);
+			log.debug(result.stdout.toString());
 			return {
 				ok: true,
 				status: 200,
@@ -48,7 +49,7 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 			};
 		} else {
 			log.error('RunTask failed execution')
-			log.error(result.stderr)
+			log.error(result.stderr.toString())
 			return {
 				ok: false,
 				status: 500,
