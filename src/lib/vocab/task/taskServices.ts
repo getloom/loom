@@ -49,7 +49,7 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 			};
 		} else {
 			log.error('RunTask failed execution')
-			log.error(result.stderr.toString())
+			log.error(result.stderr.toJSON())
 			return {
 				ok: false,
 				status: 500,
