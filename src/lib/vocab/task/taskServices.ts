@@ -6,7 +6,7 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import { RunTask } from '$lib/vocab/task/taskActions';
 import { ADMIN_HUB_ID } from '$lib/util/constants';
 import { isActorAdmin } from '../actor/actorHelpers.server';
-import {spawnSync} from 'node:child_process';
+import {execSync, spawnSync} from 'node:child_process';
 
 
 const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
@@ -37,24 +37,28 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		}		
 		//2 invoke the actual named task
 		//TODO add a list of "approved tasks" to mitigate user input attacks		
-		const result = spawnSync('gro', commandArgs);
+		const result = execSync(`gro ${commandArgs}`);
+		log.warn(result.toJSON());
+		return {ok: true, status: 200}
+		
+		// const result = spawnSync('gro', commandArgs);
 
-		//3 return invokation result & messages
-		if (result.status === 0){
-			log.debug(result.stdout.toString());
-			return {
-				ok: true,
-				status: 200,
-				value: {message: `${task} successfully executed`},
-			};
-		} else {
-			log.error('RunTask failed execution')
-			log.error(result.stderr.toJSON())
-			return {
-				ok: false,
-				status: 500,
-				message: `error executing ${task}`,
-			};
-		}
+		// //3 return invokation result & messages
+		// if (result.status === 0){
+		// 	log.debug(result.stdout.toString());
+		// 	return {
+		// 		ok: true,
+		// 		status: 200,
+		// 		value: {message: `${task} successfully executed`},
+		// 	};
+		// } else {
+		// 	log.error('RunTask failed execution')
+		// 	log.error(result.stderr.toJSON())
+		// 	return {
+		// 		ok: false,
+		// 		status: 500,
+		// 		message: `error executing ${task}`,
+		// 	};
+		// }
 	},
 };
