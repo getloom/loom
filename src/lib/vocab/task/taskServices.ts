@@ -37,7 +37,7 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		}		
 		//2 invoke the actual named task
 		//TODO add a list of "approved tasks" to mitigate user input attacks		
-		const result = execSync(`gro ${commandArgs}`, {stdio: 'inherit'});
+		const result = execSync(`gro tasks/siteDeploy https://github.com/getloom/site-template.git`, {stdio: 'inherit'});
 		log.warn(result.toString());
 		return {ok: true, status: 200}
 		
