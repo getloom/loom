@@ -3,14 +3,17 @@ import {spawn} from '@ryanatkn/belt/process.js';
 import {unwrap} from '@ryanatkn/belt/result.js';
 import { z } from 'zod';
 import { execSync } from 'node:child_process';
-import { load_envs } from '$lib/server/env';
+import type * as env_static_public from '$env/static/public';
+
+//import { load_envs } from '$lib/server/env';
 
 const Args = z
 	.object({
 		_: z.array(
             z.string(), {description: 'sourceRepo to deploy site from & dev flag'},            
         ).default([]),      	
-        dev: z.boolean({description: 'dev flag, set true to be dev mode'}).default(false)
+        dev: z.boolean({description: 'dev flag, set true to be dev mode'}).default(false),        
+        env: z.any({description: 'static public env vars'})
 	})
 	.strict();
 type Args = z.infer<typeof Args>;
@@ -18,7 +21,7 @@ type Args = z.infer<typeof Args>;
 export const task: Task<Args> = {
 	summary: 'deploys the latest version of the instances home site',
 	run: async ({args, log}) => {
-        const {_: params, dev} = args;        
+        const {_: params, env, dev} = args;
         if (params === null || params.length !== 1 || params[0] === '') {
             log.error("no sourceRepo provided");
             //TODO figure out how to actually get this info back up the chain to spawnSync in taskServices
@@ -29,7 +32,11 @@ export const task: Task<Args> = {
             log.warn("script is in dev mode")                        
             return;            
         }
-                        
+        if (!host){
+            log.warn("")
+        }
+                     
+        //TODO pass these vars as top level args from frontend?
         const {PUBLIC_SITE_HOST, PUBLIC_SITE_PORT} = await load_envs(false);
             
         //clean old build dirs
