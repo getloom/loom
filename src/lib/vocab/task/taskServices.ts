@@ -38,7 +38,7 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		//2 invoke the actual named task
 		//TODO add a list of "approved tasks" to mitigate user input attacks		
 		const result = execSync(`gro ${commandArgs}`);
-		log.warn(result.toJSON());
+		log.warn(result.toString());
 		return {ok: true, status: 200}
 		
 		// const result = spawnSync('gro', commandArgs);
