@@ -10,6 +10,7 @@ import {
 	AFTER_DEPLOY_SCRIPT_BUILD_PATH,
 	AFTER_DEPLOY_SCRIPT_SOURCE_PATH,
 	START_SERVER_SCRIPT_BUILD_PATH,
+	TASKS_SOURCE_DIR,
 } from '$lib/infra/constants.js';
 
 /**
@@ -27,6 +28,9 @@ const config: Create_Gro_Config = async (cfg) => {
 
 		// include all migration files
 		...(await readdir(MIGRATIONS_DIR)).map((m) => MIGRATIONS_DIR + '/' + m),
+
+		// include all tasks
+		...(await readdir(TASKS_SOURCE_DIR)).map((t) => TASKS_SOURCE_DIR + '/' + t),
 	];
 
 	cfg.plugins = async () => [
