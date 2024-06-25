@@ -6,7 +6,7 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import { RunTask } from '$lib/vocab/task/taskActions';
 import { ADMIN_HUB_ID } from '$lib/util/constants';
 import { isActorAdmin } from '../actor/actorHelpers.server';
-import {execSync, spawnSync} from 'node:child_process';
+import { invoke } from '$lib/tasks/siteDeploy';
 
 
 const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
@@ -38,11 +38,12 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		//2 invoke the actual named task
 		//TODO add a list of "approved tasks" to mitigate user input attacks		
 		//TODO task being invoked is not included in build
-		const result = execSync(`gro tasks/siteDeploy https://github.com/getloom/site-template.git`, {stdio: 'inherit'});
-		log.warn(result.toString());
-		return {ok: true, status: 200}
+		//TODO BLOCK genericize invocation
+		const result = await invoke('https://github.com/getloom/site-template.git', false);
+		log.warn(result.ok);
+		return {ok: true, status: 200, value: {message: "task executed ok"}};
 		
-		// const result = spawnSync('gro', commandArgs);
+		 //const result = spawnSync('gro', commandArgs);
 
 		// //3 return invokation result & messages
 		// if (result.status === 0){
