@@ -47,7 +47,7 @@ import {
 	UpdateAccountSettingsService,
 	UpdateAccountPasswordService,
 } from '$lib/vocab/account/accountServices.js';
-import { RunTaskService } from '$lib/vocab/task/taskServices';
+import {RunTaskService} from '$lib/vocab/task/taskServices';
 
 export const services: Map<string, Service> = new Map(
 	[

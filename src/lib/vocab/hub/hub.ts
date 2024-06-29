@@ -38,7 +38,7 @@ export interface InstanceSettings {
 	minPasswordLength?: number;
 	site?: {
 		sourceRepo?: string;
-	}
+	};
 }
 
 /**

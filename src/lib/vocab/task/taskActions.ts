@@ -19,7 +19,7 @@ export const RunTask: ServiceActionData = {
 		$id: '/schemas/RunTaskResponse',
 		type: 'object',
 		properties: {
-			message: {type: 'string'}
+			message: {type: 'string'},
 		},
 		required: ['message'],
 		additionalProperties: false,

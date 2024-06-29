@@ -33,7 +33,7 @@ import {
 	UpdatePolicy,
 	DeletePolicy,
 } from '$lib/vocab/policy/policyActions.js';
-import {RunTask} from '$lib/vocab/task/taskActions.js'
+import {RunTask} from '$lib/vocab/task/taskActions.js';
 import {
 	Ping,
 	Ephemera,

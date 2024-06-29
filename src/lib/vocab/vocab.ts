@@ -205,4 +205,3 @@ export type VocabName =
 	| 'UpdateSpace'
 	| 'ViewSpace'
 	| 'VocabName';
-	

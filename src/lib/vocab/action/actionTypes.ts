@@ -731,7 +731,7 @@ export interface Actions {
 	ReadPolicies: (params: ReadPoliciesParams) => Promise<ReadPoliciesResponseResult>;
 	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
 	ReadSpaces: (params: ReadSpacesParams) => Promise<ReadSpacesResponseResult>;
-	RunTask:(params: RunTaskParams) => Promise<RunTaskResponseResult>;
+	RunTask: (params: RunTaskParams) => Promise<RunTaskResponseResult>;
 	SetMobile: (params: SetMobileParams) => void;
 	SetSession: (params: SetSessionParams) => void;
 	SignIn: (params: SignInParams) => Promise<SignInResponseResult>;

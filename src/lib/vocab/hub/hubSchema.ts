@@ -56,10 +56,10 @@ export const InstanceSettingsSchema = {
 		site: {
 			type: 'object',
 			properties: {
-				sourceRepo: {type: 'string'}
+				sourceRepo: {type: 'string'},
 			},
 			additionalProperties: false,
-		}
+		},
 	},
 	additionalProperties: false,
 } satisfies Json_Schema;
