@@ -4,6 +4,7 @@ import {blue, gray} from '$lib/server/colors.js';
 import {spawn} from '@ryanatkn/belt/process.js';
 import {unwrap} from '@ryanatkn/belt/result.js';
 import {execSync} from 'node:child_process';
+import {PUBLIC_SITE_HOST, PUBLIC_SITE_PORT} from '$env/static/public';
 
 const log = new Logger(gray('[') + blue('siteDeploy') + gray(']'));
 /**
@@ -13,15 +14,10 @@ const log = new Logger(gray('[') + blue('siteDeploy') + gray(']'));
  * @returns
  */
 export const invoke = async (sourceRepo: string, dev: boolean): Promise<{ok: boolean}> => {
-	//TODO pass these vars as top level args from frontend?
-	//const {PUBLIC_SITE_HOST, PUBLIC_SITE_PORT} = await load_envs(dev);
-	const PUBLIC_SITE_HOST = '';
-	const PUBLIC_SITE_PORT = '';
-
-	//clean old build dirs
-	//const LOOM_DIR = process.cwd();
+	//TODO BLOCK clean old build dirs
 	const TIMESTAMP = Date.now();
-	const DEPLOY_DIRNAME = `site_${TIMESTAMP}`;
+	const DEPLOY_DIRNAME = `deploy_site_${TIMESTAMP}`;
+	const CURRENT_DEPLOY_DIRNAME = 'current_site_deploy';
 	//clone latest repo at dir above loom into timestamped site_<> dir?
 
 	process.chdir('../');
@@ -34,16 +30,18 @@ export const invoke = async (sourceRepo: string, dev: boolean): Promise<{ok: boo
 	//run start command
 	if (dev) {
 		log.warn('script is in dev mode');
-		//TODO BLOCK see if there's a way to make this it's own process
+		//TODO see if there's a way to make this it's own process
 		unwrap(await spawn('npm', ['run', 'preview']));
 		//TODO BLOCK refactor return type
 		return {ok: true};
 	} else {
+		execSync(`pm2 stop site`);
 		//since we're running this one without user input, we can get away with a direct exec
 		execSync(
-			`ORIGIN=${PUBLIC_SITE_HOST} PORT=${PUBLIC_SITE_PORT} pm2 start node --name 'site' -- build`,
+			`ORIGIN=https://${PUBLIC_SITE_HOST} PORT=${PUBLIC_SITE_PORT} pm2 start node --name 'site' -- build`,
 		);
-		//TODO BLOCK symlink current app to this
+		process.chdir('../');
+		execSync(`ln -sfn ${DEPLOY_DIRNAME}/ ${CURRENT_DEPLOY_DIRNAME}`);
 		return {ok: true};
 	}
 };
