@@ -2026,6 +2026,10 @@
       "default": "./dist/vocab/space/spaceServices.js",
       "types": "./dist/vocab/space/spaceServices.d.ts"
     },
+    "./vocab/task/task.js": {
+      "default": "./dist/vocab/task/task.js",
+      "types": "./dist/vocab/task/task.d.ts"
+    },
     "./vocab/task/taskActions.js": {
       "default": "./dist/vocab/task/taskActions.js",
       "types": "./dist/vocab/task/taskActions.d.ts"

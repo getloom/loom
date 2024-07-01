@@ -6,7 +6,7 @@ import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {RunTask} from '$lib/vocab/task/taskActions';
 import {ADMIN_HUB_ID} from '$lib/util/constants';
 import {isActorAdmin} from '../actor/actorHelpers.server';
-import {invoke} from '$lib/tasks/siteDeploy';
+import {tasks} from '$lib/vocab/task/task';
 
 const log = new Logger(gray('[') + blue('hubServices') + gray(']'));
 
@@ -31,38 +31,14 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		}
 		await checkHubAccess(hub_id);
 
-		//TODO BLOCK add github site template as default
-		const commandArgs = [`tasks/${task}`].concat(args);
 		let dev = false;
 		if (import.meta.env.DEV) {
 			dev = true;
 		}
 		//2 invoke the actual named task
-		//TODO add a list of "approved tasks" to mitigate user input attacks
-		//TODO task being invoked is not included in build
-		//TODO BLOCK genericize invocation
-		const result = await invoke('https://github.com/getloom/site-template.git', dev);
+		log.warn('invoking task', task);
+		const result = await tasks[task].invoke(args, dev);
 		log.warn(result.ok);
 		return {ok: true, status: 200, value: {message: 'task executed ok'}};
-
-		//const result = spawnSync('gro', commandArgs);
-
-		// //3 return invokation result & messages
-		// if (result.status === 0){
-		// 	log.debug(result.stdout.toString());
-		// 	return {
-		// 		ok: true,
-		// 		status: 200,
-		// 		value: {message: `${task} successfully executed`},
-		// 	};
-		// } else {
-		// 	log.error('RunTask failed execution')
-		// 	log.error(result.stderr.toJSON())
-		// 	return {
-		// 		ok: false,
-		// 		status: 500,
-		// 		message: `error executing ${task}`,
-		// 	};
-		// }
 	},
 };

@@ -34,6 +34,7 @@ export const toDefaultAdminSpaces = (actor: ActorId, {hub_id}: Hub): CreateSpace
 	[
 		{...toTemplatePartial('AdminHome'), name: HOME_NAME},
 		{...toTemplatePartial('InstanceAdmin'), name: 'instance'},
+		{...toTemplatePartial('AdminSite'), name: 'site'},
 		{...toTemplatePartial('Chat'), name: 'chat'},
 		{...toTemplatePartial('Mural'), name: 'mural'},
 	].map((t) => spaceTemplateToCreateSpaceParams(t, actor, hub_id));
