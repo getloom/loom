@@ -269,6 +269,16 @@ export const randomActionParams: RandomActionParams = {
 			policy_id: policy.policy_id,
 		};
 	},
+	RunTask: async (random, {account, actor, hub} = {}) => {
+		if (!actor) ({actor} = await random.actor(account));
+		if (!hub) ({hub} = await random.hub(actor, account));
+		return {
+			actor: actor.actor_id,
+			hub_id: hub.hub_id,
+			task: randomString(),
+			args: [randomString()],
+		};
+	},
 
 	ToggleMainNav: async () => {
 		return undefined;

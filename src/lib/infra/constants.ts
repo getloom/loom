@@ -17,8 +17,3 @@ export const AFTER_DEPLOY_SCRIPT_BUILD_PATH = 'dist_server/infra/after_deploy.js
  * Keep in sync with the `infra/after_deploy.ts` path.
  */
 export const AFTER_DEPLOY_SCRIPT_SOURCE_PATH = 'src/lib/infra/after_deploy.ts';
-
-/**
- * Keep in sync with the `plugin` path.
- */
-export const TASKS_SOURCE_DIR = 'src/lib/tasks';
