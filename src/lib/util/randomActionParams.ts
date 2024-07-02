@@ -270,11 +270,12 @@ export const randomActionParams: RandomActionParams = {
 		};
 	},
 	RunTask: async (random, {account, actor, hub} = {}) => {
-		if (!actor) ({actor} = await random.actor(account));
-		if (!hub) ({hub} = await random.hub(actor, account));
+		
+		if (!actor) ({actor, adminHub} = await random.adminActor(account));
+		
 		return {
-			actor: actor.actor_id,
-			hub_id: hub.hub_id,
+			actor,
+			hub_id: adminHub.hub_id,
 			task: randomString(),
 			args: [randomString()],
 		};

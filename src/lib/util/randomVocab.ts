@@ -18,7 +18,7 @@ import type {Directory, EntityData} from '$lib/vocab/entity/entityData.js';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 import type {Tie} from '$lib/vocab/tie/tie.js';
 import {CreateAccountActorService} from '$lib/vocab/actor/actorServices.js';
-import {CreateHubService} from '$lib/vocab/hub/hubServices.js';
+import {CreateHubService, InviteToHubService} from '$lib/vocab/hub/hubServices.js';
 import {CreateSpaceService} from '$lib/vocab/space/spaceServices.js';
 import type {Assignment} from '$lib/vocab/assignment/assignment.js';
 import {CreateEntityService} from '$lib/vocab/entity/entityServices.js';
@@ -35,6 +35,7 @@ import {CreatePolicyService} from '$lib/vocab/policy/policyServices.js';
 import {random_item} from '@ryanatkn/belt/random.js';
 import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
 import type {Repos} from '$lib/db/Repos.js';
+import { InviteToHub } from '$lib/vocab/hub/hubActions';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 
@@ -164,6 +165,23 @@ export class RandomVocabContext {
 			}),
 		);
 		return {actor: actor as AccountActor, personalHub, assignment, spaces, account};
+	}
+
+	//TODO BLOCK figure out how to just return the first admin actor
+	async adminActor(account?: Account): Promise<{
+		actor: AccountActor;
+		personalHub: Hub;
+		adminHub: Hub;
+		assignment: Assignment;
+		spaces: Space[];
+		account: Account;
+	}> {
+		const response = await this.actor(account);
+		unwrap(await InviteToHubService.perform({
+			...toServiceRequestFake(this.repos, 1, 1),
+			params: {actor: 1, hub_id: 1, name: response.actor.name},
+		}))
+		return response;
 	}
 
 	async hub(
