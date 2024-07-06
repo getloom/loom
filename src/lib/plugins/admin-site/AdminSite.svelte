@@ -32,8 +32,7 @@
 			hub_id: $hub.hub_id,
 			task: 'siteDeploy',
 			args: [sourceRepo],
-		});
-		console.log(result);
+		});		
 		pending = false;
 	};
 </script>
