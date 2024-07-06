@@ -27,7 +27,7 @@
 	const deploy = async () => {
 		if (pending) return;
 		pending = true;
-		const result = await actions.RunTask({
+		await actions.RunTask({
 			actor: $actor.actor_id,
 			hub_id: $hub.hub_id,
 			task: 'siteDeploy',
