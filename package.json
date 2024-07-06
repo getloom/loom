@@ -936,9 +936,9 @@
       "default": "./dist/tasks/siteDeploy.js",
       "types": "./dist/tasks/siteDeploy.d.ts"
     },
-    "./tasks/test.task.js": {
-      "default": "./dist/tasks/test.task.js",
-      "types": "./dist/tasks/test.task.d.ts"
+    "./tasks/test.js": {
+      "default": "./dist/tasks/test.js",
+      "types": "./dist/tasks/test.d.ts"
     },
     "./ui/About.svelte": {
       "svelte": "./dist/ui/About.svelte",

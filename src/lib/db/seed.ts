@@ -44,6 +44,8 @@ import type {AuthorizedServiceRequest} from '$lib/server/service.js';
 
 const log = new Logger([cyan('[seed]')]);
 
+export const ALICE = 'alice';
+
 export const seed = async (db: Database, much = false): Promise<void> => {
 	const {sql, repos} = db;
 
@@ -65,7 +67,7 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 		{username: 'b@b.b', password: 'b'},
 	];
 	const actorsParams: Record<string, string[]> = {
-		'a@a.a': ['alice', 'andy'],
+		'a@a.a': [`${ALICE}`, 'andy'],
 		'b@b.b': ['betty', 'billy'],
 	};
 	if (much) {

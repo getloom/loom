@@ -3,7 +3,13 @@ import {unwrap} from '@ryanatkn/belt/result.js';
 import type {Space, SpaceId} from '$lib/vocab/space/space.js';
 import type {Hub, HubId} from '$lib/vocab/hub/hub.js';
 import type {Account} from '$lib/vocab/account/account.js';
-import type {AccountActor, ActorId, ClientActor, PublicActor} from '$lib/vocab/actor/actor.js';
+import type {
+	AccountActor,
+	ActionActor,
+	ActorId,
+	ClientActor,
+	PublicActor,
+} from '$lib/vocab/actor/actor.js';
 import type {
 	CreateHubParams,
 	CreateAccountActorParams,
@@ -35,7 +41,8 @@ import {CreatePolicyService} from '$lib/vocab/policy/policyServices.js';
 import {random_item} from '@ryanatkn/belt/random.js';
 import {policyNames} from '$lib/vocab/policy/policyHelpers.js';
 import type {Repos} from '$lib/db/Repos.js';
-import { InviteToHub } from '$lib/vocab/hub/hubActions';
+import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server';
+import {ADMIN_ACTOR_ID, ADMIN_HUB_ID} from './constants';
 
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 
@@ -167,21 +174,26 @@ export class RandomVocabContext {
 		return {actor: actor as AccountActor, personalHub, assignment, spaces, account};
 	}
 
-	//TODO BLOCK figure out how to just return the first admin actor
-	async adminActor(account?: Account): Promise<{
+	async adminActor(
+		account?: Account,
+		actor?: AccountActor,
+	): Promise<{
 		actor: AccountActor;
-		personalHub: Hub;
-		adminHub: Hub;
-		assignment: Assignment;
-		spaces: Space[];
-		account: Account;
 	}> {
-		const response = await this.actor(account);
-		unwrap(await InviteToHubService.perform({
-			...toServiceRequestFake(this.repos, 1, 1),
-			params: {actor: 1, hub_id: 1, name: response.actor.name},
-		}))
-		return response;
+		const adminActor = (await this.repos.actor.findById(
+			ADMIN_ACTOR_ID,
+			ACTOR_COLUMNS.all,
+		)) as ActionActor;
+		if (!actor) ({actor, account} = await this.actor(account));
+		unwrap(
+			await InviteToHubService.perform({
+				...toServiceRequestFake(this.repos, adminActor),
+				params: {actor: actor.actor_id, hub_id: ADMIN_HUB_ID, name: actor.name},
+			}),
+		);
+		return {
+			actor,
+		};
 	}
 
 	async hub(

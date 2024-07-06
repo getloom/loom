@@ -1,4 +1,5 @@
 import {SiteDeployTask} from '$lib/tasks/siteDeploy';
+import {TestTask} from '$lib/tasks/test';
 import type {Result} from '@ryanatkn/belt/result.js';
 
 export interface Task {
@@ -7,4 +8,5 @@ export interface Task {
 
 export const tasks: Record<string, Task> = {
 	siteDeploy: new SiteDeployTask(),
+	test: new TestTask(),
 };

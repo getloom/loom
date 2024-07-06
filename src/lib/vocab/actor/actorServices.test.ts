@@ -5,10 +5,11 @@ import * as assert from 'uvu/assert';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 import {CreateAccountActorService, DeleteActorService} from '$lib/vocab/actor/actorServices.js';
 import {randomActionParams} from '$lib/util/randomActionParams.js';
-import {loadAdminActor, toServiceRequestFake} from '$lib/util/testHelpers.js';
+import {loadAdminActors, toServiceRequestFake} from '$lib/util/testHelpers.js';
 import {GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants.js';
 import {CreateAssignmentService} from '$lib/vocab/assignment/assignmentServices.js';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
+import {ALICE} from '$lib/db/seed';
 
 /* test__actorService */
 const test__actorService = suite<TestDbContext>('actorService');
@@ -157,14 +158,15 @@ test__actorService(
 	async ({repos, random}) => {
 		const {actor} = await random.actor();
 
-		const adminActor = await loadAdminActor(repos);
+		const adminActors = await loadAdminActors(repos);
+		const defaultAdmin = adminActors.find((a) => a.name === ALICE)!;
 
-		assert.ok(adminActor.actor_id !== actor.actor_id);
+		assert.ok(defaultAdmin.actor_id !== actor.actor_id);
 
 		unwrap(
 			await DeleteActorService.perform({
-				...toServiceRequestFake(repos, adminActor),
-				params: {actor: adminActor.actor_id, actor_id: actor.actor_id},
+				...toServiceRequestFake(repos, defaultAdmin),
+				params: {actor: defaultAdmin.actor_id, actor_id: actor.actor_id},
 			}),
 		);
 	},
@@ -173,13 +175,14 @@ test__actorService(
 test__actorService('actors cannot delete actors in the admin hub', async ({repos, random}) => {
 	const {actor} = await random.actor();
 
-	const adminActor = await loadAdminActor(repos);
+	const adminActors = await loadAdminActors(repos);
+	const defaultAdmin = adminActors.find((a) => a.name === ALICE)!;
 
 	assert.is(
 		unwrap_error(
 			await DeleteActorService.perform({
 				...toServiceRequestFake(repos, actor),
-				params: {actor: actor.actor_id, actor_id: adminActor.actor_id},
+				params: {actor: actor.actor_id, actor_id: defaultAdmin.actor_id},
 			}),
 		).status,
 		400,

@@ -51,7 +51,7 @@ export type SchemaName =
 	| 'Hub'
 	| 'HubActor'
 	| 'HubId'
-	| 'HubSettings'	
+	| 'HubSettings'
 	| 'InitialHubSettings'
 	| 'InstanceSettings'
 	| 'InviteToHubParams'

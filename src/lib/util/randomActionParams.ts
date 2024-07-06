@@ -18,6 +18,7 @@ import {
 } from '$lib/util/randomVocab.js';
 import {randomHue} from '$lib/util/color.js';
 import type {RandomActionParams} from '$lib/util/randomActionParamsTypes.js';
+import {ADMIN_HUB_ID} from './constants';
 
 /* eslint-disable no-param-reassign */
 
@@ -269,14 +270,12 @@ export const randomActionParams: RandomActionParams = {
 			policy_id: policy.policy_id,
 		};
 	},
-	RunTask: async (random, {account, actor, hub} = {}) => {
-		
-		if (!actor) ({actor, adminHub} = await random.adminActor(account));
-		
+	RunTask: async (random, {account, actor} = {}) => {
+		({actor} = await random.adminActor(account, actor));
 		return {
-			actor,
-			hub_id: adminHub.hub_id,
-			task: randomString(),
+			actor: actor.actor_id,
+			hub_id: ADMIN_HUB_ID,
+			task: 'test',
 			args: [randomString()],
 		};
 	},

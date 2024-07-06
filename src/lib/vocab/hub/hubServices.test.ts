@@ -13,7 +13,7 @@ import {
 import {
 	expectApiError,
 	invite,
-	loadAdminActor,
+	loadAdminActors,
 	toServiceRequestFake,
 } from '$lib/util/testHelpers.js';
 import {ADMIN_HUB_ID} from '$lib/util/constants.js';
@@ -23,6 +23,7 @@ import {ReadPoliciesService} from '$lib/vocab/policy/policyServices.js';
 import type {Policy} from '$lib/vocab/policy/policy.js';
 import type {Role} from '$lib/vocab/role/role.js';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
+import {ALICE} from '$lib/db/seed';
 
 const sortedPolicyNames = policyNames.slice().sort();
 const toSortedPolicyNames = (policies: Policy[]) => policies.map((p) => p.name).sort();
@@ -50,7 +51,8 @@ test_hubServices('disallow deleting personal hub', async ({repos, random}) => {
 });
 
 test_hubServices('disallow deleting admin hub', async ({repos}) => {
-	const adminActor = await loadAdminActor(repos);
+	const adminActors = await loadAdminActors(repos);
+	const adminActor = adminActors[0];
 	assert.is(
 		unwrap_error(
 			await DeleteHubService.perform({
@@ -205,7 +207,8 @@ test_hubServices(
 			}),
 		);
 
-		const adminActor = await loadAdminActor(repos);
+		const adminActors = await loadAdminActors(repos);
+		const adminActor = adminActors[0];
 
 		unwrap(
 			await CreateHubService.perform({
@@ -316,16 +319,30 @@ test_hubServices('fail KickFromHub when the actor has no assignments', async ({r
 test_hubServices('fail Admin LeaveHub if last actor', async ({repos}) => {
 	const adminHub = await repos.hub.loadAdminHub();
 	assert.ok(adminHub);
-	const adminActor = await loadAdminActor(repos);
+	const adminActors = await loadAdminActors(repos);
+	const defaultAdmin = adminActors.find((a) => a.name === ALICE)!;
+	const otherAdmins = adminActors.filter((a) => a.name !== ALICE);
+
+	for (const admin of otherAdmins) {
+		// eslint-disable-next-line no-await-in-loop
+		await LeaveHubService.perform({
+			...toServiceRequestFake(repos, admin),
+			params: {
+				actor: admin.actor_id,
+				hub_id: adminHub.hub_id,
+				actor_id: admin.actor_id,
+			},
+		});
+	}
 
 	await expectApiError(
 		405,
 		LeaveHubService.perform({
-			...toServiceRequestFake(repos, adminActor),
+			...toServiceRequestFake(repos, defaultAdmin),
 			params: {
-				actor: adminActor.actor_id,
+				actor: defaultAdmin.actor_id,
 				hub_id: adminHub.hub_id,
-				actor_id: adminActor.actor_id,
+				actor_id: defaultAdmin.actor_id,
 			},
 		}),
 	);
@@ -334,16 +351,30 @@ test_hubServices('fail Admin LeaveHub if last actor', async ({repos}) => {
 test_hubServices('fail KickFromHub if last actor', async ({repos}) => {
 	const adminHub = await repos.hub.loadAdminHub();
 	assert.ok(adminHub);
-	const adminActor = await loadAdminActor(repos);
+	const adminActors = await loadAdminActors(repos);
+	const defaultAdmin = adminActors.find((a) => a.name === ALICE)!;
+	const otherAdmins = adminActors.filter((a) => a.name !== ALICE);
+
+	for (const admin of otherAdmins) {
+		// eslint-disable-next-line no-await-in-loop
+		await LeaveHubService.perform({
+			...toServiceRequestFake(repos, admin),
+			params: {
+				actor: admin.actor_id,
+				hub_id: adminHub.hub_id,
+				actor_id: admin.actor_id,
+			},
+		});
+	}
 
 	await expectApiError(
 		405,
 		KickFromHubService.perform({
-			...toServiceRequestFake(repos, adminActor),
+			...toServiceRequestFake(repos, defaultAdmin),
 			params: {
-				actor: adminActor.actor_id,
+				actor: defaultAdmin.actor_id,
 				hub_id: adminHub.hub_id,
-				actor_id: adminActor.actor_id,
+				actor_id: defaultAdmin.actor_id,
 			},
 		}),
 	);
