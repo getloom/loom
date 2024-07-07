@@ -32,7 +32,7 @@
 			hub_id: $hub.hub_id,
 			task: 'siteDeploy',
 			args: [sourceRepo],
-		});		
+		});
 		pending = false;
 	};
 </script>
