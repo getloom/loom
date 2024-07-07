@@ -72,11 +72,11 @@ export const initAdminHub = async (
 	// We need to set up the admin hub and its actor.
 	// For more see https://www.getloom.org/docs/guide/admin
 
-	// Create the hub.
+	// Create the admin hub.
 	const hub = await repos.hub.create(
 		'community',
 		ADMIN_HUB_NAME,
-		toDefaultHubSettings(ADMIN_HUB_NAME),
+		toDefaultAdminHubSettings(ADMIN_HUB_NAME),
 	);
 
 	// Create the hub actor.
@@ -189,3 +189,9 @@ export const toDefaultHubSettings = (name: string): HubSettings => ({
 	//this is a hack to allow for creation of the hub before it's default role is created
 	defaultRoleId: -1,
 });
+
+export const toDefaultAdminHubSettings = (name: string): HubSettings => {
+	const settings = toDefaultHubSettings(name);
+	settings.instance = {site: {sourceRepo: 'https://github.com/getloom/site-template'}};
+	return settings;
+};

@@ -33,6 +33,7 @@ import {
 	UpdatePolicy,
 	DeletePolicy,
 } from '$lib/vocab/policy/policyActions.js';
+import {RunTask} from '$lib/vocab/task/taskActions.js';
 import {
 	Ping,
 	Ephemera,
@@ -79,6 +80,7 @@ export const actionDatas: ActionData[] = [
 	ReadPolicies,
 	ReadRoles,
 	ReadSpaces,
+	RunTask,
 	SetMobile,
 	SetSession,
 	SignIn,

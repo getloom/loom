@@ -62,7 +62,8 @@ export type ServiceActionName =
 	| 'UpdateHub'
 	| 'UpdatePolicy'
 	| 'UpdateRole'
-	| 'UpdateSpace';
+	| 'UpdateSpace'
+	| 'RunTask';
 
 export type ClientActionName =
 	| 'ClearFreshness'
@@ -205,6 +206,7 @@ export interface ServiceByName {
 	DeletePolicy: AuthorizedService<DeletePolicyParams, DeletePolicyResponseResult>;
 	ReadPolicies: AuthorizedService<ReadPoliciesParams, ReadPoliciesResponseResult>;
 	UpdatePolicy: AuthorizedService<UpdatePolicyParams, UpdatePolicyResponseResult>;
+	RunTask: AuthorizedService<RunTaskParams, RunTaskResponseResult>;
 }
 
 export interface ClearFreshnessParams {
@@ -679,6 +681,19 @@ export interface UpdateSpaceResponse {
 }
 export type UpdateSpaceResponseResult = ApiResult<UpdateSpaceResponse>;
 
+export interface RunTaskParams {
+	actor: ActorId;
+	hub_id: HubId;
+	task: string;
+	args: string[];
+}
+
+export interface RunTaskResponse {
+	message: string;
+}
+
+export type RunTaskResponseResult = ApiResult<RunTaskResponse>;
+
 export interface ViewSpaceParams {
 	space_id: SpaceId;
 	view: string | null;
@@ -716,6 +731,7 @@ export interface Actions {
 	ReadPolicies: (params: ReadPoliciesParams) => Promise<ReadPoliciesResponseResult>;
 	ReadRoles: (params: ReadRolesParams) => Promise<ReadRolesResponseResult>;
 	ReadSpaces: (params: ReadSpacesParams) => Promise<ReadSpacesResponseResult>;
+	RunTask: (params: RunTaskParams) => Promise<RunTaskResponseResult>;
 	SetMobile: (params: SetMobileParams) => void;
 	SetSession: (params: SetSessionParams) => void;
 	SignIn: (params: SignInParams) => Promise<SignInResponseResult>;
@@ -817,6 +833,9 @@ export interface Mutations {
 	ReadSpaces: (
 		ctx: MutationContext<ReadSpacesParams, ReadSpacesResponseResult>,
 	) => Promise<ReadSpacesResponseResult>;
+	RunTask: (
+		ctx: MutationContext<RunTaskParams, RunTaskResponseResult>,
+	) => Promise<RunTaskResponseResult>;
 	SetMobile: (ctx: MutationContext<SetMobileParams, void>) => void;
 	SetSession: (ctx: MutationContext<SetSessionParams, void>) => void;
 	SignIn: (

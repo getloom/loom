@@ -24,6 +24,7 @@ import {
 	HubSchema,
 	HubIdSchema,
 	HubSettingsSchema,
+	InstanceSettingsSchema,
 	InitialHubSettingsSchema,
 } from '$lib/vocab/hub/hubSchema.js';
 import {AssignmentSchema, AssignmentIdSchema} from '$lib/vocab/assignment/assignmentSchema.js';
@@ -56,6 +57,7 @@ export const modelSchemas: Json_Schema[] = [
 	HubIdSchema,
 	HubSchema,
 	HubSettingsSchema,
+	InstanceSettingsSchema,
 	InitialHubSettingsSchema,
 	PolicyIdSchema,
 	PolicyNameSchema,

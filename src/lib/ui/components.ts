@@ -8,6 +8,7 @@ import Home from '$lib/plugins/home/Home.svelte';
 import PersonalHome from '$lib/plugins/personal-home/PersonalHome.svelte';
 import AdminHome from '$lib/plugins/admin-home/AdminHome.svelte';
 import InstanceAdmin from '$lib/plugins/instance-admin/InstanceAdmin.svelte';
+import AdminSite from '$lib/plugins/admin-site/AdminSite.svelte';
 import Chat from '$lib/plugins/chat/Chat.svelte';
 import ReplyChat from '$lib/plugins/reply-chat/ReplyChat.svelte';
 import Board from '$lib/plugins/board/Board.svelte';
@@ -33,6 +34,7 @@ export const components: Record<string, typeof SvelteComponent<any>> = {
 	Home,
 	PersonalHome,
 	AdminHome,
+	AdminSite,
 	InstanceAdmin,
 	Chat,
 	ReplyChat,

@@ -31,6 +31,7 @@ import type {
 	ReadPoliciesParams,
 	ReadRolesParams,
 	ReadSpacesParams,
+	RunTaskParams,
 	SetMobileParams,
 	SetSessionParams,
 	SignInParams,
@@ -132,6 +133,7 @@ export interface RandomActionParams {
 	) => Promise<ReadPoliciesParams>;
 	ReadRoles: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadRolesParams>;
 	ReadSpaces: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<ReadSpacesParams>;
+	RunTask: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<RunTaskParams>;
 	SetMobile: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetMobileParams>;
 	SetSession: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SetSessionParams>;
 	SignIn: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<SignInParams>;

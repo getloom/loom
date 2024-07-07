@@ -36,18 +36,31 @@ export const HubSettingsSchema = {
 	properties: {
 		hue: {type: 'number'},
 		defaultRoleId: {$ref: '/schemas/RoleId'},
-		instance: {
+		instance: {$ref: '/schemas/InstanceSettings'},
+	},
+	required: ['hue', 'defaultRoleId'],
+	additionalProperties: false,
+} satisfies Json_Schema;
+
+export const InstanceSettingsSchema = {
+	$id: '/schemas/InstanceSettings',
+	type: 'object',
+	description: `
+	The instance admin specific settings.
+	`,
+	properties: {
+		allowedAccountNames: {type: 'array', items: {type: 'string'}},
+		disableCreateHub: {type: 'boolean'},
+		defaultHubIds: {type: 'array', items: {$ref: '/schemas/HubId'}},
+		minPasswordLength: {type: 'number'},
+		site: {
 			type: 'object',
 			properties: {
-				allowedAccountNames: {type: 'array', items: {type: 'string'}},
-				disableCreateHub: {type: 'boolean'},
-				defaultHubIds: {type: 'array', items: {$ref: '/schemas/HubId'}},
-				minPasswordLength: {type: 'number'},
+				sourceRepo: {type: 'string'},
 			},
 			additionalProperties: false,
 		},
 	},
-	required: ['hue', 'defaultRoleId'],
 	additionalProperties: false,
 } satisfies Json_Schema;
 

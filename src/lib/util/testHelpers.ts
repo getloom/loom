@@ -103,13 +103,19 @@ export const passwordHasherFake: PasswordHasher = {
 	close: async () => undefined,
 };
 
-export const loadAdminActor = async (repos: Repos): Promise<AccountActor> => {
+export const loadAdminActors = async (repos: Repos): Promise<AccountActor[]> => {
 	const assignments = await repos.assignment.filterByHub(ADMIN_HUB_ID);
 	const nonAdminAssignments = assignments.filter((p) => p.actor_id !== ADMIN_ACTOR_ID);
-	return repos.actor.findById(
-		nonAdminAssignments[0].actor_id,
-		ACTOR_COLUMNS.all,
-	) as Promise<AccountActor>;
+	const adminActors: AccountActor[] = [];
+	for (const assignment of nonAdminAssignments) {
+		// eslint-disable-next-line no-await-in-loop
+		const actor = (await repos.actor.findById(
+			assignment.actor_id,
+			ACTOR_COLUMNS.all,
+		)) as AccountActor;
+		adminActors.push(actor);
+	}
+	return adminActors;
 };
 
 export const expectApiError = async (status: number, promise: Promise<any>): Promise<void> => {

@@ -34,8 +34,8 @@
     "@getloom/eslint-config": "^0.4.1",
     "@getloom/mural": "^0.9.6",
     "@ryanatkn/fuz": "^0.82.0",
-    "svelte-intersect": "0.12.1",
     "@ryanatkn/gro": "^0.112.0",
+    "svelte-intersect": "0.12.1",
     "@sveltejs/adapter-node": "^2.0.1",
     "@sveltejs/kit": "^2.0.4",
     "@sveltejs/package": "^2.2.4",
@@ -556,6 +556,11 @@
       "default": "./dist/plugins/admin-home/AdminHome.svelte",
       "types": "./dist/plugins/admin-home/AdminHome.svelte.d.ts"
     },
+    "./plugins/admin-site/AdminSite.svelte": {
+      "svelte": "./dist/plugins/admin-site/AdminSite.svelte",
+      "default": "./dist/plugins/admin-site/AdminSite.svelte",
+      "types": "./dist/plugins/admin-site/AdminSite.svelte.d.ts"
+    },
     "./plugins/board/Board.svelte": {
       "svelte": "./dist/plugins/board/Board.svelte",
       "default": "./dist/plugins/board/Board.svelte",
@@ -926,6 +931,14 @@
     "./sync.task.js": {
       "default": "./dist/sync.task.js",
       "types": "./dist/sync.task.d.ts"
+    },
+    "./tasks/siteDeploy.js": {
+      "default": "./dist/tasks/siteDeploy.js",
+      "types": "./dist/tasks/siteDeploy.d.ts"
+    },
+    "./tasks/test.js": {
+      "default": "./dist/tasks/test.js",
+      "types": "./dist/tasks/test.d.ts"
     },
     "./ui/About.svelte": {
       "svelte": "./dist/ui/About.svelte",
@@ -2012,6 +2025,22 @@
     "./vocab/space/spaceServices.js": {
       "default": "./dist/vocab/space/spaceServices.js",
       "types": "./dist/vocab/space/spaceServices.d.ts"
+    },
+    "./vocab/task/task.js": {
+      "default": "./dist/vocab/task/task.js",
+      "types": "./dist/vocab/task/task.d.ts"
+    },
+    "./vocab/task/taskActions.js": {
+      "default": "./dist/vocab/task/taskActions.js",
+      "types": "./dist/vocab/task/taskActions.d.ts"
+    },
+    "./vocab/task/taskMutations.js": {
+      "default": "./dist/vocab/task/taskMutations.js",
+      "types": "./dist/vocab/task/taskMutations.d.ts"
+    },
+    "./vocab/task/taskServices.js": {
+      "default": "./dist/vocab/task/taskServices.js",
+      "types": "./dist/vocab/task/taskServices.d.ts"
     },
     "./vocab/tie/tie.js": {
       "default": "./dist/vocab/tie/tie.js",
