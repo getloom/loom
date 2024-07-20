@@ -34,7 +34,7 @@
 	let errorMessage: string | null = null;
 
 	// TODO formalize this (probably through the schema)
-	$: name = name.replace(/[^a-zA-Z0-9-]+/gu, '');
+	$: name = name.replace(/[^a-zA-Z0-9_]+/gu, '');
 
 	$: name, (errorMessage = null);
 

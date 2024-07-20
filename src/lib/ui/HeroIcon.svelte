@@ -3,7 +3,7 @@
 </script>
 
 <div class="icon">
-	<img src="/felt.png" {alt} />
+	<img src="/loom.png" {alt} />
 </div>
 
 <style>
