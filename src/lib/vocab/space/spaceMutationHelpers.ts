@@ -96,6 +96,7 @@ export const evictSpaces = (
 
 	evictEntities(
 		ui,
+		afterMutation,
 		spacesToEvict.map((s) => s.get().directory_id),
 	);
 };

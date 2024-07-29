@@ -48,6 +48,10 @@ export interface QueryMatchEntity {
 	(entity: Readable<Entity>, params: QueryParams, ui: Ui): boolean;
 }
 
+export interface QueryRemoveEntity {
+	(entity: Readable<Entity>, entities: Array<Readable<Entity>>): void;
+}
+
 export const createQuery = (
 	ui: Ui,
 	actions: Actions,
@@ -57,6 +61,7 @@ export const createQuery = (
 		? addEntitySortedByCreatedReversed
 		: addEntitySortedByCreated,
 	matchEntity: QueryMatchEntity = matchEntityBySourceId,
+	removeEntity: QueryRemoveEntity = removeEntityById,
 ): QueryStore => {
 	// TODO the key should be something like `params.actor + '__ ' + params.source_id`
 	// but we currently don't handle queries per actor in the mutation layer.
@@ -64,7 +69,16 @@ export const createQuery = (
 	const {queryByKey} = ui;
 	let query = queryByKey.get(key);
 	if (query) return query;
-	query = toPaginatedQuery(ui, actions, params, key, reversed, addEntity, matchEntity);
+	query = toPaginatedQuery(
+		ui,
+		actions,
+		params,
+		key,
+		reversed,
+		addEntity,
+		matchEntity,
+		removeEntity,
+	);
 	queryByKey.set(key, query);
 	return query;
 };
@@ -77,6 +91,7 @@ const toPaginatedQuery = (
 	reversed: boolean,
 	addEntity: QueryAddEntity,
 	matchEntity: QueryMatchEntity,
+	removeEntity: QueryRemoveEntity,
 ): QueryStore => {
 	const orderBy = params.orderBy ?? 'newest';
 	const {subscribe, update, get} = writable<QueryState>({
@@ -154,7 +169,23 @@ const toPaginatedQuery = (
 	};
 	ui.events.on('stashed_entities', onEntitiesAdded);
 
-	// TODO add `evicted_entities`
+	// Listen to app events to evict entities
+	const onEntitiesEvicted = (evictedEntities: Array<Readable<Entity>>) => {		
+		let mutated = false;
+		const remove = (entity: Readable<Entity>) => {			
+			if (entities.get().value.includes(entity)) {
+				removeEntity(entity, entities.get().value);
+				mutated = true;
+			} else {
+				return;
+			}
+		};
+		for (const entity of evictedEntities) {
+			remove(entity);
+		}
+		if (mutated) entities.mutate();
+	};
+	ui.events.on('evicted_entities', onEntitiesEvicted);
 
 	// We don't want automatic disposal on unsubscribe,
 	// because we want to keep queries alive independent of the current UI.
@@ -229,4 +260,9 @@ const matchEntityBySourceId: QueryMatchEntity = (entity, params, ui) => {
 		}
 	}
 	return false;
+};
+
+const removeEntityById: QueryRemoveEntity = (entity, entities) => {
+	const index = entities.findIndex((e) => e === entity);
+	entities.splice(index, 1);
 };

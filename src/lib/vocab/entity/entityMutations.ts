@@ -54,7 +54,7 @@ export const DeleteEntities: Mutations['DeleteEntities'] = async ({
 	const result = await invoke();
 	if (!result.ok) return result;
 	mutate(() => {
-		evictEntities(ui, result.value.deleted);
+		evictEntities(ui, afterMutation, result.value.deleted);
 		stashEntities(ui, afterMutation, result.value.entities);
 	});
 	return result;

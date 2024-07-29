@@ -21,9 +21,9 @@
 				{
 					actor: $actor.actor_id,
 					source_id: $space.directory_id,
-					orderBy: 'oldest',
+					orderBy: 'newest',
 				},
-				true,
+				false,
 			)
 		: null;
 	$: entities = query?.entities;

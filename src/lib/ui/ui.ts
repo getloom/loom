@@ -40,7 +40,9 @@ export const setUi = (store: Ui): Ui => {
 };
 
 // TODO either add `stashed_ties`, add ties to the payload of `stashed_entities`, or rethink this pattern
-export type UiEvents = EventEmitter<{stashed_entities: [Array<Readable<Entity>>]}>;
+export type UiEvents = EventEmitter<
+	{stashed_entities: [Array<Readable<Entity>>]} | {evicted_entities: [Array<Readable<Entity>>]}
+>;
 
 export interface Ui {
 	events: UiEvents; // TODO refactor with query system work
