@@ -53,6 +53,18 @@
 				parse={parseJson}
 				serialize={serializeJson}
 			/>
+			<Alert>
+				when hub creation is disabled, only admins are allowed to create hubs. Names added to this
+				list will be granted an exception.
+			</Alert>
+			<PropertyEditor
+				value={instanceSettings?.allowedHubCreationAccounts}
+				field="allowedHubCreationAccounts"
+				update={updateHubSetting}
+				deletable={true}
+				parse={parseJson}
+				serialize={serializeJson}
+			/>
 			<PropertyEditor
 				value={instanceSettings?.minPasswordLength}
 				field="minPasswordLength"
