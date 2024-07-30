@@ -1,5 +1,5 @@
 <script lang="ts">
-	// TODO extract to Felt
+	// TODO extract to Loom
 	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
 </script>
 

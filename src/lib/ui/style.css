@@ -1,4 +1,4 @@
-/* global styles that override Felt's */
+/* global styles that override Loom's */
 :root {
 	--luggage_size: calc(var(--icon_size_md) + var(--spacing_xs) * 2);
 	--navbar_size: calc(var(--icon_size_sm) + var(--spacing_xs) * 2);

@@ -3,7 +3,7 @@
 	import {PUBLIC_ADMIN_EMAIL, PUBLIC_GIT_HASH} from '$env/static/public';
 	import {VERSION as SVELTEKIT_VERSION} from '@sveltejs/kit';
 
-	import {VERSION as FELT_VERSION} from '$lib/util/constants.js';
+	import {VERSION as LOOM_VERSION} from '$lib/util/constants.js';
 </script>
 
 <div class="prose padded_1">
@@ -23,11 +23,11 @@
 			<a href="https://www.getloom.org/" target="_blank" rel="noreferrer">Loom</a>
 			version
 			<a
-				href="https://github.com/getloom/loom/releases/tag/v{FELT_VERSION}"
+				href="https://github.com/getloom/loom/releases/tag/v{LOOM_VERSION}"
 				target="_blank"
 				rel="noreferrer"
 			>
-				{FELT_VERSION}
+				{LOOM_VERSION}
 			</a>
 			commit
 			<a

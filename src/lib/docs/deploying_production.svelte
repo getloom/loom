@@ -72,7 +72,7 @@ npm i -g @ryanatkn/gro`}
 PUBLIC_SERVER_PORT=3000
 # notice this is ws://, not wss://, and the same port as above
 PUBLIC_WEBSOCKET_URL=ws://localhost:3000/ws
-PGDATABASE=felt
+PGDATABASE=loom
 PGUSER=postgres
 PGPASSWORD=password`}
 	/>

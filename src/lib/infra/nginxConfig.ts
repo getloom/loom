@@ -67,7 +67,7 @@ server {
   `.trim();
 };
 
-// Outputs an simple html file for nginx to server during Felt downtime
+// Outputs an simple html file for nginx to server during Loom downtime
 export const render_502_html = (PUBLIC_ADMIN_EMAIL: string): string =>
 	`
 <!DOCTYPE html>

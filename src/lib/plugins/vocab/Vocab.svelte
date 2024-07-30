@@ -8,7 +8,7 @@
 	const docsSettings = getDocsSettings();
 	$: path = $docsSettings?.path || '/docs';
 
-	// Like a `Mention` but for the Felt vocabulary.
+	// Like a `Mention` but for the Loom vocabulary.
 
 	/**
 	 * The vocabulary item name. Currently supports models and actions.

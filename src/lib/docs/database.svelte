@@ -33,7 +33,7 @@
 	</p>
 
 	<CodeExample
-		code={`database = PGDATABASE or 'felt'
+		code={`database = PGDATABASE or 'loom'
 username = PGUSERNAME or PGUSER or 'postgres'
 password = PGPASSWORD or 'password'
 host = PGHOST or 'localhost'
@@ -48,7 +48,7 @@ connect_timeout = PGCONNECT_TIMEOUT`}
 		code={`sudo -u postgres psql
 # in psql:
 # postgres=#
-create database felt; # notice the semicolon
+create database loom; # notice the semicolon
 \\password
 # enter "password"`}
 	/>
@@ -65,7 +65,7 @@ create database felt; # notice the semicolon
 	<h3>Creating backups</h3>
 	<p>Using the following command one can quickly take backups of the <code>Loom</code> database.</p>
 
-	<CodeExample code={`sudo -u postgres pg_dump felt > backup.sql`} />
+	<CodeExample code={`sudo -u postgres pg_dump loom > backup.sql`} />
 
 	<h3>Database tasks</h3>
 

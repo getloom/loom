@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {onDestroy} from 'svelte';
 
-	import FeltWindowHost from '$lib/ui/FeltWindowHost.svelte';
+	import LoomWindowHost from '$lib/ui/LoomWindowHost.svelte';
 	import PendingAnimationOverlay from '$lib/ui/PendingAnimationOverlay.svelte';
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import {getApp} from '$lib/ui/app.js';
@@ -51,7 +51,7 @@
 	{#if !loaded}
 		<PendingAnimationOverlay />
 	{/if}
-	<FeltWindowHost
+	<LoomWindowHost
 		tenant={el?.contentWindow}
 		bind:post_message
 		on:message={(e) => {

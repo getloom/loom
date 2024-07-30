@@ -13,7 +13,7 @@ import type {Repos} from '$lib/db/Repos.js';
  */
 
 // TODO we want to create this once and close it after all tests have run --
-// maybe refactor to use the Felt obtainable helper --
+// maybe refactor to use the Loom obtainable helper --
 // but how can we do that without an error-prone timeout?
 
 export interface TestDbContext {

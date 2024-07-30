@@ -99,7 +99,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		>
 		{#if checked !== undefined}
 			<!-- TODO checkbox not updated properly on event broadcast-->
-			<!-- TODO maybe use Felt checkbox component when available-->
+			<!-- TODO maybe use Loom checkbox component when available-->
 			<input type="checkbox" disabled={pending} bind:checked />
 		{/if}
 		<div class="content prose">

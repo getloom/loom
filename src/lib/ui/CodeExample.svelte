@@ -1,5 +1,5 @@
 <script lang="ts">
-	// TODO implement syntax highlighting when felt-ui publishes 0.63
+	// TODO implement syntax highlighting when loom-ui publishes 0.63
 	// import Prism from 'prismjs';
 	// import 'prism-svelte';
 
