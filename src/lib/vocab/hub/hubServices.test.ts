@@ -187,7 +187,7 @@ test_hubServices('deleted hubs cleanup after themselves', async ({repos, random}
 });
 
 test_hubServices(
-	'when new hubs are disabled, only admins should be able to create new ones',
+	'when new hubs are disabled, only admins & listed exceptions should be able to create new ones',
 	async ({repos, random}) => {
 		const {actor} = await random.actor();
 
@@ -195,6 +195,7 @@ test_hubServices(
 		assert.ok(adminHub);
 		const {settings} = adminHub;
 		const settingValue = settings.instance?.disableCreateHub;
+		const allowedActors = settings.instance?.allowedHubCreationAccounts;
 		await repos.hub.updateSettings(ADMIN_HUB_ID, {
 			...settings,
 			instance: {...settings.instance, disableCreateHub: true},
@@ -217,10 +218,30 @@ test_hubServices(
 			}),
 		);
 
+		await repos.hub.updateSettings(ADMIN_HUB_ID, {
+			...settings,
+			instance: {
+				...settings.instance,
+				disableCreateHub: true,
+				allowedHubCreationAccounts: [actor.actor_id],
+			},
+		});
+
+		unwrap(
+			await CreateHubService.perform({
+				...toServiceRequestFake(repos, actor),
+				params: randomHubParams(actor.actor_id),
+			}),
+		);
+
 		//cleanup from test; do not delete
 		await repos.hub.updateSettings(ADMIN_HUB_ID, {
 			...settings,
-			instance: {...settings.instance, disableCreateHub: settingValue},
+			instance: {
+				...settings.instance,
+				disableCreateHub: settingValue,
+				allowedHubCreationAccounts: allowedActors,
+			},
 		});
 	},
 );

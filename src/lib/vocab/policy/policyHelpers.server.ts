@@ -43,10 +43,11 @@ export const checkHubAccessForActor = async (
 	}
 };
 
-export const isCreateHubDisabled = async (repos: Repos): Promise<boolean> => {
+export const isCreateHubDisabled = async (repos: Repos, actor: ActorId): Promise<boolean> => {
 	const hub = await repos.hub.loadAdminHub(HUB_COLUMNS.settings);
-	if (hub) {
-		return !!hub.settings.instance?.disableCreateHub;
+	if (hub?.settings.instance) {
+		const {disableCreateHub, allowedHubCreationAccounts} = hub.settings.instance;
+		return !!(disableCreateHub && !allowedHubCreationAccounts?.includes(actor));
 	} else {
 		//if we can't load the adminHub, we won't allow for new hubs to be created
 		return true;

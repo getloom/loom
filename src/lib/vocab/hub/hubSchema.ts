@@ -51,6 +51,7 @@ export const InstanceSettingsSchema = {
 	properties: {
 		allowedAccountNames: {type: 'array', items: {type: 'string'}},
 		disableCreateHub: {type: 'boolean'},
+		allowedHubCreationAccounts: {type: 'array', items: {$ref: '/schemas/ActorId'}},
 		defaultHubIds: {type: 'array', items: {$ref: '/schemas/HubId'}},
 		minPasswordLength: {type: 'number'},
 		site: {

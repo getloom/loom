@@ -1,5 +1,6 @@
 import type {Flavored} from '@ryanatkn/belt/types.js';
 import type {RoleId} from '$lib/vocab/role/role';
+import type {ActorId} from '../actor/actor';
 
 export type HubId = Flavored<number, 'HubId'>;
 
@@ -34,6 +35,7 @@ export interface HubSettings {
 export interface InstanceSettings {
 	allowedAccountNames?: string[];
 	disableCreateHub?: boolean;
+	allowedHubCreationAccounts?: ActorId[];
 	defaultHubIds?: HubId[];
 	minPasswordLength?: number;
 	site?: {

@@ -97,7 +97,7 @@ export const CreateHubService: ServiceByName['CreateHub'] = {
 		}
 
 		// Check for instance settings OR admin actor
-		if ((await isCreateHubDisabled(repos)) && !(await isActorAdmin(repos, actor))) {
+		if ((await isCreateHubDisabled(repos, actor)) && !(await isActorAdmin(repos, actor))) {
 			return {ok: false, status: 403, message: 'actor does not have permission'};
 		}
 
