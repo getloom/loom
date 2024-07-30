@@ -47,7 +47,7 @@ import {ADMIN_ACTOR_ID, ADMIN_HUB_ID} from './constants';
 export type RandomTestAccount = Account & {__testPlaintextPassword: string};
 
 // TODO automate these from schemas, also use seeded rng
-export const randomString = (): string => 'r' + Math.random().toString().slice(2);
+export const randomString = (): string => 'r' + Math.random().toString().slice(2).replace('-', '_');
 export const randomAccountName = (): string => randomString() + '@email.com';
 export const randomPassword = randomString;
 export const randomActorName = randomString;

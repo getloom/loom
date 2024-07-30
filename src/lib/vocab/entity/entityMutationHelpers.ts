@@ -137,10 +137,18 @@ export const evictTie = (
 };
 
 // TODO delete orphaned entities
-export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
+export const evictEntities = (
+	ui: WritableUi,
+	afterMutation: AfterMutation,
+	entityIds: EntityId[],
+): void => {
 	const {entityById, tieById, freshnessByDirectoryId, tiesByDestId, tiesBySourceId} = ui;
 
+	const evicted: Array<Writable<Entity>> = [];
+
 	for (const entity_id of entityIds) {
+		const entity = entityById.get(entity_id);
+		if (entity) evicted.push(entity);
 		entityById.delete(entity_id);
 		freshnessByDirectoryId.delete(entity_id);
 
@@ -195,10 +203,7 @@ export const evictEntities = (ui: WritableUi, entityIds: EntityId[]): void => {
 		// or alternatively the logic of `evictTiesForEntity`
 		// could be integrated in this function instead of being extracted.
 		// See also the TODO above.
-
-		// TODO
-		// if (evicted) {
-		// 	afterMutation(() => ui.events.emit('evicted_entities', evicted!));
-		// }
 	}
+
+	afterMutation(() => ui.events.emit('evicted_entities', evicted));
 };
