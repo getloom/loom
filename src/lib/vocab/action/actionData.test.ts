@@ -5,7 +5,7 @@ import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv.js';
 import {actionDatas} from '$lib/vocab/action/actionData.js';
 import {randomActionParams} from '$lib/util/randomActionParams.js';
 import type {TestAppContext} from '$lib/util/testAppHelpers.js';
-// TODO re-enable after https://github.com/getloom/felt/pull/922
+// TODO re-enable after https://github.com/getloom/loom/pull/922
 // import {setupApp, teardownApp} from '$lib/util/testAppHelpers.js';
 
 /* test__actionDatas */
@@ -13,7 +13,7 @@ const test__actionDatas = suite<TestDbContext & TestAppContext>('actionDatas');
 
 test__actionDatas.before(setupDb);
 test__actionDatas.after(teardownDb);
-// TODO re-enable after https://github.com/getloom/felt/pull/922
+// TODO re-enable after https://github.com/getloom/loom/pull/922
 // test__actionDatas.before(setupApp);
 // test__actionDatas.after(teardownApp);
 
@@ -48,7 +48,7 @@ for (const actionData of actionDatas.values()) {
 			return;
 		}
 
-		// TODO re-enable after https://github.com/getloom/felt/pull/922
+		// TODO re-enable after https://github.com/getloom/loom/pull/922
 		// // TODO fix typecast with a union for `actionData`
 		// const result = await (app.actions as any)[actionData.name](params);
 		// if (actionData.type === 'ClientAction') {

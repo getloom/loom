@@ -87,7 +87,7 @@ npm i -g @ryanatkn/gro @changesets/cli # reinstall global dependencies`}
 		code={`sudo -u postgres psql
 # in psql:
 # postgres=#
-create database felt; # notice the semicolon
+create database loom; # notice the semicolon
 \\password
 # enter "password" or env.PGPASSWORD`}
 	/>

@@ -228,7 +228,7 @@ const generateEntities = async (
 };
 
 const hubTemplates: HubTemplate[] = [
-	{name: 'felt'},
+	{name: 'loom'},
 	{name: 'dev'},
 	{
 		name: 'example',

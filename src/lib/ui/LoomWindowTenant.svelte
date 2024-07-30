@@ -11,10 +11,10 @@
 
 	// These are named the inverse of the equivalents in `Host`.
 	type SentMessage =
-		| {type: 'felt.connect'; [key: string]: any}
+		| {type: 'loom.connect'; [key: string]: any}
 		| {type: string; [key: string]: any};
 	type ReceivedMessage =
-		| {type: 'felt.connected'; [key: string]: any}
+		| {type: 'loom.connected'; [key: string]: any}
 		| {type: string; [key: string]: any};
 
 	const dispatch = createEventDispatcher<{message: ReceivedMessage}>();
@@ -53,7 +53,7 @@
 		return (connecting = new Promise((resolve) => {
 			resolve_connection = resolve;
 			connect_status = 'pending';
-			post_message({type: 'felt.connect'});
+			post_message({type: 'loom.connect'});
 			connect_timeout = setTimeout(() => {
 				// if we're in an iframe with a host that isn't responding,
 				// this timeout keeps things from hanging
@@ -70,7 +70,7 @@
 		if (e.source !== host) return;
 		const message = e.data;
 		if (!message) return;
-		if (message.type === 'felt.connected') {
+		if (message.type === 'loom.connected') {
 			if (connect_status !== 'pending') return; // defensively ignore duplicates and uninvited messages
 			connect_status = 'success';
 			clearTimeout(connect_timeout);

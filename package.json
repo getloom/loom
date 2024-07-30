@@ -1176,16 +1176,6 @@
       "default": "./dist/ui/ErrorMessage.svelte",
       "types": "./dist/ui/ErrorMessage.svelte.d.ts"
     },
-    "./ui/FeltWindowHost.svelte": {
-      "svelte": "./dist/ui/FeltWindowHost.svelte",
-      "default": "./dist/ui/FeltWindowHost.svelte",
-      "types": "./dist/ui/FeltWindowHost.svelte.d.ts"
-    },
-    "./ui/FeltWindowTenant.svelte": {
-      "svelte": "./dist/ui/FeltWindowTenant.svelte",
-      "default": "./dist/ui/FeltWindowTenant.svelte",
-      "types": "./dist/ui/FeltWindowTenant.svelte.d.ts"
-    },
     "./ui/FreshnessIndicator.svelte": {
       "svelte": "./dist/ui/FreshnessIndicator.svelte",
       "default": "./dist/ui/FreshnessIndicator.svelte",
@@ -1290,6 +1280,16 @@
     "./ui/localStorage.js": {
       "default": "./dist/ui/localStorage.js",
       "types": "./dist/ui/localStorage.d.ts"
+    },
+    "./ui/LoomWindowHost.svelte": {
+      "svelte": "./dist/ui/LoomWindowHost.svelte",
+      "default": "./dist/ui/LoomWindowHost.svelte",
+      "types": "./dist/ui/LoomWindowHost.svelte.d.ts"
+    },
+    "./ui/LoomWindowTenant.svelte": {
+      "svelte": "./dist/ui/LoomWindowTenant.svelte",
+      "default": "./dist/ui/LoomWindowTenant.svelte",
+      "types": "./dist/ui/LoomWindowTenant.svelte.d.ts"
     },
     "./ui/Luggage.svelte": {
       "svelte": "./dist/ui/Luggage.svelte",

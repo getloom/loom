@@ -24,7 +24,7 @@ import {assertApiError} from '$lib/server/api.js';
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
 // TODO security considerations, mainly that signup leaks account name existence
-// https://github.com/getloom/felt/pull/525#discussion_r1002323512
+// https://github.com/getloom/loom/pull/525#discussion_r1002323512
 
 export const SignUpService: ServiceByName['SignUp'] = {
 	action: SignUp,

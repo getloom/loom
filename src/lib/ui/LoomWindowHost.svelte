@@ -3,7 +3,7 @@
 
 	// TODO implement parent data API with user-approval: show request dialog to users so
 	// they can accept/deny the iframe's connection/data/capability
-	// (including arbitrary data and context like the `space_id` for felt-server)
+	// (including arbitrary data and context like the `space_id` for loom)
 	// more: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concerns
 
 	type Tenant = {postMessage: Window['postMessage']} | ServiceWorker | MessagePort;
@@ -11,12 +11,12 @@
 	export let tenant: Tenant | undefined | null;
 	export let target_origin = '*'; // does not affect tenants of type `ServiceWorker` and `MessagePort`
 
-	// These are named the inverse of the equivalents in `FeltWindowTenant`.
+	// These are named the inverse of the equivalents in `LoomWindowTenant`.
 	type ReceivedMessage =
-		| {type: 'felt.connect'; [key: string]: any}
+		| {type: 'loom.connect'; [key: string]: any}
 		| {type: string; [key: string]: any};
 	type SentMessage =
-		| {type: 'felt.connected'; [key: string]: any}
+		| {type: 'loom.connected'; [key: string]: any}
 		| {type: string; [key: string]: any};
 
 	const dispatch = createEventDispatcher<{message: ReceivedMessage}>();
@@ -35,8 +35,8 @@
 		if (e.source !== tenant) return;
 		const message = e.data;
 		if (!message) return;
-		if (message.type === 'felt.connect') {
-			post_message({type: 'felt.connected'});
+		if (message.type === 'loom.connect') {
+			post_message({type: 'loom.connected'});
 		}
 		if (message.type) {
 			dispatch('message', e.data);

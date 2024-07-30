@@ -71,7 +71,7 @@ export const task: Task<Args> = {
 		const nginxHtmlSource = render_502_html(PUBLIC_ADMIN_EMAIL);
 
 		// This file is used to detect if the setup script has already run.
-		const APP_SETUP_STATE_FILE_PATH = '~/felt_state_setup';
+		const APP_SETUP_STATE_FILE_PATH = '~/loom_state_setup';
 
 		const deployLogin = `${DEPLOY_USER}@${DEPLOY_IP}`;
 

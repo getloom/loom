@@ -50,22 +50,22 @@ vi /$${'{'}DEPLOY_USER}/.pm2/logs/npm-out.log # open the app log`}
 	<CodeExample
 		code={`sudo -i -u postgres psql
 \\l # list databases
-\\c felt # connect to <code>felt</code>
+\\c loom # connect to <code>loom</code>
 \\dt # list tables
 SELECT count(*) FROM accounts; # any SQL`}
 	/>
 
-	<h4>dumping and restoring the felt database</h4>
+	<h4>dumping and restoring the loom database</h4>
 
-	<p>The following command makes a backup dump of the default <code>felt</code> table</p>
+	<p>The following command makes a backup dump of the default <code>loom</code> table</p>
 
-	<CodeExample code={`sudo -i -u postgres pg_dump felt > backup.sql`} />
+	<CodeExample code={`sudo -i -u postgres pg_dump loom > backup.sql`} />
 
 	<p>
-		And these commands can restore that dump to the default felt table. Note: you may have to drop
-		and recreate the <code>felt</code> table first
+		And these commands can restore that dump to the default loom table. Note: you may have to drop
+		and recreate the <code>loom</code> table first
 	</p>
-	<CodeExample code={`sudo -i -u postgres psql -d felt {'<'} backup.sql`} />
+	<CodeExample code={`sudo -i -u postgres psql -d loom {'<'} backup.sql`} />
 
 	<h3>Nginx</h3>
 

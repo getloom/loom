@@ -13,7 +13,7 @@ import {
 } from '$lib/util/markdown.js';
 
 // Used to avoids infinite loops because newly added children get walked.
-const ADDED_BY_FELT = Symbol();
+const ADDED_BY_LOOM = Symbol();
 
 // TODO sanitize using an allowlist of elements/attributes
 
@@ -21,7 +21,7 @@ const ADDED_BY_FELT = Symbol();
 // but we'll fix with `svast` and `svelte-parse` (and rewrite most of this anyway)
 
 /**
- * Wraps `svelte-parse` with Felt-specific plaintext extensions like linkifying URLs.
+ * Wraps `svelte-parse` with Loom-specific plaintext extensions like linkifying URLs.
  * This is a hacky initial implementation just to get links and mentions.
  * We plan to use MDsveX/Pfm to do this robustly/correctly:
  * https://github.com/pngwn/MDsveX/
@@ -32,7 +32,7 @@ export const parseSvast: typeof parse = (opts) => {
 	const ast = parse(opts);
 	walk(ast as any, {
 		enter(node, parent) {
-			if ((node as any)[ADDED_BY_FELT]) return;
+			if ((node as any)[ADDED_BY_LOOM]) return;
 			if ((node as any).type === 'text') {
 				// Parse text and replace extended syntax with new nodes.
 				// This is a temporary implementation until Pfm is ready and we write a proper plugin.
@@ -54,7 +54,7 @@ const parseSvastText = (node: Text): SvelteChild => {
 	const flushPlainText = () => {
 		if (!plainText) return;
 		(children || (children = [])).push({
-			[ADDED_BY_FELT as any]: true,
+			[ADDED_BY_LOOM as any]: true,
 			type: 'text',
 			value: plainText,
 		});
@@ -87,72 +87,72 @@ const parseSvastText = (node: Text): SvelteChild => {
 			// - //that.net become https://that.net
 			flushPlainText();
 			(children || (children = [])).push({
-				[ADDED_BY_FELT as any]: true,
+				[ADDED_BY_LOOM as any]: true,
 				type: 'svelteComponent',
 				tagName: 'Link',
 				properties: [
 					{
 						type: 'svelteProperty',
 						name: 'href',
-						value: [{[ADDED_BY_FELT as any]: true, type: 'text', value: word}],
+						value: [{[ADDED_BY_LOOM as any]: true, type: 'text', value: word}],
 						modifiers: [],
 						shorthand: 'none',
 					},
 				],
 				selfClosing: false,
-				children: [{[ADDED_BY_FELT as any]: true, type: 'text', value: word}],
+				children: [{[ADDED_BY_LOOM as any]: true, type: 'text', value: word}],
 			});
 		} else if (firstChar === '`' && lastChar === '`') {
 			// `code` tags
 			flushPlainText();
 			(children || (children = [])).push({
-				[ADDED_BY_FELT as any]: true,
+				[ADDED_BY_LOOM as any]: true,
 				type: 'svelteElement',
 				tagName: 'code',
 				properties: [],
 				selfClosing: false,
 				children: [
-					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
+					{[ADDED_BY_LOOM as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
 				],
 			});
 		} else if (firstChar === '*' && lastChar === '*') {
 			// `strong` tags
 			flushPlainText();
 			(children || (children = [])).push({
-				[ADDED_BY_FELT as any]: true,
+				[ADDED_BY_LOOM as any]: true,
 				type: 'svelteElement',
 				tagName: 'strong',
 				properties: [],
 				selfClosing: false,
 				children: [
-					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
+					{[ADDED_BY_LOOM as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
 				],
 			});
 		} else if (firstChar === '_' && lastChar === '_') {
 			// `em` tags
 			flushPlainText();
 			(children || (children = [])).push({
-				[ADDED_BY_FELT as any]: true,
+				[ADDED_BY_LOOM as any]: true,
 				type: 'svelteElement',
 				tagName: 'em',
 				properties: [],
 				selfClosing: false,
 				children: [
-					{[ADDED_BY_FELT as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
+					{[ADDED_BY_LOOM as any]: true, type: 'text', value: word.substring(1, lastCharIndex)},
 				],
 			});
 		} else if (firstChar === '@' && !checkActorName((restStr = word.substring(1)))) {
 			// `@actor` mentions
 			flushPlainText();
 			(children || (children = [])).push({
-				[ADDED_BY_FELT as any]: true,
+				[ADDED_BY_LOOM as any]: true,
 				type: 'svelteComponent',
 				tagName: 'Mention',
 				properties: [
 					{
 						type: 'svelteProperty',
 						name: 'name',
-						value: [{[ADDED_BY_FELT as any]: true, type: 'text', value: restStr}],
+						value: [{[ADDED_BY_LOOM as any]: true, type: 'text', value: restStr}],
 						modifiers: [],
 						shorthand: 'none',
 					},
@@ -169,7 +169,7 @@ const parseSvastText = (node: Text): SvelteChild => {
 	return children.length === 1
 		? children[0]
 		: {
-				[ADDED_BY_FELT as any]: true,
+				[ADDED_BY_LOOM as any]: true,
 				type: 'svelteElement',
 				tagName: 'span',
 				properties: [],
