@@ -170,9 +170,9 @@ const toPaginatedQuery = (
 	ui.events.on('stashed_entities', onEntitiesAdded);
 
 	// Listen to app events to evict entities
-	const onEntitiesEvicted = (evictedEntities: Array<Readable<Entity>>) => {		
+	const onEntitiesEvicted = (evictedEntities: Array<Readable<Entity>>) => {
 		let mutated = false;
-		const remove = (entity: Readable<Entity>) => {			
+		const remove = (entity: Readable<Entity>) => {
 			if (entities.get().value.includes(entity)) {
 				removeEntity(entity, entities.get().value);
 				mutated = true;
