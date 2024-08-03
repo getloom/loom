@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Entity, EntityId } from "$lib/vocab/entity/entity";
+	import type { EntityId } from "$lib/vocab/entity/entity";
 
     type Country = "Austria-Hungary" | "Great Britain" | "France" | "Germany" | "Italy" | "Russia" | "Turkey" | "nuetral"
 
