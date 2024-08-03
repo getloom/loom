@@ -17,7 +17,7 @@ export class InviteRepo extends PostgresRepo {
 		const status: InviteStatus = 'open';
 		const data = await this.sql<Array<Pick<Invite, T>>>`
 			INSERT INTO invites (code, status, from_id) VALUES (
-				${code}, ${status}, ${invitingAccount}}
+				${code}, ${status}, ${invitingAccount}
 			) RETURNING ${this.sql(columns as string[])}
 		`;
 		log.debug('created account', data[0]);
