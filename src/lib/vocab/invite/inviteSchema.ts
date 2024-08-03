@@ -18,7 +18,7 @@ export const InviteSchema = {
 		code: {type: 'string'},
 		status: {type: 'string'},
 		from_id: {$ref: '/schemas/AccountId'},
-        to_id: {anyOf: [{$ref: '/schemas/AccountId'}, {type: 'null'}]},
+		to_id: {anyOf: [{$ref: '/schemas/AccountId'}, {type: 'null'}]},
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
