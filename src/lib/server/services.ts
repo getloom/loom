@@ -47,7 +47,8 @@ import {
 	UpdateAccountSettingsService,
 	UpdateAccountPasswordService,
 } from '$lib/vocab/account/accountServices.js';
-import {RunTaskService} from '$lib/vocab/task/taskServices';
+import {RunTaskService} from '$lib/vocab/task/taskServices.js';
+import {CreateInviteService} from '$lib/vocab/invite/inviteServices.js';
 
 export const services: Map<string, Service> = new Map(
 	[
@@ -98,5 +99,7 @@ export const services: Map<string, Service> = new Map(
 		UpdatePolicyService,
 		// taskServices
 		RunTaskService,
+		// inviteServices
+		CreateInviteService,
 	].map((s) => [s.action.name, s]),
 );

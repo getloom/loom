@@ -7,6 +7,7 @@ import type {Space, SpaceId} from '$lib/vocab/space/space';
 import type {Directory, EntityData} from '$lib/vocab/entity/entityData.js';
 import type {Assignment, AssignmentId} from '$lib/vocab/assignment/assignment';
 import type {Tie} from '$lib/vocab/tie/tie';
+import type {Invite} from '$lib/vocab/invite/invite';
 import type {Dialog_Params} from '@ryanatkn/fuz/dialog.js';
 import type {
 	ClientSession,
@@ -31,6 +32,7 @@ export type ServiceActionName =
 	| 'CreateAssignment'
 	| 'CreateEntity'
 	| 'CreateHub'
+	| 'CreateInvite'
 	| 'CreatePolicy'
 	| 'CreateRole'
 	| 'CreateSpace'
@@ -82,6 +84,7 @@ export interface ActionParamsByName {
 	CreateAssignment: CreateAssignmentParams;
 	CreateEntity: CreateEntityParams;
 	CreateHub: CreateHubParams;
+	CreateInvite: CreateInviteParams;
 	CreatePolicy: CreatePolicyParams;
 	CreateRole: CreateRoleParams;
 	CreateSpace: CreateSpaceParams;
@@ -126,6 +129,7 @@ export interface ActionResponseByName {
 	CreateAssignment: CreateAssignmentResponse;
 	CreateEntity: CreateEntityResponse;
 	CreateHub: CreateHubResponse;
+	CreateInvite: CreateInviteResponse;
 	CreatePolicy: CreatePolicyResponse;
 	CreateRole: CreateRoleResponse;
 	CreateSpace: CreateSpaceResponse;
@@ -181,6 +185,7 @@ export interface ServiceByName {
 	DeleteActor: AuthorizedService<DeleteActorParams, DeleteActorResponseResult>;
 	ReadHub: AuthorizedService<ReadHubParams, ReadHubResponseResult>;
 	CreateHub: AuthorizedService<CreateHubParams, CreateHubResponseResult>;
+	CreateInvite: NonAuthorizedService<CreateInviteParams, CreateInviteResponseResult>;
 	UpdateHub: AuthorizedService<UpdateHubParams, UpdateHubResponseResult>;
 	DeleteHub: AuthorizedService<DeleteHubParams, DeleteHubResponseResult>;
 	InviteToHub: AuthorizedService<InviteToHubParams, InviteToHubResponseResult>;
@@ -286,6 +291,14 @@ export interface CreateHubResponse {
 	actors: PublicActor[];
 }
 export type CreateHubResponseResult = ApiResult<CreateHubResponse>;
+
+export interface CreateInviteParams {}
+
+export interface CreateInviteResponse {
+	invite: Invite;
+}
+
+export type CreateInviteResponseResult = ApiResult<CreateInviteResponse>;
 
 export interface CreatePolicyParams {
 	actor: ActorId;

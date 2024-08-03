@@ -34,6 +34,7 @@ import {
 	DeletePolicy,
 } from '$lib/vocab/policy/policyActions.js';
 import {RunTask} from '$lib/vocab/task/taskActions.js';
+import {CreateInvite} from '$lib/vocab/invite/inviteActions';
 import {
 	Ping,
 	Ephemera,
@@ -57,6 +58,7 @@ export const actionDatas: ActionData[] = [
 	CreateAssignment,
 	CreateEntity,
 	CreateHub,
+	CreateInvite,
 	CreatePolicy,
 	CreateRole,
 	CreateSpace,
