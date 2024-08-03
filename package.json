@@ -362,6 +362,10 @@
       "default": "./dist/db/migrations/00052-add-entity-directory-id.js",
       "types": "./dist/db/migrations/00052-add-entity-directory-id.d.ts"
     },
+    "./db/migrations/00053-create-invites.js": {
+      "default": "./dist/db/migrations/00053-create-invites.js",
+      "types": "./dist/db/migrations/00053-create-invites.d.ts"
+    },
     "./db/obtainDb.js": {
       "default": "./dist/db/obtainDb.js",
       "types": "./dist/db/obtainDb.d.ts"
