@@ -13,6 +13,6 @@ export const CreateInviteService: ServiceByName['CreateInvite'] = {
 	perform: async ({repos, account_id}) => {
 		log.debug('creating invite from account', account_id);
 		const invite = await repos.invite.create(account_id, INVITE_COLUMNS.all);
-		return {ok: true, status: 200, value: invite};
+		return {ok: true, status: 200, value: {invite}};
 	},
 };

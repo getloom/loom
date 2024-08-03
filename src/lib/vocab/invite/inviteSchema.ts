@@ -22,6 +22,6 @@ export const InviteSchema = {
 		created: {type: 'object', instanceof: 'Date'},
 		updated: {anyOf: [{type: 'object', instanceof: 'Date'}, {type: 'null'}]},
 	},
-	required: ['account_id', 'name', 'settings', 'password', 'created', 'updated'],
+	required: ['invite_id', 'code', 'status', 'from_id', 'to_id', 'created', 'updated'],
 	additionalProperties: false,
 } satisfies Json_Schema;

@@ -1906,6 +1906,34 @@
       "default": "./dist/vocab/hub/hubServices.js",
       "types": "./dist/vocab/hub/hubServices.d.ts"
     },
+    "./vocab/invite/invite.js": {
+      "default": "./dist/vocab/invite/invite.js",
+      "types": "./dist/vocab/invite/invite.d.ts"
+    },
+    "./vocab/invite/inviteActions.js": {
+      "default": "./dist/vocab/invite/inviteActions.js",
+      "types": "./dist/vocab/invite/inviteActions.d.ts"
+    },
+    "./vocab/invite/inviteHelpers.server.js": {
+      "default": "./dist/vocab/invite/inviteHelpers.server.js",
+      "types": "./dist/vocab/invite/inviteHelpers.server.d.ts"
+    },
+    "./vocab/invite/InviteRepo.test.js": {
+      "default": "./dist/vocab/invite/InviteRepo.test.js",
+      "types": "./dist/vocab/invite/InviteRepo.test.d.ts"
+    },
+    "./vocab/invite/InviteRepo.js": {
+      "default": "./dist/vocab/invite/InviteRepo.js",
+      "types": "./dist/vocab/invite/InviteRepo.d.ts"
+    },
+    "./vocab/invite/inviteSchema.js": {
+      "default": "./dist/vocab/invite/inviteSchema.js",
+      "types": "./dist/vocab/invite/inviteSchema.d.ts"
+    },
+    "./vocab/invite/inviteServices.js": {
+      "default": "./dist/vocab/invite/inviteServices.js",
+      "types": "./dist/vocab/invite/inviteServices.d.ts"
+    },
     "./vocab/metadata.gen.js": {
       "default": "./dist/vocab/metadata.gen.js",
       "types": "./dist/vocab/metadata.gen.d.ts"

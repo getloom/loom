@@ -279,6 +279,9 @@ export const randomActionParams: RandomActionParams = {
 			args: [randomString()],
 		};
 	},
+	CreateInvite: async () => {
+		return null;
+	},
 
 	ToggleMainNav: async () => {
 		return undefined;

@@ -8,6 +8,7 @@ import type {
 	CreateAssignmentParams,
 	CreateEntityParams,
 	CreateHubParams,
+	CreateInviteParams,
 	CreatePolicyParams,
 	CreateRoleParams,
 	CreateSpaceParams,
@@ -71,6 +72,10 @@ export interface RandomActionParams {
 		randomVocab?: RandomVocab,
 	) => Promise<CreateEntityParams>;
 	CreateHub: (random: RandomVocabContext, randomVocab?: RandomVocab) => Promise<CreateHubParams>;
+	CreateInvite: (
+		random: RandomVocabContext,
+		randomVocab?: RandomVocab,
+	) => Promise<CreateInviteParams>;
 	CreatePolicy: (
 		random: RandomVocabContext,
 		randomVocab?: RandomVocab,

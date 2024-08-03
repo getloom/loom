@@ -13,7 +13,7 @@ export class InviteRepo extends PostgresRepo {
 		account_id: AccountId,
 		columns: T[],
 	): Promise<Pick<Invite, T>> {
-		const code = '1234'; //UUID gen
+		const code = crypto.randomUUID();
 		const status: InviteStatus = 'open';
 		const data = await this.sql<Array<Pick<Invite, T>>>`
 			INSERT INTO invites (code, status, from_id) VALUES (
