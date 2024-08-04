@@ -33,7 +33,7 @@ import {EntitySchema, EntityIdSchema} from '$lib/vocab/entity/entitySchema.js';
 import {TieSchema, TieIdSchema} from '$lib/vocab/tie/tieSchema.js';
 import {RoleSchema, RoleIdSchema} from '$lib/vocab/role/roleSchema.js';
 import {PolicySchema, PolicyIdSchema, PolicyNameSchema} from '$lib/vocab/policy/policySchema.js';
-import { InviteSchema, InviteIdSchema } from '$lib/vocab/invite/inviteSchema.js';
+import {InviteSchema, InviteIdSchema} from '$lib/vocab/invite/inviteSchema.js';
 
 // Model schemas are distinct from the action schemas.
 // They're the nouns compared to the action verbs.

@@ -292,7 +292,7 @@ export interface CreateHubResponse {
 }
 export type CreateHubResponseResult = ApiResult<CreateHubResponse>;
 
-export type CreateInviteParams = null
+export type CreateInviteParams = null;
 
 export interface CreateInviteResponse {
 	invite: Invite;
