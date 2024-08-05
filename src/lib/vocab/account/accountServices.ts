@@ -49,7 +49,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 					return {ok: false, status: 400, message: 'cannot create account'};
 				}
 			}
-
+			//TODO BLOCK add check for disabled signups or invite code
 			const minPasswordLength = adminHub!.settings.instance?.minPasswordLength;
 			assertApiError(checkPasswordStrength(params.password, minPasswordLength));
 		}
