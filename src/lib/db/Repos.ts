@@ -8,6 +8,7 @@ import {EntityRepo} from '$lib/vocab/entity/EntityRepo.js';
 import {TieRepo} from '$lib/vocab/tie/TieRepo.js';
 import {RoleRepo} from '$lib/vocab/role/RoleRepo.js';
 import {PolicyRepo} from '$lib/vocab/policy/PolicyRepo.js';
+import {InviteRepo} from '$lib/vocab/invite/InviteRepo';
 
 /**
  * The `Repos` is instantiated with a `postgres.Sql` instance,
@@ -23,6 +24,7 @@ export class Repos {
 	readonly tie: TieRepo;
 	readonly role: RoleRepo;
 	readonly policy: PolicyRepo;
+	readonly invite: InviteRepo;
 
 	constructor(public readonly sql: PostgresSql) {
 		this.account = new AccountRepo(this, sql);
@@ -34,5 +36,6 @@ export class Repos {
 		this.tie = new TieRepo(this, sql);
 		this.role = new RoleRepo(this, sql);
 		this.policy = new PolicyRepo(this, sql);
+		this.invite = new InviteRepo(this, sql);
 	}
 }
