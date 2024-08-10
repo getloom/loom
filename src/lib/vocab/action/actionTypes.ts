@@ -577,6 +577,7 @@ export type SignOutResponseResult = ApiResult<SignOutResponse>;
 export interface SignUpParams {
 	username: string;
 	password: string;
+	code?: string;
 }
 export interface SignUpResponse {
 	/**

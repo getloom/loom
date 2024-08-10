@@ -20,7 +20,42 @@ export class InviteRepo extends PostgresRepo {
 				${code}, ${status}, ${account_id}
 			) RETURNING ${this.sql(columns as string[])}
 		`;
-		log.debug('created account', data[0]);
+		log.debug('created invite', data[0]);
+		return data[0];
+	}
+
+	//TODO BLOCK set index on invite code
+	//TODO BLOCK write tests for this
+	async findActiveInvite<T extends InviteColumn>(
+		code: string,
+		columns: T[],
+	): Promise<Pick<Invite, T>> {
+		const status: InviteStatus = 'open';
+		const data = await this.sql<Array<Pick<Invite, T>>>`
+			SELECT ${this.sql(columns as string[])}
+			FROM invites WHERE code=${code} AND status=${status}
+		`;
+		log.debug('found invite', data[0]);
+		return data[0];
+	}
+
+	//TODO this isn't super generic or reusable, it's basically just for closing the loop on an invite
+	//TODO BLOCK write tests for this
+	async updateInviteByCode(
+		code: string,
+		to_id: AccountId,
+		status: InviteStatus,		
+	): Promise<Invite> {		
+		const data = await this.sql<Invite[]>`
+			UPDATE invites SET
+				to_id=${to_id},
+				status=${status},
+				updated=NOW()
+			WHERE code=${code}
+			RETURNING * 
+		`;
+		log.debug('updated invite', data[0]);
+		if (!data.count) throw Error();		
 		return data[0];
 	}
 }

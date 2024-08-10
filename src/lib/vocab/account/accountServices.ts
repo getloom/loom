@@ -20,6 +20,7 @@ import {
 } from '$lib/vocab/account/accountHelpers.js';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
 import {assertApiError} from '$lib/server/api.js';
+import { isValidCode } from '../invite/inviteHelpers.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
@@ -31,6 +32,8 @@ export const SignUpService: ServiceByName['SignUp'] = {
 	transaction: true,
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
+		const code = params.code;
+		let inviteOnlyMode = false;
 		assertApiError(checkAccountName(username));
 
 		const existingAccount = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id);
@@ -49,7 +52,18 @@ export const SignUpService: ServiceByName['SignUp'] = {
 					return {ok: false, status: 400, message: 'cannot create account'};
 				}
 			}
-			//TODO BLOCK add check for disabled signups or invite code
+			//TODO BLOCK write tests for these
+			const disabledSignups = adminHub!.settings.instance?.disableSignups;
+			if (disabledSignups) {
+				return {ok: false, status: 400, message: 'account signups are disabled'};
+			}
+			const inviteCodeMode = adminHub!.settings.instance?.enableInviteOnlySignups
+			if (inviteCodeMode) {
+				inviteOnlyMode = true;
+				if (!(code && await isValidCode(repos,code))){
+					return {ok: false, status: 400, message: 'cannot create account without valid invite code'};
+				}
+			}			
 			const minPasswordLength = adminHub!.settings.instance?.minPasswordLength;
 			assertApiError(checkPasswordStrength(params.password, minPasswordLength));
 		}
@@ -61,6 +75,13 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			toDefaultAccountSettings(),
 			ACCOUNT_COLUMNS.account_id,
 		);
+
+		//TODO BLOCK write tests for this
+		if (inviteOnlyMode){			
+			await repos.invite.updateInviteByCode(code!, account.account_id, 'closed');
+		}
+
+		
 
 		await session.signIn(account.account_id);
 

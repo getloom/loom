@@ -14,6 +14,7 @@
 	export let username = '';
 	export let attrs: any = undefined;
 
+	//TODO BLOCK add mechanism for grabbing code from URL and passing it along on create
 	let password = '';
 	let password2 = '';
 	let usernameEl: HTMLInputElement;
