@@ -36,7 +36,7 @@ export interface InstanceSettings {
 	allowedAccountNames?: string[];
 	disableCreateHub?: boolean;
 	allowedHubCreationAccounts?: ActorId[];
-	disableSignups?: boolean,
+	disableSignups?: boolean;
 	enableInviteOnlySignups?: boolean;
 	defaultHubIds?: HubId[];
 	minPasswordLength?: number;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {tick} from 'svelte';
+	import {page} from '$app/stores';
 	import {PUBLIC_INSTANCE_ICON} from '$env/static/public';
 	import Pending_Button from '@ryanatkn/fuz/Pending_Button.svelte';
 	import {swallow} from '@ryanatkn/belt/dom.js';
@@ -8,13 +9,13 @@
 	import HeroIcon from '$lib/ui/HeroIcon.svelte';
 	import {getApp} from '$lib/ui/app.js';
 	import {checkAccountName, scrubAccountName} from '$lib/vocab/account/accountHelpers.js';
+	import {CODE_PARAM} from '$lib/vocab/invite/invite';
 
 	const {actions} = getApp();
 
 	export let username = '';
 	export let attrs: any = undefined;
-
-	//TODO BLOCK add mechanism for grabbing code from URL and passing it along on create
+	
 	let password = '';
 	let password2 = '';
 	let usernameEl: HTMLInputElement;
@@ -23,6 +24,7 @@
 	let buttonEl: HTMLButtonElement;
 	let errorMessage: string | undefined;
 	let submitting: boolean | undefined;
+	const codeParam = $page.url.searchParams.get(CODE_PARAM);
 
 	$: disabled = !!submitting;
 
@@ -58,7 +60,8 @@
 		buttonEl.focus();
 		submitting = true;
 		errorMessage = '';
-		const result = await actions.SignUp({username, password});
+		const code = codeParam || undefined;
+		const result = await actions.SignUp({username, password, code});
 		submitting = false;
 		if (!result.ok) {
 			errorMessage = result.message;

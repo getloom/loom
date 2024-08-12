@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { CODE_PARAM } from '$lib/vocab/invite/invite';
+	import {page} from '$app/stores';
+	import {CODE_PARAM} from '$lib/vocab/invite/invite';
 	import SignInForm from '$lib/ui/SignInForm.svelte';
 	import SignUpForm from '$lib/ui/SignUpForm.svelte';
 	import SignOutForm from '$lib/ui/SignOutForm.svelte';

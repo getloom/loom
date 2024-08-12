@@ -23,8 +23,7 @@ export class InviteRepo extends PostgresRepo {
 		log.debug('created invite', data[0]);
 		return data[0];
 	}
-
-	//TODO BLOCK set index on invite code
+	
 	//TODO BLOCK write tests for this
 	async findActiveInvite<T extends InviteColumn>(
 		code: string,
@@ -41,11 +40,7 @@ export class InviteRepo extends PostgresRepo {
 
 	//TODO this isn't super generic or reusable, it's basically just for closing the loop on an invite
 	//TODO BLOCK write tests for this
-	async updateInviteByCode(
-		code: string,
-		to_id: AccountId,
-		status: InviteStatus,		
-	): Promise<Invite> {		
+	async updateInviteByCode(code: string, to_id: AccountId, status: InviteStatus): Promise<Invite> {
 		const data = await this.sql<Invite[]>`
 			UPDATE invites SET
 				to_id=${to_id},
@@ -55,7 +50,7 @@ export class InviteRepo extends PostgresRepo {
 			RETURNING * 
 		`;
 		log.debug('updated invite', data[0]);
-		if (!data.count) throw Error();		
+		if (!data.count) throw Error();
 		return data[0];
 	}
 }
