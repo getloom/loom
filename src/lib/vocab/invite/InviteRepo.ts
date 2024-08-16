@@ -23,7 +23,7 @@ export class InviteRepo extends PostgresRepo {
 		log.debug('created invite', data[0]);
 		return data[0];
 	}
-	
+
 	//TODO BLOCK write tests for this
 	async findActiveInvite<T extends InviteColumn>(
 		code: string,

@@ -1706,6 +1706,10 @@
       "default": "./dist/vocab/account/accountSchema.js",
       "types": "./dist/vocab/account/accountSchema.d.ts"
     },
+    "./vocab/account/accountServices.test.js": {
+      "default": "./dist/vocab/account/accountServices.test.js",
+      "types": "./dist/vocab/account/accountServices.test.d.ts"
+    },
     "./vocab/account/accountServices.js": {
       "default": "./dist/vocab/account/accountServices.js",
       "types": "./dist/vocab/account/accountServices.d.ts"

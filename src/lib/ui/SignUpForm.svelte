@@ -15,7 +15,7 @@
 
 	export let username = '';
 	export let attrs: any = undefined;
-	
+
 	let password = '';
 	let password2 = '';
 	let usernameEl: HTMLInputElement;
