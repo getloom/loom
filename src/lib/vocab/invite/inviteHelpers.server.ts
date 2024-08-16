@@ -10,11 +10,11 @@ export const INVITE_COLUMNS = {
 
 const log = new Logger(gray('[') + blue('inviteHelpers.server') + gray(']'));
 
-const UUUID_MATCHER = /^[0-9a-f-]*$/gu;
+const UUID_MATCHER = /^[0-9a-f-]*$/u;
 
 //TODO BLOCK write tests for this
 export const isValidCode = async (repos: Repos, code: string): Promise<boolean> => {
-	if (!UUUID_MATCHER.test(code)) {
+	if (!UUID_MATCHER.test(code)) {
 		log.warn('code failed regex validation', code);
 		return false;
 	} else {

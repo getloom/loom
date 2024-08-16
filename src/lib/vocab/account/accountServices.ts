@@ -23,6 +23,8 @@ import {assertApiError} from '$lib/server/api.js';
 import {isValidCode} from '../invite/inviteHelpers.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
+export const VALIDATION_ERRROR_MSG = 'cannot create account without valid invite code';
+export const SIGNUPS_DISABLED_MSG = 'account signups are disabled';
 
 // TODO security considerations, mainly that signup leaks account name existence
 // https://github.com/getloom/loom/pull/525#discussion_r1002323512
@@ -55,7 +57,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			//TODO BLOCK write tests for these
 			const disabledSignups = adminHub!.settings.instance?.disableSignups;
 			if (disabledSignups) {
-				return {ok: false, status: 400, message: 'account signups are disabled'};
+				return {ok: false, status: 400, message: SIGNUPS_DISABLED_MSG};
 			}
 			const inviteCodeMode = adminHub!.settings.instance?.enableInviteOnlySignups;
 			if (inviteCodeMode) {
@@ -64,7 +66,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 					return {
 						ok: false,
 						status: 400,
-						message: 'cannot create account without valid invite code',
+						message: VALIDATION_ERRROR_MSG,
 					};
 				}
 			}
