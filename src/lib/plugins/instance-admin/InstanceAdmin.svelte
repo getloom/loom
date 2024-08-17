@@ -46,6 +46,22 @@
 				serialize={serializeJson}
 			/>
 			<PropertyEditor
+				value={instanceSettings?.disableSignups}
+				field="disableSignups"
+				update={updateHubSetting}
+				deletable={true}
+				parse={parseJson}
+				serialize={serializeJson}
+			/>
+			<PropertyEditor
+				value={instanceSettings?.enableInviteOnlySignups}
+				field="enableInviteOnlySignups"
+				update={updateHubSetting}
+				deletable={true}
+				parse={parseJson}
+				serialize={serializeJson}
+			/>
+			<PropertyEditor
 				value={instanceSettings?.disableCreateHub}
 				field="disableCreateHub"
 				update={updateHubSetting}
@@ -55,7 +71,7 @@
 			/>
 			<Alert>
 				when hub creation is disabled, only admins are allowed to create hubs. Names added to this
-				list will be granted an exception.
+				list will be granted an exception to this rule.
 			</Alert>
 			<PropertyEditor
 				value={instanceSettings?.allowedHubCreationAccounts}

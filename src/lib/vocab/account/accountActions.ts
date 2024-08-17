@@ -11,6 +11,7 @@ export const SignUp: ServiceActionData = {
 		properties: {
 			username: {type: 'string'},
 			password: {type: 'string'},
+			code: {type: 'string'},
 		},
 		required: ['username', 'password'],
 		additionalProperties: false,

@@ -12,4 +12,9 @@ export const up = async (sql: Sql<any>): Promise<void> => {
 		updated timestamp		
 	)
 	`;
+
+	await sql`
+	CREATE
+	INDEX ON invites (code);
+`;
 };

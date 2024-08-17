@@ -20,8 +20,11 @@ import {
 } from '$lib/vocab/account/accountHelpers.js';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
 import {assertApiError} from '$lib/server/api.js';
+import {isValidCode} from '../invite/inviteHelpers.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
+export const VALIDATION_ERRROR_MSG = 'cannot create account without valid invite code';
+export const SIGNUPS_DISABLED_MSG = 'account signups are disabled';
 
 // TODO security considerations, mainly that signup leaks account name existence
 // https://github.com/getloom/loom/pull/525#discussion_r1002323512
@@ -31,6 +34,8 @@ export const SignUpService: ServiceByName['SignUp'] = {
 	transaction: true,
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
+		const code = params.code?.trim();
+		let inviteOnlyMode = false;
 		assertApiError(checkAccountName(username));
 
 		const existingAccount = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id);
@@ -49,7 +54,21 @@ export const SignUpService: ServiceByName['SignUp'] = {
 					return {ok: false, status: 400, message: 'cannot create account'};
 				}
 			}
-
+			const disabledSignups = adminHub!.settings.instance?.disableSignups;
+			if (disabledSignups) {
+				return {ok: false, status: 400, message: SIGNUPS_DISABLED_MSG};
+			}
+			const inviteCodeMode = adminHub!.settings.instance?.enableInviteOnlySignups;
+			if (inviteCodeMode) {
+				inviteOnlyMode = true;
+				if (!(code && (await isValidCode(repos, code)))) {
+					return {
+						ok: false,
+						status: 400,
+						message: VALIDATION_ERRROR_MSG,
+					};
+				}
+			}
 			const minPasswordLength = adminHub!.settings.instance?.minPasswordLength;
 			assertApiError(checkPasswordStrength(params.password, minPasswordLength));
 		}
@@ -61,6 +80,10 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			toDefaultAccountSettings(),
 			ACCOUNT_COLUMNS.account_id,
 		);
+
+		if (inviteOnlyMode) {
+			await repos.invite.updateInviteByCode(code!, account.account_id, 'closed');
+		}
 
 		await session.signIn(account.account_id);
 

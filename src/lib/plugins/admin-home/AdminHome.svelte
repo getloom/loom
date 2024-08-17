@@ -1,5 +1,10 @@
 <script lang="ts">
 	import RolesList from '$lib/ui/RolesList.svelte';
+	import {getSpaceContext} from '$lib/vocab/view/view';
+
+	const {hub} = getSpaceContext();
+
+	$: instanceSettings = $hub.settings.instance;
 </script>
 
 <div class="padded_1">
@@ -14,6 +19,14 @@
 		</div>
 		<RolesList />
 	</section>
+	{#if instanceSettings?.enableInviteOnlySignups}
+		<section>
+			<div class="prose">
+				<h2>create invite link</h2>
+			</div>
+			TODO LOL
+		</section>
+	{/if}
 </div>
 
 <style>
