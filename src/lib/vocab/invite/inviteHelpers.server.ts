@@ -12,7 +12,6 @@ const log = new Logger(gray('[') + blue('inviteHelpers.server') + gray(']'));
 
 const UUID_MATCHER = /^[0-9a-f-]*$/u;
 
-//TODO BLOCK write tests for this
 export const isValidCode = async (repos: Repos, code: string): Promise<boolean> => {
 	if (!UUID_MATCHER.test(code)) {
 		log.warn('code failed regex validation', code);

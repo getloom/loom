@@ -24,7 +24,6 @@ export class InviteRepo extends PostgresRepo {
 		return data[0];
 	}
 
-	//TODO BLOCK write tests for this
 	async findActiveInvite<T extends InviteColumn>(
 		code: string,
 		columns: T[],
@@ -39,7 +38,6 @@ export class InviteRepo extends PostgresRepo {
 	}
 
 	//TODO this isn't super generic or reusable, it's basically just for closing the loop on an invite
-	//TODO BLOCK write tests for this
 	async updateInviteByCode(code: string, to_id: AccountId, status: InviteStatus): Promise<Invite> {
 		const data = await this.sql<Invite[]>`
 			UPDATE invites SET
