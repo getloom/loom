@@ -53,8 +53,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 				if (!allowedAccountNames.includes(username.toLowerCase())) {
 					return {ok: false, status: 400, message: 'cannot create account'};
 				}
-			}
-			//TODO BLOCK write tests for these
+			}			
 			const disabledSignups = adminHub!.settings.instance?.disableSignups;
 			if (disabledSignups) {
 				return {ok: false, status: 400, message: SIGNUPS_DISABLED_MSG};
@@ -81,8 +80,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 			toDefaultAccountSettings(),
 			ACCOUNT_COLUMNS.account_id,
 		);
-
-		//TODO BLOCK write tests for this
+		
 		if (inviteOnlyMode) {
 			await repos.invite.updateInviteByCode(code!, account.account_id, 'closed');
 		}
