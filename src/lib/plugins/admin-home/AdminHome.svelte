@@ -13,7 +13,7 @@
 
 	let pending = false;
 
-	$: code = '';
+	let code = '';
 
 	const deploy = async () => {
 		if (pending) return;
