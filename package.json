@@ -1922,6 +1922,10 @@
       "default": "./dist/vocab/invite/inviteHelpers.server.js",
       "types": "./dist/vocab/invite/inviteHelpers.server.d.ts"
     },
+    "./vocab/invite/inviteMutations.js": {
+      "default": "./dist/vocab/invite/inviteMutations.js",
+      "types": "./dist/vocab/invite/inviteMutations.d.ts"
+    },
     "./vocab/invite/InviteRepo.test.js": {
       "default": "./dist/vocab/invite/InviteRepo.test.js",
       "types": "./dist/vocab/invite/InviteRepo.test.d.ts"

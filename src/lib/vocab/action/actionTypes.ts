@@ -722,6 +722,7 @@ export interface Actions {
 	CreateAssignment: (params: CreateAssignmentParams) => Promise<CreateAssignmentResponseResult>;
 	CreateEntity: (params: CreateEntityParams) => Promise<CreateEntityResponseResult>;
 	CreateHub: (params: CreateHubParams) => Promise<CreateHubResponseResult>;
+	CreateInvite: (params: CreateInviteParams) => Promise<CreateInviteResponseResult>;
 	CreatePolicy: (params: CreatePolicyParams) => Promise<CreatePolicyResponseResult>;
 	CreateRole: (params: CreateRoleParams) => Promise<CreateRoleResponseResult>;
 	CreateSpace: (params: CreateSpaceParams) => Promise<CreateSpaceResponseResult>;
@@ -782,6 +783,9 @@ export interface Mutations {
 	CreateHub: (
 		ctx: MutationContext<CreateHubParams, CreateHubResponseResult>,
 	) => Promise<CreateHubResponseResult>;
+	CreateInvite: (
+		ctx: MutationContext<CreateInviteParams, CreateInviteResponseResult>,
+	) => Promise<CreateInviteResponseResult>;
 	CreatePolicy: (
 		ctx: MutationContext<CreatePolicyParams, CreatePolicyResponseResult>,
 	) => Promise<CreatePolicyResponseResult>;

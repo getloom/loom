@@ -29,6 +29,7 @@ import {
 import {CreateRole, UpdateRole, ReadRoles, DeleteRole} from '$lib/vocab/role/roleMutations.js';
 import {CreatePolicy, DeletePolicy} from '$lib/vocab/policy/policyMutations.js';
 import {RunTask} from '$lib/vocab/task/taskMutations.js';
+import {CreateInvite} from '$lib/vocab/invite/inviteMutations.js';
 import {
 	Ping,
 	Ephemera,
@@ -84,6 +85,8 @@ export const mutations: Record<string, Mutation> = {
 	DeletePolicy,
 	// taskMutations
 	RunTask,
+	// inviteMutations
+	CreateInvite,
 	// uiMutations
 	Ping,
 	Ephemera,
