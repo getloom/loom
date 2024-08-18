@@ -1,10 +1,32 @@
 <script lang="ts">
+	import {getApp} from '$lib/ui/app';
 	import RolesList from '$lib/ui/RolesList.svelte';
 	import {getSpaceContext} from '$lib/vocab/view/view';
+	import {page} from '$app/stores';
+
+	const origin = $page.url.origin;
 
 	const {hub} = getSpaceContext();
+	const {actions} = getApp();
 
 	$: instanceSettings = $hub.settings.instance;
+
+	let pending = false;
+
+	let code = '';
+
+	const deploy = async () => {
+		if (pending) return;
+		pending = true;
+		const result = await actions.CreateInvite(null);
+		if (result.ok) {
+			code = origin + '/?code=' + result.value.invite.code;
+		} else {
+			code = 'error fetching code';
+		}
+
+		pending = false;
+	};
 </script>
 
 <div class="padded_1">
@@ -23,8 +45,10 @@
 		<section>
 			<div class="prose">
 				<h2>create invite link</h2>
+				<h3>copy and paste the generated link below and send it to your invitee</h3>
 			</div>
-			TODO LOL
+			<button type="button" on:click={deploy} disabled={pending}>generate invite code</button>
+			<span>{code}</span>
 		</section>
 	{/if}
 </div>
