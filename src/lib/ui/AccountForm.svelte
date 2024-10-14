@@ -12,7 +12,7 @@
 	export let attrs: any = undefined;
 	
 	//TODO BLOCK figure out to pass callback through for server side verification	
-	$: enableSubmit = false;
+	$: enableSubmit = PUBLIC_CF_SITEKEY ? false : true;
 
 	let username = import.meta.env.DEV ? 'a@a.a' : ''; // share the username between the SignIn and SignUp forms for better UX
 	
@@ -43,9 +43,11 @@
 			</div>
 		</SignUpForm>
 	{/if}
-	<div class="turnstile">
-		<Turnstile on:turnstile-callback={handleCallback} siteKey={PUBLIC_CF_SITEKEY} />
-	</div>
+	{#if PUBLIC_CF_SITEKEY}
+		<div class="turnstile">
+			<Turnstile on:turnstile-callback={handleCallback} siteKey={PUBLIC_CF_SITEKEY} />
+		</div>
+	{/if}
 {:else}
 	<SignOutForm {...attrs} />
 {/if}
