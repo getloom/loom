@@ -6,12 +6,12 @@
 	import SignUpForm from '$lib/ui/SignUpForm.svelte';
 	import SignOutForm from '$lib/ui/SignOutForm.svelte';
 	import HelpButton from '$lib/ui/HelpButton.svelte';
+	import { PUBLIC_CF_SITEKEY } from '$env/static/public'	
 
 	export let guest: boolean;
 	export let attrs: any = undefined;
-
-	//TODO replace with env var and/or test key
-	const PUBLIC_CF_SITEKEY = "3x00000000000000000000FF";	
+	
+	//TODO BLOCK figure out to pass callback through for server side verification	
 	$: enableSubmit = false;
 
 	let username = import.meta.env.DEV ? 'a@a.a' : ''; // share the username between the SignIn and SignUp forms for better UX
@@ -28,7 +28,7 @@
 </script>
 
 {#if guest}
-	{#if view === 'sign_in'}
+	{#if view === 'sign_in'}		
 		<SignInForm {...attrs} passedCaptcha={enableSubmit} bind:username>
 			<div class="box">
 				<button on:click={() => (view = 'sign_up')}>sign up</button>
