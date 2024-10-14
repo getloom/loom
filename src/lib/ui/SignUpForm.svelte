@@ -15,6 +15,7 @@
 
 	export let username = '';
 	export let attrs: any = undefined;
+	export let passedCaptcha = true;
 
 	let password = '';
 	let password2 = '';
@@ -26,7 +27,7 @@
 	let submitting: boolean | undefined;
 	const codeParam = $page.url.searchParams.get(CODE_PARAM);
 
-	$: disabled = !!submitting;
+	$: disabled = !!submitting || !passedCaptcha;
 
 	const signUp = async () => {
 		if (submitting) return;
@@ -115,7 +116,7 @@
 				placeholder=">"
 			/>
 		</label>
-		<Pending_Button pending={!!submitting} bind:el={buttonEl} on:click={signUp}
+		<Pending_Button pending={disabled} bind:el={buttonEl} on:click={signUp}
 			>sign up</Pending_Button
 		>
 		<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_INSTANCE_ICON}</p>

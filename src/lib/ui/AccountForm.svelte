@@ -11,8 +11,7 @@
 	export let attrs: any = undefined;
 
 	//TODO replace with env var and/or test key
-	const PUBLIC_CF_SITEKEY = "1x00000000000000000000AA";
-	//TODO tie this into blocking submit/buttons
+	const PUBLIC_CF_SITEKEY = "3x00000000000000000000FF";	
 	$: enableSubmit = false;
 
 	let username = import.meta.env.DEV ? 'a@a.a' : ''; // share the username between the SignIn and SignUp forms for better UX
@@ -30,21 +29,30 @@
 
 {#if guest}
 	{#if view === 'sign_in'}
-		<SignInForm {...attrs} bind:username>
+		<SignInForm {...attrs} passedCaptcha={enableSubmit} bind:username>
 			<div class="box">
 				<button on:click={() => (view = 'sign_up')}>sign up</button>
 				<HelpButton />
 			</div>
 		</SignInForm>
 	{:else if view === 'sign_up'}
-		<SignUpForm {...attrs} bind:username>
+		<SignUpForm {...attrs} passedCaptcha={enableSubmit} bind:username>
 			<div class="box">
 				<button on:click={() => (view = 'sign_in')}>sign in</button>
 				<HelpButton />
 			</div>
 		</SignUpForm>
 	{/if}
-	<Turnstile on:turnstile-callback={handleCallback} siteKey={PUBLIC_CF_SITEKEY} />
+	<div class="turnstile">
+		<Turnstile on:turnstile-callback={handleCallback} siteKey={PUBLIC_CF_SITEKEY} />
+	</div>
 {:else}
 	<SignOutForm {...attrs} />
 {/if}
+
+<style>
+	.turnstile {
+		align-self: center;
+		text-align: center;
+	}
+</style>

@@ -13,6 +13,7 @@
 
 	export let username = '';
 	export let attrs: any = undefined;
+	export let passedCaptcha = true;
 
 	let password = import.meta.env.DEV ? 'a' : '';
 	let usernameEl: HTMLInputElement;
@@ -21,7 +22,7 @@
 	let errorMessage: string | undefined;
 	let submitting: boolean | undefined;
 
-	$: disabled = !!submitting;
+	$: disabled = !!submitting || !passedCaptcha;
 
 	const signIn = async () => {
 		if (submitting) return;
@@ -90,7 +91,7 @@
 			/></label
 		>
 		<div class="box">
-			<Pending_Button pending={!!submitting} bind:el={buttonEl} on:click={signIn}
+			<Pending_Button pending={disabled} bind:el={buttonEl} on:click={signIn}
 				>sign in</Pending_Button
 			>
 			<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_INSTANCE_ICON}</p>
