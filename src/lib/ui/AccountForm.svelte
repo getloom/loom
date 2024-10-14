@@ -11,7 +11,8 @@
 	export let guest: boolean;
 	export let attrs: any = undefined;
 	
-	//TODO BLOCK figure out to pass callback through for server side verification	
+	//TODO BLOCK figure out how to pass callback through for server side verification
+	//TODO BLOCK update the docs on this you slacker	
 	$: enableSubmit = PUBLIC_CF_SITEKEY ? false : true;
 
 	let username = import.meta.env.DEV ? 'a@a.a' : ''; // share the username between the SignIn and SignUp forms for better UX
