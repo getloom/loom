@@ -1,6 +1,10 @@
 import type {Account, AccountSettings} from '$lib/vocab/account/account.js';
 import type { ISessionApi } from "$lib/session/SessionApi";
 import { CF_SECRETKEY } from '$env/static/private'
+import {blue, gray} from 'kleur/colors';
+import {Logger} from '@ryanatkn/belt/log.js';
+
+const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 
 export type AccountColumn = keyof Account;
 export const ACCOUNT_COLUMNS = {
@@ -28,8 +32,7 @@ export const validateToken = async (token: string, session: ISessionApi): Promis
 			if (!await cloudflareVerify(token, ip)){
 				return `unable to verify captcha token`;
 			}
-		} else {
-			console.log(token);
+		} else {			
 			return `missing captcha token`;
 		}
 	}
@@ -41,6 +44,7 @@ async function cloudflareVerify(token: string, ip: string | undefined){
 	formData.append('secret',CF_SECRETKEY);
 	formData.append('response', token);
 	if (ip){
+		log.info("attaching ip for cloudflare", ip);
 		formData.append('remoteip', ip);
 	}
 	
@@ -51,8 +55,7 @@ async function cloudflareVerify(token: string, ip: string | undefined){
 		  method: 'POST',
 	  });
   
-	  const outcome = await result.json(); 
-	  console.log(outcome);
+	  const outcome = await result.json(); 	  
 	  if (outcome.success) {    
 		  return true;
 	  } else {    
