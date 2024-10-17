@@ -561,6 +561,7 @@ export interface SetSessionParams {
 export interface SignInParams {
 	username: string;
 	password: string;
+	token: string;
 }
 export interface SignInResponse {
 	/**
@@ -577,6 +578,7 @@ export type SignOutResponseResult = ApiResult<SignOutResponse>;
 export interface SignUpParams {
 	username: string;
 	password: string;
+	token: string;
 	code?: string;
 }
 export interface SignUpResponse {

@@ -10,10 +10,11 @@
 
 	export let guest: boolean;
 	export let attrs: any = undefined;
-	
-	//TODO BLOCK figure out how to pass callback through for server side verification
-	//TODO BLOCK update the docs on this you slacker	
+		
+	//TODO BLOCK update the docs on this you slacker
+	//TODO BLOCK update the tests on this you slacker
 	$: enableSubmit = PUBLIC_CF_SITEKEY ? false : true;
+	$: CFToken = "";
 
 	let username = import.meta.env.DEV ? 'a@a.a' : ''; // share the username between the SignIn and SignUp forms for better UX
 	
@@ -21,23 +22,24 @@
 
 	let view: 'sign_in' | 'sign_up' = code ? 'sign_up' : 'sign_in'; // TODO likely add "forgot_password"
 
-	function handleCallback(event: { detail: { token: any; }; }){
+	function handleCallback(event: { detail: { token: any; }; }){		
 		if(event.detail.token){
 			enableSubmit = true;
+			CFToken = event.detail.token
 		}
 	}	
 </script>
 
 {#if guest}
 	{#if view === 'sign_in'}		
-		<SignInForm {...attrs} passedCaptcha={enableSubmit} bind:username>
+		<SignInForm {...attrs} passedCaptcha={enableSubmit} token={CFToken} bind:username>
 			<div class="box">
 				<button on:click={() => (view = 'sign_up')}>sign up</button>
 				<HelpButton />
 			</div>
 		</SignInForm>
 	{:else if view === 'sign_up'}
-		<SignUpForm {...attrs} passedCaptcha={enableSubmit} bind:username>
+		<SignUpForm {...attrs} passedCaptcha={enableSubmit} token={CFToken} bind:username>
 			<div class="box">
 				<button on:click={() => (view = 'sign_in')}>sign in</button>
 				<HelpButton />

@@ -14,6 +14,8 @@
 	export let username = '';
 	export let attrs: any = undefined;
 	export let passedCaptcha = true;
+	//token is used for serverside captcha validation
+	export let token = "";
 
 	let password = import.meta.env.DEV ? 'a' : '';
 	let usernameEl: HTMLInputElement;
@@ -46,7 +48,7 @@
 		buttonEl.focus();
 		submitting = true;
 		errorMessage = '';
-		const result = await actions.SignIn({username, password});
+		const result = await actions.SignIn({username, password, token});
 		submitting = false;
 		if (!result.ok) {
 			errorMessage = result.message;

@@ -16,6 +16,8 @@
 	export let username = '';
 	export let attrs: any = undefined;
 	export let passedCaptcha = true;
+	//token is used for serverside captcha validation
+	export let token = "";
 
 	let password = '';
 	let password2 = '';
@@ -62,7 +64,7 @@
 		submitting = true;
 		errorMessage = '';
 		const code = codeParam || undefined;
-		const result = await actions.SignUp({username, password, code});
+		const result = await actions.SignUp({username, password, code, token});
 		submitting = false;
 		if (!result.ok) {
 			errorMessage = result.message;

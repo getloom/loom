@@ -11,9 +11,10 @@ export const SignUp: ServiceActionData = {
 		properties: {
 			username: {type: 'string'},
 			password: {type: 'string'},
+			token: {type: 'string'},
 			code: {type: 'string'},
 		},
-		required: ['username', 'password'],
+		required: ['username', 'password', 'token'],
 		additionalProperties: false,
 	},
 	response: {
@@ -92,8 +93,9 @@ export const SignIn: ServiceActionData = {
 		properties: {
 			username: {type: 'string'},
 			password: {type: 'string'},
+			token: {type: 'string'},
 		},
-		required: ['username', 'password'],
+		required: ['username', 'password', 'token'],
 		additionalProperties: false,
 	},
 	response: {

@@ -10,6 +10,7 @@ const log = new Logger('[SessionApi]');
 export interface ISessionApi {
 	signIn: (account_id: AccountId) => Promise<void>;
 	signOut: () => Promise<void>;
+	getIp: () => Promise<string | undefined>;
 }
 
 /**
@@ -34,5 +35,10 @@ export class SessionApi implements ISessionApi {
 		log.debug('logging out', this.req.account_id);
 		this.req.account_id = undefined;
 		setSessionCookie(this.res, '');
+	}
+
+	async getIp(): Promise<string | undefined> {
+		log.debug('fetching req ip', this.req.account_id, this.req.socket.remoteAddress);		
+		return this.req.socket.remoteAddress;
 	}
 }

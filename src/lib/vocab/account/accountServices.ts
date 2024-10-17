@@ -12,11 +12,12 @@ import {
 import {
 	ACCOUNT_COLUMNS,
 	toDefaultAccountSettings,
+	validateToken,
 } from '$lib/vocab/account/accountHelpers.server.js';
 import {
 	checkAccountName,
 	checkPasswordStrength,
-	scrubAccountName,
+	scrubAccountName,	
 } from '$lib/vocab/account/accountHelpers.js';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
 import {assertApiError} from '$lib/server/api.js';
@@ -35,9 +36,10 @@ export const SignUpService: ServiceByName['SignUp'] = {
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
 		const code = params.code?.trim();
-		let inviteOnlyMode = false;
+		const token = params.token.trim();		
+		assertApiError(await validateToken(token, session))
 		assertApiError(checkAccountName(username));
-
+		
 		const existingAccount = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id);
 		if (existingAccount) {
 			return {ok: false, status: 409, message: 'account already exists'};
@@ -46,6 +48,7 @@ export const SignUpService: ServiceByName['SignUp'] = {
 		// check `instance.allowedAccountNames`
 		// TODO does this belong in `checkAccountName` above?
 		// TODO consider `const settings = repos.entity.filterByUrl('/instance');` (but scoped to admin?)
+		let inviteOnlyMode = false;
 		if (await repos.hub.hasAdminHub()) {
 			const adminHub = await repos.hub.loadAdminHub(HUB_COLUMNS.settings);
 			const allowedAccountNames = adminHub!.settings.instance?.allowedAccountNames;
@@ -98,6 +101,8 @@ export const SignInService: ServiceByName['SignIn'] = {
 	transaction: true,
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
+		const token = params.token.trim();		
+		assertApiError(await validateToken(token, session))
 		assertApiError(checkAccountName(username));
 
 		const account = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id_password);
