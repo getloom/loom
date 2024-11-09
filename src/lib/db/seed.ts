@@ -63,8 +63,8 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 
 	// example: insert literal values
 	const accountsParams: SignInParams[] = [
-		{username: 'a@a.a', password: 'a', token: "123"},
-		{username: 'b@b.b', password: 'b', token: "123"},
+		{username: 'a@a.a', password: 'a', token: '123'},
+		{username: 'b@b.b', password: 'b', token: '123'},
 	];
 	const actorsParams: Record<string, string[]> = {
 		'a@a.a': [`${ALICE}`, 'andy'],
