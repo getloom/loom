@@ -13,6 +13,6 @@ Enabling the Cloudflare Turnstile, at the moment, is the domain of instance Oper
 1) Enter the relevent information about your website (don't forget a subdomain if you're using one). Pick the managed widget while you're at it.
 1) You should now get a site key and secret key. Keep track of those, you'll need them for the next step.
 1) In your `.env.production` file, add your site key and secret key as PUBLIC_CF_SITEKEY=<site_key> & CF_SECRETKEY=<secret_key>
-    1) If those attributes are in the file, Loom will attempt to utilize the Cloudflare turnstile with the provided data. Remove those attributes to disable the turnstile.
+    1) If those attributes are in the file, Loom will attempt to utilize the Cloudflare turnstile with the provided data. Remove the values from those attributes to disable the turnstile.
 
 That's it! Once you've got everything configured properly, kick of a new deploy of the instance and you should now be protected from rogue bots.
