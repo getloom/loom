@@ -15,6 +15,9 @@
 
 	export let username = '';
 	export let attrs: any = undefined;
+	export let passedCaptcha = true;
+	//token is used for serverside captcha validation
+	export let token = '';
 
 	let password = '';
 	let password2 = '';
@@ -26,7 +29,7 @@
 	let submitting: boolean | undefined;
 	const codeParam = $page.url.searchParams.get(CODE_PARAM);
 
-	$: disabled = !!submitting;
+	$: disabled = !!submitting || !passedCaptcha;
 
 	const signUp = async () => {
 		if (submitting) return;
@@ -61,7 +64,7 @@
 		submitting = true;
 		errorMessage = '';
 		const code = codeParam || undefined;
-		const result = await actions.SignUp({username, password, code});
+		const result = await actions.SignUp({username, password, code, token});
 		submitting = false;
 		if (!result.ok) {
 			errorMessage = result.message;
@@ -115,9 +118,7 @@
 				placeholder=">"
 			/>
 		</label>
-		<Pending_Button pending={!!submitting} bind:el={buttonEl} on:click={signUp}
-			>sign up</Pending_Button
-		>
+		<Pending_Button pending={disabled} bind:el={buttonEl} on:click={signUp}>sign up</Pending_Button>
 		<p class:error_text={!!errorMessage}>{errorMessage || PUBLIC_INSTANCE_ICON}</p>
 		<slot />
 	</fieldset>
