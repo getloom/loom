@@ -43,6 +43,7 @@ export const randomActionParams: RandomActionParams = {
 		return {
 			username: account.name,
 			password: account.__testPlaintextPassword,
+			token: randomString(),
 		};
 	},
 	SignOut: async () => {
@@ -52,6 +53,7 @@ export const randomActionParams: RandomActionParams = {
 		return {
 			username: randomAccountName(),
 			password: randomString(),
+			token: randomString(),
 		};
 	},
 	UpdateAccountSettings: async () => {

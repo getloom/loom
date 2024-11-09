@@ -10,8 +10,7 @@
 
 	export let guest: boolean;
 	export let attrs: any = undefined;
-
-	//TODO BLOCK update the tests on this you slacker
+	
 	$: enableSubmit = PUBLIC_CF_SITEKEY ? false : true;
 	$: CFToken = '';
 

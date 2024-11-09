@@ -62,6 +62,7 @@ export const randomPolicyName = (): PolicyName => random_item(policyNames);
 export const randomAccountParams = (): SignInParams => ({
 	username: randomAccountName(),
 	password: randomPassword(),
+	token: randomString(),
 });
 export const randomActorParams = (): CreateAccountActorParams => ({
 	name: randomActorName(),
