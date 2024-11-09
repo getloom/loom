@@ -12,4 +12,8 @@ export class SessionApiFake implements ISessionApi {
 		if (!this.account_id) throw Error('not signed in');
 		this.account_id = undefined;
 	}
+
+	async getIp(): Promise<string | undefined> {
+		return '127.0.0.1';
+	}
 }

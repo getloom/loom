@@ -10,7 +10,7 @@
 
 	export let guest: boolean;
 	export let attrs: any = undefined;
-	
+
 	$: enableSubmit = PUBLIC_CF_SITEKEY ? false : true;
 	$: CFToken = '';
 

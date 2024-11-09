@@ -13,4 +13,9 @@ export class SessionApiDisabled implements ISessionApi {
 	async signOut(): Promise<void> {
 		throw Error('only http clients can sign out');
 	}
+
+	//I'm just dummying this out
+	async getIp(): Promise<string | undefined> {
+		return undefined;
+	}
 }
