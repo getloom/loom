@@ -39,7 +39,7 @@ export class SessionApi implements ISessionApi {
 
 	//TODO I'm not sure if this actually works properly. Currently only used for an optional param in CF verification.
 	async getIp(): Promise<string | undefined> {
-		log.debug('fetching req ip', this.req.account_id, this.req.socket.remoteAddress);		
+		log.debug('fetching req ip', this.req.account_id, this.req.socket.remoteAddress);
 		return this.req.socket.remoteAddress;
 	}
 }

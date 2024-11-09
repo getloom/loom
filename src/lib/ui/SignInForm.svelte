@@ -15,7 +15,7 @@
 	export let attrs: any = undefined;
 	export let passedCaptcha = true;
 	//token is used for serverside captcha validation
-	export let token = "";
+	export let token = '';
 
 	let password = import.meta.env.DEV ? 'a' : '';
 	let usernameEl: HTMLInputElement;

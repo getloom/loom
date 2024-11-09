@@ -17,7 +17,7 @@ import {
 import {
 	checkAccountName,
 	checkPasswordStrength,
-	scrubAccountName,	
+	scrubAccountName,
 } from '$lib/vocab/account/accountHelpers.js';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
 import {assertApiError} from '$lib/server/api.js';
@@ -36,10 +36,10 @@ export const SignUpService: ServiceByName['SignUp'] = {
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
 		const code = params.code?.trim();
-		const token = params.token.trim();		
-		assertApiError(await validateToken(token, session))
+		const token = params.token.trim();
+		assertApiError(await validateToken(token, session));
 		assertApiError(checkAccountName(username));
-		
+
 		const existingAccount = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id);
 		if (existingAccount) {
 			return {ok: false, status: 409, message: 'account already exists'};
@@ -101,8 +101,8 @@ export const SignInService: ServiceByName['SignIn'] = {
 	transaction: true,
 	perform: async ({repos, params, session, passwordHasher}) => {
 		const username = scrubAccountName(params.username);
-		const token = params.token.trim();		
-		assertApiError(await validateToken(token, session))
+		const token = params.token.trim();
+		assertApiError(await validateToken(token, session));
 		assertApiError(checkAccountName(username));
 
 		const account = await repos.account.findByName(username, ACCOUNT_COLUMNS.account_id_password);
