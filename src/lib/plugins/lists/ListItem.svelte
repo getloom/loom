@@ -58,7 +58,7 @@
 		}
 	};
 
-	let expandItems = true;
+	let expandItems = false;
 	const toggleExpandItems = () => {
 		expandItems = !expandItems;
 	};
@@ -85,8 +85,8 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	class:expandItems
 	style:--hue={hue}
 	use:contextmenu.action={[
-		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),
 		to_contextmenu_params(EntityContextmenu, {actor, entity}),
+		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),	
 	]}
 >
 	<!-- TODO fix a11y -->

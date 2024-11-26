@@ -23,7 +23,7 @@
 	<svelte:fragment slot="icon">
 		<UnicodeIcon icon="~" />
 	</svelte:fragment>
-	Entity {#if $entity.data.type}<code><small>{$entity.data.type}</small></code>{/if}
+	Entity
 	<EntityChip {entity} />
 	<svelte:fragment slot="menu">
 		<Contextmenu_Entry
