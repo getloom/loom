@@ -86,7 +86,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	style:--hue={hue}
 	use:contextmenu.action={[
 		to_contextmenu_params(EntityContextmenu, {actor, entity}),
-		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),	
+		to_contextmenu_params(ActorContextmenu, {actor: authorActor}),
 	]}
 >
 	<!-- TODO fix a11y -->
