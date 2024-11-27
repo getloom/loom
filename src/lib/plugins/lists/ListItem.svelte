@@ -25,8 +25,6 @@
 	export let entity: Readable<Entity>;
 	export let parentList: Readable<Entity>;
 
-	//TODO BLOCK add ListLock passed from top to secure contextment
-
 	let pending = false;
 
 	$: ({checked} = $entity.data);
