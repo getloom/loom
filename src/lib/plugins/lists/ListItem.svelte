@@ -182,9 +182,4 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		font-size: var(--size_1);
 		padding: 0 var(--spacing_md);
 	}
-	.floating-controls {
-		position: absolute;
-		left: 0;
-		top: 100%;
-	}
 </style>
