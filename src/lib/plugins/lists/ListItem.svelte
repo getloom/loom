@@ -95,7 +95,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 			class="plain icon_button"
 			on:click={toggleExpandControls}
 			title="{expandControls ? 'hide' : 'show'} list controls"
-			>{#if expandControls}&lt;{:else}>{/if}</button
+			>{#if expandControls}v{:else}>{/if}</button
 		>
 		{#if checked !== undefined}
 			<!-- TODO checkbox not updated properly on event broadcast-->
@@ -126,13 +126,6 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<div class="signature" style:padding="var(--spacing_sm)">
 			<ActorAvatar actor={authorActor} showName={false} />
 		</div>
-		{#if orderedEntities?.length && (expandItems || expandControls)}
-			<div class="floating-controls">
-				<button class="plain icon_button" on:click={toggleExpandItems}>
-					{#if expandItems}-{:else}+{/if}
-				</button>
-			</div>
-		{/if}
 	</div>
 	{#if expandControls}
 		<ListControls list={entity} bind:listInputEl />
@@ -188,10 +181,5 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		flex: 1;
 		font-size: var(--size_1);
 		padding: 0 var(--spacing_md);
-	}
-	.floating-controls {
-		position: absolute;
-		left: 0;
-		top: 100%;
 	}
 </style>
