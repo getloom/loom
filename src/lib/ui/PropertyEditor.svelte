@@ -15,7 +15,8 @@
 
 	const {actions} = getApp();
 
-	type TValue = $$Generic;
+	//TODO do better generic typing in the future, maybe just make the invoking component pass the type?
+	type TValue = any;
 
 	export let value: TValue;
 	export let field: string;
@@ -70,6 +71,7 @@
 
 	const save = async () => {
 		if (!update || !parsed.ok) return;
+		if (!parsed.value && !deletable) return;
 		errorMessage = null;
 		pending = true;
 		const result = await update(parsed.value, field);
@@ -88,7 +90,7 @@
 		actions.OpenDialog(
 			to_dialog_params(ConfirmDialog, {
 				confirmed: async () => {
-					fieldValue = undefined;
+					parsed = {ok: true, value: undefined};
 					await save();
 				},
 				promptText: `Delete '${field}' from this entity? The data will be lost.`,

@@ -85,7 +85,7 @@
 				value={instanceSettings?.minPasswordLength}
 				field="minPasswordLength"
 				update={updateHubSetting}
-				deletable={true}
+				deletable={false}
 				parse={parseJson}
 				serialize={serializeJson}
 			/>
