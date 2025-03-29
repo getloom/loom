@@ -70,7 +70,7 @@
 
 	let newTodoContent = '';
 	let newTodoContentEl: HTMLTextAreaElement | undefined;
-	let creating = false;
+	let creating = false;asdfasdf
 	const createList = async () => {
 		if (!$rankingsCollection) return;
 		if (!newTodoContent) {
