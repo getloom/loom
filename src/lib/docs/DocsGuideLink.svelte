@@ -14,7 +14,6 @@
 	const icons: Record<GuideName, string> = {
 		user: '🎭',
 		admin: '🪄',
-		dev: '🧰',
 	};
 
 	$: icon = icons[guide];

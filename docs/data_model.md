@@ -1,8 +1,8 @@
-/**
- * @see ./data_model_diagram.png
- * @see https://mermaid.live/edit
- */
-export const data_model_diagram = `classDiagram
+## Data Model
+SQL Database Tables:
+
+```mermaid
+classDiagram
   Accounts <|-- Actors
   Actors <|-- Hubs
   Hubs <|-- Actors
@@ -13,4 +13,5 @@ export const data_model_diagram = `classDiagram
   Roles <|-- Policies
   Hubs <|-- Spaces
   Spaces <|-- Items
-  Items <|-- Items`;
+  Items <|-- Items
+```

@@ -493,16 +493,6 @@
       "default": "./dist/docs/introduction.svelte",
       "types": "./dist/docs/introduction.svelte.d.ts"
     },
-    "./docs/known_issues.svelte": {
-      "svelte": "./dist/docs/known_issues.svelte",
-      "default": "./dist/docs/known_issues.svelte",
-      "types": "./dist/docs/known_issues.svelte.d.ts"
-    },
-    "./docs/library_usage.svelte": {
-      "svelte": "./dist/docs/library_usage.svelte",
-      "default": "./dist/docs/library_usage.svelte",
-      "types": "./dist/docs/library_usage.svelte.d.ts"
-    },
     "./docs/managing_production.svelte": {
       "svelte": "./dist/docs/managing_production.svelte",
       "default": "./dist/docs/managing_production.svelte",

@@ -22,7 +22,6 @@
 <ul class="docs_content">
 	{#if selectedGuide === 'user' || showUnselected}<li><DocsGuideLink guide="user" /></li>{/if}
 	{#if selectedGuide === 'admin' || showUnselected}<li><DocsGuideLink guide="admin" /></li>{/if}
-	{#if selectedGuide === 'dev' || showUnselected}<li><DocsGuideLink guide="dev" /></li>{/if}
 </ul>
 
 <style>
