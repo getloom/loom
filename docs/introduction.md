@@ -7,4 +7,10 @@ These docs are instead for helping users and instance operators manage their Loo
 * [data models](data_model.md)
 * [hub types](hub_types.md)
 * [actor types](actor_types.md)
+
 ## Operators
+* [admin](admin.md)
+* [database](database.md)
+* [prod server setup ](setup_production.md)
+* [deployments](deployments.md)
+* [managing prod](managing_prod.md)
