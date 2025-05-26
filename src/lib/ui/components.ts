@@ -3,7 +3,6 @@ import type {SvelteComponent} from 'svelte';
 import Dashboard from '$lib/plugins/dashboard/Dashboard.svelte';
 import Link from '$lib/plugins/link/Link.svelte';
 import Mention from '$lib/plugins/mention/Mention.svelte';
-import Vocab from '$lib/plugins/vocab/Vocab.svelte';
 import Home from '$lib/plugins/home/Home.svelte';
 import PersonalHome from '$lib/plugins/personal-home/PersonalHome.svelte';
 import AdminHome from '$lib/plugins/admin-home/AdminHome.svelte';
@@ -29,7 +28,6 @@ export const components: Record<string, typeof SvelteComponent<any>> = {
 	// widget components
 	Link,
 	Mention,
-	Vocab,
 	// view components
 	Home,
 	PersonalHome,

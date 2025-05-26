@@ -395,136 +395,6 @@
       "default": "./dist/db/testMigration.task.js",
       "types": "./dist/db/testMigration.task.d.ts"
     },
-    "./docs/actor_types.svelte": {
-      "svelte": "./dist/docs/actor_types.svelte",
-      "default": "./dist/docs/actor_types.svelte",
-      "types": "./dist/docs/actor_types.svelte.d.ts"
-    },
-    "./docs/admin.svelte": {
-      "svelte": "./dist/docs/admin.svelte",
-      "default": "./dist/docs/admin.svelte",
-      "types": "./dist/docs/admin.svelte.d.ts"
-    },
-    "./docs/control_overview_diagram.png": {
-      "default": "./dist/docs/control_overview_diagram.png"
-    },
-    "./docs/control_overview_diagram.js": {
-      "default": "./dist/docs/control_overview_diagram.js",
-      "types": "./dist/docs/control_overview_diagram.d.ts"
-    },
-    "./docs/data_model_diagram.png": {
-      "default": "./dist/docs/data_model_diagram.png"
-    },
-    "./docs/data_model_diagram.js": {
-      "default": "./dist/docs/data_model_diagram.js",
-      "types": "./dist/docs/data_model_diagram.d.ts"
-    },
-    "./docs/data_model.svelte": {
-      "svelte": "./dist/docs/data_model.svelte",
-      "default": "./dist/docs/data_model.svelte",
-      "types": "./dist/docs/data_model.svelte.d.ts"
-    },
-    "./docs/database.svelte": {
-      "svelte": "./dist/docs/database.svelte",
-      "default": "./dist/docs/database.svelte",
-      "types": "./dist/docs/database.svelte.d.ts"
-    },
-    "./docs/deploying_production.svelte": {
-      "svelte": "./dist/docs/deploying_production.svelte",
-      "default": "./dist/docs/deploying_production.svelte",
-      "types": "./dist/docs/deploying_production.svelte.d.ts"
-    },
-    "./docs/Docs.svelte": {
-      "svelte": "./dist/docs/Docs.svelte",
-      "default": "./dist/docs/Docs.svelte",
-      "types": "./dist/docs/Docs.svelte.d.ts"
-    },
-    "./docs/docs.js": {
-      "default": "./dist/docs/docs.js",
-      "types": "./dist/docs/docs.d.ts"
-    },
-    "./docs/DocsContent.svelte": {
-      "svelte": "./dist/docs/DocsContent.svelte",
-      "default": "./dist/docs/DocsContent.svelte",
-      "types": "./dist/docs/DocsContent.svelte.d.ts"
-    },
-    "./docs/DocsGuideAdminContent.svelte": {
-      "svelte": "./dist/docs/DocsGuideAdminContent.svelte",
-      "default": "./dist/docs/DocsGuideAdminContent.svelte",
-      "types": "./dist/docs/DocsGuideAdminContent.svelte.d.ts"
-    },
-    "./docs/DocsGuideContent.svelte": {
-      "svelte": "./dist/docs/DocsGuideContent.svelte",
-      "default": "./dist/docs/DocsGuideContent.svelte",
-      "types": "./dist/docs/DocsGuideContent.svelte.d.ts"
-    },
-    "./docs/DocsGuideDevContent.svelte": {
-      "svelte": "./dist/docs/DocsGuideDevContent.svelte",
-      "default": "./dist/docs/DocsGuideDevContent.svelte",
-      "types": "./dist/docs/DocsGuideDevContent.svelte.d.ts"
-    },
-    "./docs/DocsGuideLink.svelte": {
-      "svelte": "./dist/docs/DocsGuideLink.svelte",
-      "default": "./dist/docs/DocsGuideLink.svelte",
-      "types": "./dist/docs/DocsGuideLink.svelte.d.ts"
-    },
-    "./docs/DocsGuideLinks.svelte": {
-      "svelte": "./dist/docs/DocsGuideLinks.svelte",
-      "default": "./dist/docs/DocsGuideLinks.svelte",
-      "types": "./dist/docs/DocsGuideLinks.svelte.d.ts"
-    },
-    "./docs/DocsGuideUserContent.svelte": {
-      "svelte": "./dist/docs/DocsGuideUserContent.svelte",
-      "default": "./dist/docs/DocsGuideUserContent.svelte",
-      "types": "./dist/docs/DocsGuideUserContent.svelte.d.ts"
-    },
-    "./docs/getting_started.svelte": {
-      "svelte": "./dist/docs/getting_started.svelte",
-      "default": "./dist/docs/getting_started.svelte",
-      "types": "./dist/docs/getting_started.svelte.d.ts"
-    },
-    "./docs/hub_types.svelte": {
-      "svelte": "./dist/docs/hub_types.svelte",
-      "default": "./dist/docs/hub_types.svelte",
-      "types": "./dist/docs/hub_types.svelte.d.ts"
-    },
-    "./docs/introduction.svelte": {
-      "svelte": "./dist/docs/introduction.svelte",
-      "default": "./dist/docs/introduction.svelte",
-      "types": "./dist/docs/introduction.svelte.d.ts"
-    },
-    "./docs/known_issues.svelte": {
-      "svelte": "./dist/docs/known_issues.svelte",
-      "default": "./dist/docs/known_issues.svelte",
-      "types": "./dist/docs/known_issues.svelte.d.ts"
-    },
-    "./docs/library_usage.svelte": {
-      "svelte": "./dist/docs/library_usage.svelte",
-      "default": "./dist/docs/library_usage.svelte",
-      "types": "./dist/docs/library_usage.svelte.d.ts"
-    },
-    "./docs/managing_production.svelte": {
-      "svelte": "./dist/docs/managing_production.svelte",
-      "default": "./dist/docs/managing_production.svelte",
-      "types": "./dist/docs/managing_production.svelte.d.ts"
-    },
-    "./docs/setup_dev_environment.svelte": {
-      "svelte": "./dist/docs/setup_dev_environment.svelte",
-      "default": "./dist/docs/setup_dev_environment.svelte",
-      "types": "./dist/docs/setup_dev_environment.svelte.d.ts"
-    },
-    "./docs/setup_production.svelte": {
-      "svelte": "./dist/docs/setup_production.svelte",
-      "default": "./dist/docs/setup_production.svelte",
-      "types": "./dist/docs/setup_production.svelte.d.ts"
-    },
-    "./docs/tech_stack_diagram.png": {
-      "default": "./dist/docs/tech_stack_diagram.png"
-    },
-    "./docs/tech_stack_diagram.js": {
-      "default": "./dist/docs/tech_stack_diagram.js",
-      "types": "./dist/docs/tech_stack_diagram.d.ts"
-    },
     "./infra/.env.example": {
       "default": "./dist/infra/.env.example"
     },
@@ -791,11 +661,6 @@
       "default": "./dist/plugins/todo/TodoItems.svelte",
       "types": "./dist/plugins/todo/TodoItems.svelte.d.ts"
     },
-    "./plugins/vocab/Vocab.svelte": {
-      "svelte": "./dist/plugins/vocab/Vocab.svelte",
-      "default": "./dist/plugins/vocab/Vocab.svelte",
-      "types": "./dist/plugins/vocab/Vocab.svelte.d.ts"
-    },
     "./server/ajv.js": {
       "default": "./dist/server/ajv.js",
       "types": "./dist/server/ajv.d.ts"
@@ -969,11 +834,6 @@
       "svelte": "./dist/ui/ActionHistory.svelte",
       "default": "./dist/ui/ActionHistory.svelte",
       "types": "./dist/ui/ActionHistory.svelte.d.ts"
-    },
-    "./ui/ActionInfo.svelte": {
-      "svelte": "./dist/ui/ActionInfo.svelte",
-      "default": "./dist/ui/ActionInfo.svelte",
-      "types": "./dist/ui/ActionInfo.svelte.d.ts"
     },
     "./ui/actions.js": {
       "default": "./dist/ui/actions.js",
@@ -1390,11 +1250,6 @@
       "default": "./dist/ui/RolesList.svelte",
       "types": "./dist/ui/RolesList.svelte.d.ts"
     },
-    "./ui/SchemaInfo.svelte": {
-      "svelte": "./dist/ui/SchemaInfo.svelte",
-      "default": "./dist/ui/SchemaInfo.svelte",
-      "types": "./dist/ui/SchemaInfo.svelte.d.ts"
-    },
     "./ui/services.js": {
       "default": "./dist/ui/services.js",
       "types": "./dist/ui/services.d.ts"
@@ -1549,11 +1404,6 @@
       "svelte": "./dist/ui/ViewInfo.svelte",
       "default": "./dist/ui/ViewInfo.svelte",
       "types": "./dist/ui/ViewInfo.svelte.d.ts"
-    },
-    "./ui/VocabContextmenu.svelte": {
-      "svelte": "./dist/ui/VocabContextmenu.svelte",
-      "default": "./dist/ui/VocabContextmenu.svelte",
-      "types": "./dist/ui/VocabContextmenu.svelte.d.ts"
     },
     "./ui/WebsocketApiClient.js": {
       "default": "./dist/ui/WebsocketApiClient.js",
