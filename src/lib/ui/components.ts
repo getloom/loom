@@ -27,7 +27,7 @@ export const components: Record<string, typeof SvelteComponent<any>> = {
 	Dashboard,
 	// widget components
 	Link,
-	Mention,	
+	Mention,
 	// view components
 	Home,
 	PersonalHome,
