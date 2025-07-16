@@ -451,6 +451,41 @@
       "default": "./dist/plugins/board/BoardItems.svelte",
       "types": "./dist/plugins/board/BoardItems.svelte.d.ts"
     },
+    "./plugins/budget/Budget.svelte": {
+      "svelte": "./dist/plugins/budget/Budget.svelte",
+      "default": "./dist/plugins/budget/Budget.svelte",
+      "types": "./dist/plugins/budget/Budget.svelte.d.ts"
+    },
+    "./plugins/budget/BudgetInput.svelte": {
+      "svelte": "./dist/plugins/budget/BudgetInput.svelte",
+      "default": "./dist/plugins/budget/BudgetInput.svelte",
+      "types": "./dist/plugins/budget/BudgetInput.svelte.d.ts"
+    },
+    "./plugins/budget/BudgetItem.svelte": {
+      "svelte": "./dist/plugins/budget/BudgetItem.svelte",
+      "default": "./dist/plugins/budget/BudgetItem.svelte",
+      "types": "./dist/plugins/budget/BudgetItem.svelte.d.ts"
+    },
+    "./plugins/budget/BudgetItems.svelte": {
+      "svelte": "./dist/plugins/budget/BudgetItems.svelte",
+      "default": "./dist/plugins/budget/BudgetItems.svelte",
+      "types": "./dist/plugins/budget/BudgetItems.svelte.d.ts"
+    },
+    "./plugins/budget/CategoryControls.svelte": {
+      "svelte": "./dist/plugins/budget/CategoryControls.svelte",
+      "default": "./dist/plugins/budget/CategoryControls.svelte",
+      "types": "./dist/plugins/budget/CategoryControls.svelte.d.ts"
+    },
+    "./plugins/budget/IncomeControl.svelte": {
+      "svelte": "./dist/plugins/budget/IncomeControl.svelte",
+      "default": "./dist/plugins/budget/IncomeControl.svelte",
+      "types": "./dist/plugins/budget/IncomeControl.svelte.d.ts"
+    },
+    "./plugins/budget/IncomeInput.svelte": {
+      "svelte": "./dist/plugins/budget/IncomeInput.svelte",
+      "default": "./dist/plugins/budget/IncomeInput.svelte",
+      "types": "./dist/plugins/budget/IncomeInput.svelte.d.ts"
+    },
     "./plugins/chat/Chat.svelte": {
       "svelte": "./dist/plugins/chat/Chat.svelte",
       "default": "./dist/plugins/chat/Chat.svelte",
