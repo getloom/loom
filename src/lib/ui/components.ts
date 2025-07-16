@@ -19,6 +19,7 @@ import EntityExplorer from '$lib/plugins/entity-explorer/EntityExplorer.svelte';
 import Todo from '$lib/plugins/todo/Todo.svelte';
 import List from '$lib/plugins/list/List.svelte';
 import Lists from '$lib/plugins/lists/Lists.svelte';
+import Budget from '$lib/plugins/budget/Budget.svelte';
 
 // TODO import these dynamically instead of statically like this
 
@@ -45,4 +46,5 @@ export const components: Record<string, typeof SvelteComponent<any>> = {
 	Todo,
 	List,
 	Lists,
+	Budget,
 };

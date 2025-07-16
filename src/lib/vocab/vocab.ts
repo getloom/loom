@@ -128,6 +128,7 @@ export type VocabName =
 	| 'Assignment'
 	| 'AssignmentId'
 	| 'Board'
+	| 'Budget'
 	| 'Chat'
 	| 'ClearFreshness'
 	| 'ClientAccount'
