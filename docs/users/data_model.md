@@ -12,6 +12,6 @@ classDiagram
   Roles <|-- Assignments
   Roles <|-- Policies
   Hubs <|-- Spaces
-  Spaces <|-- Items
-  Items <|-- Items
+  Spaces <|-- Entities
+  Entities <|-- Entities
 ```
