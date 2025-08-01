@@ -49,5 +49,5 @@
 />
 <button on:click={createEntity}>add income</button>
 {:else}
-    We've already got income!
+    We've already got income!    
 {/if}
