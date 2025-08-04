@@ -1,64 +1,38 @@
-# Setting up Production
-> To actually deploy a self-hosted instance to production, see
-		<a href="{base}{path}/guide/admin/deploying-production">guide/admin/deploying-production</a>
+# Setting up a Production Server
+This document describes how to set up a production environment server for deploying an instance of Loom	
 
-This document describes how to set up a production environment for deploying an instance of <a
-			href="https://github.com/getloom/loom"><code>@getloom/loom</code></a
-		>.
-	</p>
-	<p>
-		To learn more about <code>@getloom/loom</code>, see
-		<a href="{base}{path}/guide/admin/getting-started">guide/admin/getting-started</a>.
-	</p>
-	<p>
-		To deploy a self-hosted instance to production, see the instructions at
-		<a href="{base}{path}/guide/admin/deploying-production"
-			><code>guide/admin/deploying-production</code></a
-		>.
-	</p>
-	<p>
-		To manage a production instance, see <a href="{base}{path}/guide/admin/managing-production"
-			><code>guide/admin/managing-production</code></a
-		>.
-	</p>
+For deploying a self-hosted instance to production, see our [Deployments](./deployments.md) documentation
+
+For managing a provisioned & deployed production instance, see [Managing Prod](./managing_prod.md)
+
+To learn more about Loom itself, see [Getting Started](../users/getting_started.md)
 ## Setting up a server
 
-### Load a VPS with Ubuntu 22.10 x64
+### Spin up a VPS with Ubuntu 22.10 x64
 
 * details may vary for other Ubuntu versions and Linux distros
 * currently works on 512MB 10GB $4/mo
 * where? DigitalOcean, Linode, etc		
 * initialize the server to your liking, like:
-    * <a href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04"
-						>digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04</a
-					>				
+    * <a href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04">database
+		digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04
+	  </a>
     * disable root login:
-        * <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-22-04"
-							>
-								digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-22-04
-							</a>
-        * <code>sudo nano /etc/ssh/sshd_config</code>, change `PermitRootLogin` to `no`
-    * <a
-						href="https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04"
-					>
-						digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04
-					</a>
-				</li>
-				<li>
-					<a
-						href="https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-22-04"
-					>
-						digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-22-04
-					</a>
-* Loom depends on the database <a href="https://www.postgresql.org/">PostgreSQL</a>. The
-			project's scripts are currently configured to install it on the same VPS as your server. See
-			<a href="{base}{path}/guide/admin/database">the database docs</a> for more.
-		</li>
-	</ul>
+	  * <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-22-04">
+			digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-22-04
+		</a>
+	  * <code>sudo nano /etc/ssh/sshd_config</code>, change `PermitRootLogin` to `no`
+    * <a href="https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04">digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04</a>
+	* <a href="https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-22-04">
+		digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-22-04
+	</a>
+* Loom depends on the database [Postgres](https://www.postgresql.org/). The project's scripts are currently configured to install it on the same VPS as your server. See the developer [database](../developers/database.md) docs for more details.
 
 ### Set environment variables
-Open <code>.env.production</code> and set all of the values. See also <a href="https://github.com/getloom/loom/tree/main/src/lib/infra/.env.production.default"
-			>src/lib/infra/.env.production.default</a
+> **TODO**: Update this list of environment variables to prod parity
+
+Open <code>.env.production</code> on your local machine and set all of the values. See also <a href="https://github.com/getloom/loom/blob/main/src/lib/infra/.env.production.example"
+			>src/lib/infra/.env.production.example</a
 		>:
 
 * <code>DEPLOY_IP</code> to the IP address of your server
@@ -67,8 +41,16 @@ Open <code>.env.production</code> and set all of the values. See also <a href="h
 * <code>CERTBOT_EMAIL</code> is the email address to register with LetsEncrypt for an https certificate
 * <code>COOKIE_KEYS</code> should be randomized (TODO do this during <code>gro infra/setup</code>)
 
-### Log into the VPS:
-ensure you can log in: `ssh ${DEPLOY_USER}@${DEPLOY_IP}`
+>ensure you can log in to your instance with your configured details: `ssh ${DEPLOY_USER}@${DEPLOY_IP}`
+
+Once you've configured your environment variables and have confirmed you can ssh in properly, follow the steps outlined in [Deployments](./deployments.md) to finish setting up your instance.
+
+## Domain names
+Loom is designed with the assumption that it will be accessible at a subdomain like `hub.yoururl.com`, leaving the home page of the domain available for a standard web site.
+
+You will need to be comfortable setting your own DNS records if you wish to use a domain name.
+
+Loom does have a feature for deploying a custom web site on the same VPS it is running on, see [deploying a custom home site](./admin.md#deploying-a-custom-home-site)
 
 ## Login/signup challenges a.k.a. CAPTCHAS
 One of the most pernacious issues on the public facing internet is keeping your submission forms safe from bots.
