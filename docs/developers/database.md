@@ -8,7 +8,7 @@
 
 ## Postgres setup
 
-The Loom server has a dependency on <a href="https://www.postgresql.org">PostgreSQL</a> 15+. You
+Loom is powered by <a href="https://www.postgresql.org">PostgreSQL</a> 15+. You
 		can find
 		<a href="https://www.postgresql.org/download/">setup instructions</a> on their website.
 	</p>
@@ -53,9 +53,14 @@ Loom server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its D
 		for more details) Use <code>gro db/migrate</code> to run migrations.
 
 ## Creating backups</h3>
-Using the following command one can quickly take backups of the <code>Loom</code> database.</p>
 
-```sudo -u postgres pg_dump loom > backup.sql```
+The following command makes a backup dump of the default <code>loom</code> table</p>
+
+`sudo -i -u postgres pg_dump loom > backup.sql`
+
+And these commands can restore that dump to the default loom table. Note: you may have to drop and recreate the <code>loom</code> table first
+	</p>
+`sudo -i -u postgres psql -d loom {'<'} backup.sql`
 
 ## Database tasks</h3>
 
