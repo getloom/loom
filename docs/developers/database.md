@@ -46,11 +46,10 @@ create database loom; # notice the semicolon
 
 ## Creating migrations
 
-Loom server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its DB migrations.
-		Migration files are located in the
-		<a href="https://github.com/getloom/loom/tree/main/src/lib/db/migrations">migrations</a>
-		directory. To create a new migration file use the <code>ley new</code> command (see Ley's docs
-		for more details) Use <code>gro db/migrate</code> to run migrations.
+Loom server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its DB migrations. Migration files are located in the
+<a href="https://github.com/getloom/loom/tree/main/src/lib/db/migrations">migrations</a> directory. 
+
+To create a new migration file use the `ley new` command (see Ley's docs for more details) Use `gro db/migrate` to run migrations.
 
 ## Creating backups</h3>
 

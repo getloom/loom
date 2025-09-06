@@ -42,6 +42,19 @@ Inside your Admin hub there should be a space called `site-admin`. There you can
 
 Just enter the URL to your repo & hit `deploy`.
 
+## Private vs Public instances
+Loom has a handful of ways to manage how "public" or "private" your instance & hubs are. By default, anyone will be able to sign up to be a user of the system. Admins can configure the server settings to do things like
+* block any new signups
+* only allow signups from allowed emails
+* enable an invite system (currently invites can only be created and shared by Admins)
+
+Once a user has signed up and logged in, they may still find themselves blocked from Hubs.
+
+There is currently no system for discovery of all Hubs within an instance. There are only two ways to join a hub.
+
+1) You as admin can configure "default" hubs that all users will be invited to when they sign up
+1) Someone with invite powers invites a user to a hub.
+
 ## Control overview diagram
 ```mermaid
 flowchart
