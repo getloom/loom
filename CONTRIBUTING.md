@@ -1,5 +1,5 @@
 # Contributing to `@getloom/loom`
-[<img src="/src/loom.png" align="right" width="192" height="178">](https://getloom.org)
+[<img src="/static/loom.png" align="right" width="192" height="178">](https://getloom.org)
 
 Thanks for your interest in helping develop Loom!
 
