@@ -71,4 +71,22 @@ Backup your https credentials:</p>
 # on server:
 tar zcvf /tmp/letsencrypt_backup_$(date +'%Y-%m-%d_%H%M').tar.gz /etc/letsencrypt
 # then local:
-scp ${DEPLOY_USER}@${DEPLOY_IP}:/tmp/letsencrypt_backup_2022-11-14_0444.tar.gz letsencrypt_backup.tar.gz```
+scp ${DEPLOY_USER}@${DEPLOY_IP}:/tmp/letsencrypt_backup_2022-11-14_0444.tar.gz letsencrypt_backup.tar.gz
+```
+
+## Manually upgrading cloud instances
+
+If upgrading your underlying cloud OS, we recommend spinning up a new server instance and
+		restoring a DB backup to it. This helps keeps cruft from forming on your servers, helps you make
+		sure you running on the latest hardware from your cloud provider, and tests your DB restoration
+		process all in one.
+
+1) Spin up a new server with the new OS
+1) Point your DNS record to the new IP
+1) Run `gro infra/setup` on the new server
+1) Set up your DB password
+1) Use <a href="https://www.postgresql.org/docs/current/backup-dump.html"><code>pg_dump</code></a
+			> to get a copy of the DB from your lid server instance		
+1) Copy that dump from lid to new server & restore it
+1) Deploy the latest <code>@getloom/loom</code> code to your new server
+1) Restart

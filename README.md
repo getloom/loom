@@ -35,8 +35,9 @@ We'll link to a video introduction with the alpha announcement.
 To play with the code, see
 [Getting started](https://www.getloom.org/docs/guide/admin/getting-started) and
 [Contributing](CONTRIBUTING.md).
-Docs are a work-in-progress at
-[getloom.org/docs](https://www.getloom.org/docs),
+
+Docs can be fond [here](/docs/introduction.md)
+
 including our
 [known issues](https://www.getloom.org/docs/guide/user/known-issues).
 
