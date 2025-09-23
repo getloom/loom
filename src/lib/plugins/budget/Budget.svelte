@@ -10,17 +10,16 @@
 	import {browser} from '$app/environment';
 	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
 
-	import ListItems from './BudgetItems.svelte';
+	import BudgetItems from './BudgetItems.svelte';
 	import {getApp} from '$lib/ui/app.js';
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
-	import CategoryControls from './CategoryControls.svelte';
+	import BudgetItemControls from './BudgetItemControls.svelte';
 	import LoadMoreButton from '$lib/ui/LoadMoreButton.svelte';
 	import type {SpaceId} from '$lib/vocab/space/space.js';
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 	import type {ActorId} from '$lib/vocab/actor/actor.js';
 	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers.js';	
-	import IncomeControl from './IncomeControl.svelte';	
 
 	const {actor, space} = getSpaceContext();
 
@@ -49,18 +48,14 @@
 	$: console.log(entities?.get().value[1]?.get());
 
 	//TODO refactor once query by path is in place
-	const categoriesPath = '/categories';
-	$: listsCollection = $entities?.value.find((e) => e.get().path === categoriesPath);
-
-	const incomePath = '/income';
-	$: income = $entities?.value.find((e) => e.get().path === incomePath);
+	const budgetItemsPath = '/budget-items';
+	$: listsCollection = $entities?.value.find((e) => e.get().path === budgetItemsPath);
 	
-
 	$: ({space_id, directory_id} = $space);
 	$: ({actor_id} = $actor);
 
 	$: if ($query?.status === 'success' && !listsCollection) {
-		void initListsCollection(space_id, directory_id, actor_id, categoriesPath);
+		void initListsCollection(space_id, directory_id, actor_id, budgetItemsPath);
 	}
 	const initListsCollection = async (
 		space_id: SpaceId,
@@ -85,8 +80,8 @@
 		orderedEntities = await loadOrderedEntities($listsCollection!, $actor.actor_id, ui, actions);
 	};
 
-	let listInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
-	let incomeInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
+	let categoryInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
+	let valueInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
 </script>
 
 <div
@@ -95,12 +90,12 @@
 	style:--items_direction={itemsDirection}
 >
 	<div class="entities">
-		<!-- TODO handle failures here-->
-		<!-- TODO not show "lists" if there's no income-->
+		<!-- Replace two discrete controls with single BudgetItem control-->
+		<!-- expand on BudgetItem creation interface-->
+		<!-- add display/business logic to sum all budget items based on type-->
 		{#if query && listsCollection && $listsCollection && orderedEntities}
-			<IncomeControl {incomePath} {income} bind:incomeInputEl/>
-			<CategoryControls list={listsCollection} bind:listInputEl />
-			<ListItems entities={orderedEntities} parentList={listsCollection} />
+			<BudgetItemControls list={listsCollection} bind:categoryInputEl bind:valueInputEl />
+			<BudgetItems entities={orderedEntities} parentList={listsCollection} />
 			<LoadMoreButton {query} />
 		{:else}
 			<Pending_Animation />

@@ -2,17 +2,17 @@
 	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {slide} from 'svelte/transition';
 
-	import type {Entity} from '$lib/vocab/entity/entity.js';	
-	import IncomeInput from './IncomeInput.svelte';
+	import type {Entity} from '$lib/vocab/entity/entity.js';
+	import BudgetItemInput from './BudgetInput.svelte';
 
-	export let income: Readable<Entity> | undefined;
-    export let incomePath: string;
-	export let incomeInputEl: HTMLTextAreaElement | undefined = undefined;
+	export let list: Readable<Entity>;
+	export let categoryInputEl: HTMLTextAreaElement | undefined = undefined;
+	export let valueInputEl: HTMLTextAreaElement | undefined = undefined;
 </script>
 
 <div class="list-controls" transition:slide>
 	<slot />
-	<IncomeInput {incomePath} entity={income} bind:el={incomeInputEl} />
+	<BudgetItemInput {list} bind:el1={categoryInputEl} bind:el2={valueInputEl} />
 </div>
 
 <style>

@@ -14,6 +14,7 @@
 	export let el: HTMLTextAreaElement | undefined = undefined;
 	export let autofocus = false;
 	export let attrs: any = undefined;
+	export let showAvatar: boolean = true;
 
 	const onKeydown = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
@@ -25,7 +26,9 @@
 </script>
 
 <div class="text_input">
-	<ActorAvatar {actor} showName={false} />
+	{#if showAvatar}
+		<ActorAvatar {actor} showName={false} />
+	{/if}
 	<textarea
 		{placeholder}
 		on:keydown={onKeydown}

@@ -49,7 +49,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	<!-- TODO fix a11y -->
 	<div class="entity">
 		<div class="content prose">
-			<EntityContent {entity} />
+			{$entity.data.content.itemType} || {$entity.data.content.category} || {$entity.data.content.value}
 		</div>
 		<div class="signature" style:padding="var(--spacing_sm)">
 			<button
