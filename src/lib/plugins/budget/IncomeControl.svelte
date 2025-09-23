@@ -12,7 +12,7 @@
 
 <div class="list-controls" transition:slide>
 	<slot />
-	<IncomeInput {incomePath} {income} bind:el={incomeInputEl} />
+	<IncomeInput {incomePath} entity={income} bind:el={incomeInputEl} />
 </div>
 
 <style>

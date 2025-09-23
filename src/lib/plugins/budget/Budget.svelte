@@ -1,3 +1,11 @@
+<script context="module" lang="ts">
+	export type BudgetItem = {
+		category: string,
+		value: number,
+		itemType: "INCOME" | "EXPENSE"
+	}
+</script>
+
 <script lang="ts">
 	import {browser} from '$app/environment';
 	import Pending_Animation from '@ryanatkn/fuz/Pending_Animation.svelte';
@@ -22,6 +30,8 @@
 	// TODO make the item component/props generic (maybe `itemComponent` and `itemProps`?) or slots?
 	// TODO select multiple, act on groups of selected items
 	// TODO collapse button?
+
+
 
 	const {socket, createQuery, actions, ui} = getApp();
 
