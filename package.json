@@ -476,6 +476,11 @@
       "default": "./dist/plugins/budget/BudgetItems.svelte",
       "types": "./dist/plugins/budget/BudgetItems.svelte.d.ts"
     },
+    "./plugins/budget/BudgetSummary.svelte": {
+      "svelte": "./dist/plugins/budget/BudgetSummary.svelte",
+      "default": "./dist/plugins/budget/BudgetSummary.svelte",
+      "types": "./dist/plugins/budget/BudgetSummary.svelte.d.ts"
+    },
     "./plugins/chat/Chat.svelte": {
       "svelte": "./dist/plugins/chat/Chat.svelte",
       "default": "./dist/plugins/chat/Chat.svelte",
