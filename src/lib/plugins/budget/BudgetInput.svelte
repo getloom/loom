@@ -5,7 +5,7 @@
 	import {getApp} from '$lib/ui/app.js';
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import type {Entity} from '$lib/vocab/entity/entity.js';
-	import type { BudgetItem } from './Budget.svelte';
+	import type {BudgetItem} from './Budget.svelte';
 
 	const {actor, space} = getSpaceContext();
 
@@ -19,7 +19,7 @@
 	let valueInput = '';
 	let checked = false;
 
-	$: buttonText = checked ? "income" : "expense"
+	$: buttonText = checked ? 'income' : 'expense';
 
 	const createEntity = async () => {
 		const category = categoryInput.trim(); // TODO parse to trim? regularize step?
@@ -29,7 +29,7 @@
 		}
 
 		const value = valueInput.trim();
-		if (!value){
+		if (!value) {
 			el2?.focus();
 			return;
 		}
@@ -37,14 +37,14 @@
 		const content: BudgetItem = {
 			category,
 			value: +value,
-			itemType: checked ? "INCOME" : "EXPENSE"
-		}		
+			itemType: checked ? 'INCOME' : 'EXPENSE',
+		};
 
 		//TODO better error handling
 		await actions.CreateEntity({
 			actor: $actor.actor_id,
 			space_id: $space.space_id,
-			data: {type: "BudgetItem", content: content as any as string},
+			data: {type: 'BudgetItem', content: content as any as string},
 			ties: [{source_id: $list.entity_id}],
 		});
 		categoryInput = '';
@@ -55,12 +55,13 @@
 		await createEntity();
 	};
 </script>
+
 <!-- add category, value, and type inputs-->
 <input type="checkbox" bind:checked />
 <TextInput
 	placeholder="category"
 	attrs={{style: 'height: var(--input_height)'}}
-	{actor}	
+	{actor}
 	on:submit={onSubmit}
 	bind:value={categoryInput}
 	bind:el={el1}

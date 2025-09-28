@@ -8,11 +8,11 @@
 	import {randomHue} from '$lib/util/color.js';
 	import {getApp} from '$lib/ui/app.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
-	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';	
+	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 	import {moveDown, moveUp} from '$lib/vocab/entity/entityHelpers.js';
-	import type { BudgetItem } from './Budget.svelte';
+	import type {BudgetItem} from './Budget.svelte';
 
 	const {actor} = getSpaceContext();
 
@@ -36,8 +36,8 @@
 	$: enableMoveUp = !first;
 	$: enableMoveDown = !last;
 	$: $entity ? updateBudgetNumber() : Date.now();
-	$: budgetItem = $entity.data.content as any as BudgetItem
-	$: icon = budgetItem.itemType == "INCOME" ? '🤑' : '📉'
+	$: budgetItem = $entity.data.content as any as BudgetItem;
+	$: icon = budgetItem.itemType == 'INCOME' ? '🤑' : '📉';
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
@@ -55,7 +55,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		<div class="content prose">
 			<div>{icon}</div>
 			<div class="category">{budgetItem.category}</div>
-			<div class="value">${budgetItem.value}</div>			
+			<div class="value">${budgetItem.value}</div>
 		</div>
 		<div class="signature">
 			<button
@@ -94,7 +94,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: var(--spacing_sm)
+		padding: var(--spacing_sm);
 	}
 	.entity {
 		position: relative;
@@ -113,9 +113,9 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		flex-direction: row;
 	}
 	.category {
-		flex: 2;		
+		flex: 2;
 		padding-left: var(--spacing_xs);
-		text-align: center;		
+		text-align: center;
 	}
 	.value {
 		text-align: right;

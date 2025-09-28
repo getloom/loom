@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
 	export type BudgetItem = {
-		category: string,
-		value: number,
-		itemType: "INCOME" | "EXPENSE"
-	}
+		category: string;
+		value: number;
+		itemType: 'INCOME' | 'EXPENSE';
+	};
 </script>
 
 <script lang="ts">
@@ -19,19 +19,17 @@
 	import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 	import type {ActorId} from '$lib/vocab/actor/actor.js';
 	import type {Readable} from '@getloom/svelte-gettable-stores';
-	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers.js';	
-	import BudgetSummary from '$lib/plugins/budget/BudgetSummary.svelte';	
+	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers.js';
+	import BudgetSummary from '$lib/plugins/budget/BudgetSummary.svelte';
 
 	const {actor, space} = getSpaceContext();
 
 	export let layoutDirection = 'column'; // is a `flex-direction` property
-	export let itemsDirection = 'column'; // is a `flex-direction` property	
+	export let itemsDirection = 'column'; // is a `flex-direction` property
 
 	// TODO make the item component/props generic (maybe `itemComponent` and `itemProps`?) or slots?
 	// TODO select multiple, act on groups of selected items
 	// TODO collapse button?
-
-
 
 	const {socket, createQuery, actions, ui} = getApp();
 
@@ -47,7 +45,7 @@
 	//TODO refactor once query by path is in place
 	const budgetItemsPath = '/budget-items';
 	$: listsCollection = $entities?.value.find((e) => e.get().path === budgetItemsPath);
-	
+
 	$: ({space_id, directory_id} = $space);
 	$: ({actor_id} = $actor);
 
@@ -79,12 +77,12 @@
 
 	let categoryInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
 	let valueInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
-	
+
 	//This value isn't really used for anything, it's just used to trigger a redraw inside BudgetSummary
 	let budgetLastUpdated = Date.now();
 	const updateBudgetNumber = (): void => {
 		budgetLastUpdated = Date.now();
-	}
+	};
 </script>
 
 <div
