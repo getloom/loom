@@ -6,9 +6,9 @@
 
 	export let orderedEntities: Array<Readable<Entity>>;
 	export let lastUpdated: number;
-    
-    //eslint-disable-next-line no-inner-declarations
-    function calculateItems(budgetItems: Array<Readable<Entity>>, _lastUpdated: number): number {
+
+	//eslint-disable-next-line no-inner-declarations
+	function calculateItems(budgetItems: Array<Readable<Entity>>, _lastUpdated: number): number {
 		budgetCount = 0;
 		for (const item of budgetItems) {
 			const budgetItem = item.get().data.content as any as BudgetItem;
