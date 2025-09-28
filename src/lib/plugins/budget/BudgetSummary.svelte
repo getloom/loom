@@ -6,16 +6,13 @@
 
 	export let orderedEntities: Array<Readable<Entity>>;
 	export let lastUpdated: number;
-
-	//TODO mechanism for triggering list store update to then trigger a budget summary rebuild
-
-	$: budgetCount = calculateItems(orderedEntities, lastUpdated);
-
-	function calculateItems(budgetItems: Array<Readable<Entity>>, _lastUpdated: number): number {
+    
+    //eslint-disable-next-line no-inner-declarations
+    function calculateItems(budgetItems: Array<Readable<Entity>>, _lastUpdated: number): number {
 		budgetCount = 0;
 		for (const item of budgetItems) {
 			const budgetItem = item.get().data.content as any as BudgetItem;
-			if (budgetItem.itemType == 'INCOME') {
+			if (budgetItem.itemType === 'INCOME') {
 				budgetCount += budgetItem.value;
 			} else {
 				budgetCount -= budgetItem.value;
@@ -23,6 +20,8 @@
 		}
 		return budgetCount;
 	}
+
+	$: budgetCount = calculateItems(orderedEntities, lastUpdated);
 </script>
 
 <div class="entity">

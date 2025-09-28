@@ -14,7 +14,7 @@
 	export let el: HTMLTextAreaElement | undefined = undefined;
 	export let autofocus = false;
 	export let attrs: any = undefined;
-	export let showAvatar: boolean = true;
+	export let showAvatar = true;
 
 	const onKeydown = async (e: KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {

@@ -37,7 +37,7 @@
 	$: enableMoveDown = !last;
 	$: $entity ? updateBudgetNumber() : Date.now();
 	$: budgetItem = $entity.data.content as any as BudgetItem;
-	$: icon = budgetItem.itemType == 'INCOME' ? '🤑' : '📉';
+	$: icon = budgetItem.itemType === 'INCOME' ? '🤑' : '📉';
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
