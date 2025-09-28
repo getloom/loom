@@ -6,12 +6,13 @@
 
 	export let entities: Array<Readable<Entity>>;
 	export let parentList: Readable<Entity>;
+	export let updateBudgetNumber: () => void;
 </script>
 
 <!-- TODO possibly remove the `ul` wrapper and change the `li`s to `div`s -->
 <ul>
 	{#each entities as entity (entity)}
-		<BudgetItem {entity} {parentList} />
+		<BudgetItem {entity} {parentList} {updateBudgetNumber} />
 	{/each}
 </ul>
 

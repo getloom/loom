@@ -20,6 +20,7 @@
 	import type {ActorId} from '$lib/vocab/actor/actor.js';
 	import type {Readable} from '@getloom/svelte-gettable-stores';
 	import {loadOrderedEntities} from '$lib/vocab/entity/entityHelpers.js';	
+	import BudgetSummary from '$lib/plugins/budget/BudgetSummary.svelte';	
 
 	const {actor, space} = getSpaceContext();
 
@@ -42,10 +43,6 @@
 			})
 		: null;
 	$: entities = query?.entities;
-	
-	$: console.log(entities?.get());
-	$: console.log(entities?.get().value[0]?.get());
-	$: console.log(entities?.get().value[1]?.get());
 
 	//TODO refactor once query by path is in place
 	const budgetItemsPath = '/budget-items';
@@ -82,6 +79,12 @@
 
 	let categoryInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
 	let valueInputEl: HTMLTextAreaElement | undefined = undefined; // TODO use this to focus the input when appropriate
+	
+	//This value isn't really used for anything, it's just used to trigger a redraw inside BudgetSummary
+	let budgetLastUpdated = Date.now();
+	const updateBudgetNumber = (): void => {
+		budgetLastUpdated = Date.now();
+	}
 </script>
 
 <div
@@ -93,9 +96,10 @@
 		<!-- Replace two discrete controls with single BudgetItem control-->
 		<!-- expand on BudgetItem creation interface-->
 		<!-- add display/business logic to sum all budget items based on type-->
-		{#if query && listsCollection && $listsCollection && orderedEntities}
+		{#if query && listsCollection && orderedEntities}
+			<BudgetSummary {orderedEntities} lastUpdated={budgetLastUpdated} />
 			<BudgetItemControls list={listsCollection} bind:categoryInputEl bind:valueInputEl />
-			<BudgetItems entities={orderedEntities} parentList={listsCollection} />
+			<BudgetItems entities={orderedEntities} parentList={listsCollection} {updateBudgetNumber} />
 			<LoadMoreButton {query} />
 		{:else}
 			<Pending_Animation />

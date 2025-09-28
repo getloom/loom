@@ -8,11 +8,11 @@
 	import {randomHue} from '$lib/util/color.js';
 	import {getApp} from '$lib/ui/app.js';
 	import ActorContextmenu from '$lib/ui/ActorContextmenu.svelte';
-	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';
-	import EntityContent from '$lib/ui/EntityContent.svelte';
+	import EntityContextmenu from '$lib/ui/EntityContextmenu.svelte';	
 	import {getSpaceContext} from '$lib/vocab/view/view.js';
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 	import {moveDown, moveUp} from '$lib/vocab/entity/entityHelpers.js';
+	import type { BudgetItem } from './Budget.svelte';
 
 	const {actor} = getSpaceContext();
 
@@ -23,6 +23,7 @@
 
 	export let entity: Readable<Entity>;
 	export let parentList: Readable<Entity>;
+	export let updateBudgetNumber: () => void;
 
 	$: authorActor = lookupActor(actorById, $entity.actor_id);
 
@@ -34,6 +35,9 @@
 		$parentList.data.orderedItems![$parentList.data.orderedItems!.length - 1] === $entity.entity_id;
 	$: enableMoveUp = !first;
 	$: enableMoveDown = !last;
+	$: $entity ? updateBudgetNumber() : Date.now();
+	$: budgetItem = $entity.data.content as any as BudgetItem
+	$: icon = budgetItem.itemType == "INCOME" ? '🤑' : '📉'
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
@@ -49,9 +53,11 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	<!-- TODO fix a11y -->
 	<div class="entity">
 		<div class="content prose">
-			{$entity.data.content.itemType} || {$entity.data.content.category} || {$entity.data.content.value}
+			<div>{icon}</div>
+			<div class="category">{budgetItem.category}</div>
+			<div class="value">${budgetItem.value}</div>			
 		</div>
-		<div class="signature" style:padding="var(--spacing_sm)">
+		<div class="signature">
 			<button
 				class="plain icon_button"
 				title="move up"
@@ -88,6 +94,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		padding: var(--spacing_sm)
 	}
 	.entity {
 		position: relative;
@@ -102,5 +109,15 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 		flex: 1;
 		font-size: var(--size_1);
 		padding: 0 var(--spacing_md);
+		display: flex;
+		flex-direction: row;
+	}
+	.category {
+		flex: 2;		
+		padding-left: var(--spacing_xs);
+		text-align: center;		
+	}
+	.value {
+		text-align: right;
 	}
 </style>

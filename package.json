@@ -466,25 +466,15 @@
       "default": "./dist/plugins/budget/BudgetItem.svelte",
       "types": "./dist/plugins/budget/BudgetItem.svelte.d.ts"
     },
+    "./plugins/budget/BudgetItemControls.svelte": {
+      "svelte": "./dist/plugins/budget/BudgetItemControls.svelte",
+      "default": "./dist/plugins/budget/BudgetItemControls.svelte",
+      "types": "./dist/plugins/budget/BudgetItemControls.svelte.d.ts"
+    },
     "./plugins/budget/BudgetItems.svelte": {
       "svelte": "./dist/plugins/budget/BudgetItems.svelte",
       "default": "./dist/plugins/budget/BudgetItems.svelte",
       "types": "./dist/plugins/budget/BudgetItems.svelte.d.ts"
-    },
-    "./plugins/budget/CategoryControls.svelte": {
-      "svelte": "./dist/plugins/budget/CategoryControls.svelte",
-      "default": "./dist/plugins/budget/CategoryControls.svelte",
-      "types": "./dist/plugins/budget/CategoryControls.svelte.d.ts"
-    },
-    "./plugins/budget/IncomeControl.svelte": {
-      "svelte": "./dist/plugins/budget/IncomeControl.svelte",
-      "default": "./dist/plugins/budget/IncomeControl.svelte",
-      "types": "./dist/plugins/budget/IncomeControl.svelte.d.ts"
-    },
-    "./plugins/budget/IncomeInput.svelte": {
-      "svelte": "./dist/plugins/budget/IncomeInput.svelte",
-      "default": "./dist/plugins/budget/IncomeInput.svelte",
-      "types": "./dist/plugins/budget/IncomeInput.svelte.d.ts"
     },
     "./plugins/chat/Chat.svelte": {
       "svelte": "./dist/plugins/chat/Chat.svelte",
