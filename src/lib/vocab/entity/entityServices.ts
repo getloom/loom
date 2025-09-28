@@ -29,7 +29,6 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 	action: ReadEntities,
 	transaction: false,
 	perform: async ({repos, params, checkHubAccess}) => {
-		log.error(params);
 		const {source_id, pageSize = DEFAULT_PAGE_SIZE, pageKey, related, orderBy} = params;
 		log.debug('checking pagiated entities for ', source_id);
 		const {hub_id} = await repos.space.findByEntity(source_id);
@@ -56,7 +55,6 @@ export const ReadEntitiesService: ServiceByName['ReadEntities'] = {
 		const entityIds = toTieEntityIds(pageTies);
 		entityIds.delete(source_id);
 		const {entities} = await repos.entity.filterByIds(Array.from(entityIds), orderBy);
-		log.error(entities);
 		return {ok: true, status: 200, value: {entities, ties, more}};
 	},
 };
@@ -67,7 +65,6 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 	perform: async ({repos, params, checkPolicy}) => {
 		const {actor, data, space_id, path} = params;
 
-		log.error(params);
 		//TODO revist this, should data drive ties or vice versa?
 		if (data.orderedItems?.length)
 			throw new ApiError(400, 'cannot create entity with orderedItems directly');
@@ -87,7 +84,6 @@ export const CreateEntityService: ServiceByName['CreateEntity'] = {
 		//TODO maybe construct orderedItems here
 		let entity = await repos.entity.create(actor, space_id, hub_id, data, directory_id, path);
 
-		log.error(entity);
 		const entities = [entity];
 
 		const ties: Tie[] = [];
