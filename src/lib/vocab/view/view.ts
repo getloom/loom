@@ -46,6 +46,7 @@ export const viewTemplates: ViewTemplate[] = [
 	{name: 'List', view: '<List />', icon: '🪜'},
 	{name: 'Lists', view: '<Lists />', icon: '🔨'},
 	{name: 'Budget', view: '<Budget />', icon: '📈'},
+	{name: 'Uptime', view: '<Uptime />', icon: '⬆️'}
 ];
 export const viewTemplatesByName: Map<string, ViewTemplate> = new Map(
 	viewTemplates.map((t) => [t.name, t]),
