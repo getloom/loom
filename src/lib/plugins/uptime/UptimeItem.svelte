@@ -35,15 +35,15 @@
 	$: enableMoveUp = !first;
 	$: enableMoveDown = !last;
 
-	$: status = '⋯';	
+	$: status = '⋯';
 
 	//Got a CORS issue here, might need a new task to take care of this.
-	const checkStatus = async (): Promise<void> => {				
+	const checkStatus = async (): Promise<void> => {
 		const url = $entity.data.content;
-		console.log("calling " + url);
-		
+		console.log('calling ' + url);
+
 		if (!url) {
-			status = '⚠️'
+			status = '⚠️';
 			return;
 		}
 
@@ -52,20 +52,18 @@
 			hub_id: $hub.hub_id,
 			task: 'fetch',
 			args: [url],
-		});				
-		
-				
-		if (!result.ok){
-			console.error(`Response status: ${result.status}`)
-			console.error(`Response message: ${result.message}`)
-			status = '❌'
+		});
+
+		if (!result.ok) {
+			console.error(`Response status: ${result.status}`);
+			console.error(`Response message: ${result.message}`);
+			status = '❌';
 		} else {
-			status = '✅'
+			status = '✅';
 		}
 	};
 
 	checkStatus();
-
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
@@ -81,7 +79,7 @@ And then ActorContextmenu would be only for *session* actors? `SessionActorConte
 	<!-- TODO fix a11y -->
 	<div class="entity">
 		<div class="icon">{status}</div>
-		<div class="content prose">			
+		<div class="content prose">
 			<EntityContent {entity} />
 		</div>
 		<div class="signature" style:padding="var(--spacing_sm)">

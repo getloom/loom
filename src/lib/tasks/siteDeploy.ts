@@ -6,7 +6,7 @@ import {unwrap} from '@ryanatkn/belt/result.js';
 import {execSync} from 'node:child_process';
 import {PUBLIC_SITE_HOST, PUBLIC_SITE_PORT} from '$env/static/public';
 import type {Task} from '$lib/vocab/task/task';
-import type { RunTaskResponseResult } from '$lib/vocab/action/actionTypes';
+import type {RunTaskResponseResult} from '$lib/vocab/action/actionTypes';
 
 const log = new Logger(gray('[') + blue('siteDeploy') + gray(']'));
 
@@ -51,6 +51,6 @@ export class SiteDeployTask implements Task {
 		}
 		log.warn('cleaning up previous deploys');
 		execSync(`ls -t | grep deploy_site_[0-9] | tail -n +3 | xargs -r rm -r --`);
-		return {ok: true, status: 200, value: {message: "site deployed succesfully"}};
+		return {ok: true, status: 200, value: {message: 'site deployed succesfully'}};
 	}
 }
