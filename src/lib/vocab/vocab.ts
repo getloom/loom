@@ -213,5 +213,6 @@ export type VocabName =
 	| 'UpdatePolicy'
 	| 'UpdateRole'
 	| 'UpdateSpace'
+	| 'Uptime'
 	| 'ViewSpace'
 	| 'VocabName';

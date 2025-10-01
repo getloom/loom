@@ -39,6 +39,6 @@ export const RunTaskService: ServiceByName['RunTask'] = {
 		log.warn('invoking task', task);
 		const result = await tasks[task].invoke(args, dev);
 		log.warn(result.ok);
-		return {ok: true, status: 200, value: {message: 'task executed ok'}};
+		return result;
 	},
 };

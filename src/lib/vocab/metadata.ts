@@ -217,6 +217,7 @@ export const vocabNames: VocabName[] = [
 	'UpdatePolicy',
 	'UpdateRole',
 	'UpdateSpace',
+	'Uptime',
 	'ViewSpace',
 ];
 
@@ -238,6 +239,7 @@ export const viewNames: VocabName[] = [
 	'PersonalHome',
 	'ReplyChat',
 	'Todo',
+	'Uptime',
 ];
 
 export const modelNames: VocabName[] = [

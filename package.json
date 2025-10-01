@@ -691,6 +691,31 @@
       "default": "./dist/plugins/todo/TodoItems.svelte",
       "types": "./dist/plugins/todo/TodoItems.svelte.d.ts"
     },
+    "./plugins/uptime/Uptime.svelte": {
+      "svelte": "./dist/plugins/uptime/Uptime.svelte",
+      "default": "./dist/plugins/uptime/Uptime.svelte",
+      "types": "./dist/plugins/uptime/Uptime.svelte.d.ts"
+    },
+    "./plugins/uptime/UptimeControls.svelte": {
+      "svelte": "./dist/plugins/uptime/UptimeControls.svelte",
+      "default": "./dist/plugins/uptime/UptimeControls.svelte",
+      "types": "./dist/plugins/uptime/UptimeControls.svelte.d.ts"
+    },
+    "./plugins/uptime/UptimeInput.svelte": {
+      "svelte": "./dist/plugins/uptime/UptimeInput.svelte",
+      "default": "./dist/plugins/uptime/UptimeInput.svelte",
+      "types": "./dist/plugins/uptime/UptimeInput.svelte.d.ts"
+    },
+    "./plugins/uptime/UptimeItem.svelte": {
+      "svelte": "./dist/plugins/uptime/UptimeItem.svelte",
+      "default": "./dist/plugins/uptime/UptimeItem.svelte",
+      "types": "./dist/plugins/uptime/UptimeItem.svelte.d.ts"
+    },
+    "./plugins/uptime/UptimeItems.svelte": {
+      "svelte": "./dist/plugins/uptime/UptimeItems.svelte",
+      "default": "./dist/plugins/uptime/UptimeItems.svelte",
+      "types": "./dist/plugins/uptime/UptimeItems.svelte.d.ts"
+    },
     "./server/ajv.js": {
       "default": "./dist/server/ajv.js",
       "types": "./dist/server/ajv.d.ts"
