@@ -14,7 +14,7 @@
 	import {lookupActor} from '$lib/vocab/actor/actorHelpers.js';
 	import {moveDown, moveUp} from '$lib/vocab/entity/entityHelpers.js';
 
-	const {actor} = getSpaceContext();
+	const {actor, hub} = getSpaceContext();
 
 	const {
 		ui: {contextmenu, actorById},
@@ -35,19 +35,29 @@
 	$: enableMoveUp = !first;
 	$: enableMoveDown = !last;
 
-	$: status = '⋯';
+	$: status = '⋯';	
 
 	//Got a CORS issue here, might need a new task to take care of this.
-	const checkStatus = async (): Promise<void> => {
+	const checkStatus = async (): Promise<void> => {				
 		const url = $entity.data.content;
+		console.log("calling " + url);
+		
 		if (!url) {
 			status = '⚠️'
 			return;
 		}
-		const response = await fetch(url);
-		if (!response.ok){
-			console.error(`Response status: ${response.status}`)
-			console.error(`Response message: ${response.body}`)
+
+		const result = await actions.RunTask({
+			actor: $actor.actor_id,
+			hub_id: $hub.hub_id,
+			task: 'fetch',
+			args: [url],
+		});				
+		
+				
+		if (!result.ok){
+			console.error(`Response status: ${result.status}`)
+			console.error(`Response message: ${result.message}`)
 			status = '❌'
 		} else {
 			status = '✅'
