@@ -32,6 +32,7 @@ export const viewTemplates: ViewTemplate[] = [
 	{name: 'PersonalHome', view: '<PersonalHome />', icon: '🏠', creatable: false},
 	{name: 'AdminHome', view: '<AdminHome />', icon: '🏠', creatable: false, admin: true},
 	{name: 'AdminSite', view: '<AdminSite />', icon: '🖥️', creatable: false, admin: true},
+	{name: 'Uptime', view: '<Uptime />', icon: '⬆️', creatable: true, admin: true},
 	{name: 'InstanceAdmin', view: '<InstanceAdmin />', icon: '🪄', creatable: false, admin: true},
 	{name: 'EntityExplorer', view: '<EntityExplorer />', icon: '✏️', creatable: false},
 	// normal views:

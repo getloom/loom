@@ -2,10 +2,11 @@ import {Logger} from '@ryanatkn/belt/log.js';
 import {blue, gray} from '$lib/server/colors.js';
 
 import {spawn, spawn_process} from '@ryanatkn/belt/process.js';
-import {unwrap, type Result} from '@ryanatkn/belt/result.js';
+import {unwrap} from '@ryanatkn/belt/result.js';
 import {execSync} from 'node:child_process';
 import {PUBLIC_SITE_HOST, PUBLIC_SITE_PORT} from '$env/static/public';
 import type {Task} from '$lib/vocab/task/task';
+import type {RunTaskResponseResult} from '$lib/vocab/action/actionTypes';
 
 const log = new Logger(gray('[') + blue('siteDeploy') + gray(']'));
 
@@ -16,7 +17,7 @@ export class SiteDeployTask implements Task {
 	 * @param dev
 	 * @returns
 	 */
-	async invoke(args: string[], dev: boolean): Promise<Result> {
+	async invoke(args: string[], dev: boolean): Promise<RunTaskResponseResult> {
 		const TIMESTAMP = Date.now();
 		const DEPLOY_DIRNAME = `deploy_site_${TIMESTAMP}`;
 		const CURRENT_DEPLOY_DIRNAME = 'current_site_deploy';
@@ -50,6 +51,6 @@ export class SiteDeployTask implements Task {
 		}
 		log.warn('cleaning up previous deploys');
 		execSync(`ls -t | grep deploy_site_[0-9] | tail -n +3 | xargs -r rm -r --`);
-		return {ok: true};
+		return {ok: true, status: 200, value: {message: 'site deployed succesfully'}};
 	}
 }
