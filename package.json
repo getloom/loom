@@ -857,6 +857,10 @@
       "default": "./dist/sync.task.js",
       "types": "./dist/sync.task.d.ts"
     },
+    "./tasks/fetch.js": {
+      "default": "./dist/tasks/fetch.js",
+      "types": "./dist/tasks/fetch.d.ts"
+    },
     "./tasks/siteDeploy.js": {
       "default": "./dist/tasks/siteDeploy.js",
       "types": "./dist/tasks/siteDeploy.d.ts"

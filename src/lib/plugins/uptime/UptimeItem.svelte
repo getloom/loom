@@ -35,12 +35,11 @@
 	$: enableMoveUp = !first;
 	$: enableMoveDown = !last;
 
-	$: status = '⋯';
+	let status = '⋯';
 
 	//Got a CORS issue here, might need a new task to take care of this.
 	const checkStatus = async (): Promise<void> => {
 		const url = $entity.data.content;
-		console.log('calling ' + url);
 
 		if (!url) {
 			status = '⚠️';
@@ -55,15 +54,13 @@
 		});
 
 		if (!result.ok) {
-			console.error(`Response status: ${result.status}`);
-			console.error(`Response message: ${result.message}`);
 			status = '❌';
 		} else {
 			status = '✅';
 		}
 	};
 
-	checkStatus();
+	void checkStatus();
 </script>
 
 <!-- TODO delete `ActorContextmenu` ? should that be handled by the entity contextmenu?
