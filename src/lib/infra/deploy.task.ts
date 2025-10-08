@@ -64,7 +64,7 @@ export const task: Task = {
 				cd ${deploy_dirname};
 				tar -xf ${artifact_filename};
 				echo 'stopping old deploy';
-				pm2 stop npm;
+				pm2 delete npm;
 				echo 'npm ci';
 				npm ci;
 				cd ~;
