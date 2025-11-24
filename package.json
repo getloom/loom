@@ -20,7 +20,8 @@
   },
   "scripts": {
     "start": "node dist_server/server/server.js",
-    "after_deploy": "node dist_server/infra/after_deploy.js"
+    "after_deploy": "node dist_server/infra/after_deploy.js",
+    "db:destroy": "tsx scripts/db/destroy.ts"
   },
   "type": "module",
   "engines": {
@@ -58,8 +59,10 @@
     "svelte-check": "^3.6.2",
     "svelte-intersect": "0.12.1",
     "svelte-turnstile": "^0.8.0",
+    "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
-    "typescript": "^5.3.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
     "uvu": "^0.5.6",
     "zod": "^3.22.4"
   },

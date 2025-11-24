@@ -8,7 +8,7 @@ export interface Options {
 	sql: PostgresSql;
 }
 
-export class Database {
+export class Database implements Disposable {
 	readonly sql: PostgresSql;
 	readonly repos: Repos;
 
@@ -20,8 +20,15 @@ export class Database {
 		this.repos = new Repos(sql);
 	}
 
+	//deprecated, use Symbole dispose below
 	async close(): Promise<void> {
 		this.log.info('close');
 		await this.sql.end();
 	}
+
+	[Symbol.dispose]() {
+		this.log.info('close');
+		this.sql.end();
+	}
+
 }
