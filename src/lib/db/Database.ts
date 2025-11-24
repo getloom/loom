@@ -30,5 +30,4 @@ export class Database implements Disposable {
 		this.log.info('close');
 		this.sql.end();
 	}
-
 }
