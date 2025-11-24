@@ -20,6 +20,7 @@ const NODE_ENV = process.env.NODE_ENV;
 
 const PROD = NODE_ENV === "production"
 
+//TODO we assume a dev/build step has already occured & look for .js migration files. Fix after gro dev/build replaced.
 const dir = PROD ? MIGRATIONS_DIR_PROD : MIGRATIONS_DIR_DEV;
 
 const status = await ley.status({
