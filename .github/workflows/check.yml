@@ -44,6 +44,7 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_DB: loom
           POSTGRES_PASSWORD: password
+          PGUSER: postgres
       - run: npx gro check --workspace
       - run: npx gro build
       - run: node dist_server/server/server.js --check
