@@ -37,7 +37,7 @@ import type {Directory} from '$lib/vocab/entity/entityData.js';
 import type {Repos} from '$lib/db/Repos.js';
 import {ADMIN_HUB_ID} from '$lib/util/constants.js';
 import type {AuthorizedServiceRequest} from '$lib/server/service.js';
-import { toPasswordKey } from '$lib/server/password';
+import {toPasswordKey} from '$lib/server/password';
 
 /* eslint-disable no-await-in-loop */
 
@@ -49,9 +49,9 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const {sql, repos} = db;
 
 	// resource setup
-		const passwordHasher: any = {
-			encrypt: (passwordText: string) => toPasswordKey(passwordText),
-		};
+	const passwordHasher: any = {
+		encrypt: (passwordText: string) => toPasswordKey(passwordText),
+	};
 
 	log.debug('adding initial dataset to database');
 

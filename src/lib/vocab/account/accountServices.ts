@@ -11,7 +11,7 @@ import {
 } from '$lib/vocab/account/accountActions.js';
 import {
 	ACCOUNT_COLUMNS,
-	toDefaultAccountSettings,	
+	toDefaultAccountSettings,
 } from '$lib/vocab/account/accountHelpers.server.js';
 import {
 	checkAccountName,
@@ -21,7 +21,7 @@ import {
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';
 import {assertApiError} from '$lib/server/api.js';
 import {isValidCode} from '$lib/vocab/invite/inviteHelpers.server';
-import {validateToken} from '$lib/server/turnstileHelper.server'
+import {validateToken} from '$lib/server/turnstileHelper.server';
 
 const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 export const VALIDATION_ERRROR_MSG = 'cannot create account without valid invite code';

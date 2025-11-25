@@ -9,7 +9,7 @@ const log = new Logger(gray('[') + blue('accountServices') + gray(']'));
 //These two functions are responsible for server side validation of the Cloudfront Turnstile token
 //Could be replaced by other CAPTCHA forms though.
 export const validateToken = async (
-	token: string,	
+	token: string,
 	session: ISessionApi,
 ): Promise<string | null> => {
 	if (CF_SECRETKEY) {
