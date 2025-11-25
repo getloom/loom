@@ -20,7 +20,10 @@
   },
   "scripts": {
     "start": "node dist_server/server/server.js",
-    "after_deploy": "node dist_server/infra/after_deploy.js"
+    "after_deploy": "node dist_server/infra/after_deploy.js",
+    "db:destroy": "tsx scripts/db/tasks.ts destroy",
+    "db:migrate": "tsx scripts/db/tasks.ts migrate",
+    "db:seed": "tsx scripts/db/tasks.ts seed"
   },
   "type": "module",
   "engines": {
@@ -817,6 +820,10 @@
     "./server/servicesIntegration.test.js": {
       "default": "./dist/server/servicesIntegration.test.js",
       "types": "./dist/server/servicesIntegration.test.d.ts"
+    },
+    "./server/turnstileHelper.server.js": {
+      "default": "./dist/server/turnstileHelper.server.js",
+      "types": "./dist/server/turnstileHelper.server.d.ts"
     },
     "./server/uiServices.js": {
       "default": "./dist/server/uiServices.js",
