@@ -6,45 +6,49 @@ import {MIGRATIONS_DIR_DEV, MIGRATIONS_DIR_PROD} from '../../src/lib/db/migratio
 import {postgresOptions} from './util'
 
 const BACKUP_FILE = 'backup.sql';
-const NODE_ENV = process.env.NODE_ENV;
 
-const PROD = NODE_ENV === "production"
+export async function migrate(){
 
-//TODO we assume a dev/build step has already occured & look for .js migration files. Fix after gro dev/build replaced.
-const dir = PROD ? MIGRATIONS_DIR_PROD : MIGRATIONS_DIR_DEV;
+	const NODE_ENV = process.env.NODE_ENV;
 
-const status = await ley.status({
-	dir,
-	driver: 'postgres',
-	config: postgresOptions as any,
-});
+	const PROD = NODE_ENV === "production"
 
-if (!status.length) {
-	console.log('no migrations to run');
-	process.exit(0);
-}
+	//TODO we assume a dev/build step has already occured & look for .js migration files. Fix after gro dev/build replaced.
+	const dir = PROD ? MIGRATIONS_DIR_PROD : MIGRATIONS_DIR_DEV;
 
-if (PROD) {
-	console.log('backing up db');
-	spawnSync('sudo', [
-		'-i',
-		'-u',
-		postgresOptions.username,
-		'pg_dump',
-		postgresOptions.database,
-		'-f',
-		BACKUP_FILE,
-	]);
-}
+	const status = await ley.status({
+		dir,
+		driver: 'postgres',
+		config: postgresOptions as any,
+	});
 
-console.log('running migrations: ', status);
+	if (!status.length) {
+		console.log('no migrations to run');
+		process.exit(0);
+	}
 
-const successes = await ley.up({
-	dir,
-	driver: 'postgres',
-	config: postgresOptions as any,
-});
-console.log('successful migrations:', successes);
-if (successes.length !== status.length) {
-	throw Error('not all pending migrations were applied, please double check');
+	if (PROD) {
+		console.log('backing up db');
+		spawnSync('sudo', [
+			'-i',
+			'-u',
+			postgresOptions.username,
+			'pg_dump',
+			postgresOptions.database,
+			'-f',
+			BACKUP_FILE,
+		]);
+	}
+
+	console.log('running migrations: ', status);
+
+	const successes = await ley.up({
+		dir,
+		driver: 'postgres',
+		config: postgresOptions as any,
+	});
+	console.log('successful migrations:', successes);
+	if (successes.length !== status.length) {
+		throw Error('not all pending migrations were applied, please double check');
+	}
 }

@@ -4,10 +4,14 @@ import {postgresOptions} from './util'
 import {seed} from '../../src/lib/db/seed.js';
 import {Database} from '../../src/lib/db/Database.js';
 
-const much = false
+export async function seedDB(){
 
-const db = new Database({sql: postgres(postgresOptions)})
+    const much = false
 
-await seed(db, much);
+    const db = new Database({sql: postgres(postgresOptions)})
 
-db.close();
+    await seed(db, much);
+
+    await db.close();
+
+}

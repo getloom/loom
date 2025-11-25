@@ -1,15 +1,20 @@
 import postgres from 'postgres';
 import {postgresOptions} from './util'
 
-const db = postgres(postgresOptions)
+export async function destroy(){
+    console.log("Running destroy")
 
-await db.unsafe(`
-        drop schema public cascade;
-        create schema public;
-        alter schema public owner to postgres;
-        grant all on schema public to postgres;
-        grant all on schema public to ${postgresOptions.username};
-        grant all on schema public to public;
-    `);
+    const db = postgres(postgresOptions)
 
-db.end();
+    await db.unsafe(`
+            drop schema public cascade;
+            create schema public;
+            alter schema public owner to postgres;
+            grant all on schema public to postgres;
+            grant all on schema public to ${postgresOptions.username};
+            grant all on schema public to public;
+        `);
+
+    await db.end();
+
+}
