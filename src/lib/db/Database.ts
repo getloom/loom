@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {PostgresSql} from '$lib/db/postgres.js';
 import {Repos} from '$lib/db/Repos.js';
 

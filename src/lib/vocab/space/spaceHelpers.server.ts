@@ -3,7 +3,7 @@ import type {Space} from '$lib/vocab/space/space.js';
 import type {Directory} from '$lib/vocab/entity/entityData.js';
 import {ApiError} from '$lib/server/api.js';
 import {Logger} from '@ryanatkn/belt/log.js';
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {Repos} from '$lib/db/Repos.js';
 import {ACTOR_COLUMNS} from '$lib/vocab/actor/actorHelpers.server.js';
 

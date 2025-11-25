@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {Repos} from '$lib/db/Repos.js';
 import type {Entity, EntityId} from '$lib/vocab/entity/entity.js';
 import type {Directory} from '$lib/vocab/entity/entityData.js';

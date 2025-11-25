@@ -1,7 +1,7 @@
 import {suite} from 'uvu';
 import * as assert from 'uvu/assert';
 
-import {red} from '$lib/server/colors.js';
+import {red} from 'kleur/colors';
 import {setupDb, teardownDb, type TestDbContext} from '$lib/util/testDbHelpers.js';
 import {log, toServiceRequestFake} from '$lib/util/testHelpers.js';
 import {validateSchema, toValidationErrorMessage} from '$lib/server/ajv.js';

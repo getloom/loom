@@ -1,5 +1,5 @@
 import {Logger} from '@ryanatkn/belt/log.js';
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 
 import {spawn, spawn_process} from '@ryanatkn/belt/process.js';
 import {unwrap} from '@ryanatkn/belt/result.js';

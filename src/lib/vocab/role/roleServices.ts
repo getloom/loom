@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {CreateRole, ReadRoles, UpdateRole, DeleteRole} from '$lib/vocab/role/roleActions.js';
 import {HUB_COLUMNS} from '$lib/vocab/hub/hubHelpers.server.js';

@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo.js';
 import type {AccountActor, ActorRecord, PublicActor, ActorId} from '$lib/vocab/actor/actor.js';
 import {ADMIN_ACTOR_ID, GHOST_ACTOR_ID, GHOST_ACTOR_NAME} from '$lib/util/constants.js';

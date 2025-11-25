@@ -1,7 +1,7 @@
 import type {WebSocket} from 'ws';
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {BroadcastMessage} from '$lib/util/websocket.js';
 import type {BroadcastAudience, Service} from '$lib/server/service.js';
 import type {ApiResult} from '$lib/server/api.js';

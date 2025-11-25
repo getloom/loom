@@ -1,7 +1,7 @@
 import send from '@polka/send-type';
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {red, blue, gray} from '$lib/server/colors.js';
+import {red, blue, gray} from 'kleur/colors';
 import type {ApiServer, HttpMiddleware} from '$lib/server/ApiServer.js';
 import {
 	type Service,

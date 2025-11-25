@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {CreateAccountActor, DeleteActor} from '$lib/vocab/actor/actorActions.js';
 import {createSpaces} from '$lib/vocab/space/spaceHelpers.server.js';
