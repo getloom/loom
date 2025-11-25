@@ -40,6 +40,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run db:create
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_DB: loom
+          POSTGRES_PASSWORD: password
       - run: npx gro check --workspace
       - run: npx gro build
       - run: node dist_server/server/server.js --check
