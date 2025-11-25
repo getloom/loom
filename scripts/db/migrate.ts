@@ -3,17 +3,7 @@ import 'dotenv/config'
 import { spawnSync } from 'child_process';
 
 import {MIGRATIONS_DIR_DEV, MIGRATIONS_DIR_PROD} from '../../src/lib/db/migration.js';
-import { PostgresOptions } from '../../src/lib/db/postgres.ts';
-
-export const postgresOptions: PostgresOptions = {
-    host: process.env.PGHOST || "",
-    port: Number(process.env.PGPORT),
-    database: process.env.PGDATABASE || "",
-    username: process.env.PGUSER || "",
-    password: process.env.PGPASSWORD || "",
-    idle_timeout: Number(process.env.PGIDLE_TIMEOUT) || undefined,
-    connect_timeout: Number(process.env.PGCONNECT_TIMEOUT) || undefined,
-}   
+import {postgresOptions} from './util'
 
 const BACKUP_FILE = 'backup.sql';
 const NODE_ENV = process.env.NODE_ENV;

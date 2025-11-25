@@ -24,7 +24,6 @@
     "db:destroy": "tsx scripts/db/destroy.ts",
     "db:migrate": "tsx scripts/db/migrate.ts",
     "db:seed": "tsx scripts/db/seed.ts"
-
   },
   "type": "module",
   "engines": {
@@ -758,10 +757,6 @@
       "default": "./dist/server/BroadcastFake.js",
       "types": "./dist/server/BroadcastFake.d.ts"
     },
-    "./server/colors.js": {
-      "default": "./dist/server/colors.js",
-      "types": "./dist/server/colors.d.ts"
-    },
     "./server/env.js": {
       "default": "./dist/server/env.js",
       "types": "./dist/server/env.d.ts"
@@ -826,6 +821,10 @@
     "./server/servicesIntegration.test.js": {
       "default": "./dist/server/servicesIntegration.test.js",
       "types": "./dist/server/servicesIntegration.test.d.ts"
+    },
+    "./server/turnstileHelper.server.js": {
+      "default": "./dist/server/turnstileHelper.server.js",
+      "types": "./dist/server/turnstileHelper.server.d.ts"
     },
     "./server/uiServices.js": {
       "default": "./dist/server/uiServices.js",

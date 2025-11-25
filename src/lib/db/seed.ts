@@ -35,9 +35,9 @@ import {
 } from '$lib/ui/templates.js';
 import type {Directory} from '$lib/vocab/entity/entityData.js';
 import type {Repos} from '$lib/db/Repos.js';
-import {create_password_hasher} from '$lib/server/password_hasher.js';
 import {ADMIN_HUB_ID} from '$lib/util/constants.js';
 import type {AuthorizedServiceRequest} from '$lib/server/service.js';
+import { toPasswordKey } from '$lib/server/password';
 
 /* eslint-disable no-await-in-loop */
 
@@ -49,7 +49,9 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 	const {sql, repos} = db;
 
 	// resource setup
-	const passwordHasher = create_password_hasher();
+		const passwordHasher: any = {
+			encrypt: (passwordText: string) => toPasswordKey(passwordText),
+		};
 
 	log.debug('adding initial dataset to database');
 
@@ -167,8 +169,6 @@ export const seed = async (db: Database, much = false): Promise<void> => {
 			},
 		},
 	});
-	// resource teardown
-	await passwordHasher.close();
 };
 
 const createDefaultEntities = async (
