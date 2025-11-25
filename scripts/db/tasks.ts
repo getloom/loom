@@ -1,7 +1,7 @@
 import { destroy } from "./destroy";
 import { migrate } from "./migrate";
 import { seedDB } from "./seed";
-// import { create } from "./create";
+import { create } from "./create";
 // import { testMigration } from "./testMigration"
 
 
@@ -24,10 +24,10 @@ switch(task){
         console.log("seed selected");
         await seedDB();
         break;
-    // case 'create':
-    //     console.log("create selected")
-    //     await create();
-    //     break;    
+    case 'create':
+        console.log("create selected")
+        await create();
+        break;    
     default:
         console.log("task not selected");
         console.log(task);

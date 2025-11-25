@@ -23,7 +23,8 @@
     "after_deploy": "node dist_server/infra/after_deploy.js",
     "db:destroy": "tsx scripts/db/tasks.ts destroy",
     "db:migrate": "tsx scripts/db/tasks.ts migrate",
-    "db:seed": "tsx scripts/db/tasks.ts seed"
+    "db:seed": "tsx scripts/db/tasks.ts seed",
+    "db:create": "tsx scripts/db/tasks.ts create"
   },
   "type": "module",
   "engines": {
