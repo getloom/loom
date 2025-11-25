@@ -22,9 +22,9 @@
     "start": "node dist_server/server/server.js",
     "after_deploy": "node dist_server/infra/after_deploy.js",
     "db:destroy": "tsx scripts/db/tasks.ts destroy",
-    "db:migrate": "tsx scripts/db/tasks.ts migrate",
+    "db:migrate": "npx gro dev --no-watch && tsx scripts/db/tasks.ts migrate",
     "db:seed": "tsx scripts/db/tasks.ts seed",
-    "db:create": "tsx scripts/db/tasks.ts create",
+    "db:create": "npx gro dev --no-watch && tsx scripts/db/tasks.ts create",
     "db:migrate:test": "tsx scripts/db/tasks.ts testMigrate"
   },
   "type": "module",
@@ -129,10 +129,6 @@
       "default": "./dist/check.task.js",
       "types": "./dist/check.task.d.ts"
     },
-    "./db/create.task.js": {
-      "default": "./dist/db/create.task.js",
-      "types": "./dist/db/create.task.d.ts"
-    },
     "./db/Database.js": {
       "default": "./dist/db/Database.js",
       "types": "./dist/db/Database.d.ts"
@@ -140,14 +136,6 @@
     "./db/db.js": {
       "default": "./dist/db/db.js",
       "types": "./dist/db/db.d.ts"
-    },
-    "./db/destroy.task.js": {
-      "default": "./dist/db/destroy.task.js",
-      "types": "./dist/db/destroy.task.d.ts"
-    },
-    "./db/migrate.task.js": {
-      "default": "./dist/db/migrate.task.js",
-      "types": "./dist/db/migrate.task.d.ts"
     },
     "./db/migrate.js": {
       "default": "./dist/db/migrate.js",
@@ -373,10 +361,6 @@
       "default": "./dist/db/migrations/00053-create-invites.js",
       "types": "./dist/db/migrations/00053-create-invites.d.ts"
     },
-    "./db/obtainDb.js": {
-      "default": "./dist/db/obtainDb.js",
-      "types": "./dist/db/obtainDb.d.ts"
-    },
     "./db/postgres.js": {
       "default": "./dist/db/postgres.js",
       "types": "./dist/db/postgres.d.ts"
@@ -389,17 +373,9 @@
       "default": "./dist/db/Repos.js",
       "types": "./dist/db/Repos.d.ts"
     },
-    "./db/seed.task.js": {
-      "default": "./dist/db/seed.task.js",
-      "types": "./dist/db/seed.task.d.ts"
-    },
     "./db/seed.js": {
       "default": "./dist/db/seed.js",
       "types": "./dist/db/seed.d.ts"
-    },
-    "./db/testMigration.task.js": {
-      "default": "./dist/db/testMigration.task.js",
-      "types": "./dist/db/testMigration.task.d.ts"
     },
     "./infra/.env.example": {
       "default": "./dist/infra/.env.example"

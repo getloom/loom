@@ -47,7 +47,7 @@ create database loom; # notice the semicolon
 
 Now that the database is setup and the repo is installed, run the project locally on your machine. Run the following commands first to initialize the database and run the tests to ensure everything works:
 
-```gro db/create
+```npm run db:create
 npx gro test
 npx gro dev # browse to localhost:5173
 npx gro # print available tasks

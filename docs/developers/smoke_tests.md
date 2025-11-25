@@ -4,7 +4,7 @@ Since the development team of Loom is very small at the moment, smoke tests prio
 The goal of this suite is primarily to test front end behavior as judged by the human eye. Are things behaving as expected? Weird errors? Jerky or unresponsive?
 
 To perform the smoke test locally, first start by running
-`gro db/create --no-seed`
+`npm run db:create` but make sure the internal `seed` flag is set to false
 which will rebuild your local database without any seed data, simulating a freshly installed instance.
 
 # The Script

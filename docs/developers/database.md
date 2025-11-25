@@ -49,7 +49,7 @@ create database loom; # notice the semicolon
 Loom server uses <a href="https://github.com/lukeed/ley">Ley</a> to manage its DB migrations. Migration files are located in the
 <a href="https://github.com/getloom/loom/tree/main/src/lib/db/migrations">migrations</a> directory. 
 
-To create a new migration file use the `ley new` command (see Ley's docs for more details) Use `gro db/migrate` to run migrations.
+To create a new migration file use the `ley new` command (see Ley's docs for more details) Use `npm run db:migrate` to run migrations.
 
 ## Creating backups</h3>
 
@@ -63,20 +63,18 @@ And these commands can restore that dump to the default loom table. Note: you ma
 
 ## Database tasks</h3>
 
-Loom has a number of <a href="https://github.com/grogarden/gro">Gro</a> tasks for managing the
-		database. To view all of them, run <code>gro db</code>.
+Loom has a number of npm tasks for managing the database.
 
-### lib/db/create
+### npm run db:create
 
-The task <code>gro db/create</code> creates the database from scratch. It destroys any existing schema
-		and data, runs all migrations (TODO), and seeds the database.
+The task <code>npm run db:create</code> creates the database from scratch. It destroys any existing schema
+		and data, runs all migrations, and seeds the database.
 ```
-gro db/create
-gro db/create --no-seed # creates the database with no initial data
+npm run db:create
 ```
 
 The tasks it composes can be run individually:
 
-* <code>gro db/destroy</code>
-* <code>gro db/migrate</code>
-* <code>gro db/seed</code>
+* <code>npm run db:destroy</code>
+* <code>npm run db:migrate</code>
+* <code>npm run db:seed</code>

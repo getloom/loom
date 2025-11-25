@@ -3,6 +3,10 @@ import {postgresOptions} from './util.ts'
 
 export async function destroy(){
     console.log("Running destroy")
+    console.log("confirming options")
+    console.log(postgresOptions);
+    console.log("debugging env vars")
+    console.log(process.env);
 
     const db = postgres(postgresOptions)
 

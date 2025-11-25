@@ -39,7 +39,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - run: npx gro db/create
+      - run: npm run db:create
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: loom
+          POSTGRES_PASSWORD: password
+          PGUSER: postgres
       - run: npx gro check --workspace
       - run: npx gro build
       - run: node dist_server/server/server.js --check
