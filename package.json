@@ -22,7 +22,7 @@
     "start": "node dist_server/server/server.js",
     "after_deploy": "node dist_server/infra/after_deploy.js",
     "db:destroy": "tsx scripts/db/tasks.ts destroy",
-    "db:migrate": "tsx scripts/db/tasks.ts migrate",
+    "db:migrate": "npx gro dev --no-watch && tsx scripts/db/tasks.ts migrate",
     "db:seed": "tsx scripts/db/tasks.ts seed",
     "db:create": "npx gro dev --no-watch && tsx scripts/db/tasks.ts create",
     "db:migrate:test": "tsx scripts/db/tasks.ts testMigrate"
