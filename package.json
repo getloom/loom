@@ -59,6 +59,7 @@
     "svelte-intersect": "0.12.1",
     "svelte-turnstile": "^0.8.0",
     "tslib": "^2.6.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.3.3",
     "uvu": "^0.5.6",
     "zod": "^3.22.4"
