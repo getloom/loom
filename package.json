@@ -22,7 +22,9 @@
     "start": "node dist_server/server/server.js",
     "after_deploy": "node dist_server/infra/after_deploy.js",
     "db:destroy": "tsx scripts/db/destroy.ts",
-    "db:migrate": "tsx scripts/db/migrate.ts"
+    "db:migrate": "tsx scripts/db/migrate.ts",
+    "db:seed": "tsx scripts/db/seed.ts"
+
   },
   "type": "module",
   "engines": {

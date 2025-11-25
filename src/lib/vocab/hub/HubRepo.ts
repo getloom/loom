@@ -1,7 +1,7 @@
 import type {Assignable} from '@ryanatkn/belt/types.js';
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo.js';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub.js';
 import {ADMIN_HUB_ID} from '$lib/util/constants.js';

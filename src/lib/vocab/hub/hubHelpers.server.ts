@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import {ADMIN_HUB_ID, ADMIN_HUB_NAME} from '$lib/util/constants.js';
 import type {Hub, HubId, HubSettings} from '$lib/vocab/hub/hub.js';
 import type {ActorId, PublicActor} from '$lib/vocab/actor/actor.js';

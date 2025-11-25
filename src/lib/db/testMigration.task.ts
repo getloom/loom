@@ -17,7 +17,7 @@ const Args = z
 type Args = z.infer<typeof Args>;
 
 export const task: Task<Args> = {
-	summary: 'tests the most recent mogration file against the seeded database',
+	summary: 'tests the most recent migration file against the seeded database',
 	Args,
 	run: async ({invoke_task, args}) => {
 		const {checkpoint, count} = args;

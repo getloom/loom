@@ -2,7 +2,7 @@ import type {Task} from '@ryanatkn/gro';
 import {spawn} from '@ryanatkn/belt/process.js';
 import {z} from 'zod';
 
-import {green} from '$lib/server/colors.js';
+import {green} from 'kleur/colors';
 import {
 	render_502_html,
 	render_nginx_app_config,

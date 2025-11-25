@@ -1,7 +1,7 @@
 import send from '@polka/send-type';
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {HttpMiddleware} from '$lib/server/ApiServer.js';
 import {parseSessionCookie, setSessionCookie} from '$lib/session/sessionCookie.js';
 

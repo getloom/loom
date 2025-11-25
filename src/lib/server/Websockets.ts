@@ -4,7 +4,7 @@ import {EventEmitter} from 'events';
 import type StrictEventEmitter from 'strict-event-emitter-types';
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import {parseSessionCookie} from '$lib/session/sessionCookie.js';
 import type {StatusMessage} from '$lib/util/websocket.js';
 import type {AccountId} from '$lib/vocab/account/account.js';
