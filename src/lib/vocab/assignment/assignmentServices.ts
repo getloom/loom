@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {ServiceByName} from '$lib/vocab/action/actionTypes.js';
 import {CreateAssignment, DeleteAssignment} from '$lib/vocab/assignment/assignmentActions.js';
 import {ADMIN_HUB_ID} from '$lib/util/constants.js';

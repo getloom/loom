@@ -6,7 +6,7 @@ import {Logger} from '@ryanatkn/belt/log.js';
 import {promisify} from 'util';
 import type {WebSocket} from 'ws';
 
-import {blue} from '$lib/server/colors.js';
+import {blue} from 'kleur/colors';
 import type {Database} from '$lib/db/Database.js';
 import type {Websockets} from '$lib/server/Websockets.js';
 import type {Service} from '$lib/server/service.js';

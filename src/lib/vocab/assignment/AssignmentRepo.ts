@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import {PostgresRepo} from '$lib/db/PostgresRepo.js';
 import type {RoleId} from '$lib/vocab/role/role.js';
 import type {HubId} from '$lib/vocab/hub/hub.js';

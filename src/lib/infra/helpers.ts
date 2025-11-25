@@ -1,6 +1,6 @@
 import {create_counter} from '@ryanatkn/belt/counter.js';
 
-import {cyan} from '$lib/server/colors.js';
+import {cyan} from 'kleur/colors';
 
 export interface LogSequence {
 	(text: string, color?: typeof cyan): string;

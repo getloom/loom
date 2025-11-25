@@ -1,6 +1,6 @@
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {blue, gray} from '$lib/server/colors.js';
+import {blue, gray} from 'kleur/colors';
 import type {Repos} from '$lib/db/Repos.js';
 import type {Assignment} from '$lib/vocab/assignment/assignment.js';
 import {ApiError} from '$lib/server/api.js';

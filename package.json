@@ -752,10 +752,6 @@
       "default": "./dist/server/BroadcastFake.js",
       "types": "./dist/server/BroadcastFake.d.ts"
     },
-    "./server/colors.js": {
-      "default": "./dist/server/colors.js",
-      "types": "./dist/server/colors.d.ts"
-    },
     "./server/env.js": {
       "default": "./dist/server/env.js",
       "types": "./dist/server/env.d.ts"

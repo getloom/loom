@@ -6,7 +6,7 @@ import {magenta} from 'kleur/colors';
 import {to_next} from '@ryanatkn/belt/array.js';
 import type {Omit_Strict} from '@ryanatkn/belt/types.js';
 
-import {cyan} from '$lib/server/colors.js';
+import {cyan} from 'kleur/colors';
 import type {Database} from '$lib/db/Database.js';
 import type {Account} from '$lib/vocab/account/account.js';
 import type {Space} from '$lib/vocab/space/space.js';

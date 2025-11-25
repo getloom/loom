@@ -1,7 +1,7 @@
 import type {WebSocket, Data as WebSocketMessageData} from 'ws';
 import {Logger} from '@ryanatkn/belt/log.js';
 
-import {red, blue, gray} from '$lib/server/colors.js';
+import {red, blue, gray} from 'kleur/colors';
 import {type JsonRpcResponse, parseJsonRpcRequest} from '$lib/util/jsonRpc.js';
 import type {ApiServer} from '$lib/server/ApiServer.js';
 import {toValidationErrorMessage, validateSchema} from '$lib/server/ajv.js';
