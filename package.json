@@ -24,7 +24,7 @@
     "db:destroy": "tsx scripts/db/tasks.ts destroy",
     "db:migrate": "tsx scripts/db/tasks.ts migrate",
     "db:seed": "tsx scripts/db/tasks.ts seed",
-    "db:create": "npx gro dev && tsx scripts/db/tasks.ts create",
+    "db:create": "npx gro dev --no-watch && tsx scripts/db/tasks.ts create",
     "db:migrate:test": "tsx scripts/db/tasks.ts testMigrate"
   },
   "type": "module",
@@ -360,10 +360,6 @@
     "./db/migrations/00053-create-invites.js": {
       "default": "./dist/db/migrations/00053-create-invites.js",
       "types": "./dist/db/migrations/00053-create-invites.d.ts"
-    },
-    "./db/obtainDb.js": {
-      "default": "./dist/db/obtainDb.js",
-      "types": "./dist/db/obtainDb.d.ts"
     },
     "./db/postgres.js": {
       "default": "./dist/db/postgres.js",
