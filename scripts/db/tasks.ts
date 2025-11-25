@@ -2,7 +2,7 @@ import { destroy } from "./destroy";
 import { migrate } from "./migrate";
 import { seedDB } from "./seed";
 import { create } from "./create";
-// import { testMigration } from "./testMigration"
+import { testMigration } from "./testMigration"
 
 
 const task = process.argv[2];
@@ -16,10 +16,10 @@ switch(task){
         console.log("migrate selected");
         await migrate();
         break;
-    // case 'testMigrate':
-    //     console.log("test migration selected");
-    //     await testMigration();
-    //     break;
+    case 'testMigrate':
+        console.log("test migration selected");
+        await testMigration();
+        break;
     case 'seed':
         console.log("seed selected");
         await seedDB();
